@@ -1,6 +1,8 @@
-import Head from 'next/head';
-import Highcharts from 'highcharts';
+import dynamic from 'next/dynamic';
+const NoSSRGraph = dynamic(() => import('../components/graph'), {
+	ssr: false,
+});
 
 export default function Home() {
-	return <div />;
+	return <NoSSRGraph />;
 }
