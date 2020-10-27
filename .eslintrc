@@ -1,0 +1,63 @@
+{
+	"env": {
+		"browser": true,
+		"commonjs": true,
+		"es6": true,
+		"node": true
+	},
+	"plugins": ["react", "react-hooks", "import"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:import/errors",
+		"plugin:import/warnings",
+		"plugin:react/recommended"
+	],
+	"parser": "babel-eslint",
+	"parserOptions": {
+		"sourceType": "module",
+		"ecmaVersion": 2020
+	},
+	"settings": {
+		"import/extensions": [".js", ".jsx"],
+		"react": {
+			"version": "detect"
+		}
+	},
+	"rules": {
+		"arrow-parens": [2, "always"],
+		"arrow-spacing": [1, { "before": true, "after": true }],
+		"jsx-quotes": 1,
+		"keyword-spacing": [1, { "before": true, "after": true }],
+		"no-alert": 0,
+		"no-console": 1,
+		"no-debugger": 1,
+		"no-empty-function": [1, { "allow": ["arrowFunctions"] }],
+		"no-lone-blocks": 1,
+		"no-param-reassign": 0,
+		"no-trailing-spaces": [2, { "skipBlankLines": true }],
+		"no-underscore-dangle": 0,
+		"no-unexpected-multiline": 1,
+		"no-unreachable": 1,
+		"no-unused-vars": 1,
+		"no-useless-escape": 0,
+		"no-var": 1,
+		"prefer-const": 1,
+		"prettier/prettier": 0,
+		"quotes": [
+			2,
+			"single",
+			{ "avoidEscape": true, "allowTemplateLiterals": true }
+		],
+		"react-hooks/rules-of-hooks": 2,
+		"react-hooks/exhaustive-deps": "warn",
+		"strict": 0,
+		"react/jsx-props-no-spreading": 0,
+		"react/react-in-jsx-scope": 0,
+		"import/default": 1,
+		"import/export": 1,
+		"import/named": 1,
+		"import/namespace": 1,
+		"import/no-named-as-default": 1,
+		"import/no-unresolved": 1
+	}
+}
