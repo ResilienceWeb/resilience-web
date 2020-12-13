@@ -162,6 +162,15 @@ const data = {
 		{ id: 100, label: "Simon's Vegetable Stall", title: '' },
 		{ id: 101, label: 'Radmore Farm Shop', title: '' },
 		{ id: 102, label: 'Arjuna Wholefoods', title: '' },
+		{ id: 103, label: 'Daily Bread Wholefood Warehouse', title: '' },
+		// Others
+		{ id: 104, label: 'Healthy Start Veg Box Scheme', title: '' },
+		{ id: 105, label: 'Daily Bread Veg Bed', title: '' },
+		{ id: 106, label: 'Community Fridges', title: '' },
+		{ id: 107, label: 'Cambridge Organic Food Company', title: '' },
+		{ id: 108, label: 'Fresh food for emergency Food Hubs', title: '' },
+		{ id: 109, label: 'Food Cycle', title: '' },
+		{ id: 110, label: 'Cambridge Food Hub', title: '' },
 	],
 	edges: [
 		{ from: 0, to: 1 },
@@ -271,6 +280,15 @@ const data = {
 		{ from: 30, to: 100 },
 		{ from: 30, to: 101 },
 		{ from: 30, to: 102 },
+		{ from: 30, to: 103 },
+		{ from: 34, to: 103 },
+		{ from: 33, to: 104 },
+		{ from: 33, to: 106 },
+		{ from: 9, to: 105 },
+		{ from: 31, to: 108 },
+		{ from: 109, to: 108 },
+		{ from: 107, to: 104 },
+		{ from: 107, to: 110 },
 	],
 };
 
