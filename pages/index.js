@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-const NoSSRGraph = dynamic(() => import('../components/graph'), {
+const NoSSRGraph = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
