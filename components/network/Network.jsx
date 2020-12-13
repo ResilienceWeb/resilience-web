@@ -65,6 +65,15 @@ var options = {
 		// 	interpolation: false,
 		// },
 	},
+	edges: {
+		color: '#000000',
+		arrows: {
+			to: {
+				enabled: false,
+			},
+		},
+		color: {},
+	},
 	physics: {
 		forceAtlas2Based: {
 			avoidOverlap: 0.3,
@@ -87,9 +96,6 @@ var options = {
 	interaction: {
 		zoomView: false,
 		hover: true,
-	},
-	edges: {
-		color: '#000000',
 	},
 	layout: {
 		improvedLayout: false,
