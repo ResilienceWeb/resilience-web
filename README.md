@@ -7,6 +7,10 @@ Currently online at [https://web-of-connections.vercel.app](https://web-of-conne
 * Once you clone the repo locally, run `npm install` from the command line in the root directory of this project
 * Run `npm run dev` and the app will open in your default browser at http://localhost:3000
 
+## Deploying updates
+* The graph is hosted at Vercel, which is linked to this repository
+* Any changes to the data or the code will trigger a rebuild on Vercel, which then deployes the updates automatically
+
 ## Technical details
 * Using NextJS, a React framework - https://nextjs.org/
 * Dependencies of this project are listed in package.json, and I will update them at a regular interval
