@@ -2,7 +2,7 @@ Graph to use: [https://www.transitioncambridge.org/thewiki/wiki-uploads/TTEvents
 
 Currently online at [https://web-of-connections.vercel.app](https://web-of-connections.vercel.app)
 
-## Running the app locally:
+## Running the app locally
 * Make sure you have Node.js installed from https://nodejs.org
 * Once you clone the repo locally, run `npm install` from the command line in the root directory of this project
 * Run `npm run dev` and the app will open in your default browser at http://localhost:3000
