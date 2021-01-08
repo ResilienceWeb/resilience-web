@@ -6,57 +6,12 @@ import InfoBox from '../info-box';
 import styles from './Network.module.scss';
 import data from './data.js';
 
-const Node = {
-	comres: 'Community Resilience and Regeneration',
-	transition: 'Transition Cambridge',
-	ccf: 'Cambridge Carbon Footprint',
-	waterland: 'Waterland Organics',
-	smartercamtransport: 'Smarter Cambridge Transport',
-	repaircafes: 'Repair Cafes (Jointly with CCF)',
-	cafenights: 'Cafe nights with talks & activities',
-	energygroup: 'Energy Group',
-	emptycommon: 'Empty Common Community Garden',
-	growingspaces: 'Growing Spaces',
-	romseytowngarden: 'Romsey Town Community Garden',
-	cropshare: 'Crop Share',
-};
-
-const graphData = [
-	[Node.comres, Node.transition],
-	[Node.transition, Node.smartercamtransport],
-	[Node.transition, Node.repaircafes],
-	[Node.transition, Node.cafenights],
-	[Node.transition, Node.energygroup],
-	[Node.transition, Node.emptycommon],
-	[Node.transition, Node.growingspaces],
-	[Node.transition, Node.romseytowngarden],
-	[Node.transition, Node.cropshare],
-	[Node.comres, Node.ccf],
-	[Node.comres, Node.waterland],
-	[Node.comres, 'Italic'],
-	[Node.comres, 'Hellenic'],
-	[Node.comres, 'Anatolian'],
-	[Node.comres, 'Indo-Iranian'],
-	[Node.comres, 'Tocharian'],
-	['Indo-Iranian', 'Dardic'],
-	['Indo-Iranian', 'Indic'],
-	['Indo-Iranian', 'Iranian'],
-	['Iranian', 'Old Persian'],
-	['Old Persian', 'Middle Persian'],
-	['Indic', 'Sanskrit'],
-	['Italic', 'Osco-Umbrian'],
-	['Italic', 'Latino-Faliscan'],
-	['Latino-Faliscan', 'Latin'],
-	['Celtic', 'Brythonic'],
-	['Celtic', 'Goidelic'],
-];
-
 var options = {
 	nodes: {
 		shape: 'box',
 		size: 26,
 		font: {
-			size: 18,
+			size: 24,
 		},
 		shadow: {
 			enabled: true,
