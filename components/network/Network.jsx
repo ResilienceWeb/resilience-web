@@ -1,5 +1,6 @@
 import Graph from 'react-graph-vis';
 import PropTypes from 'prop-types';
+import { useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import InfoBox from '../info-box';
@@ -10,7 +11,7 @@ const options = {
 		shape: 'box',
 		size: 34,
 		font: {
-			size: 28,
+			size: 36,
 		},
 		shadow: {
 			enabled: true,
@@ -86,8 +87,10 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 		},
 	};
 
-	// TODO: useMemo
-	const selectedItem = data.nodes.find((node) => node.id === selectedId);
+	const selectedItem = useMemo(
+		() => data.nodes.find((node) => node.id === selectedId),
+		[data.nodes, selectedId],
+	);
 
 	return (
 		<div className={styles.graph}>
