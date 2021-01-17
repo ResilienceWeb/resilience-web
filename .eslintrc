@@ -10,7 +10,8 @@
 		"eslint:recommended",
 		"plugin:import/errors",
 		"plugin:import/warnings",
-		"plugin:react/recommended"
+		"plugin:react/recommended",
+		"plugin:react-hooks/recommended"
 	],
 	"parser": "babel-eslint",
 	"parserOptions": {

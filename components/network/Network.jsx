@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import Graph from 'react-graph-vis';
+import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import InfoBox from '../info-box';
 import styles from './Network.module.scss';
 
-var options = {
+const options = {
 	nodes: {
 		shape: 'box',
 		size: 34,
@@ -26,7 +26,6 @@ var options = {
 				enabled: false,
 			},
 		},
-		color: {},
 	},
 	// physics: {
 	// 	forceAtlas2Based: {
@@ -75,12 +74,10 @@ var options = {
 	height: '100%',
 };
 
-const Network = ({ data }) => {
-	const [selectedId, setSelectedId] = useState();
-
+const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 	const events = {
 		select: function (event) {
-			var { nodes, edges } = event;
+			const { nodes, edges } = event;
 			// console.log(event);
 			setSelectedId(nodes[0]);
 		},
@@ -89,11 +86,17 @@ const Network = ({ data }) => {
 		},
 	};
 
+	// TODO: useMemo
 	const selectedItem = data.nodes.find((node) => node.id === selectedId);
 
 	return (
 		<div className={styles.graph}>
-			<Graph events={events} graph={data} options={options} />
+			<Graph
+				events={events}
+				getNetwork={(network) => setNetwork(network)}
+				graph={data}
+				options={options}
+			/>
 			<AnimatePresence>
 				{selectedId && (
 					<motion.div
@@ -108,6 +111,13 @@ const Network = ({ data }) => {
 			</AnimatePresence>
 		</div>
 	);
+};
+
+Network.propTypes = {
+	data: PropTypes.object.isRequired,
+	selectedId: PropTypes.string,
+	setSelectedId: PropTypes.func.isRequired,
+	setNetwork: PropTypes.func.isRequired,
 };
 
 export default Network;
