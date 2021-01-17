@@ -1,7 +1,3 @@
-// .button {
-// 	z-index: 2;
-// }
-
 .drawer {
 	position: fixed;
 	width: 300px;
@@ -18,9 +14,8 @@
 	}
 
 	.item {
-		padding: 0.5rem;
+		padding: 0.5rem 1rem;
 		cursor: pointer;
-		// padding: 1rem;
 
 		&:hover {
 			background-color: rgb(226, 232, 240);

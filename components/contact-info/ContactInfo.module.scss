@@ -1,0 +1,16 @@
+.root {
+	position: absolute;
+	right: 0;
+	padding: 0.5rem;
+	font-size: 1rem;
+	z-index: 4;
+
+	a {
+		color: #fcba03;
+		transition: opacity 100ms;
+
+		&:hover {
+			opacity: 0.7;
+		}
+	}
+}

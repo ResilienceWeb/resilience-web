@@ -23,9 +23,10 @@ const ConnectionsDrawer = ({ items, selectNode }) => {
 		setSearchTerm(event.target.value);
 	}, []);
 
-	const sortedItems = useMemo(() => {
-		return items.filter((i) => !i.isDescriptive).sort(compareFunc);
-	}, [items]);
+	const sortedItems = useMemo(
+		() => items.filter((i) => !i.isDescriptive).sort(compareFunc),
+		[items],
+	);
 
 	const filteredItems = useMemo(() => {
 		return searchTerm
