@@ -1,0 +1,29 @@
+// .button {
+// 	z-index: 2;
+// }
+
+.drawer {
+	position: fixed;
+	width: 300px;
+	height: 100vh;
+	overflow-y: scroll;
+	border-right: 1px solid rgb(226, 232, 240);
+	background-color: white;
+	z-index: 3;
+
+	.title {
+		font-size: 24px;
+		font-weight: 700;
+		padding: 0.5rem;
+	}
+
+	.item {
+		padding: 0.5rem;
+		cursor: pointer;
+		// padding: 1rem;
+
+		&:hover {
+			background-color: rgb(226, 232, 240);
+		}
+	}
+}

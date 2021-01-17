@@ -1,10 +1,12 @@
 import Head from 'next/head';
+import { ChakraProvider } from '@chakra-ui/react';
 import '../styles/globals.css';
 
 function App({ Component, pageProps }) {
 	return (
 		<>
 			<Head>
+				<title>Web of Connections</title>
 				<meta charSet="utf-8" />
 				<meta
 					name="viewport"
@@ -15,7 +17,9 @@ function App({ Component, pageProps }) {
 					rel="stylesheet"
 				/>
 			</Head>
-			<Component {...pageProps} />
+			<ChakraProvider>
+				<Component {...pageProps} />
+			</ChakraProvider>
 		</>
 	);
 }

@@ -1,8 +1,16 @@
 import dynamic from 'next/dynamic';
-const NoSSRGraph = dynamic(() => import('../components/network'), {
+import { useCallback } from 'react';
+import Drawer from '../components/drawer';
+import data from '../data/data.js';
+const NoSSRNetwork = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
 export default function Home() {
-	return <NoSSRGraph />;
+	return (
+		<div>
+			<Drawer items={data.nodes} />
+			<NoSSRNetwork data={data} />
+		</div>
+	);
 }

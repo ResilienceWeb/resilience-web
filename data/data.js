@@ -14,22 +14,18 @@ const data = {
 		{
 			id: 1,
 			label: 'Transition Cambridge',
-			title: 'node 2 tootip text',
 		},
 		{
 			id: 2,
 			label: 'Cambridge Carbon Footprint',
-			title: 'node 3 tootip text',
 		},
 		{
 			id: 3,
 			label: 'Smarter Cambridge Transport',
-			title: 'node 4 tootip text',
 		},
 		{
 			id: 4,
 			label: 'Repair Cafes (Jointly with CCF)',
-			title: 'node 5 tootip text',
 		},
 		{
 			id: 5,
@@ -46,7 +42,7 @@ const data = {
 		{ id: 13, label: 'Cambridge City Council', title: '' },
 		{ id: 14, label: 'Cambridge Doughnut', title: '' },
 		{ id: 16, label: 'Cambridge 2030', title: '' },
-		{ id: 17, label: 'Cambridge Independent', title: '' },
+		// { id: 17, label: 'Cambridge Independent', title: '' },
 		{ id: 18, label: 'Allotment Societies', title: '' },
 		{ id: 19, label: 'Camlets Local Trading', title: '' },
 		{ id: 20, label: 'Adult Education', title: '', color: '#9d9d9e' },
@@ -144,7 +140,6 @@ const data = {
 		{ id: 92, label: 'Silent Rebellion', title: '' },
 		// Local social firms
 		{ id: 25, label: 'Local social firms', title: '' },
-		{ id: 93, label: 'Burwell Print', title: '' },
 		{ id: 94, label: 'Prospects Trust (Snakehall Farm)', title: '' },
 		{ id: 95, label: 'Darwin Nurseries', title: '' },
 		// Local food businesses
@@ -168,7 +163,6 @@ const data = {
 		{ id: 105, label: 'Daily Bread Veg Bed', title: '' },
 		{ id: 106, label: 'Community Fridges', title: '' },
 		{ id: 107, label: 'Cambridge Organic Food Company', title: '' },
-		{ id: 108, label: 'Fresh food for emergency Food Hubs', title: '' },
 		{ id: 109, label: 'Food Cycle', title: '' },
 		{ id: 110, label: 'Cambridge Food Hub', title: '' },
 	],
@@ -181,7 +175,6 @@ const data = {
 		{ from: 0, to: 14 },
 		{ from: 0, to: 15 },
 		{ from: 0, to: 16 },
-		{ from: 0, to: 17 },
 		{ from: 0, to: 18 },
 		{ from: 0, to: 19 },
 		{ from: 0, to: 20 },
@@ -268,7 +261,6 @@ const data = {
 		{ from: 23, to: 90 },
 		{ from: 23, to: 91 },
 		{ from: 23, to: 92 },
-		{ from: 25, to: 93 },
 		{ from: 25, to: 94 },
 		{ from: 25, to: 95 },
 		{ from: 30, to: 94 },
@@ -285,8 +277,7 @@ const data = {
 		{ from: 33, to: 104 },
 		{ from: 33, to: 106 },
 		{ from: 9, to: 105 },
-		{ from: 31, to: 108 },
-		{ from: 109, to: 108 },
+		{ from: 32, to: 109 },
 		{ from: 107, to: 104 },
 		{ from: 107, to: 110 },
 	],

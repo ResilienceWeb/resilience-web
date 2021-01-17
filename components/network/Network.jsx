@@ -4,14 +4,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import InfoBox from '../info-box';
 import styles from './Network.module.scss';
-import data from './data.js';
 
 var options = {
 	nodes: {
 		shape: 'box',
-		size: 26,
+		size: 34,
 		font: {
-			size: 24,
+			size: 28,
 		},
 		shadow: {
 			enabled: true,
@@ -29,28 +28,46 @@ var options = {
 		},
 		color: {},
 	},
+	// physics: {
+	// 	forceAtlas2Based: {
+	// 		avoidOverlap: 0.3,
+	// 		gravitationalConstant: -26,
+	// 		centralGravity: 0.005,
+	// 		springLength: 100,
+	// 		springConstant: 0.08,
+	// 	},
+	// 	maxVelocity: 106,
+	// 	solver: 'forceAtlas2Based',
+	// 	timestep: 0.35,
+	// 	stabilization: {
+	// 		enabled: true,
+	// 		iterations: 1000,
+	// 		updateInterval: 100,
+	// 		onlyDynamicEdges: false,
+	// 		fit: true,
+	// 	},
+	// },
 	physics: {
 		forceAtlas2Based: {
-			avoidOverlap: 0.3,
 			gravitationalConstant: -26,
 			centralGravity: 0.005,
-			springLength: 100,
-			springConstant: 0.08,
+			springLength: 230,
+			springConstant: 0.18,
 		},
-		maxVelocity: 106,
-		solver: 'forceAtlas2Based',
+		maxVelocity: 146,
+		solver: 'repulsion',
 		timestep: 0.35,
-		stabilization: {
-			enabled: true,
-			iterations: 1000,
-			updateInterval: 100,
-			onlyDynamicEdges: false,
-			fit: true,
+		stabilization: { iterations: 150 },
+		repulsion: {
+			nodeDistance: 300,
+			springLength: 250,
 		},
 	},
 	interaction: {
-		zoomView: false,
+		zoomView: true,
 		hover: true,
+		dragView: false,
+		navigationButtons: true,
 	},
 	layout: {
 		improvedLayout: false,
@@ -58,13 +75,13 @@ var options = {
 	height: '100%',
 };
 
-const Network = () => {
+const Network = ({ data }) => {
 	const [selectedId, setSelectedId] = useState();
 
 	const events = {
 		select: function (event) {
 			var { nodes, edges } = event;
-			console.log(event);
+			// console.log(event);
 			setSelectedId(nodes[0]);
 		},
 		showPopup: function (event) {
