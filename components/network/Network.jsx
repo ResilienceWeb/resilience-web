@@ -1,7 +1,7 @@
-import Graph from 'react-graph-vis';
 import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import VisNetworkReactComponent from 'vis-network-react';
 
 import InfoBox from '../info-box';
 import styles from './Network.module.scss';
@@ -9,9 +9,9 @@ import styles from './Network.module.scss';
 const options = {
 	nodes: {
 		shape: 'box',
-		size: 34,
+		size: 44,
 		font: {
-			size: 36,
+			size: 46,
 		},
 		shadow: {
 			enabled: true,
@@ -57,17 +57,22 @@ const options = {
 		maxVelocity: 146,
 		solver: 'repulsion',
 		timestep: 0.35,
-		stabilization: { iterations: 150 },
+		stabilization: { iterations: 50 },
 		repulsion: {
 			nodeDistance: 300,
 			springLength: 250,
 		},
+		adaptiveTimestep: true,
 	},
 	interaction: {
 		zoomView: true,
 		hover: true,
 		dragView: false,
 		navigationButtons: true,
+		keyboard: true,
+	},
+	manipulation: {
+		enabled: true,
 	},
 	layout: {
 		improvedLayout: false,
@@ -94,10 +99,10 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 
 	return (
 		<div className={styles.graph}>
-			<Graph
+			<VisNetworkReactComponent
 				events={events}
 				getNetwork={(network) => setNetwork(network)}
-				graph={data}
+				data={data}
 				options={options}
 			/>
 			<AnimatePresence>

@@ -2,6 +2,7 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';
 import '../styles/globals.css';
+import 'vis-network/styles/vis-network.css';
 
 function App({ Component, pageProps }) {
 	return (

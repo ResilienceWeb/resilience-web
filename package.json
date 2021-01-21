@@ -1,5 +1,5 @@
 {
-	"name": "transition-network",
+	"name": "web-of-connections",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -11,13 +11,12 @@
 		"@chakra-ui/react": "1.1.4",
 		"@emotion/react": "11.1.4",
 		"@emotion/styled": "11.0.0",
-		"d3": "6.3.1",
 		"framer-motion": "3.2.1",
 		"next": "10.0.5",
 		"react": "17.0.1",
 		"react-dom": "17.0.1",
-		"react-graph-vis": "1.0.5",
-		"sass": "1.32.4"
+		"sass": "1.32.4",
+		"vis-network-react": "DinerIsmail/vis-network-react"
 	},
 	"devDependencies": {
 		"babel-eslint": "10.1.0",
