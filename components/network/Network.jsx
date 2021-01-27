@@ -109,14 +109,17 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 				options={options}
 			/>
 			<AnimatePresence>
-				{selectedId && (
+				{selectedId && !selectedItem?.isDescriptive && (
 					<motion.div
 						key="infobox"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 					>
-						<InfoBox title={selectedItem.label} />
+						<InfoBox
+							title={selectedItem.label}
+							website={selectedItem.website}
+						/>
 					</motion.div>
 				)}
 			</AnimatePresence>
