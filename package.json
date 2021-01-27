@@ -8,21 +8,21 @@
 		"start": "next start"
 	},
 	"dependencies": {
-		"@chakra-ui/react": "1.1.4",
+		"@chakra-ui/react": "1.1.6",
 		"@emotion/react": "11.1.4",
 		"@emotion/styled": "11.0.0",
 		"framer-motion": "3.2.1",
 		"next": "10.0.5",
 		"react": "17.0.1",
 		"react-dom": "17.0.1",
-		"sass": "1.32.4",
+		"sass": "1.32.5",
 		"vis-network-react": "DinerIsmail/vis-network-react"
 	},
 	"devDependencies": {
 		"babel-eslint": "10.1.0",
-		"eslint": "7.16.0",
+		"eslint": "7.18.0",
 		"eslint-config-airbnb": "18.2.1",
-		"eslint-config-prettier": "7.1.0",
+		"eslint-config-prettier": "7.2.0",
 		"eslint-plugin-html": "6.1.1",
 		"eslint-plugin-import": "2.22.1",
 		"eslint-plugin-jsx-a11y": "6.4.1",

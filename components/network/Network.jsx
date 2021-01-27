@@ -69,11 +69,14 @@ const options = {
 		hover: true,
 		dragView: false,
 		navigationButtons: true,
-		keyboard: true,
+		keyboard: {
+			enabled: true,
+			bindToWindow: true,
+		},
 	},
-	manipulation: {
-		enabled: true,
-	},
+	// manipulation: {
+	// 	enabled: true,
+	// },
 	layout: {
 		improvedLayout: false,
 	},
