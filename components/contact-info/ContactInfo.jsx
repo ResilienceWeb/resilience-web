@@ -4,11 +4,11 @@ import styles from './ContactInfo.module.scss';
 const ContactInfo = () => (
 	<div className={styles.root}>
 		<a
-			href="mailto:ismail.diner@gmail.com"
+			href="mailto:diner.ismail@protonmail.com"
 			rel="noreferrer"
 			target="_blank"
 		>
-			Feedback
+			Make a suggestion
 		</a>
 	</div>
 );
