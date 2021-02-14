@@ -1,8 +1,10 @@
 import dynamic from 'next/dynamic';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { useDimensions } from '../hooks/useDimensions';
 import Drawer from '../components/drawer';
 import ContactInfo from '../components/contact-info';
 import SisterGraphLink from '../components/sister-graph-link';
+import MobileWarningDialog from '../components/mobile-warning-dialog';
 import data from '../data/data.js';
 
 const NoSSRNetwork = dynamic(() => import('../components/network'), {
@@ -10,8 +12,10 @@ const NoSSRNetwork = dynamic(() => import('../components/network'), {
 });
 
 export default function Home() {
+	const containerRef = useRef(null);
 	const [selectedId, setSelectedId] = useState();
 	const [network, setNetwork] = useState();
+	const { width } = useDimensions(containerRef);
 
 	const selectNode = useCallback(
 		(id) => {
@@ -22,8 +26,12 @@ export default function Home() {
 		[network],
 	);
 
+	if (width < 1000) {
+		return <MobileWarningDialog />;
+	}
+
 	return (
-		<div>
+		<div ref={containerRef}>
 			<Drawer items={data.nodes} selectNode={selectNode} />
 			<ContactInfo />
 			<SisterGraphLink />
