@@ -26,7 +26,7 @@ export default function Home() {
 		[network],
 	);
 
-	if (width < 1000) {
+	if (width < 768) {
 		return <MobileWarningDialog />;
 	}
 
