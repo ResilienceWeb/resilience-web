@@ -9,16 +9,30 @@ import styles from './Network.module.scss';
 const options = {
 	nodes: {
 		shape: 'box',
+		shapeProperties: {
+			borderRadius: 3,
+		},
 		size: 44,
 		font: {
-			size: 46,
+			size: 56,
 		},
+		margin: 16,
 		shadow: {
 			enabled: true,
 		},
-		// shapeProperties: {
-		// 	interpolation: false,
-		// },
+		borderWidthSelected: 10,
+		color: {
+			border: '#2B7CE9',
+			background: '#97C2FC',
+			highlight: {
+				border: '#467354',
+				background: '#64b37c',
+			},
+			hover: {
+				border: '#2B7CE9',
+				background: '#D2E5FF',
+			},
+		},
 	},
 	edges: {
 		color: '#000000',
@@ -28,40 +42,23 @@ const options = {
 			},
 		},
 	},
-	// physics: {
-	// 	forceAtlas2Based: {
-	// 		avoidOverlap: 0.3,
-	// 		gravitationalConstant: -26,
-	// 		centralGravity: 0.005,
-	// 		springLength: 100,
-	// 		springConstant: 0.08,
-	// 	},
-	// 	maxVelocity: 106,
-	// 	solver: 'forceAtlas2Based',
-	// 	timestep: 0.35,
-	// 	stabilization: {
-	// 		enabled: true,
-	// 		iterations: 1000,
-	// 		updateInterval: 100,
-	// 		onlyDynamicEdges: false,
-	// 		fit: true,
-	// 	},
-	// },
 	physics: {
-		forceAtlas2Based: {
-			gravitationalConstant: -26,
-			centralGravity: 0.005,
-			springLength: 230,
-			springConstant: 0.18,
-		},
-		maxVelocity: 146,
-		solver: 'repulsion',
-		timestep: 0.35,
-		stabilization: { iterations: 50 },
+		enabled: true,
 		repulsion: {
 			nodeDistance: 300,
 			springLength: 250,
+			centralGravity: 0.05,
+			springConstant: 0.01,
 		},
+		maxVelocity: 146,
+		solver: 'repulsion',
+		stabilization: {
+			enabled: true,
+			iterations: 1000,
+			// updateInterval: 5,
+			fit: true,
+		},
+		timestep: 0.1,
 		adaptiveTimestep: true,
 	},
 	interaction: {

@@ -127,11 +127,6 @@ const data = {
 			label: 'Cambridge 2030',
 		},
 		{
-			website: 'https://www.cambridgeindependent.co.uk/',
-			id: '17',
-			label: 'Cambridge Independent',
-		},
-		{
 			website: 'https://www.cambridge.gov.uk/apply-for-an-allotment-plot',
 			id: '18',
 			label: 'Allotment Societies',
