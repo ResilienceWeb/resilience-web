@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useCallback, useRef, useState } from 'react';
-import { useDimensions } from '../hooks/useDimensions';
+import useWindowSize from '../hooks/useWindowSize';
 import Drawer from '../components/drawer';
 import ContactInfo from '../components/contact-info';
 import SisterGraphLink from '../components/sister-graph-link';
@@ -15,7 +15,7 @@ export default function Home() {
 	const containerRef = useRef(null);
 	const [selectedId, setSelectedId] = useState();
 	const [network, setNetwork] = useState();
-	const { width } = useDimensions(containerRef);
+	const size = useWindowSize();
 
 	const selectNode = useCallback(
 		(id) => {
@@ -26,7 +26,7 @@ export default function Home() {
 		[network],
 	);
 
-	if (width < 768) {
+	if (size.width < 768) {
 		return <MobileWarningDialog />;
 	}
 
