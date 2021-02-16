@@ -18,27 +18,26 @@ export default async (req, res) => {
 		const sheet = doc.sheetsById[SHEET_ID];
 		const rows = await sheet.getRows();
 
-		console.log(rows);
+		const data = rows
+			.filter((row) => row.Name && row.Name.length > 0)
+			.map((row) => ({
+				rowNumber: row._rowNumber,
+				id: row.id,
+				name: row.organization,
+				// phone: row.Phone,
+				// address: row.Address,
+				// plusCode: row.PlusCode,
+				// allergies: row['Allergies?'],
+				// deliveries: {
+				// 	Tuesday: row.Tue,
+				// 	Thursday: row.Thur,
+				// 	Sunday: row.Sun,
+				// },
+				// notes: row.Notes,
+				// optimalRoute: parseInt(row['optimal route']),
+			}));
 
-		// const data = rows
-		// 	.filter((row) => row.Name && row.Name.length > 0)
-		// 	.map((row) => ({
-		// 		id: row._rowNumber,
-		// 		name: row.Name,
-		// 		phone: row.Phone,
-		// 		address: row.Address,
-		// 		plusCode: row.PlusCode,
-		// 		allergies: row['Allergies?'],
-		// 		deliveries: {
-		// 			Tuesday: row.Tue,
-		// 			Thursday: row.Thur,
-		// 			Sunday: row.Sun,
-		// 		},
-		// 		notes: row.Notes,
-		// 		optimalRoute: parseInt(row['optimal route']),
-		// 	}));
-
-		res.status(200).json({ rows: [] });
+		res.status(200).json({ rows: data });
 	} catch (e) {
 		res.status(404).json({ error: 'Something went wrong' });
 		// eslint-disable-next-line no-console
