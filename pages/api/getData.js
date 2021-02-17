@@ -28,17 +28,6 @@ export default async (req, res) => {
 				name: row.organization,
 				category: row.category,
 				description: row.description,
-				// phone: row.Phone,
-				// address: row.Address,
-				// plusCode: row.PlusCode,
-				// allergies: row['Allergies?'],
-				// deliveries: {
-				// 	Tuesday: row.Tue,
-				// 	Thursday: row.Thur,
-				// 	Sunday: row.Sun,
-				// },
-				// notes: row.Notes,
-				// optimalRoute: parseInt(row['optimal route']),
 			}));
 
 		res.status(200).json({ rows: data });

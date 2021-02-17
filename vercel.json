@@ -1,7 +1,0 @@
-{
-	"functions": {
-		"api/getData.js": {
-			"public": true
-		}
-	}
-}
