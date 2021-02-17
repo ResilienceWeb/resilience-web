@@ -9,26 +9,27 @@ export default async (req, res) => {
 	const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
 
 	try {
-		// await doc.useServiceAccountAuth({
-		// 	client_email: CLIENT_EMAIL,
-		// 	private_key: PRIVATE_KEY,
-		// });
+		await doc.useServiceAccountAuth({
+			client_email: CLIENT_EMAIL,
+			private_key: PRIVATE_KEY,
+		});
 
-		// await doc.loadInfo();
-		// const sheet = doc.sheetsById[SHEET_ID];
-		// const rows = await sheet.getRows();
+		await doc.loadInfo();
+		console.log(doc);
+		const sheet = doc.sheetsById[SHEET_ID];
+		const rows = await sheet.getRows();
 
 		// console.log(rows);
 
-		// const data = rows.map((row) => ({
-		// 	rowNumber: row._rowNumber,
-		// 	id: row.id,
-		// 	name: row.organization,
-		// 	category: row.category,
-		// 	description: row.description,
-		// }));
+		const data = rows.map((row) => ({
+			rowNumber: row._rowNumber,
+			id: row.id,
+			name: row.organization,
+			category: row.category,
+			description: row.description,
+		}));
 
-		res.status(200).json({ rows: { test: 2 } });
+		res.status(200).json({ rows: data });
 	} catch (e) {
 		res.status(404).json({ error: 'Something went wrong' });
 		// eslint-disable-next-line no-console
