@@ -18,8 +18,10 @@ export default async (req, res) => {
 		const sheet = doc.sheetsById[SHEET_ID];
 		const rows = await sheet.getRows();
 
+		console.log(rows);
+
 		const data = rows
-			.filter((row) => row.Name && row.Name.length > 0)
+			// .filter((row) => row.organization && row.organization.length > 0)
 			.map((row) => ({
 				rowNumber: row._rowNumber,
 				id: row.id,
