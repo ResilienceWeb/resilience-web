@@ -24,6 +24,8 @@ export default async (req, res) => {
 				rowNumber: row._rowNumber,
 				id: row.id,
 				name: row.organization,
+				category: row.category,
+				description: row.description,
 				// phone: row.Phone,
 				// address: row.Address,
 				// plusCode: row.PlusCode,
