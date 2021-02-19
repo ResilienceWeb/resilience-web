@@ -29,6 +29,8 @@ export default async (req, res) => {
 			description: row.description,
 		}));
 
+		console.log(data);
+
 		res.status(200).json({ rows: data });
 	} catch (e) {
 		res.status(404).json({ error: 'Something went wrong' });
