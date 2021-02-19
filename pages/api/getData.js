@@ -19,7 +19,7 @@ export default async (req, res) => {
 		const sheet = doc.sheetsById[SHEET_ID];
 		const rows = await sheet.getRows();
 
-		const data = rows.map((row) => ({
+		const transformedRows = rows.map((row) => ({
 			rowNumber: row._rowNumber,
 			id: row.id,
 			name: row.organization,
@@ -27,7 +27,7 @@ export default async (req, res) => {
 			description: row.description,
 		}));
 
-		res.status(200).json({ rows: data });
+		res.status(200).json({ result: transformedRows });
 	} catch (e) {
 		res.status(404).json({ error: 'Something went wrong: ' + e });
 		// eslint-disable-next-line no-console
