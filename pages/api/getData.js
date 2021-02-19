@@ -15,11 +15,9 @@ export default async (req, res) => {
 		});
 
 		await doc.loadInfo();
-		console.log(doc);
+
 		const sheet = doc.sheetsById[SHEET_ID];
 		const rows = await sheet.getRows();
-
-		// console.log(rows);
 
 		const data = rows.map((row) => ({
 			rowNumber: row._rowNumber,
@@ -29,11 +27,9 @@ export default async (req, res) => {
 			description: row.description,
 		}));
 
-		console.log(data);
-
 		res.status(200).json({ rows: data });
 	} catch (e) {
-		res.status(404).json({ error: 'Something went wrong' + e });
+		res.status(404).json({ error: 'Something went wrong: ' + e });
 		// eslint-disable-next-line no-console
 		console.error('Error: ', e);
 	}
