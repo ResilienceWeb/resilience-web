@@ -25,6 +25,7 @@ export default async (req, res) => {
 			name: row.organization,
 			category: row.category,
 			description: row.description,
+			website: row.website,
 		}));
 
 		res.status(200).json({ result: transformedRows });
