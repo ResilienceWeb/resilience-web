@@ -1,6 +1,6 @@
 Graph to use: [https://www.transitioncambridge.org/thewiki/wiki-uploads/TTEvents.TranNews/megsweb.pdf](https://www.transitioncambridge.org/thewiki/wiki-uploads/TTEvents.TranNews/megsweb.pdf)
 
-Currently online at [https://web-of-connections.vercel.app](https://web-of-connections.vercel.app)
+Currently online at [https://cambridgeresilienceweb.org.uk](https://cambridgeresilienceweb.org.uk)
 
 ## Running the app locally
 * Make sure you have Node.js installed from https://nodejs.org
