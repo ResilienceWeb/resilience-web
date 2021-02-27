@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import axios from 'axios';
+import fs from 'fs';
 
-const APP_URL = 'https://cambridgeresilienceweb.vercel.app';
+const APP_URL = 'https://cambridgeresilienceweb.org.uk';
 
 const refetchData = async () => {
 	try {
@@ -11,6 +12,13 @@ const refetchData = async () => {
 	}
 };
 
-refetchData().then((data) => {
-	console.log(data);
+refetchData().then((response) => {
+	const stringData = JSON.stringify(response.data.result);
+	fs.writeFile('./scripts/imported-data.json', stringData, (err) => {
+		if (!err) {
+			console.log('DONE');
+		} else {
+			console.error(err);
+		}
+	});
 });

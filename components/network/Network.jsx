@@ -1,5 +1,5 @@
+import { memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import VisNetworkReactComponent from 'vis-network-react';
 
@@ -47,8 +47,8 @@ const options = {
 		repulsion: {
 			nodeDistance: 300,
 			springLength: 250,
-			centralGravity: 0.05,
-			springConstant: 0.01,
+			// centralGravity: 0.02,
+			// springConstant: 0.01,
 		},
 		maxVelocity: 146,
 		solver: 'repulsion',
@@ -59,7 +59,7 @@ const options = {
 			fit: true,
 		},
 		timestep: 0.1,
-		adaptiveTimestep: true,
+		// adaptiveTimestep: true,
 	},
 	interaction: {
 		zoomView: true,
@@ -126,9 +126,9 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 
 Network.propTypes = {
 	data: PropTypes.object.isRequired,
-	selectedId: PropTypes.string,
+	selectedId: PropTypes.number,
 	setSelectedId: PropTypes.func.isRequired,
 	setNetwork: PropTypes.func.isRequired,
 };
 
-export default Network;
+export default memo(Network);

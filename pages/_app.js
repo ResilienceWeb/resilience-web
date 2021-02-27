@@ -8,7 +8,7 @@ function App({ Component, pageProps }) {
 	return (
 		<>
 			<Head>
-				<title>Web of Connections</title>
+				<title>Cambridge Resilience Web</title>
 				<meta charSet="utf-8" />
 				<meta
 					name="viewport"

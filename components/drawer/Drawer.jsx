@@ -4,8 +4,8 @@ import { Box, Divider, Input } from '@chakra-ui/react';
 import styles from './Drawer.module.scss';
 
 const compareFunc = (a, b) => {
-	const labelA = a.label.toLowerCase();
-	const labelB = b.label.toLowerCase();
+	const labelA = a.label?.toLowerCase();
+	const labelB = b.label?.toLowerCase();
 
 	if (labelA < labelB) {
 		return -1;
@@ -45,7 +45,7 @@ const ConnectionsDrawer = ({ items, selectNode }) => {
 
 	return (
 		<div className={styles.drawer}>
-			<h1 className={styles.title}>Web of Connections</h1>
+			<h1 className={styles.title}>Cambridge Resilience Web</h1>
 			<Box mx={2} mb={4}>
 				<Input
 					id="search"
