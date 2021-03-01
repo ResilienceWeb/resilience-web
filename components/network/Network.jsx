@@ -12,27 +12,15 @@ const options = {
 		shapeProperties: {
 			borderRadius: 3,
 		},
-		size: 44,
+		size: 32,
 		font: {
-			size: 56,
+			size: 26,
 		},
-		margin: 16,
+		margin: 10,
 		shadow: {
 			enabled: true,
 		},
 		borderWidthSelected: 10,
-		color: {
-			border: '#2B7CE9',
-			background: '#97C2FC',
-			highlight: {
-				border: '#467354',
-				background: '#64b37c',
-			},
-			hover: {
-				border: '#2B7CE9',
-				background: '#D2E5FF',
-			},
-		},
 	},
 	edges: {
 		color: '#000000',
@@ -43,22 +31,27 @@ const options = {
 		},
 	},
 	physics: {
-		enabled: true,
-		repulsion: {
-			nodeDistance: 300,
-			springLength: 250,
-			// centralGravity: 0.02,
-			// springConstant: 0.01,
+		// repulsion: {
+		// 	nodeDistance: 400,
+		// 	springLength: 250,
+		// 	// centralGravity: 0.02,
+		// 	// springConstant: 0.01,
+		// },
+		forceAtlas2Based: {
+			gravitationalConstant: -26,
+			centralGravity: 0.005,
+			springLength: 230,
+			springConstant: 0.18,
 		},
 		maxVelocity: 146,
-		solver: 'repulsion',
+		solver: 'forceAtlas2Based',
 		stabilization: {
 			enabled: true,
-			iterations: 1000,
+			iterations: 150,
 			// updateInterval: 5,
 			fit: true,
 		},
-		timestep: 0.1,
+		timestep: 0.35,
 		// adaptiveTimestep: true,
 	},
 	interaction: {
@@ -114,6 +107,7 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 						exit={{ opacity: 0 }}
 					>
 						<InfoBox
+							description={selectedItem.description}
 							title={selectedItem.label}
 							website={selectedItem.website}
 						/>

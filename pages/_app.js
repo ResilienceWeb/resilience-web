@@ -9,6 +9,7 @@ function App({ Component, pageProps }) {
 		<>
 			<Head>
 				<title>Cambridge Resilience Web</title>
+				<meta property="og:title" content="Cambridge Resilience Web" />
 				<meta charSet="utf-8" />
 				<meta
 					name="viewport"
@@ -18,6 +19,15 @@ function App({ Component, pageProps }) {
 					href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap"
 					rel="stylesheet"
 				/>
+				<meta
+					property="og:description"
+					content="A web of connections, showing localy groups working to co-create a more socially and ecologically just city."
+				/>
+				<meta
+					name="description"
+					content="A web of connections, showing localy groups working to co-create a more socially and ecologically just city."
+				/>
+				<meta name="og:image" content="static/preview-image.jpg" />
 			</Head>
 			<ChakraProvider>
 				<Component {...pageProps} />

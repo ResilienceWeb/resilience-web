@@ -18,7 +18,14 @@
 		font-weight: 500;
 	}
 
+	.description {
+		max-width: 250px;
+		margin-bottom: 1rem;
+		font-size: 14px;
+	}
+
 	.website {
+		margin-top: 2rem;
 		transition: 150ms opacity;
 
 		&:hover {

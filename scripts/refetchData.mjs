@@ -16,7 +16,7 @@ refetchData().then((response) => {
 	const stringData = JSON.stringify(response.data.result);
 	fs.writeFile('./scripts/imported-data.json', stringData, (err) => {
 		if (!err) {
-			console.log('DONE');
+			console.log('Data fetched successfully');
 		} else {
 			console.error(err);
 		}

@@ -3,6 +3,42 @@ import groupBy from 'lodash/groupBy.js';
 
 const IMPORTED_DATA_PATH = './scripts/imported-data.json';
 
+const COLOR_MAPPING = {
+	Environment: '#7ed957',
+	Housing: '#cb6ce6',
+	'Social business': '#778ffc',
+	Transportation: '#737373',
+	Connectivity: '#5ce1e6',
+	Equity: '#ff66c4',
+	Community: '#ffde59',
+	'Animal rights': '#ff914d',
+	Nature: '#008037',
+	Justice: '#ff5757',
+	Education: '#c9e265',
+	Food: '#a4791b',
+	Technology: '#d9d9d9',
+	Art: '#77fcd0',
+	Union: '#fff780',
+};
+
+const CATEGORY_MAPPING = {
+	Environment: 'Environment',
+	Housing: 'Housing',
+	'Social business': 'Social business',
+	Transportation: 'Transportation',
+	Connectivity: 'Connectivity',
+	Equity: 'Equity',
+	Community: 'Community',
+	'Animal rights': 'Animal rights',
+	Nature: 'Nature/Conservation',
+	Justice: 'Justice',
+	Education: 'Education',
+	Food: 'Food',
+	Technology: 'Technology',
+	Art: 'Art',
+	Union: 'Union',
+};
+
 const transform = () => {
 	const transformedData = {
 		nodes: [],
@@ -10,12 +46,14 @@ const transform = () => {
 	};
 	const jsonData = fs.readFileSync(IMPORTED_DATA_PATH);
 	const data = JSON.parse(jsonData);
-	data.map(({ name, category, website }, index) => {
+	data.map(({ name, category, description, website }, index) => {
 		transformedData.nodes.push({
 			id: index,
 			label: name,
 			category,
+			description,
 			website,
+			color: COLOR_MAPPING[category] ?? 'black',
 		});
 	});
 
@@ -36,6 +74,7 @@ const transform = () => {
 		id: 999,
 		label: 'Cambridge Resilience Web',
 		color: '#fcba03',
+		isDescriptive: true,
 	});
 
 	let categoryIndex = 1;
@@ -43,8 +82,8 @@ const transform = () => {
 		const categoryId = categoryIndex * 1000;
 		transformedData.nodes.push({
 			id: categoryId,
-			label: category,
-			color: '#64b37c',
+			label: CATEGORY_MAPPING[category],
+			// color: COLOR_MAPPING[category],
 			isDescriptive: true,
 		});
 		categoryIndex++;
