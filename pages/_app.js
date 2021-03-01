@@ -21,11 +21,11 @@ function App({ Component, pageProps }) {
 				/>
 				<meta
 					property="og:description"
-					content="A web of connections, showing localy groups working to co-create a more socially and ecologically just city."
+					content="A web of connections, showing localy groups working to co-create a more socially and environmentally just city."
 				/>
 				<meta
 					name="description"
-					content="A web of connections, showing localy groups working to co-create a more socially and ecologically just city."
+					content="A web of connections, showing localy groups working to co-create a more socially and environmentally just city."
 				/>
 				<meta name="og:image" content="static/preview-image.png" />
 			</Head>
