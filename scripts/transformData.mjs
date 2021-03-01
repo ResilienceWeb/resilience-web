@@ -75,6 +75,9 @@ const transform = () => {
 		label: 'Cambridge Resilience Web',
 		color: '#fcba03',
 		isDescriptive: true,
+		font: {
+			size: 46,
+		},
 	});
 
 	let categoryIndex = 1;
@@ -83,7 +86,7 @@ const transform = () => {
 		transformedData.nodes.push({
 			id: categoryId,
 			label: CATEGORY_MAPPING[category],
-			// color: COLOR_MAPPING[category],
+			color: '#c3c4c7',
 			isDescriptive: true,
 		});
 		categoryIndex++;
