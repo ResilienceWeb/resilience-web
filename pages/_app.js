@@ -27,7 +27,7 @@ function App({ Component, pageProps }) {
 					name="description"
 					content="A web of connections, showing localy groups working to co-create a more socially and ecologically just city."
 				/>
-				<meta name="og:image" content="static/preview-image.jpg" />
+				<meta name="og:image" content="static/preview-image.png" />
 			</Head>
 			<ChakraProvider>
 				<Component {...pageProps} />
