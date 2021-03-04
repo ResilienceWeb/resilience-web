@@ -3,7 +3,9 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 const SPREADSHEET_ID = process.env.APP_SPREADSHEET_ID;
 const SHEET_ID = process.env.APP_SHEET_ID;
 const CLIENT_EMAIL = process.env.APP_GOOGLE_CLIENT_EMAIL;
-const PRIVATE_KEY = JSON.parse(process.env.APP_GOOGLE_SERVICE_PRIVATE_KEY);
+const { privateKey: PRIVATE_KEY } = JSON.parse(
+	process.env.APP_GOOGLE_SERVICE_PRIVATE_KEY,
+);
 
 export default async (req, res) => {
 	const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
