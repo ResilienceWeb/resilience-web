@@ -9,14 +9,14 @@
 		"refetch": "node ./scripts/refetchData.mjs && node ./scripts/transformData.mjs"
 	},
 	"dependencies": {
-		"@chakra-ui/react": "1.3.3",
+		"@chakra-ui/react": "1.3.4",
 		"@emotion/react": "11.1.5",
 		"@emotion/styled": "11.1.5",
 		"axios": "0.21.1",
-		"framer-motion": "3.7.0",
+		"framer-motion": "3.10.0",
 		"google-spreadsheet": "3.1.15",
 		"lodash-es": "4.17.21",
-		"next": "10.0.7",
+		"next": "10.0.8",
 		"react": "17.0.1",
 		"react-dom": "17.0.1",
 		"sass": "1.32.8",

@@ -178,7 +178,7 @@ const data = {
 			description:
 				'Cambridge Cleantech is a network organisation supporting the growth of sustainable, ‘clean technology’ companies in the United Kingdom. Our members range from start-ups with smart ideas in sustainable energy, water and waste, to multinational conglomerates working to reduce their environmental impact.',
 			website: 'https://cambridgecleantech.org.uk/',
-			color: '#d9d9d9',
+			color: '#a2b342',
 		},
 		{
 			id: 20,
@@ -219,7 +219,7 @@ const data = {
 		{
 			id: 24,
 			label: 'Cambridge Convoy Refugee Action Group',
-			category: 'Justice',
+			category: 'Social justice',
 			description:
 				'CamCRAG is a registered charity that sends regular convoys of volunteers and aid from the Cambridge region to help refugees in Europe. We collect donations, hold fundraising events, fund projects overseas and raise awareness of the refugee crisis.',
 			website: 'https://camcrag.org.uk/',
@@ -246,7 +246,7 @@ const data = {
 		{
 			id: 27,
 			label: 'Cambridge For Black Lives',
-			category: 'Justice',
+			category: 'Social justice',
 			description:
 				'Black Lives Matter Cambridge is part of the movement to end structural racism both locally, nationally and internationally. ',
 			website:
@@ -354,15 +354,6 @@ const data = {
 		},
 		{
 			id: 39,
-			label: 'CamCRAG',
-			category: 'Equity',
-			description:
-				'We are a Cambridge-based charity, entirely run by volunteers, who work to help refugees in Northern France and elsewhere in Europe. As well as sending regular convoys of aid and volunteers to assist NGOs in Calais, we also organise donation collections, fundraising events and seek to raise awareness of the refugee crisis.',
-			website: 'https://camcrag.org.uk/',
-			color: '#ff66c4',
-		},
-		{
-			id: 40,
 			label: 'Camcycle',
 			category: 'Transportation',
 			description:
@@ -371,7 +362,7 @@ const data = {
 			color: '#737373',
 		},
 		{
-			id: 41,
+			id: 40,
 			label: 'Camlets Local Trading',
 			category: 'Connectivity',
 			description:
@@ -380,7 +371,7 @@ const data = {
 			color: '#5ce1e6',
 		},
 		{
-			id: 42,
+			id: 41,
 			label: 'Carbon Neutral Cambridge',
 			category: 'Environment',
 			description:
@@ -389,7 +380,7 @@ const data = {
 			color: '#7ed957',
 		},
 		{
-			id: 43,
+			id: 42,
 			label: 'Cherry Hinton Chalk Pit',
 			category: 'Nature',
 			description:
@@ -399,7 +390,7 @@ const data = {
 			color: '#008037',
 		},
 		{
-			id: 44,
+			id: 43,
 			label: 'Circular Cambridge',
 			category: 'Environment',
 			description:
@@ -409,7 +400,7 @@ const data = {
 			color: '#7ed957',
 		},
 		{
-			id: 45,
+			id: 44,
 			label: "Citizen's Advice",
 			category: 'Equity',
 			description:
@@ -418,7 +409,7 @@ const data = {
 			color: '#ff66c4',
 		},
 		{
-			id: 46,
+			id: 45,
 			label: 'Clean Wheels',
 			category: 'Transportation',
 			description:
@@ -428,7 +419,7 @@ const data = {
 			color: '#737373',
 		},
 		{
-			id: 47,
+			id: 46,
 			label: 'CoFarm Cambridge',
 			category: 'Food',
 			description:
@@ -437,7 +428,7 @@ const data = {
 			color: '#a4791b',
 		},
 		{
-			id: 48,
+			id: 47,
 			label: 'Community Apple Pressing',
 			category: 'Food',
 			description:
@@ -447,7 +438,7 @@ const data = {
 			color: '#a4791b',
 		},
 		{
-			id: 49,
+			id: 48,
 			label: 'Community Fridges',
 			category: 'Food',
 			description:
@@ -456,7 +447,7 @@ const data = {
 			color: '#a4791b',
 		},
 		{
-			id: 50,
+			id: 49,
 			label: 'Community Scrapstore',
 			category: 'Community',
 			description:
@@ -465,7 +456,7 @@ const data = {
 			color: '#ffde59',
 		},
 		{
-			id: 51,
+			id: 50,
 			label: 'Community Wardrobe',
 			category: 'Community',
 			description:
@@ -474,7 +465,7 @@ const data = {
 			color: '#ffde59',
 		},
 		{
-			id: 52,
+			id: 51,
 			label: 'Crop Share',
 			category: 'Food',
 			description:
@@ -483,7 +474,7 @@ const data = {
 			color: '#a4791b',
 		},
 		{
-			id: 53,
+			id: 52,
 			label: 'Curiosity and Imagination',
 			category: 'Art',
 			description:
@@ -492,7 +483,7 @@ const data = {
 			color: '#77fcd0',
 		},
 		{
-			id: 54,
+			id: 53,
 			label: 'Daily Bread Wholefood Warehouse',
 			category: 'Food',
 			description:
@@ -501,16 +492,16 @@ const data = {
 			color: '#a4791b',
 		},
 		{
-			id: 55,
+			id: 54,
 			label: 'Darwin Nurseries',
 			category: 'Social business',
 			description:
-				'Darwin Nurseries welcomes you to explore our 7.5 acres and meet the ever expanding menagerie of goats, sheep and pigs, chickens and rabbits. Take a wander round the fledgling woodland with its lovely mini cottage nestled amongst the trees for the children to investigate then check out the greenhouse stocked with seasonal plants, hanging baskets and vegetable plants. Our farm shop is well stocked with a wide range of produce from local producers. Relax with a drink and a delicious cake in our drinks area or if it’s lovely weather why not have a picnic outside in the woodland area.',
+				'Social business running shop and plant nursery supporting adults with learning disabilities. Our farm shop is well stocked with a wide range of produce from local producers. Explore our 7.5 acres and meet the ever expanding menagerie of goats, sheep and pigs, chickens and rabbits. Take a wander round the fledgling woodland with its lovely mini cottage nestled amongst the trees for the children to investigate then check out the greenhouse stocked with seasonal plants, hanging baskets and vegetable plants. Relax with a drink and a delicious cake in our drinks area or if it’s lovely weather why not have a picnic outside in the woodland area.',
 			website: 'https://www.cpft.nhs.uk/darwinnurseries/',
 			color: '#778ffc',
 		},
 		{
-			id: 56,
+			id: 55,
 			label: 'David Attenborough Building',
 			category: 'Connectivity',
 			description:
@@ -520,7 +511,7 @@ const data = {
 			color: '#5ce1e6',
 		},
 		{
-			id: 57,
+			id: 56,
 			label: 'DIY Thermal Imaging',
 			category: 'Environment',
 			description:
@@ -530,26 +521,26 @@ const data = {
 			color: '#7ed957',
 		},
 		{
-			id: 58,
+			id: 57,
 			label: 'Empty Common Community Garden',
-			category: 'Food',
+			category: 'Community garden',
 			description:
 				'Large community garden in the City designed and run on permaculture principles with support from Transition Cambridge, welcomes volunteers, runs weekly community gardening sessions, no experience needed.',
 			website: 'https://emptycommongarden.blogspot.com/',
-			color: '#a4791b',
+			color: '#2cb868',
 		},
 		{
-			id: 59,
+			id: 58,
 			label: 'Energy Group',
 			category: 'Technology',
 			description:
 				'Regular meetings to increase understanding and raise public awareness of energy saving/generating opportunities and promote renewable energy, welcomes new members.',
 			website:
 				'https://www.transitioncambridge.org/wiki/TTEnergy/HomePage',
-			color: '#d9d9d9',
+			color: '#a2b342',
 		},
 		{
-			id: 60,
+			id: 59,
 			label: 'Extinction Rebellion Cambridge',
 			category: 'Environment',
 			description:
@@ -558,7 +549,7 @@ const data = {
 			color: '#7ed957',
 		},
 		{
-			id: 61,
+			id: 60,
 			label: 'Federation of Cambridge Residents Associations',
 			category: 'Housing',
 			description:
@@ -567,7 +558,7 @@ const data = {
 			color: '#cb6ce6',
 		},
 		{
-			id: 62,
+			id: 61,
 			label: 'Foodcycle',
 			category: 'Food',
 			description:
@@ -576,7 +567,7 @@ const data = {
 			color: '#a4791b',
 		},
 		{
-			id: 63,
+			id: 62,
 			label: 'Fosters Mill',
 			category: 'Food',
 			description:
@@ -585,7 +576,7 @@ const data = {
 			color: '#a4791b',
 		},
 		{
-			id: 64,
+			id: 63,
 			label: 'Free Fruit Map',
 			category: 'Food',
 			website:
@@ -593,7 +584,7 @@ const data = {
 			color: '#a4791b',
 		},
 		{
-			id: 65,
+			id: 64,
 			label: 'Friends of Cherry Hinton Brook',
 			category: 'Community',
 			description:
@@ -602,7 +593,7 @@ const data = {
 			color: '#ffde59',
 		},
 		{
-			id: 66,
+			id: 65,
 			label: 'Friends of Cherry Hinton Hall',
 			category: 'Community',
 			description:
@@ -611,7 +602,7 @@ const data = {
 			color: '#ffde59',
 		},
 		{
-			id: 67,
+			id: 66,
 			label: 'Friends of Logans Meadow',
 			category: 'Community',
 			description:
@@ -620,7 +611,7 @@ const data = {
 			color: '#ffde59',
 		},
 		{
-			id: 68,
+			id: 67,
 			label: 'Friends of Midsummer Common',
 			category: 'Community',
 			description:
@@ -629,7 +620,7 @@ const data = {
 			color: '#ffde59',
 		},
 		{
-			id: 69,
+			id: 68,
 			label: 'Friends of Mill Road Cemetery',
 			category: 'Community',
 			description:
@@ -638,7 +629,7 @@ const data = {
 			color: '#ffde59',
 		},
 		{
-			id: 70,
+			id: 69,
 			label: 'Friends of Stourbridge Common',
 			category: 'Community',
 			description:
@@ -647,7 +638,7 @@ const data = {
 			color: '#ffde59',
 		},
 		{
-			id: 71,
+			id: 70,
 			label: 'Friends of the Earth',
 			category: 'Environment',
 			description:
@@ -656,7 +647,7 @@ const data = {
 			color: '#7ed957',
 		},
 		{
-			id: 72,
+			id: 71,
 			label: 'Greenpeace',
 			category: 'Environment',
 			description:
@@ -665,16 +656,16 @@ const data = {
 			color: '#7ed957',
 		},
 		{
-			id: 73,
+			id: 72,
 			label: 'Growing Spaces',
-			category: 'Food',
+			category: 'Community garden',
 			description:
 				'Cambridge Growing Spaces is a Transition Cambridge project. The project aims to reclaim unloved and underused public spaces around the city of Cambridge and transform them using edible landscaping.',
 			website: 'http://www.cambridge.growingspaces.org/',
-			color: '#a4791b',
+			color: '#2cb868',
 		},
 		{
-			id: 74,
+			id: 73,
 			label: 'Hawthorn Farm Market Stall',
 			category: 'Food',
 			description:
@@ -684,15 +675,17 @@ const data = {
 			color: '#a4791b',
 		},
 		{
-			id: 75,
+			id: 74,
 			label: 'Healthy Start Veg Box Scheme',
 			category: 'Food',
+			description:
+				'Run by Cambridge food hub and Cambridge Sustainable Food to make good quality organic fruit and veg more accessibe to families on low incomes who can apply if they have a Healthy Start Voucher.',
 			website:
 				'https://cambridgefoodhub.org/2020/09/08/healthy-start-veg-box-scheme/',
 			color: '#a4791b',
 		},
 		{
-			id: 76,
+			id: 75,
 			label: 'It Takes A City',
 			category: 'Housing',
 			description:
@@ -701,7 +694,7 @@ const data = {
 			color: '#cb6ce6',
 		},
 		{
-			id: 77,
+			id: 76,
 			label: 'Kings Hedges Family Support Project',
 			category: 'Community',
 			description:
@@ -710,7 +703,7 @@ const data = {
 			color: '#ffde59',
 		},
 		{
-			id: 78,
+			id: 77,
 			label: 'Living Streets',
 			category: 'Transportation',
 			description:
@@ -720,29 +713,35 @@ const data = {
 			color: '#737373',
 		},
 		{
-			id: 79,
+			id: 78,
 			label: 'Movement Against Racism',
-			category: 'Justice',
+			category: 'Social justice',
+			description:
+				'Peaceful Cambridge anti-racism group standing against social injustice and systemic racism, welcomes new members',
 			website: 'https://www.facebook.com/MovementAgainstRaciism/',
 			color: '#ff5757',
 		},
 		{
-			id: 80,
+			id: 79,
 			label: 'Movement for a Democratic Society',
-			category: 'Justice',
+			category: 'Equity',
+			description:
+				'Local branch of movement formed to work towards a democratic society in which people are free and equal, living in communities based on common ownership that guarantee housing, food and a place to belong',
 			website:
 				'https://www.facebook.com/Movement-for-a-Democratic-Society-Cambridge-356298144962954/',
-			color: '#ff5757',
+			color: '#ff66c4',
 		},
 		{
-			id: 81,
+			id: 80,
 			label: 'Mutual Aid',
 			category: 'Community',
-			website: 'https://covidmutualaid.org',
+			description:
+				'Informal local support networks set up during C19 pandemic by residents in their districts  - each area has own group and runs autonomously. Listings and contact details on Cambridgeshire County Council website',
+			website: 'https://www.mutual-aid.co.uk/area/cambridgeshire',
 			color: '#ffde59',
 		},
 		{
-			id: 82,
+			id: 81,
 			label: 'Natural Cambridgeshire',
 			category: 'Nature',
 			description:
@@ -751,253 +750,315 @@ const data = {
 			color: '#008037',
 		},
 		{
-			id: 83,
+			id: 82,
 			label: 'Net Zero Now',
 			category: 'Environment',
+			description:
+				'Project supporting individuals and community groups to deliver carbon reduction activities in South Cambridgeshire, run by Cambridge Carbon Footprint with support from South Cambs. District Council',
 			website:
 				'https://cambridgecarbonfootprint.org/what-we-do/net-zero/',
 			color: '#7ed957',
 		},
 		{
-			id: 84,
+			id: 83,
 			label: 'Nightingale Community Garden',
-			category: 'Food',
+			category: 'Community garden',
+			description:
+				'Community garden on the site of an old bowls club,with pond, benches, flowers, veg and trees, welcomes volunteers and visitors to just sit and relax. Small car park for visitors, 3hr max stay.',
 			website: 'http://www.nightingalegarden.org.uk/',
-			color: '#a4791b',
+			color: '#2cb868',
 		},
 		{
-			id: 85,
+			id: 84,
 			label: 'On the Verge',
 			category: 'Nature',
+			description:
+				"Promotes the growing of nectar rich flowers throughout the city for the benefit of insects which are in catastrophic decline. Aiming to make Cambridge welcoming to pollinators by providing them with 'food corridors' so they dont have to fly long distances, plus increasing bodiversity in Cambridge.",
 			website: 'https://www.onthevergecambridge.org.uk/',
 			color: '#008037',
 		},
 		{
-			id: 86,
+			id: 85,
 			label: 'Open Eco Homes',
 			category: 'Housing',
+			description:
+				'Promotes awareness of how to create beautiful, high functioning, low energy homes by finding local householders who have renovated or built new ecohomes and helping them pass on their knowledge to visitors, organising free tours in their homes each September',
 			website: 'http://openecohomes.org/',
 			color: '#cb6ce6',
 		},
 		{
-			id: 87,
+			id: 86,
 			label: 'Permaculture Guild',
-			category: 'Food',
+			category: 'Community',
+			description:
+				'Group of local people interested in and/ or qualified in permaculture design or design (of nearly anything, not necessarily land based) in accordance with ethics and natural principles. Contact through Transition Cambridge website, welcomes new members.',
 			website:
 				'https://www.transitioncambridge.org/wiki/TTPermaculture/HomePage',
-			color: '#a4791b',
+			color: '#ffde59',
 		},
 		{
-			id: 88,
+			id: 87,
 			label: 'Prospects Trust (Snakehall Farm)',
 			category: 'Social business',
+			description:
+				'Working organic care farm near Ely with an onsite farm shop, providing placements and offering therapeutic horticulture and farm based work experience to people with learning difficulties, disabilities and those with varying health needs.',
 			website: 'https://prospectstrust.org.uk/',
 			color: '#778ffc',
 		},
 		{
-			id: 89,
+			id: 88,
 			label: 'Radmore Farm Shop',
 			category: 'Food',
+			description:
+				'Local outlet for family farm in Northants. selling meats and free range eggs from the farm plus a large range of produce from other local farms and suppliers, including Fairtrade.',
 			website: 'https://radmorefarmshop.co.uk/',
 			color: '#a4791b',
 		},
 		{
-			id: 90,
+			id: 89,
 			label: 'Reach Solar Farm CBS',
 			category: 'Social business',
+			description:
+				"Community solar farm near the village of Reach, providing up to half of the village's electricity. Owned and run by a co-operative of local people as a Community Benefit Society with the object of benefitting the community as well as giving a dividend to investors",
 			website: 'http://www.reachsolarfarm.co.uk/',
 			color: '#778ffc',
 		},
 		{
-			id: 91,
+			id: 90,
 			label: 'Red Hen Project',
 			category: 'Education',
+			description:
+				'Small charity run by Soroptimists International in Cambridge, working with 5 primary schools in North Cambridge, to support children and their families in overcoming barriers to learning and provide a link between home and school.',
 			website: 'https://redhenproject.org',
 			color: '#c9e265',
 		},
 		{
-			id: 92,
+			id: 91,
 			label: 'Repair Cafes',
 			category: 'Technology',
+			description:
+				'Get things fixed for free at a repair cafe jointly run by Cambridge Carbon Footprint and Transition Cambridge in a local church hall. There will be a cafe to have a drink while you wait for your repair on mobile phone, bicycle,clothes tec..',
 			website: 'http://circularcambridge.org/repair-cafes/',
-			color: '#d9d9d9',
+			color: '#a2b342',
+		},
+		{
+			id: 92,
+			label: 'Romsey Town Community Garden',
+			category: 'Community garden',
+			description:
+				"Beautiful sustainable garden off Mill Road, aiming to bring the local community together in a space for leisure and relaxation. Grass area, flower and vegetable beds, herb garden, children's garden, wildflower area. Welcomes volunteers.",
+			website:
+				'https://www.transitioncambridge.org/wiki/TTFood/RomseyCommunityGarden',
+			color: '#2cb868',
 		},
 		{
 			id: 93,
-			label: 'Romsey Town Community Garden',
-			category: 'Food',
-			website:
-				'https://www.transitioncambridge.org/wiki/TTFood/RomseyCommunityGarden',
-			color: '#a4791b',
-		},
-		{
-			id: 94,
 			label: 'Rowan Art Centre',
 			category: 'Art',
+			description:
+				'Arts Centre for people with learning disabilities, providing a safe, creative and welcoming place to use the arts as a tool to bring people together, break down social exclusion and improve health and wellbeing. Evening classes for all.',
 			website: 'http://www.rowanhumberstone.co.uk/',
 			color: '#77fcd0',
 		},
 		{
-			id: 95,
+			id: 94,
 			label: 'School strikes',
 			category: 'Environment',
+			description:
+				'Youth of Cambridge demanding action on climate change - not an abstract problem, this is a real Climate Emergency!',
 			website:
 				'https://en-gb.facebook.com/pg/YouthStrike4ClimateCambridge/posts/',
 			color: '#7ed957',
 		},
 		{
-			id: 96,
+			id: 95,
 			label: 'Simons Vegetable Stall',
 			category: 'Food',
+			description:
+				"Local grower from the Fens, selling organic produce on Cambridge Sunday market come rain or shine, always there. Self service stall opposite Great St. Mary's church",
 			website:
 				'https://www.facebook.com/pages/category/Community/Simons-Local-Vegetable-Stall-on-the-Sunday-Farmers-Market-in-Cambridge-536598633028253/',
 			color: '#a4791b',
 		},
 		{
-			id: 97,
+			id: 96,
 			label: 'Smarter Cambridge Transport',
 			category: 'Transportation',
+			description:
+				'Think tank initiative of impartial local volunteers, developing and promoting a modern vision for integrated transport in Cambridge and the surrounding region. with a focus on ensuring that the Greater Cambridge City deal money is spent in the best possible way.',
 			website: 'https://www.smartertransport.uk',
 			color: '#737373',
 		},
 		{
-			id: 98,
+			id: 97,
 			label: 'Solar Together',
 			category: 'Environment',
+			description:
+				'A group buying scheme to help Cambs. residents buy high quality and competitively priced solar panels with battery storage systems, run by loacal authorities with a group buying specialist in the field.',
 			website: 'https://www.solartogether.co.uk/cambridgeshire/home',
 			color: '#7ed957',
 		},
 		{
-			id: 99,
+			id: 98,
 			label: 'Stand up to Racism',
-			category: 'Justice',
+			category: 'Social justice',
+			description:
+				'Campaigning to combat racism and bigotry of all kinds while working towards a community united by mutual respect',
 			website: 'https://www.facebook.com/CambridgeSUTR/',
 			color: '#ff5757',
 		},
 		{
-			id: 100,
+			id: 99,
 			label: 'Transition Cambridge',
 			category: 'Community',
+			description:
+				'Transition Cambridge is working towards building a stronger, more versatile community with the capacity to adapt to climate change and energy price hikes, while supporting local people to be happy and healthy. It welcomes volunteers to work in a variety of ways towards creating a society that makes better use of local resources.',
 			website: 'https://www.transitioncambridge.org/',
 			color: '#ffde59',
 		},
 		{
-			id: 101,
-			label: 'Trumpington Meadows',
+			id: 100,
+			label: 'Trumpington Meadows Reserve',
 			category: 'Nature',
+			description:
+				'Expansive nature reserve created for wildlife and people and run by Wildlife Trust. A place to discover and enjoy nature, explore diverse habitats, wander by the river and through flower filled meadows all managed for wildlife. Wildlife Trust office and garden.',
 			website:
 				'https://www.wildlifebcn.org/nature-reserves/trumpington-meadows',
 			color: '#008037',
 		},
 		{
-			id: 102,
+			id: 101,
 			label: 'U3AC',
 			category: 'Education',
+			description:
+				'Independent organisation organising educational, social and fitness activities for Cambridge people who are not, or no longer in full time employment. There are no age restrictions, welcomes new members.',
 			website: 'https://www.u3ac.org.uk/',
 			color: '#c9e265',
 		},
 		{
-			id: 103,
+			id: 102,
 			label: 'University and College Union',
 			category: 'Union',
 			website: 'http://www.ucu.cam.ac.uk/',
 			color: '#fff780',
 		},
 		{
-			id: 104,
+			id: 103,
 			label: 'Wandlebury Country Park',
 			category: 'Nature',
+			description:
+				'Large country park on remains of a circular Iron Age hillfort on  the Gog Magog Hills just South of Cambridge, with wildflower meadows, woodland and viewpoints, plenty of space to walk and play. Has one of the most diverse range of tree species in the area, plus many interesting species of all kinds of wild flowers, insects, birds, pond life. Car park (charged). Magog Down is opposite.',
 			website:
 				'https://www.cambridgeppf.org/pages/category/wandlebury-country-park',
 			color: '#008037',
 		},
 		{
-			id: 105,
+			id: 104,
 			label: 'Waterland Organics',
 			category: 'Food',
+			description:
+				'Small family run farm running community supported agriculture scheme (CSA) in Lode, growing organic vegetables and fruit, delivering local grown veg boxes throughout Cambridge. Welcomes volunteers via Cambridge Cropshare.  ',
 			website: 'https://www.waterlandorganics.com/',
 			color: '#a4791b',
 		},
 		{
-			id: 106,
-			label: 'Wildlife Trust',
+			id: 105,
+			label: 'Local Wildlife Trust',
 			category: 'Nature',
+			description:
+				'Manage local nature reserves, runs courses,advises on wildlife, mission to create a wilder future by protecting and restoring wildlife and wild places across the county. Welcomes volunteers.',
 			website: 'https://www.wildlifetrusts.org/',
 			color: '#008037',
 		},
 		{
-			id: 107,
+			id: 106,
 			label: 'Wildlife Wanders',
 			category: 'Nature',
+			description:
+				"Occasional friendly and sociable walks to explore Cambridge's green spaces and take a closer look at nature along the way. Looking for volunteers to organise more wanderings soon.",
 			website:
 				'https://www.transitioncambridge.org/wiki/TTNature/HomePage',
 			color: '#008037',
 		},
 		{
-			id: 108,
+			id: 107,
 			label: 'Womens Resources Centre',
 			category: 'Equity',
+			description:
+				"Women's community space which offers a safe welcoming environment plus a realm of services to make life and living a little bit easier. Practical support and advice on issues uncluding debt, family and parenting, together with a mix of fun and practicial informal groups, workshops and networking events. Coffee room and free wifi.",
 			website: 'https://www.cwrc.org.uk/',
 			color: '#ff66c4',
 		},
 		{
-			id: 109,
+			id: 108,
 			label: 'Woodland Trust',
 			category: 'Nature',
+			description:
+				'Cares for woods open to the public at Foxton and Bassingbourn ',
 			website: 'https://www.woodlandtrust.org.uk/',
 			color: '#008037',
 		},
 		{
-			id: 110,
+			id: 109,
 			label: 'XR Cambridge Unis',
 			category: 'Environment',
 			website: 'https://www.facebook.com/XRCamUnis/',
 			color: '#7ed957',
 		},
 		{
-			id: 111,
+			id: 110,
 			label: 'Extinction Rebellion Youth',
 			category: 'Environment',
+			description:
+				'Local Extinction Rebellion group run by and for young people',
 			website: 'https://xrcambridge.org/youth',
 			color: '#7ed957',
 		},
 		{
-			id: 112,
+			id: 111,
 			label: 'Cambridge Zero',
 			category: 'Environment',
 			website: 'https://www.zero.cam.ac.uk/',
 			color: '#7ed957',
 		},
 		{
-			id: 113,
+			id: 112,
 			label: 'Anonymous for the Voiceless',
 			category: 'Animal rights',
+			description:
+				'Local group of animal rights organisation that specialises in bringing animal abuse to public attention',
 			website: 'https://www.anonymousforthevoiceless.org/',
 			color: '#ff914d',
 		},
 		{
-			id: 114,
+			id: 113,
 			label: 'Animal Rights Cambridge',
 			category: 'Animal rights',
+			description:
+				'All volunteer, intergenerational group of people committed to strategies to end the exploitation of non- human animals. Focus on crucial isseues and confronting companies and institutions to raise public awareness and bring forth meaningful change for animals.',
 			website: 'https://animalrightscambridge.wordpress.com/',
 			color: '#ff914d',
 		},
 		{
-			id: 115,
+			id: 114,
 			label: 'Cambridge Hunt Saboteurs',
 			category: 'Animal rights',
+			description:
+				'Protecting wildlife from hunting and persecution in East Anglia. Welcomes volunteers.',
+			website: 'https://www.huntsabs.org.uk/',
+			color: '#ff914d',
+		},
+		{
+			id: 115,
+			label: 'South Cambs Hunt Saboteurs',
+			category: 'Animal rights',
+			description:
+				'Use non violent direct action to save the lives of hunted animals.',
 			website: 'https://www.huntsabs.org.uk/',
 			color: '#ff914d',
 		},
 		{
 			id: 116,
-			label: 'South Cambs Hunt Saboteurs',
-			category: 'Animal rights',
-			website: 'https://www.huntsabs.org.uk/',
-			color: '#ff914d',
-		},
-		{
-			id: 117,
 			label: 'The Lockon',
 			category: 'Community',
 			description:
@@ -1006,7 +1067,7 @@ const data = {
 			color: '#ffde59',
 		},
 		{
-			id: 118,
+			id: 117,
 			label: 'Cambridge & District Trades Council',
 			category: 'Union',
 			description:
@@ -1015,22 +1076,59 @@ const data = {
 			color: '#fff780',
 		},
 		{
-			id: 119,
+			id: 118,
 			label: "Cambridge People's Assembly",
-			category: 'Justice',
+			category: 'Social justice',
 			description:
 				'Broad united national campaign against austerity, cuts and privatisation in our workplaces, community and welfare services',
 			website: 'https://thepeoplesassembly.org.uk',
 			color: '#ff5757',
 		},
 		{
-			id: 120,
+			id: 119,
 			label: 'Unison Cambridgeshire County',
 			category: 'Union',
 			description:
 				'Largest single trade union branch in Cambridgeshire, and part of the largest public services trade union, UNISON; with members working across hundreds of organisations and employers.',
 			website: 'https://unisoncambridgeshire.org.uk/',
 			color: '#fff780',
+		},
+		{
+			id: 120,
+			label: 'Global Sustainability Institute',
+			category: 'Environment',
+			description:
+				"We're committed to playing a key role in developing practical solutions to the sustainability challenges we all face, both locally and globally. We do this through research and education - bringing together the information needed to make decisions, with the people capable of taking action.",
+			website: 'https://aru.ac.uk/global-sustainability-institute-gsi',
+			color: '#7ed957',
+		},
+		{
+			id: 121,
+			label: 'Maxwell Centre',
+			category: 'Connectivity',
+			website: 'https://www.maxwell.cam.ac.uk/',
+			color: '#5ce1e6',
+		},
+		{
+			id: 122,
+			label: 'Camnexus',
+			category: 'Technology',
+			website: 'https://www.camnexus.io/',
+			color: '#a2b342',
+		},
+		{
+			id: 123,
+			label: 'Cambridge Electric Transport',
+			category: 'Transportation',
+			website: 'https://cambridgeelectrictransport.co.uk/',
+			color: '#737373',
+		},
+		{
+			id: 124,
+			label: 'Zedify',
+			category: 'Transportation',
+			website: 'https://www.zedify.co.uk/cambridge',
+			color: '#737373',
 		},
 		{
 			id: 999,
@@ -1080,7 +1178,7 @@ const data = {
 			color: '#c3c4c7',
 			isDescriptive: true,
 		},
-		{ id: 12000, label: 'Justice', color: '#c3c4c7', isDescriptive: true },
+		{ id: 12000, color: '#c3c4c7', isDescriptive: true },
 		{
 			id: 13000,
 			label: 'Connectivity',
@@ -1089,37 +1187,39 @@ const data = {
 		},
 		{ id: 14000, label: 'Union', color: '#c3c4c7', isDescriptive: true },
 		{ id: 15000, label: 'Art', color: '#c3c4c7', isDescriptive: true },
+		{ id: 16000, color: '#c3c4c7', isDescriptive: true },
 	],
 	edges: [
 		{ from: 999, to: 1000, length: 2000 },
 		{ from: 1000, to: 0 },
 		{ from: 1000, to: 16 },
 		{ from: 1000, to: 34 },
+		{ from: 1000, to: 49 },
 		{ from: 1000, to: 50 },
-		{ from: 1000, to: 51 },
+		{ from: 1000, to: 64 },
 		{ from: 1000, to: 65 },
 		{ from: 1000, to: 66 },
 		{ from: 1000, to: 67 },
 		{ from: 1000, to: 68 },
 		{ from: 1000, to: 69 },
-		{ from: 1000, to: 70 },
-		{ from: 1000, to: 77 },
-		{ from: 1000, to: 81 },
-		{ from: 1000, to: 100 },
-		{ from: 1000, to: 117 },
+		{ from: 1000, to: 76 },
+		{ from: 1000, to: 80 },
+		{ from: 1000, to: 86 },
+		{ from: 1000, to: 99 },
+		{ from: 1000, to: 116 },
 		{ from: 999, to: 2000, length: 2000 },
 		{ from: 2000, to: 1 },
 		{ from: 2000, to: 5 },
 		{ from: 2000, to: 17 },
 		{ from: 2000, to: 28 },
-		{ from: 2000, to: 61 },
-		{ from: 2000, to: 76 },
-		{ from: 2000, to: 86 },
+		{ from: 2000, to: 60 },
+		{ from: 2000, to: 75 },
+		{ from: 2000, to: 85 },
 		{ from: 999, to: 3000, length: 2000 },
 		{ from: 3000, to: 2 },
 		{ from: 3000, to: 38 },
-		{ from: 3000, to: 91 },
-		{ from: 3000, to: 102 },
+		{ from: 3000, to: 90 },
+		{ from: 3000, to: 101 },
 		{ from: 999, to: 4000, length: 2000 },
 		{ from: 4000, to: 3 },
 		{ from: 4000, to: 8 },
@@ -1128,44 +1228,39 @@ const data = {
 		{ from: 4000, to: 26 },
 		{ from: 4000, to: 31 },
 		{ from: 4000, to: 35 },
+		{ from: 4000, to: 46 },
 		{ from: 4000, to: 47 },
 		{ from: 4000, to: 48 },
-		{ from: 4000, to: 49 },
-		{ from: 4000, to: 52 },
-		{ from: 4000, to: 54 },
-		{ from: 4000, to: 58 },
+		{ from: 4000, to: 51 },
+		{ from: 4000, to: 53 },
+		{ from: 4000, to: 61 },
 		{ from: 4000, to: 62 },
 		{ from: 4000, to: 63 },
-		{ from: 4000, to: 64 },
 		{ from: 4000, to: 73 },
 		{ from: 4000, to: 74 },
-		{ from: 4000, to: 75 },
-		{ from: 4000, to: 84 },
-		{ from: 4000, to: 87 },
-		{ from: 4000, to: 89 },
-		{ from: 4000, to: 93 },
-		{ from: 4000, to: 96 },
-		{ from: 4000, to: 105 },
+		{ from: 4000, to: 88 },
+		{ from: 4000, to: 95 },
+		{ from: 4000, to: 104 },
 		{ from: 999, to: 5000, length: 2000 },
 		{ from: 5000, to: 4 },
+		{ from: 5000, to: 112 },
 		{ from: 5000, to: 113 },
 		{ from: 5000, to: 114 },
 		{ from: 5000, to: 115 },
-		{ from: 5000, to: 116 },
 		{ from: 999, to: 6000, length: 2000 },
 		{ from: 6000, to: 6 },
 		{ from: 6000, to: 9 },
-		{ from: 6000, to: 55 },
-		{ from: 6000, to: 88 },
-		{ from: 6000, to: 90 },
+		{ from: 6000, to: 54 },
+		{ from: 6000, to: 87 },
+		{ from: 6000, to: 89 },
 		{ from: 999, to: 7000, length: 2000 },
 		{ from: 7000, to: 7 },
 		{ from: 7000, to: 12 },
 		{ from: 7000, to: 20 },
 		{ from: 7000, to: 25 },
-		{ from: 7000, to: 39 },
-		{ from: 7000, to: 45 },
-		{ from: 7000, to: 108 },
+		{ from: 7000, to: 44 },
+		{ from: 7000, to: 79 },
+		{ from: 7000, to: 107 },
 		{ from: 999, to: 8000, length: 2000 },
 		{ from: 8000, to: 10 },
 		{ from: 8000, to: 11 },
@@ -1173,60 +1268,69 @@ const data = {
 		{ from: 8000, to: 22 },
 		{ from: 8000, to: 23 },
 		{ from: 8000, to: 32 },
-		{ from: 8000, to: 43 },
-		{ from: 8000, to: 82 },
-		{ from: 8000, to: 85 },
-		{ from: 8000, to: 101 },
-		{ from: 8000, to: 104 },
+		{ from: 8000, to: 42 },
+		{ from: 8000, to: 81 },
+		{ from: 8000, to: 84 },
+		{ from: 8000, to: 100 },
+		{ from: 8000, to: 103 },
+		{ from: 8000, to: 105 },
 		{ from: 8000, to: 106 },
-		{ from: 8000, to: 107 },
-		{ from: 8000, to: 109 },
+		{ from: 8000, to: 108 },
 		{ from: 999, to: 9000, length: 2000 },
 		{ from: 9000, to: 13 },
 		{ from: 9000, to: 30 },
-		{ from: 9000, to: 40 },
-		{ from: 9000, to: 46 },
-		{ from: 9000, to: 78 },
-		{ from: 9000, to: 97 },
+		{ from: 9000, to: 39 },
+		{ from: 9000, to: 45 },
+		{ from: 9000, to: 77 },
+		{ from: 9000, to: 96 },
+		{ from: 9000, to: 123 },
+		{ from: 9000, to: 124 },
 		{ from: 999, to: 10000, length: 2000 },
 		{ from: 10000, to: 15 },
 		{ from: 10000, to: 33 },
 		{ from: 10000, to: 37 },
-		{ from: 10000, to: 42 },
-		{ from: 10000, to: 44 },
-		{ from: 10000, to: 57 },
-		{ from: 10000, to: 60 },
+		{ from: 10000, to: 41 },
+		{ from: 10000, to: 43 },
+		{ from: 10000, to: 56 },
+		{ from: 10000, to: 59 },
+		{ from: 10000, to: 70 },
 		{ from: 10000, to: 71 },
-		{ from: 10000, to: 72 },
-		{ from: 10000, to: 83 },
-		{ from: 10000, to: 95 },
-		{ from: 10000, to: 98 },
+		{ from: 10000, to: 82 },
+		{ from: 10000, to: 94 },
+		{ from: 10000, to: 97 },
+		{ from: 10000, to: 109 },
 		{ from: 10000, to: 110 },
 		{ from: 10000, to: 111 },
-		{ from: 10000, to: 112 },
+		{ from: 10000, to: 120 },
 		{ from: 999, to: 11000, length: 2000 },
 		{ from: 11000, to: 19 },
-		{ from: 11000, to: 59 },
-		{ from: 11000, to: 92 },
+		{ from: 11000, to: 58 },
+		{ from: 11000, to: 91 },
+		{ from: 11000, to: 122 },
 		{ from: 999, to: 12000, length: 2000 },
 		{ from: 12000, to: 24 },
 		{ from: 12000, to: 27 },
-		{ from: 12000, to: 79 },
-		{ from: 12000, to: 80 },
-		{ from: 12000, to: 99 },
-		{ from: 12000, to: 119 },
+		{ from: 12000, to: 78 },
+		{ from: 12000, to: 98 },
+		{ from: 12000, to: 118 },
 		{ from: 999, to: 13000, length: 2000 },
 		{ from: 13000, to: 29 },
-		{ from: 13000, to: 41 },
-		{ from: 13000, to: 56 },
+		{ from: 13000, to: 40 },
+		{ from: 13000, to: 55 },
+		{ from: 13000, to: 121 },
 		{ from: 999, to: 14000, length: 2000 },
 		{ from: 14000, to: 36 },
-		{ from: 14000, to: 103 },
-		{ from: 14000, to: 118 },
-		{ from: 14000, to: 120 },
+		{ from: 14000, to: 102 },
+		{ from: 14000, to: 117 },
+		{ from: 14000, to: 119 },
 		{ from: 999, to: 15000, length: 2000 },
-		{ from: 15000, to: 53 },
-		{ from: 15000, to: 94 },
+		{ from: 15000, to: 52 },
+		{ from: 15000, to: 93 },
+		{ from: 999, to: 16000, length: 2000 },
+		{ from: 16000, to: 57 },
+		{ from: 16000, to: 72 },
+		{ from: 16000, to: 83 },
+		{ from: 16000, to: 92 },
 	],
 };
 export default data;
