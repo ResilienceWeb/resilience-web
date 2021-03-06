@@ -1,5 +1,5 @@
 {
-	"name": "web-of-connections",
+	"name": "cambridge-resilience-web",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -16,7 +16,7 @@
 		"framer-motion": "3.10.0",
 		"google-spreadsheet": "3.1.15",
 		"lodash-es": "4.17.21",
-		"next": "10.0.8",
+		"next": "10.0.7",
 		"react": "17.0.1",
 		"react-dom": "17.0.1",
 		"sass": "1.32.8",
