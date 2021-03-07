@@ -2,7 +2,6 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';
 import '../styles/globals.css';
-import 'node_modules/vis-network-react/node_modules/vis-network/styles/vis-network.css';
 
 function App({ Component, pageProps }) {
 	return (
@@ -28,6 +27,11 @@ function App({ Component, pageProps }) {
 					content="A web of connections, showing local groups working to co-create a more socially and environmentally just city."
 				/>
 				<meta name="og:image" content="static/preview-image.png" />
+				<link
+					rel="stylesheet"
+					type="text/css"
+					href="https://unpkg.com/vis-network/styles/vis-network.min.css"
+				/>
 			</Head>
 			<ChakraProvider>
 				<Component {...pageProps} />
