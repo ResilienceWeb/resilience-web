@@ -10,6 +10,8 @@ const { privateKey: PRIVATE_KEY } = JSON.parse(
 export default async (req, res) => {
 	const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
 
+	console.log({ PRIVATE_KEY });
+
 	try {
 		await doc.useServiceAccountAuth({
 			client_email: CLIENT_EMAIL,
@@ -32,7 +34,7 @@ export default async (req, res) => {
 
 		res.status(200).json({ result: transformedRows });
 	} catch (e) {
-		res.status(404).json({ error: 'Something went wrong: ' + e });
+		res.status(400).json({ error: 'Something went wrong: ' + e });
 		// eslint-disable-next-line no-console
 		console.error('Error: ', e);
 	}
