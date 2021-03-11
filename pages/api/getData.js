@@ -10,8 +10,6 @@ const { privateKey: PRIVATE_KEY } = JSON.parse(
 export default async (req, res) => {
 	const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
 
-	console.log({ PRIVATE_KEY });
-
 	try {
 		await doc.useServiceAccountAuth({
 			client_email: CLIENT_EMAIL,
