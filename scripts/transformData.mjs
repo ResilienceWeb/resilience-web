@@ -38,6 +38,8 @@ const CATEGORY_MAPPING = {
 	Technology: 'Technology',
 	Art: 'Art',
 	Union: 'Union',
+	'Social justice': 'Social justice',
+	'Community garden': 'Community garden',
 };
 
 const transform = () => {
