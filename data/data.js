@@ -1026,7 +1026,7 @@ const data = {
 			label: 'Anonymous for the Voiceless',
 			category: 'Animal rights',
 			description:
-				'Local group of animal rights organisation that specialises in bringing animal abuse to public attention',
+				'Anonymous for the Voiceless (AV) is an animal rights organisation that specialises in edifying the public on animal abuse and fostering highly effective activism groups worldwide. We hold an abolitionist stance against all forms of animal exploitation and promote a clear animal rights message.',
 			website: 'https://www.anonymousforthevoiceless.org/',
 			color: '#ff914d',
 		},
@@ -1195,7 +1195,12 @@ const data = {
 			color: '#c3c4c7',
 			isDescriptive: true,
 		},
-		{ id: 12000, color: '#c3c4c7', isDescriptive: true },
+		{
+			id: 12000,
+			label: 'Social justice',
+			color: '#c3c4c7',
+			isDescriptive: true,
+		},
 		{
 			id: 13000,
 			label: 'Connectivity',
@@ -1203,7 +1208,12 @@ const data = {
 			isDescriptive: true,
 		},
 		{ id: 14000, label: 'Union', color: '#c3c4c7', isDescriptive: true },
-		{ id: 15000, color: '#c3c4c7', isDescriptive: true },
+		{
+			id: 15000,
+			label: 'Community garden',
+			color: '#c3c4c7',
+			isDescriptive: true,
+		},
 		{ id: 16000, label: 'Art', color: '#c3c4c7', isDescriptive: true },
 	],
 	edges: [
