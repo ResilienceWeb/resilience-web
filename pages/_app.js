@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';
 import '../styles/globals.css';
 
+function SafeHydrate({ children }) {
+	return (
+		<div suppressHydrationWarning>
+			{typeof window === 'undefined' ? null : children}
+		</div>
+	);
+}
+
 function App({ Component, pageProps }) {
 	return (
 		<>
@@ -33,9 +41,11 @@ function App({ Component, pageProps }) {
 					href="https://unpkg.com/vis-network/styles/vis-network.min.css"
 				/>
 			</Head>
-			<ChakraProvider>
-				<Component {...pageProps} />
-			</ChakraProvider>
+			<SafeHydrate>
+				<ChakraProvider>
+					<Component {...pageProps} />
+				</ChakraProvider>
+			</SafeHydrate>
 		</>
 	);
 }
