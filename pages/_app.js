@@ -4,12 +4,16 @@ import { ChakraProvider } from '@chakra-ui/react';
 import '../styles/globals.css';
 
 function SafeHydrate({ children }) {
+	// This prevents the app from rendering on the server
 	return (
 		<div suppressHydrationWarning>
 			{typeof window === 'undefined' ? null : children}
 		</div>
 	);
 }
+SafeHydrate.propTypes = {
+	children: PropTypes.node,
+};
 
 function App({ Component, pageProps }) {
 	return (
@@ -40,6 +44,7 @@ function App({ Component, pageProps }) {
 					type="text/css"
 					href="https://unpkg.com/vis-network/styles/vis-network.min.css"
 				/>
+				<script async src="https://cdn.splitbee.io/sb.js"></script>
 			</Head>
 			<SafeHydrate>
 				<ChakraProvider>
