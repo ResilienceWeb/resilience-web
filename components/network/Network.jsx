@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 import VisNetworkReactComponent from 'vis-network-react';
 
+import Footer from '../footer';
 import InfoBox from '../info-box';
 import styles from './Network.module.scss';
 
@@ -31,12 +32,6 @@ const options = {
 		},
 	},
 	physics: {
-		// repulsion: {
-		// 	nodeDistance: 400,
-		// 	springLength: 250,
-		// 	// centralGravity: 0.02,
-		// 	// springConstant: 0.01,
-		// },
 		forceAtlas2Based: {
 			gravitationalConstant: -26,
 			centralGravity: 0.005,
@@ -48,11 +43,9 @@ const options = {
 		stabilization: {
 			enabled: true,
 			iterations: 150,
-			// updateInterval: 5,
 			fit: true,
 		},
 		timestep: 0.35,
-		// adaptiveTimestep: true,
 	},
 	interaction: {
 		zoomView: true,
@@ -77,7 +70,6 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 	const events = {
 		select: function (event) {
 			const { nodes, edges } = event;
-			// console.log(event);
 			setSelectedId(nodes[0]);
 		},
 		showPopup: function (event) {
@@ -114,6 +106,7 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 					</motion.div>
 				)}
 			</AnimatePresence>
+			<Footer />
 		</div>
 	);
 };
