@@ -1,7 +1,7 @@
 import fs from 'fs';
 import groupBy from 'lodash/groupBy.js';
 
-const IMPORTED_DATA_PATH = './scripts/imported-data.json';
+const IMPORTED_DATA_PATH = './data/imported-data.json';
 
 const COLOR_MAPPING = {
 	Environment: '#7ed957',
@@ -112,7 +112,7 @@ const transform = () => {
 
 	const stringData = JSON.stringify(transformedData);
 	fs.writeFile(
-		'./data/data.js',
+		'../data/data.js',
 		`const data = ${stringData}; export default data;`,
 		(err) => {
 			if (!err) {
