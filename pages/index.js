@@ -9,6 +9,8 @@ import {
 	Icon,
 } from '@chakra-ui/react';
 
+import Footer from '../components/footer';
+
 export default function Homepage() {
 	return (
 		<>
@@ -82,6 +84,7 @@ export default function Homepage() {
 					</Flex>
 				</Stack>
 			</Container>
+			<Footer />
 		</>
 	);
 }
