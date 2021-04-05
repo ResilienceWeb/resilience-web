@@ -21,7 +21,7 @@ const options = {
 		shadow: {
 			enabled: true,
 		},
-		borderWidthSelected: 10,
+		borderWidthSelected: 4,
 	},
 	edges: {
 		color: '#000000',

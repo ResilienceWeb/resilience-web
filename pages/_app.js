@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';
+import '@fontsource/lato';
+import '@fontsource/karla';
 import '../styles/globals.css';
 
 function SafeHydrate({ children }) {
