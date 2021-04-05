@@ -46,8 +46,7 @@ export default function Homepage() {
 						fontSize="20"
 						maxW={'3xl'}
 					>
-						You can be part of a growing movement of positive
-						change.
+						Be part of a growing movement of positive change.
 					</Text>
 					<Stack spacing={8} direction={'row'}>
 						<Link href="/city">
