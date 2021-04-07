@@ -41,6 +41,7 @@ function App({ Component, pageProps }) {
 					content="A web of connections, showing local groups working to co-create a more socially and environmentally just city."
 				/>
 				<meta name="og:image" content="static/preview-image.png" />
+				<meta property="og:locale" content="en_GB" />
 				<link
 					rel="stylesheet"
 					type="text/css"

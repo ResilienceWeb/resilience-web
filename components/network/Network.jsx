@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 import VisNetworkReactComponent from 'vis-network-react';
 
-import Footer from '../footer';
+import PoweredByVercel from '../powered-by-vercel';
 import InfoBox from '../info-box';
 import styles from './Network.module.scss';
 
@@ -106,7 +106,7 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 					</motion.div>
 				)}
 			</AnimatePresence>
-			<Footer />
+			<PoweredByVercel />
 		</div>
 	);
 };

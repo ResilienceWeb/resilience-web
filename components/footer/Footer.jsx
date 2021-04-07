@@ -1,26 +1,44 @@
-import React from 'react';
+import {
+	Box,
+	Container,
+	Stack,
+	Text,
+	Link,
+	useColorModeValue,
+	Flex,
+} from '@chakra-ui/react';
 import Image from 'next/image';
-import styles from './Footer.module.scss';
 
-const Footer = () => {
+export default function SmallWithNavigation() {
 	return (
-		<a
-			href="https://vercel.com?utm_source=cambridge-resilience-web&utm_campaign=oss"
-			rel="noreferrer"
-			target="_blank"
+		<Box
+			bg={useColorModeValue('gray.50', 'gray.900')}
+			color={useColorModeValue('gray.700', 'gray.200')}
 		>
-			<div className={styles.root}>
-				<span>Powered by</span>
-
-				<Image
-					alt="Powered by Vercel"
-					src="/vercel.svg"
-					width="85"
-					height="19"
-				/>
-			</div>
-		</a>
+			<Container
+				as={Stack}
+				maxW={'6xl'}
+				py={4}
+				direction={{ base: 'column', md: 'row' }}
+				spacing={4}
+				justify={{ base: 'center', md: 'space-between' }}
+				align={{ base: 'center', md: 'center' }}
+			>
+				<Stack direction={'row'} spacing={6}>
+					<Link href="https://github.com/Cambridge-Resilience-Web/cambridge-resilience-web">
+						Github
+					</Link>
+				</Stack>
+				<Flex alignItems="center">
+					<Text mr={1}>Powered by</Text>
+					<Image
+						alt="Powered by Vercel"
+						src="/vercel.svg"
+						width="85"
+						height="19"
+					/>
+				</Flex>
+			</Container>
+		</Box>
 	);
-};
-
-export default Footer;
+}
