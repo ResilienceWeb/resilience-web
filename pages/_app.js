@@ -47,7 +47,7 @@ function App({ Component, pageProps }) {
 					type="text/css"
 					href="https://unpkg.com/vis-network/styles/vis-network.min.css"
 				/>
-				<script async src="https://cdn.splitbee.io/sb.js"></script>
+				<script async data-api="/_hive" src="/bee.js"></script>
 			</Head>
 			<SafeHydrate>
 				<ChakraProvider>
