@@ -1,0 +1,11 @@
+{
+	"routes": [
+		{
+			"src": "/university",
+			"status": 301,
+			"headers": {
+				"Location": "https://lm687.shinyapps.io/code/"
+			}
+		}
+	]
+}
