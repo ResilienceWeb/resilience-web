@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import styles from './InfoBox.module.scss';
 
@@ -15,7 +16,7 @@ const InfoBox = ({ title, description, website }) => {
 					rel="noreferrer"
 					target="_blank"
 				>
-					{website}
+					{website} <ExternalLinkIcon ml={1} />
 				</a>
 			)}
 		</div>

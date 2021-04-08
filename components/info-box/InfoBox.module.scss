@@ -26,6 +26,8 @@
 	}
 
 	.website {
+		display: flex;
+		align-items: center;
 		margin-top: 2rem;
 		transition: 150ms opacity;
 

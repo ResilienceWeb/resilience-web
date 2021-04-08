@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Divider, Input } from '@chakra-ui/react';
+import Image from 'next/image';
+import { Box, Divider, Flex, Input, Link } from '@chakra-ui/react';
 import styles from './Drawer.module.scss';
 
 const compareFunc = (a, b) => {
@@ -45,7 +46,17 @@ const ConnectionsDrawer = ({ items, selectNode }) => {
 
 	return (
 		<div className={styles.drawer}>
-			<h1 className={styles.title}>Cambridge Resilience Web</h1>
+			<Link href="/">
+				<Flex justifyContent="center" my={2}>
+					<Image
+						alt="Cambridge Resilience Web logo"
+						src="/logo.png"
+						width="276"
+						height="104"
+					/>
+				</Flex>
+				{/* <h1 className={styles.title}>Cambridge Resilience Web</h1> */}
+			</Link>
 			<Box mx={2} mb={4}>
 				<Input
 					id="search"
