@@ -35,11 +35,11 @@ export default function Homepage() {
 						fontSize="18"
 						maxW={'3xl'}
 					>
-						Two webs of resilience, showing local environmental and
-						social justice groups in Cambridge UK. We hope that the
-						webs will act as a navigation tool for those interested
-						in getting involved, as well as enabling different
-						groups to connect up and collaborate more.
+						Two webs of resilience, showing the environmental and
+						social justice groups in Cambridge, UK. These webs are
+						useful for finding local like-minded organisations,
+						seeing common connections and contributing to proactive
+						collaboration across Cambridge.
 					</Text>
 					<Text
 						color={'gray.500'}
@@ -48,7 +48,7 @@ export default function Homepage() {
 						fontSize="20"
 						maxW={'3xl'}
 					>
-						Be part of a growing movement of positive change.
+						Be part of a growing movement of positive change...
 					</Text>
 					<Stack spacing={8} direction={'row'}>
 						<Link href="/city">
