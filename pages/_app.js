@@ -47,7 +47,11 @@ function App({ Component, pageProps }) {
 					type="text/css"
 					href="https://unpkg.com/vis-network/styles/vis-network.min.css"
 				/>
-				<script async data-api="/_hive" src="/bee.js"></script>
+				<script
+					async
+					defer
+					src="https://scripts.withcabin.com/hello.js"
+				></script>
 			</Head>
 			<SafeHydrate>
 				<ChakraProvider>
