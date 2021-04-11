@@ -24,6 +24,7 @@ function App({ Component, pageProps }) {
 				<title>Cambridge Resilience Web</title>
 				<meta property="og:title" content="Cambridge Resilience Web" />
 				<meta charSet="utf-8" />
+				<meta property="og:locale" content="en_GB" />
 				<meta
 					name="viewport"
 					content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
@@ -41,7 +42,12 @@ function App({ Component, pageProps }) {
 					content="A web of connections, showing local groups working to co-create a more socially and environmentally just city."
 				/>
 				<meta name="og:image" content="static/preview-image.png" />
-				<meta property="og:locale" content="en_GB" />
+				<link
+					rel="shortcut icon"
+					href="/favicon.ico"
+					type="image/x-icon"
+				/>
+				<link rel="icon" href="/favicon.ico" type="image/x-icon" />
 				<link
 					rel="stylesheet"
 					type="text/css"
