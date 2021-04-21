@@ -1,10 +1,11 @@
 import dynamic from 'next/dynamic';
 import { useCallback, useRef, useState } from 'react';
 import useWindowSize from '../hooks/useWindowSize';
-import Drawer from '../components/drawer';
-import ContactInfo from '../components/contact-info';
-import SisterGraphLink from '../components/sister-graph-link';
-import MobileWarningDialog from '../components/mobile-warning-dialog';
+
+import Drawer from '@components/drawer';
+import ContactInfo from '@components/contact-info';
+import SisterGraphLink from '@components/sister-graph-link';
+import MobileWarningDialog from '@components/mobile-warning-dialog';
 import data from '../data/data.js';
 
 const NoSSRNetwork = dynamic(() => import('../components/network'), {

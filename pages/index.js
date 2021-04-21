@@ -9,7 +9,7 @@ import {
 	Icon,
 } from '@chakra-ui/react';
 
-import Footer from '../components/footer';
+import Footer from '@components/footer';
 
 export default function Homepage() {
 	return (

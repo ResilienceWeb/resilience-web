@@ -19,6 +19,14 @@
 		"ecmaVersion": 2020
 	},
 	"settings": {
+		"import/resolver": {
+			"alias": {
+				"map": [
+					["@components", "./components/"]
+				],
+				"extensions": [".js", ".jsx"]
+			}
+		},
 		"import/extensions": [".js", ".jsx"],
 		"react": {
 			"version": "detect"

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { AnimatePresence, motion } from 'framer-motion';
 import VisNetworkReactComponent from 'vis-network-react';
 
-import PoweredByVercel from '../powered-by-vercel';
-import InfoBox from '../info-box';
+import PoweredByVercel from '@components/powered-by-vercel';
+import InfoBox from '@components/info-box';
 import styles from './Network.module.scss';
 
 const options = {

@@ -1,14 +1,12 @@
 module.exports = {
-	async rewrites() {
-		return [
-			{
-				source: '/bee.js',
-				destination: 'https://cdn.splitbee.io/sb.js',
-			},
-			{
-				source: '/_hive/:slug',
-				destination: 'https://hive.splitbee.io/:slug',
-			},
-		];
+	future: {
+		webpack5: true,
+	},
+	webpack(config) {
+		config.resolve.modules.push(__dirname);
+		return config;
+	},
+	images: {
+		domains: ['media.graphcms.com'],
 	},
 };
