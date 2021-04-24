@@ -50,6 +50,7 @@
 		"no-unused-vars": 1,
 		"no-useless-escape": 0,
 		"no-var": 1,
+		"no-mixed-spaces-and-tabs": 1,
 		"prefer-const": 1,
 		"prettier/prettier": 0,
 		"quotes": [
@@ -62,6 +63,7 @@
 		"strict": 0,
 		"react/jsx-props-no-spreading": 0,
 		"react/react-in-jsx-scope": 0,
+		"react/prop-types": 0,
 		"import/default": 1,
 		"import/export": 1,
 		"import/named": 1,
