@@ -1,8 +1,10 @@
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from 'next-auth/client';
 import '@fontsource/lato';
 import '@fontsource/karla';
+import '@progress/kendo-theme-default/dist/all.css';
 import '../styles/globals.css';
 
 function SafeHydrate({ children }) {
@@ -60,9 +62,14 @@ function App({ Component, pageProps }) {
 				></script>
 			</Head>
 			<SafeHydrate>
-				<ChakraProvider>
-					<Component {...pageProps} />
-				</ChakraProvider>
+				<Provider
+					options={{ clientMaxAge: 0, keepAlive: 0 }}
+					session={pageProps.session}
+				>
+					<ChakraProvider>
+						<Component {...pageProps} />
+					</ChakraProvider>
+				</Provider>
 			</SafeHydrate>
 		</>
 	);
