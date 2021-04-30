@@ -12,7 +12,7 @@ const NoSSRNetwork = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
-export default function Home() {
+export default function City() {
 	const containerRef = useRef(null);
 	const [selectedId, setSelectedId] = useState();
 	const [network, setNetwork] = useState();

@@ -1,5 +1,4 @@
 import {
-	chakra,
 	Flex,
 	Container,
 	Heading,
@@ -9,13 +8,10 @@ import {
 	Link,
 	Icon,
 } from '@chakra-ui/react';
-import { signIn, signOut, useSession } from 'next-auth/client';
 
 import Footer from '@components/footer';
 
 export default function Homepage() {
-	const [session, loading] = useSession();
-
 	return (
 		<>
 			<Container maxW={'5xl'}>
@@ -86,32 +82,6 @@ export default function Homepage() {
 							mt={{ base: 12, sm: 16 }}
 						/>
 					</Flex>
-					{!session && (
-						<chakra.button
-							rounded="full"
-							px={6}
-							bg="#57b894"
-							colorScheme="#57b894"
-							onClick={() => signIn()}
-							size="lg"
-							_hover={{ bg: '#4a9e7f' }}
-						>
-							Login
-						</chakra.button>
-					)}
-					{session && (
-						<chakra.button
-							rounded="full"
-							px={6}
-							bg="#57b894"
-							colorScheme="#57b894"
-							onClick={() => signOut()}
-							size="lg"
-							_hover={{ bg: '#4a9e7f' }}
-						>
-							Sign out
-						</chakra.button>
-					)}
 				</Stack>
 			</Container>
 			<Footer />
