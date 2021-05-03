@@ -1,6 +1,7 @@
 import fs from 'fs';
 import groupBy from 'lodash/groupBy.js';
 
+import { CATEGORY_MAPPING } from '../data/enums.js';
 const IMPORTED_DATA_PATH = './data/imported-data.json';
 
 const COLOR_MAPPING = {
@@ -20,26 +21,6 @@ const COLOR_MAPPING = {
 	Technology: '#a2b342',
 	Art: '#77fcd0',
 	Union: '#fff780',
-};
-
-const CATEGORY_MAPPING = {
-	Environment: 'Environment',
-	Housing: 'Housing',
-	'Social business': 'Social business',
-	Transportation: 'Transportation',
-	Connectivity: 'Connectivity',
-	Equity: 'Equity',
-	Community: 'Community',
-	'Animal rights': 'Animal rights',
-	Nature: 'Nature/Conservation',
-	Justice: 'Justice',
-	Education: 'Education',
-	Food: 'Food',
-	Technology: 'Technology',
-	Art: 'Art',
-	Union: 'Union',
-	'Social justice': 'Social justice',
-	'Community garden': 'Community garden',
 };
 
 const transform = () => {

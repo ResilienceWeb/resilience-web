@@ -19,7 +19,8 @@ export default function Homepage() {
 					textAlign={'center'}
 					align={'center'}
 					spacing={{ base: 8, md: 10 }}
-					py={{ base: 16, md: 16 }}
+					py={{ base: 12, md: 10 }}
+					maxHeight="calc"
 				>
 					<Heading
 						fontFamily="Lato"
@@ -77,10 +78,7 @@ export default function Homepage() {
 						</Link>
 					</Stack>
 					<Flex w={'full'}>
-						<Illustration
-							height={{ sm: '24rem', lg: 'rem' }}
-							mt={{ base: 12, sm: 16 }}
-						/>
+						<Illustration height="20rem" mt={{ base: 6, sm: 8 }} />
 					</Flex>
 				</Stack>
 			</Container>

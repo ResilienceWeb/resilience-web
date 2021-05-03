@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import PropTypes from 'prop-types';
+import '@progress/kendo-theme-default/dist/all.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Provider } from 'next-auth/client';
 import '@fontsource/lato';
 import '@fontsource/karla';
-import '@progress/kendo-theme-default/dist/all.css';
 import '../styles/globals.css';
 
 function SafeHydrate({ children }) {
@@ -15,9 +15,6 @@ function SafeHydrate({ children }) {
 		</div>
 	);
 }
-SafeHydrate.propTypes = {
-	children: PropTypes.node,
-};
 
 function App({ Component, pageProps }) {
 	return (
@@ -60,6 +57,12 @@ function App({ Component, pageProps }) {
 					defer
 					src="https://scripts.withcabin.com/hello.js"
 				></script>
+				{/* <link
+					href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+					rel="stylesheet"
+					integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+					crossOrigin="anonymous"
+				></link> */}
 			</Head>
 			<SafeHydrate>
 				<Provider

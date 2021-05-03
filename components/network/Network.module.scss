@@ -1,6 +1,5 @@
 .graph {
-	height: 100vh;
-	margin-left: 18.75rem;
+	height: calc(100% - 56px);
 	z-index: 2;
 
 	* {
