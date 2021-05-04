@@ -1,27 +1,43 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import { chakra, Box, Flex, useBreakpointValue } from '@chakra-ui/react';
 import { MultiSelect } from '@progress/kendo-react-dropdowns';
+import { Input } from '@progress/kendo-react-inputs';
 import { CATEGORY_MAPPING } from '../../data/enums.js';
 import Item from './item';
+import styles from './MainList.module.scss';
 
 const MainList = ({ items }) => {
 	const [selectedCategories, setSelectedCategories] = useState([]);
+	const [searchTerm, setSearchTem] = useState('');
 	const categories = Object.keys(CATEGORY_MAPPING).map((key) => key);
 
 	const handleCategorySelection = useCallback((event) => {
 		setSelectedCategories(event.target.value);
 	}, []);
 
-	const filteredItems = useMemo(
-		() =>
-			items.filter((item) =>
-				!item.isDescriptive && selectedCategories.length > 0
-					? selectedCategories.includes(item.category)
-					: true,
-			),
-		[items, selectedCategories],
-	);
+	const handleSearchTermChange = useCallback((event) => {
+		setSearchTem(event.target.value);
+	}, []);
+
+	const filteredItems = useMemo(() => {
+		let results = items.filter((item) => !item.isDescriptive);
+
+		if (selectedCategories.length > 0) {
+			results = results.filter((item) =>
+				selectedCategories.includes(item.category),
+			);
+		}
+
+		if (searchTerm) {
+			results = results.filter((item) =>
+				item.label.toLowerCase().includes(searchTerm.toLowerCase()),
+			);
+		}
+
+		return results;
+	}, [items, searchTerm, selectedCategories]);
 
 	return (
 		<Flex
@@ -38,23 +54,39 @@ const MainList = ({ items }) => {
 				/>
 			</Box>
 			<chakra.div
+				paddingTop={4}
 				width={useBreakpointValue({ base: '95%', md: '600px' })}
 			>
 				<MultiSelect
+					className={styles.categoryMultiSelect}
 					data={categories}
-					label="Filter by category"
+					placeholder="Filter by category"
 					onChange={handleCategorySelection}
 					value={selectedCategories}
 					style={{ width: '100%' }}
 				/>
+				<Input
+					className={styles.searchBox}
+					placeholder="Search"
+					onChange={handleSearchTermChange}
+					style={{ width: '100%', marginTop: '1rem' }}
+					value={searchTerm}
+				/>
 			</chakra.div>
-			{filteredItems.length} results
+			<chakra.span fontSize="14px" marginTop={2}>
+				{filteredItems.length} results
+			</chakra.span>
 			<chakra.div
+				marginTop={4}
 				width={useBreakpointValue({ base: '95%', md: '600px' })}
 			>
-				{filteredItems.map((item) => (
-					<Item dataItem={item} key={item.id} />
-				))}
+				<AnimatePresence>
+					<motion.div layout>
+						{filteredItems.map((item) => (
+							<Item dataItem={item} key={item.id} />
+						))}
+					</motion.div>
+				</AnimatePresence>
 			</chakra.div>
 		</Flex>
 	);
