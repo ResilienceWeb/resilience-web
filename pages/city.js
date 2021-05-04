@@ -1,10 +1,9 @@
 import dynamic from 'next/dynamic';
 import { useCallback, useState } from 'react';
-import { chakra, Box, Slide, ScaleFade } from '@chakra-ui/react';
+import { Box, Slide, ScaleFade } from '@chakra-ui/react';
 
 import Drawer from '@components/drawer';
 import SisterGraphLink from '@components/sister-graph-link';
-import MobileWarningDialog from '@components/mobile-warning-dialog';
 import ModeSwitch from '@components/mode-switch';
 import MainList from '@components/main-list';
 import Footer from '@components/footer';
@@ -17,7 +16,7 @@ const NoSSRNetwork = dynamic(() => import('../components/network'), {
 export default function City() {
 	const [selectedId, setSelectedId] = useState();
 	const [network, setNetwork] = useState();
-	const [isWebMode, setIsWebMode] = useState(false);
+	const [isWebMode, setIsWebMode] = useState(true);
 
 	const selectNode = useCallback(
 		(id) => {
@@ -29,7 +28,6 @@ export default function City() {
 	);
 
 	const handleSwitchChange = useCallback((event) => {
-		console.log(event);
 		setIsWebMode(event.target.value);
 	}, []);
 
