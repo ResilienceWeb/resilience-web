@@ -64,3 +64,20 @@ model VerificationRequest {
 
     @@map(name: "verification_requests")
 }
+
+model Organization {
+    id          Int      @id @default(autoincrement())
+    createdAt   DateTime @default(now()) @map(name: "created_at")
+    updatedAt   DateTime @default(now()) @map(name: "updated_at")
+    title       String
+    category    String   @unique
+    website     String?
+    description String?
+    facebook    String?
+    twitter     String?
+    instagram   String?
+    email       String?
+    notes       String?
+
+    @@map(name: "organizations")
+}
