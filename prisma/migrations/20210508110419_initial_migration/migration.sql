@@ -54,7 +54,7 @@ CREATE TABLE "verification_requests" (
 );
 
 -- CreateTable
-CREATE TABLE "Organization" (
+CREATE TABLE "organizations" (
     "id" SERIAL NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -96,4 +96,4 @@ CREATE UNIQUE INDEX "users.email_unique" ON "users"("email");
 CREATE UNIQUE INDEX "verification_requests.token_unique" ON "verification_requests"("token");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Organization.category_unique" ON "Organization"("category");
+CREATE UNIQUE INDEX "organizations.category_unique" ON "organizations"("category");
