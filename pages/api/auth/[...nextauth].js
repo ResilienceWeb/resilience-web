@@ -20,9 +20,6 @@ export default NextAuth({
 		}),
 	],
 	adapter: Adapters.Prisma.Adapter({ prisma }),
-	// session: {
-	// 	jwt: true,
-	// },
 
 	database: process.env.DATABASE_URL,
 });
