@@ -14,7 +14,7 @@ import Footer from '@components/footer';
 export default function Homepage() {
 	return (
 		<>
-			<Container maxW={'5xl'}>
+			<Container maxW={'5xl'} minHeight="calc(100vh - 56px)">
 				<Stack
 					textAlign={'center'}
 					align={'center'}
@@ -23,7 +23,7 @@ export default function Homepage() {
 					maxHeight="calc"
 				>
 					<Heading
-						fontFamily="Lato"
+						fontFamily="Montserrat"
 						fontWeight={700}
 						fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
 						lineHeight={'110%'}

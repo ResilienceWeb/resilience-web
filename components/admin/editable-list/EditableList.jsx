@@ -75,7 +75,7 @@ const EditableList = ({ items, updateOrganization }) => {
 				{
 					field: 'category',
 					title: 'Category',
-					width: 260,
+					width: 160,
 					editCell: TreeListTextEditor,
 				},
 				{
@@ -87,7 +87,31 @@ const EditableList = ({ items, updateOrganization }) => {
 				{
 					field: 'email',
 					title: 'Email',
-					width: 200,
+					width: 100,
+					editCell: TreeListTextEditor,
+				},
+				{
+					field: 'description',
+					title: 'Description',
+					width: 400,
+					editCell: TreeListTextEditor,
+				},
+				{
+					field: 'facebook',
+					title: 'Facebook',
+					width: 100,
+					editCell: TreeListTextEditor,
+				},
+				{
+					field: 'instagram',
+					title: 'Instagram',
+					width: 100,
+					editCell: TreeListTextEditor,
+				},
+				{
+					field: 'twitter',
+					title: 'Twitter',
+					width: 100,
 					editCell: TreeListTextEditor,
 				},
 				{

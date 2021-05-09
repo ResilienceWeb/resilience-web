@@ -7,6 +7,7 @@ import SisterGraphLink from '@components/sister-graph-link';
 import ModeSwitch from '@components/mode-switch';
 import MainList from '@components/main-list';
 import Footer from '@components/footer';
+import useWindowSize from '../hooks/useWindowSize';
 import data from '../data/data.js';
 
 const NoSSRNetwork = dynamic(() => import('../components/network'), {
@@ -16,7 +17,8 @@ const NoSSRNetwork = dynamic(() => import('../components/network'), {
 export default function City() {
 	const [selectedId, setSelectedId] = useState();
 	const [network, setNetwork] = useState();
-	const [isWebMode, setIsWebMode] = useState(true);
+	const size = useWindowSize();
+	const [isWebMode, setIsWebMode] = useState(size.width < 768);
 
 	const selectNode = useCallback(
 		(id) => {
@@ -39,10 +41,12 @@ export default function City() {
 						<Drawer items={data.nodes} selectNode={selectNode} />
 					)}
 				</Slide>
-				<ModeSwitch
-					checked={isWebMode}
-					handleSwitchChange={handleSwitchChange}
-				/>
+				{size.width > 768 && (
+					<ModeSwitch
+						checked={isWebMode}
+						handleSwitchChange={handleSwitchChange}
+					/>
+				)}
 				<ScaleFade initialScale={0.8} in={isWebMode} unmountOnExit>
 					{isWebMode && (
 						<>

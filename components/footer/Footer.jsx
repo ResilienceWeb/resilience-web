@@ -29,7 +29,7 @@ export default function SmallWithNavigation() {
 					<Link href="https://github.com/Cambridge-Resilience-Web/cambridge-resilience-web">
 						Github
 					</Link>
-					<Link href="mailto:diner.ismail@protonmail.com">
+					<Link href="mailto:cambridgeresilienceweb@gmail.com">
 						Get in touch
 					</Link>
 				</Stack>

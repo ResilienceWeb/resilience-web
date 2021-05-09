@@ -5,6 +5,7 @@ import { useQuery, useMutation } from 'react-query';
 
 import LayoutContainer from '@components/admin/layout-container';
 import EditableList from '@components/admin/editable-list';
+import LoadingSpinner from '@components/loading-spinner';
 
 async function fetchOrganizationsRequest() {
 	const response = await fetch('/api/organizations');
@@ -34,7 +35,7 @@ function useUpdateOrganization() {
 }
 
 export default function Admin() {
-	const [session, loading] = useSession();
+	const [session, loadingSession] = useSession();
 	const { data: organizations, isLoading } = useQuery(
 		'organizations',
 		fetchOrganizationsRequest,
@@ -42,10 +43,20 @@ export default function Admin() {
 	const { mutate: updateOrganization } = useUpdateOrganization();
 
 	useEffect(() => {
-		if (!session && !loading) {
+		if (!session && !loadingSession) {
 			signIn();
 		}
-	}, [session, loading]);
+	}, [session, loadingSession]);
+
+	if (loadingSession || isLoading) {
+		return (
+			<LayoutContainer>
+				<LoadingSpinner />
+			</LayoutContainer>
+		);
+	}
+
+	if (!session) return null;
 
 	return (
 		<LayoutContainer>
