@@ -2,10 +2,13 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import '@progress/kendo-theme-default/dist/all.css';
 import { ChakraProvider } from '@chakra-ui/react';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider } from 'next-auth/client';
 import '@fontsource/lato';
 import '@fontsource/karla';
 import '../styles/globals.css';
+
+const queryClient = new QueryClient();
 
 function SafeHydrate({ children }) {
 	// This prevents the app from rendering on the server
@@ -70,7 +73,9 @@ function App({ Component, pageProps }) {
 					session={pageProps.session}
 				>
 					<ChakraProvider>
-						<Component {...pageProps} />
+						<QueryClientProvider client={queryClient}>
+							<Component {...pageProps} />
+						</QueryClientProvider>
 					</ChakraProvider>
 				</Provider>
 			</SafeHydrate>

@@ -50,6 +50,7 @@ model User {
     image         String?
     createdAt     DateTime  @default(now()) @map(name: "created_at")
     updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+    admin         Boolean   @default(false)
 
     @@map(name: "users")
 }
@@ -70,7 +71,7 @@ model Organization {
     createdAt   DateTime @default(now()) @map(name: "created_at")
     updatedAt   DateTime @default(now()) @map(name: "updated_at")
     title       String
-    category    String   @unique
+    category    String
     website     String?
     description String?
     facebook    String?
