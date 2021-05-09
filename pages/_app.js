@@ -1,9 +1,14 @@
 import Head from 'next/head';
 import PropTypes from 'prop-types';
+import '@progress/kendo-theme-default/dist/all.css';
 import { ChakraProvider } from '@chakra-ui/react';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { Provider } from 'next-auth/client';
 import '@fontsource/lato';
 import '@fontsource/karla';
 import '../styles/globals.css';
+
+const queryClient = new QueryClient();
 
 function SafeHydrate({ children }) {
 	// This prevents the app from rendering on the server
@@ -13,9 +18,6 @@ function SafeHydrate({ children }) {
 		</div>
 	);
 }
-SafeHydrate.propTypes = {
-	children: PropTypes.node,
-};
 
 function App({ Component, pageProps }) {
 	return (
@@ -58,11 +60,24 @@ function App({ Component, pageProps }) {
 					defer
 					src="https://scripts.withcabin.com/hello.js"
 				></script>
+				{/* <link
+					href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+					rel="stylesheet"
+					integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+					crossOrigin="anonymous"
+				></link> */}
 			</Head>
 			<SafeHydrate>
-				<ChakraProvider>
-					<Component {...pageProps} />
-				</ChakraProvider>
+				<Provider
+					options={{ clientMaxAge: 0, keepAlive: 0 }}
+					session={pageProps.session}
+				>
+					<ChakraProvider>
+						<QueryClientProvider client={queryClient}>
+							<Component {...pageProps} />
+						</QueryClientProvider>
+					</ChakraProvider>
+				</Provider>
 			</SafeHydrate>
 		</>
 	);

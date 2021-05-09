@@ -1,22 +1,22 @@
 import dynamic from 'next/dynamic';
-import { useCallback, useRef, useState } from 'react';
-import useWindowSize from '../hooks/useWindowSize';
+import { useCallback, useState } from 'react';
+import { Box, Slide, ScaleFade } from '@chakra-ui/react';
 
 import Drawer from '@components/drawer';
-import ContactInfo from '@components/contact-info';
 import SisterGraphLink from '@components/sister-graph-link';
-import MobileWarningDialog from '@components/mobile-warning-dialog';
+import ModeSwitch from '@components/mode-switch';
+import MainList from '@components/main-list';
+import Footer from '@components/footer';
 import data from '../data/data.js';
 
 const NoSSRNetwork = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
-export default function Home() {
-	const containerRef = useRef(null);
+export default function City() {
 	const [selectedId, setSelectedId] = useState();
 	const [network, setNetwork] = useState();
-	const size = useWindowSize();
+	const [isWebMode, setIsWebMode] = useState(true);
 
 	const selectNode = useCallback(
 		(id) => {
@@ -27,21 +27,45 @@ export default function Home() {
 		[network],
 	);
 
-	if (size.width < 768) {
-		return <MobileWarningDialog />;
-	}
+	const handleSwitchChange = useCallback((event) => {
+		setIsWebMode(event.target.value);
+	}, []);
 
 	return (
-		<div ref={containerRef}>
-			<Drawer items={data.nodes} selectNode={selectNode} />
-			<ContactInfo />
-			<SisterGraphLink />
-			<NoSSRNetwork
-				data={data}
-				selectedId={selectedId}
-				setNetwork={setNetwork}
-				setSelectedId={setSelectedId}
-			/>
-		</div>
+		<>
+			<div>
+				<Slide direction="left" in={isWebMode} unmountOnExit>
+					{isWebMode && (
+						<Drawer items={data.nodes} selectNode={selectNode} />
+					)}
+				</Slide>
+				<ModeSwitch
+					checked={isWebMode}
+					handleSwitchChange={handleSwitchChange}
+				/>
+				<ScaleFade initialScale={0.8} in={isWebMode} unmountOnExit>
+					{isWebMode && (
+						<>
+							<SisterGraphLink />
+							<Box
+								height="100vh"
+								ml="18.75rem"
+								position="relative"
+							>
+								<NoSSRNetwork
+									data={data}
+									selectedId={selectedId}
+									setNetwork={setNetwork}
+									setSelectedId={setSelectedId}
+								/>
+								<Footer />
+							</Box>
+						</>
+					)}
+				</ScaleFade>
+
+				{!isWebMode && <MainList items={data.nodes} />}
+			</div>
+		</>
 	);
 }

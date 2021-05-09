@@ -106,7 +106,7 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 					</motion.div>
 				)}
 			</AnimatePresence>
-			<PoweredByVercel />
+			{/* <PoweredByVercel /> */}
 		</div>
 	);
 };

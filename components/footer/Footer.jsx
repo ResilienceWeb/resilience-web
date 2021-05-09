@@ -14,6 +14,7 @@ export default function SmallWithNavigation() {
 		<Box
 			bg={useColorModeValue('gray.50', 'gray.900')}
 			color={useColorModeValue('gray.700', 'gray.200')}
+			zIndex="6"
 		>
 			<Container
 				as={Stack}
@@ -27,6 +28,9 @@ export default function SmallWithNavigation() {
 				<Stack direction={'row'} spacing={6}>
 					<Link href="https://github.com/Cambridge-Resilience-Web/cambridge-resilience-web">
 						Github
+					</Link>
+					<Link href="mailto:diner.ismail@protonmail.com">
+						Get in touch
 					</Link>
 				</Stack>
 				<Flex alignItems="center">
