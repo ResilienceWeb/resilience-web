@@ -5,6 +5,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider } from 'next-auth/client';
 import '@fontsource/lato';
+import '@fontsource/montserrat';
 import '@fontsource/karla';
 import '../styles/globals.css';
 

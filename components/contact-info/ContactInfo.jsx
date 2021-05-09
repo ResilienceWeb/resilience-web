@@ -4,7 +4,7 @@ import styles from './ContactInfo.module.scss';
 const ContactInfo = () => (
 	<div className={styles.root}>
 		<a
-			href="mailto:diner.ismail@protonmail.com"
+			href="mailto:cambridgeresilienceweb@gmail.com"
 			rel="noreferrer"
 			target="_blank"
 		>

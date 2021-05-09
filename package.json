@@ -15,6 +15,7 @@
 		"@emotion/styled": "11.3.0",
 		"@fontsource/karla": "4.2.2",
 		"@fontsource/lato": "4.2.2",
+		"@fontsource/montserrat": "4.3.0",
 		"@prisma/client": "2.22.1",
 		"@progress/kendo-data-query": "1.5.5",
 		"@progress/kendo-drawing": "1.10.0",
