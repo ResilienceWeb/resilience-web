@@ -26,7 +26,10 @@ export default function SmallWithNavigation() {
 				align={{ base: 'center', md: 'center' }}
 			>
 				<Stack direction={'row'} spacing={6}>
-					<Link href="https://github.com/Cambridge-Resilience-Web/cambridge-resilience-web">
+					<Link
+						href="https://github.com/Cambridge-Resilience-Web/cambridge-resilience-web"
+						target="_blank"
+					>
 						Github
 					</Link>
 					<Link href="mailto:cambridgeresilienceweb@gmail.com">

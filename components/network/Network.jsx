@@ -1,10 +1,9 @@
 import { memo, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import VisNetworkReactComponent from 'vis-network-react';
-import { chakra, Flex, Tag, useDisclosure } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
 
-import Dialog from '../main-list/dialog';
-import InfoBox from '@components/info-box';
+import Dialog from '@components/main-list/dialog';
 import styles from './Network.module.scss';
 
 const options = {

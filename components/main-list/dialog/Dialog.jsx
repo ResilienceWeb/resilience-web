@@ -1,3 +1,4 @@
+// import Link from 'next/link';
 import {
 	Modal,
 	ModalOverlay,
@@ -9,9 +10,13 @@ import {
 	Button,
 	Box,
 	Tag,
+	Icon,
+	Stack,
+	Link,
 	chakra,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
 
 const Dialog = ({ isOpen, item, onClose }) => {
 	return (
@@ -36,7 +41,48 @@ const Dialog = ({ isOpen, item, onClose }) => {
 					<Box mt={4}>{item.description}</Box>
 				</ModalBody>
 
-				<ModalFooter>
+				<ModalFooter justifyContent="space-between">
+					<Stack direction="row" spacing={4}>
+						{item.facebook && (
+							<Link href={item.facebook} target="_blank">
+								<Icon
+									as={SiFacebook}
+									color="gray.600"
+									cursor="pointer"
+									w={8}
+									h={8}
+									transition="color 150ms"
+									_hover={{ color: 'gray.500' }}
+								/>
+							</Link>
+						)}
+						{item.twitter && (
+							<Link href={item.twitter} target="_blank">
+								<Icon
+									as={SiTwitter}
+									color="gray.600"
+									cursor="pointer"
+									w={8}
+									h={8}
+									transition="color 150ms"
+									_hover={{ color: 'gray.500' }}
+								/>
+							</Link>
+						)}
+						{item.instagram && (
+							<Link href={item.instagram} target="_blank">
+								<Icon
+									as={SiInstagram}
+									color="gray.600"
+									cursor="pointer"
+									w={8}
+									h={8}
+									transition="color 150ms"
+									_hover={{ color: 'gray.500' }}
+								/>
+							</Link>
+						)}
+					</Stack>
 					<Button colorScheme="blue" mr={3} onClick={onClose}>
 						Close
 					</Button>
