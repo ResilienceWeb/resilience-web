@@ -1,46 +1,45 @@
-import { signIn, signOut, useSession } from 'next-auth/client';
-import { useEffect, useState } from 'react';
-import { Button } from '@chakra-ui/react';
+import { signIn, useSession } from 'next-auth/client';
+import { useEffect } from 'react';
 import { useQuery, useMutation } from 'react-query';
 
 import LayoutContainer from '@components/admin/layout-container';
 import EditableList from '@components/admin/editable-list';
 import LoadingSpinner from '@components/loading-spinner';
 
-async function fetchOrganizationsRequest() {
-	const response = await fetch('/api/organizations');
+async function fetchListingsRequest() {
+	const response = await fetch('/api/listings');
 	const data = await response.json();
-	const { organizations } = data;
-	return organizations;
+	const { listings } = data;
+	return listings;
 }
 
-async function updateOrganizationRequest(organizationData) {
-	const response = await fetch('/api/organizations/edit', {
+async function updateListingRequest(listingData) {
+	const response = await fetch('/api/listings/edit', {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({
-			organization: organizationData,
+			listing: listingData,
 		}),
 	});
 
 	const data = await response.json();
-	const { organization } = data;
-	return organization;
+	const { listing } = data;
+	return listing;
 }
 
-function useUpdateOrganization() {
-	return useMutation(updateOrganizationRequest);
+function useUpdateListing() {
+	return useMutation(updateListingRequest);
 }
 
 export default function Admin() {
 	const [session, loadingSession] = useSession();
-	const { data: organizations, isLoading } = useQuery(
-		'organizations',
-		fetchOrganizationsRequest,
+	const { data: listings, isLoading } = useQuery(
+		'listings',
+		fetchListingsRequest,
 	);
-	const { mutate: updateOrganization } = useUpdateOrganization();
+	const { mutate: updateListing } = useUpdateListing();
 
 	useEffect(() => {
 		if (!session && !loadingSession) {
@@ -60,10 +59,7 @@ export default function Admin() {
 
 	return (
 		<LayoutContainer>
-			<EditableList
-				items={organizations}
-				updateOrganization={updateOrganization}
-			/>
+			<EditableList items={listings} updateListing={updateListing} />
 		</LayoutContainer>
 	);
 }

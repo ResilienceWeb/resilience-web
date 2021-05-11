@@ -23,7 +23,6 @@ model Account {
     createdAt          DateTime  @default(now()) @map(name: "created_at")
     updatedAt          DateTime  @default(now()) @map(name: "updated_at")
 
-
     @@index([providerAccountId], name: "providerAccountId")
     @@index([providerId], name: "providerId")
     @@index([userId], name: "userId")
@@ -66,7 +65,7 @@ model VerificationRequest {
     @@map(name: "verification_requests")
 }
 
-model Organization {
+model Listing {
     id          Int      @id @default(autoincrement())
     createdAt   DateTime @default(now()) @map(name: "created_at")
     updatedAt   DateTime @default(now()) @map(name: "updated_at")
@@ -80,5 +79,5 @@ model Organization {
     email       String?
     notes       String?
 
-    @@map(name: "organizations")
+    @@map(name: "listings")
 }

@@ -13,7 +13,7 @@ import CommandCell from './command-cell';
 
 const editField = 'inEdit';
 
-const EditableList = ({ items, updateOrganization }) => {
+const EditableList = ({ items, updateListing }) => {
 	const [data, setData] = useState(items);
 	const [inEdit, setInEdit] = useState([]);
 
@@ -47,10 +47,10 @@ const EditableList = ({ items, updateOrganization }) => {
 
 	const handleSave = useCallback(
 		(data) => {
-			updateOrganization(data);
+			updateListing(data);
 			cancelEdit(data);
 		},
-		[cancelEdit, updateOrganization],
+		[cancelEdit, updateListing],
 	);
 
 	if (!data) return null;

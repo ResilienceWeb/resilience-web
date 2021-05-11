@@ -2,13 +2,13 @@ import prisma from '../../../prisma/client';
 
 export default async function (req, res) {
 	try {
-		const organizations = await prisma.organization.findMany();
+		const listings = await prisma.listing.findMany();
 		res.status(200);
-		res.json({ organizations });
+		res.json({ listings });
 	} catch (e) {
 		res.status(500);
 		res.json({
-			error: `Unable to fetch organizations from database - ${e}`,
+			error: `Unable to fetch listings from database - ${e}`,
 		});
 	}
 }
