@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { chakra, Box, Flex, useBreakpointValue } from '@chakra-ui/react';
 import { MultiSelect } from '@progress/kendo-react-dropdowns';
 import { Input } from '@progress/kendo-react-inputs';
-import { CATEGORY_MAPPING } from '../../data/enums.js';
+import CATEGORY_MAPPING from '../../data/enums.js';
 import Item from './item';
 import styles from './MainList.module.scss';
 

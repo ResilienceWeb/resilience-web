@@ -1,7 +1,26 @@
 import fs from 'fs';
 import groupBy from 'lodash/groupBy.js';
 
-import { CATEGORY_MAPPING } from '../data/enums.js';
+const CATEGORY_MAPPING = {
+	Environment: 'Environment',
+	Housing: 'Housing',
+	'Social business': 'Social business',
+	Transportation: 'Transportation',
+	Connectivity: 'Connectivity',
+	Equity: 'Equity',
+	Community: 'Community',
+	'Animal rights': 'Animal rights',
+	Nature: 'Nature/Conservation',
+	Justice: 'Justice',
+	Education: 'Education',
+	Food: 'Food',
+	Technology: 'Technology',
+	Art: 'Art',
+	Union: 'Union',
+	'Social justice': 'Social justice',
+	'Community garden': 'Community garden',
+};
+
 const IMPORTED_DATA_PATH = './data/imported-data.json';
 
 const COLOR_MAPPING = {
@@ -30,16 +49,34 @@ const transform = () => {
 	};
 	const jsonData = fs.readFileSync(IMPORTED_DATA_PATH);
 	const data = JSON.parse(jsonData);
-	data.map(({ name, category, description, website }, index) => {
-		transformedData.nodes.push({
-			id: index,
-			label: name,
-			category,
-			description,
-			website,
-			color: COLOR_MAPPING[category] ?? 'black',
-		});
-	});
+	data.map(
+		(
+			{
+				name,
+				category,
+				description,
+				website,
+				facebook,
+				twitter,
+				instagram,
+				email,
+			},
+			index,
+		) => {
+			transformedData.nodes.push({
+				id: index,
+				label: name,
+				category,
+				description,
+				website,
+				facebook,
+				twitter,
+				instagram,
+				email,
+				color: COLOR_MAPPING[category] ?? 'black',
+			});
+		},
+	);
 
 	let groupedByCategory = groupBy(transformedData.nodes, 'category');
 

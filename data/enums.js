@@ -1,6 +1,4 @@
-// export const CATEGORIES = ['Environment', 'Housing', 'Social business', 'Transportation', 'Connectivity', 'Equity', 'Community', 'Animal rights', 'Nature', ]
-
-export const CATEGORY_MAPPING = {
+const CATEGORY_MAPPING = {
 	Environment: 'Environment',
 	Housing: 'Housing',
 	'Social business': 'Social business',
@@ -19,3 +17,5 @@ export const CATEGORY_MAPPING = {
 	'Social justice': 'Social justice',
 	'Community garden': 'Community garden',
 };
+
+export default CATEGORY_MAPPING;

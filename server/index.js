@@ -34,6 +34,10 @@ async function startServer() {
 					category: row.category,
 					description: row.description,
 					website: row.website,
+					facebook: row.facebook,
+					twitter: row.twitter,
+					instagram: row.instagram,
+					email: row.email,
 				}));
 
 				reply.code(200).send({ result: transformedRows });
