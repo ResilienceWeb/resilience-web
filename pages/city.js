@@ -3,7 +3,6 @@ import { useCallback, useState } from 'react';
 import { Box, Slide, ScaleFade } from '@chakra-ui/react';
 
 import Drawer from '@components/drawer';
-import SisterGraphLink from '@components/sister-graph-link';
 import ModeSwitch from '@components/mode-switch';
 import MainList from '@components/main-list';
 import Footer from '@components/footer';
@@ -50,7 +49,6 @@ export default function City() {
 				<ScaleFade initialScale={0.8} in={isWebMode} unmountOnExit>
 					{isWebMode && (
 						<>
-							<SisterGraphLink />
 							<Box
 								height="100vh"
 								ml="18.75rem"

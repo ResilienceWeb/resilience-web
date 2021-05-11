@@ -1,9 +1,9 @@
-import { memo, useMemo } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { AnimatePresence, motion } from 'framer-motion';
 import VisNetworkReactComponent from 'vis-network-react';
+import { chakra, Flex, Tag, useDisclosure } from '@chakra-ui/react';
 
-import PoweredByVercel from '@components/powered-by-vercel';
+import Dialog from '../main-list/dialog';
 import InfoBox from '@components/info-box';
 import styles from './Network.module.scss';
 
@@ -57,9 +57,6 @@ const options = {
 			bindToWindow: true,
 		},
 	},
-	// manipulation: {
-	// 	enabled: true,
-	// },
 	layout: {
 		improvedLayout: false,
 	},
@@ -67,6 +64,14 @@ const options = {
 };
 
 const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
+	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	useEffect(() => {
+		if (selectedId) {
+			onOpen();
+		}
+	}, [onOpen, selectedId]);
+
 	const events = {
 		select: function (event) {
 			const { nodes, edges } = event;
@@ -90,23 +95,9 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 				data={data}
 				options={options}
 			/>
-			<AnimatePresence>
-				{selectedId && !selectedItem?.isDescriptive && (
-					<motion.div
-						key="infobox"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-					>
-						<InfoBox
-							description={selectedItem.description}
-							title={selectedItem.label}
-							website={selectedItem.website}
-						/>
-					</motion.div>
-				)}
-			</AnimatePresence>
-			{/* <PoweredByVercel /> */}
+			{Boolean(selectedId) && !selectedItem?.isDescriptive && (
+				<Dialog isOpen={isOpen} item={selectedItem} onClose={onClose} />
+			)}
 		</div>
 	);
 };
