@@ -32,7 +32,7 @@ export default function Homepage() {
 					</Heading>
 					<Text
 						color={'gray.500'}
-						fontFamily="Karla"
+						fontFamily="Karla, sans-serif"
 						fontSize="18"
 						maxW={'3xl'}
 					>
@@ -44,7 +44,7 @@ export default function Homepage() {
 					</Text>
 					<Text
 						color={'gray.500'}
-						fontFamily="Karla"
+						fontFamily="Karla, sans-serif"
 						fontWeight="700"
 						fontSize="20"
 						maxW={'3xl'}

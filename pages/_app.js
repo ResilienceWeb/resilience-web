@@ -6,7 +6,7 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider } from 'next-auth/client';
 import '@fontsource/lato';
 import '@fontsource/montserrat';
-import '@fontsource/karla';
+import '@fontsource/karla/400.css';
 import '../styles/globals.css';
 
 const queryClient = new QueryClient();
