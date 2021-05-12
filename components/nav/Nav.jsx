@@ -120,12 +120,13 @@ export default function MainNav() {
 
 const DesktopNav = () => {
 	return (
-		<Stack direction={'row'} spacing={4}>
+		<Stack direction={'row'} spacing={8}>
 			{NAV_ITEMS.map((navItem) => (
 				<Box key={navItem.label}>
 					<Popover trigger={'hover'} placement={'bottom-start'}>
 						<PopoverTrigger>
 							<Link
+								as={NextLink}
 								p={2}
 								href={navItem.href ?? '#'}
 								fontSize={'md'}
