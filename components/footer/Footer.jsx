@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import Image from 'next/image';
 
-export default function SmallWithNavigation() {
+export default function Footer() {
 	return (
 		<Box
 			bg={useColorModeValue('gray.50', 'gray.900')}

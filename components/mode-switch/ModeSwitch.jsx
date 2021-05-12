@@ -5,7 +5,14 @@ import { Label } from '@progress/kendo-react-labels';
 
 const ModeSwitch = ({ handleSwitchChange, checked }) => {
 	return (
-		<chakra.div position="absolute" right="0" padding="0.5rem" zIndex={6}>
+		<chakra.div
+			position="absolute"
+			right="0"
+			padding="0.5rem"
+			zIndex={6}
+			mt="0.8125rem"
+			mr="0.5rem"
+		>
 			<Label editorId="mode-switch">Visual mode &nbsp;</Label>
 			<Switch
 				checked={checked}

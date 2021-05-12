@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import { useCallback, useState } from 'react';
 import { Box, Slide, ScaleFade } from '@chakra-ui/react';
 
+import Layout from '@components/layout';
 import Drawer from '@components/drawer';
 import ModeSwitch from '@components/mode-switch';
 import MainList from '@components/main-list';
@@ -33,41 +34,35 @@ export default function City() {
 	}, []);
 
 	return (
-		<>
-			<div>
-				<Slide direction="left" in={isWebMode} unmountOnExit>
-					{isWebMode && (
-						<Drawer items={data.nodes} selectNode={selectNode} />
-					)}
-				</Slide>
-				{size.width > 768 && (
-					<ModeSwitch
-						checked={isWebMode}
-						handleSwitchChange={handleSwitchChange}
-					/>
+		<div>
+			<Slide direction="left" in={isWebMode} unmountOnExit>
+				{isWebMode && (
+					<Drawer items={data.nodes} selectNode={selectNode} />
 				)}
-				<ScaleFade initialScale={0.8} in={isWebMode} unmountOnExit>
-					{isWebMode && (
-						<>
-							<Box
-								height="100vh"
-								ml="18.75rem"
-								position="relative"
-							>
-								<NoSSRNetwork
-									data={data}
-									selectedId={selectedId}
-									setNetwork={setNetwork}
-									setSelectedId={setSelectedId}
-								/>
-								<Footer />
-							</Box>
-						</>
-					)}
-				</ScaleFade>
+			</Slide>
+			{size.width > 768 && (
+				<ModeSwitch
+					checked={isWebMode}
+					handleSwitchChange={handleSwitchChange}
+				/>
+			)}
+			<ScaleFade initialScale={0.8} in={isWebMode} unmountOnExit>
+				{isWebMode && (
+					<>
+						<Box height="100vh" ml="18.75rem" position="relative">
+							<NoSSRNetwork
+								data={data}
+								selectedId={selectedId}
+								setNetwork={setNetwork}
+								setSelectedId={setSelectedId}
+							/>
+							<Footer />
+						</Box>
+					</>
+				)}
+			</ScaleFade>
 
-				{!isWebMode && <MainList items={data.nodes} />}
-			</div>
-		</>
+			<Layout>{!isWebMode && <MainList items={data.nodes} />}</Layout>
+		</div>
 	);
 }
