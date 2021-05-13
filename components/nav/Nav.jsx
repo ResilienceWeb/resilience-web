@@ -292,6 +292,14 @@ const NAV_ITEMS = [
 		label: 'About us',
 		href: '/about',
 	},
+	{
+		label: 'City web',
+		href: '/city',
+	},
+	{
+		label: 'University web',
+		href: '/university',
+	},
 	// {
 	// 	label: 'Inspiration',
 	// 	children: [

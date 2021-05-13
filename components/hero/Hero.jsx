@@ -2,16 +2,11 @@ import {
 	Container,
 	Stack,
 	Flex,
-	Box,
 	Heading,
 	Text,
 	Button,
-	Image,
 	Icon,
 	Link,
-	IconButton,
-	createIcon,
-	useColorModeValue,
 } from '@chakra-ui/react';
 
 export default function CallToActionWithVideo() {
@@ -20,7 +15,7 @@ export default function CallToActionWithVideo() {
 			<Stack
 				align={'center'}
 				spacing={{ base: 8, md: 10 }}
-				py={{ base: '0', md: '3rem' }}
+				py={{ base: '0', md: '1rem' }}
 				direction={{ base: 'column', md: 'row' }}
 			>
 				<Stack flex={1} spacing={{ base: 5, md: 10 }}>
@@ -90,7 +85,7 @@ export default function CallToActionWithVideo() {
 					position={'relative'}
 					w={'full'}
 				>
-					<Illustration height="24rem" mt={{ base: 0, sm: 8 }} />
+					<Illustration height="20rem" mt={{ base: 0, sm: 8 }} />
 				</Flex>
 			</Stack>
 		</Container>
