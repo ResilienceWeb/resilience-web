@@ -33,7 +33,7 @@
 		"@progress/kendo-theme-bootstrap": "4.34.0",
 		"@progress/kendo-theme-default": "4.37.0",
 		"axios": "0.21.1",
-		"framer-motion": "4.1.15",
+		"framer-motion": "4.1.16",
 		"graphql": "15.5.0",
 		"graphql-request": "3.4.0",
 		"lodash-es": "4.17.21",
@@ -45,7 +45,7 @@
 		"react-icons": "4.2.0",
 		"react-markdown": "6.0.2",
 		"react-query": "3.16.0",
-		"sass": "1.32.12",
+		"sass": "1.32.13",
 		"vis-network-react": "DinerIsmail/vis-network-react"
 	},
 	"devDependencies": {
