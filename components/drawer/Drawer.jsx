@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import Image from 'next/image';
 import { Box, Divider, Flex, Input, Link } from '@chakra-ui/react';
@@ -85,4 +85,4 @@ ConnectionsDrawer.propTypes = {
 	selectNode: PropTypes.func.isRequired,
 };
 
-export default ConnectionsDrawer;
+export default memo(ConnectionsDrawer);

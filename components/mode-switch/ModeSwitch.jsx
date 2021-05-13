@@ -1,4 +1,3 @@
-import React from 'react';
 import { chakra } from '@chakra-ui/react';
 import { Switch } from '@progress/kendo-react-inputs';
 import { Label } from '@progress/kendo-react-labels';

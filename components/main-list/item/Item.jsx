@@ -1,13 +1,11 @@
-import React from 'react';
+import { useCallback } from 'react';
 import { motion, usePresence } from 'framer-motion';
 import { chakra, Flex, Tag, useDisclosure } from '@chakra-ui/react';
-import Dialog from '../dialog';
 
 const transition = { type: 'spring', stiffness: 300, damping: 50, mass: 1 };
 
-const Item = ({ dataItem }) => {
+const Item = ({ dataItem, onOpenDialog }) => {
 	const [isPresent, safeToRemove] = usePresence();
-	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const animations = {
 		layout: true,
@@ -18,11 +16,15 @@ const Item = ({ dataItem }) => {
 		animate: isPresent ? 'in' : 'out',
 		variants: {
 			in: { scaleY: 1, opacity: 1 },
-			out: { scaleY: 0, opacity: 0, zIndex: -1 },
+			out: { scaleY: 0, opacity: 1, zIndex: -1 },
 		},
 		onAnimationComplete: () => !isPresent && safeToRemove(),
 		transition,
 	};
+
+	const openDialog = useCallback(() => {
+		onOpenDialog(dataItem);
+	}, [dataItem, onOpenDialog]);
 
 	return (
 		<>
@@ -37,7 +39,7 @@ const Item = ({ dataItem }) => {
 					backgroundColor="#ffffff"
 					transition="transform 300ms ease-in-out, box-shadow 300ms ease-in-out"
 					_hover={{ boxShadow: 'md' }}
-					onClick={onOpen}
+					onClick={openDialog}
 				>
 					<Flex justifyContent="space-between">
 						<chakra.h2
@@ -53,7 +55,6 @@ const Item = ({ dataItem }) => {
 					</Flex>
 				</chakra.div>
 			</motion.div>
-			<Dialog isOpen={isOpen} item={dataItem} onClose={onClose} />
 		</>
 	);
 };

@@ -1,5 +1,4 @@
 /* eslint-disable react/display-name */
-import React from 'react';
 
 function CommandCell({ cancel, enterEdit, save, editField }) {
 	return (props) => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './ContactInfo.module.scss';
 
 const ContactInfo = () => (
