@@ -1,4 +1,3 @@
-// import Link from 'next/link';
 import {
 	Modal,
 	ModalOverlay,
@@ -22,7 +21,7 @@ const Dialog = ({ isOpen, item, onClose }) => {
 	return (
 		<Modal isCentered isOpen={isOpen} onClose={onClose} size="xl">
 			<ModalOverlay />
-			<ModalContent>
+			<ModalContent opacity="1">
 				<ModalHeader>{item.label}</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
