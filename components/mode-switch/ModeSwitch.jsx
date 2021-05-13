@@ -13,14 +13,15 @@ const ModeSwitch = ({ handleSwitchChange, checked }) => {
 			mt="0.8125rem"
 			mr="0.5rem"
 		>
-			<Label editorId="mode-switch">Visual mode &nbsp;</Label>
+			<Label editorId="mode-switch">Filter by category&nbsp;</Label>
 			<Switch
 				checked={checked}
 				editorId="mode-switch"
 				onChange={handleSwitchChange}
-				onLabel="On"
-				offLabel="Off"
+				onLabel=""
+				offLabel=""
 			/>
+			<Label editorId="mode-switch">&nbsp;Visual web mode</Label>
 		</chakra.div>
 	);
 };
