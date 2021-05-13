@@ -14,7 +14,6 @@ import {
 	PopoverTrigger,
 	PopoverContent,
 	useColorModeValue,
-	useBreakpointValue,
 	useDisclosure,
 } from '@chakra-ui/react';
 import {
@@ -124,24 +123,22 @@ const DesktopNav = () => {
 			{NAV_ITEMS.map((navItem) => (
 				<Box key={navItem.label}>
 					<Popover trigger={'hover'} placement={'bottom-start'}>
-						<PopoverTrigger>
-							<Link
-								as={NextLink}
-								p={2}
-								href={navItem.href ?? '#'}
-								fontSize={'md'}
-								fontWeight={500}
-								color={'gray.600'}
-								_hover={{
-									textDecoration: 'none',
-									color: 'gray.800',
-								}}
-							>
-								{navItem.label}
-							</Link>
-						</PopoverTrigger>
+						<Link
+							as={NextLink}
+							p={2}
+							href={navItem.href ?? '#'}
+							fontSize={'md'}
+							fontWeight={500}
+							color={'gray.600'}
+							_hover={{
+								textDecoration: 'none',
+								color: 'gray.800',
+							}}
+						>
+							{navItem.label}
+						</Link>
 
-						{navItem.children && (
+						{/* {navItem.children && (
 							<PopoverContent
 								border={0}
 								boxShadow={'xl'}
@@ -159,7 +156,7 @@ const DesktopNav = () => {
 									))}
 								</Stack>
 							</PopoverContent>
-						)}
+						)} */}
 					</Popover>
 				</Box>
 			))}
@@ -293,11 +290,11 @@ const NAV_ITEMS = [
 		href: '/about',
 	},
 	{
-		label: 'City web',
+		label: 'City',
 		href: '/city',
 	},
 	{
-		label: 'University web',
+		label: 'University',
 		href: '/university',
 	},
 	// {

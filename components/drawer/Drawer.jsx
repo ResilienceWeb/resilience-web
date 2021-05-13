@@ -18,7 +18,7 @@ const compareFunc = (a, b) => {
 	return 0;
 };
 
-const ConnectionsDrawer = ({ items, selectNode }) => {
+const Drawer = ({ items, selectNode }) => {
 	const [searchTerm, setSearchTerm] = useState('');
 	const handleSearchTermChange = useCallback((event) => {
 		setSearchTerm(event.target.value);
@@ -80,9 +80,9 @@ const ConnectionsDrawer = ({ items, selectNode }) => {
 	);
 };
 
-ConnectionsDrawer.propTypes = {
+Drawer.propTypes = {
 	items: PropTypes.array.isRequired,
 	selectNode: PropTypes.func.isRequired,
 };
 
-export default memo(ConnectionsDrawer);
+export default memo(Drawer);

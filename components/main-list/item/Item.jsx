@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { motion, usePresence } from 'framer-motion';
-import { chakra, Flex, Tag, useDisclosure } from '@chakra-ui/react';
+import { chakra, Flex, Tag } from '@chakra-ui/react';
 
 const transition = { type: 'spring', stiffness: 300, damping: 50, mass: 1 };
 
