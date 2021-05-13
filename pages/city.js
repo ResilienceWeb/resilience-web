@@ -18,7 +18,9 @@ export default function City() {
 	const [selectedId, setSelectedId] = useState();
 	const [network, setNetwork] = useState();
 	const size = useWindowSize();
-	const [isWebMode, setIsWebMode] = useState(size.width < 768);
+	const isMobile = window.matchMedia('only screen and (max-width: 760px)')
+		.matches;
+	const [isWebMode, setIsWebMode] = useState(!isMobile);
 
 	const selectNode = useCallback(
 		(id) => {
@@ -40,7 +42,7 @@ export default function City() {
 					<Drawer items={data.nodes} selectNode={selectNode} />
 				)}
 			</Slide>
-			{size.width > 768 && (
+			{size.width > 760 && (
 				<ModeSwitch
 					checked={isWebMode}
 					handleSwitchChange={handleSwitchChange}
