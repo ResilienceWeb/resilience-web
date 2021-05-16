@@ -81,3 +81,14 @@ model Listing {
 
     @@map(name: "listings")
 }
+
+model EditPermission {
+    id                 Int      @id @default(autoincrement())
+    createdAt          DateTime @default(now()) @map(name: "created_at")
+    updatedAt          DateTime @default(now()) @map(name: "updated_at")
+    userId             Int
+    listingId          Int
+    invitationAccepted Boolean  @default(false)
+
+    @@map(name: "edit_permissions")
+}

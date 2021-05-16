@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Button, Heading, Text } from '@chakra-ui/react';
 import {
 	TreeList,
 	TreeListToolbar,
@@ -14,7 +15,7 @@ import ListingCreationDialog from '@components/admin/listing-creation-dialog';
 
 const editField = 'inEdit';
 
-const EditableList = ({ items, createListing, updateListing }) => {
+const EditableList = ({ items, createListing, isAdmin, updateListing }) => {
 	const [data, setData] = useState(items);
 	const [inEdit, setInEdit] = useState([]);
 	const [isListingCreationOpen, setIsListingCreationOpen] = useState(false);
@@ -42,8 +43,9 @@ const EditableList = ({ items, createListing, updateListing }) => {
 	}, []);
 
 	const openListingCreationDialog = useCallback(() => {
+		setInEdit([]);
 		setIsListingCreationOpen(true);
-	}, []);
+	}, [setInEdit]);
 
 	const closeListingCreationDialog = useCallback(() => {
 		setIsListingCreationOpen(false);
@@ -57,6 +59,8 @@ const EditableList = ({ items, createListing, updateListing }) => {
 		[cancelEdit, updateListing],
 	);
 
+	const handleRemove = useCallback((data) => {}, []);
+
 	const handleAddListing = useCallback(
 		(data) => {
 			createListing(data);
@@ -69,6 +73,20 @@ const EditableList = ({ items, createListing, updateListing }) => {
 
 	return (
 		<>
+			<Heading>Listings</Heading>
+			{isAdmin ? (
+				<Text mb={4} color="gray.600">
+					You are an admin, so you can edit all the listings. With
+					great power comes great responsibility.
+				</Text>
+			) : (
+				<Text mb={4} color="gray.600">
+					The list below only includes groups that you have edit
+					access to. If you think you should be able to edit a group
+					not included below, please get in touch at
+					cambridgeresilienceweb@gmail.com
+				</Text>
+			)}
 			<TreeList
 				style={{ overflow: 'auto' }}
 				data={mapTree(data, null, (item) =>
@@ -134,23 +152,26 @@ const EditableList = ({ items, createListing, updateListing }) => {
 							cancel: cancelEdit,
 							enterEdit: enterEdit,
 							save: handleSave,
+							remove: handleRemove,
 							editField,
 						}),
 						width: 150,
 					},
 				]}
 				toolbar={
-					<TreeListToolbar>
-						<div onClick={cancelEdit}>
-							<button
-								title="Add new"
-								className="k-button k-primary"
+					isAdmin && (
+						<TreeListToolbar>
+							<Button
+								bg="#57b894"
+								colorScheme="#57b894"
 								onClick={openListingCreationDialog}
+								size="sm"
+								_hover={{ bg: '#4a9e7f' }}
 							>
 								Add new
-							</button>
-						</div>
-					</TreeListToolbar>
+							</Button>
+						</TreeListToolbar>
+					)
 				}
 			/>
 			{isListingCreationOpen && (

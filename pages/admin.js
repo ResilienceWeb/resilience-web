@@ -1,10 +1,17 @@
 import { signIn, useSession } from 'next-auth/client';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { useQuery, useMutation } from 'react-query';
 
 import LayoutContainer from '@components/admin/layout-container';
 import EditableList from '@components/admin/editable-list';
 import LoadingSpinner from '@components/loading-spinner';
+
+async function fetchPermissionsRequest() {
+	const response = await fetch('/api/permissions');
+	const data = await response.json();
+	const { editPermissions } = data;
+	return editPermissions;
+}
 
 async function fetchListingsRequest() {
 	const response = await fetch('/api/listings');
@@ -57,9 +64,14 @@ function useCreateListing(successCallback) {
 
 export default function Admin() {
 	const [session, loadingSession] = useSession();
-	const { data: listings, isLoading, refetch: refetchListings } = useQuery(
-		'listings',
-		fetchListingsRequest,
+	const {
+		data: listings,
+		isLoading: isLoadingListings,
+		refetch: refetchListings,
+	} = useQuery('listings', fetchListingsRequest);
+	const { data: permissions, isLoading: isLoadingPermissions } = useQuery(
+		'permissions',
+		fetchPermissionsRequest,
 	);
 
 	const creationSuccessCallback = useCallback(() => refetchListings(), [
@@ -74,7 +86,14 @@ export default function Admin() {
 		}
 	}, [session, loadingSession]);
 
-	if (loadingSession || isLoading) {
+	const allowedListings = useMemo(() => {
+		if (!session) return null;
+		if (session.user.admin) return listings;
+
+		return listings.filter((listing) => permissions.includes(listing.id));
+	}, [listings, permissions, session]);
+
+	if (loadingSession || isLoadingListings || isLoadingPermissions) {
 		return (
 			<LayoutContainer>
 				<LoadingSpinner />
@@ -88,7 +107,8 @@ export default function Admin() {
 		<LayoutContainer>
 			<EditableList
 				createListing={createListing}
-				items={listings}
+				isAdmin={session.user.admin}
+				items={allowedListings}
 				updateListing={updateListing}
 			/>
 		</LayoutContainer>

@@ -22,7 +22,7 @@ export default async function (req, res) {
 	} catch (e) {
 		res.status(500);
 		res.json({
-			error: `Unable to create/update listing - ${e}`,
+			error: `Unable to update listing - ${e}`,
 		});
 	}
 }

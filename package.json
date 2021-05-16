@@ -19,6 +19,7 @@
 		"@progress/kendo-data-query": "1.5.5",
 		"@progress/kendo-drawing": "1.10.0",
 		"@progress/kendo-licensing": "1.1.4",
+		"@progress/kendo-react-buttons": "4.6.0",
 		"@progress/kendo-react-common": "4.5.0",
 		"@progress/kendo-react-data-tools": "4.5.0",
 		"@progress/kendo-react-dateinputs": "4.5.0",

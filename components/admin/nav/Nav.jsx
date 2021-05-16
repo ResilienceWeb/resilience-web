@@ -18,15 +18,7 @@ import {
 	Stack,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, SettingsIcon } from '@chakra-ui/icons';
-import { useCallback } from 'react';
-
-const Links = [
-	{
-		label: 'Listings',
-		href: '/admin',
-	},
-	{ label: 'Permissions', href: '/admin/permissions' },
-];
+import { useCallback, useMemo } from 'react';
 
 const NavLink = ({ children, href }) => (
 	<Link
@@ -45,8 +37,23 @@ const NavLink = ({ children, href }) => (
 );
 
 const Nav = () => {
-	const [session] = useSession();
+	const [session, loadingSession] = useSession();
 	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	const Links = useMemo(() => {
+		const links = [
+			{
+				label: 'Listings',
+				href: '/admin',
+			},
+		];
+
+		if (session?.user.admin) {
+			links.push({ label: 'Permissions', href: '/admin/permissions' });
+		}
+
+		return links;
+	}, [session]);
 
 	const handleSignOut = useCallback(() => signOut(), []);
 
@@ -111,7 +118,9 @@ const Nav = () => {
 				<Box pb={4}>
 					<Stack as={'nav'} spacing={4}>
 						{Links.map((link) => (
-							<NavLink key={link}>{link}</NavLink>
+							<NavLink key={link.label} href={link.href}>
+								{link.label}
+							</NavLink>
 						))}
 					</Stack>
 				</Box>
