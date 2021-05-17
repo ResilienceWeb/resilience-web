@@ -132,6 +132,7 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 							colorScheme="#57b894"
 							disabled={!formRenderProps.allowSubmit}
 							size="md"
+							type={'submit'}
 							_hover={{ bg: '#4a9e7f' }}
 						>
 							Submit

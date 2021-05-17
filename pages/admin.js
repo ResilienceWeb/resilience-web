@@ -1,5 +1,5 @@
 import { signIn, useSession } from 'next-auth/client';
-import { useEffect, useCallback, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 import LayoutContainer from '@components/admin/layout-container';
@@ -21,7 +21,7 @@ async function fetchListingsRequest() {
 }
 
 async function updateListingRequest(listingData) {
-	const response = await fetch('/api/listings/edit', {
+	const response = await fetch(`/api/listings/${listingData.id}`, {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json',
@@ -31,6 +31,15 @@ async function updateListingRequest(listingData) {
 		}),
 	});
 
+	const data = await response.json();
+	const { listing } = data;
+	return listing;
+}
+
+async function deleteListingRequest({ id }) {
+	const response = await fetch(`/api/listings/${id}`, {
+		method: 'DELETE',
+	});
 	const data = await response.json();
 	const { listing } = data;
 	return listing;
@@ -51,6 +60,33 @@ function useUpdateListing() {
 			]);
 			queryClient.setQueryData(['listings', newListing.id], newListing);
 			return { previousListing, newListing };
+		},
+		onError: (err, newListing, context) => {
+			queryClient.setQueryData(
+				['listings', context.newListing.id],
+				context.previousListing,
+			);
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries('listings');
+		},
+	});
+}
+
+function useDeleteListing() {
+	const queryClient = useQueryClient();
+
+	return useMutation(deleteListingRequest, {
+		onSuccess: (data) => {
+			queryClient.setQueryData(['listings', { id: data.id }], data);
+		},
+		onMutate: async (deletedListing) => {
+			await queryClient.cancelQueries('listings');
+			const previousListings = queryClient.getQueryData('listings');
+			queryClient.setQueryData('listings', (old) =>
+				old.filter((l) => l.id !== deletedListing.id),
+			);
+			return { previousListings };
 		},
 		onError: (err, newListing, context) => {
 			queryClient.setQueryData(
@@ -113,6 +149,7 @@ export default function Admin() {
 
 	const { mutate: updateListing } = useUpdateListing();
 	const { mutate: createListing } = useCreateListing();
+	const { mutate: deleteListing } = useDeleteListing();
 
 	useEffect(() => {
 		if (!session && !loadingSession) {
@@ -146,6 +183,7 @@ export default function Admin() {
 		<LayoutContainer>
 			<EditableList
 				createListing={createListing}
+				deleteListing={deleteListing}
 				isAdmin={session.user.admin}
 				items={allowedListings}
 				updateListing={updateListing}

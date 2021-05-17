@@ -11,7 +11,13 @@ import ListingCreationDialog from '@components/admin/listing-creation-dialog';
 
 const editField = 'inEdit';
 
-const EditableList = ({ items, createListing, isAdmin, updateListing }) => {
+const EditableList = ({
+	createListing,
+	deleteListing,
+	isAdmin,
+	items,
+	updateListing,
+}) => {
 	const [data, setData] = useState(items);
 	const [itemInEdit, setItemInEdit] = useState();
 	const [isListingCreationOpen, setIsListingCreationOpen] = useState(false);
@@ -34,10 +40,16 @@ const EditableList = ({ items, createListing, isAdmin, updateListing }) => {
 		setItemInEdit(null);
 	}, []);
 
-	const handleRemove = useCallback((data) => {}, []);
+	const handleRemove = useCallback(
+		(data) => {
+			deleteListing({ id: data.id });
+		},
+		[deleteListing],
+	);
 
 	const handleSubmit = useCallback(
 		(data) => {
+			console.log(data);
 			if (data.id) {
 				updateListing(data);
 			} else {
@@ -67,7 +79,7 @@ const EditableList = ({ items, createListing, isAdmin, updateListing }) => {
 				</Text>
 			)}
 			<TreeList
-				style={{ overflow: 'auto' }}
+				style={{ overflow: 'auto', marginBottom: '2rem' }}
 				data={mapTree(data, null, (item) => extendDataItem(item, null))}
 				editField={editField}
 				columns={[

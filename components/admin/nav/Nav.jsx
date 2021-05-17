@@ -82,7 +82,7 @@ const Nav = () => {
 					</Box>
 					<HStack
 						as={'nav'}
-						spacing={4}
+						spacing={8}
 						display={{ base: 'none', md: 'flex' }}
 					>
 						{Links.map((link) => (
