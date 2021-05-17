@@ -1,12 +1,13 @@
 import Head from 'next/head';
 import PropTypes from 'prop-types';
-import '@progress/kendo-theme-default/dist/all.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'next-auth/client';
 import '@fontsource/montserrat';
 import '@fontsource/karla/400.css';
 import '../styles/globals.css';
+import '../styles/styles.global.scss';
 
 const queryClient = new QueryClient();
 
@@ -71,6 +72,7 @@ function App({ Component, pageProps }) {
 					<ChakraProvider>
 						<QueryClientProvider client={queryClient}>
 							<Component {...pageProps} />
+							<ReactQueryDevtools initialIsOpen={false} />
 						</QueryClientProvider>
 					</ChakraProvider>
 				</Provider>

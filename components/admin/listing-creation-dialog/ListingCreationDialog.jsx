@@ -1,13 +1,5 @@
 import { useRef } from 'react';
-import {
-	chakra,
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalCloseButton,
-} from '@chakra-ui/react';
+import { chakra, Button } from '@chakra-ui/react';
 import {
 	FieldWrapper,
 	Form,
@@ -17,7 +9,7 @@ import {
 import { Label, Hint, Error } from '@progress/kendo-react-labels';
 import { Input, TextArea } from '@progress/kendo-react-inputs';
 import { DropDownList } from '@progress/kendo-react-dropdowns';
-import { Dialog, DialogActionsBar } from '@progress/kendo-react-dialogs';
+import { Dialog } from '@progress/kendo-react-dialogs';
 import CATEGORY_MAPPING from '../../../data/enums.js';
 
 const emailRegex = new RegExp(/\S+@\S+\.\S+/);
@@ -33,28 +25,39 @@ const EmailInput = (fieldRenderProps) => {
 	);
 };
 
-// export const categories = [
-// 	'X-Small',
-// 	'Small',
-// 	'Medium',
-// 	'Large',
-// 	'X-Large',
-// 	'2X-Large',
-// ];
-
-const ListingCreationDialog = ({ onClose, onSubmit }) => {
+const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 	return (
 		<Dialog
-			title="Create new listing"
+			autoFocus
+			title={itemInEdit ? 'Edit listing' : 'Create new listing'}
 			onClose={onClose}
 			width={500}
-			height={550}
+			height={650}
 			style={{ zIndex: 100 }}
 		>
 			<Form
+				initialValues={{
+					id: itemInEdit?.id || null,
+					title: itemInEdit?.title || '',
+					description: itemInEdit?.description || '',
+					category: itemInEdit?.category,
+					email: itemInEdit?.email || '',
+					website: itemInEdit?.website || '',
+					facebook: itemInEdit?.facebook || '',
+					twitter: itemInEdit?.twitter || '',
+					instagram: itemInEdit?.instagram || '',
+				}}
 				onSubmit={onSubmit}
 				render={(formRenderProps) => (
-					<FormElement style={{ maxWidth: 650 }}>
+					<FormElement
+						style={{
+							maxWidth: 650,
+							height: '100%',
+							display: 'flex',
+							flexDirection: 'column',
+							justifyContent: 'space-between',
+						}}
+					>
 						<fieldset className={'k-form-fieldset'}>
 							<chakra.div mb={3}>
 								<Field
@@ -69,6 +72,7 @@ const ListingCreationDialog = ({ onClose, onSubmit }) => {
 									name={'description'}
 									component={TextArea}
 									placeholder="Description"
+									style={{ maxHeight: '200px' }}
 								/>
 							</chakra.div>
 
@@ -123,42 +127,19 @@ const ListingCreationDialog = ({ onClose, onSubmit }) => {
 								/>
 							</chakra.div>
 						</fieldset>
-						<div className="k-form-buttons">
-							<button
-								type={'submit'}
-								className="k-button"
-								disabled={!formRenderProps.allowSubmit}
-							>
-								Submit
-							</button>
-						</div>
+						<Button
+							bg="#57b894"
+							colorScheme="#57b894"
+							disabled={!formRenderProps.allowSubmit}
+							size="md"
+							_hover={{ bg: '#4a9e7f' }}
+						>
+							Submit
+						</Button>
 					</FormElement>
 				)}
 			/>
 		</Dialog>
-		// <Modal isCentered isOpen={isOpen} onClose={onClose} size="xl">
-		// 	<ModalOverlay />
-		// 	<ModalContent opacity="1">
-		// 		<ModalHeader>Create new listing</ModalHeader>
-		// 		<ModalCloseButton />
-		// 		<ModalBody>
-
-		// 			{/* <Tag mb={4} backgroundColor={item.color}>
-		// 				{item.category}
-		// 			</Tag>
-		// 			<br />
-		// 			<chakra.a
-		// 				color="blue.400"
-		// 				href={item.website}
-		// 				rel="noreferrer"
-		// 				target="_blank"
-		// 			>
-		// 				{item.website} <ExternalLinkIcon ml={1} />
-		// 			</chakra.a>
-		// 			<Box mt={4}>{item.description}</Box> */}
-		// 		</ModalBody>
-		// 	</ModalContent>
-		// </Modal>
 	);
 };
 

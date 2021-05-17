@@ -1,6 +1,6 @@
 import { signIn, useSession } from 'next-auth/client';
 import { useEffect, useCallback, useMemo } from 'react';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 import LayoutContainer from '@components/admin/layout-container';
 import EditableList from '@components/admin/editable-list';
@@ -37,7 +37,31 @@ async function updateListingRequest(listingData) {
 }
 
 function useUpdateListing() {
-	return useMutation(updateListingRequest);
+	const queryClient = useQueryClient();
+
+	return useMutation(updateListingRequest, {
+		onSuccess: (data) => {
+			queryClient.setQueryData(['listings', { id: data.id }], data);
+		},
+		onMutate: async (newListing) => {
+			await queryClient.cancelQueries(['listings', newListing.id]);
+			const previousListing = queryClient.getQueryData([
+				'listings',
+				newListing.id,
+			]);
+			queryClient.setQueryData(['listings', newListing.id], newListing);
+			return { previousListing, newListing };
+		},
+		onError: (err, newListing, context) => {
+			queryClient.setQueryData(
+				['listings', context.newListing.id],
+				context.previousListing,
+			);
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries('listings');
+		},
+	});
 }
 
 async function createListingRequest(listingData) {
@@ -56,9 +80,22 @@ async function createListingRequest(listingData) {
 	return listing;
 }
 
-function useCreateListing(successCallback) {
+function useCreateListing() {
+	const queryClient = useQueryClient();
+
 	return useMutation(createListingRequest, {
-		onSuccess: async () => successCallback(),
+		onMutate: async (newListing) => {
+			await queryClient.cancelQueries('listings');
+			const previousListings = queryClient.getQueryData('listings');
+			queryClient.setQueryData('listings', (old) => [...old, newListing]);
+			return { previousListings };
+		},
+		onError: (err, newListing, context) => {
+			queryClient.setQueryData('listings', context.previousListings);
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries('listings');
+		},
 	});
 }
 
@@ -67,18 +104,15 @@ export default function Admin() {
 	const {
 		data: listings,
 		isLoading: isLoadingListings,
-		refetch: refetchListings,
+		isError: isListingsError,
 	} = useQuery('listings', fetchListingsRequest);
 	const { data: permissions, isLoading: isLoadingPermissions } = useQuery(
 		'permissions',
 		fetchPermissionsRequest,
 	);
 
-	const creationSuccessCallback = useCallback(() => refetchListings(), [
-		refetchListings,
-	]);
 	const { mutate: updateListing } = useUpdateListing();
-	const { mutate: createListing } = useCreateListing(creationSuccessCallback);
+	const { mutate: createListing } = useCreateListing();
 
 	useEffect(() => {
 		if (!session && !loadingSession) {
@@ -99,6 +133,11 @@ export default function Admin() {
 				<LoadingSpinner />
 			</LayoutContainer>
 		);
+	}
+
+	if (isListingsError) {
+		// eslint-disable-next-line no-console
+		console.error('Error fetching listings');
 	}
 
 	if (!session) return null;
