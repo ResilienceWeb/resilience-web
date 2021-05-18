@@ -66,18 +66,20 @@ model VerificationRequest {
 }
 
 model Listing {
-    id          Int      @id @default(autoincrement())
-    createdAt   DateTime @default(now()) @map(name: "created_at")
-    updatedAt   DateTime @default(now()) @map(name: "updated_at")
-    title       String
-    category    String
-    website     String?
-    description String?
-    facebook    String?
-    twitter     String?
-    instagram   String?
-    email       String?
-    notes       String?
+    id           Int      @id @default(autoincrement())
+    createdAt    DateTime @default(now()) @map(name: "created_at")
+    updatedAt    DateTime @default(now()) @map(name: "updated_at")
+    title        String
+    category     String
+    website      String?
+    description  String?
+    facebook     String?
+    twitter      String?
+    instagram    String?
+    email        String?
+    notes        String?
+    generatePage Boolean  @default(false) @map(name: "generate_page")
+    slug         String?
 
     @@map(name: "listings")
 }
@@ -88,7 +90,7 @@ model EditPermission {
     updatedAt          DateTime @default(now()) @map(name: "updated_at")
     userId             Int
     listingId          Int
-    invitationAccepted Boolean  @default(false)
+    invitationAccepted Boolean  @default(false) @map(name: "invitation_accepted")
 
     @@map(name: "edit_permissions")
 }

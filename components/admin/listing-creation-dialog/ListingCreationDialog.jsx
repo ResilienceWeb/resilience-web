@@ -40,7 +40,7 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 					id: itemInEdit?.id || null,
 					title: itemInEdit?.title || '',
 					description: itemInEdit?.description || '',
-					category: itemInEdit?.category,
+					category: itemInEdit?.category || '',
 					email: itemInEdit?.email || '',
 					website: itemInEdit?.website || '',
 					facebook: itemInEdit?.facebook || '',
