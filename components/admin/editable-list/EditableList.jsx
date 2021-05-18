@@ -1,13 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { Button, Heading, Text } from '@chakra-ui/react';
 import {
 	TreeList,
 	TreeListToolbar,
 	mapTree,
+	orderBy,
 	extendDataItem,
 } from '@progress/kendo-react-treelist';
 import CommandCell from './command-cell';
 import ListingCreationDialog from '@components/admin/listing-creation-dialog';
+import styles from './EditableList.module.scss';
 
 const editField = 'inEdit';
 
@@ -19,12 +21,20 @@ const EditableList = ({
 	updateListing,
 }) => {
 	const [data, setData] = useState(items);
+	const [sort, setSort] = useState([{ field: 'title', dir: 'asc' }]);
 	const [itemInEdit, setItemInEdit] = useState();
 	const [isListingCreationOpen, setIsListingCreationOpen] = useState(false);
 
 	useEffect(() => {
-		setData(items);
-	}, [items]);
+		if (!data) {
+			setData(items);
+		}
+	}, [items, data]);
+
+	useEffect(() => {
+		setData(orderBy(data, sort));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [sort]);
 
 	const enterEdit = useCallback((dataItem) => {
 		setItemInEdit(extendDataItem(dataItem));
@@ -59,6 +69,10 @@ const EditableList = ({
 		[closeListingCreationDialog, createListing, updateListing],
 	);
 
+	const handleSortChange = useCallback((event) => {
+		setSort(event.sort);
+	}, []);
+
 	if (!data) return null;
 
 	return (
@@ -78,49 +92,63 @@ const EditableList = ({
 				</Text>
 			)}
 			<TreeList
-				style={{ overflow: 'auto', marginBottom: '2rem' }}
-				data={mapTree(data, null, (item) => extendDataItem(item, null))}
+				className={styles.treelist}
+				style={{
+					overflow: 'auto',
+					marginBottom: '2rem',
+					width: '100%',
+				}}
+				data={data}
 				editField={editField}
+				sort={sort}
+				sortable={{ allowUnsort: false, mode: 'single' }}
+				onSortChange={handleSortChange}
 				columns={[
 					{
 						field: 'title',
 						title: 'Title',
-						width: 280,
+						width: '10%',
 					},
 					{
 						field: 'category',
 						title: 'Category',
-						width: 160,
+						width: '10%',
 					},
 					{
 						field: 'website',
 						title: 'Website',
-						width: 210,
+						width: '10%',
+						sortable: false,
 					},
 					{
 						field: 'email',
 						title: 'Email',
-						width: 100,
+						width: '10%',
+						sortable: false,
 					},
 					{
 						field: 'description',
 						title: 'Description',
-						width: 400,
+						width: '20%',
+						sortable: false,
 					},
 					{
 						field: 'facebook',
 						title: 'Facebook',
-						width: 100,
+						width: '10%',
+						sortable: false,
 					},
 					{
 						field: 'instagram',
 						title: 'Instagram',
-						width: 100,
+						width: '10%',
+						sortable: false,
 					},
 					{
 						field: 'twitter',
 						title: 'Twitter',
-						width: 100,
+						width: '10%',
+						sortable: false,
 					},
 					{
 						cell: CommandCell({
@@ -128,7 +156,7 @@ const EditableList = ({
 							remove: handleRemove,
 							editField,
 						}),
-						width: 150,
+						width: '10%',
 					},
 				]}
 				toolbar={
