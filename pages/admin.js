@@ -158,11 +158,11 @@ export default function Admin() {
 	}, [session, loadingSession]);
 
 	const allowedListings = useMemo(() => {
-		if (!session) return null;
+		if (!session || isLoadingPermissions) return null;
 		if (session.user.admin) return listings;
 
 		return listings.filter((listing) => permissions.includes(listing.id));
-	}, [listings, permissions, session]);
+	}, [listings, permissions, session, isLoadingPermissions]);
 
 	if (loadingSession || isLoadingListings || isLoadingPermissions) {
 		return (
@@ -171,6 +171,8 @@ export default function Admin() {
 			</LayoutContainer>
 		);
 	}
+
+	console.log({ listings, allowedListings });
 
 	if (isListingsError) {
 		// eslint-disable-next-line no-console

@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button, Heading, Text } from '@chakra-ui/react';
 import {
 	TreeList,
 	TreeListToolbar,
-	mapTree,
 	orderBy,
 	extendDataItem,
 } from '@progress/kendo-react-treelist';
@@ -27,6 +26,7 @@ const EditableList = ({
 
 	useEffect(() => {
 		if (!data) {
+			console.log('setting data', items);
 			setData(items);
 		}
 	}, [items, data]);
