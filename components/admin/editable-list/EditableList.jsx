@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, memo } from 'react';
 import { Button, Heading, Text } from '@chakra-ui/react';
 import {
 	TreeList,
@@ -25,11 +25,8 @@ const EditableList = ({
 	const [isListingCreationOpen, setIsListingCreationOpen] = useState(false);
 
 	useEffect(() => {
-		if (!data) {
-			console.log('setting data', items);
-			setData(items);
-		}
-	}, [items, data]);
+		setData(items);
+	}, [items]);
 
 	useEffect(() => {
 		setData(orderBy(data, sort));
@@ -186,4 +183,4 @@ const EditableList = ({
 	);
 };
 
-export default EditableList;
+export default memo(EditableList);
