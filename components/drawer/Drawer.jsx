@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useCallback, useMemo, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import Image from 'next/image';

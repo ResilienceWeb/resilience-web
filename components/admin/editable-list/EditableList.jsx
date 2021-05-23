@@ -8,6 +8,7 @@ import {
 	filterBy,
 	extendDataItem,
 } from '@progress/kendo-react-treelist';
+import { Dialog, DialogActionsBar } from '@progress/kendo-react-dialogs';
 import CommandCell from './command-cell';
 import ListingCreationDialog from '@components/admin/listing-creation-dialog';
 import styles from './EditableList.module.scss';
@@ -26,6 +27,10 @@ const EditableList = ({
 	const [filter, setFilter] = useState([]);
 	const [itemInEdit, setItemInEdit] = useState();
 	const [isListingCreationOpen, setIsListingCreationOpen] = useState(false);
+	const [
+		isRemoteUpdateConfirmationOpen,
+		setIsRemoteUpdateConfirmationOpen,
+	] = useState(false);
 
 	useEffect(() => {
 		setData(items);
@@ -56,11 +61,18 @@ const EditableList = ({
 		if (process.env.NODE_ENV === 'development') {
 			// eslint-disable-next-line no-console
 			console.error(
-				'Oups, you tried to update the remote data during development - please only do that with production data',
+				'Oops, you tried to update the remote data during development - please only do that with production data',
 			);
 		} else {
 			await fetch('/api/listings/updateRemote');
 		}
+	}, []);
+
+	const openRemoteUpdateConfirmationDialog = useCallback(() => {
+		setIsRemoteUpdateConfirmationOpen(true);
+	}, []);
+	const closeRemoteUpdateConfirmationDialog = useCallback(() => {
+		setIsRemoteUpdateConfirmationOpen(false);
 	}, []);
 
 	const handleRemove = useCallback(
@@ -192,7 +204,7 @@ const EditableList = ({
 									Add new
 								</Button>
 								<Button
-									onClick={updateRemoteListingData}
+									onClick={openRemoteUpdateConfirmationDialog}
 									size="sm"
 									title="Update the data used by the website for the listings"
 								>
@@ -209,6 +221,40 @@ const EditableList = ({
 					onClose={closeListingCreationDialog}
 					onSubmit={handleSubmit}
 				/>
+			)}
+			{isRemoteUpdateConfirmationOpen && (
+				<Dialog
+					title={'Please confirm'}
+					onClose={closeRemoteUpdateConfirmationDialog}
+					width={500}
+					height={300}
+				>
+					<p
+						style={{
+							margin: '25px',
+							textAlign: 'center',
+						}}
+					>
+						This will update the data used by the website to display
+						the listings, so that the changes you just made will be
+						reflected in the app. If you did not make any changes,
+						you can just close the dialog or click Cancel.
+					</p>
+					<DialogActionsBar>
+						<button
+							className="k-button"
+							onClick={closeRemoteUpdateConfirmationDialog}
+						>
+							Cancel
+						</button>
+						<button
+							className="k-button"
+							onClick={updateRemoteListingData}
+						>
+							Yes, do it
+						</button>
+					</DialogActionsBar>
+				</Dialog>
 			)}
 		</>
 	);

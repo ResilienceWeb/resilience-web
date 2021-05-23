@@ -37,7 +37,7 @@ const NavLink = ({ children, href }) => (
 );
 
 const Nav = () => {
-	const [session, loadingSession] = useSession();
+	const [session] = useSession();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const Links = useMemo(() => {
