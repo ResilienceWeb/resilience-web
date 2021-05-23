@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, memo } from 'react';
-import { Button, Heading, Text } from '@chakra-ui/react';
+import { Button, Heading, Text, Flex } from '@chakra-ui/react';
 import {
 	TreeList,
 	TreeListToolbar,
@@ -45,6 +45,10 @@ const EditableList = ({
 	const closeListingCreationDialog = useCallback(() => {
 		setIsListingCreationOpen(false);
 		setItemInEdit(null);
+	}, []);
+
+	const updateRemoteListingData = useCallback(async () => {
+		await fetch('/api/listings/updateRemote');
 	}, []);
 
 	const handleRemove = useCallback(
@@ -159,15 +163,24 @@ const EditableList = ({
 				toolbar={
 					isAdmin && (
 						<TreeListToolbar>
-							<Button
-								bg="#57b894"
-								colorScheme="#57b894"
-								onClick={openListingCreationDialog}
-								size="sm"
-								_hover={{ bg: '#4a9e7f' }}
-							>
-								Add new
-							</Button>
+							<Flex justifyContent="space-between" width="100%">
+								<Button
+									bg="#57b894"
+									colorScheme="#57b894"
+									onClick={openListingCreationDialog}
+									size="sm"
+									_hover={{ bg: '#4a9e7f' }}
+								>
+									Add new
+								</Button>
+								<Button
+									onClick={updateRemoteListingData}
+									size="sm"
+									title="Update the data used by the website for the listings"
+								>
+									Update data for listings
+								</Button>
+							</Flex>
 						</TreeListToolbar>
 					)
 				}

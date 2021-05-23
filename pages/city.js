@@ -1,23 +1,21 @@
 import dynamic from 'next/dynamic';
 import { useCallback, useState } from 'react';
 import { Box, Slide, ScaleFade } from '@chakra-ui/react';
+import { GraphQLClient } from 'graphql-request';
 
 import Layout from '@components/layout';
 import Drawer from '@components/drawer';
 import ModeSwitch from '@components/mode-switch';
 import MainList from '@components/main-list';
 import Footer from '@components/footer';
-import useWindowSize from '../hooks/useWindowSize';
-import data from '../data/data.js';
 
 const NoSSRNetwork = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
-export default function City() {
+const City = ({ data }) => {
 	const [selectedId, setSelectedId] = useState();
 	const [network, setNetwork] = useState();
-	const size = useWindowSize();
 	const isMobile = window.matchMedia('only screen and (max-width: 760px)')
 		.matches;
 	const [isWebMode, setIsWebMode] = useState(!isMobile);
@@ -42,7 +40,7 @@ export default function City() {
 					<Drawer items={data.nodes} selectNode={selectNode} />
 				)}
 			</Slide>
-			{size.width > 760 && (
+			{!isMobile && (
 				<ModeSwitch
 					checked={isWebMode}
 					handleSwitchChange={handleSwitchChange}
@@ -67,4 +65,25 @@ export default function City() {
 			<Layout>{!isWebMode && <MainList items={data.nodes} />}</Layout>
 		</div>
 	);
+};
+
+export async function getStaticProps() {
+	const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL);
+
+	const response = await graphcms.request(`
+	{
+		listingGroup(where: {identifier: "cambridge-city"}) {
+			data
+		}
+	}
+	`);
+
+	return {
+		props: {
+			data: response.listingGroup.data,
+		},
+		revalidate: 60,
+	};
 }
+
+export default City;

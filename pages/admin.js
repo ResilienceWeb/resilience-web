@@ -172,8 +172,6 @@ export default function Admin() {
 		);
 	}
 
-	console.log({ listings, allowedListings });
-
 	if (isListingsError) {
 		// eslint-disable-next-line no-console
 		console.error('Error fetching listings');

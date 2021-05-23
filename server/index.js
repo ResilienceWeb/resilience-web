@@ -28,9 +28,7 @@ async function startServer() {
 				const rows = await sheet.getRows();
 
 				const transformedRows = rows.map((row) => ({
-					rowNumber: row._rowNumber,
-					id: row.id,
-					name: row.organization,
+					title: row.organization,
 					category: row.category,
 					description: row.description,
 					website: row.website,
