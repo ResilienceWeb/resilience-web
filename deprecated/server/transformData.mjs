@@ -129,24 +129,24 @@ const transform = () => {
 	}
 
 	const stringData = JSON.stringify(transformedData);
-	fs.writeFile(
-		'../data/data.js',
-		`const data = ${stringData}; export default data;`,
-		(err) => {
-			if (!err) {
-				console.log('DONE');
-			} else {
-				console.error(err);
-			}
-		},
-	);
+	// fs.writeFile(
+	// 	'../data/data.js',
+	// 	`const data = ${stringData}; export default data;`,
+	// 	(err) => {
+	// 		if (!err) {
+	// 			console.log('DONE');
+	// 		} else {
+	// 			console.error(err);
+	// 		}
+	// 	},
+	// );
 
-	fs.unlink(IMPORTED_DATA_PATH, (err) => {
-		if (err) {
-			throw err;
-		}
-		console.log('Temporary file deleted.');
-	});
+	// fs.unlink(IMPORTED_DATA_PATH, (err) => {
+	// 	if (err) {
+	// 		throw err;
+	// 	}
+	// 	console.log('Temporary file deleted.');
+	// });
 };
 
 const startsWithCapitalLetter = (word) =>

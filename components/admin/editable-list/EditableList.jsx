@@ -53,7 +53,14 @@ const EditableList = ({
 	}, []);
 
 	const updateRemoteListingData = useCallback(async () => {
-		await fetch('/api/listings/updateRemote');
+		if (process.env.NODE_ENV === 'development') {
+			// eslint-disable-next-line no-console
+			console.error(
+				'Oups, you tried to update the remote data during development - please only do that with production data',
+			);
+		} else {
+			await fetch('/api/listings/updateRemote');
+		}
 	}, []);
 
 	const handleRemove = useCallback(
