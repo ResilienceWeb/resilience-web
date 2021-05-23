@@ -93,9 +93,11 @@ const Nav = () => {
 					</HStack>
 				</HStack>
 				<Flex alignItems={'center'}>
-					<Text fontSize="14px" color="gray.600">
-						Signed in as {session?.user.email}
-					</Text>
+					{session?.user.email && (
+						<Text fontSize="14px" color="gray.600">
+							Signed in as {session?.user.email}
+						</Text>
+					)}
 					<Menu>
 						<MenuButton
 							as={Button}

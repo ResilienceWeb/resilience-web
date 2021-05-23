@@ -13,8 +13,10 @@ import { Dialog } from '@progress/kendo-react-dialogs';
 import CATEGORY_MAPPING from '../../../data/enums.js';
 
 const emailRegex = new RegExp(/\S+@\S+\.\S+/);
-const emailValidator = (value) =>
-	emailRegex.test(value) ? '' : 'Please enter a valid email.';
+const emailValidator = (value) => {
+	if (value === '') return false;
+	return emailRegex.test(value) ? '' : 'Please enter a valid email.';
+};
 const EmailInput = (fieldRenderProps) => {
 	const { validationMessage, visited, ...others } = fieldRenderProps;
 	return (

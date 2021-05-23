@@ -3,7 +3,9 @@ import { Button, Heading, Text, Flex } from '@chakra-ui/react';
 import {
 	TreeList,
 	TreeListToolbar,
+	TreeListTextFilter,
 	orderBy,
+	filterBy,
 	extendDataItem,
 } from '@progress/kendo-react-treelist';
 import CommandCell from './command-cell';
@@ -21,6 +23,7 @@ const EditableList = ({
 }) => {
 	const [data, setData] = useState(items);
 	const [sort, setSort] = useState([{ field: 'title', dir: 'asc' }]);
+	const [filter, setFilter] = useState([]);
 	const [itemInEdit, setItemInEdit] = useState();
 	const [isListingCreationOpen, setIsListingCreationOpen] = useState(false);
 
@@ -29,9 +32,11 @@ const EditableList = ({
 	}, [items]);
 
 	useEffect(() => {
-		setData(orderBy(data, sort));
+		const filtered = filterBy(items, filter);
+		const sorted = orderBy(filtered, sort);
+		setData(sorted);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [sort]);
+	}, [sort, filter]);
 
 	const enterEdit = useCallback((dataItem) => {
 		setItemInEdit(extendDataItem(dataItem));
@@ -74,6 +79,10 @@ const EditableList = ({
 		setSort(event.sort);
 	}, []);
 
+	const handleFilterChange = useCallback((event) => {
+		setFilter(event.filter);
+	}, []);
+
 	if (!data) return null;
 
 	return (
@@ -101,14 +110,16 @@ const EditableList = ({
 				}}
 				data={data}
 				editField={editField}
-				sort={sort}
+				filter={filter}
+				onFilterChange={handleFilterChange}
 				sortable={{ allowUnsort: false, mode: 'single' }}
 				onSortChange={handleSortChange}
 				columns={[
 					{
 						field: 'title',
 						title: 'Title',
-						width: '10%',
+						width: '15%',
+						filter: TreeListTextFilter,
 					},
 					{
 						field: 'category',
@@ -157,7 +168,7 @@ const EditableList = ({
 							remove: handleRemove,
 							editField,
 						}),
-						width: '10%',
+						width: '5%',
 					},
 				]}
 				toolbar={
