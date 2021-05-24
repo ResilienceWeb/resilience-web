@@ -30,9 +30,16 @@ const COLOR_MAPPING = {
 	Union: '#fff780',
 };
 
+let REMOTE_URL = '';
+if (process.env.NODE_ENV === 'development') {
+	REMOTE_URL = 'http://localhost:3000';
+} else {
+	REMOTE_URL = 'https://cambridgeresilienceweb.org.uk';
+}
+
 export default async (req, res) => {
 	try {
-		const listingsInDb = await fetch('http://localhost:3000/api/listings');
+		const listingsInDb = await fetch(`${REMOTE_URL}/api/listings`);
 
 		const data = await listingsInDb.json();
 		const { listings } = data;

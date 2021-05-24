@@ -65,8 +65,9 @@ const EditableList = ({
 			);
 		} else {
 			await fetch('/api/listings/updateRemote');
+			closeRemoteUpdateConfirmationDialog();
 		}
-	}, []);
+	}, [closeRemoteUpdateConfirmationDialog]);
 
 	const openRemoteUpdateConfirmationDialog = useCallback(() => {
 		setIsRemoteUpdateConfirmationOpen(true);
