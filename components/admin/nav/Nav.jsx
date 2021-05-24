@@ -48,12 +48,12 @@ const Nav = () => {
 			},
 		];
 
-		if (session?.user.admin) {
-			links.push({ label: 'Permissions', href: '/admin/permissions' });
-		}
+		// if (session?.user.admin) {
+		// 	links.push({ label: 'Permissions', href: '/admin/permissions' });
+		// }
 
 		return links;
-	}, [session]);
+	}, []);
 
 	const handleSignOut = useCallback(() => signOut(), []);
 

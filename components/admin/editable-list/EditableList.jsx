@@ -133,6 +133,7 @@ const EditableList = ({
 				filter={filter}
 				onFilterChange={handleFilterChange}
 				sortable={{ allowUnsort: false, mode: 'single' }}
+				sort={sort}
 				onSortChange={handleSortChange}
 				columns={[
 					{

@@ -78,7 +78,7 @@ export default async (req, res) => {
 		let groupedByCategory = groupBy(transformedData.nodes, 'category');
 
 		groupedByCategory = Object.fromEntries(
-			Object.entries(groupedByCategory).filter(([key, value]) => {
+			Object.entries(groupedByCategory).filter(([key]) => {
 				return (
 					key.length > 0 &&
 					key !== 'undefined' &&
