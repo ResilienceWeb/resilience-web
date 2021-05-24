@@ -62,7 +62,7 @@ export default async (req, res) => {
 			}) => {
 				transformedData.nodes.push({
 					id,
-					title,
+					label: title,
 					category,
 					description,
 					website,

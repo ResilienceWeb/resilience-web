@@ -56,7 +56,6 @@ const Drawer = ({ items, selectNode }) => {
 						height="104"
 					/>
 				</Flex>
-				{/* <h1 className={styles.title}>Cambridge Resilience Web</h1> */}
 			</Link>
 			<Box mx={2} mb={4}>
 				<Input
