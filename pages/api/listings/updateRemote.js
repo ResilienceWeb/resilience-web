@@ -90,7 +90,7 @@ export default async (req, res) => {
 		// Main node
 		transformedData.nodes.push({
 			id: 999,
-			title: 'Cambridge Resilience Web',
+			label: 'Cambridge Resilience Web',
 			color: '#fcba03',
 			isDescriptive: true,
 			font: {
@@ -103,7 +103,7 @@ export default async (req, res) => {
 			const categoryId = categoryIndex * 1000;
 			transformedData.nodes.push({
 				id: categoryId,
-				title: CATEGORY_MAPPING[category],
+				label: CATEGORY_MAPPING[category],
 				color: '#c3c4c7',
 				isDescriptive: true,
 			});
