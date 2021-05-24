@@ -131,9 +131,14 @@ export default async (req, res) => {
 					updateListingGroup(
 						where: { identifier: "cambridge-city" }
 						data: { data: $newData }
-						to: PUBLISHED
 					) {
 						data
+					}
+					publishListingGroup(
+						where: { identifier: "cambridge-city" }
+					) {
+						data
+						stage
 					}
 				}
 			`,
