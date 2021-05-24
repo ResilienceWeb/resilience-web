@@ -125,16 +125,13 @@ export default async (req, res) => {
 			});
 		}
 
-		// const stringData = JSON.stringify(transformedData);
-
-		// console.log(transformedData);
-
 		const response = await graphcmsMutationClient.request(
 			gql`
 				mutation updateData($newData: Json) {
 					updateListingGroup(
 						where: { identifier: "cambridge-city" }
 						data: { data: $newData }
+						to: PUBLISHED
 					) {
 						data
 					}
