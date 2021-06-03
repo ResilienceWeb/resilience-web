@@ -1,5 +1,4 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
-import { useCallback, useMemo, useState, memo } from 'react';
+import { useCallback, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import Image from 'next/image';
 import { Box, Divider, Flex, Input, Link } from '@chakra-ui/react';
@@ -19,24 +18,11 @@ const compareFunc = (a, b) => {
 	return 0;
 };
 
-const Drawer = ({ items, selectNode }) => {
-	const [searchTerm, setSearchTerm] = useState('');
-	const handleSearchTermChange = useCallback((event) => {
-		setSearchTerm(event.target.value);
-	}, []);
-
+const Drawer = ({ handleSearchTermChange, items, searchTerm, selectNode }) => {
 	const sortedItems = useMemo(
 		() => items.filter((i) => !i.isDescriptive).sort(compareFunc),
 		[items],
 	);
-
-	const filteredItems = useMemo(() => {
-		return searchTerm
-			? sortedItems.filter((i) =>
-					i.label.toLowerCase().includes(searchTerm.toLowerCase()),
-			  )
-			: sortedItems;
-	}, [searchTerm, sortedItems]);
 
 	const handleClick = useCallback(
 		(id) => {
@@ -65,7 +51,7 @@ const Drawer = ({ items, selectNode }) => {
 					value={searchTerm}
 				/>
 			</Box>
-			{filteredItems.map((item) => (
+			{sortedItems.map((item) => (
 				<div key={item.id}>
 					<div
 						className={styles.item}

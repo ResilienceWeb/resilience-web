@@ -50,6 +50,7 @@
 		"react-markdown": "6.0.2",
 		"react-query": "3.16.0",
 		"sass": "1.32.13",
+		"use-debounce": "6.0.1",
 		"vis-network-react": "DinerIsmail/vis-network-react"
 	},
 	"devDependencies": {

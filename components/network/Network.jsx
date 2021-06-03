@@ -33,7 +33,7 @@ const options = {
 	physics: {
 		forceAtlas2Based: {
 			gravitationalConstant: -26,
-			centralGravity: 0.005,
+			centralGravity: 0.003,
 			springLength: 230,
 			springConstant: 0.18,
 		},
