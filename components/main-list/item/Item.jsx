@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { motion, usePresence } from 'framer-motion';
-import { chakra, Flex, Tag, Text } from '@chakra-ui/react';
+import { chakra, Flex, Tag, Text, Icon, Tooltip } from '@chakra-ui/react';
+import { HiUserGroup } from 'react-icons/hi';
 
 const transition = { type: 'spring', stiffness: 300, damping: 50, mass: 1 };
 
@@ -48,11 +49,19 @@ const Item = ({ dataItem, onOpenDialog }) => {
 						>
 							{dataItem.label}
 						</chakra.h2>
-						<Text></Text>
 						<Tag backgroundColor={dataItem.color}>
 							{dataItem.category}
 						</Tag>
 					</Flex>
+					{dataItem.seekingVolunteers && (
+						<Flex>
+							<Tooltip label="This group is seeking volunteers. Get in touch with them if you'd like to help.">
+								<Text color="seagreen">
+									Seeking volunteers <Icon as={HiUserGroup} />
+								</Text>
+							</Tooltip>
+						</Flex>
+					)}
 				</chakra.div>
 			</motion.div>
 		</>
