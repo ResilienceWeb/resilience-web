@@ -65,6 +65,10 @@ const MainList = ({ items }) => {
 		onCloseDialog();
 	}, [onCloseDialog]);
 
+	const isMobile = window.matchMedia(
+		'only screen and (max-width: 760px)',
+	).matches;
+
 	return (
 		<>
 			<Flex
@@ -72,14 +76,16 @@ const MainList = ({ items }) => {
 				alignItems="center"
 				flexDirection="column"
 			>
-				<Box my={4}>
-					<Image
-						alt="Cambridge Resilience Web logo"
-						src="/logo.png"
-						width="276"
-						height="104"
-					/>
-				</Box>
+				{!isMobile && (
+					<Box my={4}>
+						<Image
+							alt="Cambridge Resilience Web logo"
+							src="/logo.png"
+							width="276"
+							height="104"
+						/>
+					</Box>
+				)}
 				<chakra.div
 					paddingTop={4}
 					width={useBreakpointValue({ base: '95%', md: '600px' })}
@@ -101,7 +107,7 @@ const MainList = ({ items }) => {
 					/>
 				</chakra.div>
 				<chakra.span fontSize="14px" marginTop={2}>
-					{filteredItems.length} results
+					{filteredItems.length} listings
 				</chakra.span>
 				<chakra.div
 					marginTop={4}

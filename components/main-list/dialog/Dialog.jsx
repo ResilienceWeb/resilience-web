@@ -21,7 +21,7 @@ const Dialog = ({ isOpen, item, onClose }) => {
 	return (
 		<Modal isCentered isOpen={isOpen} onClose={onClose} size="xl">
 			<ModalOverlay />
-			<ModalContent opacity="1">
+			<ModalContent opacity="1" mx={2}>
 				<ModalHeader>{item.label}</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>

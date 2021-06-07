@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { motion, usePresence } from 'framer-motion';
-import { chakra, Flex, Tag } from '@chakra-ui/react';
+import { chakra, Flex, Tag, Text } from '@chakra-ui/react';
 
 const transition = { type: 'spring', stiffness: 300, damping: 50, mass: 1 };
 
@@ -32,9 +32,8 @@ const Item = ({ dataItem, onOpenDialog }) => {
 				<chakra.div
 					py={4}
 					px={3}
-					my={2}
+					my={4}
 					cursor="pointer"
-					border="1px solid #c7c5c5"
 					borderRadius="5px"
 					backgroundColor="#ffffff"
 					transition="transform 300ms ease-in-out, box-shadow 300ms ease-in-out"
@@ -49,6 +48,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 						>
 							{dataItem.label}
 						</chakra.h2>
+						<Text></Text>
 						<Tag backgroundColor={dataItem.color}>
 							{dataItem.category}
 						</Tag>
