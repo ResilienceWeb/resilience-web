@@ -59,6 +59,7 @@ export default async (req, res) => {
 				twitter,
 				instagram,
 				email,
+				seekingVolunteers,
 			}) => {
 				transformedData.nodes.push({
 					id,
@@ -70,6 +71,7 @@ export default async (req, res) => {
 					twitter,
 					instagram,
 					email,
+					seekingVolunteers,
 					color: COLOR_MAPPING[category] ?? 'black',
 				});
 			},
