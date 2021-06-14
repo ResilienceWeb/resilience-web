@@ -7,13 +7,18 @@ import {
 	Flex,
 	useBreakpointValue,
 	useDisclosure,
+	Input,
 } from '@chakra-ui/react';
-import { MultiSelect } from '@progress/kendo-react-dropdowns';
-import { Input } from '@progress/kendo-react-inputs';
+import Select from 'react-select';
 import Dialog from './dialog';
 import CATEGORY_MAPPING from '../../data/enums.js';
 import Item from './item';
 import styles from './MainList.module.scss';
+
+const categories = Object.keys(CATEGORY_MAPPING).map((key) => ({
+	value: key,
+	label: CATEGORY_MAPPING[key],
+}));
 
 const MainList = ({ items }) => {
 	const [selectedCategories, setSelectedCategories] = useState([]);
@@ -24,10 +29,9 @@ const MainList = ({ items }) => {
 		onClose: onCloseDialog,
 	} = useDisclosure();
 	const [searchTerm, setSearchTem] = useState('');
-	const categories = Object.keys(CATEGORY_MAPPING).map((key) => key);
 
-	const handleCategorySelection = useCallback((event) => {
-		setSelectedCategories(event.target.value);
+	const handleCategorySelection = useCallback((value) => {
+		setSelectedCategories(value);
 	}, []);
 
 	const handleSearchTermChange = useCallback((event) => {
@@ -38,8 +42,9 @@ const MainList = ({ items }) => {
 		let results = items.filter((item) => !item.isDescriptive);
 
 		if (selectedCategories.length > 0) {
+			const categories = selectedCategories.map((c) => c.value);
 			results = results.filter((item) =>
-				selectedCategories.includes(item.category),
+				categories.includes(item.category),
 			);
 		}
 
@@ -90,19 +95,21 @@ const MainList = ({ items }) => {
 					paddingTop={4}
 					width={useBreakpointValue({ base: '95%', md: '600px' })}
 				>
-					<MultiSelect
-						className={styles.categoryMultiSelect}
-						data={categories}
-						placeholder="Filter by category"
+					<Select
+						isMulti
 						onChange={handleCategorySelection}
-						value={selectedCategories}
-						style={{ width: '100%' }}
+						options={categories}
+						placeholder="Filter by category"
 					/>
 					<Input
 						className={styles.searchBox}
 						placeholder="Search"
 						onChange={handleSearchTermChange}
-						style={{ width: '100%', marginTop: '1rem' }}
+						style={{
+							width: '100%',
+							marginTop: '1rem',
+							backgroundColor: '#ffffff',
+						}}
 						value={searchTerm}
 					/>
 				</chakra.div>

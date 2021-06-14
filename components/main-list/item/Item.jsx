@@ -55,7 +55,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 					</Flex>
 					{dataItem.seekingVolunteers && (
 						<Flex>
-							<Tooltip label="This group is seeking volunteers. Get in touch with them if you'd like to help.">
+							<Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">
 								<Text color="seagreen">
 									Seeking volunteers <Icon as={HiUserGroup} />
 								</Text>

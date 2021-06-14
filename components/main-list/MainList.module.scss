@@ -1,8 +1,5 @@
-.categoryMultiSelect {
-	& > div {
-		border-radius: 5px;
-	}
-}
 .searchBox {
-	border-radius: 5px;
+	&::placeholder {
+		color: #808080 !important;
+	}
 }
