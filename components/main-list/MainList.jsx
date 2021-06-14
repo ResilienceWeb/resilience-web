@@ -97,6 +97,7 @@ const MainList = ({ items }) => {
 				>
 					<Select
 						isMulti
+						isSearchable={false}
 						onChange={handleCategorySelection}
 						options={categories}
 						placeholder="Filter by category"
