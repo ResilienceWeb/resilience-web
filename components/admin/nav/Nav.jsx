@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import { useSession, signOut } from 'next-auth/client';
@@ -18,7 +19,7 @@ import {
 	Stack,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, SettingsIcon } from '@chakra-ui/icons';
-import { useCallback, useMemo } from 'react';
+import LogoImage from '../../../public/logo.png';
 
 const NavLink = ({ children, href }) => (
 	<Link
@@ -73,7 +74,7 @@ const Nav = () => {
 							<a>
 								<Image
 									alt="Cambridge Resilience Web logo"
-									src="/logo.png"
+									src={LogoImage}
 									width="130"
 									height="50"
 								/>

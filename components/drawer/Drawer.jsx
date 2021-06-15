@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Image from 'next/image';
 import { Box, Divider, Flex, Input, Link } from '@chakra-ui/react';
 import styles from './Drawer.module.scss';
+import LogoImage from '../../public/logo.png';
 
 const compareFunc = (a, b) => {
 	const labelA = a.label?.toLowerCase();
@@ -37,7 +38,7 @@ const Drawer = ({ handleSearchTermChange, items, searchTerm, selectNode }) => {
 				<Flex justifyContent="center" my={2}>
 					<Image
 						alt="Cambridge Resilience Web logo"
-						src="/logo.png"
+						src={LogoImage}
 						width="276"
 						height="104"
 					/>

@@ -22,6 +22,7 @@ import {
 	ChevronDownIcon,
 	ChevronRightIcon,
 } from '@chakra-ui/icons';
+import LogoImage from '../../public/logo.png';
 
 export default function MainNav() {
 	const { isOpen, onToggle } = useDisclosure();
@@ -63,7 +64,7 @@ export default function MainNav() {
 						<a>
 							<Image
 								alt="Cambridge Resilience Web logo"
-								src="/logo.png"
+								src={LogoImage}
 								width="130"
 								height="50"
 							/>

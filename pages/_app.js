@@ -47,11 +47,6 @@ function App({ Component, pageProps }) {
 					type="image/x-icon"
 				/>
 				<link rel="icon" href="/favicon.ico" type="image/x-icon" />
-				<link
-					rel="stylesheet"
-					type="text/css"
-					href="https://unpkg.com/vis-network/styles/vis-network.min.css"
-				/>
 				<script
 					async
 					defer
