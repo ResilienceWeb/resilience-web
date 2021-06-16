@@ -1,6 +1,4 @@
-import { chakra } from '@chakra-ui/react';
-import { Switch } from '@progress/kendo-react-inputs';
-import { Label } from '@progress/kendo-react-labels';
+import { chakra, FormLabel, Switch, Flex } from '@chakra-ui/react';
 
 const ModeSwitch = ({ handleSwitchChange, checked }) => {
 	return (
@@ -12,15 +10,20 @@ const ModeSwitch = ({ handleSwitchChange, checked }) => {
 			mt="0.8125rem"
 			mr="0.5rem"
 		>
-			<Label editorId="mode-switch">Filter by category&nbsp;</Label>
-			<Switch
-				checked={checked}
-				editorId="mode-switch"
-				onChange={handleSwitchChange}
-				onLabel=""
-				offLabel=""
-			/>
-			<Label editorId="mode-switch">&nbsp;Visual web mode</Label>
+			<Flex direction="row" alignItems="center">
+				<FormLabel fontSize="sm">Filter by category</FormLabel>
+				<Switch
+					isChecked={Boolean(checked)}
+					onChange={handleSwitchChange}
+					colorScheme="teal"
+					size="lg"
+					// checked={checked}
+					value={checked}
+				/>
+				<FormLabel fontSize="sm" ml="2">
+					Visual web mode
+				</FormLabel>
+			</Flex>
 		</chakra.div>
 	);
 };

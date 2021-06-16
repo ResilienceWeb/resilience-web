@@ -71,7 +71,7 @@ const City = ({ data }) => {
 	);
 
 	const handleSwitchChange = useCallback((event) => {
-		setIsWebMode(event.target.value);
+		setIsWebMode(!(event.target.value == 'true'));
 	}, []);
 
 	return (
