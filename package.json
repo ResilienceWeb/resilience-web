@@ -37,6 +37,7 @@
 		"@progress/kendo-theme-bootstrap": "4.35.1",
 		"@progress/kendo-theme-default": "4.38.1",
 		"axios": "0.21.1",
+		"formik": "2.2.9",
 		"framer-motion": "4.1.17",
 		"graphql": "15.5.0",
 		"graphql-request": "3.4.0",

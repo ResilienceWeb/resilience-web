@@ -1,14 +1,14 @@
-import { useRef } from 'react';
-import { chakra, Button } from '@chakra-ui/react';
+import { Formik, Form, Field } from 'formik';
 import {
-	FieldWrapper,
-	Form,
-	Field,
-	FormElement,
-} from '@progress/kendo-react-form';
-import { Label, Hint, Error } from '@progress/kendo-react-labels';
-import { Input, TextArea } from '@progress/kendo-react-inputs';
-import { DropDownList } from '@progress/kendo-react-dropdowns';
+	chakra,
+	Button,
+	FormControl,
+	FormErrorMessage,
+	FormLabel,
+	Input,
+	Textarea,
+	Select,
+} from '@chakra-ui/react';
 import { Dialog } from '@progress/kendo-react-dialogs';
 import CATEGORY_MAPPING from '../../../data/enums.js';
 
@@ -17,15 +17,14 @@ const emailValidator = (value) => {
 	if (value === '') return false;
 	return emailRegex.test(value) ? '' : 'Please enter a valid email.';
 };
-const EmailInput = (fieldRenderProps) => {
-	const { validationMessage, visited, ...others } = fieldRenderProps;
-	return (
-		<div>
-			<Input {...others} />
-			{visited && validationMessage && <Error>{validationMessage}</Error>}
-		</div>
-	);
-};
+
+function validateTextField(value) {
+	let error;
+	if (!value) {
+		error = 'This field is required';
+	}
+	return error;
+}
 
 const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 	return (
@@ -37,7 +36,7 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 			height={650}
 			style={{ zIndex: 100 }}
 		>
-			<Form
+			<Formik
 				initialValues={{
 					id: itemInEdit?.id || null,
 					title: itemInEdit?.title || '',
@@ -50,147 +49,214 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 					instagram: itemInEdit?.instagram || '',
 				}}
 				onSubmit={onSubmit}
-				render={(formRenderProps) => (
-					<FormElement
-						style={{
-							maxWidth: 650,
-							height: '100%',
-							display: 'flex',
-							flexDirection: 'column',
-							justifyContent: 'space-between',
-						}}
+			>
+				{(props) => (
+					<Form
+					// style={{
+					// 	maxWidth: 650,
+					// 	height: '100%',
+					// 	display: 'flex',
+					// 	flexDirection: 'column',
+					// 	justifyContent: 'space-between',
+					// }}
 					>
-						<fieldset className={'k-form-fieldset'}>
-							<chakra.div mb={3}>
-								<Field
-									name={'title'}
-									component={Input}
-									placeholder="Title"
-								/>
-							</chakra.div>
+						<chakra.div mb={3}>
+							<Field name="title" validate={validateTextField}>
+								{({ field, form }) => (
+									<FormControl
+										isInvalid={
+											form.errors.title &&
+											form.touched.title
+										}
+									>
+										<FormLabel htmlFor="title">
+											Title
+										</FormLabel>
+										<Input {...field} id="title" />
+										<FormErrorMessage>
+											{form.errors.title}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+						</chakra.div>
 
-							<chakra.div mb={3}>
-								<Field
-									name={'description'}
-									component={TextArea}
-									placeholder="Description"
-									style={{ maxHeight: '200px' }}
-								/>
-							</chakra.div>
+						<chakra.div mb={3}>
+							<Field
+								name="description"
+								style={{ maxHeight: '200px' }}
+							>
+								{({ field, form }) => (
+									<FormControl
+										isInvalid={
+											form.errors.description &&
+											form.touched.description
+										}
+									>
+										<FormLabel htmlFor="description">
+											Description
+										</FormLabel>
+										<Textarea {...field} id="description" />
+										<FormErrorMessage>
+											{form.errors.description}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+						</chakra.div>
 
-							<chakra.div mb={3}>
-								<Field
-									data={Object.keys(CATEGORY_MAPPING)}
-									name={'category'}
-									component={FormDropDownList}
-									placeholder="Category"
-								/>
-							</chakra.div>
+						<chakra.div mb={3}>
+							<Field name="category">
+								{({ field, form }) => (
+									<FormControl
+										isInvalid={
+											form.errors.category &&
+											form.touched.category
+										}
+									>
+										<FormLabel htmlFor="category">
+											Category
+										</FormLabel>
+										<Select {...field}>
+											{Object.keys(CATEGORY_MAPPING).map(
+												(c) => (
+													<option key={c} value={c}>
+														{c}
+													</option>
+												),
+											)}
+										</Select>
+										<FormErrorMessage>
+											{form.errors.category}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+						</chakra.div>
 
-							<chakra.div mb={3}>
-								<Field
-									name={'email'}
-									type={'email'}
-									component={EmailInput}
-									placeholder={'Email'}
-									validator={emailValidator}
-								/>
-							</chakra.div>
+						<chakra.div mb={3}>
+							<Field
+								name="email"
+								type="email"
+								validate={emailValidator}
+							>
+								{({ field, form }) => (
+									<FormControl
+										isInvalid={
+											form.errors.email &&
+											form.touched.email
+										}
+									>
+										<FormLabel htmlFor="email">
+											Email
+										</FormLabel>
+										<Input {...field} id="email" />
+										<FormErrorMessage>
+											{form.errors.email}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+						</chakra.div>
 
-							<chakra.div mb={3}>
-								<Field
-									name={'website'}
-									component={Input}
-									placeholder="Website"
-								/>
-							</chakra.div>
+						<chakra.div mb={3}>
+							<Field name="website">
+								{({ field, form }) => (
+									<FormControl
+										isInvalid={
+											form.errors.website &&
+											form.touched.website
+										}
+									>
+										<FormLabel htmlFor="title">
+											Website
+										</FormLabel>
+										<Input {...field} id="website" />
+										<FormErrorMessage>
+											{form.errors.website}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+						</chakra.div>
 
-							<chakra.div mb={3}>
-								<Field
-									name={'facebook'}
-									component={Input}
-									placeholder="Facebook"
-								/>
-							</chakra.div>
+						<chakra.div mb={3}>
+							<Field name="facebook">
+								{({ field, form }) => (
+									<FormControl
+										isInvalid={
+											form.errors.facebook &&
+											form.touched.facebook
+										}
+									>
+										<FormLabel htmlFor="facebook">
+											Facebook
+										</FormLabel>
+										<Input {...field} id="facebook" />
+										<FormErrorMessage>
+											{form.errors.facebook}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+						</chakra.div>
 
-							<chakra.div mb={3}>
-								<Field
-									name={'twitter'}
-									component={Input}
-									placeholder="Twitter"
-								/>
-							</chakra.div>
+						<chakra.div mb={3}>
+							<Field name="twitter">
+								{({ field, form }) => (
+									<FormControl
+										isInvalid={
+											form.errors.twitter &&
+											form.touched.twitter
+										}
+									>
+										<FormLabel htmlFor="twitter">
+											Twitter
+										</FormLabel>
+										<Input {...field} id="twitter" />
+										<FormErrorMessage>
+											{form.errors.twitter}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+						</chakra.div>
 
-							<chakra.div mb={3}>
-								<Field
-									name={'instagram'}
-									component={Input}
-									placeholder="Instagram"
-								/>
-							</chakra.div>
-						</fieldset>
+						<chakra.div mb={3}>
+							<Field name="instagram">
+								{({ field, form }) => (
+									<FormControl
+										isInvalid={
+											form.errors.instagram &&
+											form.touched.instagram
+										}
+									>
+										<FormLabel htmlFor="instagram">
+											Instagram
+										</FormLabel>
+										<Input {...field} id="instagram" />
+										<FormErrorMessage>
+											{form.errors.instagram}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+						</chakra.div>
 						<Button
 							bg="#57b894"
 							colorScheme="#57b894"
-							disabled={!formRenderProps.allowSubmit}
+							disabled={!props.isValid}
+							isLoading={props.isSubmitting}
 							size="md"
-							type={'submit'}
+							type="submit"
 							_hover={{ bg: '#4a9e7f' }}
 						>
 							Submit
 						</Button>
-					</FormElement>
+					</Form>
 				)}
-			/>
+			</Formik>
 		</Dialog>
-	);
-};
-
-export const FormDropDownList = (fieldRenderProps) => {
-	const {
-		validationMessage,
-		touched,
-		label,
-		id,
-		valid,
-		disabled,
-		hint,
-		wrapperStyle,
-		...others
-	} = fieldRenderProps;
-	const editorRef = useRef(null);
-
-	const showValidationMessage = touched && validationMessage;
-	const showHint = !showValidationMessage && hint;
-	const hintId = showHint ? `${id}_hint` : '';
-	const errorId = showValidationMessage ? `${id}_error` : '';
-	const labelId = label ? `${id}_label` : '';
-
-	return (
-		<FieldWrapper style={wrapperStyle}>
-			<Label
-				id={labelId}
-				editorRef={editorRef}
-				editorId={id}
-				editorValid={valid}
-				editorDisabled={disabled}
-			>
-				{label}
-			</Label>
-			<DropDownList
-				ariaLabelledBy={labelId}
-				ariaDescribedBy={`${hintId} ${errorId}`}
-				ref={editorRef}
-				valid={valid}
-				id={id}
-				disabled={disabled}
-				{...others}
-			/>
-			{showHint && <Hint id={hintId}>{hint}</Hint>}
-			{showValidationMessage && (
-				<Error id={errorId}>{validationMessage}</Error>
-			)}
-		</FieldWrapper>
 	);
 };
 
