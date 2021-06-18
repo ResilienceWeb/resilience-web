@@ -17,10 +17,10 @@ const LayoutContainer = ({ children }) => {
 							lg: 'calc(100vh - 140px)',
 						})}
 						mt="1rem"
-						width="1300px"
+						width="1500px"
 						maxWidth={useBreakpointValue({
 							base: '95%',
-							lg: '1300px',
+							lg: '1500px',
 						})}
 					>
 						{children}

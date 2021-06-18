@@ -1,3 +1,4 @@
+// import '../scripts/wdyr.js';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { ChakraProvider } from '@chakra-ui/react';

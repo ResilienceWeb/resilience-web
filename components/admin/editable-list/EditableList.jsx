@@ -1,19 +1,18 @@
 import { useCallback, useEffect, useState, memo } from 'react';
-import { Button, Heading, Text, Flex } from '@chakra-ui/react';
 import {
-	TreeList,
-	TreeListToolbar,
-	TreeListTextFilter,
-	orderBy,
-	filterBy,
-	extendDataItem,
-} from '@progress/kendo-react-treelist';
-import { Dialog, DialogActionsBar } from '@progress/kendo-react-dialogs';
-import CommandCell from './command-cell';
+	Heading,
+	Text,
+	Modal,
+	ModalOverlay,
+	ModalContent,
+	ModalHeader,
+	ModalBody,
+	ModalCloseButton,
+	Button,
+	Stack,
+} from '@chakra-ui/react';
 import ListingCreationDialog from '@components/admin/listing-creation-dialog';
-import styles from './EditableList.module.scss';
-
-const editField = 'inEdit';
+import Table from './table/Table.jsx';
 
 const EditableList = ({
 	createListing,
@@ -23,28 +22,26 @@ const EditableList = ({
 	updateListing,
 }) => {
 	const [data, setData] = useState(items);
-	const [sort, setSort] = useState([{ field: 'title', dir: 'asc' }]);
-	const [filter, setFilter] = useState([]);
+	const [filter, setFilter] = useState('');
 	const [itemInEdit, setItemInEdit] = useState();
 	const [isListingCreationOpen, setIsListingCreationOpen] = useState(false);
-	const [
-		isRemoteUpdateConfirmationOpen,
-		setIsRemoteUpdateConfirmationOpen,
-	] = useState(false);
+	const [isRemoteUpdateConfirmationOpen, setIsRemoteUpdateConfirmationOpen] =
+		useState(false);
 
 	useEffect(() => {
 		setData(items);
 	}, [items]);
 
 	useEffect(() => {
-		const filtered = filterBy(items, filter);
-		const sorted = orderBy(filtered, sort);
-		setData(sorted);
+		const filtered = items.filter((item) =>
+			item.title.toLowerCase().includes(filter.toLowerCase()),
+		);
+		setData(filtered);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [sort, filter]);
+	}, [filter]);
 
 	const enterEdit = useCallback((dataItem) => {
-		setItemInEdit(extendDataItem(dataItem));
+		setItemInEdit(dataItem);
 	}, []);
 
 	const openListingCreationDialog = useCallback(() => {
@@ -77,8 +74,8 @@ const EditableList = ({
 	}, []);
 
 	const handleRemove = useCallback(
-		(data) => {
-			deleteListing({ id: data.id });
+		(id) => {
+			deleteListing({ id });
 		},
 		[deleteListing],
 	);
@@ -95,12 +92,8 @@ const EditableList = ({
 		[closeListingCreationDialog, createListing, updateListing],
 	);
 
-	const handleSortChange = useCallback((event) => {
-		setSort(event.sort);
-	}, []);
-
 	const handleFilterChange = useCallback((event) => {
-		setFilter(event.filter);
+		setFilter(event.target.value);
 	}, []);
 
 	if (!data) return null;
@@ -121,100 +114,15 @@ const EditableList = ({
 					cambridgeresilienceweb@gmail.com
 				</Text>
 			)}
-			<TreeList
-				className={styles.treelist}
-				style={{
-					overflow: 'auto',
-					marginBottom: '2rem',
-					width: '100%',
-				}}
-				data={data}
-				editField={editField}
-				filter={filter}
+			<Table
+				enterEdit={enterEdit}
+				removeItem={handleRemove}
+				filterValue={filter}
+				items={data}
 				onFilterChange={handleFilterChange}
-				sortable={{ allowUnsort: false, mode: 'single' }}
-				sort={sort}
-				onSortChange={handleSortChange}
-				columns={[
-					{
-						field: 'title',
-						title: 'Title',
-						width: '15%',
-						filter: TreeListTextFilter,
-					},
-					{
-						field: 'category',
-						title: 'Category',
-						width: '10%',
-					},
-					{
-						field: 'website',
-						title: 'Website',
-						width: '10%',
-						sortable: false,
-					},
-					{
-						field: 'email',
-						title: 'Email',
-						width: '10%',
-						sortable: false,
-					},
-					{
-						field: 'description',
-						title: 'Description',
-						width: '20%',
-						sortable: false,
-					},
-					{
-						field: 'facebook',
-						title: 'Facebook',
-						width: '10%',
-						sortable: false,
-					},
-					{
-						field: 'instagram',
-						title: 'Instagram',
-						width: '10%',
-						sortable: false,
-					},
-					{
-						field: 'twitter',
-						title: 'Twitter',
-						width: '10%',
-						sortable: false,
-					},
-					{
-						cell: CommandCell({
-							enterEdit: enterEdit,
-							remove: handleRemove,
-							editField,
-						}),
-						width: '5%',
-					},
-				]}
-				toolbar={
-					isAdmin && (
-						<TreeListToolbar>
-							<Flex justifyContent="space-between" width="100%">
-								<Button
-									bg="#57b894"
-									colorScheme="#57b894"
-									onClick={openListingCreationDialog}
-									size="sm"
-									_hover={{ bg: '#4a9e7f' }}
-								>
-									Add new
-								</Button>
-								<Button
-									onClick={openRemoteUpdateConfirmationDialog}
-									size="sm"
-									title="Update the data used by the website for the listings"
-								>
-									Update data for listings
-								</Button>
-							</Flex>
-						</TreeListToolbar>
-					)
+				openListingCreationDialog={openListingCreationDialog}
+				openRemoteUpdateConfirmationDialog={
+					openRemoteUpdateConfirmationDialog
 				}
 			/>
 			{(isListingCreationOpen || itemInEdit) && (
@@ -225,38 +133,46 @@ const EditableList = ({
 				/>
 			)}
 			{isRemoteUpdateConfirmationOpen && (
-				<Dialog
-					title={'Please confirm'}
+				<Modal
+					isCentered
 					onClose={closeRemoteUpdateConfirmationDialog}
-					width={500}
-					height={300}
+					isOpen
+					size="md"
 				>
-					<p
-						style={{
-							margin: '25px',
-							textAlign: 'center',
-						}}
-					>
-						This will update the data used by the website to display
-						the listings, so that the changes you just made will be
-						reflected in the app. If you did not make any changes,
-						you can just close the dialog or click Cancel.
-					</p>
-					<DialogActionsBar>
-						<button
-							className="k-button"
-							onClick={closeRemoteUpdateConfirmationDialog}
-						>
-							Cancel
-						</button>
-						<button
-							className="k-button"
-							onClick={updateRemoteListingData}
-						>
-							Yes, do it
-						</button>
-					</DialogActionsBar>
-				</Dialog>
+					<ModalOverlay />
+					<ModalContent>
+						<ModalHeader>
+							{itemInEdit ? 'Edit listing' : 'Create new listing'}
+						</ModalHeader>
+						<ModalCloseButton />
+						<ModalBody>
+							<p
+								style={{
+									margin: '25px',
+									textAlign: 'center',
+								}}
+							>
+								This will update the data used by the website to
+								display the listings, so that the changes you
+								just made will be reflected in the app. If you
+								did not make any changes, you can just close the
+								dialog or click Cancel.
+							</p>
+							<Stack direction="row">
+								<Button
+									onClick={
+										closeRemoteUpdateConfirmationDialog
+									}
+								>
+									Cancel
+								</Button>
+								<Button onClick={updateRemoteListingData}>
+									Yes, do it
+								</Button>
+							</Stack>
+						</ModalBody>
+					</ModalContent>
+				</Modal>
 			)}
 		</>
 	);

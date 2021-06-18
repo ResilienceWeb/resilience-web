@@ -17,7 +17,6 @@ const ModeSwitch = ({ handleSwitchChange, checked }) => {
 					onChange={handleSwitchChange}
 					colorScheme="teal"
 					size="lg"
-					// checked={checked}
 					value={checked}
 				/>
 				<FormLabel fontSize="sm" ml="2">

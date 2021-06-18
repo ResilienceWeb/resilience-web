@@ -34,15 +34,7 @@ function validateTextField(value) {
 
 const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 	return (
-		<Modal
-			isCentered
-			onClose={onClose}
-			isOpen
-			// width={500}
-			// height={650}
-			// style={{ zIndex: 100 }}
-			size="xl"
-		>
+		<Modal isCentered onClose={onClose} isOpen size="xl">
 			<ModalOverlay />
 			<ModalContent>
 				<ModalHeader>
