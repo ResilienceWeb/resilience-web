@@ -30,7 +30,6 @@ const customMultiSelectStyles = {
 		};
 	},
 	multiValue: (styles, { data }) => {
-		console.log(data);
 		const color = chroma(data.color);
 		return {
 			...styles,

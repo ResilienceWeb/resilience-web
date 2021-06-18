@@ -1,0 +1,13 @@
+.navLink {
+	font-weight: 700;
+	color: rgb(113, 128, 150);
+
+	&:hover {
+		text-decoration: none;
+		color: rgb(93, 106, 126);
+	}
+
+	&.active {
+		color: var(--primary-green);
+	}
+}

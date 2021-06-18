@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import classnames from 'classnames';
 import {
 	Box,
 	Flex,
@@ -23,9 +25,11 @@ import {
 	ChevronRightIcon,
 } from '@chakra-ui/icons';
 import LogoImage from '../../public/logo.png';
+import styles from './Nav.module.scss';
 
 export default function MainNav() {
 	const { isOpen, onToggle } = useDisclosure();
+	const router = useRouter();
 
 	return (
 		<Box>
@@ -76,7 +80,7 @@ export default function MainNav() {
 						alignItems="center"
 						ml={10}
 					>
-						<DesktopNav />
+						<DesktopNav currentPathname={router.pathname} />
 					</Flex>
 				</Flex>
 
@@ -118,25 +122,22 @@ export default function MainNav() {
 	);
 }
 
-const DesktopNav = () => {
+const DesktopNav = ({ currentPathname }) => {
 	return (
 		<Stack direction={'row'} spacing={8}>
 			{NAV_ITEMS.map((navItem) => (
 				<Box key={navItem.label}>
 					<Popover trigger={'hover'} placement={'bottom-start'}>
-						<Link
-							as={NextLink}
-							p={2}
-							href={navItem.href ?? '#'}
-							fontSize={'md'}
-							fontWeight={500}
-							color={'gray.600'}
-							_hover={{
-								textDecoration: 'none',
-								color: 'gray.800',
-							}}
-						>
-							{navItem.label}
+						<Link as={NextLink} href={navItem.href}>
+							<a
+								className={classnames(
+									styles.navLink,
+									currentPathname === navItem.href &&
+										styles.active,
+								)}
+							>
+								{navItem.label}
+							</a>
 						</Link>
 
 						{/* {navItem.children && (
