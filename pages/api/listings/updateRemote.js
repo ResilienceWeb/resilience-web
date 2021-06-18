@@ -1,6 +1,6 @@
 import { gql, GraphQLClient } from 'graphql-request';
 import groupBy from 'lodash/groupBy';
-import { CATEGORY_MAPPING } from '../../../data/enums.js';
+import { CATEGORY_MAPPING, COLOR_MAPPING } from '../../../data/enums.js';
 
 const graphcmsMutationClient = new GraphQLClient(process.env.GRAPHCMS_URL, {
 	headers: {
