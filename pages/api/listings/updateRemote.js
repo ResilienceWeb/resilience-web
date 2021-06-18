@@ -1,6 +1,6 @@
 import { gql, GraphQLClient } from 'graphql-request';
 import groupBy from 'lodash/groupBy';
-import CATEGORY_MAPPING from '../../../data/enums.js';
+import { CATEGORY_MAPPING } from '../../../data/enums.js';
 
 const graphcmsMutationClient = new GraphQLClient(process.env.GRAPHCMS_URL, {
 	headers: {
@@ -10,25 +10,6 @@ const graphcmsMutationClient = new GraphQLClient(process.env.GRAPHCMS_URL, {
 
 const startsWithCapitalLetter = (word) =>
 	word.charCodeAt(0) >= 65 && word.charCodeAt(0) <= 90;
-
-const COLOR_MAPPING = {
-	Environment: '#7ed957',
-	Housing: '#cb6ce6',
-	'Social business': '#778ffc',
-	Transportation: '#737373',
-	Connectivity: '#5ce1e6',
-	Equity: '#ff66c4',
-	Community: '#ffde59',
-	'Community garden': '#2cb868',
-	'Animal rights': '#ff914d',
-	Nature: '#008037',
-	'Social justice': '#ff5757',
-	Education: '#c9e265',
-	Food: '#a4791b',
-	Technology: '#a2b342',
-	Art: '#77fcd0',
-	Union: '#fff780',
-};
 
 let REMOTE_URL = '';
 if (process.env.NODE_ENV === 'development') {

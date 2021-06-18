@@ -12,11 +12,10 @@ import {
 	ModalOverlay,
 	ModalContent,
 	ModalHeader,
-	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
 } from '@chakra-ui/react';
-import CATEGORY_MAPPING from '../../../data/enums.js';
+import { CATEGORY_MAPPING } from '../../../data/enums.js';
 
 const emailRegex = new RegExp(/\S+@\S+\.\S+/);
 const emailValidator = (value) => {

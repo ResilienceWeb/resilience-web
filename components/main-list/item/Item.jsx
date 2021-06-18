@@ -1,7 +1,8 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { motion, usePresence } from 'framer-motion';
 import { chakra, Flex, Tag, Text, Icon, Tooltip } from '@chakra-ui/react';
 import { HiUserGroup } from 'react-icons/hi';
+import chroma from 'chroma-js';
 
 const transition = { type: 'spring', stiffness: 300, damping: 50, mass: 1 };
 
@@ -27,6 +28,11 @@ const Item = ({ dataItem, onOpenDialog }) => {
 		onOpenDialog(dataItem);
 	}, [dataItem, onOpenDialog]);
 
+	const tagBackgroundColor = useMemo(
+		() => chroma(dataItem.color).alpha(0.5).css(),
+		[dataItem.color],
+	);
+
 	return (
 		<>
 			<motion.div {...animations}>
@@ -49,7 +55,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 						>
 							{dataItem.label}
 						</chakra.h2>
-						<Tag backgroundColor={dataItem.color}>
+						<Tag backgroundColor={tagBackgroundColor}>
 							{dataItem.category}
 						</Tag>
 					</Flex>

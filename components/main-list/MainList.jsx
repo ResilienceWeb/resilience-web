@@ -1,5 +1,6 @@
 import { memo, useCallback, useMemo, useState } from 'react';
 import Image from 'next/image';
+import chroma from 'chroma-js';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
 	chakra,
@@ -11,14 +12,44 @@ import {
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import Dialog from './dialog';
-import CATEGORY_MAPPING from '../../data/enums.js';
+import { CATEGORY_MAPPING, COLOR_MAPPING } from '../../data/enums.js';
 import Item from './item';
 import styles from './MainList.module.scss';
 
 const categories = Object.keys(CATEGORY_MAPPING).map((key) => ({
 	value: key,
 	label: CATEGORY_MAPPING[key],
+	color: COLOR_MAPPING[key],
 }));
+
+const customMultiSelectStyles = {
+	option: (provided, state) => {
+		return {
+			...provided,
+			color: state.data.color,
+		};
+	},
+	multiValue: (styles, { data }) => {
+		console.log(data);
+		const color = chroma(data.color);
+		return {
+			...styles,
+			backgroundColor: color.alpha(0.5).css(),
+		};
+	},
+	multiValueLabel: (styles) => ({
+		...styles,
+		color: '#000',
+	}),
+	multiValueRemove: (styles, { data }) => ({
+		...styles,
+		color: data.color,
+		':hover': {
+			backgroundColor: data.color,
+			color: 'white',
+		},
+	}),
+};
 
 const MainList = ({ items }) => {
 	const [selectedCategories, setSelectedCategories] = useState([]);
@@ -101,6 +132,7 @@ const MainList = ({ items }) => {
 						onChange={handleCategorySelection}
 						options={categories}
 						placeholder="Filter by category"
+						styles={customMultiSelectStyles}
 					/>
 					<Input
 						className={styles.searchBox}
