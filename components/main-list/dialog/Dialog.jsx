@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
 	Modal,
 	ModalOverlay,
@@ -91,4 +92,4 @@ const Dialog = ({ isOpen, item, onClose }) => {
 	);
 };
 
-export default Dialog;
+export default memo(Dialog);
