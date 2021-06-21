@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import dynamic from 'next/dynamic';
-import { useCallback, useState, useMemo } from 'react';
-import { Box, Slide, ScaleFade } from '@chakra-ui/react';
+import { useCallback, useState, useMemo, memo } from 'react';
+import { Box, Fade } from '@chakra-ui/react';
 import { GraphQLClient } from 'graphql-request';
 import { useDebounce } from 'use-debounce';
 
@@ -11,7 +11,7 @@ import ModeSwitch from '@components/mode-switch';
 import MainList from '@components/main-list';
 import Footer from '@components/footer';
 
-const NoSSRNetwork = dynamic(() => import('../components/network'), {
+const Network = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
@@ -37,9 +37,10 @@ const City = ({ data }) => {
 	const [selectedId, setSelectedId] = useState();
 	const [network, setNetwork] = useState();
 
-	const isMobile = window.matchMedia(
-		'only screen and (max-width: 760px)',
-	).matches;
+	const isMobile = useMemo(
+		() => window.matchMedia('only screen and (max-width: 760px)').matches,
+		[],
+	);
 	const [isWebMode, setIsWebMode] = useState(!isMobile);
 
 	const filteredItems = useMemo(() => {
@@ -71,32 +72,29 @@ const City = ({ data }) => {
 	);
 
 	const handleSwitchChange = useCallback((event) => {
+		setSelectedId(null);
 		setIsWebMode(!(event.target.value == 'true'));
 	}, []);
 
 	return (
 		<>
-			<Slide direction="left" in={isWebMode} unmountOnExit>
-				{isWebMode && (
-					<Drawer
-						handleSearchTermChange={handleSearchTermChange}
-						items={filteredItems}
-						searchTerm={searchTerm}
-						selectNode={selectNode}
-					/>
-				)}
-			</Slide>
 			{!isMobile && (
 				<ModeSwitch
 					checked={isWebMode}
 					handleSwitchChange={handleSwitchChange}
 				/>
 			)}
-			<ScaleFade initialScale={0.8} in={isWebMode} unmountOnExit>
+			<Fade in={isWebMode} unmountOnExit>
 				{isWebMode && (
 					<>
+						<Drawer
+							handleSearchTermChange={handleSearchTermChange}
+							items={filteredItems}
+							searchTerm={searchTerm}
+							selectNode={selectNode}
+						/>
 						<Box height="100vh" ml="18.75rem" position="relative">
-							<NoSSRNetwork
+							<Network
 								data={filteredNetworkData}
 								selectedId={selectedId}
 								setNetwork={setNetwork}
@@ -106,7 +104,7 @@ const City = ({ data }) => {
 						</Box>
 					</>
 				)}
-			</ScaleFade>
+			</Fade>
 
 			{!isWebMode && (
 				<Layout>
@@ -136,4 +134,4 @@ export async function getStaticProps() {
 	};
 }
 
-export default City;
+export default memo(City);
