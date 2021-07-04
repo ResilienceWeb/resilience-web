@@ -74,9 +74,7 @@ const EditableList = ({
 	}, []);
 
 	const handleRemove = useCallback(
-		(id) => {
-			deleteListing({ id });
-		},
+		(id) => deleteListing({ id }),
 		[deleteListing],
 	);
 

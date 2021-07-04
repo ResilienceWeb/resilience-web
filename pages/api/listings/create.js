@@ -14,6 +14,8 @@ export default async function (req, res) {
 				instagram: listingData.instagram,
 				twitter: listingData.twitter,
 				notes: listingData.notes,
+				seekingVolunteers: listingData.seekingVolunteers,
+				inactive: listingData.inactive,
 			},
 		});
 

@@ -20,6 +20,8 @@ import {
 } from '@chakra-ui/react';
 import { CATEGORY_MAPPING } from '../../../data/enums.js';
 
+const DEFAULT_CATEGORY = CATEGORY_MAPPING.Environment;
+
 const emailRegex = new RegExp(/\S+@\S+\.\S+/);
 const emailValidator = (value) => {
 	if (value === '') return false;
@@ -49,7 +51,7 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 							id: itemInEdit?.id || null,
 							title: itemInEdit?.title || '',
 							description: itemInEdit?.description || '',
-							category: itemInEdit?.category || '',
+							category: itemInEdit?.category || DEFAULT_CATEGORY,
 							email: itemInEdit?.email || '',
 							website: itemInEdit?.website || '',
 							facebook: itemInEdit?.facebook || '',
