@@ -33,7 +33,7 @@ function validateTextField(value) {
 
 const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 	return (
-		<Modal isCentered onClose={onClose} isOpen size="xl">
+		<Modal onClose={onClose} isOpen size="xl">
 			<ModalOverlay />
 			<ModalContent>
 				<ModalHeader>

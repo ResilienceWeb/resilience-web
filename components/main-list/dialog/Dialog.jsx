@@ -7,7 +7,6 @@ import {
 	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
-	Button,
 	Box,
 	Tag,
 	Icon,
@@ -83,9 +82,6 @@ const Dialog = ({ isOpen, item, onClose }) => {
 							</Link>
 						)}
 					</Stack>
-					<Button colorScheme="blue" mr={3} onClick={onClose}>
-						Close
-					</Button>
 				</ModalFooter>
 			</ModalContent>
 		</Modal>

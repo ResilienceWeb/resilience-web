@@ -1,7 +1,7 @@
 // import '../scripts/wdyr.js';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'next-auth/client';
@@ -9,6 +9,19 @@ import '@fontsource/montserrat';
 import '@fontsource/karla/400.css';
 import '../styles/globals.css';
 import '../styles/styles.global.scss';
+
+const theme = extendTheme({
+	styles: {
+		global: {
+			'button:focus': {
+				boxShadow: 'none !important',
+			},
+			'input:focus': {
+				boxShadow: 'none !important',
+			},
+		},
+	},
+});
 
 const queryClient = new QueryClient();
 
@@ -59,7 +72,7 @@ function App({ Component, pageProps }) {
 					options={{ clientMaxAge: 0, keepAlive: 0 }}
 					session={pageProps.session}
 				>
-					<ChakraProvider>
+					<ChakraProvider theme={theme}>
 						<QueryClientProvider client={queryClient}>
 							<Component {...pageProps} />
 							<ReactQueryDevtools initialIsOpen={false} />
