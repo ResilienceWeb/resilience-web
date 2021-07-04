@@ -1,7 +1,9 @@
+import { memo } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
 	chakra,
 	Button,
+	Checkbox,
 	FormControl,
 	FormErrorMessage,
 	FormLabel,
@@ -14,6 +16,7 @@ import {
 	ModalHeader,
 	ModalBody,
 	ModalCloseButton,
+	HStack,
 } from '@chakra-ui/react';
 import { CATEGORY_MAPPING } from '../../../data/enums.js';
 
@@ -33,7 +36,7 @@ function validateTextField(value) {
 
 const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 	return (
-		<Modal onClose={onClose} isOpen size="xl">
+		<Modal onClose={onClose} isOpen size="2xl">
 			<ModalOverlay />
 			<ModalContent>
 				<ModalHeader>
@@ -52,19 +55,14 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 							facebook: itemInEdit?.facebook || '',
 							twitter: itemInEdit?.twitter || '',
 							instagram: itemInEdit?.instagram || '',
+							seekingVolunteers:
+								itemInEdit?.seekingVolunteers || false,
+							inactive: itemInEdit?.inactive || false,
 						}}
 						onSubmit={onSubmit}
 					>
 						{(props) => (
-							<Form
-							// style={{
-							// 	maxWidth: 650,
-							// 	height: '100%',
-							// 	display: 'flex',
-							// 	flexDirection: 'column',
-							// 	justifyContent: 'space-between',
-							// }}
-							>
+							<Form>
 								<chakra.div mb={3}>
 									<Field
 										name="title"
@@ -173,24 +171,129 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 									</Field>
 								</chakra.div>
 
+								<HStack align="stretch" spacing={2}>
+									<chakra.div mb={3} flexGrow={1}>
+										<Field name="website">
+											{({ field, form }) => (
+												<FormControl
+													isInvalid={
+														form.errors.website &&
+														form.touched.website
+													}
+												>
+													<FormLabel htmlFor="title">
+														Website
+													</FormLabel>
+													<Input
+														{...field}
+														id="website"
+													/>
+													<FormErrorMessage>
+														{form.errors.website}
+													</FormErrorMessage>
+												</FormControl>
+											)}
+										</Field>
+									</chakra.div>
+
+									<chakra.div mb={3} flexGrow={1}>
+										<Field name="facebook">
+											{({ field, form }) => (
+												<FormControl
+													isInvalid={
+														form.errors.facebook &&
+														form.touched.facebook
+													}
+												>
+													<FormLabel htmlFor="facebook">
+														Facebook
+													</FormLabel>
+													<Input
+														{...field}
+														id="facebook"
+													/>
+													<FormErrorMessage>
+														{form.errors.facebook}
+													</FormErrorMessage>
+												</FormControl>
+											)}
+										</Field>
+									</chakra.div>
+								</HStack>
+
+								<HStack align="stretch" spacing={2}>
+									<chakra.div mb={3} flexGrow={1}>
+										<Field name="twitter">
+											{({ field, form }) => (
+												<FormControl
+													isInvalid={
+														form.errors.twitter &&
+														form.touched.twitter
+													}
+												>
+													<FormLabel htmlFor="twitter">
+														Twitter
+													</FormLabel>
+													<Input
+														{...field}
+														id="twitter"
+													/>
+													<FormErrorMessage>
+														{form.errors.twitter}
+													</FormErrorMessage>
+												</FormControl>
+											)}
+										</Field>
+									</chakra.div>
+
+									<chakra.div mb={3} flexGrow={1}>
+										<Field name="instagram">
+											{({ field, form }) => (
+												<FormControl
+													isInvalid={
+														form.errors.instagram &&
+														form.touched.instagram
+													}
+												>
+													<FormLabel htmlFor="instagram">
+														Instagram
+													</FormLabel>
+													<Input
+														{...field}
+														id="instagram"
+													/>
+													<FormErrorMessage>
+														{form.errors.instagram}
+													</FormErrorMessage>
+												</FormControl>
+											)}
+										</Field>
+									</chakra.div>
+								</HStack>
+
 								<chakra.div mb={3}>
-									<Field name="website">
+									<Field name="seekingVolunteers">
 										{({ field, form }) => (
 											<FormControl
 												isInvalid={
-													form.errors.website &&
-													form.touched.website
+													form.errors
+														.seekingVolunteers &&
+													form.touched
+														.seekingVolunteers
 												}
 											>
-												<FormLabel htmlFor="title">
-													Website
-												</FormLabel>
-												<Input
-													{...field}
-													id="website"
-												/>
+												<Checkbox
+													isChecked={field.value}
+													id="seekingVolunteers"
+													onChange={field.onChange}
+												>
+													Seeking volunteers
+												</Checkbox>
 												<FormErrorMessage>
-													{form.errors.website}
+													{
+														form.errors
+															.seekingVolunteers
+													}
 												</FormErrorMessage>
 											</FormControl>
 										)}
@@ -198,76 +301,29 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 								</chakra.div>
 
 								<chakra.div mb={3}>
-									<Field name="facebook">
+									<Field name="inactive">
 										{({ field, form }) => (
 											<FormControl
 												isInvalid={
-													form.errors.facebook &&
-													form.touched.facebook
+													form.errors.inactive &&
+													form.touched.inactive
 												}
 											>
-												<FormLabel htmlFor="facebook">
-													Facebook
-												</FormLabel>
-												<Input
-													{...field}
-													id="facebook"
-												/>
+												<Checkbox
+													isChecked={field.value}
+													id="inactive"
+													onChange={field.onChange}
+												>
+													Inactive
+												</Checkbox>
 												<FormErrorMessage>
-													{form.errors.facebook}
+													{form.errors.inactive}
 												</FormErrorMessage>
 											</FormControl>
 										)}
 									</Field>
 								</chakra.div>
 
-								<chakra.div mb={3}>
-									<Field name="twitter">
-										{({ field, form }) => (
-											<FormControl
-												isInvalid={
-													form.errors.twitter &&
-													form.touched.twitter
-												}
-											>
-												<FormLabel htmlFor="twitter">
-													Twitter
-												</FormLabel>
-												<Input
-													{...field}
-													id="twitter"
-												/>
-												<FormErrorMessage>
-													{form.errors.twitter}
-												</FormErrorMessage>
-											</FormControl>
-										)}
-									</Field>
-								</chakra.div>
-
-								<chakra.div mb={3}>
-									<Field name="instagram">
-										{({ field, form }) => (
-											<FormControl
-												isInvalid={
-													form.errors.instagram &&
-													form.touched.instagram
-												}
-											>
-												<FormLabel htmlFor="instagram">
-													Instagram
-												</FormLabel>
-												<Input
-													{...field}
-													id="instagram"
-												/>
-												<FormErrorMessage>
-													{form.errors.instagram}
-												</FormErrorMessage>
-											</FormControl>
-										)}
-									</Field>
-								</chakra.div>
 								<Button
 									bg="#57b894"
 									colorScheme="#57b894"
@@ -288,4 +344,4 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 	);
 };
 
-export default ListingCreationDialog;
+export default memo(ListingCreationDialog);

@@ -1,8 +1,7 @@
-import { Box, Heading } from '@chakra-ui/react';
-import * as React from 'react';
-import { TableActions } from './TableActions';
-import { TableContent } from './TableContent';
-import { TablePagination } from './TablePagination';
+import { memo } from 'react';
+import { Box } from '@chakra-ui/react';
+import TableActions from './TableActions';
+import TableContent from './TableContent';
 
 const Table = ({
 	enterEdit,
@@ -29,10 +28,9 @@ const Table = ({
 					items={items}
 					removeItem={removeItem}
 				/>
-				{/* <TablePagination /> */}
 			</Box>
 		</Box>
 	);
 };
 
-export default Table;
+export default memo(Table);

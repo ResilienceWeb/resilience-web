@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
 	Button,
 	Table,
@@ -10,7 +11,7 @@ import {
 	useColorModeValue as mode,
 } from '@chakra-ui/react';
 
-export const TableContent = ({ enterEdit, items, removeItem }) => {
+const TableContent = ({ enterEdit, items, removeItem }) => {
 	return (
 		<Table my="8" borderWidth="1px" fontSize="sm" background="#ffffff">
 			<Thead bg={mode('gray.50', 'gray.800')}>
@@ -29,15 +30,6 @@ export const TableContent = ({ enterEdit, items, removeItem }) => {
 					</Th>
 					<Th whiteSpace="nowrap" scope="col" key={4}>
 						Description
-					</Th>
-					<Th whiteSpace="nowrap" scope="col" key={5}>
-						Facebook
-					</Th>
-					<Th whiteSpace="nowrap" scope="col" key={6}>
-						Instagram
-					</Th>
-					<Th whiteSpace="nowrap" scope="col" key={7}>
-						Twitter
 					</Th>
 					<Th />
 				</Tr>
@@ -99,10 +91,6 @@ export const columns = [
 	{
 		Header: 'Description',
 		accessor: 'description',
-	},
-	{
-		Header: 'Facebook',
-		accessor: 'facebook',
 		//   Cell: function StatusCell(data) {
 		// 	return (
 		// 	  <Badge fontSize="xs" colorScheme={badgeEnum[data]}>
@@ -111,12 +99,6 @@ export const columns = [
 		// 	)
 		//   },
 	},
-	{
-		Header: 'Instagram',
-		accessor: 'instagram',
-	},
-	{
-		Header: 'Twitter',
-		accessor: 'twitter',
-	},
 ];
+
+export default memo(TableContent);

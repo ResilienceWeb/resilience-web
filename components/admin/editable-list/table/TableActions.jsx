@@ -9,11 +9,11 @@ import {
 	InputLeftElement,
 	Stack,
 } from '@chakra-ui/react';
-import * as React from 'react';
+import { memo } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { RiAddFill } from 'react-icons/ri';
 
-export const TableActions = ({
+const TableActions = ({
 	filterValue,
 	onFilterChange,
 	openListingCreationDialog,
@@ -84,3 +84,5 @@ export const TableActions = ({
 		</Stack>
 	);
 };
+
+export default memo(TableActions);
