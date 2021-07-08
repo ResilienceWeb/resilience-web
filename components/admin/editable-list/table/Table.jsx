@@ -13,7 +13,7 @@ const Table = ({
 	removeItem,
 }) => {
 	return (
-		<Box as="section" py="12">
+		<Box as="section" py={12} px={4}>
 			<Box overflowX="auto">
 				<TableActions
 					filterValue={filterValue}

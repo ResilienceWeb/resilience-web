@@ -7,23 +7,15 @@ import {
 	Flex,
 	Text,
 	IconButton,
-	Button,
 	Stack,
 	Collapse,
 	Icon,
 	Link,
 	Popover,
-	PopoverTrigger,
-	PopoverContent,
 	useColorModeValue,
 	useDisclosure,
 } from '@chakra-ui/react';
-import {
-	HamburgerIcon,
-	CloseIcon,
-	ChevronDownIcon,
-	ChevronRightIcon,
-} from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import LogoImage from '../../public/logo.png';
 import styles from './Nav.module.scss';
 
@@ -65,14 +57,14 @@ export default function MainNav() {
 					maxW="7xl"
 				>
 					<Link as={NextLink} href="/">
-						<a>
+						<button>
 							<Image
 								alt="Cambridge Resilience Web logo"
 								src={LogoImage}
 								width="130"
 								height="50"
 							/>
-						</a>
+						</button>
 					</Link>
 
 					<Flex
@@ -83,36 +75,6 @@ export default function MainNav() {
 						<DesktopNav currentPathname={router.pathname} />
 					</Flex>
 				</Flex>
-
-				{/* <Stack
-					flex={{ base: 1, md: 0 }}
-					justify={'flex-end'}
-					direction={'row'}
-					spacing={6}
-				>
-					<Button
-						as={'a'}
-						fontSize={'sm'}
-						fontWeight={400}
-						variant={'link'}
-						href={'#'}
-					>
-						Sign In
-					</Button>
-					<Button
-						display={{ base: 'none', md: 'inline-flex' }}
-						fontSize={'sm'}
-						fontWeight={600}
-						color={'white'}
-						bg={'pink.400'}
-						href={'#'}
-						_hover={{
-							bg: 'pink.300',
-						}}
-					>
-						Sign Up
-					</Button>
-				</Stack> */}
 			</Flex>
 
 			<Collapse in={isOpen} animateOpacity>
@@ -129,7 +91,7 @@ const DesktopNav = ({ currentPathname }) => {
 				<Box key={navItem.label}>
 					<Popover trigger={'hover'} placement={'bottom-start'}>
 						<Link as={NextLink} href={navItem.href}>
-							<a
+							<button
 								className={classnames(
 									styles.navLink,
 									currentPathname === navItem.href &&
@@ -137,77 +99,12 @@ const DesktopNav = ({ currentPathname }) => {
 								)}
 							>
 								{navItem.label}
-							</a>
+							</button>
 						</Link>
-
-						{/* {navItem.children && (
-							<PopoverContent
-								border={0}
-								boxShadow={'xl'}
-								bg={'white'}
-								p={4}
-								rounded={'xl'}
-								minW={'sm'}
-							>
-								<Stack>
-									{navItem.children.map((child) => (
-										<DesktopSubNav
-											key={child.label}
-											{...child}
-										/>
-									))}
-								</Stack>
-							</PopoverContent>
-						)} */}
 					</Popover>
 				</Box>
 			))}
 		</Stack>
-	);
-};
-
-const DesktopSubNav = ({ label, href, subLabel }) => {
-	return (
-		<Link
-			href={href}
-			role={'group'}
-			display={'block'}
-			p={2}
-			rounded={'md'}
-			_hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}
-		>
-			<Stack direction={'row'} align={'center'}>
-				<Box>
-					<Text
-						transition={'all .3s ease'}
-						_groupHover={{ color: 'pink.400' }}
-						fontWeight={500}
-					>
-						{label}
-					</Text>
-					<Text fontSize={'sm'}>{subLabel}</Text>
-				</Box>
-				<Flex
-					transition={'all .3s ease'}
-					transform={'translateX(-10px)'}
-					opacity={0}
-					_groupHover={{
-						opacity: '100%',
-						transform: 'translateX(0)',
-					}}
-					justify={'flex-end'}
-					align={'center'}
-					flex={1}
-				>
-					<Icon
-						color={'pink.400'}
-						w={5}
-						h={5}
-						as={ChevronRightIcon}
-					/>
-				</Flex>
-			</Stack>
-		</Link>
 	);
 };
 
@@ -295,19 +192,4 @@ const NAV_ITEMS = [
 		label: 'University',
 		href: '/university',
 	},
-	// {
-	// 	label: 'Inspiration',
-	// 	children: [
-	// 		{
-	// 			label: 'Explore Design Work',
-	// 			subLabel: 'Trending Design to inspire you',
-	// 			href: '#',
-	// 		},
-	// 		{
-	// 			label: 'New & Noteworthy',
-	// 			subLabel: 'Up-and-coming Designers',
-	// 			href: '#',
-	// 		},
-	// 	],
-	// },
 ];

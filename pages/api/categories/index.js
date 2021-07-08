@@ -2,10 +2,7 @@ import prisma from '../../../prisma/client';
 
 export default async function (req, res) {
 	try {
-		const listings = await prisma.listing.findMany({
-			include: {
-				category: true,
-			},
+		const categories = await prisma.category.findMany({
 			orderBy: [
 				{
 					id: 'asc',
@@ -13,11 +10,11 @@ export default async function (req, res) {
 			],
 		});
 		res.status(200);
-		res.json({ listings });
+		res.json({ categories });
 	} catch (e) {
 		res.status(500);
 		res.json({
-			error: `Unable to fetch listings from database - ${e}`,
+			error: `Unable to fetch categories from database - ${e}`,
 		});
 	}
 }

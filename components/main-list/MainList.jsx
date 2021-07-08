@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import Dialog from './dialog';
+// import { useCategories } from '../../hooks/categories';
 import { CATEGORY_MAPPING, COLOR_MAPPING } from '../../data/enums.js';
 import Item from './item';
 import styles from './MainList.module.scss';
@@ -59,6 +60,9 @@ const MainList = ({ items }) => {
 		onClose: onCloseDialog,
 	} = useDisclosure();
 	const [searchTerm, setSearchTem] = useState('');
+	// const { categories: fetchedCategories } = useCategories();
+	// console.log(fetchedCategories, categories);
+	// console.log(selectedCategories);
 
 	const handleCategorySelection = useCallback((value) => {
 		setSelectedCategories(value);

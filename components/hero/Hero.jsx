@@ -9,7 +9,7 @@ import {
 	Link,
 } from '@chakra-ui/react';
 
-export default function CallToActionWithVideo() {
+export default function Hero() {
 	return (
 		<Container maxW={'7xl'}>
 			<Stack
@@ -20,7 +20,6 @@ export default function CallToActionWithVideo() {
 			>
 				<Stack flex={1} spacing={{ base: 5, md: 10 }}>
 					<Heading
-						// fontFamily="Montserrat"
 						fontWeight={700}
 						fontSize={{ base: '3xl', md: '6xl' }}
 						lineHeight={1.1}

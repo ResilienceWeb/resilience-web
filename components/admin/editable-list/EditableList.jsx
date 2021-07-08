@@ -10,6 +10,7 @@ import {
 	ModalCloseButton,
 	Button,
 	Stack,
+	Box,
 } from '@chakra-ui/react';
 import ListingCreationDialog from '@components/admin/listing-creation-dialog';
 import Table from './table/Table.jsx';
@@ -29,16 +30,11 @@ const EditableList = ({
 		useState(false);
 
 	useEffect(() => {
-		setData(items);
-	}, [items]);
-
-	useEffect(() => {
 		const filtered = items.filter((item) =>
 			item.title.toLowerCase().includes(filter.toLowerCase()),
 		);
 		setData(filtered);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [filter]);
+	}, [filter, items]);
 
 	const enterEdit = useCallback((dataItem) => {
 		setItemInEdit(dataItem);
@@ -98,20 +94,22 @@ const EditableList = ({
 
 	return (
 		<>
-			<Heading>Listings</Heading>
-			{isAdmin ? (
-				<Text mb={4} color="gray.600">
-					You are an admin, so you can edit all the listings. With
-					great power comes great responsibility.
-				</Text>
-			) : (
-				<Text mb={4} color="gray.600">
-					The list below only includes groups that you have edit
-					access to. If you think you should be able to edit a group
-					not included below, please get in touch at
-					cambridgeresilienceweb@gmail.com
-				</Text>
-			)}
+			<Box px={4}>
+				<Heading>Listings</Heading>
+				{isAdmin ? (
+					<Text mb={4} color="gray.600">
+						You are an admin, so you can edit all the listings. With
+						great power comes great responsibility.
+					</Text>
+				) : (
+					<Text mb={4} color="gray.600">
+						The list below only includes groups that you have edit
+						access to. If you think you should be able to edit a
+						group not included below, please get in touch at
+						cambridgeresilienceweb@gmail.com
+					</Text>
+				)}
+			</Box>
 			<Table
 				enterEdit={enterEdit}
 				removeItem={handleRemove}

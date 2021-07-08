@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import chroma from 'chroma-js';
 import {
 	Button,
 	Table,
@@ -8,6 +9,7 @@ import {
 	Thead,
 	Tr,
 	Stack,
+	Tag,
 	useColorModeValue as mode,
 } from '@chakra-ui/react';
 
@@ -79,6 +81,15 @@ export const columns = [
 	{
 		Header: 'Category',
 		accessor: 'category',
+		Cell: function StatusCell(category) {
+			if (!category) return null;
+			const color = chroma(`#${category.color}`);
+			return (
+				<Tag fontSize="xs" backgroundColor={color.alpha(0.5).css()}>
+					{category.label}
+				</Tag>
+			);
+		},
 	},
 	{
 		Header: 'Website',
@@ -91,13 +102,6 @@ export const columns = [
 	{
 		Header: 'Description',
 		accessor: 'description',
-		//   Cell: function StatusCell(data) {
-		// 	return (
-		// 	  <Badge fontSize="xs" colorScheme={badgeEnum[data]}>
-		// 		{data}
-		// 	  </Badge>
-		// 	)
-		//   },
 	},
 ];
 

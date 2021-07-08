@@ -10,7 +10,7 @@ export default async function (req, res) {
 					where: { id: parseInt(listingId) },
 					data: {
 						title: listingData.title,
-						category: listingData.category,
+						categoryId: parseInt(listingData.category),
 						website: listingData.website,
 						description: listingData.description,
 						email: listingData.email,

@@ -52,11 +52,14 @@ const Drawer = ({ handleSearchTermChange, items, searchTerm, selectNode }) => {
 					value={searchTerm}
 				/>
 			</Box>
-			{sortedItems.map((item) => (
+			{sortedItems.map((item, index) => (
 				<div key={item.id}>
 					<div
 						className={styles.item}
 						onClick={() => handleClick(item.id)}
+						onKeyUp={() => handleClick(item.id)}
+						role="button"
+						tabIndex={index}
 					>
 						{item.label}
 					</div>

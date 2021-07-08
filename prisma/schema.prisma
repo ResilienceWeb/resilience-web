@@ -65,12 +65,24 @@ model VerificationRequest {
     @@map(name: "verification_requests")
 }
 
+model Category {
+    id        Int       @id @default(autoincrement())
+    createdAt DateTime  @default(now()) @map(name: "created_at")
+    updatedAt DateTime  @default(now()) @map(name: "updated_at")
+    label     String    @unique
+    color     String?   @default("f1f1f1")
+    listings  Listing[]
+
+    @@map(name: "categories")
+}
+
 model Listing {
-    id                Int      @id @default(autoincrement())
-    createdAt         DateTime @default(now()) @map(name: "created_at")
-    updatedAt         DateTime @default(now()) @map(name: "updated_at")
+    id                Int       @id @default(autoincrement())
+    createdAt         DateTime  @default(now()) @map(name: "created_at")
+    updatedAt         DateTime  @default(now()) @map(name: "updated_at")
     title             String
-    category          String
+    category          Category? @relation(fields: [categoryId], references: [id])
+    categoryId        Int?
     website           String?
     description       String?
     facebook          String?
@@ -78,8 +90,8 @@ model Listing {
     instagram         String?
     email             String?
     notes             String?
-    seekingVolunteers Boolean? @map(name: "seeking_volunteers")
-    inactive          Boolean  @default(false)
+    seekingVolunteers Boolean?  @map(name: "seeking_volunteers")
+    inactive          Boolean   @default(false)
 
     @@map(name: "listings")
 }

@@ -5,19 +5,13 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import LayoutContainer from '@components/admin/layout-container';
 import EditableList from '@components/admin/editable-list';
 import LoadingSpinner from '@components/loading-spinner';
+import { useListings } from '../hooks/listings';
 
 async function fetchPermissionsRequest() {
 	const response = await fetch('/api/permissions');
 	const data = await response.json();
 	const { editPermissions } = data;
 	return editPermissions;
-}
-
-async function fetchListingsRequest() {
-	const response = await fetch('/api/listings');
-	const data = await response.json();
-	const { listings } = data;
-	return listings;
 }
 
 async function updateListingRequest(listingData) {
@@ -138,10 +132,10 @@ function useCreateListing() {
 export default function Admin() {
 	const [session, loadingSession] = useSession();
 	const {
-		data: listings,
+		listings,
 		isLoading: isLoadingListings,
 		isError: isListingsError,
-	} = useQuery('listings', fetchListingsRequest);
+	} = useListings();
 	const { data: permissions, isLoading: isLoadingPermissions } = useQuery(
 		'permissions',
 		fetchPermissionsRequest,

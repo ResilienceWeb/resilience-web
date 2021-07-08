@@ -6,7 +6,7 @@ export default async function (req, res) {
 		const listing = await prisma.listing.create({
 			data: {
 				title: listingData.title,
-				category: listingData.category,
+				categoryId: listingData.category,
 				website: listingData.website,
 				description: listingData.description,
 				email: listingData.email,

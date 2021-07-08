@@ -19,6 +19,7 @@ import {
 	HStack,
 } from '@chakra-ui/react';
 import { CATEGORY_MAPPING } from '../../../data/enums.js';
+import { useCategories } from '../../../hooks/categories';
 
 const DEFAULT_CATEGORY = CATEGORY_MAPPING.Environment;
 
@@ -37,6 +38,10 @@ function validateTextField(value) {
 }
 
 const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
+	const { categories } = useCategories();
+
+	if (!categories) return null; // TODO: add loading spinner?
+
 	return (
 		<Modal onClose={onClose} isOpen size="2xl">
 			<ModalOverlay />
@@ -51,7 +56,8 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 							id: itemInEdit?.id || null,
 							title: itemInEdit?.title || '',
 							description: itemInEdit?.description || '',
-							category: itemInEdit?.category || DEFAULT_CATEGORY,
+							category:
+								itemInEdit?.category.id || categories[0].id,
 							email: itemInEdit?.email || '',
 							website: itemInEdit?.website || '',
 							facebook: itemInEdit?.facebook || '',
@@ -129,14 +135,12 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 													Category
 												</FormLabel>
 												<Select {...field}>
-													{Object.keys(
-														CATEGORY_MAPPING,
-													).map((c) => (
+													{categories.map((c) => (
 														<option
-															key={c}
-															value={c}
+															key={c.id}
+															value={c.id}
 														>
-															{c}
+															{c.label}
 														</option>
 													))}
 												</Select>
