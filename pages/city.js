@@ -120,103 +120,103 @@ const startsWithCapitalLetter = (word) =>
 
 export async function getStaticProps() {
 	let REMOTE_URL = '';
-	if (process.env.NODE_ENV === 'development') {
-		REMOTE_URL = 'http://localhost:3000';
-	} else {
-		REMOTE_URL = 'https://cambridgeresilienceweb.org.uk';
-	}
-	const listingsInDb = await fetch(`${REMOTE_URL}/api/listings`);
+	// if (process.env.NODE_ENV === 'development') {
+	// 	REMOTE_URL = 'http://localhost:3000';
+	// } else {
+	REMOTE_URL = 'https://cambridgeresilienceweb.org.uk';
+	// }
+	// const listingsInDb = await fetch(`${REMOTE_URL}/api/listings`);
 
-	const data = await listingsInDb.json();
-	const { listings } = data;
+	// const data = await listingsInDb.json();
+	// const { listings } = data;
 
-	const transformedData = {
-		nodes: [],
-		edges: [],
-	};
+	// const transformedData = {
+	// 	nodes: [],
+	// 	edges: [],
+	// };
 
-	listings.map(
-		({
-			id,
-			title,
-			category,
-			description,
-			website,
-			facebook,
-			twitter,
-			instagram,
-			email,
-			seekingVolunteers,
-		}) => {
-			transformedData.nodes.push({
-				id,
-				label: title,
-				category: category.label,
-				description,
-				website,
-				facebook,
-				twitter,
-				instagram,
-				email,
-				seekingVolunteers,
-				color: `#${category.color}`,
-			});
-		},
-	);
+	// listings.map(
+	// 	({
+	// 		id,
+	// 		title,
+	// 		category,
+	// 		description,
+	// 		website,
+	// 		facebook,
+	// 		twitter,
+	// 		instagram,
+	// 		email,
+	// 		seekingVolunteers,
+	// 	}) => {
+	// 		transformedData.nodes.push({
+	// 			id,
+	// 			label: title,
+	// 			category: category.label,
+	// 			description,
+	// 			website,
+	// 			facebook,
+	// 			twitter,
+	// 			instagram,
+	// 			email,
+	// 			seekingVolunteers,
+	// 			color: `#${category.color}`,
+	// 		});
+	// 	},
+	// );
 
-	let groupedByCategory = groupBy(transformedData.nodes, 'category');
+	// let groupedByCategory = groupBy(transformedData.nodes, 'category');
 
-	groupedByCategory = Object.fromEntries(
-		Object.entries(groupedByCategory).filter(([key]) => {
-			return (
-				key.length > 0 &&
-				key !== 'undefined' &&
-				startsWithCapitalLetter(key)
-			);
-		}),
-	);
+	// groupedByCategory = Object.fromEntries(
+	// 	Object.entries(groupedByCategory).filter(([key]) => {
+	// 		return (
+	// 			key.length > 0 &&
+	// 			key !== 'undefined' &&
+	// 			startsWithCapitalLetter(key)
+	// 		);
+	// 	}),
+	// );
 
-	// Main node
-	transformedData.nodes.push({
-		id: 999,
-		label: 'Cambridge Resilience Web',
-		color: '#fcba03',
-		isDescriptive: true,
-		font: {
-			size: 46,
-		},
-	});
+	// // Main node
+	// transformedData.nodes.push({
+	// 	id: 999,
+	// 	label: 'Cambridge Resilience Web',
+	// 	color: '#fcba03',
+	// 	isDescriptive: true,
+	// 	font: {
+	// 		size: 46,
+	// 	},
+	// });
 
-	let categoryIndex = 1;
-	for (const category in groupedByCategory) {
-		const categoryId = categoryIndex * 1000;
-		transformedData.nodes.push({
-			id: categoryId,
-			label: category,
-			color: '#c3c4c7',
-			isDescriptive: true,
-		});
-		categoryIndex++;
+	// let categoryIndex = 1;
+	// for (const category in groupedByCategory) {
+	// 	const categoryId = categoryIndex * 1000;
+	// 	transformedData.nodes.push({
+	// 		id: categoryId,
+	// 		label: category,
+	// 		color: '#c3c4c7',
+	// 		isDescriptive: true,
+	// 	});
+	// 	categoryIndex++;
 
-		// From main node to category node
-		transformedData.edges.push({
-			from: 999,
-			to: categoryId,
-			length: 2000,
-		});
+	// 	// From main node to category node
+	// 	transformedData.edges.push({
+	// 		from: 999,
+	// 		to: categoryId,
+	// 		length: 2000,
+	// 	});
 
-		// From category node to all subitems
-		groupedByCategory[category].map((item) => {
-			transformedData.edges.push({
-				from: categoryId,
-				to: item.id,
-			});
-		});
-	}
+	// 	// From category node to all subitems
+	// 	groupedByCategory[category].map((item) => {
+	// 		transformedData.edges.push({
+	// 			from: categoryId,
+	// 			to: item.id,
+	// 		});
+	// 	});
+	// }
 
 	return {
 		props: {
-			data: transformedData,
+			data: {},
 		},
 		revalidate: 60,
 	};
