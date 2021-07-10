@@ -26,4 +26,8 @@ export default NextAuth({
 			return session;
 		},
 	},
+	theme: 'light',
+	pages: {
+		signIn: '/auth/signin',
+	},
 });
