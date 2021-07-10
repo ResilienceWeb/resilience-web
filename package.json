@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
-		"build": "prisma migrate deploy && next build",
+		"build": "next build",
 		"start": "next start",
 		"db": "prisma studio",
 		"postinstall": "prisma generate"
