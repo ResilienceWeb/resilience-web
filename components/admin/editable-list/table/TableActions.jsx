@@ -17,7 +17,6 @@ const TableActions = ({
 	filterValue,
 	onFilterChange,
 	openListingCreationDialog,
-	openRemoteUpdateConfirmationDialog,
 }) => {
 	return (
 		<Stack
@@ -72,13 +71,6 @@ const TableActions = ({
 					variant="solid"
 				>
 					New listing
-				</Button>
-				<Button
-					onClick={openRemoteUpdateConfirmationDialog}
-					size="sm"
-					title="Update the data used by the website for the listings"
-				>
-					Update data for listings
 				</Button>
 			</ButtonGroup>
 		</Stack>

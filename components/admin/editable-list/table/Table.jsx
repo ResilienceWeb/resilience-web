@@ -9,7 +9,6 @@ const Table = ({
 	items,
 	onFilterChange,
 	openListingCreationDialog,
-	openRemoteUpdateConfirmationDialog,
 	removeItem,
 }) => {
 	return (
@@ -19,9 +18,6 @@ const Table = ({
 					filterValue={filterValue}
 					onFilterChange={onFilterChange}
 					openListingCreationDialog={openListingCreationDialog}
-					openRemoteUpdateConfirmationDialog={
-						openRemoteUpdateConfirmationDialog
-					}
 				/>
 				<TableContent
 					enterEdit={enterEdit}

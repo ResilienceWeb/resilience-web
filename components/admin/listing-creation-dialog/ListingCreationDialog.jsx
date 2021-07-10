@@ -18,10 +18,7 @@ import {
 	ModalCloseButton,
 	HStack,
 } from '@chakra-ui/react';
-import { CATEGORY_MAPPING } from '../../../data/enums.js';
 import { useCategories } from '../../../hooks/categories';
-
-const DEFAULT_CATEGORY = CATEGORY_MAPPING.Environment;
 
 const emailRegex = new RegExp(/\S+@\S+\.\S+/);
 const emailValidator = (value) => {

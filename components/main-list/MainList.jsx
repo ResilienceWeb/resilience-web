@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import chroma from 'chroma-js';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -12,16 +12,9 @@ import {
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import Dialog from './dialog';
-// import { useCategories } from '../../hooks/categories';
-import { CATEGORY_MAPPING, COLOR_MAPPING } from '../../data/enums.js';
+import { useCategories } from '../../hooks/categories';
 import Item from './item';
 import styles from './MainList.module.scss';
-
-const categories = Object.keys(CATEGORY_MAPPING).map((key) => ({
-	value: key,
-	label: CATEGORY_MAPPING[key],
-	color: COLOR_MAPPING[key],
-}));
 
 const customMultiSelectStyles = {
 	option: (provided, state) => {
@@ -53,6 +46,7 @@ const customMultiSelectStyles = {
 
 const MainList = ({ items }) => {
 	const [selectedCategories, setSelectedCategories] = useState([]);
+	const [categories, setCategories] = useState({});
 	const [selectedDataItem, setSelectedDataItem] = useState();
 	const {
 		isOpen: isDialogOpen,
@@ -60,9 +54,19 @@ const MainList = ({ items }) => {
 		onClose: onCloseDialog,
 	} = useDisclosure();
 	const [searchTerm, setSearchTem] = useState('');
-	// const { categories: fetchedCategories } = useCategories();
-	// console.log(fetchedCategories, categories);
-	// console.log(selectedCategories);
+	const { categories: fetchedCategories } = useCategories();
+
+	useEffect(() => {
+		if (!fetchedCategories) return;
+
+		setCategories(
+			fetchedCategories.map((c) => ({
+				value: c.label,
+				label: c.label,
+				color: `#${c.color}`,
+			})),
+		);
+	}, [fetchedCategories]);
 
 	const handleCategorySelection = useCallback((value) => {
 		setSelectedCategories(value);
@@ -76,7 +80,7 @@ const MainList = ({ items }) => {
 		let results = items.filter((item) => !item.isDescriptive);
 
 		if (selectedCategories.length > 0) {
-			const categories = selectedCategories.map((c) => c.value);
+			const categories = selectedCategories.map((c) => c.label);
 			results = results.filter((item) =>
 				categories.includes(item.category),
 			);

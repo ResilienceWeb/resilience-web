@@ -1,17 +1,5 @@
 import { useCallback, useEffect, useState, memo } from 'react';
-import {
-	Heading,
-	Text,
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalCloseButton,
-	Button,
-	Stack,
-	Box,
-} from '@chakra-ui/react';
+import { Heading, Text, Box } from '@chakra-ui/react';
 import ListingCreationDialog from '@components/admin/listing-creation-dialog';
 import Table from './table/Table.jsx';
 
@@ -26,8 +14,6 @@ const EditableList = ({
 	const [filter, setFilter] = useState('');
 	const [itemInEdit, setItemInEdit] = useState();
 	const [isListingCreationOpen, setIsListingCreationOpen] = useState(false);
-	const [isRemoteUpdateConfirmationOpen, setIsRemoteUpdateConfirmationOpen] =
-		useState(false);
 
 	useEffect(() => {
 		const filtered = items.filter((item) =>
@@ -48,25 +34,6 @@ const EditableList = ({
 	const closeListingCreationDialog = useCallback(() => {
 		setIsListingCreationOpen(false);
 		setItemInEdit(null);
-	}, []);
-
-	const updateRemoteListingData = useCallback(async () => {
-		if (process.env.NODE_ENV === 'development') {
-			// eslint-disable-next-line no-console
-			console.error(
-				'Oops, you tried to update the remote data during development - please only do that with production data',
-			);
-		} else {
-			await fetch('/api/listings/updateRemote');
-			closeRemoteUpdateConfirmationDialog();
-		}
-	}, [closeRemoteUpdateConfirmationDialog]);
-
-	const openRemoteUpdateConfirmationDialog = useCallback(() => {
-		setIsRemoteUpdateConfirmationOpen(true);
-	}, []);
-	const closeRemoteUpdateConfirmationDialog = useCallback(() => {
-		setIsRemoteUpdateConfirmationOpen(false);
 	}, []);
 
 	const handleRemove = useCallback(
@@ -117,9 +84,6 @@ const EditableList = ({
 				items={data}
 				onFilterChange={handleFilterChange}
 				openListingCreationDialog={openListingCreationDialog}
-				openRemoteUpdateConfirmationDialog={
-					openRemoteUpdateConfirmationDialog
-				}
 			/>
 			{(isListingCreationOpen || itemInEdit) && (
 				<ListingCreationDialog
@@ -127,48 +91,6 @@ const EditableList = ({
 					onClose={closeListingCreationDialog}
 					onSubmit={handleSubmit}
 				/>
-			)}
-			{isRemoteUpdateConfirmationOpen && (
-				<Modal
-					isCentered
-					onClose={closeRemoteUpdateConfirmationDialog}
-					isOpen
-					size="md"
-				>
-					<ModalOverlay />
-					<ModalContent>
-						<ModalHeader>
-							{itemInEdit ? 'Edit listing' : 'Create new listing'}
-						</ModalHeader>
-						<ModalCloseButton />
-						<ModalBody>
-							<p
-								style={{
-									margin: '25px',
-									textAlign: 'center',
-								}}
-							>
-								This will update the data used by the website to
-								display the listings, so that the changes you
-								just made will be reflected in the app. If you
-								did not make any changes, you can just close the
-								dialog or click Cancel.
-							</p>
-							<Stack direction="row">
-								<Button
-									onClick={
-										closeRemoteUpdateConfirmationDialog
-									}
-								>
-									Cancel
-								</Button>
-								<Button onClick={updateRemoteListingData}>
-									Yes, do it
-								</Button>
-							</Stack>
-						</ModalBody>
-					</ModalContent>
-				</Modal>
 			)}
 		</>
 	);
