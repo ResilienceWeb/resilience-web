@@ -120,11 +120,11 @@ const startsWithCapitalLetter = (word) =>
 
 export async function getStaticProps() {
 	let REMOTE_URL = '';
-	// if (process.env.NODE_ENV === 'development') {
-	// 	REMOTE_URL = 'http://localhost:3000';
-	// } else {
-	REMOTE_URL = 'https://cambridgeresilienceweb.org.uk';
-	// }
+	if (process.env.NODE_ENV === 'development') {
+		REMOTE_URL = 'http://localhost:3000';
+	} else {
+		REMOTE_URL = 'https://cambridgeresilienceweb.org.uk';
+	}
 	const listingsInDb = await fetch(`${REMOTE_URL}/api/listings`);
 
 	const data = await listingsInDb.json();
