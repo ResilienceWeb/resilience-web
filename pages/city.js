@@ -41,7 +41,7 @@ const City = ({ data }) => {
 		() => window.matchMedia('only screen and (max-width: 760px)').matches,
 		[],
 	);
-	const [isWebMode, setIsWebMode] = useState(isMobile); // TODO: revert
+	const [isWebMode, setIsWebMode] = useState(!isMobile);
 
 	const filteredItems = useMemo(() => {
 		return searchTermValue
