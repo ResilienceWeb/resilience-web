@@ -29,5 +29,6 @@ export default NextAuth({
 	theme: 'light',
 	pages: {
 		signIn: '/auth/signin',
+		verifyRequest: '/auth/verify-request',
 	},
 });

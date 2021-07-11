@@ -1,8 +1,8 @@
 import { getCsrfToken } from 'next-auth/client';
-import { Button, Input, Flex, Box, StylesProvider } from '@chakra-ui/react';
+import { Button, Input, Flex, Box } from '@chakra-ui/react';
 import Image from 'next/image';
 import LogoImage from '../../public/logo.png';
-import styles from './signin.module.scss';
+import styles from './auth.module.scss';
 
 export default function SignIn({ csrfToken }) {
 	return (
