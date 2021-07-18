@@ -1,6 +1,7 @@
 import { signIn, useSession } from 'next-auth/client';
-import { useEffect, useMemo } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { Flex } from '@chakra-ui/react';
 
 import LayoutContainer from '@components/admin/layout-container';
 import EditableList from '@components/admin/editable-list';
@@ -129,7 +130,7 @@ function useCreateListing() {
 	});
 }
 
-export default function Admin() {
+const Admin = () => {
 	const [session, loadingSession] = useSession();
 	const {
 		listings,
@@ -155,10 +156,18 @@ export default function Admin() {
 		if (!session || isLoadingPermissions) return null;
 		if (session.user.admin) return listings;
 
-		return listings.filter((listing) => permissions.includes(listing.id));
+		return listings?.filter((listing) => permissions.includes(listing.id));
 	}, [listings, permissions, session, isLoadingPermissions]);
 
-	if (loadingSession || isLoadingListings || isLoadingPermissions) {
+	if (loadingSession) {
+		return (
+			<Flex height="100vh" justifyContent="center" alignItems="center">
+				<LoadingSpinner />
+			</Flex>
+		);
+	}
+
+	if (isLoadingListings || isLoadingPermissions) {
 		return (
 			<LayoutContainer>
 				<LoadingSpinner />
@@ -184,4 +193,6 @@ export default function Admin() {
 			/>
 		</LayoutContainer>
 	);
-}
+};
+
+export default memo(Admin);

@@ -49,12 +49,12 @@ const Nav = () => {
 			},
 		];
 
-		// if (session?.user.admin) {
-		// 	links.push({ label: 'Permissions', href: '/admin/permissions' });
-		// }
+		if (session?.user.admin) {
+			links.push({ label: 'Permissions', href: '/admin/permissions' });
+		}
 
 		return links;
-	}, []);
+	}, [session?.user.admin]);
 
 	const handleSignOut = useCallback(() => signOut(), []);
 
@@ -71,14 +71,14 @@ const Nav = () => {
 				<HStack spacing={8} alignItems={'center'}>
 					<Box>
 						<Link as={NextLink} href="/">
-							<a>
+							<button>
 								<Image
 									alt="Cambridge Resilience Web logo"
 									src={LogoImage}
 									width="130"
 									height="50"
 								/>
-							</a>
+							</button>
 						</Link>
 					</Box>
 					<HStack

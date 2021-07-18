@@ -9,6 +9,7 @@ import {
 	InputLeftElement,
 	Stack,
 } from '@chakra-ui/react';
+import { signIn, useSession } from 'next-auth/client';
 import { memo } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { RiAddFill } from 'react-icons/ri';
@@ -18,6 +19,8 @@ const TableActions = ({
 	onFilterChange,
 	openListingCreationDialog,
 }) => {
+	const [session, loadingSession] = useSession();
+
 	return (
 		<Stack
 			spacing="4"
@@ -62,17 +65,19 @@ const TableActions = ({
 					<option>Marketing Directors</option>
 				</Select> */}
 			</HStack>
-			<ButtonGroup size="sm" variant="outline">
-				<Button
-					colorScheme="green"
-					iconSpacing="1"
-					leftIcon={<RiAddFill fontSize="1.25em" />}
-					onClick={openListingCreationDialog}
-					variant="solid"
-				>
-					New listing
-				</Button>
-			</ButtonGroup>
+			{session?.user?.admin && (
+				<ButtonGroup size="sm" variant="outline">
+					<Button
+						colorScheme="green"
+						iconSpacing="1"
+						leftIcon={<RiAddFill fontSize="1.25em" />}
+						onClick={openListingCreationDialog}
+						variant="solid"
+					>
+						New listing
+					</Button>
+				</ButtonGroup>
+			)}
 		</Stack>
 	);
 };

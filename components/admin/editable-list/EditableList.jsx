@@ -17,7 +17,7 @@ const EditableList = ({
 
 	useEffect(() => {
 		const filtered = items.filter((item) =>
-			item.title.toLowerCase().includes(filter.toLowerCase()),
+			item.title?.toLowerCase().includes(filter.toLowerCase()),
 		);
 		setData(filtered);
 	}, [filter, items]);

@@ -32,7 +32,7 @@
 		"react-query": "3.18.1",
 		"react-select": "4.3.1",
 		"sass": "1.35.2",
-		"use-debounce": "6.0.1",
+		"use-debounce": "7.0.0",
 		"vis-network-react": "DinerIsmail/vis-network-react"
 	},
 	"devDependencies": {
