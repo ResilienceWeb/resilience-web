@@ -16,7 +16,7 @@ export default function useCategories() {
 
 	return {
 		categories,
-		isLoadingCategories: isLoading,
-		isCategoriesError: isError,
+		isLoading,
+		isError,
 	};
 }

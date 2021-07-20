@@ -9,7 +9,7 @@ import {
 	InputLeftElement,
 	Stack,
 } from '@chakra-ui/react';
-import { signIn, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import { memo } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { RiAddFill } from 'react-icons/ri';
@@ -19,7 +19,7 @@ const TableActions = ({
 	onFilterChange,
 	openListingCreationDialog,
 }) => {
-	const [session, loadingSession] = useSession();
+	const [session] = useSession();
 
 	return (
 		<Stack
@@ -38,7 +38,6 @@ const TableActions = ({
 							<BsSearch />
 						</InputLeftElement>
 						<Input
-							// className={styles.searchBox}
 							placeholder="Filter by title…"
 							onChange={onFilterChange}
 							style={{

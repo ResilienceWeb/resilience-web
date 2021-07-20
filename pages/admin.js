@@ -6,14 +6,8 @@ import { Flex } from '@chakra-ui/react';
 import LayoutContainer from '@components/admin/layout-container';
 import EditableList from '@components/admin/editable-list';
 import LoadingSpinner from '@components/loading-spinner';
-import { useListings } from '../hooks/listings';
-
-async function fetchPermissionsRequest() {
-	const response = await fetch('/api/permissions');
-	const data = await response.json();
-	const { editPermissions } = data;
-	return editPermissions;
-}
+import { useListings } from '@hooks/listings';
+import { usePermissions } from '@hooks/permissions';
 
 async function updateListingRequest(listingData) {
 	const response = await fetch(`/api/listings/${listingData.id}`, {
@@ -137,10 +131,7 @@ const Admin = () => {
 		isLoading: isLoadingListings,
 		isError: isListingsError,
 	} = useListings();
-	const { data: permissions, isLoading: isLoadingPermissions } = useQuery(
-		'permissions',
-		fetchPermissionsRequest,
-	);
+	const { permissions, isLoading: isLoadingPermissions } = usePermissions();
 
 	const { mutate: updateListing } = useUpdateListing();
 	const { mutate: createListing } = useCreateListing();

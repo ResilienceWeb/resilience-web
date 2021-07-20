@@ -23,7 +23,8 @@
 		"import/resolver": {
 			"alias": {
 				"map": [
-					["@components", "./components/"]
+					["@components", "./components/"],
+					["@hooks", "./hooks/"]
 				],
 				"extensions": [".js", ".jsx"]
 			}
