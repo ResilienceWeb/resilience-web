@@ -1,6 +1,6 @@
 import { signIn, useSession } from 'next-auth/client';
 import { memo, useEffect, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { Flex } from '@chakra-ui/react';
 
 import LayoutContainer from '@components/admin/layout-container';

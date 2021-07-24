@@ -97,12 +97,11 @@ model Listing {
 }
 
 model EditPermission {
-    id                 Int      @id @default(autoincrement())
-    createdAt          DateTime @default(now()) @map(name: "created_at")
-    updatedAt          DateTime @default(now()) @map(name: "updated_at")
-    userId             Int
-    listingId          Int
-    invitationAccepted Boolean  @default(false)
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @default(now()) @map(name: "updated_at")
+    email     String   @default("TOREPLACE")
+    listingId Int
 
     @@map(name: "edit_permissions")
 }

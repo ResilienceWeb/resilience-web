@@ -23,6 +23,15 @@ export default function Invite() {
 	const [session, loadingSession] = useSession();
 	const { listings, isLoading: isLoadingListings } = useListings();
 
+	// useEffect(() => {
+	// 	async function fetchData() {
+	// 		const response = await fetch('/api/permissions/all');
+	// 		const data = await response.json();
+	// 		console.log('resp', data);
+	// 	}
+	// 	fetchData();
+	// }, []);
+
 	useEffect(() => {
 		if (!session && !loadingSession) {
 			signIn();
@@ -30,11 +39,14 @@ export default function Invite() {
 	}, [session, loadingSession]);
 
 	const inviteUser = useCallback(async (data) => {
-		const response = await axios.post(`/api/auth/inviteUser`, {
-			email: data.email,
-			listing: data.listing,
-		});
-		console.log({ response });
+		const response = await axios.post(
+			`http://localhost:3000/api/inviteUser`,
+			{
+				email: data.email,
+				listingId: data.listing,
+			},
+		);
+		// console.log({ response });
 	}, []);
 
 	if (loadingSession || isLoadingListings) {
@@ -54,7 +66,8 @@ export default function Invite() {
 			<Box mt={8} maxW="400px">
 				<Formik
 					initialValues={{
-						email: '',
+						email: 'ismail.diner+test7@gmail.com',
+						listing: listings[0].id,
 					}}
 					onSubmit={inviteUser}
 				>
@@ -94,12 +107,12 @@ export default function Invite() {
 												Listing
 											</FormLabel>
 											<Select {...field}>
-												{listings.map((c) => (
+												{listings.map((l) => (
 													<option
-														key={c.id}
-														value={c.id}
+														key={l.id}
+														value={l.id}
 													>
-														{c.title}
+														{l.title}
 													</option>
 												))}
 											</Select>
@@ -125,7 +138,7 @@ export default function Invite() {
 								type="submit"
 								_hover={{ bg: '#4a9e7f' }}
 							>
-								Invite user test
+								Send invite
 							</Button>
 						</Form>
 					)}

@@ -2,7 +2,7 @@
 	"name": "cambridge-resilience-web",
 	"version": "0.1.0",
 	"scripts": {
-		"dev": "next dev",
+		"dev": "NODE_OPTIONS='--inspect' next dev",
 		"build": "next build",
 		"start": "next start",
 		"db": "prisma studio",
@@ -26,6 +26,7 @@
 		"next": "11.0.1",
 		"next-auth": "3.27.3",
 		"next-seo": "4.26.0",
+		"nodemailer": "6.6.3",
 		"qs": "6.10.1",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",

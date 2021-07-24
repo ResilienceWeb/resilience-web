@@ -22,5 +22,5 @@ a:hover {
 }
 
 :root {
-	--primary-green: rgb(74, 158, 127);
+	--primary-green: #4a9e7f; /* rgb(74, 158, 127); */
 }
