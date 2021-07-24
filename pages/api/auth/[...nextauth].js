@@ -49,7 +49,7 @@ export default NextAuth({
 			}) {
 				const userInfo = await fetchUserByEmail(email);
 
-				if (userInfo?.emailVerified) {
+				if (userInfo) {
 					return new Promise((resolve, reject) => {
 						const { server, from } = provider;
 						nodemailer.createTransport(server).sendMail(
@@ -85,7 +85,7 @@ export default NextAuth({
 						);
 					});
 				} else {
-					// User is not registered, so going for invitation workflow, as u
+					// User is not registered, so going for invitation workflow
 					const permissions = await fetchPermissions(email);
 					const permission = permissions.reduce(
 						(accumulator, current) =>
