@@ -20,6 +20,13 @@ import LoadingSpinner from '@components/loading-spinner';
 import { useListings } from '@hooks/listings';
 import { emailRequiredValidator } from '../../helpers/emails';
 
+let REMOTE_URL = '';
+if (process.env.NODE_ENV === 'development') {
+	REMOTE_URL = 'http://localhost:3000';
+} else {
+	REMOTE_URL = 'https://cambridgeresilienceweb.org.uk';
+}
+
 export default function Invite() {
 	const [session, loadingSession] = useSession();
 	const { listings, isLoading: isLoadingListings } = useListings();
@@ -34,7 +41,7 @@ export default function Invite() {
 	const inviteUser = useCallback(
 		async (data) => {
 			const response = await axios.post(
-				`http://localhost:3000/api/auth/inviteUser`,
+				`${REMOTE_URL}/api/auth/inviteUser`,
 				{
 					email: data.email,
 					listingId: data.listing,

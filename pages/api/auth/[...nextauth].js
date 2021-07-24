@@ -22,10 +22,15 @@ async function fetchPermissions(email) {
 }
 
 async function fetchUserByEmail(email) {
-	const response = await fetch(`${REMOTE_URL}/api/users/${email}`);
-	const data = await response.json();
-	const { user } = data;
-	return user;
+	try {
+		const response = await fetch(`${REMOTE_URL}/api/users/${email}`);
+		const data = await response.json();
+		const { user } = data;
+		return user;
+	} catch (e) {
+		// eslint-disable-next-line no-console
+		console.error('Error', e);
+	}
 }
 
 export default NextAuth({
@@ -49,7 +54,7 @@ export default NextAuth({
 			}) {
 				const userInfo = await fetchUserByEmail(email);
 
-				if (userInfo) {
+				if (!userInfo) {
 					return new Promise((resolve, reject) => {
 						const { server, from } = provider;
 						nodemailer.createTransport(server).sendMail(
@@ -87,6 +92,7 @@ export default NextAuth({
 				} else {
 					// User is not registered, so going for invitation workflow
 					const permissions = await fetchPermissions(email);
+
 					const permission = permissions.reduce(
 						(accumulator, current) =>
 							Date.parse(accumulator.createdAt) >=
