@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import Dialog from './dialog';
-import { useCategories } from '../../hooks/categories';
+import { useCategories } from '@hooks/categories';
 import Item from './item';
 import styles from './MainList.module.scss';
 

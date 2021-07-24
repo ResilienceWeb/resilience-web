@@ -77,11 +77,11 @@ model Category {
 }
 
 model Listing {
-    id                Int       @id @default(autoincrement())
-    createdAt         DateTime  @default(now()) @map(name: "created_at")
-    updatedAt         DateTime  @default(now()) @map(name: "updated_at")
+    id                Int              @id @default(autoincrement())
+    createdAt         DateTime         @default(now()) @map(name: "created_at")
+    updatedAt         DateTime         @default(now()) @map(name: "updated_at")
     title             String
-    category          Category? @relation(fields: [categoryId], references: [id])
+    category          Category?        @relation(fields: [categoryId], references: [id])
     categoryId        Int?
     website           String?
     description       String?
@@ -90,19 +90,20 @@ model Listing {
     instagram         String?
     email             String?
     notes             String?
-    seekingVolunteers Boolean?  @map(name: "seeking_volunteers")
-    inactive          Boolean   @default(false)
+    seekingVolunteers Boolean?         @map(name: "seeking_volunteers")
+    inactive          Boolean          @default(false)
+    editPermissions   EditPermission[]
 
     @@map(name: "listings")
 }
 
 model EditPermission {
-    id                 Int      @id @default(autoincrement())
-    createdAt          DateTime @default(now()) @map(name: "created_at")
-    updatedAt          DateTime @default(now()) @map(name: "updated_at")
-    userId             Int
-    listingId          Int
-    invitationAccepted Boolean  @default(false)
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @default(now()) @map(name: "updated_at")
+    email     String   @default("TOREPLACE")
+    listing   Listing  @relation(fields: [listingId], references: [id])
+    listingId Int
 
     @@map(name: "edit_permissions")
 }

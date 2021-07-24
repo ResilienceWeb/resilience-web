@@ -50,7 +50,7 @@ const Nav = () => {
 		];
 
 		if (session?.user.admin) {
-			links.push({ label: 'Permissions', href: '/admin/permissions' });
+			links.push({ label: 'Invite', href: '/admin/invite' });
 		}
 
 		return links;

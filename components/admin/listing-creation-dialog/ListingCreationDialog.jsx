@@ -18,13 +18,8 @@ import {
 	ModalCloseButton,
 	HStack,
 } from '@chakra-ui/react';
-import { useCategories } from '../../../hooks/categories';
-
-const emailRegex = new RegExp(/\S+@\S+\.\S+/);
-const emailValidator = (value) => {
-	if (value === '') return false;
-	return emailRegex.test(value) ? '' : 'Please enter a valid email.';
-};
+import { emailValidator } from '../../../helpers/emails';
+import { useCategories } from '@hooks/categories';
 
 function validateTextField(value) {
 	let error;
