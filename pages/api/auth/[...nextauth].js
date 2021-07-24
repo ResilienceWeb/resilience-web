@@ -4,14 +4,28 @@ import Adapters from 'next-auth/adapters';
 import nodemailer from 'nodemailer';
 import prisma from '../../../prisma/client.js';
 
+let REMOTE_URL = '';
+if (process.env.NODE_ENV === 'development') {
+	REMOTE_URL = 'http://localhost:3000';
+} else {
+	REMOTE_URL = 'https://cambridgeresilienceweb.org.uk';
+}
+
 async function fetchPermissions(email) {
 	const emailEncoded = encodeURIComponent(email);
 	const response = await fetch(
-		`http://localhost:3000/api/permissions?email=${emailEncoded}`,
+		`${REMOTE_URL}/api/permissions?email=${emailEncoded}`,
 	);
 	const data = await response.json();
 	const { editPermissions } = data;
 	return editPermissions;
+}
+
+async function fetchUserByEmail(email) {
+	const response = await fetch(`${REMOTE_URL}/api/users/${email}`);
+	const data = await response.json();
+	const { user } = data;
+	return user;
 }
 
 export default NextAuth({
@@ -25,7 +39,7 @@ export default NextAuth({
 					pass: process.env.EMAIL_SERVER_PASSWORD,
 				},
 			},
-			from: process.env.EMAIL_FROM,
+			from: `Cambridge Resilience Web <${process.env.EMAIL_FROM}>`,
 			async sendVerificationRequest({
 				identifier: email,
 				url,
@@ -33,46 +47,90 @@ export default NextAuth({
 				baseUrl,
 				provider,
 			}) {
-				const permissions = await fetchPermissions(email);
-				const permission = permissions.reduce((accumulator, current) =>
-					Date.parse(accumulator.createdAt) >=
-					Date.parse(current.createdAt)
-						? accumulator
-						: current,
-				);
-				console.log({ lastPermission: permission });
+				const userInfo = await fetchUserByEmail(email);
 
-				return new Promise((resolve, reject) => {
-					const { server, from } = provider;
-					// Strip protocol from URL and use domain as site name
-					const site = baseUrl.replace(/^https?:\/\//, '');
+				if (userInfo?.emailVerified) {
+					return new Promise((resolve, reject) => {
+						const { server, from } = provider;
+						nodemailer.createTransport(server).sendMail(
+							{
+								to: email,
+								from: `Cambridge Resilience Web <${from}>`,
+								subject: `Sign in to Cambridge Resilience Web`,
+								text: text({ url, email }),
+								html: html({
+									url,
+									email,
+									mainText: '',
+									footerText: `If you did not request this email you can safely ignore it.`,
+								}),
+							},
+							(error) => {
+								if (error) {
+									// eslint-disable-next-line no-console
+									console.error(
+										'SEND_VERIFICATION_EMAIL_ERROR',
+										email,
+										error,
+									);
+									return reject(
+										new Error(
+											'SEND_VERIFICATION_EMAIL_ERROR',
+											error,
+										),
+									);
+								}
+								return resolve();
+							},
+						);
+					});
+				} else {
+					// User is not registered, so going for invitation workflow, as u
+					const permissions = await fetchPermissions(email);
+					const permission = permissions.reduce(
+						(accumulator, current) =>
+							Date.parse(accumulator.createdAt) >=
+							Date.parse(current.createdAt)
+								? accumulator
+								: current,
+					);
 
-					return resolve();
+					return new Promise((resolve, reject) => {
+						const { server, from } = provider;
 
-					// nodemailer.createTransport(server).sendMail(
-					// 	{
-					// 		to: email,
-					// 		from,
-					// 		subject: `Your invite to Cambridge Resilience Web`,
-					// 		text: text({ url, site, email }),
-					// 		html: html({ url, site, email }),
-					// 	},
-					// 	(error) => {
-					// 		if (error) {
-					// 			// eslint-disable-next-line no-console
-					// 			console.error(
-					// 				'SEND_VERIFICATION_EMAIL_ERROR',
-					// 				email,
-					// 				error,
-					// 			);
-					// 			return reject(
-					// 				new Error('SEND_VERIFICATION_EMAIL_ERROR', error),
-					// 			);
-					// 		}
-					// 		return resolve();
-					// 	},
-					// );
-				});
+						nodemailer.createTransport(server).sendMail(
+							{
+								to: email,
+								from: `Cambridge Resilience Web <${from}>`,
+								subject: `Your invite to Cambridge Resilience Web`,
+								text: text({ url, email }),
+								html: html({
+									url,
+									email,
+									mainText: `You have been invited to manage ${permission.listing.title} on Cambridge Resilience Web, a digital mapping of organisations in Cambridge that are working to create a more resilient, more equitable and greener future for Cambridge and its residents.`,
+									footerText: `If you're not sure why you received this invite or if you have any questions, please reply to this email.`,
+								}),
+							},
+							(error) => {
+								if (error) {
+									// eslint-disable-next-line no-console
+									console.error(
+										'SEND_VERIFICATION_EMAIL_ERROR',
+										email,
+										error,
+									);
+									return reject(
+										new Error(
+											'SEND_VERIFICATION_EMAIL_ERROR',
+											error,
+										),
+									);
+								}
+								return resolve();
+							},
+						);
+					});
+				}
 			},
 		}),
 	],
@@ -92,7 +150,7 @@ export default NextAuth({
 	},
 });
 
-const html = ({ url, site, email }) => {
+const html = ({ url, email, mainText, footerText }) => {
 	// Insert invisible space into domains and email address to prevent both the
 	// email address and the domain from being turned into a hyperlink by email
 	// clients like Outlook and Apple mail, as this is confusing because it seems
@@ -109,7 +167,7 @@ const html = ({ url, site, email }) => {
 
 	// Uses tables for layout and inline CSS due to email client limitations
 	return `
-  <body style="background: ${backgroundColor};">
+  <body style="background: ${backgroundColor}; margin-bottom: 16px;">
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 	  <tr>
 		<td align="center" style="padding: 10px 0px 20px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
@@ -118,12 +176,12 @@ const html = ({ url, site, email }) => {
 	  </tr>
 	</table>
 	<table width="100%" border="0" cellspacing="20" cellpadding="0" style="background: ${mainBackgroundColor}; max-width: 600px; margin: auto; border-radius: 10px;">
-	<tr>
-		You have been invited to manage {insert group here} on Cambridge Resilience Web, a digital mapping of organisations in Cambridge that are working to create a more resilient, more equitable and greener future for Cambridge and its residents.
+	<tr align="center" style="padding: 10px 0px 0px 0px; font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
+		${mainText}
 	</tr>
 	  <tr>
 		<td align="center" style="padding: 10px 0px 0px 0px; font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
-		  To accept your invite, click the button below to sign in as <strong>${escapedEmail}</strong>
+		  Click the button below to sign in as <strong>${escapedEmail}</strong>
 		</td>
 	  </tr>
 	  <tr>
@@ -137,7 +195,7 @@ const html = ({ url, site, email }) => {
 	  </tr>
 	  <tr>
 		<td align="center" style="padding: 0px 0px 10px 0px; font-size: 16px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
-		  If you're not sure why you received this invite or have any questions, please reply to this email.
+		  ${footerText}
 		</td>
 	  </tr>
 	</table>
@@ -146,4 +204,4 @@ const html = ({ url, site, email }) => {
 };
 
 // Email text body – fallback for email clients that don't render HTML
-const text = ({ url, site }) => `Sign in to ${site}\n${url}\n\n`;
+const text = ({ url }) => `Sign in to Cambridge Resilience Web\n${url}\n\n`;

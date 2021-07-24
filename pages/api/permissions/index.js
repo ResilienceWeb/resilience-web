@@ -11,18 +11,17 @@ export default async function (req, res) {
 		}
 
 		const editPermissions = await prisma.editPermission.findMany({
-			where: { email: email },
-			select: {
-				listingId: true,
-				createdAt: true,
+			include: {
+				listing: true,
 			},
+			where: { email: email },
 		});
 
 		if (req.query?.email) {
 			res.json({ editPermissions });
 		} else {
 			const editPermissionsArray = editPermissions.map(
-				(ep) => ep.listingId,
+				(ep) => ep.listing.id,
 			);
 			res.json({ editPermissions: editPermissionsArray });
 		}

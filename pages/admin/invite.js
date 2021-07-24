@@ -12,6 +12,7 @@ import {
 	FormErrorMessage,
 	FormLabel,
 	FormHelperText,
+	useToast,
 } from '@chakra-ui/react';
 import { signIn, useSession } from 'next-auth/client';
 import LayoutContainer from '@components/admin/layout-container';
@@ -22,15 +23,7 @@ import { emailRequiredValidator } from '../../helpers/emails';
 export default function Invite() {
 	const [session, loadingSession] = useSession();
 	const { listings, isLoading: isLoadingListings } = useListings();
-
-	// useEffect(() => {
-	// 	async function fetchData() {
-	// 		const response = await fetch('/api/permissions/all');
-	// 		const data = await response.json();
-	// 		console.log('resp', data);
-	// 	}
-	// 	fetchData();
-	// }, []);
+	const toast = useToast();
 
 	useEffect(() => {
 		if (!session && !loadingSession) {
@@ -38,16 +31,28 @@ export default function Invite() {
 		}
 	}, [session, loadingSession]);
 
-	const inviteUser = useCallback(async (data) => {
-		const response = await axios.post(
-			`http://localhost:3000/api/inviteUser`,
-			{
-				email: data.email,
-				listingId: data.listing,
-			},
-		);
-		// console.log({ response });
-	}, []);
+	const inviteUser = useCallback(
+		async (data) => {
+			const response = await axios.post(
+				`http://localhost:3000/api/auth/inviteUser`,
+				{
+					email: data.email,
+					listingId: data.listing,
+				},
+			);
+
+			if (response.status === 200) {
+				toast({
+					title: 'Success',
+					description: `Invite sent to ${data.email}`,
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+				});
+			}
+		},
+		[toast],
+	);
 
 	if (loadingSession || isLoadingListings) {
 		return (
@@ -66,7 +71,7 @@ export default function Invite() {
 			<Box mt={8} maxW="400px">
 				<Formik
 					initialValues={{
-						email: 'ismail.diner+test7@gmail.com',
+						email: '',
 						listing: listings[0].id,
 					}}
 					onSubmit={inviteUser}
