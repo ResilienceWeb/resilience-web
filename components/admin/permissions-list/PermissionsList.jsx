@@ -1,7 +1,7 @@
 import { memo } from 'react';
 
 const PermissionsList = ({ permissions }) => {
-	console.log(permissions);
+	// console.log(permissions);
 	return <div></div>;
 };
 

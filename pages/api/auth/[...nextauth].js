@@ -54,7 +54,9 @@ export default NextAuth({
 			}) {
 				const userInfo = await fetchUserByEmail(email);
 
-				if (!userInfo) {
+				if (userInfo) {
+					// User exists - sign in as usual
+
 					return new Promise((resolve, reject) => {
 						const { server, from } = provider;
 						nodemailer.createTransport(server).sendMail(
@@ -92,6 +94,14 @@ export default NextAuth({
 				} else {
 					// User is not registered, so going for invitation workflow
 					const permissions = await fetchPermissions(email);
+
+					if (permissions.length === 0) {
+						// TODO: implement NextAuth error page (e.g. you need to be invited to access dashboard etc)
+
+						return new Promise((_, reject) =>
+							reject('User not registered and not invited'),
+						);
+					}
 
 					const permission = permissions.reduce(
 						(accumulator, current) =>
