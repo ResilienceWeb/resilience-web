@@ -54,6 +54,8 @@ export default NextAuth({
 			}) {
 				const userInfo = await fetchUserByEmail(email);
 
+				console.log({ userInfo });
+
 				if (userInfo) {
 					// User exists - sign in as usual
 
