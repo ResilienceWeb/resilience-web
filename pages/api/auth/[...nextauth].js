@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import Adapters from 'next-auth/adapters';
 import nodemailer from 'nodemailer';
 import prisma from '../../../prisma/client.js';
 
@@ -153,7 +153,7 @@ export default NextAuth({
 			},
 		}),
 	],
-	adapter: PrismaAdapter(prisma),
+	adapter: Adapters.Prisma.Adapter({ prisma }),
 	database: process.env.DATABASE_URL,
 	callbacks: {
 		async session(session, token) {
