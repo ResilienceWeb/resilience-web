@@ -164,6 +164,7 @@ export default NextAuth({
 		signIn: '/auth/signin',
 		verifyRequest: '/auth/verify-request',
 	},
+	debug: true,
 });
 
 const html = ({ url, email, mainText, footerText }) => {
