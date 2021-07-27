@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
-import Adapters from 'next-auth/adapters';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import nodemailer from 'nodemailer';
 import prisma from '../../../prisma/client.js';
 
@@ -152,13 +152,21 @@ export default NextAuth({
 			},
 		}),
 	],
-	adapter: Adapters.Prisma.Adapter({ prisma }),
+	adapter: PrismaAdapter(prisma),
 	database: process.env.DATABASE_URL,
 	callbacks: {
 		async session(session, token) {
 			session.user.id = token.id;
 			session.user.admin = token.admin;
 			return session;
+		},
+		async signIn(user, account, profile) {
+			console.log(profile);
+			return true;
+		},
+		async jwt(token, user, account, profile, isNewUser) {
+			console.log({ isNewUser });
+			return token;
 		},
 	},
 	theme: 'light',

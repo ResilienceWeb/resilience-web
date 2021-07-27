@@ -14,6 +14,7 @@
 		"@emotion/react": "11.4.0",
 		"@emotion/styled": "11.3.0",
 		"@fontsource/karla": "4.5.0",
+		"@next-auth/prisma-adapter": "0.5.3",
 		"@prisma/client": "2.27.0",
 		"axios": "0.21.1",
 		"chroma-js": "2.1.2",
