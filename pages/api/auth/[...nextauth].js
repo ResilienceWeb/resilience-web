@@ -95,7 +95,7 @@ export default NextAuth({
 					// User is not registered, so going for invitation workflow
 					const permissions = await fetchPermissions(email);
 
-					if (permissions.length === 0) {
+					if (permissions?.length === 0) {
 						// TODO: implement NextAuth error page (e.g. you need to be invited to access dashboard etc)
 
 						return new Promise((_, reject) =>
