@@ -23,7 +23,8 @@ async function fetchPermissions(email) {
 
 async function fetchUserByEmail(email) {
 	try {
-		const response = await fetch(`${REMOTE_URL}/api/users/${email}`);
+		const emailEncoded = encodeURIComponent(email);
+		const response = await fetch(`${REMOTE_URL}/api/users/${emailEncoded}`);
 		const data = await response.json();
 		const { user } = data;
 		return user;
@@ -159,14 +160,6 @@ export default NextAuth({
 			session.user.id = token.id;
 			session.user.admin = token.admin;
 			return session;
-		},
-		async signIn(user, account, profile) {
-			console.log(profile);
-			return true;
-		},
-		async jwt(token, user, account, profile, isNewUser) {
-			console.log({ isNewUser });
-			return token;
 		},
 	},
 	theme: 'light',
