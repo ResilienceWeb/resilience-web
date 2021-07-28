@@ -1,15 +1,9 @@
 import axios from 'axios';
 import cookie from 'cookie';
 import qs from 'qs';
+import { REMOTE_URL } from '../../../helpers/config';
 
 export default async function (req, res) {
-	let REMOTE_URL = '';
-	if (process.env.NODE_ENV === 'development') {
-		REMOTE_URL = 'http://localhost:3000';
-	} else {
-		REMOTE_URL = 'https://cambridgeresilienceweb.org.uk';
-	}
-
 	try {
 		const CSRFResponse = await axios({
 			method: 'GET',

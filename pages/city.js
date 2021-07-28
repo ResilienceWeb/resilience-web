@@ -10,6 +10,7 @@ import Drawer from '@components/drawer';
 import ModeSwitch from '@components/mode-switch';
 import MainList from '@components/main-list';
 import Footer from '@components/footer';
+import { REMOTE_URL } from '../helpers/config';
 
 const Network = dynamic(() => import('../components/network'), {
 	ssr: false,
@@ -119,12 +120,6 @@ const startsWithCapitalLetter = (word) =>
 	word.charCodeAt(0) >= 65 && word.charCodeAt(0) <= 90;
 
 export async function getStaticProps() {
-	let REMOTE_URL = '';
-	if (process.env.NODE_ENV === 'development') {
-		REMOTE_URL = 'http://localhost:3000';
-	} else {
-		REMOTE_URL = 'https://cambridgeresilienceweb.org.uk';
-	}
 	const listingsInDb = await fetch(`${REMOTE_URL}/api/listings`);
 
 	const data = await listingsInDb.json();

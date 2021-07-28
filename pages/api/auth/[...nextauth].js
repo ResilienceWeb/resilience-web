@@ -3,13 +3,7 @@ import Providers from 'next-auth/providers';
 import Adapters from 'next-auth/adapters';
 import nodemailer from 'nodemailer';
 import prisma from '../../../prisma/client.js';
-
-let REMOTE_URL = '';
-if (process.env.NODE_ENV === 'development') {
-	REMOTE_URL = 'http://localhost:3000';
-} else {
-	REMOTE_URL = 'https://cambridgeresilienceweb.org.uk';
-}
+import { REMOTE_URL } from '../../../helpers/config';
 
 async function fetchPermissions(email) {
 	const emailEncoded = encodeURIComponent(email);
@@ -54,8 +48,6 @@ export default NextAuth({
 				provider,
 			}) {
 				const userInfo = await fetchUserByEmail(email);
-
-				console.log({ userInfo });
 
 				if (userInfo) {
 					// User exists - sign in as usual
@@ -160,6 +152,9 @@ export default NextAuth({
 			session.user.id = token.id;
 			session.user.admin = token.admin;
 			return session;
+		},
+		async redirect(url, baseUrl) {
+			return `${baseUrl}/admin`;
 		},
 	},
 	theme: 'light',

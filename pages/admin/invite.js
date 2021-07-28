@@ -19,13 +19,7 @@ import LayoutContainer from '@components/admin/layout-container';
 import LoadingSpinner from '@components/loading-spinner';
 import { useListings } from '@hooks/listings';
 import { emailRequiredValidator } from '../../helpers/emails';
-
-let REMOTE_URL = '';
-if (process.env.NODE_ENV === 'development') {
-	REMOTE_URL = 'http://localhost:3000';
-} else {
-	REMOTE_URL = 'https://cambridgeresilienceweb.org.uk';
-}
+import { REMOTE_URL } from '../../helpers/config';
 
 export default function Invite() {
 	const [session, loadingSession] = useSession();
