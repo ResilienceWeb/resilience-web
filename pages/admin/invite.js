@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Formik, Form, Field } from 'formik';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import {
 	chakra,
 	Box,
@@ -18,8 +18,9 @@ import { signIn, useSession } from 'next-auth/client';
 import LayoutContainer from '@components/admin/layout-container';
 import LoadingSpinner from '@components/loading-spinner';
 import { useListings } from '@hooks/listings';
-import { emailRequiredValidator } from '../../helpers/emails';
-import { REMOTE_URL } from '../../helpers/config';
+import { sortStringsFunc } from '@helpers/utils';
+import { emailRequiredValidator } from '@helpers/emails';
+import { REMOTE_URL } from '@helpers/config';
 
 export default function Invite() {
 	const [session, loadingSession] = useSession();
@@ -31,6 +32,10 @@ export default function Invite() {
 			signIn();
 		}
 	}, [session, loadingSession]);
+
+	const orderedListings = useMemo(() => {
+		return listings.sort(sortStringsFunc);
+	}, [listings]);
 
 	const inviteUser = useCallback(
 		async (data) => {
@@ -113,7 +118,7 @@ export default function Invite() {
 												Listing
 											</FormLabel>
 											<Select {...field}>
-												{listings.map((l) => (
+												{orderedListings.map((l) => (
 													<option
 														key={l.id}
 														value={l.id}

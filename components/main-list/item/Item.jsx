@@ -53,7 +53,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 							fontWeight={700}
 							style={{ color: '#454545', marginBottom: 0 }}
 						>
-							{dataItem.label}
+							{dataItem.title}
 						</chakra.h2>
 						<Tag backgroundColor={tagBackgroundColor}>
 							{dataItem.category}

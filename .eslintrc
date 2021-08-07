@@ -24,7 +24,8 @@
 			"alias": {
 				"map": [
 					["@components", "./components/"],
-					["@hooks", "./hooks/"]
+					["@hooks", "./hooks/"],
+					["@helpers", "./helpers/"]
 				],
 				"extensions": [".js", ".jsx"]
 			}

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import cookie from 'cookie';
 import qs from 'qs';
-import { REMOTE_URL } from '../../../helpers/config';
+import { REMOTE_URL } from '@helpers/config';
 
 export default async function (req, res) {
 	try {

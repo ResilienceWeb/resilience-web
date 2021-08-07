@@ -3,7 +3,7 @@ import Providers from 'next-auth/providers';
 import Adapters from 'next-auth/adapters';
 import nodemailer from 'nodemailer';
 import prisma from '../../../prisma/client.js';
-import { REMOTE_URL } from '../../../helpers/config';
+import { REMOTE_URL } from '@helpers/config';
 
 async function fetchPermissions(email) {
 	const emailEncoded = encodeURIComponent(email);

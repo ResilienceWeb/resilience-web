@@ -88,7 +88,7 @@ const MainList = ({ items }) => {
 
 		if (searchTerm) {
 			results = results.filter((item) =>
-				item.label.toLowerCase().includes(searchTerm.toLowerCase()),
+				item.title.toLowerCase().includes(searchTerm.toLowerCase()),
 			);
 		}
 

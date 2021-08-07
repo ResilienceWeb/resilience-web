@@ -18,7 +18,7 @@ import {
 	ModalCloseButton,
 	HStack,
 } from '@chakra-ui/react';
-import { emailValidator } from '../../../helpers/emails';
+import { emailValidator } from '@helpers/emails';
 import { useCategories } from '@hooks/categories';
 
 function validateTextField(value) {

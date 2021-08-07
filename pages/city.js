@@ -10,14 +10,14 @@ import Drawer from '@components/drawer';
 import ModeSwitch from '@components/mode-switch';
 import MainList from '@components/main-list';
 import Footer from '@components/footer';
-import { REMOTE_URL } from '../helpers/config';
+import { REMOTE_URL } from '@helpers/config';
 
 const Network = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
 const filterFunction = (item, searchTerm) => {
-	if (item.label.toLowerCase().includes(searchTerm.toLowerCase())) {
+	if (item.title.toLowerCase().includes(searchTerm.toLowerCase())) {
 		return true;
 	}
 
@@ -47,7 +47,7 @@ const City = ({ data }) => {
 	const filteredItems = useMemo(() => {
 		return searchTermValue
 			? data.nodes.filter((i) =>
-					i.label
+					i.title
 						.toLowerCase()
 						.includes(searchTermValue.toLowerCase()),
 			  )
@@ -146,6 +146,7 @@ export async function getStaticProps() {
 			transformedData.nodes.push({
 				id,
 				label: title,
+				title,
 				category: category.label,
 				description,
 				website,

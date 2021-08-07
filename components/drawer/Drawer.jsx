@@ -2,26 +2,13 @@ import { useCallback, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import Image from 'next/image';
 import { Box, Divider, Flex, Input, Link } from '@chakra-ui/react';
+import { sortStringsFunc } from '@helpers/utils';
 import styles from './Drawer.module.scss';
 import LogoImage from '../../public/logo.png';
 
-const compareFunc = (a, b) => {
-	const labelA = a.label?.toLowerCase();
-	const labelB = b.label?.toLowerCase();
-
-	if (labelA < labelB) {
-		return -1;
-	}
-	if (labelA > labelB) {
-		return 1;
-	}
-
-	return 0;
-};
-
 const Drawer = ({ handleSearchTermChange, items, searchTerm, selectNode }) => {
 	const sortedItems = useMemo(
-		() => items.filter((i) => !i.isDescriptive).sort(compareFunc),
+		() => items.filter((i) => !i.isDescriptive).sort(sortStringsFunc),
 		[items],
 	);
 
