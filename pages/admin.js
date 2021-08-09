@@ -1,130 +1,21 @@
 import { signIn, useSession } from 'next-auth/client';
 import { memo, useEffect, useMemo } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import { Flex } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 import LayoutContainer from '@components/admin/layout-container';
 import EditableList from '@components/admin/editable-list';
 import LoadingSpinner from '@components/loading-spinner';
-import { useListings } from '@hooks/listings';
+import {
+	useListings,
+	useCreateListing,
+	useUpdateListing,
+	useDeleteListing,
+} from '@hooks/listings';
 import { usePermissions } from '@hooks/permissions';
 
-async function updateListingRequest(listingData) {
-	const response = await fetch(`/api/listings/${listingData.id}`, {
-		method: 'PUT',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-			listing: listingData,
-		}),
-	});
-
-	const data = await response.json();
-	const { listing } = data;
-	return listing;
-}
-
-async function deleteListingRequest({ id }) {
-	const response = await fetch(`/api/listings/${id}`, {
-		method: 'DELETE',
-	});
-	const data = await response.json();
-	const { listing } = data;
-	return listing;
-}
-
-function useUpdateListing() {
-	const queryClient = useQueryClient();
-
-	return useMutation(updateListingRequest, {
-		onSuccess: (data) => {
-			queryClient.setQueryData(['listings', { id: data.id }], data);
-		},
-		onMutate: async (newListing) => {
-			await queryClient.cancelQueries(['listings', newListing.id]);
-			const previousListing = queryClient.getQueryData([
-				'listings',
-				newListing.id,
-			]);
-			queryClient.setQueryData(['listings', newListing.id], newListing);
-			return { previousListing, newListing };
-		},
-		onError: (err, newListing, context) => {
-			queryClient.setQueryData(
-				['listings', context.newListing.id],
-				context.previousListing,
-			);
-		},
-		onSettled: () => {
-			queryClient.invalidateQueries('listings');
-		},
-	});
-}
-
-function useDeleteListing() {
-	const queryClient = useQueryClient();
-
-	return useMutation(deleteListingRequest, {
-		onSuccess: (data) => {
-			queryClient.setQueryData(['listings', { id: data.id }], data);
-		},
-		onMutate: async (deletedListing) => {
-			await queryClient.cancelQueries('listings');
-			const previousListings = queryClient.getQueryData('listings');
-			queryClient.setQueryData('listings', (old) =>
-				old.filter((l) => l.id !== deletedListing.id),
-			);
-			return { previousListings };
-		},
-		onError: (err, newListing, context) => {
-			queryClient.setQueryData(
-				['listings', context.newListing.id],
-				context.previousListing,
-			);
-		},
-		onSettled: () => {
-			queryClient.invalidateQueries('listings');
-		},
-	});
-}
-
-async function createListingRequest(listingData) {
-	const response = await fetch('/api/listings/create', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-			listing: listingData,
-		}),
-	});
-
-	const data = await response.json();
-	const { listing } = data;
-	return listing;
-}
-
-function useCreateListing() {
-	const queryClient = useQueryClient();
-
-	return useMutation(createListingRequest, {
-		onMutate: async (newListing) => {
-			await queryClient.cancelQueries('listings');
-			const previousListings = queryClient.getQueryData('listings');
-			queryClient.setQueryData('listings', (old) => [...old, newListing]);
-			return { previousListings };
-		},
-		onError: (err, newListing, context) => {
-			queryClient.setQueryData('listings', context.previousListings);
-		},
-		onSettled: () => {
-			queryClient.invalidateQueries('listings');
-		},
-	});
-}
-
 const Admin = () => {
+	const { query } = useRouter();
 	const [session, loadingSession] = useSession();
 	const {
 		listings,
@@ -139,9 +30,13 @@ const Admin = () => {
 
 	useEffect(() => {
 		if (!session && !loadingSession) {
-			signIn();
+			if (query.activate) {
+				signIn('email', { email: query.activate });
+			} else {
+				signIn();
+			}
 		}
-	}, [session, loadingSession]);
+	}, [session, loadingSession, query.activate]);
 
 	const allowedListings = useMemo(() => {
 		if (!session || isLoadingPermissions) return null;

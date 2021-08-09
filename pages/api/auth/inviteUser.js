@@ -1,16 +1,13 @@
 import axios from 'axios';
-import cookie from 'cookie';
-import qs from 'qs';
+const sgMail = require('@sendgrid/mail');
 import { REMOTE_URL } from '@helpers/config';
+import { htmlTemplate, textTemplate } from '@helpers/emailTemplates';
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export default async function (req, res) {
 	try {
-		const CSRFResponse = await axios({
-			method: 'GET',
-			url: `${REMOTE_URL}/api/auth/csrf`,
-		});
-
-		const { email, listingId } = req.body;
+		const { email, listing } = req.body;
 
 		if (!email) {
 			res.status(400);
@@ -19,49 +16,56 @@ export default async function (req, res) {
 			});
 		}
 
+		if (!listing) {
+			res.status(400);
+			res.json({
+				error: `Listing not provided. Please make sure it's included in the request body.`,
+			});
+		}
+
+		// TODO: replace with fetch
 		const response = await axios({
 			method: 'POST',
 			url: `${REMOTE_URL}/api/permissions/create`,
 			data: {
 				email: email,
-				listingId: parseInt(listingId),
+				listingId: parseInt(listing.id),
 			},
 		});
 
+		const emailEncoded = encodeURIComponent(email);
+		const callToActionButtonUrl = `${REMOTE_URL}/admin?activate=${emailEncoded}`;
 		if (response.status === 201) {
-			const params = {
-				email,
-				callbackUrl: `${REMOTE_URL}`,
-				csrfToken: String(CSRFResponse.data.csrfToken),
-				json: 'true',
+			const msg = {
+				to: email,
+				from: `Cambridge Resilience Web <cambridgeresilienceweb@gmail.com>`,
+				subject: `Your invite to Cambridge Resilience Web`,
+				text: textTemplate({ url: callToActionButtonUrl, email }),
+				html: htmlTemplate({
+					url: callToActionButtonUrl,
+					email,
+					buttonText: 'Activate account',
+					mainText: `You have been invited to manage the group <b>${listing.title}</b> on Cambridge Resilience Web, a digital mapping of organisations in Cambridge that are working to create a more resilient, more equitable and greener future for Cambridge and its residents.`,
+					footerText: `If you're not sure why you received this invite or if you have any questions, please reply to this email.`,
+				}),
 			};
-			const data = qs.stringify(params);
 
-			const parsedCookie = cookie.parse(
-				CSRFResponse.headers['set-cookie'].join('; '),
-			);
-			delete parsedCookie.Path;
-			delete parsedCookie.SameSite;
-			const Cookie = Object.entries(parsedCookie)
-				.map(([key, val]) => cookie.serialize(key, val))
-				.join('; ');
+			(async () => {
+				try {
+					await sgMail.send(msg);
 
-			const { status } = await axios({
-				method: 'POST',
-				url: `${REMOTE_URL}/api/auth/signin/email`,
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-					Cookie,
-				},
-				data,
-			});
+					res.status(200);
+					res.json({
+						res: 'Invite sent successfully',
+					});
+				} catch (error) {
+					console.error(error);
 
-			res.status(status);
-			res.json({
-				res: 'Invite sent successfully',
-			});
-		} else {
-			res.status(400);
+					if (error.response) {
+						console.error(error.response.body);
+					}
+				}
+			})();
 		}
 
 		res.status(400);
@@ -73,8 +77,8 @@ export default async function (req, res) {
 	}
 }
 
-export const config = {
-	api: {
-		bodyParser: true,
-	},
-};
+// export const config = {
+// 	api: {
+// 		bodyParser: true,
+// 	},
+// };

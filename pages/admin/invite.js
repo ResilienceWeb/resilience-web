@@ -34,20 +34,24 @@ export default function Invite() {
 	}, [session, loadingSession]);
 
 	const orderedListings = useMemo(() => {
-		return listings.sort(sortStringsFunc);
+		return listings?.sort(sortStringsFunc);
 	}, [listings]);
 
 	const inviteUser = useCallback(
 		async (data) => {
-			const response = await axios.post(
-				`${REMOTE_URL}/api/auth/inviteUser`,
-				{
-					email: data.email,
-					listingId: data.listing,
+			const response = await fetch(`${REMOTE_URL}/api/auth/inviteUser`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json;charset=utf-8',
 				},
-			);
+				body: JSON.stringify({
+					email: data.email,
+					listing: listings?.find((l) => l.id == data.listing),
+				}),
+			});
+			const result = await response.json();
 
-			if (response.status === 200) {
+			if (!result.error) {
 				toast({
 					title: 'Success',
 					description: `Invite sent to ${data.email}`,
@@ -57,7 +61,7 @@ export default function Invite() {
 				});
 			}
 		},
-		[toast],
+		[listings, toast],
 	);
 
 	if (loadingSession || isLoadingListings) {

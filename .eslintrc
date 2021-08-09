@@ -41,7 +41,7 @@
 		"jsx-quotes": 1,
 		"keyword-spacing": [1, { "before": true, "after": true }],
 		"no-alert": 0,
-		"no-console": 1,
+		"no-console": 0,
 		"no-debugger": 1,
 		"no-empty-function": [1, { "allow": ["arrowFunctions"] }],
 		"no-lone-blocks": 1,
