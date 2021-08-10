@@ -38,7 +38,7 @@ export default async function (req, res) {
 		if (response.status === 201) {
 			const msg = {
 				to: email,
-				from: `Cambridge Resilience Web <cambridgeresilienceweb@gmail.com>`,
+				from: `Cambridge Resilience Web <info@resilienceweb.org.uk>`,
 				subject: `Your invite to Cambridge Resilience Web`,
 				text: textTemplate({ url: callToActionButtonUrl, email }),
 				html: htmlTemplate({

@@ -5,29 +5,6 @@ import nodemailer from 'nodemailer';
 import prisma from '../../../prisma/client.js';
 import { htmlTemplate, textTemplate } from '@helpers/emailTemplates';
 
-// async function fetchPermissions(email) {
-// 	const emailEncoded = encodeURIComponent(email);
-// 	const response = await fetch(
-// 		`${REMOTE_URL}/api/permissions?email=${emailEncoded}`,
-// 	);
-// 	const data = await response.json();
-// 	const { editPermissions } = data;
-// 	return editPermissions;
-// }
-
-// async function fetchUserByEmail(email) {
-// 	try {
-// 		const emailEncoded = encodeURIComponent(email);
-// 		const response = await fetch(`${REMOTE_URL}/api/users/${emailEncoded}`);
-// 		const data = await response.json();
-// 		const { user } = data;
-// 		return user;
-// 	} catch (e) {
-// 		// eslint-disable-next-line no-console
-// 		console.error('Error', e);
-// 	}
-// }
-
 export default NextAuth({
 	providers: [
 		Providers.Email({
@@ -60,6 +37,7 @@ export default NextAuth({
 								url,
 								email,
 								mainText: '',
+								buttonText: 'Sign in',
 								footerText: `If you did not request this email you can safely ignore it.`,
 							}),
 						},
