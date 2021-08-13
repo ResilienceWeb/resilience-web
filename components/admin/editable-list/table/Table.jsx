@@ -1,24 +1,11 @@
 import { memo } from 'react';
 import { Box } from '@chakra-ui/react';
-import TableActions from './TableActions';
 import TableContent from './TableContent';
 
-const Table = ({
-	enterEdit,
-	filterValue,
-	items,
-	onFilterChange,
-	openListingCreationDialog,
-	removeItem,
-}) => {
+const Table = ({ enterEdit, items, removeItem }) => {
 	return (
-		<Box as="section" py={12}>
+		<Box as="section" py={6}>
 			<Box overflowX="auto">
-				<TableActions
-					filterValue={filterValue}
-					onFilterChange={onFilterChange}
-					openListingCreationDialog={openListingCreationDialog}
-				/>
 				<TableContent
 					enterEdit={enterEdit}
 					items={items}

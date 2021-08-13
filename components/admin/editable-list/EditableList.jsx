@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState, memo } from 'react';
-import { Heading, Text, Box } from '@chakra-ui/react';
+import { Heading, Text, Box, Stack } from '@chakra-ui/react';
 import ListingCreationDialog from '@components/admin/listing-creation-dialog';
 import Table from './table/Table.jsx';
+import TableActions from './table/TableActions';
 
 const EditableList = ({
 	createListing,
@@ -61,9 +62,24 @@ const EditableList = ({
 
 	return (
 		<>
-			<Box px={4}>
-				<Heading>Listings</Heading>
-				{/* {isAdmin ? (
+			<Stack
+				spacing="5"
+				direction={{
+					base: 'column',
+					md: 'row',
+				}}
+				justify="space-between"
+				align={{
+					base: 'flex-start',
+					md: 'center',
+				}}
+			>
+				<Box px={4}>
+					<Heading>Listings</Heading>
+					<Text color={'gray.600'} fontSize="sm">
+						There are {data.length} listings
+					</Text>
+					{/* {isAdmin ? (
 					<Text mb={4} color="gray.600">
 						You are an admin, so you can edit all the listings. With
 						great power comes great responsibility.
@@ -76,14 +92,17 @@ const EditableList = ({
 						cambridgeresilienceweb@gmail.com
 					</Text>
 				)} */}
-			</Box>
+				</Box>
+				<TableActions
+					filterValue={filter}
+					onFilterChange={handleFilterChange}
+					openListingCreationDialog={openListingCreationDialog}
+				/>
+			</Stack>
 			<Table
 				enterEdit={enterEdit}
 				removeItem={handleRemove}
-				filterValue={filter}
 				items={data}
-				onFilterChange={handleFilterChange}
-				openListingCreationDialog={openListingCreationDialog}
 			/>
 			{(isListingCreationOpen || itemInEdit) && (
 				<ListingCreationDialog

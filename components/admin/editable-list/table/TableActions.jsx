@@ -23,12 +23,17 @@ const TableActions = ({
 
 	return (
 		<Stack
-			spacing="4"
 			direction={{
 				base: 'column',
 				md: 'row',
 			}}
-			justify="space-between"
+			spacing="4"
+			justify="flex-end"
+			flex="1"
+			w={{
+				base: 'full',
+				md: 'auto',
+			}}
 		>
 			<HStack>
 				<FormControl id="search">
