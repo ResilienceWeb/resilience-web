@@ -12,6 +12,8 @@ import {
 	FormLabel,
 	FormHelperText,
 	useToast,
+	Stack,
+	StackDivider,
 } from '@chakra-ui/react';
 import { signIn, useSession } from 'next-auth/client';
 import LayoutContainer from '@components/admin/layout-container';
@@ -75,88 +77,111 @@ export default function Invite() {
 
 	return (
 		<LayoutContainer>
-			<Heading>Invite user</Heading>
+			<Box
+				px={{
+					base: '4',
+					md: '10',
+				}}
+				py={4}
+				maxWidth="3xl"
+				mx="auto"
+			>
+				<Stack spacing="4" divider={<StackDivider />}>
+					<Heading>Invite user</Heading>
 
-			<Box mt={8} maxW="400px">
-				<Formik
-					initialValues={{
-						email: '',
-						listing: listings[0].id,
-					}}
-					onSubmit={inviteUser}
-				>
-					{(props) => (
-						<Form>
-							<chakra.div mb={3}>
-								<Field
-									name="email"
-									type="email"
-									validate={emailRequiredValidator}
-								>
-									{({ field, form }) => (
-										<FormControl
-											isInvalid={form.errors.email}
+					<Box mt={6} maxW="400px">
+						<Formik
+							initialValues={{
+								email: '',
+								listing: listings[0].id,
+							}}
+							onSubmit={inviteUser}
+						>
+							{(props) => (
+								<Form>
+									<chakra.div mb={3}>
+										<Field
+											name="email"
+											type="email"
+											validate={emailRequiredValidator}
 										>
-											<FormLabel htmlFor="email">
-												Email
-											</FormLabel>
-											<Input {...field} id="email" />
-											<FormErrorMessage>
-												{form.errors.email}
-											</FormErrorMessage>
-										</FormControl>
-									)}
-								</Field>
-							</chakra.div>
-							<chakra.div mb={3}>
-								<Field name="listing">
-									{({ field, form }) => (
-										<FormControl
-											isInvalid={
-												form.errors.listing &&
-												form.touched.listing
-											}
-										>
-											<FormLabel htmlFor="listing">
-												Listing
-											</FormLabel>
-											<Select {...field}>
-												{orderedListings.map((l) => (
-													<option
-														key={l.id}
-														value={l.id}
+											{({ field, form }) => (
+												<FormControl
+													isInvalid={
+														form.errors.email
+													}
+												>
+													<FormLabel htmlFor="email">
+														Email
+													</FormLabel>
+													<Input
+														{...field}
+														id="email"
+														background="white"
+													/>
+													<FormErrorMessage>
+														{form.errors.email}
+													</FormErrorMessage>
+												</FormControl>
+											)}
+										</Field>
+									</chakra.div>
+									<chakra.div mb={3}>
+										<Field name="listing">
+											{({ field, form }) => (
+												<FormControl
+													isInvalid={
+														form.errors.listing &&
+														form.touched.listing
+													}
+												>
+													<FormLabel htmlFor="listing">
+														Listing
+													</FormLabel>
+													<Select
+														{...field}
+														background="white"
 													>
-														{l.title}
-													</option>
-												))}
-											</Select>
-											<FormErrorMessage>
-												{form.errors.listing}
-											</FormErrorMessage>
-											<FormHelperText>
-												The listing the user will be
-												able to edit
-											</FormHelperText>
-										</FormControl>
-									)}
-								</Field>
-							</chakra.div>
+														{orderedListings.map(
+															(l) => (
+																<option
+																	key={l.id}
+																	value={l.id}
+																>
+																	{l.title}
+																</option>
+															),
+														)}
+													</Select>
+													<FormErrorMessage>
+														{form.errors.listing}
+													</FormErrorMessage>
+													<FormHelperText>
+														The listing the user
+														will be able to edit
+													</FormHelperText>
+												</FormControl>
+											)}
+										</Field>
+									</chakra.div>
 
-							<Button
-								bg="#57b894"
-								colorScheme="#57b894"
-								mt={4}
-								variant="solid"
-								disabled={!props.isValid}
-								isLoading={props.isSubmitting}
-								type="submit"
-								_hover={{ bg: '#4a9e7f' }}
-							>
-								Send invite
-							</Button>
-						</Form>
-					)}
-				</Formik>
+									<Button
+										bg="#57b894"
+										colorScheme="#57b894"
+										mt={4}
+										variant="solid"
+										disabled={!props.isValid}
+										isLoading={props.isSubmitting}
+										type="submit"
+										_hover={{ bg: '#4a9e7f' }}
+									>
+										Send invite
+									</Button>
+								</Form>
+							)}
+						</Formik>
+					</Box>
+				</Stack>
 			</Box>
 		</LayoutContainer>
 	);
