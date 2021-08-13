@@ -63,7 +63,7 @@ const EditableList = ({
 		<>
 			<Box px={4}>
 				<Heading>Listings</Heading>
-				{isAdmin ? (
+				{/* {isAdmin ? (
 					<Text mb={4} color="gray.600">
 						You are an admin, so you can edit all the listings. With
 						great power comes great responsibility.
@@ -75,7 +75,7 @@ const EditableList = ({
 						group not included below, please get in touch at
 						cambridgeresilienceweb@gmail.com
 					</Text>
-				)}
+				)} */}
 			</Box>
 			<Table
 				enterEdit={enterEdit}

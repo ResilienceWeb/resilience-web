@@ -15,6 +15,7 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalBody,
+	ModalFooter,
 	ModalCloseButton,
 	HStack,
 } from '@chakra-ui/react';
@@ -322,17 +323,19 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 									</Field>
 								</chakra.div>
 
-								<Button
-									bg="#57b894"
-									colorScheme="#57b894"
-									disabled={!props.isValid}
-									isLoading={props.isSubmitting}
-									size="md"
-									type="submit"
-									_hover={{ bg: '#4a9e7f' }}
-								>
-									Submit
-								</Button>
+								<ModalFooter pr="0">
+									<Button
+										bg="#57b894"
+										colorScheme="#57b894"
+										disabled={!props.isValid}
+										isLoading={props.isSubmitting}
+										size="md"
+										type="submit"
+										_hover={{ bg: '#4a9e7f' }}
+									>
+										{itemInEdit ? 'Update' : 'Create'}
+									</Button>
+								</ModalFooter>
 							</Form>
 						)}
 					</Formik>

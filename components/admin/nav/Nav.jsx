@@ -1,12 +1,14 @@
 import { useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import { useSession, signOut } from 'next-auth/client';
 import {
 	Box,
 	Flex,
 	HStack,
 	Link,
+	Icon,
 	IconButton,
 	Button,
 	Menu,
@@ -19,6 +21,7 @@ import {
 	Stack,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, SettingsIcon } from '@chakra-ui/icons';
+import { BsCardChecklist, BsPeopleFill } from 'react-icons/bs';
 import LogoImage from '../../../public/logo.png';
 
 const NavLink = ({ children, href }) => (
@@ -39,6 +42,7 @@ const NavLink = ({ children, href }) => (
 
 const Nav = () => {
 	const [session] = useSession();
+	const router = useRouter();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const Links = useMemo(() => {
@@ -46,11 +50,16 @@ const Nav = () => {
 			{
 				label: 'Listings',
 				href: '/admin',
+				icon: <Icon as={BsCardChecklist} />,
 			},
 		];
 
 		if (session?.user.admin) {
-			links.push({ label: 'Invite', href: '/admin/invite' });
+			links.push({
+				label: 'Invite',
+				href: '/admin/invite',
+				icon: <Icon as={BsPeopleFill} />,
+			});
 		}
 
 		return links;
@@ -88,7 +97,30 @@ const Nav = () => {
 					>
 						{Links.map((link) => (
 							<NavLink key={link.label} href={link.href}>
-								{link.label}
+								<Button
+									aria-current={
+										router.pathname === link.href
+											? 'page'
+											: undefined
+									}
+									background="transparent"
+									color="gray.600"
+									fontWeight="700"
+									leftIcon={link.icon}
+									spacing="2"
+									px="3"
+									py="2"
+									rounded="md"
+									transition="all 0.2s"
+									_hover={{
+										bg: '#e2e8f0',
+									}}
+									_activeLink={{
+										bg: 'blackAlpha.100',
+									}}
+								>
+									{link.label}
+								</Button>
 							</NavLink>
 						))}
 					</HStack>
