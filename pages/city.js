@@ -17,7 +17,7 @@ const Network = dynamic(() => import('../components/network'), {
 });
 
 const filterFunction = (item, searchTerm) => {
-	if (item.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+	if (item.label.toLowerCase().includes(searchTerm.toLowerCase())) {
 		return true;
 	}
 
@@ -47,7 +47,7 @@ const City = ({ data }) => {
 	const filteredItems = useMemo(() => {
 		return searchTermValue
 			? data.nodes.filter((i) =>
-					i.title
+					i.label
 						.toLowerCase()
 						.includes(searchTermValue.toLowerCase()),
 			  )
