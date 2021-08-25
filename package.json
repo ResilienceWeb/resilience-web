@@ -1,6 +1,9 @@
 {
 	"name": "cambridge-resilience-web",
 	"version": "0.1.0",
+	"engines": {
+		"node": "14.16.1"
+	},
 	"scripts": {
 		"dev": "NODE_OPTIONS='--inspect' next dev",
 		"build": "next build",
