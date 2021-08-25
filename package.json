@@ -37,7 +37,7 @@
 		"react-select": "4.3.1",
 		"sass": "1.35.2",
 		"use-debounce": "7.0.0",
-		"vis-network-react": "github:DinerIsmail/vis-network-react"
+		"vis-network-react": "git://github.com/DinerIsmail/vis-network-react.git"
 	},
 	"devDependencies": {
 		"@welldone-software/why-did-you-render": "6.2.0",
