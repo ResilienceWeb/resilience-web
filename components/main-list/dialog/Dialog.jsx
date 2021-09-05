@@ -12,10 +12,11 @@ import {
 	Icon,
 	Stack,
 	Link,
-	chakra,
+	chakra, Flex, Tooltip, Text,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
+import { HiOutlineArchive, HiUserGroup } from 'react-icons/hi';
 
 const Dialog = ({ isOpen, item, onClose }) => {
 	return (
@@ -38,6 +39,24 @@ const Dialog = ({ isOpen, item, onClose }) => {
 						{item.website} <ExternalLinkIcon ml={1} />
 					</chakra.a>
 					<Box mt={4}>{item.description}</Box>
+					{item.seekingVolunteers && (
+						<Flex justifyContent={'right'}>
+							<Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">
+								<Text color="seagreen">
+									Seeking volunteers <Icon as={HiUserGroup} />
+								</Text>
+							</Tooltip>
+						</Flex>
+					)}
+					{item.inactive && (
+						<Flex justifyContent={'right'}>
+							<Tooltip label="This group is currently inactive.">
+								<Text color="grey">
+									Currently Inactive <Icon as={HiOutlineArchive} />
+								</Text>
+							</Tooltip>
+						</Flex>
+					)}
 				</ModalBody>
 
 				<ModalFooter justifyContent="space-between">

@@ -21,11 +21,9 @@ const filterFunction = (item, searchTerm) => {
 		return true;
 	}
 
-	if (item.isDescriptive) {
-		return true;
-	}
+	return !!item.isDescriptive;
 
-	return false;
+
 };
 
 const City = ({ data }) => {
@@ -142,6 +140,7 @@ export async function getStaticProps() {
 			instagram,
 			email,
 			seekingVolunteers,
+			inactive
 		}) => {
 			transformedData.nodes.push({
 				id,
@@ -155,6 +154,7 @@ export async function getStaticProps() {
 				instagram,
 				email,
 				seekingVolunteers,
+				inactive,
 				color: `#${category.color}`,
 			});
 		},
