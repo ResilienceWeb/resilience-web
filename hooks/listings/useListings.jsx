@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 
 async function fetchListingsRequest() {
-	const response = await fetch('/api/listings?');
+	const response = await fetch('/api/listings');
 	const data = await response.json();
 	const { listings } = data;
 	return listings;

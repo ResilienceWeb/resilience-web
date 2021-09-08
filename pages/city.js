@@ -128,7 +128,7 @@ export async function getStaticProps() {
 		edges: [],
 	};
 
-	listings.map(
+	listings?.map(
 		({
 			id,
 			title,

@@ -16,7 +16,8 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
-import { HiOutlineArchive, HiUserGroup } from 'react-icons/hi';
+import { HiUserGroup } from 'react-icons/hi';
+import { GiNightSleep } from 'react-icons/gi';
 
 const Dialog = ({ isOpen, item, onClose }) => {
 	return (
@@ -52,7 +53,7 @@ const Dialog = ({ isOpen, item, onClose }) => {
 						<Flex justifyContent={'right'}>
 							<Tooltip label="This group is currently inactive.">
 								<Text color="grey">
-									Currently Inactive <Icon as={HiOutlineArchive} />
+									Currently Inactive <Icon as={GiNightSleep} />
 								</Text>
 							</Tooltip>
 						</Flex>

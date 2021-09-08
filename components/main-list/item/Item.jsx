@@ -1,7 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { motion, usePresence } from 'framer-motion';
 import { chakra, Flex, Tag, Text, Icon, Tooltip } from '@chakra-ui/react';
-import { HiOutlineArchive, HiUserGroup } from 'react-icons/hi';
+import { HiUserGroup } from 'react-icons/hi';
+import { GiNightSleep } from 'react-icons/gi';
 import chroma from 'chroma-js';
 
 const transition = { type: 'spring', stiffness: 300, damping: 50, mass: 1 };
@@ -72,7 +73,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 						<Flex>
 							<Tooltip label="This group is currently inactive.">
 								<Text color="grey">
-									Currently Inactive <Icon as={HiOutlineArchive} />
+									Currently Inactive <Icon as={GiNightSleep} />
 								</Text>
 							</Tooltip>
 						</Flex>
