@@ -73,7 +73,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 						<Flex>
 							<Tooltip label="This group is currently inactive.">
 								<Text color="grey">
-									Currently Inactive <Icon as={GiNightSleep} />
+									Currently inactive <Icon as={GiNightSleep} />
 								</Text>
 							</Tooltip>
 						</Flex>
