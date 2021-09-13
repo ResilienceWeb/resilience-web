@@ -1,19 +1,67 @@
 import { useMutation, useQueryClient } from 'react-query';
+// import { PutObjectCommand } from '@aws-sdk/client-s3';
+// import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import doConfig from '../../helpers/config';
+import s3 from '../../lib/digitalocean';
 
-async function updateListingRequest(listingData) {
-	const response = await fetch(`/api/listings/${listingData.id}`, {
-		method: 'PUT',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-			listing: listingData,
-		}),
+// const putObject = async (file) => {
+// 	console.log(file);
+// 	const fileAsUInt8Array = new Uint8Array(file);
+// 	const Key = `${Date.now()}-placeholder1`;
+// 	const command = new PutObjectCommand({
+// 		Bucket: doConfig.bucketName,
+// 		Key: Key,
+// 		Body: fileAsUInt8Array,
+// 	});
+
+// 	const signedUrl = await getSignedUrl(s3Client, command, {
+// 		expiresIn: 3600,
+// 	});
+// 	console.log('Signed url', signedUrl);
+
+// 	const response = await fetch(signedUrl);
+// 	console.log('Response', response);
+// };
+
+const uploadFile = async (file) => {
+	const url = s3.getSignedUrl('putObject', {
+		Bucket: doConfig.bucketName,
+		Key: 'file-name.ext',
+		ContentType: 'text',
+		Expires: 60 * 5,
 	});
 
-	const data = await response.json();
-	const { listing } = data;
-	return listing;
+	const response = await fetch(url, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'text',
+		},
+	});
+
+	console.log(response);
+};
+
+async function updateListingRequest(listingData) {
+	const formData = new FormData();
+	Object.keys(listingData).map((key) => {
+		if (key === 'image') {
+			formData.append(key, listingData[key]);
+		} else {
+			// All fields except image need to be JSON stringified to maintain the type
+			formData.append(key, JSON.stringify(listingData[key]));
+		}
+	});
+
+	await uploadFile(listingData.image);
+
+	// const response = await fetch(`/api/listings/${listingData.id}`, {
+	// 	method: 'POST',
+	// 	body: formData,
+	// });
+
+	// const data = await response.json();
+	// const { listing } = data;
+	return { test: 'test' };
 }
 
 export default function useUpdateListing() {
