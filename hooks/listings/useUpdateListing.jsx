@@ -1,8 +1,4 @@
 import { useMutation, useQueryClient } from 'react-query';
-// import { PutObjectCommand } from '@aws-sdk/client-s3';
-// import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import doConfig from '../../helpers/config';
-import s3 from '../../lib/digitalocean';
 
 // const putObject = async (file) => {
 // 	console.log(file);
@@ -23,45 +19,76 @@ import s3 from '../../lib/digitalocean';
 // 	console.log('Response', response);
 // };
 
-const uploadFile = async (file) => {
-	const url = s3.getSignedUrl('putObject', {
-		Bucket: doConfig.bucketName,
-		Key: 'file-name.ext',
-		ContentType: 'text',
-		Expires: 60 * 5,
-	});
+// const uploadFile = async (file) => {
+// 	const url = s3.getSignedUrl('putObject', {
+// 		Bucket: doConfig.bucketName,
+// 		Key: `${Date.now()}-${file.name}`,
+// 		ContentType: 'image/jpeg',
+// 		Expires: 60 * 5,
+// 		ACL: 'public-read',
+// 	});
+// 	console.log('url to fetch', url);
 
-	const response = await fetch(url, {
-		method: 'PUT',
-		headers: {
-			'Content-Type': 'text',
-		},
-	});
+// 	const response = await fetch(url, {
+// 		method: 'POST',
+// 		headers: {
+// 			'Content-Type': 'image/jpeg',
+// 		},
+// 		body: file,
+// 	});
 
-	console.log(response);
-};
+// 	console.log(response);
+
+// const params = {
+// 	Bucket: `${doConfig.bucketName}`,
+// 	Body: file,
+// 	Key: file.name,
+// 	ContentType: file.type,
+// 	ACL: 'public-read',
+// };
+
+// s3.upload(params, function (err, data) {
+// 		console.error(err);
+// 	})
+// 	.on('build', (request) => {
+// 		request.httpRequest.headers.Host = `${doConfig.digitalOceanSpaces}`;
+// 		request.httpRequest.headers['Content-Length'] =
+// 			image.size;
+// 		request.httpRequest.headers['Content-Type'] =
+// 			image.type;
+// 		request.httpRequest.headers['x-amz-acl'] =
+// 			'public-read';
+// 	})
+// 	.send((err) => {
+// 		if (err) {
+// 			console.error(err);
+// 		} else {
+// 			imageUrl =
+// 				`${doConfig.digitalOceanSpaces}` +
+// 				image.path.split('/').pop();
+// 			console.log(
+// 				'File uploaded successfully',
+// 				imageUrl,
+// 			);
+// 		}
+// 	});
+// }
+// };
 
 async function updateListingRequest(listingData) {
 	const formData = new FormData();
-	Object.keys(listingData).map((key) => {
-		if (key === 'image') {
-			formData.append(key, listingData[key]);
-		} else {
-			// All fields except image need to be JSON stringified to maintain the type
-			formData.append(key, JSON.stringify(listingData[key]));
-		}
+	Object.keys(listingData).map((key) =>
+		formData.append(key, listingData[key]),
+	);
+
+	const response = await fetch(`/api/listings/${listingData.id}`, {
+		method: 'POST',
+		body: formData,
 	});
 
-	await uploadFile(listingData.image);
-
-	// const response = await fetch(`/api/listings/${listingData.id}`, {
-	// 	method: 'POST',
-	// 	body: formData,
-	// });
-
-	// const data = await response.json();
-	// const { listing } = data;
-	return { test: 'test' };
+	const data = await response.json();
+	const { listing } = data;
+	return listing;
 }
 
 export default function useUpdateListing() {

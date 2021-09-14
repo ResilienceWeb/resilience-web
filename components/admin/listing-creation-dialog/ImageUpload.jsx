@@ -1,14 +1,13 @@
 import { useRef, useState, memo } from 'react';
+import Image from 'next/image';
 import {
 	FormControl,
 	FormErrorMessage,
 	FormLabel,
 	InputGroup,
-	InputLeftElement,
 	Icon,
-	Input,
 } from '@chakra-ui/react';
-import { FiFile } from 'react-icons/fi';
+import { IoImageOutline } from 'react-icons/io5';
 
 const ImageUpload = ({ field, form, formProps }) => {
 	const fileInputRef = useRef();
@@ -18,9 +17,6 @@ const ImageUpload = ({ field, form, formProps }) => {
 		<FormControl isInvalid={form.errors.image && form.touched.image}>
 			<FormLabel htmlFor="image">Upload image</FormLabel>
 			<InputGroup>
-				<InputLeftElement pointerEvents="none">
-					<Icon as={FiFile} />
-				</InputLeftElement>
 				<input
 					type="file"
 					accept="image/*"
@@ -31,35 +27,36 @@ const ImageUpload = ({ field, form, formProps }) => {
 					onChange={(event) => {
 						const file = event.target.files[0];
 						if (file?.type.substr(0, 5) === 'image') {
-							// const reader = new FileReader();
-							// reader.onloadend = () => {
-							// 	setPreview(reader.result);
-							// };
-							// reader.readAsDataURL(file);
+							const reader = new FileReader();
+							reader.readAsDataURL(file);
+							reader.onloadend = () => {
+								setPreview(reader.result);
+							};
 
-							formProps.setFieldValue(
-								'image',
-								event.target.files[0],
-							);
+							formProps.setFieldValue('image', file);
 						} else {
 							setPreview(null);
 						}
 					}}
 				></input>
-				<Input
-					// {...field}
-					placeholder={
-						formProps.values.image?.name
-							? formProps.values.image.name
-							: 'Your file ...'
-					}
-					onClick={() => fileInputRef.current.click()}
-				/>
-				{preview && (
-					<img
-						alt="Preview of file uploaded by user"
-						src={preview}
-						style={{ objectFit: 'cover' }}
+				{preview ? (
+					<div style={{ width: '130px', height: '130px' }}>
+						<Image
+							alt="Preview of file uploaded by user"
+							src={preview}
+							layout="fill"
+							objectFit="contain"
+						/>
+					</div>
+				) : (
+					<Icon
+						as={IoImageOutline}
+						onClick={() => fileInputRef.current.click()}
+						w={100}
+						h={100}
+						cursor="pointer"
+						transition="color 100ms"
+						_hover={{ color: '#4a9e7f' }}
 					/>
 				)}
 			</InputGroup>

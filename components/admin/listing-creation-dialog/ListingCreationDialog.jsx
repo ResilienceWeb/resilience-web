@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
 	chakra,
@@ -33,14 +33,6 @@ function validateTextField(value) {
 
 const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 	const { categories } = useCategories();
-
-	// useEffect(() => {
-	// 	if (image) {
-
-	// 	} else {
-
-	// 	}
-	// }, [image]);
 
 	if (!categories) return null; // TODO: add loading spinner?
 

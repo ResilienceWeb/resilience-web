@@ -9,8 +9,6 @@
 		"postinstall": "prisma generate"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "3.31.0",
-		"@aws-sdk/s3-request-presigner": "3.31.0",
 		"@chakra-ui/icons": "1.0.15",
 		"@chakra-ui/react": "1.6.7",
 		"@emotion/react": "11.4.1",
@@ -18,7 +16,7 @@
 		"@fontsource/karla": "4.5.0",
 		"@prisma/client": "2.29.1",
 		"@sendgrid/mail": "7.4.6",
-		"aws-sdk": "2.982.0",
+		"aws-sdk": "2.988.0",
 		"axios": "0.21.1",
 		"chroma-js": "2.1.2",
 		"cookie": "0.4.1",
@@ -28,9 +26,6 @@
 		"graphql": "15.5.1",
 		"graphql-request": "3.5.0",
 		"lodash-es": "4.17.21",
-		"multer": "1.4.3",
-		"multer-s3": "2.9.0",
-		"multiparty": "4.2.2",
 		"next": "11.1.2",
 		"next-auth": "3.28.0",
 		"next-seo": "4.26.0",
