@@ -1,5 +1,5 @@
 import axios from 'axios';
-const sgMail = require('@sendgrid/mail');
+import sgMail from '@sendgrid/mail';
 import { REMOTE_URL } from '@helpers/config';
 import { htmlTemplate, textTemplate } from '@helpers/emailTemplates';
 

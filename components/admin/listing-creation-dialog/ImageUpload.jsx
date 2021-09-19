@@ -5,18 +5,23 @@ import {
 	FormErrorMessage,
 	FormLabel,
 	InputGroup,
-	Icon,
+	Button,
 } from '@chakra-ui/react';
-import { IoImageOutline } from 'react-icons/io5';
 
 const ImageUpload = ({ field, form, formProps }) => {
 	const fileInputRef = useRef();
 	const [preview, setPreview] = useState();
 
+	const hasImageAlready = field.value && !field.value.name;
+
 	return (
 		<FormControl isInvalid={form.errors.image && form.touched.image}>
-			<FormLabel htmlFor="image">Upload image</FormLabel>
-			<InputGroup>
+			<FormLabel htmlFor="image">Cover image</FormLabel>
+			<InputGroup
+				display="flex"
+				alignItems="center"
+				justifyContent="center"
+			>
 				<input
 					type="file"
 					accept="image/*"
@@ -39,25 +44,36 @@ const ImageUpload = ({ field, form, formProps }) => {
 						}
 					}}
 				></input>
-				{preview ? (
-					<div style={{ width: '130px', height: '130px' }}>
+
+				{hasImageAlready || preview ? (
+					<div style={{ width: '200px', height: '200px' }}>
 						<Image
 							alt="Preview of file uploaded by user"
-							src={preview}
+							src={preview ?? field.value}
 							layout="fill"
 							objectFit="contain"
 						/>
 					</div>
 				) : (
-					<Icon
-						as={IoImageOutline}
-						onClick={() => fileInputRef.current.click()}
-						w={100}
-						h={100}
-						cursor="pointer"
-						transition="color 100ms"
-						_hover={{ color: '#4a9e7f' }}
+					<div
+						style={{
+							width: '250px',
+							height: '200px',
+							backgroundColor: '#cfcdca',
+						}}
 					/>
+				)}
+
+				{!preview && (
+					<Button
+						position="absolute"
+						colorScheme="blue"
+						size="sm"
+						opacity="0.8"
+						onClick={() => fileInputRef.current.click()}
+					>
+						{hasImageAlready ? 'Replace image' : 'Upload'}
+					</Button>
 				)}
 			</InputGroup>
 			<FormErrorMessage>{form.errors.image}</FormErrorMessage>

@@ -36,6 +36,8 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 
 	if (!categories) return null; // TODO: add loading spinner?
 
+	console.log(itemInEdit.image);
+
 	return (
 		<Modal onClose={onClose} isOpen size="5xl">
 			<ModalOverlay />
@@ -60,7 +62,7 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 							seekingVolunteers:
 								itemInEdit?.seekingVolunteers || false,
 							inactive: itemInEdit?.inactive || false,
-							image: '',
+							image: itemInEdit?.image,
 						}}
 						onSubmit={onSubmit}
 					>

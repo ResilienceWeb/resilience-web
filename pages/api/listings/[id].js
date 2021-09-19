@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import prisma from '../../../prisma/client';
 import doSpace from '../../../lib/digitalocean';
-import doConfig from '../../../helpers/config';
+import doConfig from '@helpers/config';
 
 String.prototype.toBoolean = function () {
 	if (this === 'true') return true;

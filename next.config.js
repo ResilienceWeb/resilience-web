@@ -4,6 +4,10 @@ module.exports = {
 		return config;
 	},
 	images: {
-		domains: ['media.graphcms.com'],
+		domains: [
+			'media.graphcms.com',
+			'via.placeholder.com',
+			'resilienceweb.ams3.digitaloceanspaces.com',
+		],
 	},
 };
