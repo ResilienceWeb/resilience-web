@@ -22,8 +22,6 @@ const filterFunction = (item, searchTerm) => {
 	}
 
 	return !!item.isDescriptive;
-
-
 };
 
 const City = ({ data }) => {
@@ -134,20 +132,23 @@ export async function getStaticProps() {
 			title,
 			category,
 			description,
+			image,
 			website,
 			facebook,
 			twitter,
 			instagram,
 			email,
 			seekingVolunteers,
-			inactive
+			inactive,
 		}) => {
+			console.log(image);
 			transformedData.nodes.push({
 				id,
 				label: title,
 				title,
 				category: category.label,
 				description,
+				image: image ?? '',
 				website,
 				facebook,
 				twitter,

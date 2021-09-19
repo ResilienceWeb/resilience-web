@@ -12,7 +12,11 @@ import {
 	Icon,
 	Stack,
 	Link,
-	chakra, Flex, Tooltip, Text,
+	chakra,
+	Flex,
+	Tooltip,
+	Text,
+	Image,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
@@ -24,13 +28,25 @@ const Dialog = ({ isOpen, item, onClose }) => {
 		<Modal isCentered isOpen={isOpen} onClose={onClose} size="xl">
 			<ModalOverlay />
 			<ModalContent opacity="1" mx={2}>
-				<ModalHeader>{item.label}</ModalHeader>
+				{item.image && (
+					<Image
+						alt={`${item.label} cover image`}
+						src={item.image}
+						objectFit="cover"
+						width="100%"
+						maxHeight="300px"
+						borderTopRadius="0.375rem"
+					/>
+				)}
+
+				<ModalHeader pb={0}>{item.label}</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
 					<Tag mb={4} backgroundColor={item.color}>
 						{item.category}
 					</Tag>
 					<br />
+
 					<chakra.a
 						color="blue.400"
 						href={item.website}
@@ -53,7 +69,8 @@ const Dialog = ({ isOpen, item, onClose }) => {
 						<Flex justifyContent={'right'}>
 							<Tooltip label="This group is currently inactive.">
 								<Text color="grey">
-									Currently inactive <Icon as={GiNightSleep} />
+									Currently inactive{' '}
+									<Icon as={GiNightSleep} />
 								</Text>
 							</Tooltip>
 						</Flex>
