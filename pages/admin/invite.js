@@ -60,6 +60,14 @@ export default function Invite() {
 					duration: 5000,
 					isClosable: true,
 				});
+			} else {
+				toast({
+					title: 'Error',
+					description: `There was an error. Please try again or contact the developers.`,
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+				});
 			}
 		},
 		[listings, toast],

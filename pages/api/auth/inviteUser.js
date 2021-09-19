@@ -1,4 +1,3 @@
-import axios from 'axios';
 import sgMail from '@sendgrid/mail';
 import { REMOTE_URL } from '@helpers/config';
 import { htmlTemplate, textTemplate } from '@helpers/emailTemplates';
@@ -23,18 +22,20 @@ export default async function (req, res) {
 			});
 		}
 
-		// TODO: replace with fetch
-		const response = await axios({
+		const response = await fetch(`${REMOTE_URL}/api/permissions/create`, {
 			method: 'POST',
-			url: `${REMOTE_URL}/api/permissions/create`,
-			data: {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
 				email: email,
 				listingId: parseInt(listing.id),
-			},
+			}),
 		});
 
 		const emailEncoded = encodeURIComponent(email);
 		const callToActionButtonUrl = `${REMOTE_URL}/admin?activate=${emailEncoded}`;
+
 		if (response.status === 201) {
 			const msg = {
 				to: email,
@@ -66,9 +67,12 @@ export default async function (req, res) {
 					}
 				}
 			})();
+		} else {
+			res.status(400);
+			res.json({
+				error: 'There was an unspecified error',
+			});
 		}
-
-		res.status(400);
 	} catch (e) {
 		res.status(500);
 		res.json({
@@ -76,9 +80,3 @@ export default async function (req, res) {
 		});
 	}
 }
-
-// export const config = {
-// 	api: {
-// 		bodyParser: true,
-// 	},
-// };
