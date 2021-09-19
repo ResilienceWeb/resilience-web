@@ -44,6 +44,7 @@ const EditableList = ({
 
 	const handleSubmit = useCallback(
 		(data) => {
+			console.log(data);
 			if (data.id) {
 				updateListing(data);
 			} else {

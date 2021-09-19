@@ -32,7 +32,7 @@ export default function SignIn({ csrfToken }) {
 							type="hidden"
 							defaultValue={csrfToken}
 						/>
-						<label>
+						<label htmlFor="email">
 							Email
 							<Input type="email" id="email" name="email" />
 						</label>

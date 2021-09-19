@@ -92,6 +92,7 @@ model Listing {
     notes             String?
     seekingVolunteers Boolean?         @map(name: "seeking_volunteers")
     inactive          Boolean          @default(false)
+    image             String?
     editPermissions   EditPermission[]
 
     @@map(name: "listings")

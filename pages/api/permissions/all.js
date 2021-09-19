@@ -5,7 +5,7 @@ export default async function (req, res) {
 	try {
 		const session = await getSession({ req });
 
-		if (!session.user.admin) {
+		if (!session?.user.admin) {
 			res.status(403);
 			res.json({
 				error: `You don't have enough permissions to access this data.`,
