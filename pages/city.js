@@ -141,7 +141,6 @@ export async function getStaticProps() {
 			seekingVolunteers,
 			inactive,
 		}) => {
-			console.log(image);
 			transformedData.nodes.push({
 				id,
 				label: title,
