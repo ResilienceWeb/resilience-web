@@ -23,25 +23,31 @@ export default async function (req, res) {
 				form.keepExtensions = true;
 
 				await form.parse(req, async (err, fields, files) => {
-					const imageUrl = await uploadImage(files.image);
+					const newData = {
+						title: fields.title,
+						categoryId: parseInt(fields.category),
+						website: fields.website,
+						description: fields.description,
+						email: fields.email,
+						facebook: fields.facebook,
+						instagram: fields.instagram,
+						twitter: fields.twitter,
+						notes: fields.notes,
+						seekingVolunteers: fields.seekingVolunteers.toBoolean(),
+						inactive: fields.inactive.toBoolean(),
+					};
+
+					let imageUrl = null;
+					if (files.image) {
+						imageUrl = await uploadImage(files.image);
+					}
+					if (imageUrl) {
+						newData.image = imageUrl;
+					}
 
 					const listing = await prisma.listing.update({
 						where: { id: parseInt(listingId) },
-						data: {
-							title: fields.title,
-							categoryId: parseInt(fields.category),
-							website: fields.website,
-							description: fields.description,
-							email: fields.email,
-							facebook: fields.facebook,
-							instagram: fields.instagram,
-							twitter: fields.twitter,
-							notes: fields.notes,
-							seekingVolunteers:
-								fields.seekingVolunteers.toBoolean(),
-							inactive: fields.inactive.toBoolean(),
-							image: imageUrl,
-						},
+						data: newData,
 					});
 
 					res.status(200);
