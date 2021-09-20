@@ -17,8 +17,8 @@ import Layout from '@components/layout';
 import Drawer from '@components/drawer';
 import ModeSwitch from '@components/mode-switch';
 import MainList from '@components/main-list';
-import Footer from '@components/footer';
 import { REMOTE_URL } from '@helpers/config';
+import { useLocalStorage } from '@hooks/application';
 
 const Network = dynamic(() => import('../components/network'), {
 	ssr: false,
@@ -46,7 +46,7 @@ const City = ({ data }) => {
 		() => window.matchMedia('only screen and (max-width: 760px)').matches,
 		[],
 	);
-	const [isWebMode, setIsWebMode] = useState(!isMobile);
+	const [isWebMode, setIsWebMode] = useLocalStorage(!isMobile);
 
 	const filteredItems = useMemo(() => {
 		return searchTermValue
