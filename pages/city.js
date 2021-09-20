@@ -1,9 +1,17 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import dynamic from 'next/dynamic';
 import { useCallback, useState, useMemo, memo } from 'react';
-import { Box, Fade } from '@chakra-ui/react';
+import {
+	Box,
+	Fade,
+	InputGroup,
+	InputLeftElement,
+	Flex,
+	Input,
+} from '@chakra-ui/react';
 import { useDebounce } from 'use-debounce';
 import groupBy from 'lodash/groupBy';
+import { FiSearch } from 'react-icons/fi';
 
 import Layout from '@components/layout';
 import Drawer from '@components/drawer';
@@ -84,20 +92,41 @@ const City = ({ data }) => {
 			<Fade in={isWebMode} unmountOnExit>
 				{isWebMode && (
 					<>
-						<Drawer
-							handleSearchTermChange={handleSearchTermChange}
-							items={filteredItems}
-							searchTerm={searchTerm}
-							selectNode={selectNode}
-						/>
+						<Drawer items={filteredItems} selectNode={selectNode} />
 						<Box height="100vh" ml="18.75rem" position="relative">
+							<Box transition=".3s ease">
+								<Flex
+									as="header"
+									align="center"
+									justify="space-between"
+									w="full"
+									px="4"
+									bg={'white'}
+									borderBottomWidth="1px"
+									borderColor={'inherit'}
+									h="14"
+								>
+									<InputGroup
+										w="96"
+										display={{ base: 'none', md: 'flex' }}
+									>
+										<InputLeftElement color="gray.500">
+											<FiSearch />
+										</InputLeftElement>
+										<Input
+											onChange={handleSearchTermChange}
+											placeholder="Search"
+											value={searchTerm}
+										/>
+									</InputGroup>
+								</Flex>
+							</Box>
 							<Network
 								data={filteredNetworkData}
 								selectedId={selectedId}
 								setNetwork={setNetwork}
 								setSelectedId={setSelectedId}
 							/>
-							<Footer />
 						</Box>
 					</>
 				)}

@@ -6,6 +6,8 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'next-auth/client';
 import '@fontsource/karla/400.css';
+import '@fontsource/poppins/400.css';
+import '@fontsource/poppins/500.css';
 import '../styles/globals.css';
 import '../styles/styles.global.scss';
 

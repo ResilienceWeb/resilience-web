@@ -45,8 +45,9 @@ const Item = ({ dataItem, onOpenDialog }) => {
 					borderRadius="5px"
 					backgroundColor="#ffffff"
 					transition="transform 300ms ease-in-out, box-shadow 300ms ease-in-out"
-					_hover={{ boxShadow: 'md' }}
 					onClick={openDialog}
+					opacity={dataItem.inactive ? 0.7 : 1}
+					_hover={{ boxShadow: 'md' }}
 				>
 					<Flex justifyContent="space-between">
 						<chakra.h2
@@ -73,7 +74,8 @@ const Item = ({ dataItem, onOpenDialog }) => {
 						<Flex>
 							<Tooltip label="This group is currently inactive.">
 								<Text color="grey">
-									Currently inactive <Icon as={GiNightSleep} />
+									Currently inactive{' '}
+									<Icon as={GiNightSleep} />
 								</Text>
 							</Tooltip>
 						</Flex>

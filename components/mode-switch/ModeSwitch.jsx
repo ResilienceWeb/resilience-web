@@ -2,14 +2,7 @@ import { chakra, FormLabel, Switch, Flex } from '@chakra-ui/react';
 
 const ModeSwitch = ({ handleSwitchChange, checked }) => {
 	return (
-		<chakra.div
-			position="absolute"
-			right="0"
-			padding="0.5rem"
-			zIndex={6}
-			mt="0.8125rem"
-			mr="0.5rem"
-		>
+		<chakra.div position="absolute" right="0" zIndex={6} my="1rem">
 			<Flex direction="row" alignItems="center">
 				<FormLabel fontSize="sm">Filter by category</FormLabel>
 				<Switch
