@@ -1,71 +1,90 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import dynamic from 'next/dynamic';
-import { useCallback, useState, useMemo, memo } from 'react';
-import {
-	Box,
-	Fade,
-	InputGroup,
-	InputLeftElement,
-	Flex,
-	Input,
-} from '@chakra-ui/react';
+import NextLink from 'next/link';
+import { useCallback, useEffect, useState, useMemo, memo } from 'react';
+import { Box, Fade, Button, Link } from '@chakra-ui/react';
 import { useDebounce } from 'use-debounce';
 import groupBy from 'lodash/groupBy';
-import { FiSearch } from 'react-icons/fi';
+import { FaArrowLeft } from 'react-icons/fa';
 
-import Layout from '@components/layout';
 import Drawer from '@components/drawer';
-import ModeSwitch from '@components/mode-switch';
 import MainList from '@components/main-list';
+import Header from '@components/header';
 import { REMOTE_URL } from '@helpers/config';
 import { useLocalStorage } from '@hooks/application';
+import { useCategories } from '@hooks/categories';
 
 const Network = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
-const filterFunction = (item, searchTerm) => {
-	if (item.label.toLowerCase().includes(searchTerm.toLowerCase())) {
-		return true;
-	}
-
-	return !!item.isDescriptive;
-};
-
 const City = ({ data }) => {
-	const [searchTerm, setSearchTerm] = useState('');
-	const [searchTermValue] = useDebounce(searchTerm, 500);
-	const handleSearchTermChange = useCallback((event) => {
-		setSearchTerm(event.target.value);
-	}, []);
-
-	const [selectedId, setSelectedId] = useState();
-	const [network, setNetwork] = useState();
-
 	const isMobile = useMemo(
 		() => window.matchMedia('only screen and (max-width: 760px)').matches,
 		[],
 	);
 	const [isWebMode, setIsWebMode] = useLocalStorage(!isMobile);
 
+	const [searchTerm, setSearchTerm] = useState('');
+	const [searchTermValue] = useDebounce(searchTerm, 500);
+	const handleSearchTermChange = useCallback((event) => {
+		setSearchTerm(event.target.value);
+	}, []);
+	const [selectedCategories, setSelectedCategories] = useState([]);
+	const [categories, setCategories] = useState({});
+
+	const [selectedId, setSelectedId] = useState();
+	const [network, setNetwork] = useState();
+
+	const { categories: fetchedCategories } = useCategories();
+
+	useEffect(() => {
+		if (!fetchedCategories) return;
+
+		setCategories(
+			fetchedCategories.map((c) => ({
+				value: c.label,
+				label: c.label,
+				color: `#${c.color}`,
+			})),
+		);
+	}, [fetchedCategories]);
+
+	const handleCategorySelection = useCallback((value) => {
+		setSelectedCategories(value);
+	}, []);
+
 	const filteredItems = useMemo(() => {
-		return searchTermValue
-			? data.nodes.filter((i) =>
-					i.label
-						.toLowerCase()
-						.includes(searchTermValue.toLowerCase()),
-			  )
-			: data.nodes;
-	}, [searchTermValue, data.nodes]);
+		let results = data.nodes.filter((item) => !item.isDescriptive);
+
+		if (selectedCategories.length > 0) {
+			const categories = selectedCategories.map((c) => c.label);
+			results = results.filter((item) =>
+				categories.includes(item.category),
+			);
+		}
+
+		if (searchTermValue) {
+			results = results.filter((item) =>
+				item.title
+					.toLowerCase()
+					.includes(searchTermValue.toLowerCase()),
+			);
+		}
+
+		return results;
+	}, [data.nodes, selectedCategories, searchTermValue]);
+
+	const descriptiveNodes = useMemo(() => {
+		return data.nodes.filter((item) => item.isDescriptive);
+	}, [data.nodes]);
 
 	const filteredNetworkData = useMemo(() => {
 		return {
 			edges: data.edges,
-			nodes: searchTermValue
-				? data.nodes.filter((i) => filterFunction(i, searchTermValue))
-				: data.nodes,
+			nodes: [...filteredItems, ...descriptiveNodes],
 		};
-	}, [data.edges, data.nodes, searchTermValue]);
+	}, [data.edges, filteredItems, descriptiveNodes]);
 
 	const selectNode = useCallback(
 		(id) => {
@@ -76,67 +95,44 @@ const City = ({ data }) => {
 		[network],
 	);
 
-	const handleSwitchChange = useCallback((event) => {
-		setSelectedId(null);
-		setIsWebMode(!(event.target.value == 'true'));
-	}, []);
+	const handleSwitchChange = useCallback(
+		(event) => {
+			setSelectedId(null);
+			setIsWebMode(!(event.target.value == 'true'));
+		},
+		[setIsWebMode],
+	);
 
 	return (
 		<>
-			{!isMobile && (
-				<ModeSwitch
-					checked={isWebMode}
+			{isWebMode && (
+				<Drawer items={filteredItems} selectNode={selectNode} />
+			)}
+			<Box
+				height="100vh"
+				ml={isWebMode ? '18.75rem' : '0'}
+				position="relative"
+			>
+				<Header
+					categories={categories}
+					handleCategorySelection={handleCategorySelection}
+					handleSearchTermChange={handleSearchTermChange}
 					handleSwitchChange={handleSwitchChange}
+					isMobile={isMobile}
+					isWebMode={isWebMode}
+					searchTerm={searchTerm}
 				/>
-			)}
-			<Fade in={isWebMode} unmountOnExit>
 				{isWebMode && (
-					<>
-						<Drawer items={filteredItems} selectNode={selectNode} />
-						<Box height="100vh" ml="18.75rem" position="relative">
-							<Box transition=".3s ease">
-								<Flex
-									as="header"
-									align="center"
-									justify="space-between"
-									w="full"
-									px="4"
-									bg={'white'}
-									borderBottomWidth="1px"
-									borderColor={'inherit'}
-									h="14"
-								>
-									<InputGroup
-										w="96"
-										display={{ base: 'none', md: 'flex' }}
-									>
-										<InputLeftElement color="gray.500">
-											<FiSearch />
-										</InputLeftElement>
-										<Input
-											onChange={handleSearchTermChange}
-											placeholder="Search"
-											value={searchTerm}
-										/>
-									</InputGroup>
-								</Flex>
-							</Box>
-							<Network
-								data={filteredNetworkData}
-								selectedId={selectedId}
-								setNetwork={setNetwork}
-								setSelectedId={setSelectedId}
-							/>
-						</Box>
-					</>
+					<Network
+						data={filteredNetworkData}
+						selectedId={selectedId}
+						setNetwork={setNetwork}
+						setSelectedId={setSelectedId}
+					/>
 				)}
-			</Fade>
 
-			{!isWebMode && (
-				<Layout>
-					<MainList items={data.nodes} />
-				</Layout>
-			)}
+				{!isWebMode && <MainList filteredItems={filteredItems} />}
+			</Box>
 		</>
 	);
 };

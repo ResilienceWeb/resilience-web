@@ -12,7 +12,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 
 	const animations = {
 		layout: true,
-		initial: false,
+		initial: true,
 		style: {
 			position: isPresent ? 'static' : 'absolute',
 		},
@@ -57,7 +57,10 @@ const Item = ({ dataItem, onOpenDialog }) => {
 						>
 							{dataItem.title}
 						</chakra.h2>
-						<Tag backgroundColor={tagBackgroundColor}>
+						<Tag
+							backgroundColor={tagBackgroundColor}
+							userSelect="none"
+						>
 							{dataItem.category}
 						</Tag>
 					</Flex>
