@@ -42,7 +42,7 @@ const Dialog = ({ isOpen, item, onClose }) => {
 				<ModalHeader pb={0}>{item.label}</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
-					<Tag mb={4} backgroundColor={item.color}>
+					<Tag mb={4} backgroundColor={item.color} userSelect="none">
 						{item.category}
 					</Tag>
 					<br />

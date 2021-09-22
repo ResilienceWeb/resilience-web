@@ -105,36 +105,34 @@ const City = ({ data }) => {
 
 	return (
 		<>
-			<Fade in unmountOnExit>
+			{isWebMode && (
+				<Drawer items={filteredItems} selectNode={selectNode} />
+			)}
+			<Box
+				height="100vh"
+				ml={isWebMode ? '18.75rem' : '0'}
+				position="relative"
+			>
+				<Header
+					categories={categories}
+					handleCategorySelection={handleCategorySelection}
+					handleSearchTermChange={handleSearchTermChange}
+					handleSwitchChange={handleSwitchChange}
+					isMobile={isMobile}
+					isWebMode={isWebMode}
+					searchTerm={searchTerm}
+				/>
 				{isWebMode && (
-					<Drawer items={filteredItems} selectNode={selectNode} />
-				)}
-				<Box
-					height="100vh"
-					ml={isWebMode ? '18.75rem' : '0'}
-					position="relative"
-				>
-					<Header
-						categories={categories}
-						handleCategorySelection={handleCategorySelection}
-						handleSearchTermChange={handleSearchTermChange}
-						handleSwitchChange={handleSwitchChange}
-						isMobile={isMobile}
-						isWebMode={isWebMode}
-						searchTerm={searchTerm}
+					<Network
+						data={filteredNetworkData}
+						selectedId={selectedId}
+						setNetwork={setNetwork}
+						setSelectedId={setSelectedId}
 					/>
-					{isWebMode && (
-						<Network
-							data={filteredNetworkData}
-							selectedId={selectedId}
-							setNetwork={setNetwork}
-							setSelectedId={setSelectedId}
-						/>
-					)}
+				)}
 
-					{!isWebMode && <MainList filteredItems={filteredItems} />}
-				</Box>
-			</Fade>
+				{!isWebMode && <MainList filteredItems={filteredItems} />}
+			</Box>
 		</>
 	);
 };

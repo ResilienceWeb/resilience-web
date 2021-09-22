@@ -1,5 +1,5 @@
 import { memo, useCallback, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
 import {
 	chakra,
 	Flex,
@@ -36,23 +36,8 @@ const MainList = ({ filteredItems }) => {
 				justifyContent="center"
 				alignItems="center"
 				flexDirection="column"
+				mt={8}
 			>
-				<chakra.div
-					paddingTop={4}
-					width={useBreakpointValue({ base: '95%', md: '600px' })}
-				>
-					{/* <Input
-						className={styles.searchBox}
-						placeholder="Search"
-						onChange={handleSearchTermChange}
-						style={{
-							width: '100%',
-							marginTop: '1rem',
-							backgroundColor: '#ffffff',
-						}}
-						value={searchTerm}
-					/> */}
-				</chakra.div>
 				<chakra.span fontSize="14px" marginTop={2}>
 					{filteredItems.length} listings
 				</chakra.span>
@@ -60,17 +45,19 @@ const MainList = ({ filteredItems }) => {
 					marginTop={4}
 					width={useBreakpointValue({ base: '95%', md: '600px' })}
 				>
-					<AnimatePresence>
-						<motion.div layout>
-							{filteredItems.map((item) => (
-								<Item
-									dataItem={item}
-									key={item.id}
-									onOpenDialog={handleOpenDialog}
-								/>
-							))}
-						</motion.div>
-					</AnimatePresence>
+					<AnimateSharedLayout>
+						<AnimatePresence>
+							<motion.div layout>
+								{filteredItems.map((item) => (
+									<Item
+										dataItem={item}
+										key={item.id}
+										onOpenDialog={handleOpenDialog}
+									/>
+								))}
+							</motion.div>
+						</AnimatePresence>
+					</AnimateSharedLayout>
 				</chakra.div>
 			</Flex>
 			{selectedDataItem && (
