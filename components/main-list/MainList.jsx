@@ -1,99 +1,21 @@
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import Image from 'next/image';
-import chroma from 'chroma-js';
+import { memo, useCallback, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
 	chakra,
-	Box,
 	Flex,
 	useBreakpointValue,
 	useDisclosure,
-	Input,
 } from '@chakra-ui/react';
-import Select from 'react-select';
 import Dialog from './dialog';
-import { useCategories } from '@hooks/categories';
 import Item from './item';
-import styles from './MainList.module.scss';
 
-const customMultiSelectStyles = {
-	option: (provided, state) => {
-		return {
-			...provided,
-			color: state.data.color,
-		};
-	},
-	multiValue: (styles, { data }) => {
-		const color = chroma(data.color);
-		return {
-			...styles,
-			backgroundColor: color.alpha(0.5).css(),
-		};
-	},
-	multiValueLabel: (styles) => ({
-		...styles,
-		color: '#000',
-	}),
-	multiValueRemove: (styles, { data }) => ({
-		...styles,
-		color: data.color,
-		':hover': {
-			backgroundColor: data.color,
-			color: 'white',
-		},
-	}),
-};
-
-const MainList = ({ items }) => {
-	const [selectedCategories, setSelectedCategories] = useState([]);
-	const [categories, setCategories] = useState({});
+const MainList = ({ filteredItems }) => {
 	const [selectedDataItem, setSelectedDataItem] = useState();
 	const {
 		isOpen: isDialogOpen,
 		onOpen: onOpenDialog,
 		onClose: onCloseDialog,
 	} = useDisclosure();
-	const [searchTerm, setSearchTem] = useState('');
-	const { categories: fetchedCategories } = useCategories();
-
-	useEffect(() => {
-		if (!fetchedCategories) return;
-
-		setCategories(
-			fetchedCategories.map((c) => ({
-				value: c.label,
-				label: c.label,
-				color: `#${c.color}`,
-			})),
-		);
-	}, [fetchedCategories]);
-
-	const handleCategorySelection = useCallback((value) => {
-		setSelectedCategories(value);
-	}, []);
-
-	const handleSearchTermChange = useCallback((event) => {
-		setSearchTem(event.target.value);
-	}, []);
-
-	const filteredItems = useMemo(() => {
-		let results = items.filter((item) => !item.isDescriptive);
-
-		if (selectedCategories.length > 0) {
-			const categories = selectedCategories.map((c) => c.label);
-			results = results.filter((item) =>
-				categories.includes(item.category),
-			);
-		}
-
-		if (searchTerm) {
-			results = results.filter((item) =>
-				item.title.toLowerCase().includes(searchTerm.toLowerCase()),
-			);
-		}
-
-		return results;
-	}, [items, searchTerm, selectedCategories]);
 
 	const handleOpenDialog = useCallback(
 		(item) => {
@@ -108,10 +30,6 @@ const MainList = ({ items }) => {
 		onCloseDialog();
 	}, [onCloseDialog]);
 
-	const isMobile = window.matchMedia(
-		'only screen and (max-width: 760px)',
-	).matches;
-
 	return (
 		<>
 			<Flex
@@ -119,29 +37,11 @@ const MainList = ({ items }) => {
 				alignItems="center"
 				flexDirection="column"
 			>
-				{!isMobile && (
-					<Box my={4}>
-						<Image
-							alt="Cambridge Resilience Web logo"
-							src="/logo.png"
-							width="276"
-							height="104"
-						/>
-					</Box>
-				)}
 				<chakra.div
 					paddingTop={4}
 					width={useBreakpointValue({ base: '95%', md: '600px' })}
 				>
-					<Select
-						isMulti
-						isSearchable={false}
-						onChange={handleCategorySelection}
-						options={categories}
-						placeholder="Filter by category"
-						styles={customMultiSelectStyles}
-					/>
-					<Input
+					{/* <Input
 						className={styles.searchBox}
 						placeholder="Search"
 						onChange={handleSearchTermChange}
@@ -151,7 +51,7 @@ const MainList = ({ items }) => {
 							backgroundColor: '#ffffff',
 						}}
 						value={searchTerm}
-					/>
+					/> */}
 				</chakra.div>
 				<chakra.span fontSize="14px" marginTop={2}>
 					{filteredItems.length} listings

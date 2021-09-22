@@ -30,12 +30,7 @@ export default function Hero() {
 						<br />
 						<Text as={'span'}>Resilience Web</Text>
 					</Heading>
-					<Text
-						color={'gray.500'}
-						fontFamily="Karla, sans-serif"
-						fontSize="18"
-						maxW={'3xl'}
-					>
+					<Text color={'gray.500'} fontSize="18" maxW={'3xl'}>
 						Two webs of resilience, showing the environmental and
 						social justice groups in Cambridge, UK. These webs are
 						useful for finding local like-minded organisations,
