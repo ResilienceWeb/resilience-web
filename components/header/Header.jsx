@@ -73,7 +73,9 @@ const Header = ({
 }) => {
 	const content = (
 		<>
-			<InputGroup maxW={isWebMode ? '250px' : '300px'}>
+			<InputGroup
+				maxW={isWebMode ? '250px' : isMobile ? '100%' : '300px'}
+			>
 				<InputLeftElement color="gray.500">
 					<FiSearch />
 				</InputLeftElement>
