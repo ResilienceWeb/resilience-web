@@ -1,9 +1,18 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, memo } from 'react';
 import { motion, usePresence } from 'framer-motion';
-import { chakra, Flex, Tag, Text, Icon, Tooltip } from '@chakra-ui/react';
-import { HiUserGroup } from 'react-icons/hi';
-import { GiNightSleep } from 'react-icons/gi';
 import chroma from 'chroma-js';
+import {
+	Box,
+	Flex,
+	Tag,
+	Text,
+	Icon,
+	Tooltip,
+	Image,
+	chakra,
+} from '@chakra-ui/react';
+import { HiUserGroup } from 'react-icons/hi';
+import ImagePlaceholder from './image-placeholder';
 
 const transition = { type: 'spring', stiffness: 300, damping: 50, mass: 1 };
 
@@ -35,25 +44,40 @@ const Item = ({ dataItem, onOpenDialog }) => {
 	);
 
 	return (
-		<>
-			<motion.div {...animations}>
-				<chakra.div
-					py={4}
-					px={3}
-					my={4}
-					cursor="pointer"
-					borderRadius="5px"
-					backgroundColor="#ffffff"
-					transition="transform 300ms ease-in-out, box-shadow 300ms ease-in-out"
-					onClick={openDialog}
-					opacity={dataItem.inactive ? 0.7 : 1}
-					_hover={{ boxShadow: 'md' }}
-				>
-					<Flex justifyContent="space-between">
+		<motion.div {...animations}>
+			<chakra.div
+				height="230px"
+				cursor="pointer"
+				borderRadius="5px"
+				backgroundColor="#ffffff"
+				transition="transform 300ms ease-in-out, box-shadow 300ms ease-in-out"
+				onClick={openDialog}
+				opacity={dataItem.inactive ? 0.7 : 1}
+				_hover={{ boxShadow: 'md' }}
+			>
+				{dataItem.image ? (
+					<Image
+						alt={`${dataItem.label} cover image`}
+						src={dataItem.image}
+						objectFit="cover"
+						width="100%"
+						height="150px"
+						borderTopRadius=".375rem"
+					/>
+				) : (
+					<ImagePlaceholder
+						backgroundColor={tagBackgroundColor}
+						categoryLabel={dataItem.category}
+					/>
+				)}
+
+				<Box px={3}>
+					<Flex justifyContent="space-between" mt={3}>
 						<chakra.h2
 							fontSize={17}
 							fontWeight={700}
-							style={{ color: '#454545', marginBottom: 0 }}
+							color="#454545"
+							mb={0}
 						>
 							{dataItem.title}
 						</chakra.h2>
@@ -67,26 +91,16 @@ const Item = ({ dataItem, onOpenDialog }) => {
 					{dataItem.seekingVolunteers && (
 						<Flex>
 							<Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">
-								<Text color="seagreen">
+								<Text color="seagreen" fontSize="sm">
 									Seeking volunteers <Icon as={HiUserGroup} />
 								</Text>
 							</Tooltip>
 						</Flex>
 					)}
-					{dataItem.inactive && (
-						<Flex>
-							<Tooltip label="This group is currently inactive.">
-								<Text color="grey">
-									Currently inactive{' '}
-									<Icon as={GiNightSleep} />
-								</Text>
-							</Tooltip>
-						</Flex>
-					)}
-				</chakra.div>
-			</motion.div>
-		</>
+				</Box>
+			</chakra.div>
+		</motion.div>
 	);
 };
 
-export default Item;
+export default memo(Item);

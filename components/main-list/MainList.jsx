@@ -3,6 +3,8 @@ import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
 import {
 	chakra,
 	Flex,
+	Grid,
+	GridItem,
 	useBreakpointValue,
 	useDisclosure,
 } from '@chakra-ui/react';
@@ -43,18 +45,27 @@ const MainList = ({ filteredItems }) => {
 				</chakra.span>
 				<chakra.div
 					marginTop={4}
-					width={useBreakpointValue({ base: '95%', md: '600px' })}
+					width={useBreakpointValue({ base: '95%', md: '85%' })}
 				>
 					<AnimateSharedLayout>
 						<AnimatePresence>
 							<motion.div layout>
-								{filteredItems.map((item) => (
-									<Item
-										dataItem={item}
-										key={item.id}
-										onOpenDialog={handleOpenDialog}
-									/>
-								))}
+								<Grid
+									templateColumns={{
+										base: '1fr',
+										md: 'repeat(3, 1fr)',
+									}}
+									gap={6}
+								>
+									{filteredItems.map((item) => (
+										<GridItem key={item.id}>
+											<Item
+												dataItem={item}
+												onOpenDialog={handleOpenDialog}
+											/>
+										</GridItem>
+									))}
+								</Grid>
 							</motion.div>
 						</AnimatePresence>
 					</AnimateSharedLayout>

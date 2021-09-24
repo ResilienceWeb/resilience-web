@@ -1,7 +1,7 @@
 import { useCallback, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import Image from 'next/image';
-import { Divider, Flex, Link } from '@chakra-ui/react';
+import { Flex, Link } from '@chakra-ui/react';
 import { sortStringsFunc } from '@helpers/utils';
 import styles from './Drawer.module.scss';
 import LogoImage from '../../public/logo.png';

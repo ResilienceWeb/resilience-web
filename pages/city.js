@@ -1,11 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import dynamic from 'next/dynamic';
-import NextLink from 'next/link';
 import { useCallback, useEffect, useState, useMemo, memo } from 'react';
-import { Box, Fade, Button, Link } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useDebounce } from 'use-debounce';
 import groupBy from 'lodash/groupBy';
-import { FaArrowLeft } from 'react-icons/fa';
 
 import Drawer from '@components/drawer';
 import MainList from '@components/main-list';
