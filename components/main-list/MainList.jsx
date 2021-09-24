@@ -45,7 +45,11 @@ const MainList = ({ filteredItems }) => {
 				</chakra.span>
 				<chakra.div
 					marginTop={4}
-					width={useBreakpointValue({ base: '95%', md: '85%' })}
+					width={useBreakpointValue({
+						base: '95%',
+						md: '85%',
+						lg: '70%',
+					})}
 				>
 					<AnimateSharedLayout>
 						<AnimatePresence>

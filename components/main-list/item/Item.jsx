@@ -46,7 +46,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 	return (
 		<motion.div {...animations}>
 			<chakra.div
-				height="230px"
+				height="250px"
 				cursor="pointer"
 				borderRadius="5px"
 				backgroundColor="#ffffff"
@@ -61,7 +61,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 						src={dataItem.image}
 						objectFit="cover"
 						width="100%"
-						height="150px"
+						height="170px"
 						borderTopRadius=".375rem"
 					/>
 				) : (

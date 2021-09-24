@@ -74,7 +74,7 @@ const ImagePlaceholder = ({ backgroundColor, categoryLabel }) => {
 				borderTopLeftRadius: '.375rem',
 				backgroundColor: backgroundColor,
 				backgroundImage: pattern,
-				height: '150px',
+				height: '170px',
 			}}
 		/>
 	);
