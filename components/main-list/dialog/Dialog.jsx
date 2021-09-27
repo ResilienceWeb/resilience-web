@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import {
 	Modal,
 	ModalOverlay,
@@ -23,7 +23,21 @@ import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
 import { HiUserGroup } from 'react-icons/hi';
 import { GiNightSleep } from 'react-icons/gi';
 
+const sanitizeLink = (link) => {
+	let result = link;
+	result = result.replace('https://www.', '');
+	result = result.replace('https://', '');
+	result = result.replace(/\/$/, '');
+
+	return result;
+};
+
 const Dialog = ({ isOpen, item, onClose }) => {
+	const websiteSanitized = useMemo(
+		() => sanitizeLink(item.website),
+		[item.website],
+	);
+
 	return (
 		<Modal isCentered isOpen={isOpen} onClose={onClose} size="xl">
 			<ModalOverlay />
@@ -52,8 +66,9 @@ const Dialog = ({ isOpen, item, onClose }) => {
 						href={item.website}
 						rel="noreferrer"
 						target="_blank"
+						verticalAlign="text-bottom"
 					>
-						{item.website} <ExternalLinkIcon ml={1} />
+						{websiteSanitized} <ExternalLinkIcon ml={1} />
 					</chakra.a>
 					<Box mt={4}>{item.description}</Box>
 				</ModalBody>

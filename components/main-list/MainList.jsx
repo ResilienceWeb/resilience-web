@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import Dialog from './dialog';
 import Item from './item';
+import Footer from '@components/footer';
 
 const MainList = ({ filteredItems }) => {
 	const [selectedDataItem, setSelectedDataItem] = useState();
@@ -38,7 +39,7 @@ const MainList = ({ filteredItems }) => {
 				justifyContent="center"
 				alignItems="center"
 				flexDirection="column"
-				mt={8}
+				my={8}
 			>
 				<chakra.span fontSize="14px" marginTop={2}>
 					{filteredItems.length} listings
@@ -75,6 +76,7 @@ const MainList = ({ filteredItems }) => {
 					</AnimateSharedLayout>
 				</chakra.div>
 			</Flex>
+			<Footer />
 			{selectedDataItem && (
 				<Dialog
 					isOpen={isDialogOpen}
