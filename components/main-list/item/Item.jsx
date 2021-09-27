@@ -46,7 +46,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 	return (
 		<motion.div {...animations}>
 			<chakra.div
-				height="250px"
+				height="fit-content"
 				cursor="pointer"
 				borderRadius="5px"
 				backgroundColor="#ffffff"
@@ -71,19 +71,22 @@ const Item = ({ dataItem, onOpenDialog }) => {
 					/>
 				)}
 
-				<Box px={3}>
+				<Box px={3} pb={3}>
 					<Flex justifyContent="space-between" mt={3}>
 						<chakra.h2
-							fontSize={17}
+							fontSize={15}
 							fontWeight={700}
 							color="#454545"
 							mb={0}
+							noOfLines={3}
 						>
 							{dataItem.title}
 						</chakra.h2>
 						<Tag
 							backgroundColor={tagBackgroundColor}
 							userSelect="none"
+							height="26px"
+							minWidth="fit-content"
 						>
 							{dataItem.category}
 						</Tag>
