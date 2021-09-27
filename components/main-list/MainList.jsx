@@ -36,10 +36,10 @@ const MainList = ({ filteredItems }) => {
 	return (
 		<>
 			<Flex
-				justifyContent="center"
 				alignItems="center"
 				flexDirection="column"
-				my={8}
+				minHeight="calc(100vh - 112px)"
+				py={8}
 			>
 				<chakra.span fontSize="14px" marginTop={2}>
 					{filteredItems.length} listings
