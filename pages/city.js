@@ -16,11 +16,19 @@ const Network = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
+const mobileMatchMedia = 'only screen and (max-width: 760px)';
 const City = ({ data }) => {
-	const isMobile = useMemo(
-		() => window.matchMedia('only screen and (max-width: 760px)').matches,
-		[],
+	const [isMobile, setIsMobile] = useState(
+		window.matchMedia(mobileMatchMedia).matches,
 	);
+
+	const handleResize = () => {
+		setIsMobile(window.matchMedia(mobileMatchMedia).matches);
+	};
+	useEffect(() => {
+		window.addEventListener('resize', handleResize, false);
+	}, []);
+
 	const [isWebMode, setIsWebMode] = useLocalStorage(!isMobile);
 
 	const [searchTerm, setSearchTerm] = useState('');
@@ -129,7 +137,12 @@ const City = ({ data }) => {
 					/>
 				)}
 
-				{!isWebMode && <MainList filteredItems={filteredItems} />}
+				{!isWebMode && (
+					<MainList
+						filteredItems={filteredItems}
+						isMobile={isMobile}
+					/>
+				)}
 			</Box>
 		</>
 	);

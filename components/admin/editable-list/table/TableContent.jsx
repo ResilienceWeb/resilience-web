@@ -82,7 +82,7 @@ export const columns = [
 		Header: 'Category',
 		accessor: 'category',
 		Cell: function StatusCell(category) {
-			if (!category) return null;
+			if (!category || !category.color) return null;
 			const color = chroma(`#${category.color}`);
 			return (
 				<Tag fontSize="xs" backgroundColor={color.alpha(0.5).css()}>

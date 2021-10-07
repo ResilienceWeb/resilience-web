@@ -32,16 +32,21 @@ const sanitizeLink = (link) => {
 	return result;
 };
 
-const Dialog = ({ isOpen, item, onClose }) => {
+const Dialog = ({ isOpen, isMobile, item, onClose }) => {
 	const websiteSanitized = useMemo(
 		() => sanitizeLink(item.website),
 		[item.website],
 	);
 
 	return (
-		<Modal isCentered isOpen={isOpen} onClose={onClose} size="xl">
+		<Modal
+			isCentered={!isMobile}
+			isOpen={isOpen}
+			onClose={onClose}
+			size={isMobile ? 'full' : 'xl'}
+		>
 			<ModalOverlay />
-			<ModalContent opacity="1" mx={2}>
+			<ModalContent opacity="1">
 				{item.image && (
 					<Image
 						alt={`${item.label} cover image`}

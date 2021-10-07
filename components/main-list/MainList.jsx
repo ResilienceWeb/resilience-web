@@ -12,7 +12,7 @@ import Dialog from './dialog';
 import Item from './item';
 import Footer from '@components/footer';
 
-const MainList = ({ filteredItems }) => {
+const MainList = ({ filteredItems, isMobile }) => {
 	const [selectedDataItem, setSelectedDataItem] = useState();
 	const {
 		isOpen: isDialogOpen,
@@ -80,6 +80,7 @@ const MainList = ({ filteredItems }) => {
 			{selectedDataItem && (
 				<Dialog
 					isOpen={isDialogOpen}
+					isMobile={isMobile}
 					item={selectedDataItem}
 					onClose={handleCloseDialog}
 				/>
