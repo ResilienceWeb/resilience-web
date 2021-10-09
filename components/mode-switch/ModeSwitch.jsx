@@ -2,9 +2,20 @@ import { chakra, FormLabel, Switch, Flex } from '@chakra-ui/react';
 
 const ModeSwitch = ({ handleSwitchChange, checked }) => {
 	return (
-		<chakra.div ml={4}>
-			<Flex direction="row" alignItems="center" width="350px">
-				<FormLabel textAlign="center" fontSize="sm" mb={0}>
+		<chakra.div ml={2} mr={2}>
+			<Flex
+				direction="row"
+				alignItems="center"
+				justifyContent="center"
+				width="200px"
+			>
+				<FormLabel
+					textAlign="center"
+					fontSize="sm"
+					mr={2}
+					mb={0}
+					ml={0}
+				>
 					List view
 				</FormLabel>
 				<Switch
@@ -15,8 +26,8 @@ const ModeSwitch = ({ handleSwitchChange, checked }) => {
 					value={checked}
 					height="28px"
 				/>
-				<FormLabel fontSize="sm" ml={2} mb={0}>
-					Visual web mode
+				<FormLabel fontSize="sm" ml={2} mb={0} mr={0}>
+					Map view
 				</FormLabel>
 			</Flex>
 		</chakra.div>

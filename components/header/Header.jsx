@@ -18,6 +18,7 @@ import {
 import { FiSearch } from 'react-icons/fi';
 import { AiFillHome } from 'react-icons/ai';
 import ModeSwitch from '@components/mode-switch';
+import VolunteerSwitch from '@components/volunteer-switch';
 
 const customMultiSelectStyles = {
 	container: () => ({
@@ -67,8 +68,10 @@ const Header = ({
 	handleCategorySelection,
 	handleSearchTermChange,
 	handleSwitchChange,
+	handleVolunteerSwitchChange,
 	isMobile,
 	isWebMode,
+	isVolunteer,
 	searchTerm,
 }) => {
 	const content = (
@@ -89,7 +92,7 @@ const Header = ({
 					}}
 				/>
 			</InputGroup>
-			<InputGroup maxW="450px">
+			<InputGroup maxW="250px">
 				<Select
 					isMulti
 					isSearchable={false}
@@ -99,6 +102,10 @@ const Header = ({
 					styles={customMultiSelectStyles}
 				/>
 			</InputGroup>
+			<VolunteerSwitch
+				checked={isVolunteer}
+				handleSwitchChange={handleVolunteerSwitchChange}
+			/>
 		</>
 	);
 
