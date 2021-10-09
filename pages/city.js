@@ -30,6 +30,7 @@ const City = ({ data }) => {
 	}, []);
 
 	const [isWebMode, setIsWebMode] = useLocalStorage(!isMobile);
+	const [isVolunteer, setIsVolunteer] = useState(false);
 
 	const [searchTerm, setSearchTerm] = useState('');
 	const [searchTermValue] = useDebounce(searchTerm, 500);
@@ -63,6 +64,10 @@ const City = ({ data }) => {
 	const filteredItems = useMemo(() => {
 		let results = data.nodes.filter((item) => !item.isDescriptive);
 
+		if (isVolunteer) {
+			results = results.filter((item) => item.seekingVolunteers);
+		}
+
 		if (selectedCategories.length > 0) {
 			const categories = selectedCategories.map((c) => c.label);
 			results = results.filter((item) =>
@@ -79,7 +84,7 @@ const City = ({ data }) => {
 		}
 
 		return results;
-	}, [data.nodes, selectedCategories, searchTermValue]);
+	}, [data.nodes, isVolunteer, selectedCategories, searchTermValue]);
 
 	const descriptiveNodes = useMemo(() => {
 		return data.nodes.filter((item) => item.isDescriptive);
@@ -109,6 +114,14 @@ const City = ({ data }) => {
 		[setIsWebMode],
 	);
 
+	const handleVolunteerSwitchChange = useCallback(
+		(event) => {
+			setSelectedId(null);
+			setIsVolunteer(!(event.target.value == 'true'));
+		},
+		[setIsVolunteer],
+	);
+
 	return (
 		<>
 			{isWebMode && (
@@ -124,8 +137,10 @@ const City = ({ data }) => {
 					handleCategorySelection={handleCategorySelection}
 					handleSearchTermChange={handleSearchTermChange}
 					handleSwitchChange={handleSwitchChange}
+					handleVolunteerSwitchChange={handleVolunteerSwitchChange}
 					isMobile={isMobile}
 					isWebMode={isWebMode}
+					isVolunteer={isVolunteer}
 					searchTerm={searchTerm}
 				/>
 				{isWebMode && (
