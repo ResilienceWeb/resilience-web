@@ -12,6 +12,8 @@ import {
 	FormErrorMessage,
 	FormLabel,
 	Input,
+	InputGroup,
+	InputLeftAddon,
 	Textarea,
 	Select,
 	HStack,
@@ -114,6 +116,7 @@ export default function Listing() {
 										listing?.seekingVolunteers || false,
 									inactive: listing?.inactive || false,
 									image: listing?.image,
+									slug: listing?.slug || '',
 								}}
 								enableReinitialize
 								onSubmit={handleSubmit}
@@ -506,6 +509,53 @@ export default function Listing() {
 														</Field>
 													</chakra.div>
 												</HStack>
+
+												<chakra.div mb={3}>
+													<Field name="slug">
+														{({ field, form }) => (
+															<FormControl
+																isInvalid={
+																	form.errors
+																		.slug &&
+																	form.touched
+																		.slug
+																}
+															>
+																<FormLabel
+																	htmlFor="slug"
+																	fontSize="sm"
+																>
+																	Url
+																</FormLabel>
+																<InputGroup size="sm">
+																	<InputLeftAddon
+																		bg="gray.50"
+																		color="gray.500"
+																		rounded="md"
+																		userSelect="none"
+																	>
+																		cambridgeresilienceweb.org.uk/city/
+																	</InputLeftAddon>
+																	<Input
+																		{...field}
+																		id="slug"
+																		fontSize="sm"
+																		shadow="sm"
+																		size="sm"
+																		rounded="md"
+																	/>
+																</InputGroup>
+																<FormErrorMessage>
+																	{
+																		form
+																			.errors
+																			.slug
+																	}
+																</FormErrorMessage>
+															</FormControl>
+														)}
+													</Field>
+												</chakra.div>
 
 												<chakra.div mb={3}>
 													<Field name="seekingVolunteers">

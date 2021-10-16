@@ -24,6 +24,7 @@ export default async function (req, res) {
 						notes: fields.notes,
 						seekingVolunteers: fields.seekingVolunteers.toBoolean(),
 						inactive: fields.inactive.toBoolean(),
+						slug: fields.slug,
 					};
 
 					let imageUrl = null;
