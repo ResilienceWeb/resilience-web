@@ -10,6 +10,14 @@ import '@fontsource/poppins/500.css';
 import '../styles/globals.css';
 import '../styles/styles.global.scss';
 
+String.prototype.toBoolean = function () {
+	if (this === 'true') return true;
+
+	if (this === 'false') return false;
+
+	throw 'Invalid input. This function only takes "true" or "false" and converts them to primitive boolean.';
+};
+
 const theme = extendTheme({
 	styles: {
 		global: {

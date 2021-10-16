@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "listings" ALTER COLUMN "slug" DROP NOT NULL,
+ALTER COLUMN "slug" DROP DEFAULT;

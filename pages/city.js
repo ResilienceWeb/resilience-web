@@ -29,7 +29,7 @@ const City = ({ data }) => {
 		window.addEventListener('resize', handleResize, false);
 	}, []);
 
-	const [isWebMode, setIsWebMode] = useLocalStorage(!isMobile);
+	const [isWebMode, setIsWebMode] = useLocalStorage('isWebMode', !isMobile);
 	const [isVolunteer, setIsVolunteer] = useState(false);
 
 	const [searchTerm, setSearchTerm] = useState('');

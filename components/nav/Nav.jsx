@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import NextLink from 'next/link';
+import { signIn, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import classnames from 'classnames';
 import {
@@ -20,6 +21,7 @@ import LogoImage from '../../public/logo.png';
 import styles from './Nav.module.scss';
 
 export default function MainNav() {
+	const [session, loadingSession] = useSession();
 	const { isOpen, onToggle } = useDisclosure();
 	const router = useRouter();
 
@@ -34,7 +36,7 @@ export default function MainNav() {
 				borderBottom={1}
 				borderStyle={'solid'}
 				borderColor={useColorModeValue('gray.200', 'gray.900')}
-				align={'center'}
+				align="center"
 				justifyContent="center"
 			>
 				<Flex ml={{ base: -2 }} display={{ base: 'flex', md: 'none' }}>
@@ -53,27 +55,37 @@ export default function MainNav() {
 				</Flex>
 				<Flex
 					flex={{ base: 1 }}
-					justify={{ base: 'center', md: 'start' }}
+					justify={{ base: 'center', md: 'space-between' }}
 					maxW="7xl"
 				>
-					<Link as={NextLink} href="/">
-						<button>
-							<Image
-								alt="Cambridge Resilience Web logo"
-								src={LogoImage}
-								width="130"
-								height="50"
-							/>
-						</button>
-					</Link>
+					<Flex>
+						<Link as={NextLink} href="/">
+							<button>
+								<Image
+									alt="Cambridge Resilience Web logo"
+									src={LogoImage}
+									width="130"
+									height="50"
+								/>
+							</button>
+						</Link>
 
-					<Flex
-						display={{ base: 'none', md: 'flex' }}
-						alignItems="center"
-						ml={10}
-					>
-						<DesktopNav currentPathname={router.pathname} />
+						<Flex
+							display={{ base: 'none', md: 'flex' }}
+							alignItems="center"
+							ml={10}
+						>
+							<DesktopNav currentPathname={router.pathname} />
+						</Flex>
 					</Flex>
+
+					{session && (
+						<Link as={NextLink} href="/admin">
+							<button className={styles.navLink}>
+								Admin dashboard
+							</button>
+						</Link>
+					)}
 				</Flex>
 			</Flex>
 

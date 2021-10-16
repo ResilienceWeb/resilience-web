@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState, memo } from 'react';
 import { Heading, Text, Box, Stack } from '@chakra-ui/react';
 import ListingCreationDialog from '@components/admin/listing-creation-dialog';
@@ -11,6 +12,7 @@ const EditableList = ({
 	items,
 	updateListing,
 }) => {
+	const router = useRouter();
 	const [data, setData] = useState(items);
 	const [filter, setFilter] = useState('');
 	const [itemInEdit, setItemInEdit] = useState();
@@ -23,9 +25,12 @@ const EditableList = ({
 		setData(filtered);
 	}, [filter, items]);
 
-	const enterEdit = useCallback((dataItem) => {
-		setItemInEdit(dataItem);
-	}, []);
+	const enterEdit = useCallback(
+		(dataItem) => {
+			router.push(`/admin/${dataItem.slug}`);
+		},
+		[router],
+	);
 
 	const openListingCreationDialog = useCallback(() => {
 		setItemInEdit(null);
@@ -76,22 +81,18 @@ const EditableList = ({
 			>
 				<Box px={4}>
 					<Heading>Listings</Heading>
-					<Text color={'gray.600'} fontSize="sm">
-						There are {data.length} listings
-					</Text>
-					{/* {isAdmin ? (
-					<Text mb={4} color="gray.600">
-						You are an admin, so you can edit all the listings. With
-						great power comes great responsibility.
-					</Text>
-				) : (
-					<Text mb={4} color="gray.600">
-						The list below only includes groups that you have edit
-						access to. If you think you should be able to edit a
-						group not included below, please get in touch at
-						cambridgeresilienceweb@gmail.com
-					</Text>
-				)} */}
+					{isAdmin ? (
+						<Text color={'gray.600'} fontSize="sm">
+							There are {data.length} listings
+						</Text>
+					) : (
+						<Text color={'gray.600'} fontSize="sm">
+							The list below only includes groups that you have
+							edit access to. If you think you should be able to
+							edit a group not included below, please get in touch
+							at cambridgeresilienceweb@gmail.com
+						</Text>
+					)}
 				</Box>
 				<TableActions
 					filterValue={filter}

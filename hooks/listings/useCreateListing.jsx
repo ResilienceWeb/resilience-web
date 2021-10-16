@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from 'react-query';
 
 async function createListingRequest(listingData) {
+	const formData = new FormData();
+	Object.keys(listingData).map((key) =>
+		formData.append(key, listingData[key]),
+	);
+
 	const response = await fetch('/api/listings/create', {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-			listing: listingData,
-		}),
+		body: formData,
 	});
 
 	const data = await response.json();

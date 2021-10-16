@@ -14,6 +14,8 @@ import {
 } from '@chakra-ui/react';
 
 const TableContent = ({ enterEdit, items, removeItem }) => {
+	if (!items) return null;
+
 	return (
 		<Table my="8" borderWidth="1px" fontSize="sm" background="#ffffff">
 			<Thead bg={mode('gray.50', 'gray.800')}>
