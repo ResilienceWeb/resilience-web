@@ -1,6 +1,7 @@
 import formidable from 'formidable';
 import prisma from '../../../prisma/client';
 import uploadImage from '@helpers/uploadImage';
+import { stringToBoolean } from '@helpers/utils';
 
 export default async function (req, res) {
 	try {
@@ -22,8 +23,10 @@ export default async function (req, res) {
 						instagram: fields.instagram,
 						twitter: fields.twitter,
 						notes: fields.notes,
-						seekingVolunteers: fields.seekingVolunteers.toBoolean(),
-						inactive: fields.inactive.toBoolean(),
+						seekingVolunteers: stringToBoolean(
+							fields.seekingVolunteers,
+						),
+						inactive: stringToBoolean(fields.inactive),
 						slug: fields.slug,
 					};
 

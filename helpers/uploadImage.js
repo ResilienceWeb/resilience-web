@@ -14,8 +14,6 @@ const uploadImage = (image, oldImageKey) => {
 				ACL: 'public-read',
 			};
 
-			console.log(image.path);
-
 			let imageUrl;
 			doSpace
 				.upload(params, function (err, data) {

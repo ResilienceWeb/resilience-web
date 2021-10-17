@@ -11,3 +11,11 @@ export const sortStringsFunc = (a, b) => {
 
 	return 0;
 };
+
+export const stringToBoolean = function (value) {
+	if (value === 'true') return true;
+
+	if (value === 'false') return false;
+
+	throw 'Invalid input. This function only takes "true" or "false" and converts them to primitive boolean.';
+};
