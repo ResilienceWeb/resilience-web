@@ -3,7 +3,7 @@ import path from 'path';
 import doSpace from '../lib/digitalocean';
 import doConfig from './config';
 
-const uploadImage = (image) => {
+const uploadImage = (image, oldImageKey) => {
 	return new Promise((resolve, reject) => {
 		if (image) {
 			const params = {
@@ -13,6 +13,8 @@ const uploadImage = (image) => {
 				ContentType: image.type,
 				ACL: 'public-read',
 			};
+
+			console.log(image.path);
 
 			let imageUrl;
 			doSpace
@@ -38,6 +40,20 @@ const uploadImage = (image) => {
 							image.path.split('/').pop();
 						console.log('File uploaded successfully', imageUrl);
 						resolve(imageUrl);
+
+						if (oldImageKey) {
+							// Delete previous image
+							const deleteParams = {
+								Bucket: `${doConfig.bucketName}`,
+								Key: path.basename(oldImageKey),
+							};
+							doSpace.deleteObject(
+								deleteParams,
+								function (err, data) {
+									console.log(err, data);
+								},
+							);
+						}
 					}
 				});
 		} else {

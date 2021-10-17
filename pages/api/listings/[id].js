@@ -29,7 +29,14 @@ export default async function (req, res) {
 
 					let imageUrl = null;
 					if (files.image) {
-						imageUrl = await uploadImage(files.image);
+						const { image: oldImageKey } =
+							await prisma.listing.findUnique({
+								where: { id: parseInt(listingId) },
+								select: {
+									image: true,
+								},
+							});
+						imageUrl = await uploadImage(files.image, oldImageKey);
 					}
 					if (imageUrl) {
 						newData.image = imageUrl;
