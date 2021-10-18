@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import NextLink from 'next/link';
-import { signIn, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import classnames from 'classnames';
 import {
@@ -21,7 +21,7 @@ import LogoImage from '../../public/logo.png';
 import styles from './Nav.module.scss';
 
 export default function MainNav() {
-	const [session, loadingSession] = useSession();
+	const [session] = useSession();
 	const { isOpen, onToggle } = useDisclosure();
 	const router = useRouter();
 
@@ -102,7 +102,10 @@ const DesktopNav = ({ currentPathname }) => {
 			{NAV_ITEMS.map((navItem) => (
 				<Box key={navItem.label}>
 					<Popover trigger={'hover'} placement={'bottom-start'}>
-						<Link as={NextLink} href={navItem.href}>
+						<Link
+							href={navItem.href}
+							isExternal={navItem.isExternal}
+						>
 							<button
 								className={classnames(
 									styles.navLink,
@@ -203,5 +206,10 @@ const NAV_ITEMS = [
 	{
 		label: 'University',
 		href: '/university',
+	},
+	{
+		label: 'Donate',
+		href: 'https://opencollective.com/resilience-web',
+		isExternal: true,
 	},
 ];
