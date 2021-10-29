@@ -12,6 +12,9 @@ export default async function (req, res) {
 		const { slug } = req.query;
 		const listing = await prisma.listing.findUnique({
 			where: { slug },
+			include: {
+				category: true,
+			},
 		});
 
 		res.status(200);
