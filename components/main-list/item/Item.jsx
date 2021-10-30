@@ -52,8 +52,9 @@ const Item = ({ dataItem, onOpenDialog }) => {
 				backgroundColor="#ffffff"
 				transition="transform 300ms ease-in-out, box-shadow 300ms ease-in-out"
 				onClick={openDialog}
+				boxShadow="md"
 				opacity={dataItem.inactive ? 0.7 : 1}
-				_hover={{ boxShadow: 'md' }}
+				_hover={{ boxShadow: 'xl' }}
 			>
 				{dataItem.image ? (
 					<Image

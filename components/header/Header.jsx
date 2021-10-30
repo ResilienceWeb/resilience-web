@@ -14,6 +14,7 @@ import {
 	HStack,
 	Link,
 	chakra,
+	useBreakpointValue,
 } from '@chakra-ui/react';
 import { FiSearch } from 'react-icons/fi';
 import { AiFillHome } from 'react-icons/ai';
@@ -33,7 +34,8 @@ const customMultiSelectStyles = {
 	placeholder: (provided) => {
 		return {
 			...provided,
-			// color: '' // TODO: find correct colour
+			color: '#718096',
+			opacity: '0.7',
 		};
 	},
 	option: (provided, state) => {
@@ -92,7 +94,9 @@ const Header = ({
 					}}
 				/>
 			</InputGroup>
-			<InputGroup maxW="250px">
+			<InputGroup
+				maxW={useBreakpointValue({ base: 'initial', md: '250px' })}
+			>
 				<Select
 					isMulti
 					isSearchable={false}
