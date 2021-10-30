@@ -13,6 +13,7 @@ import {
 	Icon,
 	Link,
 	Popover,
+	Button,
 	useColorModeValue,
 	useDisclosure,
 } from '@chakra-ui/react';
@@ -55,7 +56,8 @@ export default function MainNav() {
 				</Flex>
 				<Flex
 					flex={{ base: 1 }}
-					justify={{ base: 'center', md: 'space-between' }}
+					justify={{ base: 'space-around', md: 'space-between' }}
+					alignItems="center"
 					maxW="7xl"
 				>
 					<Flex>
@@ -81,9 +83,14 @@ export default function MainNav() {
 
 					{session && (
 						<Link as={NextLink} href="/admin">
-							<button className={styles.navLink}>
-								Admin dashboard
-							</button>
+							<Button
+								colorScheme="blue"
+								variant="solid"
+								size="sm"
+								mr={-4}
+							>
+								Dashboard
+							</Button>
 						</Link>
 					)}
 				</Flex>

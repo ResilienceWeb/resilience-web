@@ -52,8 +52,9 @@ const Item = ({ dataItem, onOpenDialog }) => {
 				backgroundColor="#ffffff"
 				transition="transform 300ms ease-in-out, box-shadow 300ms ease-in-out"
 				onClick={openDialog}
+				boxShadow="md"
 				opacity={dataItem.inactive ? 0.7 : 1}
-				_hover={{ boxShadow: 'md' }}
+				_hover={{ boxShadow: 'xl' }}
 			>
 				{dataItem.image ? (
 					<Image
@@ -75,7 +76,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 					<Flex justifyContent="space-between" mt={3}>
 						<chakra.h2
 							fontSize={15}
-							fontWeight={700}
+							fontWeight={600}
 							color="#454545"
 							mb={0}
 							noOfLines={3}

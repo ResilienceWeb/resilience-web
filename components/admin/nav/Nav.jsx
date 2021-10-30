@@ -105,7 +105,7 @@ const Nav = () => {
 									}
 									background="transparent"
 									color="gray.600"
-									fontWeight="700"
+									fontWeight="600"
 									leftIcon={link.icon}
 									spacing="2"
 									px="3"

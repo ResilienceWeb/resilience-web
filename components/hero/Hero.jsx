@@ -20,7 +20,7 @@ export default function Hero() {
 			>
 				<Stack flex={1} spacing={{ base: 5, md: 10 }}>
 					<Heading
-						fontWeight={700}
+						fontWeight={600}
 						fontSize={{ base: '3xl', md: '6xl' }}
 						lineHeight={1.1}
 					>
@@ -39,7 +39,7 @@ export default function Hero() {
 					</Text>
 					<Text
 						color={'gray.500'}
-						fontWeight="700"
+						fontWeight="600"
 						fontSize="20"
 						maxW={'3xl'}
 					>

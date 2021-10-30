@@ -9,5 +9,7 @@ module.exports = {
 			'via.placeholder.com',
 			'resilienceweb.ams3.digitaloceanspaces.com',
 		],
+		formats: ['image/avif', 'image/webp'],
 	},
+	swcMinify: true,
 };

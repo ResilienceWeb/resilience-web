@@ -22,15 +22,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
 import { HiUserGroup } from 'react-icons/hi';
 import { GiNightSleep } from 'react-icons/gi';
-
-const sanitizeLink = (link) => {
-	let result = link;
-	result = result.replace('https://www.', '');
-	result = result.replace('https://', '');
-	result = result.replace(/\/$/, '');
-
-	return result;
-};
+import { sanitizeLink } from '@helpers/utils';
 
 const Dialog = ({ isOpen, isMobile, item, onClose }) => {
 	const websiteSanitized = useMemo(

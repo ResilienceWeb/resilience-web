@@ -1,4 +1,3 @@
-// import '../scripts/wdyr.js';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
@@ -7,6 +6,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'next-auth/client';
 import '@fontsource/poppins/400.css';
 import '@fontsource/poppins/500.css';
+import '@fontsource/poppins/600.css';
 import '../styles/globals.css';
 import '../styles/styles.global.scss';
 

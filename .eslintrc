@@ -12,9 +12,9 @@
 		"plugin:import/warnings",
 		"plugin:react/recommended",
 		"plugin:react-hooks/recommended",
-		"plugin:jsx-a11y/recommended"
+		"plugin:jsx-a11y/recommended",
+		"next"
 	],
-	"parser": "babel-eslint",
 	"parserOptions": {
 		"sourceType": "module",
 		"ecmaVersion": 2020
@@ -30,10 +30,7 @@
 				"extensions": [".js", ".jsx"]
 			}
 		},
-		"import/extensions": [".js", ".jsx"],
-		"react": {
-			"version": "detect"
-		}
+		"import/extensions": [".js", ".jsx"]
 	},
 	"rules": {
 		"arrow-parens": [2, "always"],
