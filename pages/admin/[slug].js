@@ -72,6 +72,8 @@ export default function Listing() {
 		);
 	}
 
+	console.log(listing);
+
 	return (
 		<LayoutContainer>
 			<Box

@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 
-async function fetchListingsRequest(slug) {
+export async function fetchListingsRequest(slug) {
 	const response = await fetch(`/api/listing/${slug}`);
 	const data = await response.json();
 	const { listing } = data;

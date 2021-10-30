@@ -75,7 +75,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 					<Flex justifyContent="space-between" mt={3}>
 						<chakra.h2
 							fontSize={15}
-							fontWeight={700}
+							fontWeight={600}
 							color="#454545"
 							mb={0}
 							noOfLines={3}

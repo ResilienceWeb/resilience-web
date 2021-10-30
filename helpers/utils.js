@@ -19,3 +19,12 @@ export const stringToBoolean = function (value) {
 
 	throw 'Invalid input. This function only takes "true" or "false" and converts them to primitive boolean.';
 };
+
+export const sanitizeLink = (link) => {
+	let result = link;
+	result = result.replace('https://www.', '');
+	result = result.replace('https://', '');
+	result = result.replace(/\/$/, '');
+
+	return result;
+};
