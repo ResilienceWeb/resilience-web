@@ -34,7 +34,7 @@ function validateTextField(value) {
 const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 	const { categories } = useCategories();
 
-	if (!categories) return null; // TODO: add loading spinner?
+	if (!categories) return null;
 
 	return (
 		<Modal onClose={onClose} isOpen size="5xl">
