@@ -1,10 +1,9 @@
 import { memo, useCallback, useState } from 'react';
-import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import {
 	chakra,
 	Flex,
 	Grid,
-	GridItem,
 	useBreakpointValue,
 	useDisclosure,
 } from '@chakra-ui/react';
@@ -39,7 +38,7 @@ const MainList = ({ filteredItems, isMobile }) => {
 				alignItems="center"
 				flexDirection="column"
 				minHeight="calc(100vh - 112px)"
-				py={8}
+				py={10}
 			>
 				<chakra.span fontSize="14px" marginTop={2}>
 					{filteredItems.length} listings
@@ -52,28 +51,23 @@ const MainList = ({ filteredItems, isMobile }) => {
 						lg: '70%',
 					})}
 				>
-					<AnimateSharedLayout>
+					<Grid
+						templateColumns={{
+							base: '1fr',
+							md: 'repeat(3, 1fr)',
+						}}
+						gap={6}
+					>
 						<AnimatePresence>
-							<motion.div layout>
-								<Grid
-									templateColumns={{
-										base: '1fr',
-										md: 'repeat(3, 1fr)',
-									}}
-									gap={6}
-								>
-									{filteredItems.map((item) => (
-										<GridItem key={item.id}>
-											<Item
-												dataItem={item}
-												onOpenDialog={handleOpenDialog}
-											/>
-										</GridItem>
-									))}
-								</Grid>
-							</motion.div>
+							{filteredItems.map((item) => (
+								<Item
+									dataItem={item}
+									onOpenDialog={handleOpenDialog}
+									key={item.id}
+								/>
+							))}
 						</AnimatePresence>
-					</AnimateSharedLayout>
+					</Grid>
 				</chakra.div>
 			</Flex>
 			<Footer />

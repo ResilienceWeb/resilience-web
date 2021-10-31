@@ -1,5 +1,6 @@
-import { useCallback, useMemo, memo } from 'react';
-import { motion, usePresence } from 'framer-motion';
+import { useCallback, useMemo, useLayoutEffect, memo } from 'react';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import chroma from 'chroma-js';
 import {
 	Box,
@@ -14,25 +15,23 @@ import {
 import { HiUserGroup } from 'react-icons/hi';
 import ImagePlaceholder from './image-placeholder';
 
-const transition = { type: 'spring', stiffness: 300, damping: 50, mass: 1 };
-
 const Item = ({ dataItem, onOpenDialog }) => {
-	const [isPresent, safeToRemove] = usePresence();
+	const { ref, inView } = useInView();
+	const animation = useAnimation();
 
-	const animations = {
-		layout: true,
-		initial: true,
-		style: {
-			position: isPresent ? 'static' : 'absolute',
-		},
-		animate: isPresent ? 'in' : 'out',
-		variants: {
-			in: { scaleY: 1, opacity: 1 },
-			out: { scaleY: 0, opacity: 1, zIndex: -1 },
-		},
-		onAnimationComplete: () => !isPresent && safeToRemove(),
-		transition,
-	};
+	useLayoutEffect(() => {
+		if (inView) {
+			animation.start({
+				opacity: 1,
+				y: 0,
+				transition: {
+					type: 'spring',
+					duration: 0.4,
+					bounce: 0.3,
+				},
+			});
+		}
+	}, [inView]);
 
 	const openDialog = useCallback(() => {
 		onOpenDialog(dataItem);
@@ -44,7 +43,12 @@ const Item = ({ dataItem, onOpenDialog }) => {
 	);
 
 	return (
-		<motion.div {...animations}>
+		<motion.div
+			initial={{ opacity: 0, y: 50 }}
+			exit={{ opacity: 0 }}
+			animate={animation}
+			whileHover={{ scale: 1.1 }}
+		>
 			<chakra.div
 				height="fit-content"
 				cursor="pointer"
@@ -55,6 +59,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 				boxShadow="md"
 				opacity={dataItem.inactive ? 0.7 : 1}
 				_hover={{ boxShadow: 'xl' }}
+				ref={ref}
 			>
 				{dataItem.image ? (
 					<Image
