@@ -47,7 +47,13 @@ export default async function (req, res) {
 					email,
 					buttonText: 'Activate account',
 					mainText: `You have been invited to manage the group <b>${listing.title}</b> on Cambridge Resilience Web, a digital mapping of organisations in Cambridge that are working to create a more resilient, more equitable and greener future for Cambridge and its residents.`,
-					footerText: `If you're not sure why you received this invite or if you have any questions, please reply to this email.`,
+					secondaryText: `<p>There is lots of great work being done in Cambridge by the multitude of Cambridge-based groups working to make a positive difference in the areas of the environment and civil society. However, there wasn't a single place to go that showed all the organisations and how they are connected. These webs, in the first instance, are therefore a tool to help potential volunteers to discover organisations such as yours. Additionally, we want to facilitate collaboration and cross pollination across organisations where desired, and are looking into running events in the future that would enable this.</p>
+					<p>We hope you are excited to be a part of the Cambridge Resilience Web, and that you will share it with members of your organisation!  If you have any questions about the web, or if you would rather not be included on it, please let me know by replying to this email.</p>
+					<p>Please give this a go, and we would love to hear any feedback you have about the web itself, how it is to use, and how it could be most useful to your organization.</p>
+					<p>The Cambridge Resilience Web is a collaboration between volunteers at Transition Cambridge, Cambridge Doughnut, and the Interdisciplinary Research Hub in Sustainability & Conservation at Wolfson College, Cambridge.</p>
+					<p>If that sounds good, click the button below to activate your account. If it doesn’t, we would appreciate it if you could reply to this email and let us know why.</p>`,
+					footerText: `<p>If you're not sure why you received this invite or if you have any questions, please reply to this email.</p>
+					<p>The Cambridge Resilience Web Team x</p>`,
 				}),
 			};
 

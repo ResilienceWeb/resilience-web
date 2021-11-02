@@ -3,7 +3,7 @@ import Providers from 'next-auth/providers';
 import Adapters from 'next-auth/adapters';
 import nodemailer from 'nodemailer';
 import prisma from '../../../prisma/client.js';
-import { htmlTemplate, textTemplate } from '@helpers/emailTemplates';
+import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates';
 
 export default NextAuth({
 	providers: [
@@ -33,7 +33,7 @@ export default NextAuth({
 							from: `Cambridge Resilience Web <${from}>`,
 							subject: `Sign in to Cambridge Resilience Web`,
 							text: textTemplate({ url, email }),
-							html: htmlTemplate({
+							html: simpleHtmlTemplate({
 								url,
 								email,
 								mainText: '',
