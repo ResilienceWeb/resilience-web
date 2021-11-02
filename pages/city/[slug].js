@@ -18,6 +18,7 @@ import Layout from '@components/layout';
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
 
 function Listing({ listing }) {
+	console.log(listing);
 	return (
 		<>
 			<NextSeo
@@ -72,7 +73,7 @@ function Listing({ listing }) {
 								</Heading>
 								<Tag
 									mb={8}
-									backgroundColor={listing.color}
+									backgroundColor={`#${listing.category.color}`}
 									userSelect="none"
 									size="lg"
 								>

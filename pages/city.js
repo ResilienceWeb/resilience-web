@@ -191,6 +191,7 @@ export async function getStaticProps() {
 			email,
 			seekingVolunteers,
 			inactive,
+			slug,
 		}) => {
 			transformedData.nodes.push({
 				id,
@@ -207,6 +208,7 @@ export async function getStaticProps() {
 				seekingVolunteers,
 				inactive,
 				color: `#${category.color}`,
+				slug,
 			});
 		},
 	);

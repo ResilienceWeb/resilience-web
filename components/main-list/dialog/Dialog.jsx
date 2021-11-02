@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import {
 	Modal,
 	ModalOverlay,
@@ -17,18 +17,38 @@ import {
 	Tooltip,
 	Text,
 	Image,
+	useToast,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
 import { HiUserGroup } from 'react-icons/hi';
 import { GiNightSleep } from 'react-icons/gi';
+import { BsFillShareFill } from 'react-icons/bs';
 import { sanitizeLink } from '@helpers/utils';
+import { REMOTE_URL } from '@helpers/config';
 
 const Dialog = ({ isOpen, isMobile, item, onClose }) => {
+	const toast = useToast();
+
 	const websiteSanitized = useMemo(
 		() => sanitizeLink(item.website),
 		[item.website],
 	);
+
+	const showCopiedToClipboardToast = useCallback(() => {
+		toast({
+			title: 'Copied to clipboard',
+			description:
+				'The link to this listing is now in your clipboard and ready to be shared.',
+			status: 'info',
+			duration: 4000,
+		});
+	}, []);
+
+	const handleShareButtonClick = useCallback(() => {
+		navigator.clipboard.writeText(`${REMOTE_URL}/city/${item.slug}`);
+		showCopiedToClipboardToast();
+	});
 
 	return (
 		<Modal
@@ -53,9 +73,21 @@ const Dialog = ({ isOpen, isMobile, item, onClose }) => {
 				<ModalHeader pb={0}>{item.label}</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
-					<Tag mb={4} backgroundColor={item.color} userSelect="none">
-						{item.category}
-					</Tag>
+					<Flex justifyContent="space-between">
+						<Tag
+							mb={4}
+							backgroundColor={item.color}
+							userSelect="none"
+						>
+							{item.category}
+						</Tag>
+						<Icon
+							as={BsFillShareFill}
+							cursor="pointer"
+							fontSize="2xl"
+							onClick={handleShareButtonClick}
+						/>
+					</Flex>
 					<br />
 
 					<chakra.a
