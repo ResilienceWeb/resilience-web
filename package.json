@@ -16,6 +16,7 @@
 		"@fontsource/poppins": "4.5.0",
 		"@prisma/client": "3.2.1",
 		"@sendgrid/mail": "7.5.0",
+		"@tinymce/tinymce-react": "3.13.0",
 		"aws-sdk": "2.991.0",
 		"chroma-js": "2.1.2",
 		"cookie": "0.4.1",

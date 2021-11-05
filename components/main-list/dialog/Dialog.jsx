@@ -26,6 +26,7 @@ import { GiNightSleep } from 'react-icons/gi';
 import { BsFillShareFill } from 'react-icons/bs';
 import { sanitizeLink } from '@helpers/utils';
 import { REMOTE_URL } from '@helpers/config';
+import DescriptionRichText from '@components/main-list/description-rich-text';
 
 const Dialog = ({ isOpen, isMobile, item, onClose }) => {
 	const toast = useToast();
@@ -99,7 +100,9 @@ const Dialog = ({ isOpen, isMobile, item, onClose }) => {
 					>
 						{websiteSanitized} <ExternalLinkIcon ml={1} />
 					</chakra.a>
-					<Box mt={4}>{item.description}</Box>
+					<Box mt={4}>
+						<DescriptionRichText html={item.description} />
+					</Box>
 				</ModalBody>
 
 				<ModalFooter justifyContent="space-between">

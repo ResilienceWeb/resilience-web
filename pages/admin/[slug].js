@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, useField } from 'formik';
+import { Editor } from '@tinymce/tinymce-react';
 import {
 	chakra,
 	Flex,
@@ -14,7 +15,6 @@ import {
 	Input,
 	InputGroup,
 	InputLeftAddon,
-	Textarea,
 	Select,
 	HStack,
 	Text,
@@ -38,6 +38,47 @@ function validateTextField(value) {
 	}
 	return error;
 }
+
+const EditorField = (props) => {
+	const { label, name, ...otherProps } = props;
+	const [field, meta] = useField(name);
+	const type = 'text';
+	const handleEditorChange = (value) => {
+		field.onChange({ target: { type, name, value } });
+	};
+
+	const handleBlur = () => {
+		field.onBlur({ target: { name } });
+	};
+
+	return (
+		<>
+			{label && <label>{label}</label>}
+			<Editor
+				{...otherProps}
+				value={field.value}
+				onEditorChange={handleEditorChange}
+				onBlur={handleBlur}
+				init={{
+					height: 500,
+					menubar: false,
+					plugins: [
+						'advlist autolink lists link anchor',
+						'visualblocks code fullscreen',
+						'table paste code help wordcount',
+					],
+					toolbar:
+						'undo redo | formatselect | ' +
+						'bold italic backcolor | bullist numlist |' +
+						'help',
+				}}
+			></Editor>
+			{meta.touched && meta.error ? (
+				<div className="error">{meta.error}</div>
+			) : null}
+		</>
+	);
+};
 
 export default function Listing() {
 	const router = useRouter();
@@ -71,8 +112,6 @@ export default function Listing() {
 			</Flex>
 		);
 	}
-
-	console.log(listing);
 
 	return (
 		<LayoutContainer>
@@ -180,7 +219,7 @@ export default function Listing() {
 															maxHeight: '200px',
 														}}
 													>
-														{({ field, form }) => (
+														{({ form }) => (
 															<FormControl
 																isInvalid={
 																	form.errors
@@ -195,14 +234,7 @@ export default function Listing() {
 																>
 																	Description
 																</FormLabel>
-																<Textarea
-																	{...field}
-																	id="description"
-																	fontSize="sm"
-																	shadow="sm"
-																	size="sm"
-																	rounded="md"
-																/>
+																<EditorField name="description" />
 																<FormErrorMessage>
 																	{
 																		form

@@ -5,7 +5,6 @@ import {
 	Heading,
 	useBreakpointValue,
 	Flex,
-	Text,
 	Image,
 	Tag,
 	Stack,
@@ -16,9 +15,9 @@ import {
 import { REMOTE_URL } from '@helpers/config';
 import Layout from '@components/layout';
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
+import DescriptionRichText from '@components/main-list/description-rich-text';
 
 function Listing({ listing }) {
-	console.log(listing);
 	return (
 		<>
 			<NextSeo
@@ -81,7 +80,7 @@ function Listing({ listing }) {
 								</Tag>
 							</Flex>
 
-							<Text>{listing.description}</Text>
+							<DescriptionRichText html={listing.description} />
 
 							<Flex mt={8} justifyContent="center">
 								<Link
