@@ -56,6 +56,7 @@ const EditorField = (props) => {
 			{label && <label>{label}</label>}
 			<Editor
 				{...otherProps}
+				apiKey={process.env.TINY_APIKEY}
 				value={field.value}
 				onEditorChange={handleEditorChange}
 				onBlur={handleBlur}
