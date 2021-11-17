@@ -267,7 +267,7 @@ export async function getStaticProps() {
 		props: {
 			data: transformedData,
 		},
-		revalidate: 60,
+		revalidate: 5,
 	};
 }
 
