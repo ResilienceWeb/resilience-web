@@ -8,6 +8,7 @@ module.exports = {
 			'media.graphcms.com',
 			'via.placeholder.com',
 			'resilienceweb.ams3.digitaloceanspaces.com',
+			'opencollective.com',
 		],
 		formats: ['image/avif', 'image/webp'],
 	},

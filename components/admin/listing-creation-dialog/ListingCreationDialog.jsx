@@ -19,17 +19,12 @@ import {
 	ModalCloseButton,
 	HStack,
 } from '@chakra-ui/react';
-import { emailValidator } from '@helpers/emails';
+import {
+	emailValidator,
+	fieldRequiredValidator,
+} from '@helpers/formValidation';
 import { useCategories } from '@hooks/categories';
 import ImageUpload from './ImageUpload';
-
-function validateTextField(value) {
-	let error;
-	if (!value) {
-		error = 'This field is required';
-	}
-	return error;
-}
 
 const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 	const { categories } = useCategories();
@@ -72,7 +67,9 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 											<chakra.div mb={3}>
 												<Field
 													name="title"
-													validate={validateTextField}
+													validate={
+														fieldRequiredValidator
+													}
 												>
 													{({ field, form }) => (
 														<FormControl

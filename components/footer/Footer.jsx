@@ -25,7 +25,7 @@ export default function Footer() {
 				justify={{ base: 'center', md: 'space-between' }}
 				align={{ base: 'center', md: 'center' }}
 			>
-				<Stack direction={'row'} spacing={6}>
+				<Stack direction={'row'} spacing={6} alignItems="center">
 					<Link
 						href="https://github.com/Cambridge-Resilience-Web/cambridge-resilience-web"
 						target="_blank"
@@ -34,6 +34,19 @@ export default function Footer() {
 					</Link>
 					<Link href="mailto:cambridgeresilienceweb@gmail.com">
 						Get in touch
+					</Link>
+					<Link
+						href="https://opencollective.com/resilience-web/donate"
+						target="_blank"
+						rel="noreferrer"
+						height="50"
+					>
+						<Image
+							alt="Open collective button that says Donate to our collective"
+							src="https://opencollective.com/resilience-web/donate/button@2x.png"
+							width="300"
+							height="50"
+						/>
 					</Link>
 				</Stack>
 				<Flex alignItems="center">

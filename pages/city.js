@@ -1,6 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import dynamic from 'next/dynamic';
-import { useCallback, useEffect, useState, useMemo, memo } from 'react';
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+	useMemo,
+	memo,
+} from 'react';
 import { Box } from '@chakra-ui/react';
 import { useDebounce } from 'use-debounce';
 import groupBy from 'lodash/groupBy';
@@ -11,23 +18,14 @@ import Header from '@components/header';
 import { REMOTE_URL } from '@helpers/config';
 import { useLocalStorage } from '@hooks/application';
 import { useCategories } from '@hooks/categories';
+import { AppContext } from '@store/AppContext';
 
 const Network = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
-const mobileMatchMedia = 'only screen and (max-width: 760px)';
 const City = ({ data }) => {
-	const [isMobile, setIsMobile] = useState(
-		window.matchMedia(mobileMatchMedia).matches,
-	);
-
-	const handleResize = () => {
-		setIsMobile(window.matchMedia(mobileMatchMedia).matches);
-	};
-	useEffect(() => {
-		window.addEventListener('resize', handleResize, false);
-	}, []);
+	const { isMobile } = useContext(AppContext);
 
 	const [isWebMode, setIsWebMode] = useLocalStorage('isWebMode', !isMobile);
 	const [isVolunteer, setIsVolunteer] = useState(false);

@@ -13,6 +13,7 @@
 		"plugin:react/recommended",
 		"plugin:react-hooks/recommended",
 		"plugin:jsx-a11y/recommended",
+		"next/core-web-vitals",
 		"next"
 	],
 	"parserOptions": {
@@ -25,7 +26,8 @@
 				"map": [
 					["@components", "./components/"],
 					["@hooks", "./hooks/"],
-					["@helpers", "./helpers/"]
+					["@helpers", "./helpers/"],
+					["@store", "./store/"]
 				],
 				"extensions": [".js", ".jsx"]
 			}

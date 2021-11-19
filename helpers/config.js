@@ -6,4 +6,12 @@ export const REMOTE_URL =
 export default {
 	digitalOceanSpaces: 'https://resilienceweb.ams3.digitaloceanspaces.com/',
 	bucketName: 'resilienceweb',
+	emailServer: {
+		host: process.env.EMAIL_SERVER_HOST,
+		port: process.env.EMAIL_SERVER_PORT,
+		auth: {
+			user: process.env.EMAIL_SERVER_USER,
+			pass: process.env.EMAIL_SERVER_PASSWORD,
+		},
+	},
 };

@@ -26,18 +26,10 @@ import {
 	useUpdateListing,
 } from '@hooks/listings';
 import { useCategories } from '@hooks/categories';
-import { emailValidator } from '@helpers/emails';
+import { emailValidator, fieldRequiredValidator } from '@helpers/emails';
 import ImageUpload from '@components/admin/listing-creation-dialog/ImageUpload';
 import LayoutContainer from '@components/admin/layout-container';
 import LoadingSpinner from '@components/loading-spinner';
-
-function validateTextField(value) {
-	let error;
-	if (!value) {
-		error = 'This field is required';
-	}
-	return error;
-}
 
 const EditorField = (props) => {
 	const { label, name, ...otherProps } = props;
@@ -175,7 +167,7 @@ export default function Listing() {
 													<Field
 														name="title"
 														validate={
-															validateTextField
+															fieldRequiredValidator
 														}
 													>
 														{({ field, form }) => (

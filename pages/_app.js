@@ -9,6 +9,7 @@ import '@fontsource/poppins/500.css';
 import '@fontsource/poppins/600.css';
 import '../styles/globals.css';
 import '../styles/styles.global.scss';
+import StoreProvider from '@store/StoreProvider';
 
 const theme = extendTheme({
 	styles: {
@@ -74,7 +75,9 @@ function App({ Component, pageProps }) {
 				>
 					<ChakraProvider theme={theme}>
 						<QueryClientProvider client={queryClient}>
-							<Component {...pageProps} />
+							<StoreProvider>
+								<Component {...pageProps} />
+							</StoreProvider>
 							<ReactQueryDevtools initialIsOpen={false} />
 						</QueryClientProvider>
 					</ChakraProvider>

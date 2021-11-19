@@ -1,13 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import doSpace from '../lib/digitalocean';
-import doConfig from './config';
+import config from './config';
 
 const uploadImage = (image, oldImageKey) => {
 	return new Promise((resolve, reject) => {
 		if (image) {
 			const params = {
-				Bucket: `${doConfig.bucketName}`,
+				Bucket: `${config.bucketName}`,
 				Body: fs.createReadStream(image.path),
 				Key: path.basename(image.path),
 				ContentType: image.type,
@@ -23,7 +23,7 @@ const uploadImage = (image, oldImageKey) => {
 					}
 				})
 				.on('build', (request) => {
-					request.httpRequest.headers.Host = `${doConfig.digitalOceanSpaces}`;
+					request.httpRequest.headers.Host = `${config.digitalOceanSpaces}`;
 					request.httpRequest.headers['Content-Length'] = image.size;
 					request.httpRequest.headers['Content-Type'] = image.type;
 					request.httpRequest.headers['x-amz-acl'] = 'public-read';
@@ -34,7 +34,7 @@ const uploadImage = (image, oldImageKey) => {
 						reject(err);
 					} else {
 						imageUrl =
-							`${doConfig.digitalOceanSpaces}` +
+							`${config.digitalOceanSpaces}` +
 							image.path.split('/').pop();
 						console.log('File uploaded successfully', imageUrl);
 						resolve(imageUrl);
@@ -42,7 +42,7 @@ const uploadImage = (image, oldImageKey) => {
 						if (oldImageKey) {
 							// Delete previous image
 							const deleteParams = {
-								Bucket: `${doConfig.bucketName}`,
+								Bucket: `${config.bucketName}`,
 								Key: path.basename(oldImageKey),
 							};
 							doSpace.deleteObject(

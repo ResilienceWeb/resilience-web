@@ -4,18 +4,12 @@ import Adapters from 'next-auth/adapters';
 import nodemailer from 'nodemailer';
 import prisma from '../../../prisma/client.js';
 import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates';
+import config from '@helpers/config';
 
 export default NextAuth({
 	providers: [
 		Providers.Email({
-			server: {
-				host: process.env.EMAIL_SERVER_HOST,
-				port: process.env.EMAIL_SERVER_PORT,
-				auth: {
-					user: process.env.EMAIL_SERVER_USER,
-					pass: process.env.EMAIL_SERVER_PASSWORD,
-				},
-			},
+			server: config.emailServer,
 			maxAge: 72 * 60 * 60,
 			from: `Cambridge Resilience Web <${process.env.EMAIL_FROM}>`,
 			async sendVerificationRequest({
@@ -27,6 +21,7 @@ export default NextAuth({
 			}) {
 				return new Promise((resolve, reject) => {
 					const { server, from } = provider;
+					console.log(server);
 					nodemailer.createTransport(server).sendMail(
 						{
 							to: email,
