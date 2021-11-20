@@ -20,7 +20,7 @@ import LayoutContainer from '@components/admin/layout-container';
 import LoadingSpinner from '@components/loading-spinner';
 import { useListings } from '@hooks/listings';
 import { sortStringsFunc } from '@helpers/utils';
-import { emailRequiredValidator } from '@helpers/emails';
+import { emailRequiredValidator } from '@helpers/formValidation';
 import { REMOTE_URL } from '@helpers/config';
 
 export default function Invite() {

@@ -7,7 +7,7 @@ export default async function (req, res) {
 
 		nodemailer.createTransport(config.emailServer).sendMail(
 			{
-				to: 'ismail.diner@gmail.com', // TODO: replace with gmail address
+				to: 'cambridgeresilienceweb@gmail.com',
 				from: `${process.env.EMAIL_FROM}`,
 				replyTo: email,
 				subject: `Website feedback`,

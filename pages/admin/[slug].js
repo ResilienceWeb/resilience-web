@@ -26,7 +26,10 @@ import {
 	useUpdateListing,
 } from '@hooks/listings';
 import { useCategories } from '@hooks/categories';
-import { emailValidator, fieldRequiredValidator } from '@helpers/emails';
+import {
+	emailValidator,
+	fieldRequiredValidator,
+} from '@helpers/formValidation';
 import ImageUpload from '@components/admin/listing-creation-dialog/ImageUpload';
 import LayoutContainer from '@components/admin/layout-container';
 import LoadingSpinner from '@components/loading-spinner';
