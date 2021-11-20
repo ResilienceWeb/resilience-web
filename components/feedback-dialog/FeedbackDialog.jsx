@@ -50,6 +50,8 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
 				duration: 5000,
 				isClosable: true,
 			});
+
+			onClose();
 		} else {
 			toast({
 				title: 'Error',
