@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import { useSession } from 'next-auth/client';
@@ -25,6 +26,7 @@ import {
 	ChevronDownIcon,
 	ChatIcon,
 } from '@chakra-ui/icons';
+import { AppContext } from '@store/AppContext';
 import FeedbackDialog from '../feedback-dialog';
 import LogoImage from '../../public/logo.png';
 import styles from './Nav.module.scss';
@@ -33,6 +35,7 @@ export default function MainNav() {
 	const [session] = useSession();
 	const { isOpen, onToggle } = useDisclosure();
 	const router = useRouter();
+	const { isMobile } = useContext(AppContext);
 
 	const {
 		isOpen: isFeedbackDialogOpen,
@@ -101,13 +104,24 @@ export default function MainNav() {
 
 						<HStack>
 							<Tooltip label="Send feedback">
-								<IconButton
-									icon={<ChatIcon />}
-									onClick={onOpenFeedbackDialog}
-									size="md"
-									colorScheme="green"
-									variant="solid"
-								/>
+								{isMobile ? (
+									<IconButton
+										icon={<ChatIcon />}
+										onClick={onOpenFeedbackDialog}
+										size="md"
+										colorScheme="green"
+										variant="solid"
+									/>
+								) : (
+									<Button
+										onClick={onOpenFeedbackDialog}
+										size="md"
+										colorScheme="green"
+										variant="solid"
+									>
+										Get in touch
+									</Button>
+								)}
 							</Tooltip>
 							{session && (
 								<Link as={NextLink} href="/admin">
@@ -240,6 +254,10 @@ const NAV_ITEMS = [
 	{
 		label: 'About',
 		href: '/about',
+	},
+	{
+		label: 'How it works',
+		href: '/how-it-works',
 	},
 	{
 		label: 'City',

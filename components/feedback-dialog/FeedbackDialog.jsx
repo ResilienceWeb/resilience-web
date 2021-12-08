@@ -1,4 +1,4 @@
-import { memo, useContext, useCallback, useMemo } from 'react';
+import { memo, useContext, useCallback } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
 	Modal,

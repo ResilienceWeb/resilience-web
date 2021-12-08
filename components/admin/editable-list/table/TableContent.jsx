@@ -32,9 +32,6 @@ const TableContent = ({ enterEdit, items, removeItem }) => {
 					<Th whiteSpace="nowrap" scope="col" key={3}>
 						Email
 					</Th>
-					<Th whiteSpace="nowrap" scope="col" key={4}>
-						Description
-					</Th>
 					<Th />
 				</Tr>
 			</Thead>
@@ -100,10 +97,6 @@ export const columns = [
 	{
 		Header: 'Email',
 		accessor: 'email',
-	},
-	{
-		Header: 'Description',
-		accessor: 'description',
 	},
 ];
 
