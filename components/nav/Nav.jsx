@@ -159,6 +159,7 @@ const DesktopNav = ({ currentPathname }) => {
 				<Box key={navItem.label}>
 					<Popover trigger={'hover'} placement={'bottom-start'}>
 						<Link
+							as={NextLink}
 							href={navItem.href}
 							isExternal={navItem.isExternal}
 						>
