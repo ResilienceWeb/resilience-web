@@ -84,16 +84,18 @@ const City = ({ data }) => {
 		return results;
 	}, [data.nodes, isVolunteer, selectedCategories, searchTermValue]);
 
-	const descriptiveNodes = useMemo(() => {
-		return data.nodes.filter((item) => item.isDescriptive);
-	}, [data.nodes]);
+	const descriptiveNodes = useMemo(
+		() => data.nodes.filter((item) => item.isDescriptive),
+		[data.nodes],
+	);
 
-	const filteredNetworkData = useMemo(() => {
-		return {
+	const filteredNetworkData = useMemo(
+		() => ({
 			edges: data.edges,
 			nodes: [...filteredItems, ...descriptiveNodes],
-		};
-	}, [data.edges, filteredItems, descriptiveNodes]);
+		}),
+		[data.edges, filteredItems, descriptiveNodes],
+	);
 
 	const selectNode = useCallback(
 		(id) => {

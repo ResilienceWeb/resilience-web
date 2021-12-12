@@ -71,15 +71,18 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 		}
 	}, [onOpen, selectedId]);
 
-	const events = {
-		select: function (event) {
-			const { nodes, edges } = event;
-			setSelectedId(nodes[0]);
-		},
-		showPopup: function (event) {
-			console.log('show popup?');
-		},
-	};
+	const events = useMemo(
+		() => ({
+			select: function (event) {
+				const { nodes, edges } = event;
+				setSelectedId(nodes[0]);
+			},
+			showPopup: function (event) {
+				console.log('show popup?');
+			},
+		}),
+		[setSelectedId],
+	);
 
 	const selectedItem = useMemo(
 		() => data.nodes.find((node) => node.id === selectedId),
@@ -91,11 +94,16 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 		onClose();
 	}, [onClose, setSelectedId]);
 
+	const getNetwork = useCallback(
+		(network) => setNetwork(network),
+		[setNetwork],
+	);
+
 	return (
 		<div className={styles.graph}>
 			<VisNetworkReactComponent
 				events={events}
-				getNetwork={(network) => setNetwork(network)}
+				getNetwork={getNetwork}
 				data={data}
 				options={options}
 			/>
