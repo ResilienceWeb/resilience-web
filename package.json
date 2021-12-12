@@ -14,7 +14,7 @@
 		"@emotion/react": "11.7.0",
 		"@emotion/styled": "11.6.0",
 		"@fontsource/poppins": "4.5.0",
-		"@prisma/client": "3.2.1",
+		"@prisma/client": "3.6.0",
 		"@sendgrid/mail": "7.6.0",
 		"@tinymce/tinymce-react": "3.13.0",
 		"aws-sdk": "2.991.0",
@@ -57,7 +57,7 @@
 		"eslint-plugin-react-hooks": "4.3.0",
 		"prettier": "2.4.1",
 		"prettier-eslint": "13.0.0",
-		"prisma": "3.2.1",
+		"prisma": "3.6.0",
 		"prop-types": "15.7.2",
 		"stylelint-config-recommended": "6.0.0"
 	}
