@@ -1,3 +1,5 @@
+import 'vis-network-react/node_modules/vis-network/dist/dist/vis-network.min.css';
+
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import VisNetworkReactComponent from 'vis-network-react';
