@@ -1,108 +1,108 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Account {
-    id                 Int       @id @default(autoincrement())
-    compoundId         String    @unique(map: "accounts.compound_id_unique") @map("compound_id")
-    userId             Int       @map("user_id")
-    providerType       String    @map("provider_type")
-    providerId         String    @map("provider_id")
-    providerAccountId  String    @map("provider_account_id")
-    refreshToken       String?   @map("refresh_token")
-    accessToken        String?   @map("access_token")
-    accessTokenExpires DateTime? @map("access_token_expires")
-    createdAt          DateTime  @default(now()) @map("created_at")
-    updatedAt          DateTime  @default(now()) @map("updated_at")
+  id                String    @id @default(cuid())
+  userId            String    @map("user_id")
+  type              String    @map("provider_type")
+  provider          String    @map("provider_id")
+  providerAccountId String    @map("provider_account_id")
+  refreshToken      String?   @map("refresh_token")
+  accessToken       String?   @map("access_token")
+  expires_in        DateTime? @map("access_token_expires")
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
-    @@index([providerAccountId], map: "providerAccountId")
-    @@index([providerId], map: "providerId")
-    @@index([userId], map: "userId")
-    @@map("accounts")
-}
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-model Session {
-    id           Int      @id @default(autoincrement())
-    userId       Int      @map("user_id")
-    expires      DateTime
-    sessionToken String   @unique(map: "sessions.session_token_unique") @map("session_token")
-    accessToken  String   @unique(map: "sessions.access_token_unique") @map("access_token")
-    createdAt    DateTime @default(now()) @map("created_at")
-    updatedAt    DateTime @default(now()) @map("updated_at")
-
-    @@map("sessions")
+  @@index([providerAccountId], map: "providerAccountId")
+  @@index([userId], map: "userId")
+  @@map("accounts")
 }
 
 model User {
-    id            Int       @id @default(autoincrement())
-    name          String?
-    email         String?   @unique(map: "users.email_unique")
-    emailVerified DateTime? @map("email_verified")
-    image         String?
-    createdAt     DateTime  @default(now()) @map("created_at")
-    updatedAt     DateTime  @default(now()) @map("updated_at")
-    admin         Boolean   @default(false)
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique(map: "users.email_unique")
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  admin         Boolean   @default(false)
+  accounts      Account[]
+  sessions      Session[]
 
-    @@map("users")
+  @@map("users")
 }
 
-model VerificationRequest {
-    id         Int      @id @default(autoincrement())
-    identifier String
-    token      String   @unique(map: "verification_requests.token_unique")
-    expires    DateTime
-    createdAt  DateTime @default(now()) @map("created_at")
-    updatedAt  DateTime @default(now()) @map("updated_at")
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String?  @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
 
-    @@map("verification_requests")
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique(map: "verification_requests.token_unique")
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_requests")
 }
 
 model Category {
-    createdAt DateTime  @default(now()) @map("created_at")
-    updatedAt DateTime  @default(now()) @map("updated_at")
-    label     String    @unique(map: "categories.label_unique")
-    color     String?   @default("f1f1f1")
-    id        Int       @id @default(autoincrement())
-    listings  Listing[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  label     String    @unique(map: "categories.label_unique")
+  color     String?   @default("f1f1f1")
+  id        Int       @id @default(autoincrement())
+  listings  Listing[]
 
-    @@map("categories")
+  @@map("categories")
 }
 
 model Listing {
-    id                Int              @id @default(autoincrement())
-    createdAt         DateTime         @default(now()) @map("created_at")
-    updatedAt         DateTime         @default(now()) @map("updated_at")
-    title             String
-    website           String?
-    description       String?
-    facebook          String?
-    twitter           String?
-    instagram         String?
-    email             String?
-    notes             String?
-    inactive          Boolean          @default(false)
-    seekingVolunteers Boolean?         @map("seeking_volunteers")
-    categoryId        Int?
-    image             String?
-    category          Category?        @relation(fields: [categoryId], references: [id])
-    editPermissions   EditPermission[]
-    slug              String?          @unique
+  id                Int              @id @default(autoincrement())
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @default(now()) @map("updated_at")
+  title             String
+  website           String?
+  description       String?
+  facebook          String?
+  twitter           String?
+  instagram         String?
+  email             String?
+  notes             String?
+  inactive          Boolean          @default(false)
+  seekingVolunteers Boolean?         @map("seeking_volunteers")
+  categoryId        Int?
+  image             String?
+  category          Category?        @relation(fields: [categoryId], references: [id])
+  editPermissions   EditPermission[]
+  slug              String?          @unique
 
-    @@map("listings")
+  @@map("listings")
 }
 
 model EditPermission {
-    id        Int      @id @default(autoincrement())
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @default(now()) @map("updated_at")
-    listingId Int
-    email     String   @default("TOREPLACE")
-    listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  listingId Int
+  email     String   @default("TOREPLACE")
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
 
-    @@map("edit_permissions")
+  @@map("edit_permissions")
 }

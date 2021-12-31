@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { useSession, signOut } from 'next-auth/client';
+import { useSession, signOut } from 'next-auth/react';
 import {
 	Box,
 	Flex,
@@ -41,7 +41,7 @@ const NavLink = ({ children, href }) => (
 );
 
 const Nav = () => {
-	const [session] = useSession();
+	const { data: session } = useSession();
 	const router = useRouter();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 

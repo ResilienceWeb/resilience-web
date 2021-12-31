@@ -1,4 +1,4 @@
-import { signIn, useSession } from 'next-auth/client';
+import { signIn, useSession } from 'next-auth/react';
 import { memo, useEffect, useMemo } from 'react';
 import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
@@ -16,7 +16,8 @@ import { usePermissions } from '@hooks/permissions';
 
 const Admin = () => {
 	const { query } = useRouter();
-	const [session, loadingSession] = useSession();
+	const { data: session, status: sessionStatus } = useSession();
+
 	const {
 		listings,
 		isLoading: isLoadingListings,
@@ -29,14 +30,15 @@ const Admin = () => {
 	const { mutate: deleteListing } = useDeleteListing();
 
 	useEffect(() => {
-		if (!session && !loadingSession) {
+		console.log(session, sessionStatus);
+		if (!session && sessionStatus !== 'loading') {
 			if (query.activate) {
 				signIn('email', { email: query.activate });
 			} else {
 				signIn();
 			}
 		}
-	}, [session, loadingSession, query.activate]);
+	}, [session, sessionStatus, query.activate]);
 
 	const allowedListings = useMemo(() => {
 		if (!session || isLoadingPermissions) return null;
@@ -45,7 +47,7 @@ const Admin = () => {
 		return listings?.filter((listing) => permissions.includes(listing.id));
 	}, [listings, permissions, session, isLoadingPermissions]);
 
-	if (loadingSession) {
+	if (sessionStatus === 'loading') {
 		return (
 			<Flex height="100vh" justifyContent="center" alignItems="center">
 				<LoadingSpinner />

@@ -1,4 +1,4 @@
-import { getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/react';
 import prisma from '../../../prisma/client';
 
 export default async function (req, res) {

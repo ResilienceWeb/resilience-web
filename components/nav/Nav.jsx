@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import Image from 'next/image';
 import NextLink from 'next/link';
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import classnames from 'classnames';
 import {
@@ -32,7 +32,7 @@ import LogoImage from '../../public/logo.png';
 import styles from './Nav.module.scss';
 
 export default function MainNav() {
-	const [session] = useSession();
+	const { data: session } = useSession();
 	const { isOpen, onToggle } = useDisclosure();
 	const router = useRouter();
 	const { isMobile } = useContext(AppContext);

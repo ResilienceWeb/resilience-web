@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
-import Providers from 'next-auth/providers';
-import Adapters from 'next-auth/adapters';
+import EmailProvider from 'next-auth/providers/email';
+// import { TypeORMLegacyAdapter } from '@next-auth/typeorm-legacy-adapter';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import nodemailer from 'nodemailer';
 import prisma from '../../../prisma/client.js';
 import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates';
@@ -8,9 +9,8 @@ import config from '@helpers/config';
 
 export default NextAuth({
 	providers: [
-		Providers.Email({
+		EmailProvider({
 			server: config.emailServer,
-			maxAge: 72 * 60 * 60,
 			from: `Cambridge Resilience Web <${process.env.EMAIL_FROM}>`,
 			async sendVerificationRequest({
 				identifier: email,
@@ -21,7 +21,6 @@ export default NextAuth({
 			}) {
 				return new Promise((resolve, reject) => {
 					const { server, from } = provider;
-					console.log(server);
 					nodemailer.createTransport(server).sendMail(
 						{
 							to: email,
@@ -58,22 +57,33 @@ export default NextAuth({
 			},
 		}),
 	],
-	adapter: Adapters.Prisma.Adapter({ prisma }),
+	adapter: PrismaAdapter({
+		...prisma,
+		verificationRequest: 'VerificationToken',
+	}),
 	database: process.env.DATABASE_URL,
+	sesion: {
+		strategy: 'database',
+		maxAge: 72 * 60 * 60,
+		updateAge: 24 * 60 * 60,
+	},
 	callbacks: {
-		async session(session, token) {
-			session.user.id = token.id;
-			session.user.admin = token.admin;
+		async session({ session, token, user }) {
+			session.user.id = user.id;
+			session.user.admin = user.admin;
 			return session;
 		},
-		async redirect(url, baseUrl) {
+		async redirect({ baseUrl }) {
 			return `${baseUrl}/admin`;
 		},
 	},
-	theme: 'light',
+	theme: {
+		colorScheme: 'light',
+	},
 	pages: {
 		signIn: '/auth/signin',
 		verifyRequest: '/auth/verify-request',
 	},
-	debug: false,
+	debug: true,
+	secret: 'LlKq6ZtYbr+hTC073mAmAh9/h2HwMfsFo4hrfCx5mLg=', // TODO: replace with proper secret from env var
 });

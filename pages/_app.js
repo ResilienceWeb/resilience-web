@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { Provider } from 'next-auth/client';
+import { SessionProvider } from 'next-auth/react';
 import '@fontsource/poppins/400.css';
 import '@fontsource/poppins/500.css';
 import '@fontsource/poppins/600.css';
@@ -69,8 +69,8 @@ function App({ Component, pageProps }) {
 				></script>
 			</Head>
 			<SafeHydrate>
-				<Provider
-					options={{ clientMaxAge: 0, keepAlive: 0 }}
+				<SessionProvider
+					refetchInterval={5 * 60}
 					session={pageProps.session}
 				>
 					<ChakraProvider theme={theme}>
@@ -81,7 +81,7 @@ function App({ Component, pageProps }) {
 							<ReactQueryDevtools initialIsOpen={false} />
 						</QueryClientProvider>
 					</ChakraProvider>
-				</Provider>
+				</SessionProvider>
 			</SafeHydrate>
 		</>
 	);

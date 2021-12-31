@@ -1,4 +1,4 @@
-import { getCsrfToken } from 'next-auth/client';
+import { getCsrfToken } from 'next-auth/react';
 import { Button, Input, Flex, Box } from '@chakra-ui/react';
 import Image from 'next/image';
 import LogoImage from '../../public/logo.png';

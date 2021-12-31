@@ -15,7 +15,7 @@ import {
 	Stack,
 	StackDivider,
 } from '@chakra-ui/react';
-import { signIn, useSession } from 'next-auth/client';
+import { signIn, useSession } from 'next-auth/react';
 import LayoutContainer from '@components/admin/layout-container';
 import LoadingSpinner from '@components/loading-spinner';
 import { useListings } from '@hooks/listings';
@@ -24,15 +24,15 @@ import { emailRequiredValidator } from '@helpers/formValidation';
 import { REMOTE_URL } from '@helpers/config';
 
 export default function Invite() {
-	const [session, loadingSession] = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 	const { listings, isLoading: isLoadingListings } = useListings();
 	const toast = useToast();
 
 	useEffect(() => {
-		if (!session && !loadingSession) {
+		if (!session && !sessionStatus === 'loading') {
 			signIn();
 		}
-	}, [session, loadingSession]);
+	}, [session, sessionStatus]);
 
 	const orderedListings = useMemo(() => {
 		return listings?.sort(sortStringsFunc);
@@ -73,7 +73,7 @@ export default function Invite() {
 		[listings, toast],
 	);
 
-	if (loadingSession || isLoadingListings) {
+	if (sessionStatus === 'loading' || isLoadingListings) {
 		return (
 			<LayoutContainer>
 				<LoadingSpinner />
