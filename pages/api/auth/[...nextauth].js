@@ -84,6 +84,6 @@ export default NextAuth({
 		signIn: '/auth/signin',
 		verifyRequest: '/auth/verify-request',
 	},
-	debug: true,
-	secret: 'LlKq6ZtYbr+hTC073mAmAh9/h2HwMfsFo4hrfCx5mLg=', // TODO: replace with proper secret from env var
+	debug: false,
+	secret: process.env.NEXT_AUTH_SECRET,
 });
