@@ -20,18 +20,11 @@ const TableContent = ({ enterEdit, items, removeItem }) => {
 		<Table my="8" borderWidth="1px" fontSize="sm" background="#ffffff">
 			<Thead bg={mode('gray.50', 'gray.800')}>
 				<Tr>
-					<Th whiteSpace="nowrap" scope="col" key={0}>
-						Title
-					</Th>
-					<Th whiteSpace="nowrap" scope="col" key={1}>
-						Category
-					</Th>
-					<Th whiteSpace="nowrap" scope="col" key={2}>
-						Website
-					</Th>
-					<Th whiteSpace="nowrap" scope="col" key={3}>
-						Email
-					</Th>
+					{columns.map((column, index) => (
+						<Th whiteSpace="nowrap" scope="col" key={index}>
+							{column.Header}
+						</Th>
+					))}
 					<Th />
 				</Tr>
 			</Thead>

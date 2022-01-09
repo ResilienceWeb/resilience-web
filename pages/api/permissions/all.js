@@ -12,7 +12,11 @@ export default async function (req, res) {
 			});
 		}
 
-		const editPermissions = await prisma.editPermission.findMany();
+		const editPermissions = await prisma.editPermission.findMany({
+			include: {
+				listing: true,
+			},
+		});
 		res.status(200);
 		res.json({ editPermissions });
 	} catch (e) {

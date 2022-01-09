@@ -30,7 +30,6 @@ const Admin = () => {
 	const { mutate: deleteListing } = useDeleteListing();
 
 	useEffect(() => {
-		console.log(session, sessionStatus);
 		if (!session && sessionStatus !== 'loading') {
 			if (query.activate) {
 				signIn('email', { email: query.activate });

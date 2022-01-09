@@ -22,6 +22,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, SettingsIcon } from '@chakra-ui/icons';
 import { BsCardChecklist, BsPeopleFill } from 'react-icons/bs';
+import { BiLockOpen } from 'react-icons/bi';
 import LogoImage from '../../../public/logo.png';
 
 const NavLink = ({ children, href }) => (
@@ -59,6 +60,11 @@ const Nav = () => {
 				label: 'Invite',
 				href: '/admin/invite',
 				icon: <Icon as={BsPeopleFill} />,
+			});
+			links.push({
+				label: 'Permissions',
+				href: '/admin/permissions',
+				icon: <Icon as={BiLockOpen} />,
 			});
 		}
 
