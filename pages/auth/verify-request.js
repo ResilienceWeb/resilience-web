@@ -1,4 +1,5 @@
 import { Flex, Box, Heading } from '@chakra-ui/react';
+
 import styles from './auth.module.scss';
 
 export default function VerifyRequest() {
@@ -23,6 +24,7 @@ export default function VerifyRequest() {
 					<Heading as="h1" mb={4}>
 						Check your email
 					</Heading>
+
 					<p>A sign in link has been sent to your email address.</p>
 				</Box>
 			</Flex>

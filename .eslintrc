@@ -13,7 +13,8 @@
 		"plugin:react-hooks/recommended",
 		"plugin:jsx-a11y/recommended",
 		"next/core-web-vitals",
-		"next"
+		"next",
+		"plugin:prettier/recommended"
 	],
 	"parserOptions": {
 		"sourceType": "module",

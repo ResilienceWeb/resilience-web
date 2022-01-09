@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth';
 import EmailProvider from 'next-auth/providers/email';
-// import { TypeORMLegacyAdapter } from '@next-auth/typeorm-legacy-adapter';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import nodemailer from 'nodemailer';
 import prisma from '../../../prisma/client.js';

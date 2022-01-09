@@ -29,39 +29,42 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
 	const { isMobile } = useContext(AppContext);
 	const toast = useToast();
 
-	const onFormSubmit = useCallback(async (data) => {
-		const response = await fetch(`${REMOTE_URL}/api/feedback`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json;charset=utf-8',
-			},
-			body: JSON.stringify({
-				email: data.email,
-				feedback: data.feedback,
-			}),
-		});
-		const result = await response.json();
-
-		if (!result.error) {
-			toast({
-				title: 'Success',
-				description: `Feedback sent! Thank you.`,
-				status: 'success',
-				duration: 5000,
-				isClosable: true,
+	const onFormSubmit = useCallback(
+		async (data) => {
+			const response = await fetch(`${REMOTE_URL}/api/feedback`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json;charset=utf-8',
+				},
+				body: JSON.stringify({
+					email: data.email,
+					feedback: data.feedback,
+				}),
 			});
+			const result = await response.json();
 
-			onClose();
-		} else {
-			toast({
-				title: 'Error',
-				description: `There was an error. Please try again or email directly at cambridgeresilienceweb@gmail.com`,
-				status: 'error',
-				duration: 5000,
-				isClosable: true,
-			});
-		}
-	}, []);
+			if (!result.error) {
+				toast({
+					title: 'Success',
+					description: `Feedback sent! Thank you.`,
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+				});
+
+				onClose();
+			} else {
+				toast({
+					title: 'Error',
+					description: `There was an error. Please try again or email directly at cambridgeresilienceweb@gmail.com`,
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+				});
+			}
+		},
+		[onClose, toast],
+	);
 
 	return (
 		<Modal
