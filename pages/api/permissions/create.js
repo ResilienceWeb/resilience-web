@@ -1,6 +1,6 @@
 import prisma from '../../../prisma/client';
 
-export default async function (req, res) {
+export default async function handler(req, res) {
 	try {
 		const { email, listingId } = req.body;
 		const editPermission = await prisma.editPermission.create({

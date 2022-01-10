@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 import config from '@helpers/config';
 
-export default async function (req, res) {
+export default async function handler(req, res) {
 	try {
 		const { email, feedback } = req.body;
 

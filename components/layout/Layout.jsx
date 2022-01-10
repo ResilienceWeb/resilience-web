@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import classnames from 'classnames';
 import { Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react';
 import Nav from '@components/nav';
@@ -27,4 +28,4 @@ const Layout = ({ applyPostStyling, children }) => {
 	);
 };
 
-export default Layout;
+export default memo(Layout);

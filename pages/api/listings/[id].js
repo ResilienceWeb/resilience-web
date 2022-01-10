@@ -3,7 +3,7 @@ import prisma from '../../../prisma/client';
 import uploadImage from '@helpers/uploadImage';
 import { stringToBoolean } from '@helpers/utils';
 
-export default async function (req, res) {
+export default async function handler(req, res) {
 	try {
 		switch (req.method) {
 			case 'POST': {

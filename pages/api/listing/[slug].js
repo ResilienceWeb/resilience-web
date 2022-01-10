@@ -1,6 +1,6 @@
 import prisma from '../../../prisma/client';
 
-export default async function (req, res) {
+export default async function handler(req, res) {
 	try {
 		if (req.method !== 'GET') {
 			res.status(500);

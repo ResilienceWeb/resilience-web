@@ -6,7 +6,8 @@
 		"build": "next build",
 		"start": "next start -H 0.0.0.0 -p ${PORT:-8080}",
 		"db": "prisma studio",
-		"postinstall": "prisma generate"
+		"postinstall": "prisma generate",
+		"lint": "eslint ."
 	},
 	"prisma": {
 		"seed": "ts-node prisma/seed.ts"

@@ -26,7 +26,6 @@ export async function fetchUser(email) {
 
 const PermissionsList = ({ permissions }) => {
 	const [userRegistrationsMap, setUserRegistrationsMap] = useState([]);
-	console.log(userRegistrationsMap);
 
 	useEffect(() => {
 		async function fetchData() {

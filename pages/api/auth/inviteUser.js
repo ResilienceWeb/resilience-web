@@ -4,7 +4,7 @@ import { htmlTemplate, textTemplate } from '@helpers/emailTemplates';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export default async function (req, res) {
+export default async function handler(req, res) {
 	try {
 		const { email, listing } = req.body;
 

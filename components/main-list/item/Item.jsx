@@ -31,7 +31,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 				},
 			});
 		}
-	}, [inView]);
+	}, [animation, inView]);
 
 	const openDialog = useCallback(() => {
 		onOpenDialog(dataItem);

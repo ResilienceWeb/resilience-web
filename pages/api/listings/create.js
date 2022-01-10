@@ -5,7 +5,7 @@ import { stringToBoolean } from '@helpers/utils';
 
 const generateSlug = (title) => title.toLowerCase().replace(/ /g, '-');
 
-export default async function (req, res) {
+export default async function handler(req, res) {
 	try {
 		const form = new formidable.IncomingForm();
 		form.keepExtensions = true;
