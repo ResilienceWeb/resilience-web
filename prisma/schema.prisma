@@ -39,7 +39,6 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  EditPermission EditPermission[]
   @@map("users")
 }
 
@@ -106,6 +105,4 @@ model EditPermission {
   listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
 
   @@map("edit_permissions")
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
 }
