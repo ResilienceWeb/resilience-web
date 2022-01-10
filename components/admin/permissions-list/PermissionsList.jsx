@@ -1,5 +1,6 @@
 import { memo, useEffect, useMemo, useState } from 'react';
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Table, Tbody, Td, Th, Thead, Tr, Tag } from '@chakra-ui/react';
+import chroma from 'chroma-js';
 
 const columns = [
 	{
@@ -76,6 +77,27 @@ const PermissionsList = ({ permissions }) => {
 						{columns.map((column, index) => {
 							const cell = row[column.accessor];
 							const element = column.Cell?.(cell) ?? cell;
+
+							if (column.accessor === 'accountCreated') {
+								return (
+									<Td key={index} width="100px">
+										<Tag
+											backgroundColor={
+												element === 'Yes'
+													? chroma('green')
+															.alpha(0.5)
+															.css()
+													: chroma('gray')
+															.alpha(0.5)
+															.css()
+											}
+										>
+											{element}
+										</Tag>
+									</Td>
+								);
+							}
+
 							return (
 								<Td key={index} maxWidth="100px">
 									{element}
