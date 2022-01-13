@@ -6,6 +6,11 @@ import {
 	chakra,
 	useColorModeValue,
 	SimpleGrid,
+	Button,
+	Center,
+	Link,
+	Text,
+	Flex,
 } from '@chakra-ui/react';
 import crwScreenshot1 from '../public/crw-screenshot-1.png';
 import crwScreenshot2 from '../public/crw-screenshot-2.png';
@@ -142,6 +147,26 @@ function Features() {
 					</chakra.p>
 				</Box>
 			</SimpleGrid>
+			<Flex direction="column" alignItems="center" mb={8}>
+				<Link
+					href="https://calendly.com/resilience-web/intro-call"
+					isExternal
+				>
+					<Button colorScheme="blue" size="lg" px={8} mb={4}>
+						Book a welcome call
+					</Button>
+				</Link>
+				<Text
+					maxWidth="400px"
+					color="gray.600"
+					align="center"
+					style={{ fontSize: '15px' }}
+				>
+					Do you need technical help? Do you have questions about the
+					platform? Or feedback? If so, you can book a 20 min slot to
+					have a chat with Diner.
+				</Text>
+			</Flex>
 		</>
 	);
 }

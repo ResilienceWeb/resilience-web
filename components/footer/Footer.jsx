@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import {
 	Box,
 	Container,
@@ -8,8 +9,11 @@ import {
 	Flex,
 } from '@chakra-ui/react';
 import Image from 'next/image';
+import { AppContext } from '@store/AppContext';
 
 export default function Footer() {
+	const { isMobile } = useContext(AppContext);
+
 	return (
 		<Box
 			bg={useColorModeValue('white', 'gray.800')}
@@ -32,9 +36,11 @@ export default function Footer() {
 					>
 						Github
 					</Link>
-					<Link href="mailto:cambridgeresilienceweb@gmail.com">
-						Get in touch
-					</Link>
+					{!isMobile && (
+						<Link href="mailto:cambridgeresilienceweb@gmail.com">
+							Get in touch
+						</Link>
+					)}
 					<Link
 						href="https://opencollective.com/resilience-web/donate"
 						target="_blank"
