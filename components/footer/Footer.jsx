@@ -7,6 +7,8 @@ import {
 	Link,
 	useColorModeValue,
 	Flex,
+	VStack,
+	useBreakpointValue,
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import { AppContext } from '@store/AppContext';
@@ -29,41 +31,53 @@ export default function Footer() {
 				justify={{ base: 'center', md: 'space-between' }}
 				align={{ base: 'center', md: 'center' }}
 			>
-				<Stack direction={'row'} spacing={6} alignItems="center">
+				<Stack
+					direction={'row'}
+					spacing={6}
+					alignItems="center"
+					mb={{ base: 4, md: 0 }}
+				>
 					<Link
 						href="https://github.com/Cambridge-Resilience-Web/cambridge-resilience-web"
 						target="_blank"
 					>
 						Github
 					</Link>
-					{!isMobile && (
-						<Link href="mailto:cambridgeresilienceweb@gmail.com">
-							Get in touch
-						</Link>
-					)}
 					<Link
 						href="https://opencollective.com/resilience-web/donate"
 						target="_blank"
 						rel="noreferrer"
-						height="50"
+						// height="50"
 					>
-						<Image
-							alt="Open collective button that says Donate to our collective"
-							src="https://opencollective.com/resilience-web/donate/button@2x.png"
-							width="300"
-							height="50"
-						/>
+						Donate to our collective
+						{/* <Image
+								alt="Open collective button that says Donate to our collective"
+								src="https://opencollective.com/resilience-web/donate/button@2x.png"
+								width="300"
+								height="50"
+							/> */}
 					</Link>
 				</Stack>
-				<Flex alignItems="center">
-					<Text mr={1}>Powered by</Text>
-					<Image
-						alt="Powered by Vercel"
-						src="/vercel.svg"
-						width="85"
-						height="19"
-					/>
-				</Flex>
+				<Link
+					fontWeight="semibold"
+					href="https://dinerismail.dev"
+					target="_blank"
+					isExternal
+					_hover={{ color: 'black' }}
+				>
+					Made with ❤️ by Diner
+				</Link>
+				{!isMobile && (
+					<Flex alignItems="center">
+						<Text mr={1}>Powered by</Text>
+						<Image
+							alt="Powered by Vercel"
+							src="/vercel.svg"
+							width="85"
+							height="19"
+						/>
+					</Flex>
+				)}
 			</Container>
 		</Box>
 	);
