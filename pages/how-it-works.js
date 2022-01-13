@@ -7,7 +7,6 @@ import {
 	useColorModeValue,
 	SimpleGrid,
 	Button,
-	Center,
 	Link,
 	Text,
 	Flex,

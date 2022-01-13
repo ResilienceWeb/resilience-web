@@ -158,21 +158,19 @@ const DesktopNav = ({ currentPathname }) => {
 			{NAV_ITEMS.map((navItem) => (
 				<Box key={navItem.label}>
 					<Popover trigger={'hover'} placement={'bottom-start'}>
-						<Link
-							as={NextLink}
-							href={navItem.href}
-							isExternal={navItem.isExternal}
-						>
-							<button
-								className={classnames(
-									styles.navLink,
-									currentPathname === navItem.href &&
-										styles.active,
-								)}
-							>
-								{navItem.label}
-							</button>
-						</Link>
+						<NextLink href={navItem.href} passHref>
+							<Link isExternal={navItem.isExternal}>
+								<button
+									className={classnames(
+										styles.navLink,
+										currentPathname === navItem.href &&
+											styles.active,
+									)}
+								>
+									{navItem.label}
+								</button>
+							</Link>
+						</NextLink>
 					</Popover>
 				</Box>
 			))}
@@ -267,6 +265,7 @@ const NAV_ITEMS = [
 	{
 		label: 'University',
 		href: '/university',
+		isExternal: true,
 	},
 	{
 		label: 'Donate',
