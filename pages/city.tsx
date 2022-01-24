@@ -1,5 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import dynamic from 'next/dynamic';
+import { GetStaticProps } from 'next';
 import {
 	useCallback,
 	useContext,
@@ -20,7 +21,7 @@ import { useLocalStorage } from '@hooks/application';
 import { useCategories } from '@hooks/categories';
 import { AppContext } from '@store/AppContext';
 
-const Network = dynamic(() => import('../components/network'), {
+const NetworkComponent = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
@@ -144,7 +145,7 @@ const City = ({ data }) => {
 					searchTerm={searchTerm}
 				/>
 				{isWebMode && (
-					<Network
+					<NetworkComponent
 						data={filteredNetworkData}
 						selectedId={selectedId}
 						setNetwork={setNetwork}
@@ -166,7 +167,7 @@ const City = ({ data }) => {
 const startsWithCapitalLetter = (word) =>
 	word.charCodeAt(0) >= 65 && word.charCodeAt(0) <= 90;
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
 	const listingsInDb = await fetch(`${REMOTE_URL}/api/listings`);
 
 	const data = await listingsInDb.json();

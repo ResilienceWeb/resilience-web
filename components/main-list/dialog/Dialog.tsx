@@ -28,7 +28,7 @@ import { sanitizeLink } from '@helpers/utils';
 import { REMOTE_URL } from '@helpers/config';
 import DescriptionRichText from '@components/main-list/description-rich-text';
 
-const Dialog = ({ isOpen, isMobile, item, onClose }) => {
+const Dialog = ({ isOpen, isMobile, item, onClose }: { isOpen: boolean, isMobile?: boolean, item: any, onClose: () => void }) => {
 	const toast = useToast();
 
 	const websiteSanitized = useMemo(
@@ -44,12 +44,12 @@ const Dialog = ({ isOpen, isMobile, item, onClose }) => {
 			status: 'info',
 			duration: 4000,
 		});
-	}, []);
+	}, [toast]);
 
 	const handleShareButtonClick = useCallback(() => {
 		navigator.clipboard.writeText(`${REMOTE_URL}/city/${item.slug}`);
 		showCopiedToClipboardToast();
-	});
+	}, [item.slug, showCopiedToClipboardToast]);
 
 	return (
 		<Modal

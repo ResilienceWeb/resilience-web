@@ -29,7 +29,7 @@ export default function Invite() {
 	const toast = useToast();
 
 	useEffect(() => {
-		if (!session && !sessionStatus === 'loading') {
+		if (!session && !(sessionStatus === 'loading')) {
 			signIn();
 		}
 	}, [session, sessionStatus]);

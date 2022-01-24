@@ -4,7 +4,6 @@ import { memo, useCallback, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import VisNetworkReactComponent from 'vis-network-react';
 import { useDisclosure } from '@chakra-ui/react';
-
 import Dialog from '@components/main-list/dialog';
 import styles from './Network.module.scss';
 

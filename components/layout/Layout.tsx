@@ -1,11 +1,11 @@
-import { memo } from 'react';
+import React, { memo } from 'react';
 import classnames from 'classnames';
 import { Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react';
 import Nav from '@components/nav';
 import Footer from '@components/footer';
 import styles from './Layout.module.scss';
 
-const Layout = ({ applyPostStyling, children }) => {
+const Layout = ({ applyPostStyling, children }: { applyPostStyling?: boolean, children: React.ReactNode }) => {
 	return (
 		<>
 			<Nav />

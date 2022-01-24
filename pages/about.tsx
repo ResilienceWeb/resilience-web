@@ -1,3 +1,4 @@
+import { GetStaticProps } from 'next';
 import { NextSeo } from 'next-seo';
 import { GraphQLClient } from 'graphql-request';
 import ReactMarkdown from 'react-markdown';
@@ -39,7 +40,7 @@ const About = ({ page }) => {
 	);
 };
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
 	const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL);
 
 	const { page } = await graphcms.request(`

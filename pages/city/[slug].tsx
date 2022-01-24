@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { GetStaticProps, GetStaticPaths } from 'next';
 import { NextSeo } from 'next-seo';
 import {
 	Box,
@@ -162,7 +163,7 @@ function Listing({ listing }) {
 	);
 }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
 	const response = await fetch(`${REMOTE_URL}/api/listing/${params.slug}`);
 	const data = await response.json();
 	const { listing } = data;
@@ -175,7 +176,7 @@ export async function getStaticProps({ params }) {
 	};
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths : GetStaticPaths = async () => {
 	const response = await fetch(`${REMOTE_URL}/api/listings`);
 	const data = await response.json();
 	const { listings } = data;

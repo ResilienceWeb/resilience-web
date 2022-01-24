@@ -7,8 +7,6 @@ import {
 	Link,
 	useColorModeValue,
 	Flex,
-	VStack,
-	useBreakpointValue,
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import { AppContext } from '@store/AppContext';
@@ -47,7 +45,6 @@ export default function Footer() {
 						href="https://opencollective.com/resilience-web/donate"
 						target="_blank"
 						rel="noreferrer"
-						// height="50"
 					>
 						Donate to our collective
 						{/* <Image

@@ -1,4 +1,5 @@
 import { getCsrfToken } from 'next-auth/react';
+import type { GetServerSideProps } from 'next';
 import { Button, Input, Flex, Box } from '@chakra-ui/react';
 import Image from 'next/image';
 import LogoImage from '../../public/logo.png';
@@ -53,7 +54,7 @@ export default function SignIn({ csrfToken }) {
 	);
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 	const csrfToken = await getCsrfToken(context);
 	return {
 		props: { csrfToken },

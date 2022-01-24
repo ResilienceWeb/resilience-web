@@ -1,5 +1,4 @@
 import { Flex, Box, Heading } from '@chakra-ui/react';
-
 import styles from './auth.module.scss';
 
 export default function VerifyRequest() {

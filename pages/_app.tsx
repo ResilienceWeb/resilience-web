@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import type { AppProps } from 'next/app';
 import PropTypes from 'prop-types';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
@@ -35,7 +36,7 @@ function SafeHydrate({ children }) {
 	);
 }
 
-function App({ Component, pageProps }) {
+function App({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<Head>
