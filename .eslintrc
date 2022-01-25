@@ -7,18 +7,23 @@
 	},
 	"plugins": ["react", "react-hooks", "import", "jsx-a11y"],
 	"extends": [
-		"eslint:recommended",
 		"plugin:import/recommended",
+		"plugin:import/typescript",
 		"plugin:react/recommended",
 		"plugin:react-hooks/recommended",
 		"plugin:jsx-a11y/recommended",
 		"next/core-web-vitals",
 		"next",
+		"plugin:@typescript-eslint/recommended",
 		"plugin:prettier/recommended"
 	],
+	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"sourceType": "module",
-		"ecmaVersion": 2020
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"ecmaVersion": "latest"
 	},
 	"settings": {
 		"import/resolver": {
@@ -27,8 +32,7 @@
 					["@components", "./components/"],
 					["@hooks", "./hooks/"],
 					["@helpers", "./helpers/"],
-					["@store", "./store/"],
-					["@types", "./types/"]
+					["@store", "./store/"]
 				],
 				"extensions": [".js", ".jsx", ".ts", ".tsx"]
 			}

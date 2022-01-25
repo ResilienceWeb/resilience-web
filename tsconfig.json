@@ -31,14 +31,11 @@
 			],
 			"@store/*": [
 				"store/*"
-			],
-			"@types/*": [
-				"types/*"
 			]
 		},
 		"typeRoots": [
 			"./node_modules/@types",
-			"./types"
+			"./types",
 		]
 	},
 	"include": [

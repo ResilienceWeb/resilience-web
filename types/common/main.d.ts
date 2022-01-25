@@ -1,7 +1,18 @@
-/// <reference path="./network.d.ts" />
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="./next-auth.d.ts" />
 
-interface Person {
-    firstName: string;
-    lastName: string;
-    age: number;
+type Listing = {
+	title: string;
+	categoryId?: number;
+	website?: string;
+	description: string;
+	email?: string;
+	facebook?: string;
+	instagram?: string;
+	twitter?: string;
+	notes?: string;
+	seekingVolunteers: boolean;
+	inactive: boolean;
+	slug: string;
+	image?: string;
 }
