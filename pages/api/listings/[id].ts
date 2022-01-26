@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					if (files.image) {
 						const { image: oldImageKey } =
 							await prisma.listing.findUnique({
-								where: { id: parseInt(listingId) },
+								where: { id: parseInt(listingId as string) },
 								select: {
 									image: true,
 								},
@@ -47,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					}
 
 					const listing = await prisma.listing.update({
-						where: { id: parseInt(listingId) },
+						where: { id: parseInt(listingId as string) },
 						data: newData,
 					});
 
@@ -60,7 +60,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			case 'DELETE': {
 				const { id: listingId } = req.query;
 				const listing = await prisma.listing.delete({
-					where: { id: parseInt(listingId) },
+					where: { id: parseInt(listingId as string) },
 				});
 				res.status(200);
 				res.json({ listing });

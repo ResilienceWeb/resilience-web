@@ -11,7 +11,6 @@ import {
 	Stack,
 	HStack,
 	Collapse,
-	Icon,
 	Link,
 	Popover,
 	Button,
@@ -23,7 +22,6 @@ import {
 import {
 	HamburgerIcon,
 	CloseIcon,
-	ChevronDownIcon,
 	ChatIcon,
 } from '@chakra-ui/icons';
 import { AppContext } from '@store/AppContext';
