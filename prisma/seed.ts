@@ -1,5 +1,5 @@
-// @ts-nocheck
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
+
 const prisma = new PrismaClient()
 
 const categories = [
@@ -40,7 +40,7 @@ const categories = [
 
 async function main() {
 	categories.forEach(async (category) => {
-		const cat = await prisma.category.create({
+		await prisma.category.create({
 			data: category,
 		});
 	});
