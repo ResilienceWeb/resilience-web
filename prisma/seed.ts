@@ -40,7 +40,7 @@ const categories = [
 
 async function main() {
 	categories.forEach(async (category) => {
-		const cat = await prisma.category.create({
+		await prisma.category.create({
 			data: category,
 		});
 	});

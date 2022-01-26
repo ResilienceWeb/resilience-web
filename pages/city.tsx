@@ -25,6 +25,10 @@ const NetworkComponent = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
 
+type INetwork = {
+	selectNodes: (ids: string[]) => void;
+}
+
 const City = ({ data }) => {
 	const { isMobile } = useContext(AppContext);
 
@@ -40,7 +44,7 @@ const City = ({ data }) => {
 	const [categories, setCategories] = useState({});
 
 	const [selectedId, setSelectedId] = useState();
-	const [network, setNetwork] = useState();
+	const [network, setNetwork] = useState<INetwork>();
 
 	const { categories: fetchedCategories } = useCategories();
 

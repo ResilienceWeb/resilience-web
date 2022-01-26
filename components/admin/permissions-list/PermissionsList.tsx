@@ -25,7 +25,7 @@ export async function fetchUser(email) {
 }
 
 const PermissionsList = ({ permissions }) => {
-	const [userRegistrationsMap, setUserRegistrationsMap] = useState([]);
+	const [userRegistrationsMap, setUserRegistrationsMap] = useState({});
 
 	useEffect(() => {
 		async function fetchData() {
@@ -75,14 +75,13 @@ const PermissionsList = ({ permissions }) => {
 					<Tr key={index}>
 						{columns.map((column, index) => {
 							const cell = row[column.accessor];
-							const element = column.Cell?.(cell) ?? cell;
 
 							if (column.accessor === 'accountCreated') {
 								return (
 									<Td key={index} width="100px">
 										<Tag
 											backgroundColor={
-												element === 'Yes'
+												cell === 'Yes'
 													? chroma('green')
 															.alpha(0.5)
 															.css()
@@ -91,7 +90,7 @@ const PermissionsList = ({ permissions }) => {
 															.css()
 											}
 										>
-											{element}
+											{cell}
 										</Tag>
 									</Td>
 								);
@@ -99,7 +98,7 @@ const PermissionsList = ({ permissions }) => {
 
 							return (
 								<Td key={index} maxWidth="100px">
-									{element}
+									{cell}
 								</Td>
 							);
 						})}

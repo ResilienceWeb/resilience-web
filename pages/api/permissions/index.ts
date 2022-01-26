@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 		let email = session?.user.email;
 		if (req.query?.email) {
-			email = req.query.email;
+			email = req.query.email as string;
 		}
 
 		const editPermissions = await prisma.editPermission.findMany({

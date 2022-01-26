@@ -15,8 +15,8 @@ import {
 } from '@chakra-ui/react';
 
 const ImageUpload = ({ field, form, formProps }) => {
-	const fileInputRef = useRef();
-	const [preview, setPreview] = useState();
+	const fileInputRef = useRef<HTMLInputElement>();
+	const [preview, setPreview] = useState<string | ArrayBuffer>();
 
 	const hasImageAlready = field.value && !field.value.name;
 
