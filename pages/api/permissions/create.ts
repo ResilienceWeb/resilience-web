@@ -8,8 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		const editPermission = await prisma.editPermission.create({
 			data: {
 				email: email,
-				listingId: listingId,
-				asd: 'new'
+				listingId: listingId
 			},
 		});
 
