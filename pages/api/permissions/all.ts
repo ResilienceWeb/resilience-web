@@ -5,7 +5,6 @@ import prisma from '../../../prisma/client';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		const session = await getSession({ req });
-
 		if (!session?.user.admin) {
 			res.status(403);
 			res.json({

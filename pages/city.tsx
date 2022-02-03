@@ -17,7 +17,7 @@ import Drawer from '@components/drawer';
 import MainList from '@components/main-list';
 import Header from '@components/header';
 import { REMOTE_URL } from '@helpers/config';
-import { removeNonAlphaNumeric } from '@helpers/utils';
+import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils';
 import { useLocalStorage } from '@hooks/application';
 import { useCategories } from '@hooks/categories';
 import { AppContext } from '@store/AppContext';
@@ -66,7 +66,7 @@ const City = ({ data }) => {
 	}, []);
 
 	const filteredItems = useMemo(() => {
-		let results = data.nodes.filter((item) => !item.isDescriptive);
+		let results = data.nodes.filter((item) => !item.isDescriptive).sort(sortStringsFunc);
 
 		if (isVolunteer) {
 			results = results.filter((item) => item.seekingVolunteers);

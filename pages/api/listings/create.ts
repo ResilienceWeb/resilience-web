@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
+import { getSession } from 'next-auth/react';
 import prisma from '../../../prisma/client';
 import uploadImage from '@helpers/uploadImage';
 import { stringToBoolean } from '@helpers/utils';
@@ -13,8 +14,13 @@ type ResponseData = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
 	try {
-		const form = new formidable.IncomingForm();
-		form.keepExtensions = true;
+		const session = await getSession({ req });
+		if (!session?.user?.admin) {
+			res.status(403);
+			res.json({
+				error: `You don't have enough permissions to access this data.`,
+			});
+		}
 
 		if (req.method !== 'POST') {
 			res.status(500);
@@ -22,6 +28,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 				error: `Method ${req.method} not supported at this endpoint`,
 			});
 		}
+
+		const form = new formidable.IncomingForm();
+		form.keepExtensions = true;
 
 		await form.parse(req, async (err, fields, files) => {
 			const newData: Listing = {

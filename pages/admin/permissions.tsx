@@ -18,7 +18,7 @@ export default function Permissions() {
 		);
 	}
 
-	if (!session || !session.user.admin) return null;
+	if (!session || !session.user.admin || !permissions) return null;
 
 	return (
 		<LayoutContainer>

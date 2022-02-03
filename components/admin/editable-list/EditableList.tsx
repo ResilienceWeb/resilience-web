@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState, memo } from 'react';
 import { Heading, Text, Box, Stack } from '@chakra-ui/react';
 import ListingCreationDialog from '@components/admin/listing-creation-dialog';
+import { removeNonAlphaNumeric } from '@helpers/utils';
 import Table from './table/Table';
 import TableActions from './table/TableActions';
 
@@ -20,7 +21,7 @@ const EditableList = ({
 
 	useEffect(() => {
 		const filtered = items.filter((item) =>
-			item.title?.toLowerCase().includes(filter.toLowerCase()),
+			removeNonAlphaNumeric(item.title)?.toLowerCase().includes(filter.toLowerCase()),
 		);
 		setData(filtered);
 	}, [filter, items]);

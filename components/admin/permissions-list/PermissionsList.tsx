@@ -44,7 +44,7 @@ const PermissionsList = ({ permissions }) => {
 	}, []);
 
 	const permissionsForDisplay = useMemo(() => {
-		if (!permissions) return [];
+		if (!permissions || !Object.keys(userRegistrationsMap).length) return [];
 
 		const result = permissions.map((p) => {
 			return {

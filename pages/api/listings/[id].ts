@@ -1,11 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
+import { getSession } from 'next-auth/react';
 import prisma from '../../../prisma/client';
 import uploadImage from '@helpers/uploadImage';
 import { stringToBoolean } from '@helpers/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	try {
+		const session = await getSession({ req });
+		if (!session?.user) {
+			res.status(403);
+			res.json({
+				error: `You don't have enough permissions to access this data.`,
+			});
+		}
+
 		switch (req.method) {
 			case 'POST': { // TODO: Update http method to PATCH?
 				const { id: listingId } = req.query;

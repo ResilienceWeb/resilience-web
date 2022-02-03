@@ -6,6 +6,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	try {
 		const session = await getSession({ req });
 
+		if (!session?.user) {
+			res.status(403);
+			res.json({
+				error: `You don't have enough permissions to access this data.`,
+			});
+		}
+
 		let email = session?.user.email;
 		if (req.query?.email) {
 			email = req.query.email as string;
