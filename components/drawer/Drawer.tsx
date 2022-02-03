@@ -1,5 +1,4 @@
 import { useCallback, useMemo, memo } from 'react';
-import PropTypes from 'prop-types';
 import Image from 'next/image';
 import { Flex, Link } from '@chakra-ui/react';
 import { sortStringsFunc } from '@helpers/utils';
@@ -47,11 +46,6 @@ const Drawer = ({ items, selectNode }) => {
 			))}
 		</div>
 	);
-};
-
-Drawer.propTypes = {
-	items: PropTypes.array.isRequired,
-	selectNode: PropTypes.func.isRequired,
 };
 
 export default memo(Drawer);

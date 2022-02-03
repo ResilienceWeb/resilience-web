@@ -17,6 +17,7 @@ import Drawer from '@components/drawer';
 import MainList from '@components/main-list';
 import Header from '@components/header';
 import { REMOTE_URL } from '@helpers/config';
+import { removeNonAlphaNumeric } from '@helpers/utils';
 import { useLocalStorage } from '@hooks/application';
 import { useCategories } from '@hooks/categories';
 import { AppContext } from '@store/AppContext';
@@ -80,7 +81,7 @@ const City = ({ data }) => {
 
 		if (searchTermValue) {
 			results = results.filter((item) =>
-				item.title
+				removeNonAlphaNumeric(item.title)
 					.toLowerCase()
 					.includes(searchTermValue.toLowerCase()),
 			);

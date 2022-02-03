@@ -47,7 +47,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 			initial={{ opacity: 0, y: 50 }}
 			exit={{ opacity: 0 }}
 			animate={animation}
-			whileHover={{ scale: 1.1 }}
+			whileHover={{ scale: 1.05 }}
 		>
 			<chakra.div
 				height="fit-content"

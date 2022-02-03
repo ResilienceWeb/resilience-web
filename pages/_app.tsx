@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
-import PropTypes from 'prop-types';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -8,7 +7,7 @@ import { SessionProvider } from 'next-auth/react';
 import '@fontsource/poppins/400.css';
 import '@fontsource/poppins/500.css';
 import '@fontsource/poppins/600.css';
-import '../styles/globals.css';
+import '../styles/colors.css';
 import '../styles/styles.global.scss';
 import StoreProvider from '@store/StoreProvider';
 
@@ -87,10 +86,5 @@ function App({ Component, pageProps }: AppProps) {
 		</>
 	);
 }
-
-App.propTypes = {
-	Component: PropTypes.any,
-	pageProps: PropTypes.any,
-};
 
 export default App;

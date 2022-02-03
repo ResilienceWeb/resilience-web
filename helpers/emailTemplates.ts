@@ -4,6 +4,12 @@ export const simpleHtmlTemplate = ({
 	buttonText,
 	mainText,
 	footerText,
+}: {
+	url: string;
+	email: string;
+	buttonText: string;
+	mainText: string;
+	footerText: string;
 }) => {
 	// Insert invisible space into domains and email address to prevent both the
 	// email address and the domain from being turned into a hyperlink by email
@@ -63,6 +69,13 @@ export const htmlTemplate = ({
 	mainText,
 	secondaryText,
 	footerText,
+}: {
+	url: string;
+	email: string;
+	buttonText: string;
+	mainText: string;
+	secondaryText: string;
+	footerText: string;
 }) => {
 	// Insert invisible space into domains and email address to prevent both the
 	// email address and the domain from being turned into a hyperlink by email
@@ -128,5 +141,5 @@ export const htmlTemplate = ({
 };
 
 // Email text body – fallback for email clients that don't render HTML
-export const textTemplate = ({ url }) =>
+export const textTemplate = ({ url }: { url: string }) =>
 	`Sign in to Cambridge Resilience Web\n${url}\n\n`;

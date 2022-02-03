@@ -1,4 +1,4 @@
-export const sortStringsFunc = (a, b) => {
+export const sortStringsFunc = (a, b): number => {
 	const labelA = a.title?.toLowerCase();
 	const labelB = b.title?.toLowerCase();
 
@@ -12,7 +12,7 @@ export const sortStringsFunc = (a, b) => {
 	return 0;
 };
 
-export const stringToBoolean = function (value) {
+export const stringToBoolean = function (value: string): boolean {
 	if (value === 'true') return true;
 
 	if (value === 'false') return false;
@@ -20,11 +20,16 @@ export const stringToBoolean = function (value) {
 	throw 'Invalid input. This function only takes "true" or "false" and converts them to primitive boolean.';
 };
 
-export const sanitizeLink = (link) => {
+export const sanitizeLink = (link: string) => {
 	let result = link;
 	result = result.replace('https://www.', '');
 	result = result.replace('https://', '');
 	result = result.replace(/\/$/, '');
 
+	return result;
+};
+
+export const removeNonAlphaNumeric = (str: string) => {
+	const result = str.replace(/[^\w\s]/gi, '');
 	return result;
 };

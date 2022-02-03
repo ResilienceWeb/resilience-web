@@ -1,7 +1,6 @@
 import 'vis-network-react/node_modules/vis-network/dist/dist/vis-network.min.css';
 
 import { memo, useCallback, useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import VisNetworkReactComponent from 'vis-network-react';
 import { useDisclosure } from '@chakra-ui/react';
 import Dialog from '@components/main-list/dialog';
@@ -63,6 +62,14 @@ const options = {
 	height: '100%',
 };
 
+
+// Network.propTypes = {
+// 	data: PropTypes.object.isRequired,
+// 	selectedId: PropTypes.number,
+// 	setSelectedId: PropTypes.func.isRequired,
+// 	setNetwork: PropTypes.func.isRequired,
+// };
+
 const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -117,13 +124,6 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
 			)}
 		</div>
 	);
-};
-
-Network.propTypes = {
-	data: PropTypes.object.isRequired,
-	selectedId: PropTypes.number,
-	setSelectedId: PropTypes.func.isRequired,
-	setNetwork: PropTypes.func.isRequired,
 };
 
 export default memo(Network);
