@@ -79,6 +79,7 @@
 		"import/no-unresolved": 1,
 		"import/no-anonymous-default-export": 0,
 		"jsx-a11y/anchor-is-valid": 1,
-		"jsx-a11y/label-has-associated-control": 1
+		"jsx-a11y/label-has-associated-control": 1,
+		"@typescript-eslint/ban-ts-comment": 0
 	}
 }

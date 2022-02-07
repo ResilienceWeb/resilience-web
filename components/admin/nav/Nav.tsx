@@ -113,7 +113,6 @@ const Nav = () => {
 									color="gray.600"
 									fontWeight="600"
 									leftIcon={link.icon}
-									spacing="2"
 									px="3"
 									py="2"
 									rounded="md"
