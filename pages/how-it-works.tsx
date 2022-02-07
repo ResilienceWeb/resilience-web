@@ -27,7 +27,6 @@ const HowItWorks = () => {
 					title: 'How it works | Cambridge Resilience Web',
 					description:
 						'Two webs of resilience, showing the environmental and social justice groups in Cambridge',
-					// images: [{ url: 'https://cckitchen.uk/cck-preview.png' }],
 					url: 'https://cambridgeresilienceweb.org.uk/about',
 				}}
 			/>

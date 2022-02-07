@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
+import type { File } from 'formidable';
 import { getSession } from 'next-auth/react';
 import prisma from '../../../prisma/client';
 import uploadImage from '@helpers/uploadImage';
@@ -29,28 +30,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			});
 		}
 
-		const form = new formidable.IncomingForm();
-		form.keepExtensions = true;
+		const form = formidable({
+			keepExtensions: true
+		});
 
 		await form.parse(req, async (err, fields, files) => {
 			const newData: Listing = {
-				title: fields.title,
-				categoryId: parseInt(fields.category),
-				website: fields.website,
-				description: fields.description,
-				email: fields.email,
-				facebook: fields.facebook,
-				instagram: fields.instagram,
-				twitter: fields.twitter,
-				notes: fields.notes,
-				seekingVolunteers: stringToBoolean(fields.seekingVolunteers),
-				inactive: stringToBoolean(fields.inactive),
+				title: fields.title as string,
+				categoryId: parseInt(fields.category as string),
+				website: fields.website as string,
+				description: fields.description as string,
+				email: fields.email as string,
+				facebook: fields.facebook as string,
+				instagram: fields.instagram as string,
+				twitter: fields.twitter as string,
+				notes: fields.notes as string,
+				seekingVolunteers: stringToBoolean(fields.seekingVolunteers as string),
+				inactive: stringToBoolean(fields.inactive as string),
 				slug: generateSlug(fields.title),
 			};
 
 			let imageUrl = null;
 			if (files.image) {
-				imageUrl = await uploadImage(files.image);
+				imageUrl = await uploadImage(files.image as File);
 			}
 			if (imageUrl) {
 				newData.image = imageUrl;

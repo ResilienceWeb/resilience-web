@@ -1,16 +1,17 @@
 import fs from 'fs';
 import path from 'path';
+import type { File } from 'formidable';
 import doSpace from '../lib/digitalocean';
 import config from './config';
 
-const uploadImage = (image, oldImageKey) => {
+const uploadImage = (image: File, oldImageKey?: string) => {
 	return new Promise((resolve, reject) => {
 		if (image) {
 			const params = {
 				Bucket: `${config.bucketName}`,
-				Body: fs.createReadStream(image.path),
-				Key: path.basename(image.path),
-				ContentType: image.type,
+				Body: fs.createReadStream(image.filepath),
+				Key: path.basename(image.filepath),
+				ContentType: image.mimetype,
 				ACL: 'public-read',
 			};
 
@@ -25,7 +26,7 @@ const uploadImage = (image, oldImageKey) => {
 				.on('build', (request) => {
 					request.httpRequest.headers.Host = `${config.digitalOceanSpaces}`;
 					request.httpRequest.headers['Content-Length'] = image.size;
-					request.httpRequest.headers['Content-Type'] = image.type;
+					request.httpRequest.headers['Content-Type'] = image.mimetype;
 					request.httpRequest.headers['x-amz-acl'] = 'public-read';
 				})
 				.send((err) => {
@@ -35,7 +36,7 @@ const uploadImage = (image, oldImageKey) => {
 					} else {
 						imageUrl =
 							`${config.digitalOceanSpaces}` +
-							image.path.split('/').pop();
+							image.filepath.split('/').pop();
 						console.log('File uploaded successfully', imageUrl);
 						resolve(imageUrl);
 

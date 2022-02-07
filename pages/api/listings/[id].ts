@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
+import type { File } from 'formidable';
 import { getSession } from 'next-auth/react';
 import prisma from '../../../prisma/client';
 import uploadImage from '@helpers/uploadImage';
@@ -19,25 +20,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			case 'POST': { // TODO: Update http method to PATCH?
 				const { id: listingId } = req.query;
 
-				const form = new formidable.IncomingForm();
-				form.keepExtensions = true;
+				const form = formidable({
+					keepExtensions: true
+				});
 
 				await form.parse(req, async (err, fields, files) => {
 					const newData: Listing = {
-						title: fields.title,
-						categoryId: parseInt(fields.category),
-						website: fields.website,
-						description: fields.description,
-						email: fields.email,
-						facebook: fields.facebook,
-						instagram: fields.instagram,
-						twitter: fields.twitter,
-						notes: fields.notes,
+						title: fields.title as string,
+						categoryId: parseInt(fields.category as string),
+						website: fields.website as string,
+						description: fields.description as string,
+						email: fields.email as string,
+						facebook: fields.facebook as string,
+						instagram: fields.instagram as string,
+						twitter: fields.twitter as string,
+						notes: fields.notes as string,
 						seekingVolunteers: stringToBoolean(
-							fields.seekingVolunteers,
+							fields.seekingVolunteers as string,
 						),
-						inactive: stringToBoolean(fields.inactive),
-						slug: fields.slug,
+						inactive: stringToBoolean(fields.inactive as string),
+						slug: fields.slug as string,
 					};
 
 					let imageUrl = null;
@@ -49,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 									image: true,
 								},
 							});
-						imageUrl = await uploadImage(files.image, oldImageKey);
+						imageUrl = await uploadImage(files.image as File, oldImageKey);
 					}
 					if (imageUrl) {
 						newData.image = imageUrl;
