@@ -1,4 +1,4 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
 import { useEffect, useCallback, useMemo } from 'react';
 import {
 	chakra,
@@ -23,6 +23,11 @@ import { sortStringsFunc } from '@helpers/utils';
 import { emailRequiredValidator } from '@helpers/formValidation';
 import { REMOTE_URL } from '@helpers/config';
 
+interface FormValues {
+	email: string;
+	listing: string;
+}
+
 export default function Invite() {
 	const { data: session, status: sessionStatus } = useSession();
 	const { listings, isLoading: isLoadingListings } = useListings();
@@ -39,7 +44,7 @@ export default function Invite() {
 	}, [listings]);
 
 	const inviteUser = useCallback(
-		async (data) => {
+		async (data, actions: FormikHelpers<FormValues>) => {
 			const response = await fetch(`${REMOTE_URL}/api/auth/inviteUser`, {
 				method: 'POST',
 				headers: {
@@ -60,6 +65,7 @@ export default function Invite() {
 					duration: 5000,
 					isClosable: true,
 				});
+				actions.setFieldValue('email', '', false);
 			} else {
 				toast({
 					title: 'Error',
@@ -72,6 +78,11 @@ export default function Invite() {
 		},
 		[listings, toast],
 	);
+
+	const initialValues = useMemo<FormValues>(() => ({
+		email: '',
+		listing: listings[0].id,
+	}), [listings])
 
 	if (sessionStatus === 'loading' || isLoadingListings) {
 		return (
@@ -99,10 +110,7 @@ export default function Invite() {
 
 					<Box mt={6} maxW="400px">
 						<Formik
-							initialValues={{
-								email: '',
-								listing: listings[0].id,
-							}}
+							initialValues={initialValues}
 							onSubmit={inviteUser}
 						>
 							{(props) => (
