@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
 import {
 	Box,
 	Heading,
@@ -19,6 +20,15 @@ import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
 import DescriptionRichText from '@components/main-list/description-rich-text';
 
 function Listing({ listing }) {
+	const router = useRouter();
+	if (router.isFallback) {
+		return (
+			<Layout>
+				<h1>Please wait…</h1>
+			</Layout>
+		)
+	}
+
 	return (
 		<>
 			<NextSeo
@@ -172,7 +182,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		props: {
 			listing,
 		},
-		revalidate: 60,
+		revalidate: 5,
 	};
 }
 
@@ -184,7 +194,7 @@ export const getStaticPaths : GetStaticPaths = async () => {
 
 	return {
 		paths,
-		fallback: false,
+		fallback: true,
 	};
 }
 
