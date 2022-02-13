@@ -28,13 +28,14 @@ const customMultiSelectStyles = {
 		return {
 			...provided,
 			borderColor: '#E2E8F0',
+			borderRadius: '0.375rem',
+			height: '40px'
 		};
 	},
 	placeholder: (provided) => {
 		return {
 			...provided,
 			color: '#718096',
-			opacity: '0.7',
 		};
 	},
 	option: (provided, state) => {
@@ -92,6 +93,7 @@ const Header = ({
 						backgroundColor: '#ffffff',
 						width: '100%',
 					}}
+					_placeholder={{ color: 'gray.500' }}
 				/>
 			</InputGroup>
 			<InputGroup
