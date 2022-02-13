@@ -39,11 +39,11 @@ export default function SignIn({ csrfToken }) {
 						</label>
 						<Button
 							type="submit"
-							bg="#57b894"
-							colorScheme="#57b894"
+							bg="rw.700"
+							colorScheme="rw.700"
 							mt={2}
 							width="100%"
-							_hover={{ bg: '#4a9e7f' }}
+							_hover={{ bg: 'rw.900' }}
 						>
 							Sign in
 						</Button>

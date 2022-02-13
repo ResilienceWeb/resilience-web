@@ -50,22 +50,22 @@ export default function Hero() {
 							<Button
 								rounded="full"
 								px={6}
-								bg="#57b894"
-								colorScheme="#57b894"
+								bg="rw.700"
+								colorScheme="rw.700"
 								size="lg"
-								_hover={{ bg: '#4a9e7f' }}
+								_hover={{ bg: 'rw.900' }}
 							>
 								City
 							</Button>
 						</Link>
 						<Link href="https://lm687.shinyapps.io/code" isExternal>
 							<Button
-								bg="#57b894"
-								colorScheme="#57b894"
-								rounded={'full'}
+								bg="rw.700"
+								colorScheme="rw.700"
+								rounded="full"
 								px={6}
 								size="lg"
-								_hover={{ bg: '#4a9e7f' }}
+								_hover={{ bg: 'rw.900' }}
 							>
 								University
 							</Button>

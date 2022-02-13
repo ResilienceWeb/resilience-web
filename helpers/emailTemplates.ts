@@ -1,3 +1,10 @@
+const backgroundColor = '#f9f9f9';
+const textColor = '#444444';
+const mainBackgroundColor = '#ffffff';
+const buttonBackgroundColor = '#3A8159';
+const buttonBorderColor = '#3A8159';
+const buttonTextColor = '#ffffff';
+
 export const simpleHtmlTemplate = ({
 	url,
 	email,
@@ -17,16 +24,9 @@ export const simpleHtmlTemplate = ({
 	// like they are supposed to click on their email address to sign in.
 	const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`;
 
-	const backgroundColor = '#f9f9f9';
-	const textColor = '#444444';
-	const mainBackgroundColor = '#ffffff';
-	const buttonBackgroundColor = '#57b894';
-	const buttonBorderColor = '#57b894';
-	const buttonTextColor = '#ffffff';
-
 	// Uses tables for layout and inline CSS due to email client limitations
 	return `
-  <body style="background: ${backgroundColor}; margin-bottom: 16px;">
+  <body style="background: ${backgroundColor}; padding-bottom: 16px;">
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 	  <tr>
 		<td align="center" style="padding: 10px 0px 20px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
@@ -83,16 +83,9 @@ export const htmlTemplate = ({
 	// like they are supposed to click on their email address to sign in.
 	const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`;
 
-	const backgroundColor = '#f9f9f9';
-	const textColor = '#444444';
-	const mainBackgroundColor = '#ffffff';
-	const buttonBackgroundColor = '#57b894';
-	const buttonBorderColor = '#57b894';
-	const buttonTextColor = '#ffffff';
-
 	// Uses tables for layout and inline CSS due to email client limitations
 	return `
-  <body style="background: ${backgroundColor}; margin-bottom: 16px;">
+  <body style="background: ${backgroundColor}; padding-bottom: 16px;">
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 	  <tr>
 		<td align="center" style="padding: 10px 0px 20px 0px; font-size: 24px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">

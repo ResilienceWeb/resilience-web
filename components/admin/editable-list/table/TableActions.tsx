@@ -70,17 +70,17 @@ const TableActions = ({
 						placeholder="All roles"
 					>
 						<option>All roles</option>
-						<option>UI Designers</option>
-						<option>Marketing Directors</option>
 					</Select> */}
 					</HStack>
 					<ButtonGroup size="sm" variant="outline">
 						<Button
-							colorScheme="green"
+							bg="rw.700"
+							colorScheme="rw.700"
 							iconSpacing="1"
 							leftIcon={<HiPlus fontSize="1.25em" />}
 							onClick={openListingCreationDialog}
 							variant="solid"
+							_hover={{ bg: 'rw.900' }}
 						>
 							New listing
 						</Button>

@@ -101,7 +101,7 @@ export default function MainNav() {
 						</Flex>
 
 						<HStack>
-							<Tooltip label="Send feedback">
+							<Tooltip label="We appreciate any kind of feedback, positive or negative.">
 								{isMobile ? (
 									<IconButton
 										aria-label="Send feedback"
@@ -115,8 +115,10 @@ export default function MainNav() {
 									<Button
 										onClick={onOpenFeedbackDialog}
 										size="md"
-										colorScheme="green"
+										bg="rw.700"
+										colorScheme="rw.700"
 										variant="solid"
+										_hover={{ bg: 'rw.900' }}
 									>
 										Get in touch
 									</Button>

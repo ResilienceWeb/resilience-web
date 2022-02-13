@@ -399,13 +399,13 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
 
 									<ModalFooter pr="0">
 										<Button
-											bg="#57b894"
-											colorScheme="#57b894"
+											bg="rw.700"
+											colorScheme="rw.700"
 											disabled={!props.isValid}
 											isLoading={props.isSubmitting}
 											size="md"
 											type="submit"
-											_hover={{ bg: '#4a9e7f' }}
+											_hover={{ bg: 'rw.900' }}
 										>
 											{itemInEdit ? 'Update' : 'Create'}
 										</Button>

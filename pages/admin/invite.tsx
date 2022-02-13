@@ -81,7 +81,7 @@ export default function Invite() {
 
 	const initialValues = useMemo<FormValues>(() => ({
 		email: '',
-		listing: listings[0].id,
+		listing: listings ? listings[0].id : '',
 	}), [listings])
 
 	if (sessionStatus === 'loading' || isLoadingListings) {
@@ -182,14 +182,14 @@ export default function Invite() {
 									</chakra.div>
 
 									<Button
-										bg="#57b894"
-										colorScheme="#57b894"
+										bg="rw.700"
+										colorScheme="rw.700"
 										mt={4}
 										variant="solid"
 										disabled={!props.isValid}
 										isLoading={props.isSubmitting}
 										type="submit"
-										_hover={{ bg: '#4a9e7f' }}
+										_hover={{ bg: 'rw.900' }}
 									>
 										Send invite
 									</Button>

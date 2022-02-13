@@ -22,6 +22,12 @@ const theme = extendTheme({
 			},
 		},
 	},
+	colors: {
+		rw: {
+			700: '#3A8159',
+			900: '#09622f'
+		}
+	}
 });
 
 const queryClient = new QueryClient();

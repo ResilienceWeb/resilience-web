@@ -101,9 +101,9 @@ function Listing({ listing }) {
 								>
 									<Button
 										size="lg"
-										bg="#57b894"
-										colorScheme="#57b894"
-										_hover={{ bg: '#4a9e7f' }}
+										bg="rw.700"
+										colorScheme="rw.700"
+										_hover={{ bg: 'rw.900' }}
 									>
 										Visit website
 									</Button>
