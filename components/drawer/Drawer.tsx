@@ -21,11 +21,11 @@ const Drawer = ({ items, selectNode }) => {
 	return (
 		<div className={styles.drawer}>
 			<Link href="/">
-				<Flex justifyContent="center" my={2}>
+				<Flex justifyContent="center" my={2} px={4}>
 					<Image
 						alt="Cambridge Resilience Web logo"
 						src={LogoImage}
-						width="276"
+						width="306"
 						height="104"
 					/>
 				</Flex>

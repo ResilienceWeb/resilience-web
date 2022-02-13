@@ -11,8 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { memo } from 'react';
-import { BsSearch } from 'react-icons/bs';
-import { RiAddFill } from 'react-icons/ri';
+import { HiOutlineSearch, HiPlus } from 'react-icons/hi';
 
 const TableActions = ({
 	filterValue,
@@ -44,8 +43,9 @@ const TableActions = ({
 								<InputLeftElement
 									pointerEvents="none"
 									color="gray.400"
+									fontSize="xl"
 								>
-									<BsSearch />
+									<HiOutlineSearch />
 								</InputLeftElement>
 								<Input
 									placeholder="Filter by title…"
@@ -78,7 +78,7 @@ const TableActions = ({
 						<Button
 							colorScheme="green"
 							iconSpacing="1"
-							leftIcon={<RiAddFill fontSize="1.25em" />}
+							leftIcon={<HiPlus fontSize="1.25em" />}
 							onClick={openListingCreationDialog}
 							variant="solid"
 						>

@@ -19,8 +19,8 @@ export default function SignIn({ csrfToken }) {
 						<Image
 							alt="Cambridge Resilience Web logo"
 							src={LogoImage}
-							width="260"
-							height="100"
+							width="306"
+							height="104"
 						/>
 					</Box>
 					<form

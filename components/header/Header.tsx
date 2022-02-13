@@ -16,8 +16,7 @@ import {
 	chakra,
 	useBreakpointValue,
 } from '@chakra-ui/react';
-import { FiSearch } from 'react-icons/fi';
-import { AiFillHome } from 'react-icons/ai';
+import { HiOutlineSearch, HiHome } from 'react-icons/hi';
 import ModeSwitch from '@components/mode-switch';
 import VolunteerSwitch from '@components/volunteer-switch';
 
@@ -48,6 +47,7 @@ const customMultiSelectStyles = {
 		const color = chroma(data.color);
 		return {
 			...styles,
+			fontSize: '14px',
 			backgroundColor: color.alpha(0.5).css(),
 		};
 	},
@@ -81,8 +81,8 @@ const Header = ({
 			<InputGroup
 				maxW={isWebMode ? '250px' : isMobile ? '100%' : '300px'}
 			>
-				<InputLeftElement color="gray.500">
-					<FiSearch />
+				<InputLeftElement color="gray.500" fontSize="lg">
+					<HiOutlineSearch />
 				</InputLeftElement>
 				<Input
 					onChange={handleSearchTermChange}
@@ -118,7 +118,7 @@ const Header = ({
 			<>
 				<Link as={NextLink} href="/">
 					<Button
-						leftIcon={<AiFillHome />}
+						leftIcon={<HiHome />}
 						colorScheme="blue"
 						variant="solid"
 						size="sm"
@@ -137,7 +137,7 @@ const Header = ({
 						<Image
 							alt="Cambridge Resilience Web logo"
 							src="/logo.png"
-							width="276"
+							width="306"
 							height="104"
 						/>
 					</Box>
@@ -170,10 +170,10 @@ const Header = ({
 				/>
 				<Link as={NextLink} href="/">
 					<Button
-						leftIcon={<AiFillHome />}
+						leftIcon={<HiHome />}
 						colorScheme="blue"
 						size="sm"
-						px={8}
+						px={6}
 					>
 						Homepage
 					</Button>

@@ -21,8 +21,7 @@ import {
 	Stack,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, SettingsIcon } from '@chakra-ui/icons';
-import { BsCardChecklist, BsPeopleFill } from 'react-icons/bs';
-import { BiLockOpen } from 'react-icons/bi';
+import { HiViewList, HiUsers, HiOutlineLockOpen } from 'react-icons/hi';
 import LogoImage from '../../../public/logo.png';
 
 const NavLink = ({ children, href }) => (
@@ -51,7 +50,7 @@ const Nav = () => {
 			{
 				label: 'Listings',
 				href: '/admin',
-				icon: <Icon as={BsCardChecklist} />,
+				icon: <Icon as={HiViewList} fontSize="lg" />,
 			},
 		];
 
@@ -59,12 +58,12 @@ const Nav = () => {
 			links.push({
 				label: 'Invite',
 				href: '/admin/invite',
-				icon: <Icon as={BsPeopleFill} />,
+				icon: <Icon as={HiUsers} fontSize="lg" />,
 			});
 			links.push({
 				label: 'Permissions',
 				href: '/admin/permissions',
-				icon: <Icon as={BiLockOpen} />,
+				icon: <Icon as={HiOutlineLockOpen} fontSize="lg" />,
 			});
 		}
 
@@ -90,7 +89,7 @@ const Nav = () => {
 								<Image
 									alt="Cambridge Resilience Web logo"
 									src={LogoImage}
-									width="130"
+									width="148"
 									height="50"
 								/>
 							</button>

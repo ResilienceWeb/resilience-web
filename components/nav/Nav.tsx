@@ -85,7 +85,7 @@ export default function MainNav() {
 									<Image
 										alt="Cambridge Resilience Web logo"
 										src={LogoImage}
-										width="130"
+										width="145"
 										height="50"
 									/>
 								</button>

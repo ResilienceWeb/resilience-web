@@ -21,9 +21,8 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
-import { HiUserGroup } from 'react-icons/hi';
+import { HiUserGroup, HiShare } from 'react-icons/hi';
 import { GiNightSleep } from 'react-icons/gi';
-import { BsFillShareFill } from 'react-icons/bs';
 import { sanitizeLink } from '@helpers/utils';
 import { REMOTE_URL } from '@helpers/config';
 import DescriptionRichText from '@components/main-list/description-rich-text';
@@ -83,9 +82,9 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: { isOpen: boolean, isMobile
 							{item.category}
 						</Tag>
 						<Icon
-							as={BsFillShareFill}
+							as={HiShare}
 							cursor="pointer"
-							fontSize="2xl"
+							fontSize="3xl"
 							onClick={handleShareButtonClick}
 						/>
 					</Flex>
