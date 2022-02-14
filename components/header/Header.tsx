@@ -29,7 +29,6 @@ const customMultiSelectStyles = {
 			...provided,
 			borderColor: '#E2E8F0',
 			borderRadius: '0.375rem',
-			height: '40px'
 		};
 	},
 	placeholder: (provided) => {
@@ -91,13 +90,14 @@ const Header = ({
 					value={searchTerm}
 					style={{
 						backgroundColor: '#ffffff',
+						height: '38px',
 						width: '100%',
 					}}
-					_placeholder={{ color: 'gray.500' }}
+					_placeholder={{ color: '#718096', opacity: 1 }}
 				/>
 			</InputGroup>
 			<InputGroup
-				maxW={useBreakpointValue({ base: 'initial', md: '250px' })}
+				maxW={useBreakpointValue({ base: 'initial', md: '300px' })}
 			>
 				<Select
 					isMulti
@@ -158,9 +158,9 @@ const Header = ({
 				align="center"
 				w="full"
 				px="4"
-				bg={'white'}
+				bg="white"
 				borderBottomWidth="1px"
-				borderColor={'inherit'}
+				borderColor="inherit"
 				h="14"
 			>
 				<HStack spacing={2} width="100%">
