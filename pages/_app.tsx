@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
+import Script from 'next/script'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -68,12 +69,11 @@ function App({ Component, pageProps }: AppProps) {
 					type="image/x-icon"
 				/>
 				<link rel="icon" href="/favicon.ico" type="image/x-icon" />
-				<script
-					async
-					defer
-					src="https://cabin.cambridgeresilienceweb.org.uk/hello.js"
-				></script>
 			</Head>
+			<Script
+				strategy="afterInteractive"
+				src="https://cabin.cambridgeresilienceweb.org.uk/hello.js"
+			/>
 			<SafeHydrate>
 				<SessionProvider
 					refetchInterval={5 * 60}

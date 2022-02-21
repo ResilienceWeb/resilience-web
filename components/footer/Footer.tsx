@@ -62,16 +62,16 @@ export default function Footer() {
 					isExternal
 					_hover={{ color: 'black' }}
 				>
-					Made with ❤️ by Diner
+					Built with ❤️ <span style={{ marginLeft: '5px' }}>by Diner</span>
 				</Link>
 				{!isMobile && (
 					<Flex alignItems="center">
-						<Text mr={1}>Powered by</Text>
+						<Text mr={1} fontSize="sm">Powered by</Text>
 						<Image
 							alt="Powered by Vercel"
 							src="/vercel.svg"
-							width="85"
-							height="19"
+							width="56"
+							height="13"
 						/>
 					</Flex>
 				)}
