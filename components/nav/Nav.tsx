@@ -19,11 +19,7 @@ import {
 	useColorModeValue,
 	useDisclosure,
 } from '@chakra-ui/react';
-import {
-	HamburgerIcon,
-	CloseIcon,
-	ChatIcon,
-} from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon, ChatIcon } from '@chakra-ui/icons';
 import { AppContext } from '@store/AppContext';
 import FeedbackDialog from '../feedback-dialog';
 import LogoImage from '../../public/logo.png';
@@ -193,7 +189,7 @@ const MobileNav = () => {
 	);
 };
 
-const MobileNavItem = ({ label, href }: { label: string, href: string }) => {
+const MobileNavItem = ({ label, href }: { label: string; href: string }) => {
 	return (
 		<Stack spacing={4}>
 			<Flex

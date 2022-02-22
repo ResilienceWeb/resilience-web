@@ -2,7 +2,7 @@
 	"singleQuote": true,
 	"useTabs": true,
 	"printWidth": 80,
-	"jsxBracketSameLine": false,
+	"bracketSameLine": false,
 	"editor.formatOnSave": true,
 	"arrowParens": "always",
 	"trailingComma": "all"
