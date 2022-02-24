@@ -34,9 +34,12 @@ export default function Invite() {
 	const toast = useToast();
 
 	useEffect(() => {
-		if (!session && !(sessionStatus === 'loading')) {
-			signIn();
+		async function signInIfNeeded() {
+			if (!session && !(sessionStatus === 'loading')) {
+				await signIn();
+			}
 		}
+		void signInIfNeeded();
 	}, [session, sessionStatus]);
 
 	const orderedListings = useMemo(() => {
@@ -79,10 +82,13 @@ export default function Invite() {
 		[listings, toast],
 	);
 
-	const initialValues = useMemo<FormValues>(() => ({
-		email: '',
-		listing: listings ? listings[0].id : '',
-	}), [listings])
+	const initialValues = useMemo<FormValues>(
+		() => ({
+			email: '',
+			listing: listings ? listings[0].id : '',
+		}),
+		[listings],
+	);
 
 	if (sessionStatus === 'loading' || isLoadingListings) {
 		return (

@@ -6,7 +6,10 @@ import prisma from '../../../prisma/client';
 import uploadImage from '@helpers/uploadImage';
 import { stringToBoolean } from '@helpers/utils';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+	req: NextApiRequest,
+	res: NextApiResponse,
+) {
 	try {
 		const session = await getSession({ req });
 		if (!session?.user) {
@@ -17,14 +20,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		}
 
 		switch (req.method) {
-			case 'POST': { // TODO: Update http method to PATCH?
+			case 'POST': {
+				// TODO: Update http method to PATCH?
 				const { id: listingId } = req.query;
 
 				const form = formidable({
-					keepExtensions: true
+					keepExtensions: true,
 				});
 
-				await form.parse(req, async (err, fields, files) => {
+				// eslint-disable-next-line @typescript-eslint/no-misused-promises
+				form.parse(req, async (_err, fields, files) => {
 					const newData: Listing = {
 						title: fields.title as string,
 						categoryId: parseInt(fields.category as string),
@@ -51,7 +56,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 									image: true,
 								},
 							});
-						imageUrl = await uploadImage(files.image as File, oldImageKey);
+						imageUrl = await uploadImage(
+							files.image as File,
+							oldImageKey as string,
+						);
 					}
 					if (imageUrl) {
 						newData.image = imageUrl;

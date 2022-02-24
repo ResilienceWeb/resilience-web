@@ -39,12 +39,13 @@ const PermissionsList = ({ permissions }) => {
 			);
 			setUserRegistrationsMap(userRegistrationsResult);
 		}
-		fetchData();
+		void fetchData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const permissionsForDisplay = useMemo(() => {
-		if (!permissions || !Object.keys(userRegistrationsMap).length) return [];
+		if (!permissions || !Object.keys(userRegistrationsMap).length)
+			return [];
 
 		const result = permissions.map((p) => {
 			return {

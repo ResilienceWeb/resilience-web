@@ -39,18 +39,22 @@ export default function MainNav() {
 
 	return (
 		<>
-			<Box>
-				<Flex
-					bg={useColorModeValue('white', 'gray.800')}
+			<Flex
+				bg={useColorModeValue('white', 'gray.800')}
 					color={useColorModeValue('gray.600', 'white')}
+					display="flex"
+					justifyContent="center">
+				<Flex
 					minH={'60px'}
 					py={{ base: 2 }}
 					px={{ base: 4 }}
 					borderBottom={1}
-					borderStyle={'solid'}
+					borderStyle="solid"
 					borderColor={useColorModeValue('gray.200', 'gray.900')}
-					align="center"
-					justifyContent="center"
+					alignItems="center"
+					justifyContent="space-between"
+					flex={{ base: 1 }}
+					maxW="7xl"
 				>
 					<Flex
 						ml={{ base: -2 }}
@@ -69,12 +73,7 @@ export default function MainNav() {
 							aria-label={'Toggle Navigation'}
 						/>
 					</Flex>
-					<Flex
-						flex={{ base: 1 }}
-						justify={{ base: 'space-around', md: 'space-between' }}
-						alignItems="center"
-						maxW="7xl"
-					>
+					<Flex alignItems="center">
 						<Flex>
 							<Link as={NextLink} href="/">
 								<button>
@@ -95,8 +94,8 @@ export default function MainNav() {
 								<DesktopNav currentPathname={router.pathname} />
 							</Flex>
 						</Flex>
-
-						<HStack>
+					</Flex>
+					<HStack >
 							<Tooltip label="We appreciate any kind of feedback, positive or negative.">
 								{isMobile ? (
 									<IconButton
@@ -104,17 +103,15 @@ export default function MainNav() {
 										icon={<ChatIcon />}
 										onClick={onOpenFeedbackDialog}
 										size="md"
-										colorScheme="green"
-										variant="solid"
+										colorScheme="rw.900"
+										variant="outline"
 									/>
 								) : (
 									<Button
 										onClick={onOpenFeedbackDialog}
 										size="md"
-										bg="rw.700"
-										colorScheme="rw.700"
-										variant="solid"
-										_hover={{ bg: 'rw.900' }}
+										colorScheme="rw.900"
+										variant="outline"
 									>
 										Get in touch
 									</Button>
@@ -133,13 +130,11 @@ export default function MainNav() {
 								</Link>
 							)}
 						</HStack>
-					</Flex>
 				</Flex>
-
-				<Collapse in={isOpen} animateOpacity>
+			</Flex>
+			<Collapse in={isOpen} animateOpacity>
 					<MobileNav />
 				</Collapse>
-			</Box>
 
 			<FeedbackDialog
 				isOpen={isFeedbackDialogOpen}

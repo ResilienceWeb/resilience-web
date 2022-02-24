@@ -21,15 +21,17 @@ const Item = ({ dataItem, onOpenDialog }) => {
 
 	useLayoutEffect(() => {
 		if (inView) {
-			animation.start({
-				opacity: 1,
-				y: 0,
-				transition: {
-					type: 'spring',
-					duration: 0.4,
-					bounce: 0.3,
-				},
-			});
+			animation
+				.start({
+					opacity: 1,
+					y: 0,
+					transition: {
+						type: 'spring',
+						duration: 0.4,
+						bounce: 0.3,
+					},
+				})
+				.catch((e) => console.error('Animation error', e));
 		}
 	}, [animation, inView]);
 

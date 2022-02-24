@@ -2,11 +2,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 import config from '@helpers/config';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+	req: NextApiRequest,
+	res: NextApiResponse,
+) {
 	try {
 		const { email, feedback } = req.body;
 
-		nodemailer.createTransport(config.emailServer).sendMail(
+		await nodemailer.createTransport(config.emailServer).sendMail(
 			{
 				to: 'cambridgeresilienceweb@gmail.com',
 				from: `${process.env.EMAIL_FROM}`,

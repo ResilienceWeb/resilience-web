@@ -21,14 +21,16 @@ const EditableList = ({
 
 	useEffect(() => {
 		const filtered = items.filter((item) =>
-			removeNonAlphaNumeric(item.title)?.toLowerCase().includes(filter.toLowerCase()),
+			removeNonAlphaNumeric(item.title)
+				?.toLowerCase()
+				.includes(filter.toLowerCase()),
 		);
 		setData(filtered);
 	}, [filter, items]);
 
 	const enterEdit = useCallback(
-		(dataItem) => {
-			router.push(`/admin/${dataItem.slug}`);
+		async (dataItem) => {
+			await router.push(`/admin/${dataItem.slug}`);
 		},
 		[router],
 	);

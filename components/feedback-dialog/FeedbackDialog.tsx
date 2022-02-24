@@ -150,8 +150,8 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
 									</chakra.div>
 									<ModalFooter pr="0">
 										<Button
-											bg="#57b894"
-											colorScheme="#57b894"
+											bg="#4a9e7f"
+											colorScheme="#4a9e7f"
 											mt={4}
 											variant="solid"
 											disabled={!props.isValid}

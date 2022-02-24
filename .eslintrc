@@ -5,13 +5,14 @@
 		"es6": true,
 		"node": true
 	},
-	"plugins": ["react", "react-hooks", "import", "jsx-a11y", "@typescript-eslint"],
+	"plugins": ["react", "react-hooks", "import", "jsx-a11y", "@typescript-eslint", "promise"],
 	"extends": [
 		"plugin:import/recommended",
 		"plugin:import/typescript",
 		"plugin:react/recommended",
 		"plugin:react-hooks/recommended",
 		"plugin:jsx-a11y/recommended",
+		"plugin:promise/recommended",
 		"next/core-web-vitals",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -23,7 +24,8 @@
 		"ecmaFeatures": {
 			"jsx": true
 		},
-		"ecmaVersion": "latest"
+		"ecmaVersion": "latest",
+		"project": ["tsconfig.json"]
 	},
 	"settings": {
 		"import/resolver": {
@@ -80,6 +82,14 @@
 		"import/no-anonymous-default-export": 0,
 		"jsx-a11y/anchor-is-valid": 1,
 		"jsx-a11y/label-has-associated-control": 1,
-		"@typescript-eslint/ban-ts-comment": 0
+		"@typescript-eslint/ban-ts-comment": 0,
+		"@typescript-eslint/no-unused-vars": 0,
+		"@typescript-eslint/no-unsafe-assignment": 0,
+		"@typescript-eslint/no-unsafe-member-access": 0,
+		"@typescript-eslint/restrict-template-expressions": 0,
+		"@typescript-eslint/no-unsafe-call": 0,
+		"@typescript-eslint/no-unsafe-return": 0,
+		"@typescript-eslint/no-explicit-any": 0,
+		"@typescript-eslint/no-unsafe-argument": 0
 	}
 }

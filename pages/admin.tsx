@@ -32,9 +32,9 @@ const Admin = () => {
 	useEffect(() => {
 		if (!session && sessionStatus !== 'loading') {
 			if (query.activate) {
-				signIn('email', { email: query.activate });
+				void signIn('email', { email: query.activate });
 			} else {
-				signIn();
+				signIn().catch((e) => console.error(e));
 			}
 		}
 	}, [session, sessionStatus, query.activate]);
@@ -81,5 +81,7 @@ const Admin = () => {
 		</LayoutContainer>
 	);
 };
+
+Admin.auth = true;
 
 export default memo(Admin);

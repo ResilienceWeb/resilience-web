@@ -11,9 +11,12 @@ const generateSlug = (title) => title.toLowerCase().replace(/ /g, '-');
 type ResponseData = {
 	error?: string;
 	listing?: Listing; // TODO: change to 'data'
-}
+};
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
+export default async function handler(
+	req: NextApiRequest,
+	res: NextApiResponse<ResponseData>,
+) {
 	try {
 		const session = await getSession({ req });
 		if (!session?.user?.admin) {
@@ -31,10 +34,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 		}
 
 		const form = formidable({
-			keepExtensions: true
+			keepExtensions: true,
 		});
 
-		await form.parse(req, async (err, fields, files) => {
+		// eslint-disable-next-line @typescript-eslint/no-misused-promises
+		void form.parse(req, async (_err, fields, files) => {
 			const newData: Listing = {
 				title: fields.title as string,
 				categoryId: parseInt(fields.category as string),
@@ -45,7 +49,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 				instagram: fields.instagram as string,
 				twitter: fields.twitter as string,
 				notes: fields.notes as string,
-				seekingVolunteers: stringToBoolean(fields.seekingVolunteers as string),
+				seekingVolunteers: stringToBoolean(
+					fields.seekingVolunteers as string,
+				),
 				inactive: stringToBoolean(fields.inactive as string),
 				slug: generateSlug(fields.title),
 			};

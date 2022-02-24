@@ -43,7 +43,7 @@ export default NextAuth({
 								);
 								return reject(
 									new Error(
-										`SEND_VERIFICATION_EMAIL_ERROR ${error}`
+										`SEND_VERIFICATION_EMAIL_ERROR ${error}`,
 									),
 								);
 							}
@@ -54,22 +54,22 @@ export default NextAuth({
 			},
 		}),
 	],
-	adapter: PrismaAdapter({
-		...prisma,
-		verificationRequest: 'VerificationToken',
-	}),
+	adapter: PrismaAdapter(prisma),
 	session: {
 		strategy: 'database',
 		maxAge: 72 * 60 * 60,
 		updateAge: 24 * 60 * 60,
 	},
 	callbacks: {
-		async session({ session, token, user }) {
-			session.user.id = user.id;
-			session.user.admin = user.admin;
+		session({ session, user }) {
+			session.user = {
+				...session.user,
+				id: user.id,
+				admin: user.admin,
+			};
 			return session;
 		},
-		async redirect({ baseUrl }) {
+		redirect({ baseUrl }) {
 			return `${baseUrl}/admin`;
 		},
 	},
@@ -80,6 +80,6 @@ export default NextAuth({
 		signIn: '/auth/signin',
 		verifyRequest: '/auth/verify-request',
 	},
-	debug: false,
+	debug: true,
 	secret: process.env.NEXT_AUTH_SECRET,
 });

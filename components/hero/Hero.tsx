@@ -11,7 +11,7 @@ import {
 
 export default function Hero() {
 	return (
-		<Container maxW={'7xl'}>
+		<Container maxW="7xl">
 			<Stack
 				align={'center'}
 				spacing={{ base: 8, md: 10 }}
@@ -158,7 +158,7 @@ export const Illustration = (props) => {
 				cy="211.88941"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="707.15272"
@@ -174,7 +174,7 @@ export const Illustration = (props) => {
 				cy="200.12315"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="768.33732"
@@ -190,7 +190,7 @@ export const Illustration = (props) => {
 				cy="251.89473"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="777.75033"
@@ -206,7 +206,7 @@ export const Illustration = (props) => {
 				cy="122.46577"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="771.8672"
@@ -222,7 +222,7 @@ export const Illustration = (props) => {
 				cy="114.22939"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="701.26959"
@@ -238,7 +238,7 @@ export const Illustration = (props) => {
 				cy="84.81372"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="733.03851"
@@ -254,7 +254,7 @@ export const Illustration = (props) => {
 				cy="90.69685"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="802.4595"
@@ -270,7 +270,7 @@ export const Illustration = (props) => {
 				cy="129.52554"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="854.23108"
@@ -286,7 +286,7 @@ export const Illustration = (props) => {
 				cy="61.28118"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="671.85392"
@@ -302,7 +302,7 @@ export const Illustration = (props) => {
 				cy="16.56936"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="689.50332"
@@ -318,7 +318,7 @@ export const Illustration = (props) => {
 				cy="49.51491"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="853.05445"
@@ -334,7 +334,7 @@ export const Illustration = (props) => {
 				cy="157.76458"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="593.01992"
@@ -350,7 +350,7 @@ export const Illustration = (props) => {
 				cy="150.70482"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="690.67995"
@@ -366,7 +366,7 @@ export const Illustration = (props) => {
 				cy="161.29446"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="818.93227"
@@ -382,7 +382,7 @@ export const Illustration = (props) => {
 				cy="166.00097"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="750.68792"
@@ -398,7 +398,7 @@ export const Illustration = (props) => {
 				cy="48.33828"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="755.39442"
@@ -414,7 +414,7 @@ export const Illustration = (props) => {
 				cy="121.28915"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="634.20186"
@@ -430,7 +430,7 @@ export const Illustration = (props) => {
 				cy="174.23736"
 				rx="28.23904"
 				ry="13.71611"
-				fill="#57b894"
+				fill="#4a9e7f"
 			/>
 			<ellipse
 				cx="650.67463"
@@ -448,7 +448,7 @@ export const Illustration = (props) => {
 					rx="14.7942"
 					ry="6.40684"
 					transform="translate(-82.2221 779.58806) rotate(-60.79941)"
-					fill="#57b894"
+					fill="#4a9e7f"
 				/>
 				<ellipse
 					cx="804.40702"
@@ -468,7 +468,7 @@ export const Illustration = (props) => {
 					rx="6.40684"
 					ry="14.7942"
 					transform="translate(-150.30628 722.00638) rotate(-48.17218)"
-					fill="#57b894"
+					fill="#4a9e7f"
 				/>
 				<ellipse
 					cx="947.38726"
@@ -488,7 +488,7 @@ export const Illustration = (props) => {
 					rx="6.40684"
 					ry="14.7942"
 					transform="translate(-138.9674 599.1163) rotate(-48.17218)"
-					fill="#57b894"
+					fill="#4a9e7f"
 				/>
 				<ellipse
 					cx="815.60505"
