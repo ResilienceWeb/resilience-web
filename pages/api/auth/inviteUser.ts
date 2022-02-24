@@ -6,7 +6,10 @@ import { htmlTemplate, textTemplate } from '@helpers/emailTemplates';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+	req: NextApiRequest,
+	res: NextApiResponse,
+) {
 	try {
 		const session = await getSession({ req });
 		if (!session?.user.admin) {
@@ -67,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				}),
 			};
 
-			(async () => {
+			void (async () => {
 				try {
 					await sgMail.send(msg);
 
