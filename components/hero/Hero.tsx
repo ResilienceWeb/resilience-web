@@ -45,6 +45,14 @@ export default function Hero() {
 					>
 						Be part of a growing movement of positive change...
 					</Text>
+					<button
+						type="button"
+						onClick={() => {
+							throw new Error('Sentry Frontend Error');
+						}}
+					>
+						Throw error
+					</button>
 					<Stack spacing={{ base: 4, sm: 6 }} direction="row">
 						<Link href="/city">
 							<Button

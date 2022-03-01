@@ -21,6 +21,7 @@
 		"@next-auth/prisma-adapter": "1.0.1",
 		"@prisma/client": "3.9.2",
 		"@sendgrid/mail": "7.6.0",
+		"@sentry/nextjs": "6.18.1",
 		"@tinymce/tinymce-react": "3.13.0",
 		"aws-sdk": "2.1069.0",
 		"chroma-js": "2.4.2",

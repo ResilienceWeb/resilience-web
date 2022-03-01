@@ -43,7 +43,7 @@ const Admin = () => {
 		if (!session || isLoadingPermissions) return null;
 		if (session.user.admin) return listings;
 
-		return listings?.filter((listing) => permissions.includes(listing.id));
+		return listings?.filter((listing) => permissions?.includes(listing.id));
 	}, [listings, permissions, session, isLoadingPermissions]);
 
 	if (sessionStatus === 'loading') {

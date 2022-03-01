@@ -1,13 +1,17 @@
 import { Category } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { withSentry } from '@sentry/nextjs';
 import prisma from '../../../prisma/client';
 
 type ResponseData = {
 	error?: string;
-	categories?: Category[]
-}
+	categories?: Category[];
+};
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
+const handler = async (
+	req: NextApiRequest,
+	res: NextApiResponse<ResponseData>,
+) => {
 	try {
 		const categories: Category[] = await prisma.category.findMany({
 			orderBy: [
@@ -24,4 +28,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			error: `Unable to fetch categories from database - ${e}`,
 		});
 	}
-}
+};
+
+export default withSentry(handler);

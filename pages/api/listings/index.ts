@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { withSentry } from '@sentry/nextjs';
 import prisma from '../../../prisma/client';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		const listings = await prisma.listing.findMany({
 			include: {
@@ -21,4 +22,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			error: `Unable to fetch listings from database - ${e}`,
 		});
 	}
-}
+};
+
+export const config = {
+	api: {
+		externalResolver: true,
+	},
+};
+
+export default withSentry(handler);
