@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import { withSentry } from '@sentry/nextjs';
 import prisma from '../../../prisma/client';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		const session = await getSession({ req });
 		if (!session?.user.admin) {
@@ -25,4 +26,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			error: `Unable to fetch edit permissions from database - ${e}`,
 		});
 	}
-}
+};
+
+export default withSentry(handler);

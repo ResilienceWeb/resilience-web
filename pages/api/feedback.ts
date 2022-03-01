@@ -1,11 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
+import { withSentry } from '@sentry/nextjs';
 import config from '@helpers/config';
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse,
-) {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		const { email, feedback } = req.body;
 
@@ -35,4 +33,6 @@ export default async function handler(
 			error: `Unable to send feedback - ${e}`,
 		});
 	}
-}
+};
+
+export default withSentry(handler);

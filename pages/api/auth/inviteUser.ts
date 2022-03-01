@@ -1,15 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import sgMail from '@sendgrid/mail';
 import { getSession } from 'next-auth/react';
+import { withSentry } from '@sentry/nextjs';
 import { REMOTE_URL } from '@helpers/config';
 import { htmlTemplate, textTemplate } from '@helpers/emailTemplates';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse,
-) {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		const session = await getSession({ req });
 		if (!session?.user.admin) {
@@ -98,4 +96,6 @@ export default async function handler(
 			error: `Unable to invite user - ${e}`,
 		});
 	}
-}
+};
+
+export default withSentry(handler);

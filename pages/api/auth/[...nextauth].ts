@@ -80,6 +80,6 @@ export default NextAuth({
 		signIn: '/auth/signin',
 		verifyRequest: '/auth/verify-request',
 	},
-	debug: true,
+	debug: false,
 	secret: process.env.NEXT_AUTH_SECRET,
 });

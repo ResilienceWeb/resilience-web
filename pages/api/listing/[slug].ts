@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { withSentry } from '@sentry/nextjs';
 import prisma from '../../../prisma/client';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		if (req.method !== 'GET') {
 			res.status(500);
@@ -26,4 +27,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			error: `Unable to fetch listing by slug - ${e}`,
 		});
 	}
-}
+};
+
+export default withSentry(handler);

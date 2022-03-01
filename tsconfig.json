@@ -41,7 +41,11 @@
 	"include": [
 		"next-env.d.ts",
 		"**/*.ts",
-		"**/*.tsx"
+		"**/*.tsx",
+		"./next.config.js",
+		"./sentry.client.config.js",
+		"./sentry.server.config.js",
+		"./pages/_error.js"
 	],
 	"exclude": [
 		"node_modules"

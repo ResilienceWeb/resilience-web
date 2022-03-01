@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
 import type { File } from 'formidable';
 import { getSession } from 'next-auth/react';
+import { withSentry } from '@sentry/nextjs';
 import prisma from '../../../prisma/client';
 import uploadImage from '@helpers/uploadImage';
 import { stringToBoolean } from '@helpers/utils';
@@ -13,10 +14,10 @@ type ResponseData = {
 	listing?: Listing; // TODO: change to 'data'
 };
 
-export default async function handler(
+const handler = async (
 	req: NextApiRequest,
 	res: NextApiResponse<ResponseData>,
-) {
+) => {
 	try {
 		const session = await getSession({ req });
 		if (!session?.user?.admin) {
@@ -77,10 +78,12 @@ export default async function handler(
 			error: `Unable to save listing to database - ${e}`,
 		});
 	}
-}
+};
 
 export const config = {
 	api: {
 		bodyParser: false,
 	},
 };
+
+export default withSentry(handler);

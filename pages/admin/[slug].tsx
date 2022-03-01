@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { Formik, Form, Field, useField } from 'formik';
+import { Formik, Form, Field, useField, FieldProps } from 'formik';
 import { Editor } from '@tinymce/tinymce-react';
 import {
 	chakra,
@@ -173,14 +173,18 @@ export default function Listing() {
 															fieldRequiredValidator
 														}
 													>
-														{({ field, form }) => (
+														{({
+															field,
+															form,
+														}: FieldProps) => (
 															<FormControl
-																isInvalid={
+																isInvalid={Boolean(
 																	form.errors
 																		.title &&
-																	form.touched
-																		.title
-																}
+																		form
+																			.touched
+																			.title,
+																)}
 															>
 																<FormLabel
 																	htmlFor="title"
@@ -215,14 +219,17 @@ export default function Listing() {
 															maxHeight: '200px',
 														}}
 													>
-														{({ form }) => (
+														{({
+															form,
+														}: FieldProps) => (
 															<FormControl
-																isInvalid={
+																isInvalid={Boolean(
 																	form.errors
 																		.description &&
-																	form.touched
-																		.description
-																}
+																		form
+																			.touched
+																			.description,
+																)}
 															>
 																<FormLabel
 																	htmlFor="description"
@@ -245,14 +252,18 @@ export default function Listing() {
 
 												<chakra.div mb={3}>
 													<Field name="category">
-														{({ field, form }) => (
+														{({
+															field,
+															form,
+														}: FieldProps) => (
 															<FormControl
-																isInvalid={
+																isInvalid={Boolean(
 																	form.errors
 																		.category &&
-																	form.touched
-																		.category
-																}
+																		form
+																			.touched
+																			.category,
+																)}
 															>
 																<FormLabel
 																	htmlFor="category"
@@ -304,14 +315,18 @@ export default function Listing() {
 															emailValidator
 														}
 													>
-														{({ field, form }) => (
+														{({
+															field,
+															form,
+														}: FieldProps) => (
 															<FormControl
-																isInvalid={
+																isInvalid={Boolean(
 																	form.errors
 																		.email &&
-																	form.touched
-																		.email
-																}
+																		form
+																			.touched
+																			.email,
+																)}
 															>
 																<FormLabel
 																	htmlFor="email"
@@ -340,7 +355,10 @@ export default function Listing() {
 												</chakra.div>
 
 												<Field name="image">
-													{({ field, form }) => (
+													{({
+														field,
+														form,
+													}: FieldProps) => (
 														<ImageUpload
 															field={field}
 															form={form}
@@ -362,16 +380,16 @@ export default function Listing() {
 															{({
 																field,
 																form,
-															}) => (
+															}: FieldProps) => (
 																<FormControl
-																	isInvalid={
+																	isInvalid={Boolean(
 																		form
 																			.errors
 																			.website &&
-																		form
-																			.touched
-																			.website
-																	}
+																			form
+																				.touched
+																				.website,
+																	)}
 																>
 																	<FormLabel
 																		htmlFor="title"
@@ -407,16 +425,16 @@ export default function Listing() {
 															{({
 																field,
 																form,
-															}) => (
+															}: FieldProps) => (
 																<FormControl
-																	isInvalid={
+																	isInvalid={Boolean(
 																		form
 																			.errors
 																			.facebook &&
-																		form
-																			.touched
-																			.facebook
-																	}
+																			form
+																				.touched
+																				.facebook,
+																	)}
 																>
 																	<FormLabel
 																		htmlFor="facebook"
@@ -457,16 +475,16 @@ export default function Listing() {
 															{({
 																field,
 																form,
-															}) => (
+															}: FieldProps) => (
 																<FormControl
-																	isInvalid={
+																	isInvalid={Boolean(
 																		form
 																			.errors
 																			.twitter &&
-																		form
-																			.touched
-																			.twitter
-																	}
+																			form
+																				.touched
+																				.twitter,
+																	)}
 																>
 																	<FormLabel
 																		htmlFor="twitter"
@@ -502,16 +520,16 @@ export default function Listing() {
 															{({
 																field,
 																form,
-															}) => (
+															}: FieldProps) => (
 																<FormControl
-																	isInvalid={
+																	isInvalid={Boolean(
 																		form
 																			.errors
 																			.instagram &&
-																		form
-																			.touched
-																			.instagram
-																	}
+																			form
+																				.touched
+																				.instagram,
+																	)}
 																>
 																	<FormLabel
 																		htmlFor="instagram"
@@ -542,14 +560,18 @@ export default function Listing() {
 
 												<chakra.div mb={3}>
 													<Field name="slug">
-														{({ field, form }) => (
+														{({
+															field,
+															form,
+														}: FieldProps) => (
 															<FormControl
-																isInvalid={
+																isInvalid={Boolean(
 																	form.errors
 																		.slug &&
-																	form.touched
-																		.slug
-																}
+																		form
+																			.touched
+																			.slug,
+																)}
 															>
 																<FormLabel
 																	htmlFor="slug"
@@ -589,14 +611,18 @@ export default function Listing() {
 
 												<chakra.div mb={3}>
 													<Field name="seekingVolunteers">
-														{({ field, form }) => (
+														{({
+															field,
+															form,
+														}: FieldProps) => (
 															<FormControl
-																isInvalid={
+																isInvalid={Boolean(
 																	form.errors
 																		.seekingVolunteers &&
-																	form.touched
-																		.seekingVolunteers
-																}
+																		form
+																			.touched
+																			.seekingVolunteers,
+																)}
 															>
 																<Checkbox
 																	isChecked={
@@ -635,14 +661,18 @@ export default function Listing() {
 
 												<chakra.div mb={3}>
 													<Field name="inactive">
-														{({ field, form }) => (
+														{({
+															field,
+															form,
+														}: FieldProps) => (
 															<FormControl
-																isInvalid={
+																isInvalid={Boolean(
 																	form.errors
 																		.inactive &&
-																	form.touched
-																		.inactive
-																}
+																		form
+																			.touched
+																			.inactive,
+																)}
 															>
 																<Checkbox
 																	isChecked={

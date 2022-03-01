@@ -2,14 +2,12 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
 import type { File } from 'formidable';
 import { getSession } from 'next-auth/react';
+import { withSentry } from '@sentry/nextjs';
 import prisma from '../../../prisma/client';
 import uploadImage from '@helpers/uploadImage';
 import { stringToBoolean } from '@helpers/utils';
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse,
-) {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		const session = await getSession({ req });
 		if (!session?.user) {
@@ -72,6 +70,7 @@ export default async function handler(
 
 					res.status(200);
 					res.json({ listing });
+					throw new Error('API throw error test');
 				});
 
 				break;
@@ -99,10 +98,12 @@ export default async function handler(
 			error: `Unable to update/delete listing - ${e}`,
 		});
 	}
-}
+};
 
 export const config = {
 	api: {
 		bodyParser: false,
 	},
 };
+
+export default withSentry(handler);
