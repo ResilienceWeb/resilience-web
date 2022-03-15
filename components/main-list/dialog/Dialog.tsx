@@ -159,7 +159,7 @@ const Dialog = ({
 					{item.seekingVolunteers && (
 						<Flex justifyContent={'right'}>
 							<Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">
-								<Text color="seagreen">
+								<Text color="rw.900">
 									Seeking volunteers <Icon as={HiUserGroup} />
 								</Text>
 							</Tooltip>

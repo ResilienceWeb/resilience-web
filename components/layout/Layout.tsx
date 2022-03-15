@@ -1,4 +1,5 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
+import { useRouter } from 'next/router';
 import classnames from 'classnames';
 import { Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react';
 import Nav from '@components/nav';
@@ -13,13 +14,20 @@ const Layout = ({
 	applyPostStyling?: boolean;
 	children: React.ReactNode;
 }) => {
+	const router = useRouter();
+
+	const isHomepage = useMemo(
+		() => router.pathname === '/',
+		[router.pathname],
+	);
+
 	return (
 		<>
 			<Nav />
 			<SlideFade in>
 				<Flex
 					className={classnames(applyPostStyling && styles.root)}
-					// mt="1rem"
+					mt={isHomepage ? '0' : '1rem'}
 					minHeight={useBreakpointValue({
 						base: 'calc(100vh - 186px)',
 						lg: 'calc(100vh - 140px)',
@@ -27,11 +35,13 @@ const Layout = ({
 					alignItems="center"
 					flexDirection="column"
 				>
-					<AlertBanner
-						content="Join our Pecha Kucha event on the 24th March: Stories from the Cambridge Resilience Webs"
-						type="info"
-						url="https://www.eventbrite.co.uk/e/stories-from-the-cambridge-resilience-webs-tickets-260401135807"
-					/>
+					{isHomepage && (
+						<AlertBanner
+							content="Join our Pecha Kucha event on the 24th March: Stories from the Cambridge Resilience Webs"
+							type="info"
+							url="https://www.eventbrite.co.uk/e/stories-from-the-cambridge-resilience-webs-tickets-260401135807"
+						/>
+					)}
 					{children}
 				</Flex>
 			</SlideFade>

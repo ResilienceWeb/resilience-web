@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useLayoutEffect, memo } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useRouter } from 'next/router';
 import chroma from 'chroma-js';
 import {
 	Box,
@@ -18,6 +19,7 @@ import ImagePlaceholder from './image-placeholder';
 const Item = ({ dataItem, onOpenDialog }) => {
 	const { ref, inView } = useInView();
 	const animation = useAnimation();
+	const router = useRouter();
 
 	useLayoutEffect(() => {
 		if (inView) {
@@ -35,9 +37,10 @@ const Item = ({ dataItem, onOpenDialog }) => {
 		}
 	}, [animation, inView]);
 
-	const openDialog = useCallback(() => {
-		onOpenDialog(dataItem);
-	}, [dataItem, onOpenDialog]);
+	const openDialog = useCallback(async () => {
+		// onOpenDialog(dataItem);
+		await router.push(`/city/${dataItem.slug}`);
+	}, [dataItem.slug, router]);
 
 	const tagBackgroundColor = useMemo(
 		() => chroma(dataItem.color).alpha(0.5).css(),
@@ -102,7 +105,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
 					{dataItem.seekingVolunteers && (
 						<Flex>
 							<Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">
-								<Text color="seagreen" fontSize="sm">
+								<Text color="rw.900" fontSize="sm">
 									Seeking volunteers <Icon as={HiUserGroup} />
 								</Text>
 							</Tooltip>

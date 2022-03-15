@@ -10,6 +10,7 @@ import {
 import Dialog from './dialog';
 import Item from './item';
 import Footer from '@components/footer';
+import { REMOTE_URL } from '@helpers/config';
 
 const MainList = ({ filteredItems, isMobile }) => {
 	const [selectedDataItem, setSelectedDataItem] = useState();
@@ -71,14 +72,14 @@ const MainList = ({ filteredItems, isMobile }) => {
 				</chakra.div>
 			</Flex>
 			<Footer />
-			{selectedDataItem && (
+			{/* {selectedDataItem && (
 				<Dialog
 					isOpen={isDialogOpen}
 					isMobile={isMobile}
 					item={selectedDataItem}
 					onClose={handleCloseDialog}
 				/>
-			)}
+			)} */}
 		</>
 	);
 };
