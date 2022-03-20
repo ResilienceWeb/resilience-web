@@ -10,7 +10,7 @@ import {
 	Box,
 	Tag,
 	Icon,
-	Stack,
+	HStack,
 	Link,
 	chakra,
 	Flex,
@@ -60,6 +60,70 @@ const Dialog = ({
 		showCopiedToClipboardToast();
 	}, [item.slug, showCopiedToClipboardToast]);
 
+	const socialLinks = (
+		<>
+			<HStack spacing={4}>
+				{item.facebook && (
+					<Link href={item.facebook} target="_blank">
+						<Icon
+							as={SiFacebook}
+							color="gray.600"
+							cursor="pointer"
+							w={8}
+							h={8}
+							transition="color 150ms"
+							_hover={{ color: 'gray.500' }}
+						/>
+					</Link>
+				)}
+				{item.twitter && (
+					<Link href={item.twitter} target="_blank">
+						<Icon
+							as={SiTwitter}
+							color="gray.600"
+							cursor="pointer"
+							w={8}
+							h={8}
+							transition="color 150ms"
+							_hover={{ color: 'gray.500' }}
+						/>
+					</Link>
+				)}
+				{item.instagram && (
+					<Link href={item.instagram} target="_blank">
+						<Icon
+							as={SiInstagram}
+							color="gray.600"
+							cursor="pointer"
+							w={8}
+							h={8}
+							transition="color 150ms"
+							_hover={{ color: 'gray.500' }}
+						/>
+					</Link>
+				)}
+			</HStack>
+			{item.seekingVolunteers && (
+				<Flex justifyContent={'right'}>
+					<Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">
+						<Text color="seagreen">
+							Seeking volunteers <Icon as={HiUserGroup} />
+						</Text>
+					</Tooltip>
+				</Flex>
+			)}
+			{item.inactive && (
+				<Flex justifyContent={'right'}>
+					<Tooltip label="This group is currently inactive.">
+						<Text color="grey">
+							Currently inactive <Icon as={GiNightSleep} />
+						</Text>
+					</Tooltip>
+				</Flex>
+			)}
+		</>
+	);
+
 	return (
 		<Modal
 			isCentered={!isMobile}
@@ -81,7 +145,10 @@ const Dialog = ({
 				)}
 
 				<ModalHeader pb={0}>{item.label}</ModalHeader>
-				<ModalCloseButton />
+				<ModalCloseButton
+					size="lg"
+					backgroundColor="rgba(160,174,192,0.4)"
+				/>
 				<ModalBody>
 					<Flex justifyContent="space-between">
 						<Tag
@@ -109,73 +176,22 @@ const Dialog = ({
 					>
 						{websiteSanitized} <ExternalLinkIcon ml={1} />
 					</chakra.a>
-					<Box mt={4}>
+
+					{isMobile && (
+						<HStack justifyContent="space-between" mt={4}>
+							{socialLinks}
+						</HStack>
+					)}
+					<Box mt={4} mb={8}>
 						<DescriptionRichText html={item.description} />
 					</Box>
 				</ModalBody>
 
-				<ModalFooter justifyContent="space-between">
-					<Stack direction="row" spacing={4}>
-						{item.facebook && (
-							<Link href={item.facebook} target="_blank">
-								<Icon
-									as={SiFacebook}
-									color="gray.600"
-									cursor="pointer"
-									w={8}
-									h={8}
-									transition="color 150ms"
-									_hover={{ color: 'gray.500' }}
-								/>
-							</Link>
-						)}
-						{item.twitter && (
-							<Link href={item.twitter} target="_blank">
-								<Icon
-									as={SiTwitter}
-									color="gray.600"
-									cursor="pointer"
-									w={8}
-									h={8}
-									transition="color 150ms"
-									_hover={{ color: 'gray.500' }}
-								/>
-							</Link>
-						)}
-						{item.instagram && (
-							<Link href={item.instagram} target="_blank">
-								<Icon
-									as={SiInstagram}
-									color="gray.600"
-									cursor="pointer"
-									w={8}
-									h={8}
-									transition="color 150ms"
-									_hover={{ color: 'gray.500' }}
-								/>
-							</Link>
-						)}
-					</Stack>
-					{item.seekingVolunteers && (
-						<Flex justifyContent={'right'}>
-							<Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">
-								<Text color="rw.900">
-									Seeking volunteers <Icon as={HiUserGroup} />
-								</Text>
-							</Tooltip>
-						</Flex>
-					)}
-					{item.inactive && (
-						<Flex justifyContent={'right'}>
-							<Tooltip label="This group is currently inactive.">
-								<Text color="grey">
-									Currently inactive{' '}
-									<Icon as={GiNightSleep} />
-								</Text>
-							</Tooltip>
-						</Flex>
-					)}
-				</ModalFooter>
+				{!isMobile && (
+					<ModalFooter justifyContent="space-between">
+						{socialLinks}
+					</ModalFooter>
+				)}
 			</ModalContent>
 		</Modal>
 	);
