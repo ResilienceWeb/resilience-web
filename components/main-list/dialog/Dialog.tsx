@@ -182,7 +182,7 @@ const Dialog = ({
 							{socialLinks}
 						</HStack>
 					)}
-					<Box mt={4}>
+					<Box mt={4} mb={8}>
 						<DescriptionRichText html={item.description} />
 					</Box>
 				</ModalBody>
