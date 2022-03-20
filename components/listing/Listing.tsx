@@ -35,7 +35,7 @@ function Listing({ listing }) {
 			<Box
 				maxWidth={useBreakpointValue({
 					base: '100%',
-					md: '800px',
+					md: '700px',
 				})}
 			>
 				<Button
@@ -45,7 +45,7 @@ function Listing({ listing }) {
 					ml={2}
 					onClick={goBack}
 					variant="link"
-					color="black"
+					color="gray.700"
 				>
 					Back
 				</Button>
@@ -55,12 +55,14 @@ function Listing({ listing }) {
 					borderLeftRadius={!isMobile ? 'lg' : undefined}
 					boxSize={useBreakpointValue({
 						base: '100%',
-						md: '800px',
+						md: '700px',
 					})}
 					maxHeight="400px"
-					maxWidth="948px"
 					objectFit="cover"
-					borderRadius="lg"
+					borderRadius={useBreakpointValue({
+						base: 'none',
+						md: 'lg',
+					})}
 				/>
 				<Flex
 					flexDirection={useBreakpointValue({
@@ -73,6 +75,10 @@ function Listing({ listing }) {
 						md: 10,
 					})}
 					py={4}
+					px={useBreakpointValue({
+						base: 4,
+						md: 2,
+					})}
 				>
 					<Box
 						display="flex"
@@ -81,10 +87,10 @@ function Listing({ listing }) {
 						width="100%"
 					>
 						<Box>
-							<Heading as="h1" data-testid="Title" pb={2}>
-								{listing.title}
-							</Heading>
-							<HStack justifyContent="space-between">
+							<HStack>
+								<Heading as="h1" data-testid="Title" pb={2}>
+									{listing.title}
+								</Heading>
 								<Tag
 									mb={2}
 									backgroundColor={`#${listing.category.color}`}
@@ -93,15 +99,15 @@ function Listing({ listing }) {
 								>
 									{listing.category.label}
 								</Tag>
-								{listing.seekingVolunteers && (
-									<Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">
-										<Text color="rw.900">
-											<Icon as={HiUserGroup} /> Seeking
-											volunteers
-										</Text>
-									</Tooltip>
-								)}
 							</HStack>
+							{listing.seekingVolunteers && (
+								<Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">
+									<Text color="rw.900">
+										<Icon as={HiUserGroup} /> Seeking
+										volunteers
+									</Text>
+								</Tooltip>
+							)}
 						</Box>
 						{/* <Flex
 							mt="4"
@@ -124,7 +130,7 @@ function Listing({ listing }) {
 							})}
 							justifyContent="space-between"
 						>
-							<Stack direction="row" spacing={4} mt={8}>
+							<HStack mt={8} justifyContent="space-between">
 								<Link
 									href={listing.website}
 									rel="noreferrer"
@@ -140,59 +146,67 @@ function Listing({ listing }) {
 										Visit website
 									</Button>
 								</Link>
-								{listing.facebook && (
-									<Link
-										href={listing.facebook}
-										target="_blank"
-									>
-										<Icon
-											as={SiFacebook}
-											color="gray.600"
-											cursor="pointer"
-											w={8}
-											h={8}
-											transition="color 150ms"
-											_hover={{ color: 'gray.500' }}
-										/>
-									</Link>
-								)}
-								{listing.twitter && (
-									<Link
-										href={listing.twitter}
-										target="_blank"
-									>
-										<Icon
-											as={SiTwitter}
-											color="gray.600"
-											cursor="pointer"
-											w={8}
-											h={8}
-											transition="color 150ms"
-											_hover={{ color: 'gray.500' }}
-										/>
-									</Link>
-								)}
-								{listing.instagram && (
-									<Link
-										href={listing.instagram}
-										target="_blank"
-									>
-										<Icon
-											as={SiInstagram}
-											color="gray.600"
-											cursor="pointer"
-											w={8}
-											h={8}
-											transition="color 150ms"
-											_hover={{ color: 'gray.500' }}
-										/>
-									</Link>
-								)}
-							</Stack>
+								<HStack spacing={4}>
+									{listing.facebook && (
+										<Link
+											href={listing.facebook}
+											target="_blank"
+										>
+											<Icon
+												as={SiFacebook}
+												color="gray.600"
+												cursor="pointer"
+												w={8}
+												h={8}
+												transition="color 150ms"
+												_hover={{ color: 'gray.500' }}
+											/>
+										</Link>
+									)}
+									{listing.twitter && (
+										<Link
+											href={listing.twitter}
+											target="_blank"
+										>
+											<Icon
+												as={SiTwitter}
+												color="gray.600"
+												cursor="pointer"
+												w={8}
+												h={8}
+												transition="color 150ms"
+												_hover={{ color: 'gray.500' }}
+											/>
+										</Link>
+									)}
+									{listing.instagram && (
+										<Link
+											href={listing.instagram}
+											target="_blank"
+										>
+											<Icon
+												as={SiInstagram}
+												color="gray.600"
+												cursor="pointer"
+												w={8}
+												h={8}
+												transition="color 150ms"
+												_hover={{ color: 'gray.500' }}
+											/>
+										</Link>
+									)}
+								</HStack>
+							</HStack>
 						</Box>
 					</Box>
 				</Flex>
-				<Box>
+				<Box
+					mb={8}
+					px={useBreakpointValue({
+						base: 4,
+						md: 2,
+					})}
+				>
 					<DescriptionRichText html={listing.description} />
 				</Box>
 			</Box>
