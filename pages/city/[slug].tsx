@@ -13,7 +13,7 @@ function Listing({ listing }) {
 			<Layout>
 				<h1>Please wait…</h1>
 			</Layout>
-		)
+		);
 	}
 
 	return (
@@ -44,9 +44,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		},
 		revalidate: 5,
 	};
-}
+};
 
-export const getStaticPaths : GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
 	const response = await fetch(`${REMOTE_URL}/api/listings`);
 	const data = await response.json();
 	const { listings } = data;
@@ -56,6 +56,6 @@ export const getStaticPaths : GetStaticPaths = async () => {
 		paths,
 		fallback: true,
 	};
-}
+};
 
 export default memo(Listing);
