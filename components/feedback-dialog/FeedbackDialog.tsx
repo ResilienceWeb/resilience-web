@@ -150,14 +150,14 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
 									</chakra.div>
 									<ModalFooter pr="0">
 										<Button
-											bg="#4a9e7f"
-											colorScheme="#4a9e7f"
+											bg="rw.700"
+											colorScheme="rw.700"
 											mt={4}
 											variant="solid"
 											disabled={!props.isValid}
 											isLoading={props.isSubmitting}
 											type="submit"
-											_hover={{ bg: '#4a9e7f' }}
+											_hover={{ bg: 'rw.900' }}
 										>
 											Send feedback
 										</Button>

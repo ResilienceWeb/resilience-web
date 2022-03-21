@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState, memo } from 'react';
 import { Heading, Text, Box, Stack } from '@chakra-ui/react';
 import ListingCreationDialog from '@components/admin/listing-creation-dialog';
+import DeleteConfirmationDialog from './delete-confirmation-dialog';
 import { removeNonAlphaNumeric } from '@helpers/utils';
 import Table from './table/Table';
 import TableActions from './table/TableActions';
@@ -18,6 +19,8 @@ const EditableList = ({
 	const [filter, setFilter] = useState('');
 	const [itemInEdit, setItemInEdit] = useState();
 	const [isListingCreationOpen, setIsListingCreationOpen] = useState(false);
+	const [isDeleteConfirmationOpenWithId, setIsDeleteConfirmationOpenWithId] =
+		useState();
 
 	useEffect(() => {
 		const filtered = items.filter((item) =>
@@ -45,10 +48,17 @@ const EditableList = ({
 		setItemInEdit(null);
 	}, []);
 
-	const handleRemove = useCallback(
-		(id) => deleteListing({ id }),
-		[deleteListing],
-	);
+	const openRemoveDialog = useCallback((id) => {
+		setIsDeleteConfirmationOpenWithId(id);
+	}, []);
+	const closeRemoveDialog = useCallback(() => {
+		setIsDeleteConfirmationOpenWithId(null);
+	}, []);
+
+	const handleRemove = useCallback(() => {
+		deleteListing({ id: isDeleteConfirmationOpenWithId });
+		closeRemoveDialog();
+	}, [closeRemoveDialog, deleteListing, isDeleteConfirmationOpenWithId]);
 
 	const handleSubmit = useCallback(
 		(data) => {
@@ -105,7 +115,7 @@ const EditableList = ({
 			</Stack>
 			<Table
 				enterEdit={enterEdit}
-				removeItem={handleRemove}
+				removeItem={openRemoveDialog}
 				items={data}
 			/>
 			{(isListingCreationOpen || itemInEdit) && (
@@ -115,6 +125,11 @@ const EditableList = ({
 					onSubmit={handleSubmit}
 				/>
 			)}
+			<DeleteConfirmationDialog
+				isOpen={isDeleteConfirmationOpenWithId}
+				onClose={closeRemoveDialog}
+				handleRemove={handleRemove}
+			/>
 		</>
 	);
 };

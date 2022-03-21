@@ -19,7 +19,7 @@ import {
 	HStack,
 	Text,
 } from '@chakra-ui/react';
-import { IoMdArrowRoundBack } from 'react-icons/io';
+import { HiArrowLeft } from 'react-icons/hi';
 import {
 	useListing,
 	useCreateListing,
@@ -121,10 +121,13 @@ export default function Listing() {
 				mx="auto"
 			>
 				<Button
-					leftIcon={<IoMdArrowRoundBack />}
-					colorScheme="teal"
-					variant="outline"
+					leftIcon={<HiArrowLeft />}
+					name="Back"
+					mb={2}
+					ml={2}
 					onClick={goBack}
+					variant="link"
+					color="gray.700"
 				>
 					Back
 				</Button>
