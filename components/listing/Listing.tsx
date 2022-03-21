@@ -47,7 +47,7 @@ function Listing({ listing }) {
 					variant="link"
 					color="gray.700"
 				>
-					Back
+					Back to main list
 				</Button>
 				<Image
 					src={listing.image}
