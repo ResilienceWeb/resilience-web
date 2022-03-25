@@ -27,7 +27,7 @@ const Layout = ({
 			<SlideFade in>
 				<Flex
 					className={classnames(applyPostStyling && styles.root)}
-					mt={isHomepage ? '0' : '1rem'}
+					mt={'1rem'}
 					minHeight={useBreakpointValue({
 						base: 'calc(100vh - 186px)',
 						lg: 'calc(100vh - 140px)',
@@ -35,13 +35,13 @@ const Layout = ({
 					alignItems="center"
 					flexDirection="column"
 				>
-					{isHomepage && (
+					{/* {isHomepage && (
 						<AlertBanner
 							content="Join our Pecha Kucha event on the 24th March: Stories from the Cambridge Resilience Webs"
 							type="info"
 							url="https://www.eventbrite.co.uk/e/stories-from-the-cambridge-resilience-webs-tickets-260401135807"
 						/>
-					)}
+					)} */}
 					{children}
 				</Flex>
 			</SlideFade>
