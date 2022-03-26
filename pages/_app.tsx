@@ -52,8 +52,6 @@ function App({ Component, pageProps }: AppProps) {
 				openGraph={{
 					type: 'website',
 					locale: 'en_GB',
-					url: 'https://cambridgeresilienceweb.org.uk',
-					site_name: 'SiteName',
 					title: 'Cambridge Resilience Web',
 					description:
 						'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',

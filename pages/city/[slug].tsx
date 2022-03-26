@@ -23,7 +23,6 @@ function Listing({ listing }) {
 				openGraph={{
 					title: `${listing.title} | Cambridge Resilience Web`,
 					images: [{ url: listing.image }],
-					url: `https://cambridgeresilienceweb.org.uk/city/${listing.slug}`,
 				}}
 			/>
 			<Layout>
