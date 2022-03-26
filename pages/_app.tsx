@@ -47,19 +47,19 @@ function SafeHydrate({ children }) {
 function App({ Component, pageProps }: AppProps) {
 	return (
 		<>
+			<DefaultSeo
+				title="Cambridge Resilience Web"
+				openGraph={{
+					type: 'website',
+					locale: 'en_GB',
+					url: 'https://cambridgeresilienceweb.org.uk',
+					site_name: 'SiteName',
+					title: 'Cambridge Resilience Web',
+					description:
+						'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
+				}}
+			/>
 			<Head>
-				<DefaultSeo
-					openGraph={{
-						type: 'website',
-						locale: 'en_GB',
-						url: 'https://cambridgeresilienceweb.org.uk',
-						site_name: 'SiteName',
-						title: 'Cambridge Resilience Web',
-						description:
-							'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
-					}}
-				/>
-				<title>Cambridge Resilience Web</title>
 				<meta charSet="utf-8" />
 				<meta property="og:locale" content="en_GB" />
 				<meta
