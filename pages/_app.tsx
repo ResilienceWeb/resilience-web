@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
-import Script from 'next/script'
+import Script from 'next/script';
+import { DefaultSeo } from 'next-seo';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -27,9 +28,9 @@ const theme = extendTheme({
 		rw: {
 			600: '#6BA182',
 			700: '#3A8159',
-			900: '#09622f'
-		}
-	}
+			900: '#09622f',
+		},
+	},
 });
 
 const queryClient = new QueryClient();
@@ -47,21 +48,23 @@ function App({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<Head>
+				<DefaultSeo
+					openGraph={{
+						type: 'website',
+						locale: 'en_GB',
+						url: 'https://cambridgeresilienceweb.org.uk',
+						site_name: 'SiteName',
+						title: 'Cambridge Resilience Web',
+						description:
+							'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
+					}}
+				/>
 				<title>Cambridge Resilience Web</title>
-				<meta property="og:title" content="Cambridge Resilience Web" />
 				<meta charSet="utf-8" />
 				<meta property="og:locale" content="en_GB" />
 				<meta
 					name="viewport"
 					content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
-				/>
-				<meta
-					property="og:description"
-					content="A web of connections, showing local groups working to co-create a more socially and environmentally just city."
-				/>
-				<meta
-					name="description"
-					content="A web of connections, showing local groups working to co-create a more socially and environmentally just city."
 				/>
 				<meta name="og:image" content="static/preview-image.png" />
 				<link
