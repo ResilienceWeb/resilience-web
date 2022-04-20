@@ -7,81 +7,82 @@ import LayoutContainer from '@components/admin/layout-container';
 import EditableList from '@components/admin/editable-list';
 import LoadingSpinner from '@components/loading-spinner';
 import {
-	useListings,
-	useCreateListing,
-	useUpdateListing,
-	useDeleteListing,
+    useListings,
+    useCreateListing,
+    useUpdateListing,
+    useDeleteListing,
 } from '@hooks/listings';
 import { usePermissions } from '@hooks/permissions';
 
 const Admin = () => {
-	const { query } = useRouter();
-	const { data: session, status: sessionStatus } = useSession();
+    const { query } = useRouter();
+    const { data: session, status: sessionStatus } = useSession();
 
-	const {
-		listings,
-		isLoading: isLoadingListings,
-		isError: isListingsError,
-	} = useListings();
-	const { permissions, isLoading: isLoadingPermissions } = usePermissions();
+    const {
+        listings,
+        isLoading: isLoadingListings,
+        isError: isListingsError,
+    } = useListings();
+    const { permissions, isLoading: isLoadingPermissions } = usePermissions();
 
-	const { mutate: updateListing } = useUpdateListing();
-	const { mutate: createListing } = useCreateListing();
-	const { mutate: deleteListing } = useDeleteListing();
+    const { mutate: updateListing } = useUpdateListing();
+    const { mutate: createListing } = useCreateListing();
+    const { mutate: deleteListing } = useDeleteListing();
 
-	useEffect(() => {
-		if (!session && sessionStatus !== 'loading') {
-			if (query.activate) {
-				void signIn('email', { email: query.activate });
-			} else {
-				signIn().catch((e) => console.error(e));
-			}
-		}
-	}, [session, sessionStatus, query.activate]);
+    useEffect(() => {
+        if (!session && sessionStatus !== 'loading') {
+            if (query.activate) {
+                void signIn('email', { email: query.activate });
+            } else {
+                signIn().catch((e) => console.error(e));
+            }
+        }
+    }, [session, sessionStatus, query.activate]);
 
-	const allowedListings = useMemo(() => {
-		if (!session || isLoadingPermissions) return null;
-		if (session.user.admin) return listings;
+    const allowedListings = useMemo(() => {
+        if (!session || isLoadingPermissions) return null;
+        if (session.user.admin) return listings;
 
-		return listings?.filter((listing) => permissions?.includes(listing.id));
-	}, [listings, permissions, session, isLoadingPermissions]);
+        return listings?.filter((listing) => permissions?.includes(listing.id));
+    }, [listings, permissions, session, isLoadingPermissions]);
 
-	if (sessionStatus === 'loading') {
-		return (
-			<Flex height="100vh" justifyContent="center" alignItems="center">
-				<LoadingSpinner />
-			</Flex>
-		);
-	}
+    if (sessionStatus === 'loading') {
+        return (
+            <Flex height="100vh" justifyContent="center" alignItems="center">
+                <LoadingSpinner />
+            </Flex>
+        );
+    }
 
-	if (isLoadingListings || isLoadingPermissions) {
-		return (
-			<LayoutContainer>
-				<LoadingSpinner />
-			</LayoutContainer>
-		);
-	}
+    if (isLoadingListings || isLoadingPermissions) {
+        return (
+            <LayoutContainer>
+                <LoadingSpinner />
+            </LayoutContainer>
+        );
+    }
 
-	if (isListingsError) {
-		// eslint-disable-next-line no-console
-		console.error('Error fetching listings');
-	}
+    if (isListingsError) {
+        // eslint-disable-next-line no-console
+        console.error('Error fetching listings');
+    }
 
-	if (!session) return null;
+    if (!session) return null;
 
-	return (
-		<LayoutContainer>
-			<EditableList
-				createListing={createListing}
-				deleteListing={deleteListing}
-				isAdmin={session.user.admin}
-				items={allowedListings}
-				updateListing={updateListing}
-			/>
-		</LayoutContainer>
-	);
+    return (
+        <LayoutContainer>
+            <EditableList
+                createListing={createListing}
+                deleteListing={deleteListing}
+                isAdmin={session.user.admin}
+                items={allowedListings}
+                updateListing={updateListing}
+            />
+        </LayoutContainer>
+    );
 };
 
 Admin.auth = true;
 
 export default memo(Admin);
+

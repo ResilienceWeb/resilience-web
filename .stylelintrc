@@ -1,22 +1,14 @@
 {
-	"extends": "stylelint-config-recommended",
-	"rules": {
-		"at-rule-no-unknown": [
-			true,
-			{
-				"ignoreAtRules": [
-					"extends",
-					"apply"
-				]
-			}
-		],
-		"block-no-empty": null,
-		"unit-whitelist": [
-			"em",
-			"rem",
-			"s",
-			"ms",
-			"vh"
-		]
-	}
+    "extends": "stylelint-config-recommended",
+    "rules": {
+        "at-rule-no-unknown": [
+            true,
+            {
+                "ignoreAtRules": ["extends", "apply"]
+            }
+        ],
+        "block-no-empty": null,
+        "unit-whitelist": ["em", "rem", "s", "ms", "vh"]
+    }
 }
+

@@ -1,9 +1,10 @@
 {
 	"singleQuote": true,
-	"useTabs": true,
+	"useTabs": false,
 	"printWidth": 80,
 	"bracketSameLine": false,
 	"editor.formatOnSave": true,
 	"arrowParens": "always",
 	"trailingComma": "all"
 }
+

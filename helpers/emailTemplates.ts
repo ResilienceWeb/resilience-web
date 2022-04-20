@@ -6,26 +6,26 @@ const buttonBorderColor = '#3A8159';
 const buttonTextColor = '#ffffff';
 
 export const simpleHtmlTemplate = ({
-	url,
-	email,
-	buttonText,
-	mainText,
-	footerText,
+    url,
+    email,
+    buttonText,
+    mainText,
+    footerText,
 }: {
-	url: string;
-	email: string;
-	buttonText: string;
-	mainText: string;
-	footerText: string;
+    url: string;
+    email: string;
+    buttonText: string;
+    mainText: string;
+    footerText: string;
 }) => {
-	// Insert invisible space into domains and email address to prevent both the
-	// email address and the domain from being turned into a hyperlink by email
-	// clients like Outlook and Apple mail, as this is confusing because it seems
-	// like they are supposed to click on their email address to sign in.
-	const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`;
+    // Insert invisible space into domains and email address to prevent both the
+    // email address and the domain from being turned into a hyperlink by email
+    // clients like Outlook and Apple mail, as this is confusing because it seems
+    // like they are supposed to click on their email address to sign in.
+    const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`;
 
-	// Uses tables for layout and inline CSS due to email client limitations
-	return `
+    // Uses tables for layout and inline CSS due to email client limitations
+    return `
   <body style="background: ${backgroundColor}; padding-bottom: 16px;">
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 	  <tr>
@@ -63,28 +63,28 @@ export const simpleHtmlTemplate = ({
 };
 
 export const htmlTemplate = ({
-	url,
-	email,
-	buttonText,
-	mainText,
-	secondaryText,
-	footerText,
+    url,
+    email,
+    buttonText,
+    mainText,
+    secondaryText,
+    footerText,
 }: {
-	url: string;
-	email: string;
-	buttonText: string;
-	mainText: string;
-	secondaryText: string;
-	footerText: string;
+    url: string;
+    email: string;
+    buttonText: string;
+    mainText: string;
+    secondaryText: string;
+    footerText: string;
 }) => {
-	// Insert invisible space into domains and email address to prevent both the
-	// email address and the domain from being turned into a hyperlink by email
-	// clients like Outlook and Apple mail, as this is confusing because it seems
-	// like they are supposed to click on their email address to sign in.
-	const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`;
+    // Insert invisible space into domains and email address to prevent both the
+    // email address and the domain from being turned into a hyperlink by email
+    // clients like Outlook and Apple mail, as this is confusing because it seems
+    // like they are supposed to click on their email address to sign in.
+    const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`;
 
-	// Uses tables for layout and inline CSS due to email client limitations
-	return `
+    // Uses tables for layout and inline CSS due to email client limitations
+    return `
   <body style="background: ${backgroundColor}; padding-bottom: 16px;">
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 	  <tr>
@@ -135,4 +135,5 @@ export const htmlTemplate = ({
 
 // Email text body – fallback for email clients that don't render HTML
 export const textTemplate = ({ url }: { url: string }) =>
-	`Sign in to Cambridge Resilience Web\n${url}\n\n`;
+    `Sign in to Cambridge Resilience Web\n${url}\n\n`;
+

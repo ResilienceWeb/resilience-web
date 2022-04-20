@@ -6,36 +6,37 @@ import PermissionsList from '@components/admin/permissions-list';
 import { useAllPermissions } from '@hooks/permissions';
 
 export default function Permissions() {
-	const { data: session, status: sessionStatus } = useSession();
-	const { permissions, isLoading: isLoadingPermissions } =
-		useAllPermissions();
+    const { data: session, status: sessionStatus } = useSession();
+    const { permissions, isLoading: isLoadingPermissions } =
+        useAllPermissions();
 
-	if (sessionStatus === 'loading' || isLoadingPermissions) {
-		return (
-			<LayoutContainer>
-				<LoadingSpinner />
-			</LayoutContainer>
-		);
-	}
+    if (sessionStatus === 'loading' || isLoadingPermissions) {
+        return (
+            <LayoutContainer>
+                <LoadingSpinner />
+            </LayoutContainer>
+        );
+    }
 
-	if (!session || !session.user.admin || !permissions) return null;
+    if (!session || !session.user.admin || !permissions) return null;
 
-	return (
-		<LayoutContainer>
-			<Box
-				px={{
-					base: '4',
-					md: '10',
-				}}
-				py={4}
-				maxWidth="5xl"
-				mx="auto"
-			>
-				<Stack spacing="4" divider={<StackDivider />}>
-					<Heading>Permissions</Heading>
-					<PermissionsList permissions={permissions} />
-				</Stack>
-			</Box>
-		</LayoutContainer>
-	);
+    return (
+        <LayoutContainer>
+            <Box
+                px={{
+                    base: '4',
+                    md: '10',
+                }}
+                py={4}
+                maxWidth="5xl"
+                mx="auto"
+            >
+                <Stack spacing="4" divider={<StackDivider />}>
+                    <Heading>Permissions</Heading>
+                    <PermissionsList permissions={permissions} />
+                </Stack>
+            </Box>
+        </LayoutContainer>
+    );
 }
+
