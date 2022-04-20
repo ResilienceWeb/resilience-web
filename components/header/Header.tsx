@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import NextLink from 'next/link';
 import Select from 'react-select';
 import chroma from 'chroma-js';
@@ -185,4 +184,5 @@ const Header = ({
 	);
 };
 
-export default memo(Header);
+export default Header;
+

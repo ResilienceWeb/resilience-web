@@ -13,27 +13,30 @@ import { Box } from '@chakra-ui/react';
 import { useDebounce } from 'use-debounce';
 import groupBy from 'lodash/groupBy';
 
-import Drawer from '@components/drawer';
 import MainList from '@components/main-list';
-import Header from '@components/header';
 import { REMOTE_URL } from '@helpers/config';
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils';
-import { useLocalStorage } from '@hooks/application';
 import { useCategories } from '@hooks/categories';
 import { AppContext } from '@store/AppContext';
 
 const NetworkComponent = dynamic(() => import('../components/network'), {
 	ssr: false,
 });
+const Drawer = dynamic(() => import('@components/drawer'), {
+	ssr: false,
+});
+const Header = dynamic(() => import('@components/header'), {
+	ssr: false,
+});
 
 type INetwork = {
 	selectNodes: (ids: string[]) => void;
-}
+};
 
 const City = ({ data }) => {
 	const { isMobile } = useContext(AppContext);
 
-	const [isWebMode, setIsWebMode] = useLocalStorage('isWebMode', !isMobile);
+	const [isWebMode, setIsWebMode] = useState(undefined);
 	const [isVolunteer, setIsVolunteer] = useState(false);
 
 	const [searchTerm, setSearchTerm] = useState('');
@@ -66,7 +69,9 @@ const City = ({ data }) => {
 	}, []);
 
 	const filteredItems = useMemo(() => {
-		let results = data.nodes.filter((item) => !item.isDescriptive).sort(sortStringsFunc);
+		let results = data.nodes
+			.filter((item) => !item.isDescriptive)
+			.sort(sortStringsFunc);
 
 		if (isVolunteer) {
 			results = results.filter((item) => item.seekingVolunteers);
@@ -275,6 +280,7 @@ export const getStaticProps: GetStaticProps = async () => {
 		},
 		revalidate: 5,
 	};
-}
+};
 
 export default memo(City);
+

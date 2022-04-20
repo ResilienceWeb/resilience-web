@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useLayoutEffect, memo } from 'react';
+import { useCallback, useMemo, useEffect, memo } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import chroma from 'chroma-js';
@@ -13,13 +13,14 @@ import {
 	chakra,
 } from '@chakra-ui/react';
 import { HiUserGroup } from 'react-icons/hi';
+
 import ImagePlaceholder from './image-placeholder';
 
 const Item = ({ dataItem, onOpenDialog }) => {
 	const { ref, inView } = useInView();
 	const animation = useAnimation();
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		if (inView) {
 			animation
 				.start({
@@ -115,3 +116,4 @@ const Item = ({ dataItem, onOpenDialog }) => {
 };
 
 export default memo(Item);
+

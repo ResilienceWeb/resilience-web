@@ -7,9 +7,10 @@ import {
 	useBreakpointValue,
 	useDisclosure,
 } from '@chakra-ui/react';
+
+import Footer from '@components/footer';
 import Dialog from './dialog';
 import Item from './item';
-import Footer from '@components/footer';
 
 const MainList = ({ filteredItems, isMobile }) => {
 	const [selectedDataItem, setSelectedDataItem] = useState();
@@ -84,3 +85,4 @@ const MainList = ({ filteredItems, isMobile }) => {
 };
 
 export default memo(MainList);
+

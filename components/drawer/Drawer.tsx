@@ -41,7 +41,6 @@ const Drawer = ({ items, selectNode }) => {
 					>
 						{item.label}
 					</div>
-					{/* <Divider /> */}
 				</div>
 			))}
 		</div>
@@ -49,3 +48,4 @@ const Drawer = ({ items, selectNode }) => {
 };
 
 export default memo(Drawer);
+

@@ -76,23 +76,22 @@ function App({ Component, pageProps }: AppProps) {
 				strategy="afterInteractive"
 				src="https://cabin.cambridgeresilienceweb.org.uk/hello.js"
 			/>
-			<SafeHydrate>
-				<SessionProvider
-					refetchInterval={5 * 60}
-					session={pageProps.session}
-				>
-					<ChakraProvider theme={theme}>
-						<QueryClientProvider client={queryClient}>
-							<StoreProvider>
-								<Component {...pageProps} />
-							</StoreProvider>
-							<ReactQueryDevtools initialIsOpen={false} />
-						</QueryClientProvider>
-					</ChakraProvider>
-				</SessionProvider>
-			</SafeHydrate>
+			<SessionProvider
+				refetchInterval={5 * 60}
+				session={pageProps.session}
+			>
+				<QueryClientProvider client={queryClient}>
+					<StoreProvider>
+						<ChakraProvider theme={theme}>
+							<Component {...pageProps} />
+						</ChakraProvider>
+					</StoreProvider>
+					<ReactQueryDevtools initialIsOpen={false} />
+				</QueryClientProvider>
+			</SessionProvider>
 		</>
 	);
 }
 
 export default App;
+

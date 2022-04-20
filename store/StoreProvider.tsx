@@ -1,9 +1,9 @@
 import React from 'react';
-import { useIsMobile } from '@hooks/application';
+import { useMediaQuerySSR } from '@hooks/application';
 import { AppContext } from '@store/AppContext';
 
 const StoreProvider = ({ children }) => {
-	const { isMobile } = useIsMobile();
+	const isMobile = useMediaQuerySSR('(max-width: 760px)');
 
 	return (
 		<AppContext.Provider value={{ isMobile }}>
@@ -13,3 +13,4 @@ const StoreProvider = ({ children }) => {
 };
 
 export default StoreProvider;
+
