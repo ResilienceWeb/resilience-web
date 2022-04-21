@@ -12,7 +12,9 @@ export default function useCategories() {
         data: categories,
         isLoading,
         isError,
-    } = useQuery('categories', fetchCategoriesRequest);
+    } = useQuery('categories', fetchCategoriesRequest, {
+        refetchOnWindowFocus: false,
+    });
 
     return {
         categories,
