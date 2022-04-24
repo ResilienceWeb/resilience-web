@@ -167,15 +167,17 @@ const Dialog = ({
                     </Flex>
                     <br />
 
-                    <chakra.a
-                        color="blue.400"
-                        href={item.website}
-                        rel="noreferrer"
-                        target="_blank"
-                        verticalAlign="text-bottom"
-                    >
-                        {websiteSanitized} <ExternalLinkIcon ml={1} />
-                    </chakra.a>
+                    {item.website && (
+                        <chakra.a
+                            color="blue.400"
+                            href={item.website}
+                            rel="noreferrer"
+                            target="_blank"
+                            verticalAlign="text-bottom"
+                        >
+                            {websiteSanitized} <ExternalLinkIcon ml={1} />
+                        </chakra.a>
+                    )}
 
                     {isMobile && (
                         <HStack justifyContent="space-between" mt={4}>

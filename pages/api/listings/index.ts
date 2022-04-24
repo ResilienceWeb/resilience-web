@@ -3,10 +3,19 @@ import { withSentry } from '@sentry/nextjs';
 import prisma from '../../../prisma/client';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+    const { location } = req.query;
     try {
         const listings = await prisma.listing.findMany({
+            where: {
+                location: {
+                    slug: {
+                        contains: location,
+                    },
+                },
+            },
             include: {
                 category: true,
+                location: true,
             },
             orderBy: [
                 {
