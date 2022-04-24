@@ -21,6 +21,10 @@ export const stringToBoolean = function (value: string): boolean {
 };
 
 export const sanitizeLink = (link: string) => {
+    if (!link) {
+        return '';
+    }
+
     let result = link;
     result = result.replace('https://www.', '');
     result = result.replace('https://', '');
