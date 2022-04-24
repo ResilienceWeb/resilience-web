@@ -78,8 +78,8 @@ model Category {
     color      String?   @default("f1f1f1")
     id         Int       @id @default(autoincrement())
     listings   Listing[]
-    location   Location  @relation(fields: [locationId], references: [id])
-    locationId Int
+    location   Location? @relation(fields: [locationId], references: [id])
+    locationId Int?
 
     @@map("categories")
 }
@@ -102,8 +102,8 @@ model Listing {
     image             String?
     category          Category?        @relation(fields: [categoryId], references: [id])
     categoryId        Int?
-    location          Location         @relation(fields: [locationId], references: [id])
-    locationId        Int
+    location          Location?        @relation(fields: [locationId], references: [id])
+    locationId        Int?
     editPermissions   EditPermission[]
 
     @@map("listings")
