@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { withSentry } from '@sentry/nextjs';
 import prisma from '../../../prisma/client';
 
+const DEFAULT_LOCATION_SLUG = 'cambridge-city';
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { location } = req.query;
     try {
@@ -9,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             where: {
                 location: {
                     slug: {
-                        contains: location,
+                        contains: location ?? DEFAULT_LOCATION_SLUG,
                     },
                 },
             },
