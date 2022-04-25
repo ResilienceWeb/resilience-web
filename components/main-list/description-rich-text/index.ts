@@ -1,1 +1,1 @@
-export { default } from './DescriptionRichText';
+export { default } from './DescriptionRichText'

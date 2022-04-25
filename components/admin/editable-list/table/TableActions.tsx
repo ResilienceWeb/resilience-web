@@ -8,17 +8,17 @@ import {
     InputGroup,
     InputLeftElement,
     Stack,
-} from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
-import { memo } from 'react';
-import { HiOutlineSearch, HiPlus } from 'react-icons/hi';
+} from '@chakra-ui/react'
+import { useSession } from 'next-auth/react'
+import { memo } from 'react'
+import { HiOutlineSearch, HiPlus } from 'react-icons/hi'
 
 const TableActions = ({
     filterValue,
     onFilterChange,
     openListingCreationDialog,
 }) => {
-    const { data: session } = useSession();
+    const { data: session } = useSession()
 
     return (
         <Stack
@@ -75,8 +75,7 @@ const TableActions = ({
                 </>
             )}
         </Stack>
-    );
-};
+    )
+}
 
-export default memo(TableActions);
-
+export default memo(TableActions)

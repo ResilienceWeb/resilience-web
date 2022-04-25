@@ -1,11 +1,11 @@
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState, memo } from 'react';
-import { Heading, Text, Box, Stack } from '@chakra-ui/react';
-import ListingCreationDialog from '@components/admin/listing-creation-dialog';
-import DeleteConfirmationDialog from './delete-confirmation-dialog';
-import { removeNonAlphaNumeric } from '@helpers/utils';
-import Table from './table/Table';
-import TableActions from './table/TableActions';
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useState, memo } from 'react'
+import { Heading, Text, Box, Stack } from '@chakra-ui/react'
+import ListingCreationDialog from '@components/admin/listing-creation-dialog'
+import DeleteConfirmationDialog from './delete-confirmation-dialog'
+import { removeNonAlphaNumeric } from '@helpers/utils'
+import Table from './table/Table'
+import TableActions from './table/TableActions'
 
 const EditableList = ({
     createListing,
@@ -14,69 +14,69 @@ const EditableList = ({
     items,
     updateListing,
 }) => {
-    const router = useRouter();
-    const [data, setData] = useState(items);
-    const [filter, setFilter] = useState('');
-    const [itemInEdit, setItemInEdit] = useState();
-    const [isListingCreationOpen, setIsListingCreationOpen] = useState(false);
+    const router = useRouter()
+    const [data, setData] = useState(items)
+    const [filter, setFilter] = useState('')
+    const [itemInEdit, setItemInEdit] = useState()
+    const [isListingCreationOpen, setIsListingCreationOpen] = useState(false)
     const [isDeleteConfirmationOpenWithId, setIsDeleteConfirmationOpenWithId] =
-        useState();
+        useState()
 
     useEffect(() => {
         const filtered = items.filter((item) =>
             removeNonAlphaNumeric(item.title)
                 ?.toLowerCase()
                 .includes(filter.toLowerCase()),
-        );
-        setData(filtered);
-    }, [filter, items]);
+        )
+        setData(filtered)
+    }, [filter, items])
 
     const enterEdit = useCallback(
         async (dataItem) => {
-            await router.push(`/admin/${dataItem.slug}`);
+            await router.push(`/admin/${dataItem.slug}`)
         },
         [router],
-    );
+    )
 
     const openListingCreationDialog = useCallback(() => {
-        setItemInEdit(null);
-        setIsListingCreationOpen(true);
-    }, [setItemInEdit]);
+        setItemInEdit(null)
+        setIsListingCreationOpen(true)
+    }, [setItemInEdit])
 
     const closeListingCreationDialog = useCallback(() => {
-        setIsListingCreationOpen(false);
-        setItemInEdit(null);
-    }, []);
+        setIsListingCreationOpen(false)
+        setItemInEdit(null)
+    }, [])
 
     const openRemoveDialog = useCallback((id) => {
-        setIsDeleteConfirmationOpenWithId(id);
-    }, []);
+        setIsDeleteConfirmationOpenWithId(id)
+    }, [])
     const closeRemoveDialog = useCallback(() => {
-        setIsDeleteConfirmationOpenWithId(null);
-    }, []);
+        setIsDeleteConfirmationOpenWithId(null)
+    }, [])
 
     const handleRemove = useCallback(() => {
-        deleteListing({ id: isDeleteConfirmationOpenWithId });
-        closeRemoveDialog();
-    }, [closeRemoveDialog, deleteListing, isDeleteConfirmationOpenWithId]);
+        deleteListing({ id: isDeleteConfirmationOpenWithId })
+        closeRemoveDialog()
+    }, [closeRemoveDialog, deleteListing, isDeleteConfirmationOpenWithId])
 
     const handleSubmit = useCallback(
         (data) => {
             if (data.id) {
-                updateListing(data);
+                updateListing(data)
             } else {
-                createListing(data);
+                createListing(data)
             }
-            closeListingCreationDialog();
+            closeListingCreationDialog()
         },
         [closeListingCreationDialog, createListing, updateListing],
-    );
+    )
 
     const handleFilterChange = useCallback((event) => {
-        setFilter(event.target.value);
-    }, []);
+        setFilter(event.target.value)
+    }, [])
 
-    if (!data) return null;
+    if (!data) return null
 
     return (
         <>
@@ -131,8 +131,7 @@ const EditableList = ({
                 handleRemove={handleRemove}
             />
         </>
-    );
-};
+    )
+}
 
-export default memo(EditableList);
-
+export default memo(EditableList)

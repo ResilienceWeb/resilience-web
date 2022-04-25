@@ -1,10 +1,10 @@
-import { useQuery } from 'react-query';
+import { useQuery } from 'react-query'
 
 export async function fetchListingsRequest(slug) {
-    const response = await fetch(`/api/listing/${slug}`);
-    const data = await response.json();
-    const { listing } = data;
-    return listing;
+    const response = await fetch(`/api/listing/${slug}`)
+    const data = await response.json()
+    const { listing } = data
+    return listing
 }
 
 export default function useListing(slug) {
@@ -12,12 +12,11 @@ export default function useListing(slug) {
         data: listing,
         isLoading,
         isError,
-    } = useQuery(`listing-${slug}`, () => fetchListingsRequest(slug)); // Figure out better RQ caching
+    } = useQuery(`listing-${slug}`, () => fetchListingsRequest(slug)) // Figure out better RQ caching
 
     return {
         listing,
         isLoading,
         isError,
-    };
+    }
 }
-

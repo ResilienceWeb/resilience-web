@@ -1,37 +1,37 @@
-import { memo, useCallback, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { memo, useCallback, useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import {
     chakra,
     Flex,
     Grid,
     useBreakpointValue,
     useDisclosure,
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
 
-import Footer from '@components/footer';
-import Dialog from './dialog';
-import Item from './item';
+import Footer from '@components/footer'
+import Dialog from './dialog'
+import Item from './item'
 
 const MainList = ({ filteredItems, isMobile }) => {
-    const [selectedDataItem, setSelectedDataItem] = useState();
+    const [selectedDataItem, setSelectedDataItem] = useState()
     const {
         isOpen: isDialogOpen,
         onOpen: onOpenDialog,
         onClose: onCloseDialog,
-    } = useDisclosure();
+    } = useDisclosure()
 
     const handleOpenDialog = useCallback(
         (item) => {
-            setSelectedDataItem(item);
-            onOpenDialog();
+            setSelectedDataItem(item)
+            onOpenDialog()
         },
         [onOpenDialog],
-    );
+    )
 
     const handleCloseDialog = useCallback(() => {
-        setSelectedDataItem(null);
-        onCloseDialog();
-    }, [onCloseDialog]);
+        setSelectedDataItem(null)
+        onCloseDialog()
+    }, [onCloseDialog])
 
     return (
         <>
@@ -81,8 +81,7 @@ const MainList = ({ filteredItems, isMobile }) => {
                 />
             )}
         </>
-    );
-};
+    )
+}
 
-export default memo(MainList);
-
+export default memo(MainList)

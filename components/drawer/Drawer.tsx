@@ -1,22 +1,22 @@
-import { useCallback, useMemo, memo } from 'react';
-import Image from 'next/image';
-import { Flex, Link } from '@chakra-ui/react';
-import { sortStringsFunc } from '@helpers/utils';
-import styles from './Drawer.module.scss';
-import LogoImage from '../../public/logo.png';
+import { useCallback, useMemo, memo } from 'react'
+import Image from 'next/image'
+import { Flex, Link } from '@chakra-ui/react'
+import { sortStringsFunc } from '@helpers/utils'
+import styles from './Drawer.module.scss'
+import LogoImage from '../../public/logo.png'
 
 const Drawer = ({ items, selectNode }) => {
     const sortedItems = useMemo(
         () => items.filter((i) => !i.isDescriptive).sort(sortStringsFunc),
         [items],
-    );
+    )
 
     const handleClick = useCallback(
         (id) => {
-            selectNode(id);
+            selectNode(id)
         },
         [selectNode],
-    );
+    )
 
     return (
         <div className={styles.drawer}>
@@ -44,8 +44,7 @@ const Drawer = ({ items, selectNode }) => {
                 </div>
             ))}
         </div>
-    );
-};
+    )
+}
 
-export default memo(Drawer);
-
+export default memo(Drawer)

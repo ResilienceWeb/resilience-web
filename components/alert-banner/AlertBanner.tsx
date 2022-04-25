@@ -1,16 +1,10 @@
-import { memo } from 'react';
-import {
-    Alert,
-    AlertIcon,
-    AlertDescription,
-    Box,
-    Link,
-} from '@chakra-ui/react';
+import { memo } from 'react'
+import { Alert, AlertIcon, AlertDescription, Box, Link } from '@chakra-ui/react'
 
 interface IAlertProps {
-    type: 'info' | 'warning';
-    content: string;
-    url: string;
+    type: 'info' | 'warning'
+    content: string
+    url: string
 }
 
 const AlertBanner: React.FC<IAlertProps> = ({ type, content, url }) => {
@@ -28,8 +22,7 @@ const AlertBanner: React.FC<IAlertProps> = ({ type, content, url }) => {
                 </Box>
             </Alert>
         </Link>
-    );
-};
+    )
+}
 
-export default memo(AlertBanner);
-
+export default memo(AlertBanner)

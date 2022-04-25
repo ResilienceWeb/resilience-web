@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import { chakra, FormLabel, Switch, Flex } from '@chakra-ui/react';
+import { memo } from 'react'
+import { chakra, FormLabel, Switch, Flex } from '@chakra-ui/react'
 
 const VolunteerSwitch = ({ handleSwitchChange, checked }) => {
     return (
@@ -23,8 +23,7 @@ const VolunteerSwitch = ({ handleSwitchChange, checked }) => {
                 />
             </Flex>
         </chakra.div>
-    );
-};
+    )
+}
 
-export default memo(VolunteerSwitch);
-
+export default memo(VolunteerSwitch)

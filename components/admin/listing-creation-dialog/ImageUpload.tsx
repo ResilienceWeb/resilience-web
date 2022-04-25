@@ -1,5 +1,5 @@
-import { useRef, useState, memo } from 'react';
-import Image from 'next/image';
+import { useRef, useState, memo } from 'react'
+import Image from 'next/image'
 import {
     FormControl,
     FormErrorMessage,
@@ -12,13 +12,13 @@ import {
     Stack,
     Icon,
     Text,
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
 
 const ImageUpload = ({ field, form, formProps }) => {
-    const fileInputRef = useRef<HTMLInputElement>();
-    const [preview, setPreview] = useState<string | ArrayBuffer>();
+    const fileInputRef = useRef<HTMLInputElement>()
+    const [preview, setPreview] = useState<string | ArrayBuffer>()
 
-    const hasImageAlready = field.value && !field.value.name;
+    const hasImageAlready = field.value && !field.value.name
 
     return (
         <FormControl isInvalid={form.errors.image && form.touched.image}>
@@ -36,17 +36,17 @@ const ImageUpload = ({ field, form, formProps }) => {
                         accept="image/*"
                         ref={fileInputRef}
                         onChange={(event) => {
-                            const file = event.target.files[0];
+                            const file = event.target.files[0]
                             if (file?.type.substr(0, 5) === 'image') {
-                                const reader = new FileReader();
-                                reader.readAsDataURL(file);
+                                const reader = new FileReader()
+                                reader.readAsDataURL(file)
                                 reader.onloadend = () => {
-                                    setPreview(reader.result);
-                                };
+                                    setPreview(reader.result)
+                                }
 
-                                formProps.setFieldValue('image', file);
+                                formProps.setFieldValue('image', file)
                             } else {
-                                setPreview(null);
+                                setPreview(null)
                             }
                         }}
                     />
@@ -137,8 +137,7 @@ const ImageUpload = ({ field, form, formProps }) => {
             </InputGroup>
             <FormErrorMessage>{form.errors.image}</FormErrorMessage>
         </FormControl>
-    );
-};
+    )
+}
 
-export default memo(ImageUpload);
-
+export default memo(ImageUpload)

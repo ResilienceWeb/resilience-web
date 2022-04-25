@@ -1,10 +1,10 @@
 {
-	"singleQuote": true,
-	"useTabs": false,
-	"printWidth": 80,
-	"bracketSameLine": false,
-	"editor.formatOnSave": true,
-	"arrowParens": "always",
-	"trailingComma": "all"
+    "singleQuote": true,
+    "useTabs": false,
+    "printWidth": 80,
+    "bracketSameLine": false,
+    "arrowParens": "always",
+    "trailingComma": "all",
+    "semi": false
 }
 

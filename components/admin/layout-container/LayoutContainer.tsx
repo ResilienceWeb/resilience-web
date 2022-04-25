@@ -1,6 +1,6 @@
-import { Box, Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react';
-import styles from './LayoutContainer.module.scss';
-import Nav from '../nav';
+import { Box, Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react'
+import styles from './LayoutContainer.module.scss'
+import Nav from '../nav'
 
 const LayoutContainer = ({ children }) => {
     return (
@@ -27,8 +27,7 @@ const LayoutContainer = ({ children }) => {
                 </Flex>
             </SlideFade>
         </>
-    );
-};
+    )
+}
 
-export default LayoutContainer;
-
+export default LayoutContainer

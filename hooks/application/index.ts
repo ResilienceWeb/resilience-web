@@ -1,2 +1,2 @@
-export { default as useLocalStorage } from './useLocalStorage';
-export { default as useMediaQuerySSR } from './useMediaQuerySSR';
+export { default as useLocalStorage } from './useLocalStorage'
+export { default as useMediaQuerySSR } from './useMediaQuerySSR'

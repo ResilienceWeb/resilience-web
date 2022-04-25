@@ -1,10 +1,10 @@
-import NextAuth from 'next-auth';
-import EmailProvider from 'next-auth/providers/email';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import nodemailer from 'nodemailer';
-import prisma from '../../../prisma/client';
-import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates';
-import config from '@helpers/config';
+import NextAuth from 'next-auth'
+import EmailProvider from 'next-auth/providers/email'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import nodemailer from 'nodemailer'
+import prisma from '../../../prisma/client'
+import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates'
+import config from '@helpers/config'
 
 export default NextAuth({
     providers: [
@@ -18,7 +18,7 @@ export default NextAuth({
                 provider,
             }) {
                 return new Promise((resolve, reject) => {
-                    const { server, from } = provider;
+                    const { server, from } = provider
                     nodemailer.createTransport(server).sendMail(
                         {
                             to: email,
@@ -40,17 +40,17 @@ export default NextAuth({
                                     'SEND_VERIFICATION_EMAIL_ERROR',
                                     email,
                                     error,
-                                );
+                                )
                                 return reject(
                                     new Error(
                                         `SEND_VERIFICATION_EMAIL_ERROR ${error}`,
                                     ),
-                                );
+                                )
                             }
-                            return resolve();
+                            return resolve()
                         },
-                    );
-                });
+                    )
+                })
             },
         }),
     ],
@@ -66,11 +66,11 @@ export default NextAuth({
                 ...session.user,
                 id: user.id,
                 admin: user.admin,
-            };
-            return session;
+            }
+            return session
         },
         redirect({ baseUrl }) {
-            return `${baseUrl}/admin`;
+            return `${baseUrl}/admin`
         },
     },
     theme: {
@@ -82,5 +82,4 @@ export default NextAuth({
     },
     debug: false,
     secret: process.env.NEXT_AUTH_SECRET,
-});
-
+})

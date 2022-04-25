@@ -1,36 +1,36 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import sgMail from '@sendgrid/mail';
-import { getSession } from 'next-auth/react';
-import { withSentry } from '@sentry/nextjs';
-import { REMOTE_URL } from '@helpers/config';
-import { htmlTemplate, textTemplate } from '@helpers/emailTemplates';
+import type { NextApiRequest, NextApiResponse } from 'next'
+import sgMail from '@sendgrid/mail'
+import { getSession } from 'next-auth/react'
+import { withSentry } from '@sentry/nextjs'
+import { REMOTE_URL } from '@helpers/config'
+import { htmlTemplate, textTemplate } from '@helpers/emailTemplates'
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const session = await getSession({ req });
+        const session = await getSession({ req })
         if (!session?.user.admin) {
-            res.status(403);
+            res.status(403)
             res.json({
                 error: `You don't have enough permissions to access this data.`,
-            });
+            })
         }
 
-        const { email, listing } = req.body;
+        const { email, listing } = req.body
 
         if (!email) {
-            res.status(400);
+            res.status(400)
             res.json({
                 error: `Email not provided. Please make sure it's included in the request body.`,
-            });
+            })
         }
 
         if (!listing) {
-            res.status(400);
+            res.status(400)
             res.json({
                 error: `Listing not provided. Please make sure it's included in the request body.`,
-            });
+            })
         }
 
         const response = await fetch(`${REMOTE_URL}/api/permissions/create`, {
@@ -42,10 +42,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 email: email,
                 listingId: parseInt(listing.id),
             }),
-        });
+        })
 
-        const emailEncoded = encodeURIComponent(email);
-        const callToActionButtonUrl = `${REMOTE_URL}/admin?activate=${emailEncoded}`;
+        const emailEncoded = encodeURIComponent(email)
+        const callToActionButtonUrl = `${REMOTE_URL}/admin?activate=${emailEncoded}`
 
         if (response.status === 201) {
             const msg = {
@@ -66,37 +66,36 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     footerText: `<p>If you're not sure why you received this invite or if you have any questions, please reply to this email.</p>
 					<p>The Cambridge Resilience Web Team x</p>`,
                 }),
-            };
+            }
 
             void (async () => {
                 try {
-                    await sgMail.send(msg);
+                    await sgMail.send(msg)
 
-                    res.status(200);
+                    res.status(200)
                     res.json({
                         res: 'Invite sent successfully',
-                    });
+                    })
                 } catch (error) {
-                    console.error(error);
+                    console.error(error)
 
                     if (error.response) {
-                        console.error(error.response.body);
+                        console.error(error.response.body)
                     }
                 }
-            })();
+            })()
         } else {
-            res.status(400);
+            res.status(400)
             res.json({
                 error: 'There was an unspecified error',
-            });
+            })
         }
     } catch (e) {
-        res.status(500);
+        res.status(500)
         res.json({
             error: `Unable to invite user - ${e}`,
-        });
+        })
     }
-};
+}
 
-export default withSentry(handler);
-
+export default withSentry(handler)

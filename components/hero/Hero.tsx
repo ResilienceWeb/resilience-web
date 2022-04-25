@@ -7,7 +7,7 @@ import {
     Button,
     Icon,
     Link,
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
 
 export default function Hero() {
     return (
@@ -83,7 +83,7 @@ export default function Hero() {
                 </Flex>
             </Stack>
         </Container>
-    );
+    )
 }
 
 export const Illustration = (props) => {
@@ -502,6 +502,5 @@ export const Illustration = (props) => {
                 />
             </g>
         </Icon>
-    );
-};
-
+    )
+}

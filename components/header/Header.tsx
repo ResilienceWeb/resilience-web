@@ -1,7 +1,7 @@
-import NextLink from 'next/link';
-import Select from 'react-select';
-import chroma from 'chroma-js';
-import Image from 'next/image';
+import NextLink from 'next/link'
+import Select from 'react-select'
+import chroma from 'chroma-js'
+import Image from 'next/image'
 import {
     Box,
     InputGroup,
@@ -14,10 +14,10 @@ import {
     Link,
     chakra,
     useBreakpointValue,
-} from '@chakra-ui/react';
-import { HiOutlineSearch, HiHome } from 'react-icons/hi';
-import ModeSwitch from '@components/mode-switch';
-import VolunteerSwitch from '@components/volunteer-switch';
+} from '@chakra-ui/react'
+import { HiOutlineSearch, HiHome } from 'react-icons/hi'
+import ModeSwitch from '@components/mode-switch'
+import VolunteerSwitch from '@components/volunteer-switch'
 
 const customMultiSelectStyles = {
     container: () => ({
@@ -28,27 +28,27 @@ const customMultiSelectStyles = {
             ...provided,
             borderColor: '#E2E8F0',
             borderRadius: '0.375rem',
-        };
+        }
     },
     placeholder: (provided) => {
         return {
             ...provided,
             color: '#718096',
-        };
+        }
     },
     option: (provided, state) => {
         return {
             ...provided,
             color: state.data.color,
-        };
+        }
     },
     multiValue: (styles, { data }) => {
-        const color = chroma(data.color);
+        const color = chroma(data.color)
         return {
             ...styles,
             fontSize: '14px',
             backgroundColor: color.alpha(0.5).css(),
-        };
+        }
     },
     multiValueLabel: (styles) => ({
         ...styles,
@@ -62,7 +62,7 @@ const customMultiSelectStyles = {
             color: 'white',
         },
     }),
-};
+}
 
 const Header = ({
     categories,
@@ -112,7 +112,7 @@ const Header = ({
                 handleSwitchChange={handleVolunteerSwitchChange}
             />
         </>
-    );
+    )
 
     if (isMobile) {
         return (
@@ -147,7 +147,7 @@ const Header = ({
                     </chakra.div>
                 </Flex>
             </>
-        );
+        )
     }
 
     return (
@@ -181,8 +181,7 @@ const Header = ({
                 </Link>
             </Flex>
         </Box>
-    );
-};
+    )
+}
 
-export default Header;
-
+export default Header

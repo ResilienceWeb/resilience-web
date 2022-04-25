@@ -1,1 +1,1 @@
-export { default } from './CommandCell';
+export { default } from './CommandCell'

@@ -1,57 +1,57 @@
-import { signIn, useSession } from 'next-auth/react';
-import { memo, useEffect, useMemo } from 'react';
-import { Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { signIn, useSession } from 'next-auth/react'
+import { memo, useEffect, useMemo } from 'react'
+import { Flex } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 
-import LayoutContainer from '@components/admin/layout-container';
-import EditableList from '@components/admin/editable-list';
-import LoadingSpinner from '@components/loading-spinner';
+import LayoutContainer from '@components/admin/layout-container'
+import EditableList from '@components/admin/editable-list'
+import LoadingSpinner from '@components/loading-spinner'
 import {
     useListings,
     useCreateListing,
     useUpdateListing,
     useDeleteListing,
-} from '@hooks/listings';
-import { usePermissions } from '@hooks/permissions';
+} from '@hooks/listings'
+import { usePermissions } from '@hooks/permissions'
 
 const Admin = () => {
-    const { query } = useRouter();
-    const { data: session, status: sessionStatus } = useSession();
+    const { query } = useRouter()
+    const { data: session, status: sessionStatus } = useSession()
 
     const {
         listings,
         isLoading: isLoadingListings,
         isError: isListingsError,
-    } = useListings();
-    const { permissions, isLoading: isLoadingPermissions } = usePermissions();
+    } = useListings()
+    const { permissions, isLoading: isLoadingPermissions } = usePermissions()
 
-    const { mutate: updateListing } = useUpdateListing();
-    const { mutate: createListing } = useCreateListing();
-    const { mutate: deleteListing } = useDeleteListing();
+    const { mutate: updateListing } = useUpdateListing()
+    const { mutate: createListing } = useCreateListing()
+    const { mutate: deleteListing } = useDeleteListing()
 
     useEffect(() => {
         if (!session && sessionStatus !== 'loading') {
             if (query.activate) {
-                void signIn('email', { email: query.activate });
+                void signIn('email', { email: query.activate })
             } else {
-                signIn().catch((e) => console.error(e));
+                signIn().catch((e) => console.error(e))
             }
         }
-    }, [session, sessionStatus, query.activate]);
+    }, [session, sessionStatus, query.activate])
 
     const allowedListings = useMemo(() => {
-        if (!session || isLoadingPermissions) return null;
-        if (session.user.admin) return listings;
+        if (!session || isLoadingPermissions) return null
+        if (session.user.admin) return listings
 
-        return listings?.filter((listing) => permissions?.includes(listing.id));
-    }, [listings, permissions, session, isLoadingPermissions]);
+        return listings?.filter((listing) => permissions?.includes(listing.id))
+    }, [listings, permissions, session, isLoadingPermissions])
 
     if (sessionStatus === 'loading') {
         return (
             <Flex height="100vh" justifyContent="center" alignItems="center">
                 <LoadingSpinner />
             </Flex>
-        );
+        )
     }
 
     if (isLoadingListings || isLoadingPermissions) {
@@ -59,15 +59,15 @@ const Admin = () => {
             <LayoutContainer>
                 <LoadingSpinner />
             </LayoutContainer>
-        );
+        )
     }
 
     if (isListingsError) {
         // eslint-disable-next-line no-console
-        console.error('Error fetching listings');
+        console.error('Error fetching listings')
     }
 
-    if (!session) return null;
+    if (!session) return null
 
     return (
         <LayoutContainer>
@@ -79,10 +79,9 @@ const Admin = () => {
                 updateListing={updateListing}
             />
         </LayoutContainer>
-    );
-};
+    )
+}
 
-Admin.auth = true;
+Admin.auth = true
 
-export default memo(Admin);
-
+export default memo(Admin)

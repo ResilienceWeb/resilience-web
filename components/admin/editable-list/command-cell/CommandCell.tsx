@@ -1,9 +1,9 @@
 /* eslint-disable react/display-name */
-import { Button, Stack } from '@chakra-ui/react';
+import { Button, Stack } from '@chakra-ui/react'
 
 function CommandCell({ enterEdit, remove }) {
     return (props) => {
-        if (!props.dataItem) return null;
+        if (!props.dataItem) return null
 
         return (
             <td>
@@ -25,9 +25,8 @@ function CommandCell({ enterEdit, remove }) {
                     </Button>
                 </Stack>
             </td>
-        );
-    };
+        )
+    }
 }
 
-export default CommandCell;
-
+export default CommandCell

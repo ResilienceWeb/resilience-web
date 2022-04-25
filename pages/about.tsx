@@ -1,10 +1,10 @@
-import { GetStaticProps } from 'next';
-import { NextSeo } from 'next-seo';
-import { GraphQLClient } from 'graphql-request';
-import ReactMarkdown from 'react-markdown';
-import { Box, Heading, useBreakpointValue, Flex } from '@chakra-ui/react';
+import { GetStaticProps } from 'next'
+import { NextSeo } from 'next-seo'
+import { GraphQLClient } from 'graphql-request'
+import ReactMarkdown from 'react-markdown'
+import { Box, Heading, useBreakpointValue, Flex } from '@chakra-ui/react'
 
-import Layout from '@components/layout';
+import Layout from '@components/layout'
 
 const About = ({ page }) => {
     return (
@@ -36,11 +36,11 @@ const About = ({ page }) => {
                 </Flex>
             </Layout>
         </>
-    );
-};
+    )
+}
 
 export const getStaticProps: GetStaticProps = async () => {
-    const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL);
+    const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL)
 
     const { page } = await graphcms.request(`
 	{
@@ -51,15 +51,14 @@ export const getStaticProps: GetStaticProps = async () => {
 			title
 		}
 	}
-	`);
+	`)
 
     return {
         props: {
             page,
         },
         revalidate: 60,
-    };
-};
+    }
+}
 
-export default About;
-
+export default About

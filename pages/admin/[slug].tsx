@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router';
-import { useCallback } from 'react';
-import { Formik, Form, Field, useField, FieldProps } from 'formik';
-import { Editor } from '@tinymce/tinymce-react';
+import { useRouter } from 'next/router'
+import { useCallback } from 'react'
+import { Formik, Form, Field, useField, FieldProps } from 'formik'
+import { Editor } from '@tinymce/tinymce-react'
 import {
     chakra,
     Flex,
@@ -18,33 +18,26 @@ import {
     Select,
     HStack,
     Text,
-} from '@chakra-ui/react';
-import { HiArrowLeft } from 'react-icons/hi';
-import {
-    useListing,
-    useCreateListing,
-    useUpdateListing,
-} from '@hooks/listings';
-import { useCategories } from '@hooks/categories';
-import {
-    emailValidator,
-    fieldRequiredValidator,
-} from '@helpers/formValidation';
-import ImageUpload from '@components/admin/listing-creation-dialog/ImageUpload';
-import LayoutContainer from '@components/admin/layout-container';
-import LoadingSpinner from '@components/loading-spinner';
+} from '@chakra-ui/react'
+import { HiArrowLeft } from 'react-icons/hi'
+import { useListing, useCreateListing, useUpdateListing } from '@hooks/listings'
+import { useCategories } from '@hooks/categories'
+import { emailValidator, fieldRequiredValidator } from '@helpers/formValidation'
+import ImageUpload from '@components/admin/listing-creation-dialog/ImageUpload'
+import LayoutContainer from '@components/admin/layout-container'
+import LoadingSpinner from '@components/loading-spinner'
 
 const EditorField = (props) => {
-    const { label, name, ...otherProps } = props;
-    const [field, meta] = useField(name);
-    const type = 'text';
+    const { label, name, ...otherProps } = props
+    const [field, meta] = useField(name)
+    const type = 'text'
     const handleEditorChange = (value) => {
-        field.onChange({ target: { type, name, value } });
-    };
+        field.onChange({ target: { type, name, value } })
+    }
 
     const handleBlur = () => {
-        field.onBlur({ target: { name } });
-    };
+        field.onBlur({ target: { name } })
+    }
 
     return (
         <>
@@ -73,40 +66,40 @@ const EditorField = (props) => {
                 <div className="error">{meta.error}</div>
             ) : null}
         </>
-    );
-};
+    )
+}
 
 export default function Listing() {
-    const router = useRouter();
-    const { slug } = router.query;
-    const { categories } = useCategories();
-    const { mutate: updateListing } = useUpdateListing();
-    const { mutate: createListing } = useCreateListing();
+    const router = useRouter()
+    const { slug } = router.query
+    const { categories } = useCategories()
+    const { mutate: updateListing } = useUpdateListing()
+    const { mutate: createListing } = useCreateListing()
 
     const goBack = useCallback(() => {
-        router.back();
-    }, [router]);
+        router.back()
+    }, [router])
 
     const handleSubmit = useCallback(
         (data) => {
             if (data.id) {
-                updateListing(data);
+                updateListing(data)
             } else {
-                createListing(data);
+                createListing(data)
             }
-            goBack();
+            goBack()
         },
         [createListing, updateListing, goBack],
-    );
+    )
 
-    const { listing, isLoading, isError } = useListing(slug);
+    const { listing, isLoading, isError } = useListing(slug)
 
     if (!categories || !listing || isLoading) {
         return (
             <Flex height="100vh" justifyContent="center" alignItems="center">
                 <LoadingSpinner />
             </Flex>
-        );
+        )
     }
 
     return (
@@ -734,7 +727,7 @@ export default function Listing() {
                                                 </Button>
                                             </Box>
                                         </Form>
-                                    );
+                                    )
                                 }}
                             </Formik>
                         </Stack>
@@ -742,6 +735,5 @@ export default function Listing() {
                 </Box>
             </Box>
         </LayoutContainer>
-    );
+    )
 }
-

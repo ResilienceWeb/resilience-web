@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext } from 'react'
 import {
     Box,
     Container,
@@ -7,12 +7,12 @@ import {
     Link,
     useColorModeValue,
     Flex,
-} from '@chakra-ui/react';
-import Image from 'next/image';
-import { AppContext } from '@store/AppContext';
+} from '@chakra-ui/react'
+import Image from 'next/image'
+import { AppContext } from '@store/AppContext'
 
 export default function Footer() {
-    const { isMobile } = useContext(AppContext);
+    const { isMobile } = useContext(AppContext)
 
     return (
         <Box
@@ -74,6 +74,5 @@ export default function Footer() {
                 )}
             </Container>
         </Box>
-    );
+    )
 }
-

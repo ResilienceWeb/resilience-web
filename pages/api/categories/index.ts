@@ -1,12 +1,12 @@
-import { Category } from '@prisma/client';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { withSentry } from '@sentry/nextjs';
-import prisma from '../../../prisma/client';
+import { Category } from '@prisma/client'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { withSentry } from '@sentry/nextjs'
+import prisma from '../../../prisma/client'
 
 type ResponseData = {
-    error?: string;
-    categories?: Category[];
-};
+    error?: string
+    categories?: Category[]
+}
 
 const handler = async (
     req: NextApiRequest,
@@ -19,16 +19,15 @@ const handler = async (
                     id: 'asc',
                 },
             ],
-        });
-        res.status(200);
-        res.json({ categories });
+        })
+        res.status(200)
+        res.json({ categories })
     } catch (e) {
-        res.status(500);
+        res.status(500)
         res.json({
             error: `Unable to fetch categories from database - ${e}`,
-        });
+        })
     }
-};
+}
 
-export default withSentry(handler);
-
+export default withSentry(handler)

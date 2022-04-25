@@ -1,5 +1,5 @@
-import { NextSeo } from 'next-seo';
-import Image from 'next/image';
+import { NextSeo } from 'next-seo'
+import Image from 'next/image'
 import {
     Box,
     Heading,
@@ -10,12 +10,12 @@ import {
     Link,
     Text,
     Flex,
-} from '@chakra-ui/react';
-import crwScreenshot1 from '../public/crw-screenshot-1.png';
-import crwScreenshot2 from '../public/crw-screenshot-2.png';
-import crwScreenshot3 from '../public/crw-screenshot-3.png';
+} from '@chakra-ui/react'
+import crwScreenshot1 from '../public/crw-screenshot-1.png'
+import crwScreenshot2 from '../public/crw-screenshot-2.png'
+import crwScreenshot3 from '../public/crw-screenshot-3.png'
 
-import Layout from '@components/layout';
+import Layout from '@components/layout'
 
 const HowItWorks = () => {
     return (
@@ -38,8 +38,8 @@ const HowItWorks = () => {
                 </Box>
             </Layout>
         </>
-    );
-};
+    )
+}
 
 function Features() {
     return (
@@ -165,8 +165,7 @@ function Features() {
                 </Text>
             </Flex>
         </>
-    );
+    )
 }
 
-export default HowItWorks;
-
+export default HowItWorks

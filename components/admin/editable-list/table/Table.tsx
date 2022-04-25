@@ -1,6 +1,6 @@
-import { memo } from 'react';
-import { Box } from '@chakra-ui/react';
-import TableContent from './TableContent';
+import { memo } from 'react'
+import { Box } from '@chakra-ui/react'
+import TableContent from './TableContent'
 
 const Table = ({ enterEdit, items, removeItem }) => {
     return (
@@ -13,8 +13,7 @@ const Table = ({ enterEdit, items, removeItem }) => {
                 />
             </Box>
         </Box>
-    );
-};
+    )
+}
 
-export default memo(Table);
-
+export default memo(Table)

@@ -1,10 +1,10 @@
-import 'vis-network-react/node_modules/vis-network/dist/dist/vis-network.min.css';
+import 'vis-network-react/node_modules/vis-network/dist/dist/vis-network.min.css'
 
-import { memo, useCallback, useEffect, useMemo } from 'react';
-import VisNetworkReactComponent from 'vis-network-react';
-import { useDisclosure } from '@chakra-ui/react';
-import Dialog from '@components/main-list/dialog';
-import styles from './Network.module.scss';
+import { memo, useCallback, useEffect, useMemo } from 'react'
+import VisNetworkReactComponent from 'vis-network-react'
+import { useDisclosure } from '@chakra-ui/react'
+import Dialog from '@components/main-list/dialog'
+import styles from './Network.module.scss'
 
 const options = {
     nodes: {
@@ -60,7 +60,7 @@ const options = {
         improvedLayout: false,
     },
     height: '100%',
-};
+}
 
 // Network.propTypes = {
 // 	data: PropTypes.object.isRequired,
@@ -70,41 +70,41 @@ const options = {
 // };
 
 const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     useEffect(() => {
         if (selectedId) {
-            onOpen();
+            onOpen()
         }
-    }, [onOpen, selectedId]);
+    }, [onOpen, selectedId])
 
     const events = useMemo(
         () => ({
             select: function (event) {
-                const { nodes, edges } = event;
-                setSelectedId(nodes[0]);
+                const { nodes, edges } = event
+                setSelectedId(nodes[0])
             },
             showPopup: function (event) {
-                console.log('show popup?');
+                console.log('show popup?')
             },
         }),
         [setSelectedId],
-    );
+    )
 
     const selectedItem = useMemo(
         () => data.nodes.find((node) => node.id === selectedId),
         [data.nodes, selectedId],
-    );
+    )
 
     const onCloseDialog = useCallback(() => {
-        setSelectedId(null);
-        onClose();
-    }, [onClose, setSelectedId]);
+        setSelectedId(null)
+        onClose()
+    }, [onClose, setSelectedId])
 
     const getNetwork = useCallback(
         (network) => setNetwork(network),
         [setNetwork],
-    );
+    )
 
     return (
         <div className={styles.graph}>
@@ -122,8 +122,7 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
                 />
             )}
         </div>
-    );
-};
+    )
+}
 
-export default memo(Network);
-
+export default memo(Network)

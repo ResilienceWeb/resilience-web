@@ -1,15 +1,15 @@
-import { useQuery } from 'react-query';
-import { useSession } from 'next-auth/react';
+import { useQuery } from 'react-query'
+import { useSession } from 'next-auth/react'
 
 async function fetchPermissionsRequest() {
-    const response = await fetch('/api/permissions');
-    const data = await response.json();
-    const { editPermissions } = data;
-    return editPermissions;
+    const response = await fetch('/api/permissions')
+    const data = await response.json()
+    const { editPermissions } = data
+    return editPermissions
 }
 
 export default function usePermissions() {
-    const { data: session } = useSession();
+    const { data: session } = useSession()
 
     const {
         data: permissions,
@@ -17,12 +17,11 @@ export default function usePermissions() {
         isError,
     } = useQuery('permissions', fetchPermissionsRequest, {
         enabled: Boolean(session),
-    });
+    })
 
     return {
         permissions,
         isLoading,
         isError,
-    };
+    }
 }
-

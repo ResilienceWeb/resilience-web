@@ -3,20 +3,20 @@
 import NextAuth from 'next-auth'
 
 declare module 'next-auth' {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
-  interface Session {
-    user: {
-      admin: boolean;
-      id: string;
-      name?: string;
-      email?: string;
-      image?: string;
+    /**
+     * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+     */
+    interface Session {
+        user: {
+            admin: boolean
+            id: string
+            name?: string
+            email?: string
+            image?: string
+        }
     }
-  }
 
-  interface User {
-      admin: boolean;
-  }
+    interface User {
+        admin: boolean
+    }
 }

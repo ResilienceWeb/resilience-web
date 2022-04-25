@@ -1,1 +1,1 @@
-export { default } from './ModeSwitch';
+export { default } from './ModeSwitch'

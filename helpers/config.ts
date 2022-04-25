@@ -1,7 +1,7 @@
 export const REMOTE_URL =
     process.env.NODE_ENV === 'development'
         ? 'http://localhost:3000'
-        : 'https://cambridgeresilienceweb.org.uk';
+        : 'https://cambridgeresilienceweb.org.uk'
 
 export default {
     digitalOceanSpaces: 'https://resilienceweb.ams3.digitaloceanspaces.com/',
@@ -14,5 +14,4 @@ export default {
             pass: process.env.EMAIL_SERVER_PASSWORD,
         },
     },
-};
-
+}

@@ -1,11 +1,11 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import nodemailer from 'nodemailer';
-import { withSentry } from '@sentry/nextjs';
-import config from '@helpers/config';
+import type { NextApiRequest, NextApiResponse } from 'next'
+import nodemailer from 'nodemailer'
+import { withSentry } from '@sentry/nextjs'
+import config from '@helpers/config'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const { email, feedback } = req.body;
+        const { email, feedback } = req.body
 
         await nodemailer.createTransport(config.emailServer).sendMail(
             {
@@ -18,22 +18,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             (error) => {
                 if (error) {
                     // eslint-disable-next-line no-console
-                    console.error('Error sending feedback email', email, error);
+                    console.error('Error sending feedback email', email, error)
                 }
             },
-        );
+        )
 
-        res.status(201);
+        res.status(201)
         res.json({
             result: 'Feedback sent successfully',
-        });
+        })
     } catch (e) {
-        res.status(500);
+        res.status(500)
         res.json({
             error: `Unable to send feedback - ${e}`,
-        });
+        })
     }
-};
+}
 
-export default withSentry(handler);
-
+export default withSentry(handler)

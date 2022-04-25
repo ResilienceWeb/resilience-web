@@ -1,5 +1,5 @@
-import { Formik, Form, Field, FormikHelpers } from 'formik';
-import { useEffect, useCallback, useMemo } from 'react';
+import { Formik, Form, Field, FormikHelpers } from 'formik'
+import { useEffect, useCallback, useMemo } from 'react'
 import {
     chakra,
     Box,
@@ -14,37 +14,37 @@ import {
     useToast,
     Stack,
     StackDivider,
-} from '@chakra-ui/react';
-import { signIn, useSession } from 'next-auth/react';
-import LayoutContainer from '@components/admin/layout-container';
-import LoadingSpinner from '@components/loading-spinner';
-import { useListings } from '@hooks/listings';
-import { sortStringsFunc } from '@helpers/utils';
-import { emailRequiredValidator } from '@helpers/formValidation';
-import { REMOTE_URL } from '@helpers/config';
+} from '@chakra-ui/react'
+import { signIn, useSession } from 'next-auth/react'
+import LayoutContainer from '@components/admin/layout-container'
+import LoadingSpinner from '@components/loading-spinner'
+import { useListings } from '@hooks/listings'
+import { sortStringsFunc } from '@helpers/utils'
+import { emailRequiredValidator } from '@helpers/formValidation'
+import { REMOTE_URL } from '@helpers/config'
 
 interface FormValues {
-    email: string;
-    listing: string;
+    email: string
+    listing: string
 }
 
 export default function Invite() {
-    const { data: session, status: sessionStatus } = useSession();
-    const { listings, isLoading: isLoadingListings } = useListings();
-    const toast = useToast();
+    const { data: session, status: sessionStatus } = useSession()
+    const { listings, isLoading: isLoadingListings } = useListings()
+    const toast = useToast()
 
     useEffect(() => {
         async function signInIfNeeded() {
             if (!session && !(sessionStatus === 'loading')) {
-                await signIn();
+                await signIn()
             }
         }
-        void signInIfNeeded();
-    }, [session, sessionStatus]);
+        void signInIfNeeded()
+    }, [session, sessionStatus])
 
     const orderedListings = useMemo(() => {
-        return listings?.sort(sortStringsFunc);
-    }, [listings]);
+        return listings?.sort(sortStringsFunc)
+    }, [listings])
 
     const inviteUser = useCallback(
         async (data, actions: FormikHelpers<FormValues>) => {
@@ -57,8 +57,8 @@ export default function Invite() {
                     email: data.email,
                     listing: listings?.find((l) => l.id == data.listing),
                 }),
-            });
-            const result = await response.json();
+            })
+            const result = await response.json()
 
             if (!result.error) {
                 toast({
@@ -67,8 +67,8 @@ export default function Invite() {
                     status: 'success',
                     duration: 5000,
                     isClosable: true,
-                });
-                actions.setFieldValue('email', '', false);
+                })
+                actions.setFieldValue('email', '', false)
             } else {
                 toast({
                     title: 'Error',
@@ -76,11 +76,11 @@ export default function Invite() {
                     status: 'error',
                     duration: 5000,
                     isClosable: true,
-                });
+                })
             }
         },
         [listings, toast],
-    );
+    )
 
     const initialValues = useMemo<FormValues>(
         () => ({
@@ -88,17 +88,17 @@ export default function Invite() {
             listing: listings ? listings[0].id : '',
         }),
         [listings],
-    );
+    )
 
     if (sessionStatus === 'loading' || isLoadingListings) {
         return (
             <LayoutContainer>
                 <LoadingSpinner />
             </LayoutContainer>
-        );
+        )
     }
 
-    if (!session || !session.user.admin) return null;
+    if (!session || !session.user.admin) return null
 
     return (
         <LayoutContainer>
@@ -206,6 +206,5 @@ export default function Invite() {
                 </Stack>
             </Box>
         </LayoutContainer>
-    );
+    )
 }
-

@@ -6,37 +6,36 @@
  *
  * Return Boolean, based on query params
  */
-import { useLayoutEffect, useEffect, useState, useCallback } from 'react';
+import { useLayoutEffect, useEffect, useState, useCallback } from 'react'
 
 const useIsomorphicLayoutEffect =
-    typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+    typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 const useMediaQuerySSR = (queryStr) => {
-    const [targetW, setTargetW] = useState(false);
+    const [targetW, setTargetW] = useState(false)
 
     const updateTarget = useCallback((e) => {
         if (e.matches) {
-            setTargetW(true);
+            setTargetW(true)
         } else {
-            setTargetW(false);
+            setTargetW(false)
         }
-    }, []);
+    }, [])
 
     useIsomorphicLayoutEffect(() => {
-        const media = window.matchMedia(queryStr);
+        const media = window.matchMedia(queryStr)
 
-        media.addEventListener('change', updateTarget);
+        media.addEventListener('change', updateTarget)
 
         // Check on mount (callback is not called until a change occurs)
         if (media.matches) {
-            setTargetW(true);
+            setTargetW(true)
         }
         // clean up
-        return () => media.removeEventListener('change', updateTarget);
-    }, []);
+        return () => media.removeEventListener('change', updateTarget)
+    }, [])
 
-    return targetW;
-};
+    return targetW
+}
 
-export default useMediaQuerySSR;
-
+export default useMediaQuerySSR

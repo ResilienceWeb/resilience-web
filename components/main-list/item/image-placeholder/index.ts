@@ -1,1 +1,1 @@
-export { default } from './ImagePlaceholder';
+export { default } from './ImagePlaceholder'

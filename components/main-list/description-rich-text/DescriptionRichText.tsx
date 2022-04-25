@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import styles from './DescriptionRichText.module.scss';
+import { memo } from 'react'
+import styles from './DescriptionRichText.module.scss'
 
 const DescriptionRichText = ({ html }) => {
     return (
@@ -9,8 +9,7 @@ const DescriptionRichText = ({ html }) => {
                 __html: html,
             }}
         ></div>
-    );
-};
+    )
+}
 
-export default memo(DescriptionRichText);
-
+export default memo(DescriptionRichText)

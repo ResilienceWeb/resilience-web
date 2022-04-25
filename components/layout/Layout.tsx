@@ -1,25 +1,22 @@
-import React, { memo, useMemo } from 'react';
-import { useRouter } from 'next/router';
-import classnames from 'classnames';
-import { Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react';
-import Nav from '@components/nav';
-import Footer from '@components/footer';
-import AlertBanner from '@components/alert-banner';
-import styles from './Layout.module.scss';
+import React, { memo, useMemo } from 'react'
+import { useRouter } from 'next/router'
+import classnames from 'classnames'
+import { Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react'
+import Nav from '@components/nav'
+import Footer from '@components/footer'
+import AlertBanner from '@components/alert-banner'
+import styles from './Layout.module.scss'
 
 const Layout = ({
     applyPostStyling,
     children,
 }: {
-    applyPostStyling?: boolean;
-    children: React.ReactNode;
+    applyPostStyling?: boolean
+    children: React.ReactNode
 }) => {
-    const router = useRouter();
+    const router = useRouter()
 
-    const isHomepage = useMemo(
-        () => router.pathname === '/',
-        [router.pathname],
-    );
+    const isHomepage = useMemo(() => router.pathname === '/', [router.pathname])
 
     return (
         <>
@@ -47,8 +44,7 @@ const Layout = ({
             </SlideFade>
             <Footer />
         </>
-    );
-};
+    )
+}
 
-export default memo(Layout);
-
+export default memo(Layout)

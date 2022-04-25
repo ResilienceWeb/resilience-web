@@ -1,4 +1,4 @@
-import { memo, useContext, useCallback } from 'react';
+import { memo, useContext, useCallback } from 'react'
 import {
     Modal,
     ModalOverlay,
@@ -8,22 +8,22 @@ import {
     ModalFooter,
     ModalCloseButton,
     Button,
-} from '@chakra-ui/react';
-import { AppContext } from '@store/AppContext';
-import { REMOTE_URL } from '@helpers/config';
+} from '@chakra-ui/react'
+import { AppContext } from '@store/AppContext'
+import { REMOTE_URL } from '@helpers/config'
 
 type props = {
-    handleRemove: (id: any) => void;
-    isOpen: boolean;
-    onClose: () => void;
-};
+    handleRemove: (id: any) => void
+    isOpen: boolean
+    onClose: () => void
+}
 
 const DeleteConfirmationialog: React.FC<props> = ({
     handleRemove,
     isOpen,
     onClose,
 }) => {
-    const { isMobile } = useContext(AppContext);
+    const { isMobile } = useContext(AppContext)
 
     return (
         <Modal
@@ -65,8 +65,7 @@ const DeleteConfirmationialog: React.FC<props> = ({
                 </ModalBody>
             </ModalContent>
         </Modal>
-    );
-};
+    )
+}
 
-export default memo(DeleteConfirmationialog);
-
+export default memo(DeleteConfirmationialog)

@@ -1,5 +1,5 @@
-import { Flex, Box, Heading } from '@chakra-ui/react';
-import styles from './auth.module.scss';
+import { Flex, Box, Heading } from '@chakra-ui/react'
+import styles from './auth.module.scss'
 
 export default function VerifyRequest() {
     return (
@@ -28,6 +28,5 @@ export default function VerifyRequest() {
                 </Box>
             </Flex>
         </div>
-    );
+    )
 }
-

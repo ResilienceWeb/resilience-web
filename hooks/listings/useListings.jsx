@@ -1,10 +1,10 @@
-import { useQuery } from 'react-query';
+import { useQuery } from 'react-query'
 
 async function fetchListingsRequest() {
-    const response = await fetch('/api/listings');
-    const data = await response.json();
-    const { listings } = data;
-    return listings;
+    const response = await fetch('/api/listings')
+    const data = await response.json()
+    const { listings } = data
+    return listings
 }
 
 export default function useListings() {
@@ -12,12 +12,11 @@ export default function useListings() {
         data: listings,
         isLoading,
         isError,
-    } = useQuery('listings', fetchListingsRequest);
+    } = useQuery('listings', fetchListingsRequest)
 
     return {
         listings,
         isLoading,
         isError,
-    };
+    }
 }
-

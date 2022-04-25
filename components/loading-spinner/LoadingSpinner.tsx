@@ -1,5 +1,5 @@
-import { Flex } from '@chakra-ui/react';
-import styles from './LoadingSpinner.module.scss';
+import { Flex } from '@chakra-ui/react'
+import styles from './LoadingSpinner.module.scss'
 
 const LoadingSpinner = () => (
     <Flex align="center" className={styles.container} justify="center">
@@ -18,7 +18,6 @@ const LoadingSpinner = () => (
             <div />
         </div>
     </Flex>
-);
+)
 
-export default LoadingSpinner;
-
+export default LoadingSpinner

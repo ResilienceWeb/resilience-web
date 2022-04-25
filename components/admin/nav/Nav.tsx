@@ -1,8 +1,8 @@
-import { useCallback, useMemo } from 'react';
-import Image from 'next/image';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import { useSession, signOut } from 'next-auth/react';
+import { useCallback, useMemo } from 'react'
+import Image from 'next/image'
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
+import { useSession, signOut } from 'next-auth/react'
 import {
     Box,
     Flex,
@@ -19,10 +19,10 @@ import {
     useColorModeValue,
     Text,
     Stack,
-} from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, SettingsIcon } from '@chakra-ui/icons';
-import { HiViewList, HiUsers, HiOutlineLockOpen } from 'react-icons/hi';
-import LogoImage from '../../../public/logo.png';
+} from '@chakra-ui/react'
+import { HamburgerIcon, CloseIcon, SettingsIcon } from '@chakra-ui/icons'
+import { HiViewList, HiUsers, HiOutlineLockOpen } from 'react-icons/hi'
+import LogoImage from '../../../public/logo.png'
 
 const NavLink = ({ children, href }) => (
     <Link
@@ -38,12 +38,12 @@ const NavLink = ({ children, href }) => (
     >
         {children}
     </Link>
-);
+)
 
 const Nav = () => {
-    const { data: session } = useSession();
-    const router = useRouter();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { data: session } = useSession()
+    const router = useRouter()
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     const Links = useMemo(() => {
         const links = [
@@ -52,25 +52,25 @@ const Nav = () => {
                 href: '/admin',
                 icon: <Icon as={HiViewList} fontSize="lg" />,
             },
-        ];
+        ]
 
         if (session?.user.admin) {
             links.push({
                 label: 'Invite',
                 href: '/admin/invite',
                 icon: <Icon as={HiUsers} fontSize="lg" />,
-            });
+            })
             links.push({
                 label: 'Permissions',
                 href: '/admin/permissions',
                 icon: <Icon as={HiOutlineLockOpen} fontSize="lg" />,
-            });
+            })
         }
 
-        return links;
-    }, [session?.user.admin]);
+        return links
+    }, [session?.user.admin])
 
-    const handleSignOut = useCallback(() => signOut(), []);
+    const handleSignOut = useCallback(() => signOut(), [])
 
     return (
         <Box bg="#fafafa" px={4}>
@@ -165,8 +165,7 @@ const Nav = () => {
                 </Box>
             ) : null}
         </Box>
-    );
-};
+    )
+}
 
-export default Nav;
-
+export default Nav

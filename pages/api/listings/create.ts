@@ -1,42 +1,42 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import formidable from 'formidable';
-import type { File } from 'formidable';
-import { getSession } from 'next-auth/react';
-import { withSentry } from '@sentry/nextjs';
-import prisma from '../../../prisma/client';
-import uploadImage from '@helpers/uploadImage';
-import { stringToBoolean } from '@helpers/utils';
+import type { NextApiRequest, NextApiResponse } from 'next'
+import formidable from 'formidable'
+import type { File } from 'formidable'
+import { getSession } from 'next-auth/react'
+import { withSentry } from '@sentry/nextjs'
+import prisma from '../../../prisma/client'
+import uploadImage from '@helpers/uploadImage'
+import { stringToBoolean } from '@helpers/utils'
 
-const generateSlug = (title) => title.toLowerCase().replace(/ /g, '-');
+const generateSlug = (title) => title.toLowerCase().replace(/ /g, '-')
 
 type ResponseData = {
-    error?: string;
-    listing?: Listing; // TODO: change to 'data'
-};
+    error?: string
+    listing?: Listing // TODO: change to 'data'
+}
 
 const handler = async (
     req: NextApiRequest,
     res: NextApiResponse<ResponseData>,
 ) => {
     try {
-        const session = await getSession({ req });
+        const session = await getSession({ req })
         if (!session?.user?.admin) {
-            res.status(403);
+            res.status(403)
             res.json({
                 error: `You don't have enough permissions to access this data.`,
-            });
+            })
         }
 
         if (req.method !== 'POST') {
-            res.status(500);
+            res.status(500)
             res.json({
                 error: `Method ${req.method} not supported at this endpoint`,
-            });
+            })
         }
 
         const form = formidable({
             keepExtensions: true,
-        });
+        })
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         void form.parse(req, async (_err, fields, files) => {
@@ -55,36 +55,35 @@ const handler = async (
                 ),
                 inactive: stringToBoolean(fields.inactive as string),
                 slug: generateSlug(fields.title),
-            };
+            }
 
-            let imageUrl = null;
+            let imageUrl = null
             if (files.image) {
-                imageUrl = await uploadImage(files.image as File);
+                imageUrl = await uploadImage(files.image as File)
             }
             if (imageUrl) {
-                newData.image = imageUrl;
+                newData.image = imageUrl
             }
 
             const listing = await prisma.listing.create({
                 data: newData,
-            });
+            })
 
-            res.status(201);
-            res.json({ listing });
-        });
+            res.status(201)
+            res.json({ listing })
+        })
     } catch (e) {
-        res.status(500);
+        res.status(500)
         res.json({
             error: `Unable to save listing to database - ${e}`,
-        });
+        })
     }
-};
+}
 
 export const config = {
     api: {
         bodyParser: false,
     },
-};
+}
 
-export default withSentry(handler);
-
+export default withSentry(handler)

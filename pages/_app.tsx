@@ -1,17 +1,17 @@
-import Head from 'next/head';
-import type { AppProps } from 'next/app';
-import Script from 'next/script';
-import { DefaultSeo } from 'next-seo';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import { QueryClientProvider, QueryClient } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { SessionProvider } from 'next-auth/react';
-import '@fontsource/poppins/400.css';
-import '@fontsource/poppins/500.css';
-import '@fontsource/poppins/600.css';
-import '../styles/colors.css';
-import '../styles/styles.global.scss';
-import StoreProvider from '@store/StoreProvider';
+import Head from 'next/head'
+import type { AppProps } from 'next/app'
+import Script from 'next/script'
+import { DefaultSeo } from 'next-seo'
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { QueryClientProvider, QueryClient } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+import { SessionProvider } from 'next-auth/react'
+import '@fontsource/poppins/400.css'
+import '@fontsource/poppins/500.css'
+import '@fontsource/poppins/600.css'
+import '../styles/colors.css'
+import '../styles/styles.global.scss'
+import StoreProvider from '@store/StoreProvider'
 
 const theme = extendTheme({
     styles: {
@@ -31,9 +31,9 @@ const theme = extendTheme({
             900: '#09622f',
         },
     },
-});
+})
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 function SafeHydrate({ children }) {
     // This prevents the app from rendering on the server
@@ -41,7 +41,7 @@ function SafeHydrate({ children }) {
         <div suppressHydrationWarning>
             {typeof window === 'undefined' ? null : children}
         </div>
-    );
+    )
 }
 
 function App({ Component, pageProps }: AppProps) {
@@ -90,8 +90,7 @@ function App({ Component, pageProps }: AppProps) {
                 </QueryClientProvider>
             </SessionProvider>
         </>
-    );
+    )
 }
 
-export default App;
-
+export default App

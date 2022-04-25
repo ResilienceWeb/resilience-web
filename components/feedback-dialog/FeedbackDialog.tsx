@@ -1,5 +1,5 @@
-import { memo, useContext, useCallback } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { memo, useContext, useCallback } from 'react'
+import { Formik, Form, Field } from 'formik'
 import {
     Modal,
     ModalOverlay,
@@ -17,17 +17,17 @@ import {
     Textarea,
     chakra,
     useToast,
-} from '@chakra-ui/react';
-import { AppContext } from '@store/AppContext';
+} from '@chakra-ui/react'
+import { AppContext } from '@store/AppContext'
 import {
     emailRequiredValidator,
     fieldRequiredValidator,
-} from '@helpers/formValidation';
-import { REMOTE_URL } from '@helpers/config';
+} from '@helpers/formValidation'
+import { REMOTE_URL } from '@helpers/config'
 
 const FeedbackDialog = ({ isOpen, onClose }) => {
-    const { isMobile } = useContext(AppContext);
-    const toast = useToast();
+    const { isMobile } = useContext(AppContext)
+    const toast = useToast()
 
     const onFormSubmit = useCallback(
         async (data) => {
@@ -40,8 +40,8 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
                     email: data.email,
                     feedback: data.feedback,
                 }),
-            });
-            const result = await response.json();
+            })
+            const result = await response.json()
 
             if (!result.error) {
                 toast({
@@ -50,9 +50,9 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
                     status: 'success',
                     duration: 5000,
                     isClosable: true,
-                });
+                })
 
-                onClose();
+                onClose()
             } else {
                 toast({
                     title: 'Error',
@@ -60,11 +60,11 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
                     status: 'error',
                     duration: 5000,
                     isClosable: true,
-                });
+                })
             }
         },
         [onClose, toast],
-    );
+    )
 
     return (
         <Modal
@@ -163,14 +163,13 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
                                         </Button>
                                     </ModalFooter>
                                 </Form>
-                            );
+                            )
                         }}
                     </Formik>
                 </ModalBody>
             </ModalContent>
         </Modal>
-    );
-};
+    )
+}
 
-export default memo(FeedbackDialog);
-
+export default memo(FeedbackDialog)

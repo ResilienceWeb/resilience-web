@@ -1,10 +1,10 @@
-import { useQuery } from 'react-query';
+import { useQuery } from 'react-query'
 
 async function fetchPermissionsRequest() {
-    const response = await fetch('/api/permissions/all');
-    const data = await response.json();
-    const { editPermissions } = data;
-    return editPermissions;
+    const response = await fetch('/api/permissions/all')
+    const data = await response.json()
+    const { editPermissions } = data
+    return editPermissions
 }
 
 export default function usePermissions() {
@@ -12,12 +12,11 @@ export default function usePermissions() {
         data: permissions,
         isLoading,
         isError,
-    } = useQuery('permissions', fetchPermissionsRequest);
+    } = useQuery('permissions', fetchPermissionsRequest)
 
     return {
         permissions,
         isLoading,
         isError,
-    };
+    }
 }
-

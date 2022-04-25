@@ -1,5 +1,5 @@
-import { memo, useContext, useCallback } from 'react';
-import { useRouter } from 'next/router';
+import { memo, useContext, useCallback } from 'react'
+import { useRouter } from 'next/router'
 import {
     Box,
     Heading,
@@ -14,21 +14,21 @@ import {
     Button,
     Text,
     Tooltip,
-} from '@chakra-ui/react';
-import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { HiArrowLeft, HiUserGroup } from 'react-icons/hi';
-import DescriptionRichText from '@components/main-list/description-rich-text';
-import { AppContext } from '@store/AppContext';
-import { REMOTE_URL } from '@helpers/config';
+} from '@chakra-ui/react'
+import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
+import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
+import DescriptionRichText from '@components/main-list/description-rich-text'
+import { AppContext } from '@store/AppContext'
+import { REMOTE_URL } from '@helpers/config'
 
 function Listing({ listing }) {
-    const router = useRouter();
-    const { isMobile } = useContext(AppContext);
+    const router = useRouter()
+    const { isMobile } = useContext(AppContext)
 
     const goBack = useCallback(async () => {
-        await router.push(`${REMOTE_URL}/city`);
-    }, [router]);
+        await router.push(`${REMOTE_URL}/city`)
+    }, [router])
 
     return (
         <>
@@ -197,8 +197,7 @@ function Listing({ listing }) {
                 </Box>
             </Box>
         </>
-    );
+    )
 }
 
-export default memo(Listing);
-
+export default memo(Listing)

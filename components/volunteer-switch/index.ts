@@ -1,1 +1,1 @@
-export { default } from './VolunteerSwitch';
+export { default } from './VolunteerSwitch'

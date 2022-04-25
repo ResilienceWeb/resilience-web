@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useEffect, memo } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import chroma from 'chroma-js';
+import { useCallback, useMemo, useEffect, memo } from 'react'
+import { motion, useAnimation } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
+import chroma from 'chroma-js'
 import {
     Box,
     Flex,
@@ -11,14 +11,14 @@ import {
     Tooltip,
     Image,
     chakra,
-} from '@chakra-ui/react';
-import { HiUserGroup } from 'react-icons/hi';
+} from '@chakra-ui/react'
+import { HiUserGroup } from 'react-icons/hi'
 
-import ImagePlaceholder from './image-placeholder';
+import ImagePlaceholder from './image-placeholder'
 
 const Item = ({ dataItem, onOpenDialog }) => {
-    const { ref, inView } = useInView();
-    const animation = useAnimation();
+    const { ref, inView } = useInView()
+    const animation = useAnimation()
 
     useEffect(() => {
         if (inView) {
@@ -32,18 +32,18 @@ const Item = ({ dataItem, onOpenDialog }) => {
                         bounce: 0.3,
                     },
                 })
-                .catch((e) => console.error('Animation error', e));
+                .catch((e) => console.error('Animation error', e))
         }
-    }, [animation, inView]);
+    }, [animation, inView])
 
     const openDialog = useCallback(() => {
-        onOpenDialog(dataItem);
-    }, [dataItem, onOpenDialog]);
+        onOpenDialog(dataItem)
+    }, [dataItem, onOpenDialog])
 
     const tagBackgroundColor = useMemo(
         () => chroma(dataItem.color).alpha(0.5).css(),
         [dataItem.color],
-    );
+    )
 
     return (
         <motion.div
@@ -112,8 +112,7 @@ const Item = ({ dataItem, onOpenDialog }) => {
                 </Box>
             </chakra.div>
         </motion.div>
-    );
-};
+    )
+}
 
-export default memo(Item);
-
+export default memo(Item)

@@ -1,10 +1,10 @@
-import { useQuery } from 'react-query';
+import { useQuery } from 'react-query'
 
 async function fetchCategoriesRequest() {
-    const response = await fetch('/api/categories');
-    const data = await response.json();
-    const { categories } = data;
-    return categories;
+    const response = await fetch('/api/categories')
+    const data = await response.json()
+    const { categories } = data
+    return categories
 }
 
 export default function useCategories() {
@@ -14,12 +14,11 @@ export default function useCategories() {
         isError,
     } = useQuery('categories', fetchCategoriesRequest, {
         refetchOnWindowFocus: false,
-    });
+    })
 
     return {
         categories,
         isLoading,
         isError,
-    };
+    }
 }
-

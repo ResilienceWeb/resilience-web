@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react'
 import {
     Modal,
     ModalOverlay,
@@ -18,14 +18,14 @@ import {
     Text,
     Image,
     useToast,
-} from '@chakra-ui/react';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si';
-import { HiUserGroup, HiShare } from 'react-icons/hi';
-import { GiNightSleep } from 'react-icons/gi';
-import { sanitizeLink } from '@helpers/utils';
-import { REMOTE_URL } from '@helpers/config';
-import DescriptionRichText from '@components/main-list/description-rich-text';
+} from '@chakra-ui/react'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
+import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
+import { HiUserGroup, HiShare } from 'react-icons/hi'
+import { GiNightSleep } from 'react-icons/gi'
+import { sanitizeLink } from '@helpers/utils'
+import { REMOTE_URL } from '@helpers/config'
+import DescriptionRichText from '@components/main-list/description-rich-text'
 
 const Dialog = ({
     isOpen,
@@ -33,17 +33,17 @@ const Dialog = ({
     item,
     onClose,
 }: {
-    isOpen: boolean;
-    isMobile?: boolean;
-    item: any;
-    onClose: () => void;
+    isOpen: boolean
+    isMobile?: boolean
+    item: any
+    onClose: () => void
 }) => {
-    const toast = useToast();
+    const toast = useToast()
 
     const websiteSanitized = useMemo(
         () => sanitizeLink(item.website),
         [item.website],
-    );
+    )
 
     const showCopiedToClipboardToast = useCallback(() => {
         toast({
@@ -52,13 +52,13 @@ const Dialog = ({
                 'The link to this listing is now in your clipboard and ready to be shared.',
             status: 'info',
             duration: 4000,
-        });
-    }, [toast]);
+        })
+    }, [toast])
 
     const handleShareButtonClick = useCallback(async () => {
-        await navigator.clipboard.writeText(`${REMOTE_URL}/city/${item.slug}`);
-        showCopiedToClipboardToast();
-    }, [item.slug, showCopiedToClipboardToast]);
+        await navigator.clipboard.writeText(`${REMOTE_URL}/city/${item.slug}`)
+        showCopiedToClipboardToast()
+    }, [item.slug, showCopiedToClipboardToast])
 
     const socialLinks = (
         <>
@@ -122,7 +122,7 @@ const Dialog = ({
                 </Flex>
             )}
         </>
-    );
+    )
 
     return (
         <Modal
@@ -196,8 +196,7 @@ const Dialog = ({
                 )}
             </ModalContent>
         </Modal>
-    );
-};
+    )
+}
 
-export default memo(Dialog);
-
+export default memo(Dialog)

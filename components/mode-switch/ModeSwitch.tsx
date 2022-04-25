@@ -1,4 +1,4 @@
-import { chakra, FormLabel, Switch, Flex } from '@chakra-ui/react';
+import { chakra, FormLabel, Switch, Flex } from '@chakra-ui/react'
 
 const ModeSwitch = ({ handleSwitchChange, checked }) => {
     return (
@@ -31,8 +31,7 @@ const ModeSwitch = ({ handleSwitchChange, checked }) => {
                 </FormLabel>
             </Flex>
         </chakra.div>
-    );
-};
+    )
+}
 
-export default ModeSwitch;
-
+export default ModeSwitch

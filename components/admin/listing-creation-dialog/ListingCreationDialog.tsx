@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { memo } from 'react'
+import { Formik, Form, Field } from 'formik'
 import {
     chakra,
     Button,
@@ -18,18 +18,15 @@ import {
     ModalFooter,
     ModalCloseButton,
     HStack,
-} from '@chakra-ui/react';
-import {
-    emailValidator,
-    fieldRequiredValidator,
-} from '@helpers/formValidation';
-import { useCategories } from '@hooks/categories';
-import ImageUpload from './ImageUpload';
+} from '@chakra-ui/react'
+import { emailValidator, fieldRequiredValidator } from '@helpers/formValidation'
+import { useCategories } from '@hooks/categories'
+import ImageUpload from './ImageUpload'
 
 const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
-    const { categories } = useCategories();
+    const { categories } = useCategories()
 
-    if (!categories) return null;
+    if (!categories) return null
 
     return (
         <Modal onClose={onClose} isOpen size="5xl">
@@ -411,14 +408,13 @@ const ListingCreationDialog = ({ itemInEdit, onClose, onSubmit }) => {
                                         </Button>
                                     </ModalFooter>
                                 </Form>
-                            );
+                            )
                         }}
                     </Formik>
                 </ModalBody>
             </ModalContent>
         </Modal>
-    );
-};
+    )
+}
 
-export default memo(ListingCreationDialog);
-
+export default memo(ListingCreationDialog)

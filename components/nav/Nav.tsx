@@ -1,9 +1,9 @@
-import { useContext } from 'react';
-import Image from 'next/image';
-import NextLink from 'next/link';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import classnames from 'classnames';
+import { useContext } from 'react'
+import Image from 'next/image'
+import NextLink from 'next/link'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import classnames from 'classnames'
 import {
     Box,
     Flex,
@@ -18,24 +18,24 @@ import {
     Tooltip,
     useColorModeValue,
     useDisclosure,
-} from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, ChatIcon } from '@chakra-ui/icons';
-import { AppContext } from '@store/AppContext';
-import FeedbackDialog from '../feedback-dialog';
-import LogoImage from '../../public/logo.png';
-import styles from './Nav.module.scss';
+} from '@chakra-ui/react'
+import { HamburgerIcon, CloseIcon, ChatIcon } from '@chakra-ui/icons'
+import { AppContext } from '@store/AppContext'
+import FeedbackDialog from '../feedback-dialog'
+import LogoImage from '../../public/logo.png'
+import styles from './Nav.module.scss'
 
 export default function MainNav() {
-    const { data: session } = useSession();
-    const { isOpen, onToggle } = useDisclosure();
-    const router = useRouter();
-    const { isMobile } = useContext(AppContext);
+    const { data: session } = useSession()
+    const { isOpen, onToggle } = useDisclosure()
+    const router = useRouter()
+    const { isMobile } = useContext(AppContext)
 
     const {
         isOpen: isFeedbackDialogOpen,
         onOpen: onOpenFeedbackDialog,
         onClose: onCloseFeedbackDialog,
-    } = useDisclosure();
+    } = useDisclosure()
 
     return (
         <>
@@ -142,7 +142,7 @@ export default function MainNav() {
                 onClose={onCloseFeedbackDialog}
             />
         </>
-    );
+    )
 }
 
 const DesktopNav = ({ currentPathname }) => {
@@ -168,8 +168,8 @@ const DesktopNav = ({ currentPathname }) => {
                 </Box>
             ))}
         </Stack>
-    );
-};
+    )
+}
 
 const MobileNav = () => {
     return (
@@ -182,8 +182,8 @@ const MobileNav = () => {
                 <MobileNavItem key={navItem.label} {...navItem} />
             ))}
         </Stack>
-    );
-};
+    )
+}
 
 const MobileNavItem = ({ label, href }: { label: string; href: string }) => {
     return (
@@ -206,8 +206,8 @@ const MobileNavItem = ({ label, href }: { label: string; href: string }) => {
                 </Text>
             </Flex>
         </Stack>
-    );
-};
+    )
+}
 
 const NAV_ITEMS = [
     {
@@ -232,5 +232,4 @@ const NAV_ITEMS = [
         href: 'https://opencollective.com/resilience-web',
         isExternal: true,
     },
-];
-
+]

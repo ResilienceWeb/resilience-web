@@ -1,6 +1,6 @@
-import { memo, useEffect, useMemo, useState } from 'react';
-import { Table, Tbody, Td, Th, Thead, Tr, Tag } from '@chakra-ui/react';
-import chroma from 'chroma-js';
+import { memo, useEffect, useMemo, useState } from 'react'
+import { Table, Tbody, Td, Th, Thead, Tr, Tag } from '@chakra-ui/react'
+import chroma from 'chroma-js'
 
 const columns = [
     {
@@ -15,50 +15,48 @@ const columns = [
         Header: 'Account created?',
         accessor: 'accountCreated',
     },
-];
+]
 
 export async function fetchUser(email) {
-    const response = await fetch(`/api/users/${email}`);
-    const data = await response.json();
-    const { user } = data;
-    return user;
+    const response = await fetch(`/api/users/${email}`)
+    const data = await response.json()
+    const { user } = data
+    return user
 }
 
 const PermissionsList = ({ permissions }) => {
-    const [userRegistrationsMap, setUserRegistrationsMap] = useState({});
+    const [userRegistrationsMap, setUserRegistrationsMap] = useState({})
 
     useEffect(() => {
         async function fetchData() {
-            const userRegistrationsResult = {};
+            const userRegistrationsResult = {}
             await Promise.all(
                 permissions.map(async (p) => {
-                    const isUserRegistered = await fetchUser(p.email);
-                    userRegistrationsResult[p.email] =
-                        Boolean(isUserRegistered);
+                    const isUserRegistered = await fetchUser(p.email)
+                    userRegistrationsResult[p.email] = Boolean(isUserRegistered)
                 }),
-            );
-            setUserRegistrationsMap(userRegistrationsResult);
+            )
+            setUserRegistrationsMap(userRegistrationsResult)
         }
-        void fetchData();
+        void fetchData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [])
 
     const permissionsForDisplay = useMemo(() => {
-        if (!permissions || !Object.keys(userRegistrationsMap).length)
-            return [];
+        if (!permissions || !Object.keys(userRegistrationsMap).length) return []
 
         const result = permissions.map((p) => {
             return {
                 email: p.email,
                 listing: p.listing.title,
                 accountCreated: userRegistrationsMap[p.email] ? 'Yes' : 'No',
-            };
-        });
+            }
+        })
 
-        return result;
-    }, [permissions, userRegistrationsMap]);
+        return result
+    }, [permissions, userRegistrationsMap])
 
-    if (!permissionsForDisplay) return null;
+    if (!permissionsForDisplay) return null
 
     return (
         <Table my="8" borderWidth="1px" fontSize="sm" background="#ffffff">
@@ -75,7 +73,7 @@ const PermissionsList = ({ permissions }) => {
                 {permissionsForDisplay.map((row, index) => (
                     <Tr key={index}>
                         {columns.map((column, index) => {
-                            const cell = row[column.accessor];
+                            const cell = row[column.accessor]
 
                             if (column.accessor === 'accountCreated') {
                                 return (
@@ -94,21 +92,20 @@ const PermissionsList = ({ permissions }) => {
                                             {cell}
                                         </Tag>
                                     </Td>
-                                );
+                                )
                             }
 
                             return (
                                 <Td key={index} maxWidth="100px">
                                     {cell}
                                 </Td>
-                            );
+                            )
                         })}
                     </Tr>
                 ))}
             </Tbody>
         </Table>
-    );
-};
+    )
+}
 
-export default memo(PermissionsList);
-
+export default memo(PermissionsList)
