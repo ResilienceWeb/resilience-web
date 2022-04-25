@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-mixed-spaces-and-tabs */
 import dynamic from 'next/dynamic'
 import { GetStaticProps, GetStaticPaths } from 'next'

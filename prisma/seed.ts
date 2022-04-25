@@ -78,28 +78,28 @@ async function main() {
         data: locationCity,
     })
 
-    categoriesCity.forEach(async (category) => {
+    for (const category of categoriesCity) {
         await prisma.category.create({
             data: {
                 ...category,
                 locationId: newLocationCity.id,
             },
         })
-    })
+    }
 
     const newLocationUni = await prisma.location.create({
         data: locationUni,
     })
-    categoriesUni.forEach(async (category) => {
+    for (const category of categoriesUni) {
         await prisma.category.create({
             data: {
                 ...category,
                 locationId: newLocationUni.id,
             },
         })
-    })
+    }
 
-    listingsCity.forEach(async (listing) => {
+    for (const listing of listingsCity) {
         const newCategory = await prisma.category.findFirst({
             where: {
                 locationId: newLocationCity.id,
@@ -113,10 +113,11 @@ async function main() {
                 categoryId: newCategory.id,
             },
         })
-    })
+    }
 
-    setTimeout(() => {
-        listingsUni.forEach(async (listing) => {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    setTimeout(async () => {
+        for (const listing of listingsUni) {
             const newCategory = await prisma.category.findFirst({
                 where: {
                     locationId: newLocationUni.id,
@@ -130,7 +131,7 @@ async function main() {
                     categoryId: newCategory.id,
                 },
             })
-        })
+        }
     }, 1000)
 }
 
@@ -139,7 +140,7 @@ main()
         console.error(e)
         process.exit(1)
     })
-    .finally(async () => {
-        await prisma.$disconnect()
+    .finally(() => {
+        void prisma.$disconnect()
     })
 

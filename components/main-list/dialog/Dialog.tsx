@@ -55,8 +55,8 @@ const Dialog = ({
         })
     }, [toast])
 
-    const handleShareButtonClick = useCallback(async () => {
-        await navigator.clipboard.writeText(`${REMOTE_URL}/city/${item.slug}`)
+    const handleShareButtonClick = useCallback(() => {
+        void navigator.clipboard.writeText(`${REMOTE_URL}/city/${item.slug}`)
         showCopiedToClipboardToast()
     }, [item.slug, showCopiedToClipboardToast])
 

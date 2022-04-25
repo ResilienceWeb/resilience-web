@@ -20,7 +20,6 @@
         "plugin:react-hooks/recommended",
         "plugin:jsx-a11y/recommended",
         "plugin:promise/recommended",
-        "next/core-web-vitals",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "prettier"
@@ -35,6 +34,9 @@
         "project": ["tsconfig.json"]
     },
     "settings": {
+        "react": {
+            "version": "detect"
+        },
         "import/resolver": {
             "alias": {
                 "map": [
@@ -98,6 +100,9 @@
         "@typescript-eslint/no-unsafe-return": 0,
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/no-unsafe-argument": 0,
-        "@typescript-eslint/no-var-requires": 0
+        "@typescript-eslint/no-var-requires": 0,
+        "promise/catch-or-return": [1, {
+            "allowFinally": true
+        }]
     }
 }

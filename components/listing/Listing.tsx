@@ -7,7 +7,6 @@ import {
     Flex,
     Image,
     Tag,
-    Stack,
     HStack,
     Link,
     Icon,
@@ -26,8 +25,8 @@ function Listing({ listing }) {
     const router = useRouter()
     const { isMobile } = useContext(AppContext)
 
-    const goBack = useCallback(async () => {
-        await router.push(`${REMOTE_URL}/city`)
+    const goBack = useCallback(() => {
+        void router.push(`${REMOTE_URL}/city`)
     }, [router])
 
     return (

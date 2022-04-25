@@ -70,7 +70,7 @@ const Nav = () => {
         return links
     }, [session?.user.admin])
 
-    const handleSignOut = useCallback(() => signOut(), [])
+    const handleSignOut = useCallback(() => void signOut(), [])
 
     return (
         <Box bg="#fafafa" px={4}>
