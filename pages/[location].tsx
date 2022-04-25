@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import dynamic from 'next/dynamic';
 import { GetStaticProps, GetStaticPaths } from 'next';
+import { useRouter } from 'next/router';
 import {
     useCallback,
     useContext,
@@ -18,6 +19,7 @@ import { REMOTE_URL } from '@helpers/config';
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils';
 import { useCategories } from '@hooks/categories';
 import { AppContext } from '@store/AppContext';
+import Layout from '@components/layout';
 
 const NetworkComponent = dynamic(() => import('../components/network'), {
     ssr: false,
@@ -34,6 +36,15 @@ type INetwork = {
 };
 
 const City = ({ data }) => {
+    const router = useRouter();
+    if (router.isFallback) {
+        return (
+            <Layout>
+                <h1>Please wait…</h1>
+            </Layout>
+        );
+    }
+
     const { isMobile } = useContext(AppContext);
 
     const [isWebMode, setIsWebMode] = useState(undefined);
