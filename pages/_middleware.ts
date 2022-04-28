@@ -52,7 +52,6 @@ export default function middleware(req: NextRequest) {
             hostname === 'cambridgeresilienceweb.org.uk' ||
             hostname === 'resilienceweb.org.uk'
         ) {
-            url.pathname = `/home`
             return NextResponse.rewrite(url)
         }
 
