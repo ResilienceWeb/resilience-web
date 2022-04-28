@@ -25,12 +25,14 @@ export default function middleware(req: NextRequest) {
                   .replace(`.resilienceweb.org.uk`, '')
             : hostname.replace(`.localhost:3000`, '')
 
-    if (pathname.startsWith(`/_sites`))
+    if (pathname.startsWith(`/_sites`)) {
         return new Response(null, {
             status: 404,
         })
+    }
 
     if (!pathname.includes('.') && !pathname.startsWith('/api')) {
+        console.log(currentHost)
         if (currentHost == 'app') {
             if (
                 pathname === '/login' &&
@@ -45,7 +47,11 @@ export default function middleware(req: NextRequest) {
             return NextResponse.rewrite(url)
         }
 
-        if (hostname === 'localhost:3000') {
+        if (
+            hostname === 'localhost:3000' ||
+            hostname === 'cambridgeresilienceweb.org.uk' ||
+            hostname === 'resilienceweb.org.uk'
+        ) {
             url.pathname = `/home`
             return NextResponse.rewrite(url)
         }
