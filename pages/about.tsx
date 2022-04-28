@@ -4,6 +4,7 @@ import { GraphQLClient } from 'graphql-request'
 import ReactMarkdown from 'react-markdown'
 import { Box, Heading, useBreakpointValue, Flex } from '@chakra-ui/react'
 
+import ErrorBoundary from '@components/error-boundary'
 import Layout from '@components/layout'
 
 const About = ({ page }) => {
@@ -31,7 +32,11 @@ const About = ({ page }) => {
                         <Heading as="h1" mb={8}>
                             {page.title}
                         </Heading>
-                        <ReactMarkdown>{page.content.markdown}</ReactMarkdown>
+                        <ErrorBoundary>
+                            <ReactMarkdown>
+                                {page.content.markdown}
+                            </ReactMarkdown>
+                        </ErrorBoundary>
                     </Box>
                 </Flex>
             </Layout>
