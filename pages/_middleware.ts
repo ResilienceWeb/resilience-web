@@ -20,12 +20,9 @@ export default function middleware(req: NextRequest) {
 
     const currentHost =
         process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
-            ? // You have to replace ".vercel.pub" with your own domain if you deploy this example under your domain.
-              // You can use wildcard subdomains on .vercel.app links that are associated with your Vercel team slug
-              // in this case, our team slug is "platformize", thus *.platformize.vercel.app works
-              hostname
-                  .replace(`.vercel.pub`, '')
-                  .replace(`.platformize.vercel.app`, '')
+            ? hostname
+                  .replace(`.cambridgeresilienceweb.org.uk`, '')
+                  .replace(`.resilienceweb.org.uk`, '')
             : hostname.replace(`.localhost:3000`, '')
 
     if (pathname.startsWith(`/_sites`))
