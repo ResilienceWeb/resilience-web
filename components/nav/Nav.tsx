@@ -44,14 +44,14 @@ export default function MainNav() {
                 color={useColorModeValue('gray.600', 'white')}
                 display="flex"
                 justifyContent="center"
+                borderBottom={1}
+                borderStyle="solid"
+                borderColor={useColorModeValue('gray.200', 'gray.900')}
             >
                 <Flex
                     minH={'60px'}
                     py={{ base: 2 }}
                     px={{ base: 4 }}
-                    borderBottom={1}
-                    borderStyle="solid"
-                    borderColor={useColorModeValue('gray.200', 'gray.900')}
                     alignItems="center"
                     justifyContent="space-between"
                     flex={{ base: 1 }}
@@ -97,7 +97,7 @@ export default function MainNav() {
                         </Flex>
                     </Flex>
                     <HStack>
-                        <Tooltip label="We appreciate any kind of feedback, positive or negative.">
+                        <Tooltip label="Any suggestions, ideas or bug reports are welcome.">
                             {isMobile ? (
                                 <IconButton
                                     aria-label="Send feedback"
