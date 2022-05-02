@@ -15,13 +15,17 @@ import {
     MenuButton,
     MenuList,
     MenuItem,
+    MenuDivider,
     useDisclosure,
     useColorModeValue,
     Text,
     Stack,
 } from '@chakra-ui/react'
-import { HamburgerIcon, CloseIcon, SettingsIcon } from '@chakra-ui/icons'
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { HiViewList, HiUsers, HiOutlineLockOpen } from 'react-icons/hi'
+import { BsPersonCircle } from 'react-icons/bs'
+import { BiCategory } from 'react-icons/bi'
+import SiteSelector from './site-selector'
 import LogoImage from '../../../public/logo.png'
 
 const NavLink = ({ children, href }) => (
@@ -65,6 +69,11 @@ const Nav = () => {
                 href: '/admin/permissions',
                 icon: <Icon as={HiOutlineLockOpen} fontSize="lg" />,
             })
+            links.push({
+                label: 'Categories',
+                href: '/admin/categories',
+                icon: <Icon as={BiCategory} fontSize="lg" />,
+            })
         }
 
         return links
@@ -73,7 +82,13 @@ const Nav = () => {
     const handleSignOut = useCallback(() => void signOut(), [])
 
     return (
-        <Box bg="#fafafa" px={4}>
+        <Box
+            bg="#fafafa"
+            px={4}
+            borderBottom={1}
+            borderStyle="solid"
+            borderColor={useColorModeValue('gray.200', 'gray.900')}
+        >
             <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
                 <IconButton
                     size={'md'}
@@ -130,11 +145,9 @@ const Nav = () => {
                     </HStack>
                 </HStack>
                 <Flex alignItems={'center'}>
-                    {session?.user.email && (
-                        <Text fontSize="14px" color="gray.600">
-                            Signed in as {session?.user.email}
-                        </Text>
-                    )}
+                    <Box mr="1rem">
+                        <SiteSelector />
+                    </Box>
                     <Menu>
                         <MenuButton
                             as={Button}
@@ -142,10 +155,20 @@ const Nav = () => {
                             variant={'link'}
                             cursor={'pointer'}
                         >
-                            <SettingsIcon />
+                            <BsPersonCircle size="32" />
                         </MenuButton>
                         <MenuList zIndex={5}>
-                            <MenuItem onClick={handleSignOut}>
+                            {session?.user.email && (
+                                <>
+                                    <MenuItem isDisabled color="gray.600">
+                                        <Text fontSize="14px">
+                                            Signed in as {session?.user.email}
+                                        </Text>
+                                    </MenuItem>
+                                    <MenuDivider />
+                                </>
+                            )}
+                            <MenuItem onClick={handleSignOut} fontSize={'15px'}>
                                 Sign out
                             </MenuItem>
                         </MenuList>
