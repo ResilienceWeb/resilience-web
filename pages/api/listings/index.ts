@@ -5,13 +5,13 @@ import prisma from '../../../prisma/client'
 const DEFAULT_LOCATION_SLUG = 'cambridge-city'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { location } = req.query
+    const { site } = req.query
     try {
         const listings = await prisma.listing.findMany({
             where: {
                 location: {
                     slug: {
-                        contains: location ?? DEFAULT_LOCATION_SLUG,
+                        contains: site ?? DEFAULT_LOCATION_SLUG,
                     },
                 },
             },

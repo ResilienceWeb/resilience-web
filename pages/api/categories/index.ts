@@ -8,12 +8,23 @@ type ResponseData = {
     categories?: Category[]
 }
 
+const DEFAULT_LOCATION_SLUG = 'cambridge-city'
+
 const handler = async (
     req: NextApiRequest,
     res: NextApiResponse<ResponseData>,
 ) => {
     try {
+        const { site } = req.query
+
         const categories: Category[] = await prisma.category.findMany({
+            where: {
+                location: {
+                    slug: {
+                        contains: site ?? DEFAULT_LOCATION_SLUG,
+                    },
+                },
+            },
             orderBy: [
                 {
                     id: 'asc',
