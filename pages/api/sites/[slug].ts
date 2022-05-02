@@ -5,13 +5,13 @@ import prisma from '../../../prisma/client'
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const { slug } = req.query
-        const location = await prisma.location.findFirst({
+        const site = await prisma.location.findFirst({
             where: {
                 slug,
             },
         })
         res.status(200)
-        res.json({ location })
+        res.json({ site })
     } catch (e) {
         res.status(500)
         res.json({

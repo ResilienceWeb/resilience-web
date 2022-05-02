@@ -4,13 +4,13 @@ import prisma from '../../../prisma/client'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const locations = await prisma.location.findMany()
+        const sites = await prisma.location.findMany()
         res.status(200)
-        res.json({ locations })
+        res.json({ sites })
     } catch (e) {
         res.status(500)
         res.json({
-            error: `Unable to fetch locations from database - ${e}`,
+            error: `Unable to fetch sites from database - ${e}`,
         })
     }
 }

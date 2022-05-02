@@ -16,3 +16,4 @@ type Listing = {
     slug: string
     image?: string
 }
+

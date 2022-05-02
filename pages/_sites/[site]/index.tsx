@@ -200,10 +200,10 @@ const Site = ({ data }) => {
 }
 
 export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
-    const response = await fetch(`${REMOTE_URL}/api/locations`)
+    const response = await fetch(`${REMOTE_URL}/api/sites`)
     const data = await response.json()
-    const { locations } = data
-    const paths = locations.map((l) => `/${l.slug}`)
+    const { sites } = data
+    const paths = sites.map((l) => `/${l.slug}`)
 
     return {
         paths: paths.map((path) => ({
@@ -225,11 +225,11 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
     const { site } = params
 
     const { listings } = await fetch(
-        `${REMOTE_URL}/api/listings?location=${site}`,
+        `${REMOTE_URL}/api/listings?site=${site}`,
     ).then((res) => res.json())
 
-    const { location } = await fetch(
-        `${REMOTE_URL}/api/locations/${site}`,
+    const { site: siteData } = await fetch(
+        `${REMOTE_URL}/api/sites/${site}`,
     ).then((res) => res.json())
 
     const transformedData = {
@@ -288,7 +288,7 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
     // Main node
     transformedData.nodes.push({
         id: 999,
-        label: location?.centralNodeLabel,
+        label: siteData?.centralNodeLabel,
         color: '#fcba03',
         isDescriptive: true,
         font: {
