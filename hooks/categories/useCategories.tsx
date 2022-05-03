@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query'
 import { useContext } from 'react'
 import { AppContext } from '@store/AppContext'
+import { Category } from '@prisma/client'
 
 async function fetchCategoriesRequest({ queryKey }) {
     const [_key, { siteSlug }] = queryKey
@@ -10,7 +11,11 @@ async function fetchCategoriesRequest({ queryKey }) {
     return categories
 }
 
-export default function useCategories() {
+export default function useCategories(): {
+    categories: Category[]
+    isLoading: boolean
+    isError: boolean
+} {
     const { selectedSite: siteSlug } = useContext(AppContext)
     const {
         data: categories,

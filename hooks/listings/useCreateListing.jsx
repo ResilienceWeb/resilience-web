@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQueryClient } from 'react-query'
 
 async function createListingRequest(listingData) {
@@ -23,14 +24,14 @@ export default function useCreateListing() {
         onMutate: async (newListing) => {
             await queryClient.cancelQueries('listings')
             const previousListings = queryClient.getQueryData('listings')
-            queryClient.setQueryData('listings', (old) => [...old, newListing])
+            queryClient.setQueryData('listings', (old) => [newListing])
             return { previousListings }
         },
         onError: (err, newListing, context) => {
             queryClient.setQueryData('listings', context.previousListings)
         },
         onSettled: () => {
-            queryClient.invalidateQueries('listings')
+            void queryClient.invalidateQueries('listings')
         },
     })
 }

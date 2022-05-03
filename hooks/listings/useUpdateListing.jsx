@@ -39,7 +39,7 @@ export default function useUpdateListing() {
             )
         },
         onSettled: () => {
-            queryClient.invalidateQueries('listings')
+            void queryClient.invalidateQueries('listings')
         },
     })
 }

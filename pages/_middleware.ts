@@ -32,7 +32,6 @@ export default function middleware(req: NextRequest) {
     }
 
     if (!pathname.includes('.') && !pathname.startsWith('/api')) {
-        console.log(currentHost)
         if (currentHost == 'app') {
             if (
                 pathname === '/login' &&

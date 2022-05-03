@@ -1,6 +1,9 @@
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState, memo } from 'react'
+import { useCallback, useEffect, useState, memo, useContext } from 'react'
 import { Heading, Text, Box, Stack } from '@chakra-ui/react'
+
+import { AppContext } from '@store/AppContext'
+import { REMOTE_URL } from '@helpers/config'
 import ListingCreationDialog from '@components/admin/listing-creation-dialog'
 import DeleteConfirmationDialog from './delete-confirmation-dialog'
 import { removeNonAlphaNumeric } from '@helpers/utils'
@@ -21,6 +24,8 @@ const EditableList = ({
     const [isListingCreationOpen, setIsListingCreationOpen] = useState(false)
     const [isDeleteConfirmationOpenWithId, setIsDeleteConfirmationOpenWithId] =
         useState()
+
+    const { selectedSite: siteSlug } = useContext(AppContext)
 
     useEffect(() => {
         const filtered = items.filter((item) =>
@@ -61,7 +66,12 @@ const EditableList = ({
     }, [closeRemoveDialog, deleteListing, isDeleteConfirmationOpenWithId])
 
     const handleSubmit = useCallback(
-        (data) => {
+        async (data) => {
+            const { site: siteData } = await fetch(
+                `${REMOTE_URL}/api/sites/${siteSlug}`,
+            ).then((res) => res.json())
+
+            data.locationId = siteData.id
             if (data.id) {
                 updateListing(data)
             } else {
@@ -69,7 +79,7 @@ const EditableList = ({
             }
             closeListingCreationDialog()
         },
-        [closeListingCreationDialog, createListing, updateListing],
+        [closeListingCreationDialog, createListing, siteSlug, updateListing],
     )
 
     const handleFilterChange = useCallback((event) => {

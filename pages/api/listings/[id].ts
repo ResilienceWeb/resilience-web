@@ -31,6 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     const newData: Listing = {
                         title: fields.title as string,
                         categoryId: parseInt(fields.category as string),
+                        locationId: parseInt(fields.locationId as string),
                         website: fields.website as string,
                         description: fields.description as string,
                         email: fields.email as string,
@@ -70,7 +71,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                     res.status(200)
                     res.json({ listing })
-                    throw new Error('API throw error test')
                 })
 
                 break
