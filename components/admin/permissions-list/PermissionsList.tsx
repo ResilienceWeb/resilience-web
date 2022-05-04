@@ -30,7 +30,7 @@ const PermissionsList = ({ permissions }) => {
     useEffect(() => {
         async function fetchData() {
             const userRegistrationsResult = {}
-            await Promise.all(
+            await Promise.allSettled(
                 permissions.map(async (p) => {
                     const isUserRegistered = await fetchUser(p.email)
                     userRegistrationsResult[p.email] = Boolean(isUserRegistered)
@@ -39,8 +39,7 @@ const PermissionsList = ({ permissions }) => {
             setUserRegistrationsMap(userRegistrationsResult)
         }
         void fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [permissions])
 
     const permissionsForDisplay = useMemo(() => {
         if (!permissions || !Object.keys(userRegistrationsMap).length) return []
