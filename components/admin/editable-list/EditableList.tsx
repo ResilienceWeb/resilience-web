@@ -71,10 +71,10 @@ const EditableList = ({
                 `${REMOTE_URL}/api/sites/${siteSlug}`,
             ).then((res) => res.json())
 
-            data.locationId = siteData.id
             if (data.id) {
                 updateListing(data)
             } else {
+                data.locationId = siteData.id
                 createListing(data)
             }
             closeListingCreationDialog()

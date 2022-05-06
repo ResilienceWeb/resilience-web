@@ -31,7 +31,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     const newData: Listing = {
                         title: fields.title as string,
                         categoryId: parseInt(fields.category as string),
-                        locationId: parseInt(fields.locationId as string),
                         website: fields.website as string,
                         description: fields.description as string,
                         email: fields.email as string,
