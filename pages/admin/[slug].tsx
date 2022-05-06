@@ -44,7 +44,7 @@ const EditorField = (props) => {
             {label && <label>{label}</label>}
             <Editor
                 {...otherProps}
-                apiKey={process.env.TINY_APIKEY}
+                apiKey={process.env.NEXT_PUBLIC_TINY_MCE_APIKEY}
                 value={field.value}
                 onEditorChange={handleEditorChange}
                 onBlur={handleBlur}
