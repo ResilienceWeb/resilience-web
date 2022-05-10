@@ -5,7 +5,7 @@ import prisma from '../../../prisma/client'
 
 type ResponseData = {
     error?: string
-    categories?: Category[]
+    data?: Category | Category[]
 }
 
 const DEFAULT_LOCATION_SLUG = 'cambridge-city'
@@ -17,26 +17,41 @@ const handler = async (
     try {
         const { site } = req.query
 
-        const categories: Category[] = await prisma.category.findMany({
-            where: {
-                location: {
-                    slug: {
-                        contains: site ?? DEFAULT_LOCATION_SLUG,
+        switch (req.method) {
+            case 'GET': {
+                const categories: Category[] = await prisma.category.findMany({
+                    where: {
+                        location: {
+                            slug: {
+                                contains: site ?? DEFAULT_LOCATION_SLUG,
+                            },
+                        },
                     },
-                },
-            },
-            orderBy: [
-                {
-                    id: 'asc',
-                },
-            ],
-        })
-        res.status(200)
-        res.json({ categories })
+                    orderBy: [
+                        {
+                            id: 'asc',
+                        },
+                    ],
+                })
+                res.status(200)
+                res.json({ data: categories })
+
+                break
+            }
+            case 'POST': {
+                const category = await prisma.category.create({
+                    data: req.body,
+                })
+                res.status(201)
+                res.json({ data: category })
+
+                break
+            }
+        }
     } catch (e) {
         res.status(500)
         res.json({
-            error: `Unable to fetch categories from database - ${e}`,
+            error: `Unable to ${req.method} process database operation - ${e}`,
         })
     }
 }

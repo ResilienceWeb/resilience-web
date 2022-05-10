@@ -6,8 +6,7 @@ import { Category } from '@prisma/client'
 async function fetchCategoriesRequest({ queryKey }) {
     const [_key, { siteSlug }] = queryKey
     const response = await fetch(`/api/categories?site=${siteSlug}`)
-    const data = await response.json()
-    const { categories } = data
+    const { data: categories } = await response.json()
     return categories
 }
 

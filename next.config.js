@@ -15,9 +15,6 @@ const moduleExports = {
         ],
         formats: ['image/avif', 'image/webp'],
     },
-    env: {
-        TINY_APIKEY: process.env.TINY_MCE_APIKEY,
-    },
     swcMinify: true,
 }
 

@@ -3,7 +3,8 @@ import { useSession } from 'next-auth/react'
 import { Box, Stack, StackDivider, Heading } from '@chakra-ui/react'
 import LayoutContainer from '@components/admin/layout-container'
 import { useCategories } from '@hooks/categories'
-import CategoriesList from '@components/admin/categories-list'
+import CategoriesHeader from '@components/admin/categories/header'
+import CategoriesList from '@components/admin/categories/list'
 import LoadingSpinner from '@components/loading-spinner'
 
 export default function Categories() {
@@ -37,7 +38,8 @@ export default function Categories() {
             >
                 <Stack spacing="4" divider={<StackDivider />}>
                     <Heading>Edit categories</Heading>
-                    <Box mt={6} maxW="400px">
+                    <Box mt={6}>
+                        <CategoriesHeader />
                         <CategoriesList categories={orderedCategories} />
                     </Box>
                 </Stack>
