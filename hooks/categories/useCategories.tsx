@@ -15,7 +15,7 @@ export default function useCategories(): {
     isLoading: boolean
     isError: boolean
 } {
-    const { selectedSite: siteSlug } = useContext(AppContext)
+    const { selectedSiteSlug: siteSlug } = useContext(AppContext)
     const {
         data: categories,
         isLoading,

@@ -10,7 +10,7 @@ type SiteOption = {
 }
 
 const SiteSelector = () => {
-    const { selectedSite, setSelectedSite } = useContext(AppContext)
+    const { selectedSiteSlug, setSelectedSiteSlug } = useContext(AppContext)
     const { sites } = useSites()
 
     const siteOptions: Options<SiteOption> = useMemo(() => {
@@ -23,15 +23,15 @@ const SiteSelector = () => {
     }, [sites])
 
     const selectedOption = useMemo(
-        () => siteOptions.find((s) => s.value === selectedSite),
-        [selectedSite, siteOptions],
+        () => siteOptions.find((s) => s.value === selectedSiteSlug),
+        [selectedSiteSlug, siteOptions],
     )
 
     const handleSiteChange = useCallback(
         (siteOption) => {
-            setSelectedSite(siteOption.value)
+            setSelectedSiteSlug(siteOption.value)
         },
-        [setSelectedSite],
+        [setSelectedSiteSlug],
     )
 
     return (

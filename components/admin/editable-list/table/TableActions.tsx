@@ -1,6 +1,5 @@
 import {
     Button,
-    ButtonGroup,
     FormControl,
     FormLabel,
     HStack,
@@ -59,19 +58,18 @@ const TableActions = ({
                             </InputGroup>
                         </FormControl>
                     </HStack>
-                    <ButtonGroup size="sm" variant="outline">
-                        <Button
-                            bg="rw.700"
-                            colorScheme="rw.700"
-                            iconSpacing="1"
-                            leftIcon={<HiPlus fontSize="1.25em" />}
-                            onClick={openListingCreationDialog}
-                            variant="solid"
-                            _hover={{ bg: 'rw.900' }}
-                        >
-                            New listing
-                        </Button>
-                    </ButtonGroup>
+                    <Button
+                        bg="rw.700"
+                        colorScheme="rw.700"
+                        iconSpacing="1"
+                        leftIcon={<HiPlus fontSize="1.25em" />}
+                        onClick={openListingCreationDialog}
+                        variant="solid"
+                        size="sm"
+                        _hover={{ bg: 'rw.900' }}
+                    >
+                        New listing
+                    </Button>
                 </>
             )}
         </Stack>

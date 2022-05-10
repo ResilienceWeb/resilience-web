@@ -1,4 +1,15 @@
-import { Table, Tbody, Td, Th, Thead, Tr, Tag } from '@chakra-ui/react'
+import {
+    Table,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
+    Tag,
+    Button,
+    Flex,
+    useDisclosure,
+} from '@chakra-ui/react'
 import chroma from 'chroma-js'
 import { memo, useMemo } from 'react'
 
@@ -13,7 +24,7 @@ const columns = [
     },
 ]
 
-const CategoriesList = ({ categories }) => {
+const List = ({ categories }) => {
     if (!categories) {
         return null
     }
@@ -62,5 +73,5 @@ const CategoriesList = ({ categories }) => {
     )
 }
 
-export default memo(CategoriesList)
+export default memo(List)
 

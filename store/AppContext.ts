@@ -2,9 +2,11 @@ import { createContext } from 'react'
 
 export const AppContext = createContext({
     isMobile: false,
-    selectedSite: undefined,
-    setSelectedSite: (siteSlug: string) => {
+    selectedSiteSlug: undefined,
+    selectedLocationId: undefined,
+    setSelectedSiteSlug: (siteSlug: string) => {
         /* */
     },
+    sites: {},
 })
 

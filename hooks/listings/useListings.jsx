@@ -11,7 +11,7 @@ async function fetchListingsRequest({ queryKey }) {
 }
 
 export default function useListings() {
-    const { selectedSite: siteSlug } = useContext(AppContext)
+    const { selectedSiteSlug: siteSlug } = useContext(AppContext)
     const {
         data: listings,
         isLoading,
