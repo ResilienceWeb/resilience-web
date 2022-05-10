@@ -8,8 +8,6 @@ type ResponseData = {
     data?: Category | Category[]
 }
 
-const DEFAULT_LOCATION_SLUG = 'cambridge-city'
-
 const handler = async (
     req: NextApiRequest,
     res: NextApiResponse<ResponseData>,
@@ -23,7 +21,7 @@ const handler = async (
                     where: {
                         location: {
                             slug: {
-                                contains: site ?? DEFAULT_LOCATION_SLUG,
+                                contains: site,
                             },
                         },
                     },
@@ -45,6 +43,29 @@ const handler = async (
                 res.status(201)
                 res.json({ data: category })
 
+                break
+            }
+            case 'PUT': {
+                const category = await prisma.category.update({
+                    where: {
+                        location: {
+                            slug: {
+                                contains: site,
+                            },
+                        },
+                    },
+                })
+
+                res.status(200)
+                res.json({ data: category })
+
+                break
+            }
+            default: {
+                res.status(500)
+                res.json({
+                    error: `Method ${req.method} not supported at this endpoint`,
+                })
                 break
             }
         }
