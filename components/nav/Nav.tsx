@@ -20,6 +20,8 @@ import {
     useDisclosure,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, ChatIcon } from '@chakra-ui/icons'
+
+import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import { AppContext } from '@store/AppContext'
 import FeedbackDialog from '../feedback-dialog'
 import LogoImage from '../../public/logo.png'
@@ -220,7 +222,7 @@ const NAV_ITEMS = [
     },
     {
         label: 'City',
-        href: 'https://cambridge-city.cambridgeresilienceweb.org.uk',
+        href: `${PROTOCOL}://cambridge-city.${REMOTE_HOSTNAME}`,
     },
     {
         label: 'University',

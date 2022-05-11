@@ -3,6 +3,14 @@ export const REMOTE_URL =
         ? 'http://localhost:3000'
         : 'https://cambridgeresilienceweb.org.uk'
 
+export const REMOTE_HOSTNAME =
+    process.env.NODE_ENV === 'development'
+        ? 'localhost:3000'
+        : 'cambridgeresilienceweb.org.uk'
+
+export const PROTOCOL =
+    process.env.NODE_ENV === 'development' ? 'http' : 'https'
+
 export default {
     digitalOceanSpaces: 'https://resilienceweb.ams3.digitaloceanspaces.com/',
     bucketName: 'resilienceweb',

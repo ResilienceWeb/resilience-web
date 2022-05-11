@@ -11,7 +11,7 @@ const VolunteerSwitch = ({ handleSwitchChange, checked }) => {
                 width="150px"
             >
                 <FormLabel textAlign="center" fontSize="sm" mb={0}>
-                    Volunteer
+                    Seeking volunteers
                 </FormLabel>
                 <Switch
                     isChecked={Boolean(checked)}
