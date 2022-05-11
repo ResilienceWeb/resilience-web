@@ -10,6 +10,16 @@ const StoreProvider = ({ children }) => {
         DEFAULT_SELECTED_SITE,
     )
     const [sites, setSites] = useState([])
+    const [subdomain, setSubdomain] = useState<string>()
+
+    useEffect(() => {
+        const hostname = window.location.hostname
+        if (!hostname.includes('.')) {
+            return null
+        }
+
+        setSubdomain(hostname.split('.')[0])
+    }, [])
 
     useEffect(() => {
         async function fetchSites() {
@@ -20,6 +30,12 @@ const StoreProvider = ({ children }) => {
         }
         void fetchSites()
     }, [])
+
+    useEffect(() => {
+        if (subdomain) {
+            setSelectedSiteSlug(subdomain)
+        }
+    }, [subdomain])
 
     const selectedLocationId = useMemo(() => {
         if (sites) {

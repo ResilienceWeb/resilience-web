@@ -10,14 +10,13 @@ import {
     useMemo,
     memo,
 } from 'react'
-import { Box } from '@chakra-ui/react'
+import { Box, Center, Spinner } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 
 import { REMOTE_URL } from '@helpers/config'
-import Layout from '@components/layout'
 import MainList from '@components/main-list'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
@@ -53,9 +52,9 @@ const Site = ({ data }) => {
 
     if (router.isFallback) {
         return (
-            <Layout>
-                <h1>Please wait…</h1>
-            </Layout>
+            <Center height="100vh">
+                <Spinner size="xl" />
+            </Center>
         )
     }
 
