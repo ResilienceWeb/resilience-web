@@ -16,15 +16,7 @@ export default function useDeleteListing() {
         onSuccess: (data) => {
             queryClient.setQueryData(['listings', { id: data.id }], data)
         },
-        onMutate: async (deletedListing) => {
-            await queryClient.cancelQueries('listings')
-            const previousListings = queryClient.getQueryData('listings')
-            queryClient.setQueryData('listings', (old) =>
-                old.filter((l) => l.id !== deletedListing.id),
-            )
-            return { previousListings }
-        },
-        onError: (err, newListing, context) => {
+        onError: (err, deletedListing, context) => {
             queryClient.setQueryData(
                 ['listings', context.newListing.id],
                 context.previousListing,
