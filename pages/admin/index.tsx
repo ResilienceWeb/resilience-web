@@ -1,11 +1,10 @@
 import { signIn, useSession } from 'next-auth/react'
 import { memo, useEffect, useMemo } from 'react'
-import { Flex } from '@chakra-ui/react'
+import { Center, Spinner } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 import LayoutContainer from '@components/admin/layout-container'
 import EditableList from '@components/admin/editable-list'
-import LoadingSpinner from '@components/loading-spinner'
 import {
     useListings,
     useCreateListing,
@@ -48,16 +47,18 @@ const Admin = () => {
 
     if (sessionStatus === 'loading') {
         return (
-            <Flex height="100vh" justifyContent="center" alignItems="center">
-                <LoadingSpinner />
-            </Flex>
+            <Center height="100vh">
+                <Spinner size="xl" />
+            </Center>
         )
     }
 
     if (isLoadingListings || isLoadingPermissions) {
         return (
             <LayoutContainer>
-                <LoadingSpinner />
+                <Center height="100%">
+                    <Spinner size="xl" />
+                </Center>
             </LayoutContainer>
         )
     }

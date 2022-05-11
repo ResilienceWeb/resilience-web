@@ -18,6 +18,7 @@ import {
     Select,
     HStack,
     Text,
+    Spinner,
 } from '@chakra-ui/react'
 import { HiArrowLeft } from 'react-icons/hi'
 import { useListing, useCreateListing, useUpdateListing } from '@hooks/listings'
@@ -25,7 +26,6 @@ import { useCategories } from '@hooks/categories'
 import { emailValidator, fieldRequiredValidator } from '@helpers/formValidation'
 import ImageUpload from '@components/admin/listing-creation-dialog/ImageUpload'
 import LayoutContainer from '@components/admin/layout-container'
-import LoadingSpinner from '@components/loading-spinner'
 
 const EditorField = (props) => {
     const { label, name, ...otherProps } = props
@@ -97,7 +97,7 @@ export default function Listing() {
     if (!categories || !listing || isLoading) {
         return (
             <Flex height="100vh" justifyContent="center" alignItems="center">
-                <LoadingSpinner />
+                <Spinner size="xl" />
             </Flex>
         )
     }

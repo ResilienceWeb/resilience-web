@@ -1,7 +1,13 @@
-import { Box, Heading, Stack, StackDivider } from '@chakra-ui/react'
+import {
+    Box,
+    Heading,
+    Stack,
+    StackDivider,
+    Center,
+    Spinner,
+} from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
 import LayoutContainer from '@components/admin/layout-container'
-import LoadingSpinner from '@components/loading-spinner'
 import PermissionsList from '@components/admin/permissions-list'
 import { useAllPermissions } from '@hooks/permissions'
 
@@ -12,7 +18,9 @@ export default function Permissions() {
     if (sessionStatus === 'loading' || isLoadingPermissions) {
         return (
             <LayoutContainer>
-                <LoadingSpinner />
+                <Center height="100%">
+                    <Spinner size="xl" />
+                </Center>
             </LayoutContainer>
         )
     }

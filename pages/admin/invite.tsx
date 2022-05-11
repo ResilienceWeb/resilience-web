@@ -14,10 +14,11 @@ import {
     useToast,
     Stack,
     StackDivider,
+    Center,
+    Spinner,
 } from '@chakra-ui/react'
 import { signIn, useSession } from 'next-auth/react'
 import LayoutContainer from '@components/admin/layout-container'
-import LoadingSpinner from '@components/loading-spinner'
 import { useListings } from '@hooks/listings'
 import { sortStringsFunc } from '@helpers/utils'
 import { emailRequiredValidator } from '@helpers/formValidation'
@@ -93,7 +94,9 @@ export default function Invite() {
     if (sessionStatus === 'loading' || isLoadingListings) {
         return (
             <LayoutContainer>
-                <LoadingSpinner />
+                <Center height="100%">
+                    <Spinner size="xl" />
+                </Center>
             </LayoutContainer>
         )
     }
