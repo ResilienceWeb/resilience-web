@@ -1,23 +1,16 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import dynamic from 'next/dynamic'
 import { GetStaticProps } from 'next'
-import {
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
-    useMemo,
-    memo,
-} from 'react'
+import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { Box } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
 import groupBy from 'lodash/groupBy'
 
+import { useAppContext } from '@store/hooks'
 import MainList from '@components/main-list'
 import { REMOTE_URL } from '@helpers/config'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
-import { AppContext } from '@store/AppContext'
 
 const NetworkComponent = dynamic(() => import('../components/network'), {
     ssr: false,
@@ -34,7 +27,7 @@ type INetwork = {
 }
 
 const City = ({ data }) => {
-    const { isMobile } = useContext(AppContext)
+    const { isMobile } = useAppContext()
 
     const [isWebMode, setIsWebMode] = useState(undefined)
     const [isVolunteer, setIsVolunteer] = useState(false)

@@ -1,4 +1,4 @@
-import { memo, useContext, useCallback } from 'react'
+import { memo } from 'react'
 import {
     Modal,
     ModalOverlay,
@@ -13,11 +13,10 @@ import {
     FormLabel,
     Input,
     FormErrorMessage,
-    FormHelperText,
 } from '@chakra-ui/react'
-import { AppContext } from '@store/AppContext'
 import { Formik, Form, Field } from 'formik'
-import { REMOTE_URL } from '@helpers/config'
+
+import { useAppContext } from '@store/hooks'
 
 type props = {
     onSubmit: (id: any) => void
@@ -26,7 +25,7 @@ type props = {
 }
 
 const NewCategoryDialog: React.FC<props> = ({ onSubmit, isOpen, onClose }) => {
-    const { isMobile } = useContext(AppContext)
+    const { isMobile } = useAppContext()
 
     return (
         <Modal

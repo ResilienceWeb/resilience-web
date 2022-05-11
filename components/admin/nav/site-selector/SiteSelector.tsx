@@ -1,7 +1,8 @@
-import { memo, useContext, useMemo, useCallback } from 'react'
+import { memo, useMemo, useCallback } from 'react'
 import Select from 'react-select'
 import type { Options } from 'react-select'
-import { AppContext } from '@store/AppContext'
+
+import { useAppContext } from '@store/hooks'
 import { useSites } from '@hooks/sites'
 
 type SiteOption = {
@@ -10,7 +11,7 @@ type SiteOption = {
 }
 
 const SiteSelector = () => {
-    const { selectedSiteSlug, setSelectedSiteSlug } = useContext(AppContext)
+    const { selectedSiteSlug, setSelectedSiteSlug } = useAppContext()
     const { sites } = useSites()
 
     const siteOptions: Options<SiteOption> = useMemo(() => {

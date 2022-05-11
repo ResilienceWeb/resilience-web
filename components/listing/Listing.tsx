@@ -1,4 +1,4 @@
-import { memo, useContext, useCallback } from 'react'
+import { memo, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import {
     Box,
@@ -17,13 +17,14 @@ import {
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
+
+import { useAppContext } from '@store/hooks'
 import DescriptionRichText from '@components/main-list/description-rich-text'
-import { AppContext } from '@store/AppContext'
 import { REMOTE_URL } from '@helpers/config'
 
 function Listing({ listing }) {
     const router = useRouter()
-    const { isMobile } = useContext(AppContext)
+    const { isMobile } = useAppContext()
 
     const goBack = useCallback(() => {
         void router.push(`${REMOTE_URL}/city`)

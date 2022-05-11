@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState, memo, useContext } from 'react'
+import { useCallback, useEffect, useState, memo } from 'react'
 import { Heading, Text, Box, Stack } from '@chakra-ui/react'
 
-import { AppContext } from '@store/AppContext'
+import { useAppContext } from '@store/hooks'
 import ListingCreationDialog from '@components/admin/listing-creation-dialog'
 import DeleteConfirmationDialog from './delete-confirmation-dialog'
 import { removeNonAlphaNumeric } from '@helpers/utils'
@@ -24,7 +24,7 @@ const EditableList = ({
     const [isDeleteConfirmationOpenWithId, setIsDeleteConfirmationOpenWithId] =
         useState()
 
-    const { selectedLocationId } = useContext(AppContext)
+    const { selectedLocationId } = useAppContext()
 
     useEffect(() => {
         const filtered = items.filter((item) =>

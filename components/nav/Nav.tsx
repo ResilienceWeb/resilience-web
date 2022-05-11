@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { useSession } from 'next-auth/react'
@@ -21,8 +20,8 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, ChatIcon } from '@chakra-ui/icons'
 
+import { useAppContext } from '@store/hooks'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
-import { AppContext } from '@store/AppContext'
 import FeedbackDialog from '../feedback-dialog'
 import LogoImage from '../../public/logo.png'
 import styles from './Nav.module.scss'
@@ -31,7 +30,7 @@ export default function MainNav() {
     const { data: session } = useSession()
     const { isOpen, onToggle } = useDisclosure()
     const router = useRouter()
-    const { isMobile } = useContext(AppContext)
+    const { isMobile } = useAppContext()
 
     const {
         isOpen: isFeedbackDialogOpen,

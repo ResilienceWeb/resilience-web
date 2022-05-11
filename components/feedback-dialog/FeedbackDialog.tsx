@@ -1,4 +1,4 @@
-import { memo, useContext, useCallback } from 'react'
+import { memo, useCallback } from 'react'
 import { Formik, Form, Field } from 'formik'
 import {
     Modal,
@@ -18,7 +18,8 @@ import {
     chakra,
     useToast,
 } from '@chakra-ui/react'
-import { AppContext } from '@store/AppContext'
+
+import { useAppContext } from '@store/hooks'
 import {
     emailRequiredValidator,
     fieldRequiredValidator,
@@ -26,7 +27,7 @@ import {
 import { REMOTE_URL } from '@helpers/config'
 
 const FeedbackDialog = ({ isOpen, onClose }) => {
-    const { isMobile } = useContext(AppContext)
+    const { isMobile } = useAppContext()
     const toast = useToast()
 
     const onFormSubmit = useCallback(

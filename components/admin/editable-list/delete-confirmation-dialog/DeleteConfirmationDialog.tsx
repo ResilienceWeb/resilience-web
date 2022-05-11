@@ -1,4 +1,4 @@
-import { memo, useContext, useCallback } from 'react'
+import { memo } from 'react'
 import {
     Modal,
     ModalOverlay,
@@ -9,8 +9,8 @@ import {
     ModalCloseButton,
     Button,
 } from '@chakra-ui/react'
-import { AppContext } from '@store/AppContext'
-import { REMOTE_URL } from '@helpers/config'
+
+import { useAppContext } from '@store/hooks'
 
 type props = {
     handleRemove: (id: any) => void
@@ -23,7 +23,7 @@ const DeleteConfirmationialog: React.FC<props> = ({
     isOpen,
     onClose,
 }) => {
-    const { isMobile } = useContext(AppContext)
+    const { isMobile } = useAppContext()
 
     return (
         <Modal

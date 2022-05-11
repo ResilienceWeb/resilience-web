@@ -1,8 +1,8 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react'
-import { memo, useCallback, useContext } from 'react'
+import { memo, useCallback } from 'react'
 import { HiPlus } from 'react-icons/hi'
+import { useAppContext } from '@store/hooks'
 
-import { AppContext } from '@store/AppContext'
 import { useCreateCategory } from '@hooks/categories'
 import NewCategoryDialog from './new-category-dialog'
 
@@ -10,7 +10,7 @@ const Header = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { mutate: createCategory } = useCreateCategory()
 
-    const { selectedLocationId } = useContext(AppContext)
+    const { selectedLocationId } = useAppContext()
 
     const handleSubmit = useCallback(
         (data) => {

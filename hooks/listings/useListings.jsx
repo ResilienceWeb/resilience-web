@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
-import { useContext } from 'react'
-import { AppContext } from '@store/AppContext'
+
+import { useAppContext } from '@store/hooks'
 
 async function fetchListingsRequest({ queryKey }) {
     const [_key, { siteSlug }] = queryKey
@@ -11,7 +11,7 @@ async function fetchListingsRequest({ queryKey }) {
 }
 
 export default function useListings() {
-    const { selectedSiteSlug: siteSlug } = useContext(AppContext)
+    const { selectedSiteSlug: siteSlug } = useAppContext()
     const {
         data: listings,
         isLoading,

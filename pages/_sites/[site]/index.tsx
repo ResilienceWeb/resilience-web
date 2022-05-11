@@ -2,25 +2,18 @@
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import groupBy from 'lodash/groupBy'
-import {
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
-    useMemo,
-    memo,
-} from 'react'
+import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { Box, Center, Spinner } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 
+import { useAppContext } from '@store/hooks'
 import { REMOTE_URL } from '@helpers/config'
 import MainList from '@components/main-list'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
-import { AppContext } from '@store/AppContext'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
     ssr: false,
@@ -58,7 +51,7 @@ const Site = ({ data }) => {
         )
     }
 
-    const { isMobile } = useContext(AppContext)
+    const { isMobile } = useAppContext()
 
     const [isWebMode, setIsWebMode] = useState(undefined)
     const [isVolunteer, setIsVolunteer] = useState(false)
