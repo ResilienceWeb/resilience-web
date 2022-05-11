@@ -220,7 +220,7 @@ const NAV_ITEMS = [
     },
     {
         label: 'City',
-        href: '/city',
+        href: 'https://cambridge-city.cambridgeresilienceweb.org.uk',
     },
     {
         label: 'University',
