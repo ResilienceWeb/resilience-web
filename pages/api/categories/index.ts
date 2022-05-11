@@ -21,7 +21,7 @@ const handler = async (
                     where: {
                         location: {
                             slug: {
-                                contains: site,
+                                contains: site || 'cambridge-city',
                             },
                         },
                     },
