@@ -8,8 +8,11 @@ import {
     Icon,
     Link,
 } from '@chakra-ui/react'
+import { useAppContext } from '@store/hooks'
 
 export default function Hero() {
+    const { isMobile } = useAppContext()
+
     return (
         <Container maxW="7xl">
             <Stack
@@ -72,15 +75,18 @@ export default function Hero() {
                         </Link>
                     </Stack>
                 </Stack>
-                <Flex
-                    flex={1}
-                    justify={'center'}
-                    align={'center'}
-                    position={'relative'}
-                    w={'full'}
-                >
-                    <Illustration height="20rem" mt={{ base: 0, sm: 8 }} />
-                </Flex>
+
+                {!isMobile && (
+                    <Flex
+                        flex={1}
+                        justify={'center'}
+                        align={'center'}
+                        position={'relative'}
+                        w={'full'}
+                    >
+                        <Illustration height="20rem" mt={{ base: 0, sm: 8 }} />
+                    </Flex>
+                )}
             </Stack>
         </Container>
     )
