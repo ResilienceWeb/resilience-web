@@ -1,15 +1,4 @@
-import {
-    Table,
-    Tbody,
-    Td,
-    Th,
-    Thead,
-    Tr,
-    Tag,
-    Button,
-    Flex,
-    useDisclosure,
-} from '@chakra-ui/react'
+import { Table, Tbody, Td, Th, Thead, Tr, Tag } from '@chakra-ui/react'
 import chroma from 'chroma-js'
 import { memo, useMemo } from 'react'
 
@@ -30,7 +19,7 @@ const List = ({ categories }) => {
     }
 
     return (
-        <Table borderWidth="1px" fontSize="sm" background="#ffffff">
+        <Table borderWidth="1px" fontSize="sm" background="#ffffff" mb={'2rem'}>
             <Thead bg={'gray.50'}>
                 <Tr>
                     {columns.map((column, index) => (

@@ -39,6 +39,7 @@
         "nodemailer": "6.7.5",
         "qs": "6.10.3",
         "react": "17.0.2",
+        "react-colorful": "5.5.1",
         "react-dom": "17.0.2",
         "react-icons": "4.3.1",
         "react-intersection-observer": "9.1.0",
@@ -75,4 +76,3 @@
         "typescript": "4.6.4"
     }
 }
-

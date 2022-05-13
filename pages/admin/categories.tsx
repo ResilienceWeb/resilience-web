@@ -1,6 +1,13 @@
 import { useMemo } from 'react'
 import { useSession } from 'next-auth/react'
-import { Box, Stack, StackDivider, Heading, Spinner } from '@chakra-ui/react'
+import {
+    Box,
+    Stack,
+    StackDivider,
+    Heading,
+    Spinner,
+    Center,
+} from '@chakra-ui/react'
 import LayoutContainer from '@components/admin/layout-container'
 import { useCategories } from '@hooks/categories'
 import CategoriesHeader from '@components/admin/categories/header'
@@ -17,7 +24,9 @@ export default function Categories() {
     if (sessionStatus === 'loading' || isLoadingCategories) {
         return (
             <LayoutContainer>
-                <Spinner size="xl" />
+                <Center height="100%">
+                    <Spinner size="xl" />
+                </Center>
             </LayoutContainer>
         )
     }
