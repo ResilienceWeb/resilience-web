@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import {
     Box,
@@ -20,15 +20,25 @@ import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 
 import { useAppContext } from '@store/hooks'
 import DescriptionRichText from '@components/main-list/description-rich-text'
-import { REMOTE_URL } from '@helpers/config'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 function Listing({ listing }) {
     const router = useRouter()
     const { isMobile } = useAppContext()
+    const [subdomain, setSubdomain] = useState<string>()
+
+    useEffect(() => {
+        const hostname = window.location.hostname
+        if (!hostname.includes('.')) {
+            return null
+        }
+
+        setSubdomain(hostname.split('.')[0])
+    }, [])
 
     const goBack = useCallback(() => {
-        void router.push(`${REMOTE_URL}/city`)
-    }, [router])
+        void router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
+    }, [router, subdomain])
 
     return (
         <>
@@ -116,22 +126,25 @@ function Listing({ listing }) {
                             })}
                             justifyContent="space-between"
                         >
-                            <HStack mt={8} justifyContent="space-between">
-                                <Link
-                                    href={listing.website}
-                                    rel="noreferrer"
-                                    target="_blank"
-                                >
-                                    <Button
-                                        size="md"
-                                        bg="rw.700"
-                                        colorScheme="rw.700"
-                                        rightIcon={<ExternalLinkIcon />}
-                                        _hover={{ bg: 'rw.900' }}
+                            <HStack justifyContent="space-between">
+                                {listing.website && (
+                                    <Link
+                                        href={listing.website}
+                                        rel="noreferrer"
+                                        target="_blank"
                                     >
-                                        Visit website
-                                    </Button>
-                                </Link>
+                                        <Button
+                                            size="md"
+                                            bg="rw.700"
+                                            colorScheme="rw.700"
+                                            rightIcon={<ExternalLinkIcon />}
+                                            mt={8}
+                                            _hover={{ bg: 'rw.900' }}
+                                        >
+                                            Visit website
+                                        </Button>
+                                    </Link>
+                                )}
                                 <HStack spacing={4}>
                                     {listing.facebook && (
                                         <Link

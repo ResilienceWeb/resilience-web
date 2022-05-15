@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import {
     Modal,
     ModalOverlay,
@@ -24,7 +24,8 @@ import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
 import { HiUserGroup, HiShare } from 'react-icons/hi'
 import { GiNightSleep } from 'react-icons/gi'
 import { sanitizeLink } from '@helpers/utils'
-import { REMOTE_URL } from '@helpers/config'
+// import { REMOTE_URL } from '@helpers/config'
+import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import DescriptionRichText from '@components/main-list/description-rich-text'
 
 const Dialog = ({
@@ -39,6 +40,7 @@ const Dialog = ({
     onClose: () => void
 }) => {
     const toast = useToast()
+    const [subdomain, setSubdomain] = useState<string>()
 
     const websiteSanitized = useMemo(
         () => sanitizeLink(item.website),
@@ -55,10 +57,20 @@ const Dialog = ({
         })
     }, [toast])
 
+    useEffect(() => {
+        const hostname = window.location.hostname
+        if (!hostname.includes('.')) {
+            return null
+        }
+
+        setSubdomain(hostname.split('.')[0])
+    }, [])
     const handleShareButtonClick = useCallback(() => {
-        void navigator.clipboard.writeText(`${REMOTE_URL}/city/${item.slug}`)
+        void navigator.clipboard.writeText(
+            `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${item.slug}`,
+        )
         showCopiedToClipboardToast()
-    }, [item.slug, showCopiedToClipboardToast])
+    }, [item.slug, showCopiedToClipboardToast, subdomain])
 
     const socialLinks = (
         <>
