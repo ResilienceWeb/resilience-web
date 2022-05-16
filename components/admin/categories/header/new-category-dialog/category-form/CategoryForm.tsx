@@ -18,7 +18,7 @@ const CategoryForm = ({ onSubmit }) => {
         <Formik
             initialValues={{
                 label: '',
-                color: '',
+                color: 'ffffff',
             }}
             onSubmit={(values, actions) => {
                 actions.setSubmitting(false)
