@@ -9,6 +9,7 @@ import {
     Link,
 } from '@chakra-ui/react'
 import { useAppContext } from '@store/hooks'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 export default function Hero() {
     const { isMobile } = useAppContext()
@@ -49,7 +50,9 @@ export default function Hero() {
                         Be part of a growing movement of positive change...
                     </Text>
                     <Stack spacing={{ base: 4, sm: 6 }} direction="row">
-                        <Link href="/city">
+                        <Link
+                            href={`${PROTOCOL}://cambridge-city.${REMOTE_HOSTNAME}`}
+                        >
                             <Button
                                 rounded="full"
                                 px={6}

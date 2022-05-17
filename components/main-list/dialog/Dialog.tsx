@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import chroma from 'chroma-js'
 import {
     Modal,
     ModalOverlay,
@@ -136,6 +137,8 @@ const Dialog = ({
         </>
     )
 
+    const color = chroma(item.color)
+
     return (
         <Modal
             isCentered={!isMobile}
@@ -165,7 +168,7 @@ const Dialog = ({
                     <Flex justifyContent="space-between">
                         <Tag
                             mb={4}
-                            backgroundColor={item.color}
+                            backgroundColor={color.alpha(0.5).css()}
                             userSelect="none"
                         >
                             {item.category}

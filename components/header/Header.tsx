@@ -18,6 +18,7 @@ import {
 import { HiOutlineSearch, HiHome } from 'react-icons/hi'
 import ModeSwitch from '@components/mode-switch'
 import VolunteerSwitch from '@components/volunteer-switch'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 const customMultiSelectStyles = {
     container: () => ({
@@ -117,7 +118,7 @@ const Header = ({
     if (isMobile) {
         return (
             <>
-                <Link as={NextLink} href="/">
+                <Link as={NextLink} href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
                     <Button
                         leftIcon={<HiHome />}
                         colorScheme="blue"
@@ -169,7 +170,7 @@ const Header = ({
                     checked={isWebMode}
                     handleSwitchChange={handleSwitchChange}
                 />
-                <Link as={NextLink} href="/">
+                <Link as={NextLink} href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
                     <Button
                         leftIcon={<HiHome />}
                         colorScheme="blue"
