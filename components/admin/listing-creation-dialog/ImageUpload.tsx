@@ -59,6 +59,7 @@ const ImageUpload = ({ field, form, formProps }) => {
                             src={preview ?? field.value}
                             layout="fill"
                             objectFit="contain"
+                            unoptimized
                         />
                     </div>
                 ) : (
