@@ -17,11 +17,14 @@ const SiteSelector = () => {
     const siteOptions: Options<SiteOption> = useMemo(() => {
         if (!sites) return []
 
+        if (sites?.length && !selectedSiteSlug) {
+            setSelectedSiteSlug(sites[0].slug)
+        }
         return sites.map((s) => ({
             value: s.slug,
             label: s.title,
         }))
-    }, [sites])
+    }, [selectedSiteSlug, setSelectedSiteSlug, sites])
 
     const selectedOption = useMemo(
         () => siteOptions.find((s) => s.value === selectedSiteSlug),
@@ -36,13 +39,11 @@ const SiteSelector = () => {
     )
 
     return (
-        <div>
-            <Select
-                options={siteOptions}
-                value={selectedOption}
-                onChange={handleSiteChange}
-            />
-        </div>
+        <Select
+            options={siteOptions}
+            value={selectedOption}
+            onChange={handleSiteChange}
+        />
     )
 }
 
