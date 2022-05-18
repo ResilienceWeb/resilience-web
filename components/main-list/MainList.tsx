@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useCallback, useState, useMemo } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import {
     chakra,
@@ -8,6 +8,7 @@ import {
     useDisclosure,
 } from '@chakra-ui/react'
 
+import { useCategories } from '@hooks/categories'
 import Footer from '@components/footer'
 import Dialog from './dialog'
 import Item from './item'
@@ -32,6 +33,14 @@ const MainList = ({ filteredItems, isMobile }) => {
         setSelectedDataItem(null)
         onCloseDialog()
     }, [onCloseDialog])
+
+    const { categories } = useCategories()
+    const categoriesIndexes = useMemo(() => {
+        const categoriesIndexexObj = {}
+        categories?.map((c, i) => (categoriesIndexexObj[c.label] = i))
+
+        return categoriesIndexexObj
+    }, [categories])
 
     return (
         <>
@@ -62,6 +71,7 @@ const MainList = ({ filteredItems, isMobile }) => {
                         <AnimatePresence>
                             {filteredItems.map((item) => (
                                 <Item
+                                    categoriesIndexes={categoriesIndexes}
                                     dataItem={item}
                                     onOpenDialog={handleOpenDialog}
                                     key={item.id}

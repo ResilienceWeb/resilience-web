@@ -16,7 +16,7 @@ import { HiUserGroup } from 'react-icons/hi'
 
 import ImagePlaceholder from './image-placeholder'
 
-const Item = ({ dataItem, onOpenDialog }) => {
+const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
     const { ref, inView } = useInView()
     const animation = useAnimation()
 
@@ -43,6 +43,11 @@ const Item = ({ dataItem, onOpenDialog }) => {
     const tagBackgroundColor = useMemo(
         () => chroma(dataItem.color).alpha(0.5).css(),
         [dataItem.color],
+    )
+
+    const categoryIndex = useMemo(
+        () => categoriesIndexes?.[dataItem.category],
+        [categoriesIndexes, dataItem.category],
     )
 
     return (
@@ -74,10 +79,13 @@ const Item = ({ dataItem, onOpenDialog }) => {
                         borderTopRadius=".375rem"
                     />
                 ) : (
-                    <ImagePlaceholder
-                        backgroundColor={tagBackgroundColor}
-                        categoryLabel={dataItem.category}
-                    />
+                    categoryIndex !== null &&
+                    categoryIndex !== undefined && (
+                        <ImagePlaceholder
+                            backgroundColor={tagBackgroundColor}
+                            categoryIndex={categoryIndex}
+                        />
+                    )
                 )}
 
                 <Box px={3} pb={3}>
