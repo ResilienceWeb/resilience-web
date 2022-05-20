@@ -315,13 +315,15 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
         })
     }
 
-    if (!transformedData) return { notFound: true, revalidate: 10 }
+    if (!transformedData) {
+        return { notFound: true, revalidate: 30 }
+    }
 
     return {
         props: {
             data: transformedData,
         },
-        revalidate: 3600,
+        revalidate: 30,
     }
 }
 
