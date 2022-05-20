@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import { Button, Stack } from '@chakra-ui/react'
 
-function CommandCell({ enterEdit, remove }) {
+function CommandCell({ goToEdit, remove }) {
     return (props) => {
         if (!props.dataItem) return null
 
@@ -11,7 +11,7 @@ function CommandCell({ enterEdit, remove }) {
                     <Button
                         colorScheme="blue"
                         className="k-button"
-                        onClick={() => enterEdit(props.dataItem)}
+                        onClick={() => goToEdit(props.dataItem)}
                         size="sm"
                     >
                         Edit

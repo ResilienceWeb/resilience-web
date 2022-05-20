@@ -92,7 +92,7 @@
         "jsx-a11y/anchor-is-valid": 1,
         "jsx-a11y/label-has-associated-control": 1,
         "@typescript-eslint/ban-ts-comment": 0,
-        "@typescript-eslint/no-unused-vars": 0,
+        "@typescript-eslint/no-unused-vars": 1,
         "@typescript-eslint/no-unsafe-assignment": 0,
         "@typescript-eslint/no-unsafe-member-access": 0,
         "@typescript-eslint/restrict-template-expressions": 0,

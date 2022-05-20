@@ -5,16 +5,10 @@ import { useRouter } from 'next/router'
 
 import LayoutContainer from '@components/admin/layout-container'
 import EditableList from '@components/admin/editable-list'
-import {
-    useListings,
-    useCreateListing,
-    useUpdateListing,
-    useDeleteListing,
-} from '@hooks/listings'
+import { useListings, useDeleteListing } from '@hooks/listings'
 import { usePermissions } from '@hooks/permissions'
 
 const Admin = () => {
-    const { query } = useRouter()
     const { data: session, status: sessionStatus } = useSession()
 
     const {
@@ -23,11 +17,9 @@ const Admin = () => {
         isError: isListingsError,
     } = useListings()
     const { permissions, isLoading: isLoadingPermissions } = usePermissions()
-
-    const { mutate: updateListing } = useUpdateListing()
-    const { mutate: createListing } = useCreateListing()
     const { mutate: deleteListing } = useDeleteListing()
 
+    const { query } = useRouter()
     useEffect(() => {
         if (!session && sessionStatus !== 'loading') {
             if (query.activate) {
@@ -73,11 +65,9 @@ const Admin = () => {
     return (
         <LayoutContainer>
             <EditableList
-                createListing={createListing}
                 deleteListing={deleteListing}
                 isAdmin={session.user.admin}
                 items={allowedListings}
-                updateListing={updateListing}
             />
         </LayoutContainer>
     )

@@ -2,29 +2,17 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState, memo } from 'react'
 import { Heading, Text, Box, Stack } from '@chakra-ui/react'
 
-import { useAppContext } from '@store/hooks'
-import ListingCreationDialog from '@components/admin/listing-creation-dialog'
 import DeleteConfirmationDialog from './delete-confirmation-dialog'
 import { removeNonAlphaNumeric } from '@helpers/utils'
 import Table from './table/Table'
 import TableActions from './table/TableActions'
 
-const EditableList = ({
-    createListing,
-    deleteListing,
-    isAdmin,
-    items,
-    updateListing,
-}) => {
+const EditableList = ({ deleteListing, isAdmin, items }) => {
     const router = useRouter()
     const [data, setData] = useState(items)
     const [filter, setFilter] = useState('')
-    const [itemInEdit, setItemInEdit] = useState()
-    const [isListingCreationOpen, setIsListingCreationOpen] = useState(false)
     const [isDeleteConfirmationOpenWithId, setIsDeleteConfirmationOpenWithId] =
         useState()
-
-    const { selectedLocationId } = useAppContext()
 
     useEffect(() => {
         const filtered = items.filter((item) =>
@@ -35,22 +23,16 @@ const EditableList = ({
         setData(filtered)
     }, [filter, items])
 
-    const enterEdit = useCallback(
+    const goToEdit = useCallback(
         async (dataItem) => {
             await router.push(`/admin/${dataItem.slug}`)
         },
         [router],
     )
 
-    const openListingCreationDialog = useCallback(() => {
-        setItemInEdit(null)
-        setIsListingCreationOpen(true)
-    }, [setItemInEdit])
-
-    const closeListingCreationDialog = useCallback(() => {
-        setIsListingCreationOpen(false)
-        setItemInEdit(null)
-    }, [])
+    const goToCreateListing = useCallback(async () => {
+        await router.push('/admin/new-listing')
+    }, [router])
 
     const openRemoveDialog = useCallback((id) => {
         setIsDeleteConfirmationOpenWithId(id)
@@ -63,24 +45,6 @@ const EditableList = ({
         deleteListing({ id: isDeleteConfirmationOpenWithId })
         closeRemoveDialog()
     }, [closeRemoveDialog, deleteListing, isDeleteConfirmationOpenWithId])
-
-    const handleSubmit = useCallback(
-        (data) => {
-            if (data.id) {
-                updateListing(data)
-            } else {
-                data.locationId = selectedLocationId
-                createListing(data)
-            }
-            closeListingCreationDialog()
-        },
-        [
-            closeListingCreationDialog,
-            createListing,
-            selectedLocationId,
-            updateListing,
-        ],
-    )
 
     const handleFilterChange = useCallback((event) => {
         setFilter(event.target.value)
@@ -120,21 +84,14 @@ const EditableList = ({
                 <TableActions
                     filterValue={filter}
                     onFilterChange={handleFilterChange}
-                    openListingCreationDialog={openListingCreationDialog}
+                    goToCreateListing={goToCreateListing}
                 />
             </Stack>
             <Table
-                enterEdit={enterEdit}
+                goToEdit={goToEdit}
                 removeItem={openRemoveDialog}
                 items={data}
             />
-            {(isListingCreationOpen || itemInEdit) && (
-                <ListingCreationDialog
-                    itemInEdit={itemInEdit}
-                    onClose={closeListingCreationDialog}
-                    onSubmit={handleSubmit}
-                />
-            )}
             <DeleteConfirmationDialog
                 isOpen={isDeleteConfirmationOpenWithId}
                 onClose={closeRemoveDialog}

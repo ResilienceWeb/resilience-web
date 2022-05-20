@@ -24,8 +24,8 @@ export default function useCreateListing() {
         onMutate: async (newListing) => {
             await queryClient.cancelQueries('listings')
             const previousListings = queryClient.getQueryData('listings')
-            queryClient.setQueryData('listings', (old) => [newListing])
-            return { previousListings }
+            queryClient.setQueryData(['listings', newListing.id], newListing)
+            return { previousListings, newListing }
         },
         onError: (err, newListing, context) => {
             queryClient.setQueryData('listings', context.previousListings)

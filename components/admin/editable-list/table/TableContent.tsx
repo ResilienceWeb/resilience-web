@@ -13,7 +13,7 @@ import {
     useColorModeValue as mode,
 } from '@chakra-ui/react'
 
-const TableContent = ({ enterEdit, items, removeItem }) => {
+const TableContent = ({ goToEdit, items, removeItem }) => {
     if (!items) return null
 
     return (
@@ -44,7 +44,7 @@ const TableContent = ({ enterEdit, items, removeItem }) => {
                             <Stack direction="column" spacing={2}>
                                 <Button
                                     colorScheme="blue"
-                                    onClick={() => enterEdit(row)}
+                                    onClick={() => goToEdit(row)}
                                     size="sm"
                                 >
                                     Edit

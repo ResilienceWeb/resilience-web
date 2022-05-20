@@ -12,11 +12,7 @@ import { useSession } from 'next-auth/react'
 import { memo } from 'react'
 import { HiOutlineSearch, HiPlus } from 'react-icons/hi'
 
-const TableActions = ({
-    filterValue,
-    onFilterChange,
-    openListingCreationDialog,
-}) => {
+const TableActions = ({ filterValue, onFilterChange, goToCreateListing }) => {
     const { data: session } = useSession()
 
     return (
@@ -63,7 +59,7 @@ const TableActions = ({
                         colorScheme="rw.700"
                         iconSpacing="1"
                         leftIcon={<HiPlus fontSize="1.25em" />}
-                        onClick={openListingCreationDialog}
+                        onClick={goToCreateListing}
                         variant="solid"
                         size="sm"
                         _hover={{ bg: 'rw.900' }}
