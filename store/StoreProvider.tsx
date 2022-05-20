@@ -32,8 +32,7 @@ const StoreProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        if (subdomain) {
-            console.log(subdomain)
+        if (subdomain && subdomain !== 'resilienceweb') {
             setSelectedSiteSlug(subdomain)
         }
     }, [subdomain])
