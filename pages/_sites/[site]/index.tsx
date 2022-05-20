@@ -280,7 +280,7 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
     // Main node
     transformedData.nodes.push({
         id: 999,
-        label: siteData?.centralNodeLabel,
+        label: siteData?.title,
         color: '#fcba03',
         isDescriptive: true,
         font: {

@@ -1,8 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withSentry } from '@sentry/nextjs'
+import { Location } from '@prisma/client'
 import prisma from '../../../prisma/client'
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+type ResponseData = {
+    error?: string
+    site?: Location
+}
+
+const handler = async (
+    req: NextApiRequest,
+    res: NextApiResponse<ResponseData>,
+) => {
     try {
         const { slug } = req.query
         const site = await prisma.location.findFirst({
@@ -15,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } catch (e) {
         res.status(500)
         res.json({
-            error: `Unable to fetch location from database - ${e}`,
+            error: `Unable to fetch site from database - ${e}`,
         })
     }
 }
