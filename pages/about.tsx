@@ -17,7 +17,7 @@ const About = ({ page }) => {
                     title: 'About | Cambridge Resilience Web',
                     description:
                         'Two webs of resilience, showing the environmental and social justice groups in Cambridge',
-                    url: 'https://cambridgeresilienceweb.org.uk/about',
+                    url: 'https://resilienceweb.org.uk/about',
                 }}
             />
             <Layout applyPostStyling>

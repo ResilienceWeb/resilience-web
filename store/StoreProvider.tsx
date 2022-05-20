@@ -33,6 +33,7 @@ const StoreProvider = ({ children }) => {
 
     useEffect(() => {
         if (subdomain) {
+            console.log(subdomain)
             setSelectedSiteSlug(subdomain)
         }
     }, [subdomain])

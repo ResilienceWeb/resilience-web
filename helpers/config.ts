@@ -1,12 +1,12 @@
 export const REMOTE_URL =
     process.env.NODE_ENV === 'development'
         ? 'http://localhost:3000'
-        : 'https://cambridgeresilienceweb.org.uk'
+        : 'https://resilienceweb.org.uk'
 
 export const REMOTE_HOSTNAME =
     process.env.NODE_ENV === 'development'
         ? 'localhost:3000'
-        : 'cambridgeresilienceweb.org.uk'
+        : 'resilienceweb.org.uk'
 
 export const PROTOCOL =
     process.env.NODE_ENV === 'development' ? 'http' : 'https'

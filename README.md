@@ -1,6 +1,6 @@
 Inspiration: [https://www.transitioncambridge.org/thewiki/wiki-uploads/TTEvents.TranNews/megsweb.pdf](https://www.transitioncambridge.org/thewiki/wiki-uploads/TTEvents.TranNews/megsweb.pdf)
 
-Currently online at [https://cambridgeresilienceweb.org.uk](https://cambridgeresilienceweb.org.uk)
+Currently online at [https://resilienceweb.org.uk](https://resilienceweb.org.uk)
 
 ## Running the app locally
 * Make sure you have Node.js installed from https://nodejs.org

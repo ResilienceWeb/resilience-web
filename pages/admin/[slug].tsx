@@ -582,7 +582,7 @@ export default function Listing() {
                                                                         rounded="md"
                                                                         userSelect="none"
                                                                     >
-                                                                        cambridgeresilienceweb.org.uk/city/
+                                                                        resilienceweb.org.uk/
                                                                     </InputLeftAddon>
                                                                     <Input
                                                                         {...field}
