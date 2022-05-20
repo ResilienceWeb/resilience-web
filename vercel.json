@@ -6,6 +6,13 @@
             "headers": {
                 "Location": "https://lm687.shinyapps.io/code/"
             }
+        },
+        {
+            "src": "/city",
+            "status": 301,
+            "headers": {
+                "Location": "/"
+            }
         }
     ]
 }
