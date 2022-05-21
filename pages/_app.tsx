@@ -35,15 +35,6 @@ const theme = extendTheme({
 
 const queryClient = new QueryClient()
 
-function SafeHydrate({ children }) {
-    // This prevents the app from rendering on the server
-    return (
-        <div suppressHydrationWarning>
-            {typeof window === 'undefined' ? null : children}
-        </div>
-    )
-}
-
 function App({ Component, pageProps }: AppProps) {
     return (
         <>
@@ -75,6 +66,11 @@ function App({ Component, pageProps }: AppProps) {
             <Script
                 strategy="afterInteractive"
                 src="https://cabin.cambridgeresilienceweb.org.uk/hello.js"
+            />
+            <Script
+                defer
+                data-domain-id="0d744e7e937f32cc835ae0ce6188555b3f2dbd2c"
+                src="https://fairdatacenter.de/cdn/fair.js"
             />
             <SessionProvider
                 refetchInterval={5 * 60}
