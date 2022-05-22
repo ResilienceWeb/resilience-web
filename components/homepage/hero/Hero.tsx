@@ -59,6 +59,7 @@ export default function Hero() {
                                 bg="rw.700"
                                 colorScheme="rw.700"
                                 size="lg"
+                                data-cabin-event="navigate-city"
                                 _hover={{ bg: 'rw.900' }}
                             >
                                 City
@@ -71,6 +72,7 @@ export default function Hero() {
                                 rounded="full"
                                 px={6}
                                 size="lg"
+                                data-cabin-event="navigate-uni"
                                 _hover={{ bg: 'rw.900' }}
                             >
                                 University
