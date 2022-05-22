@@ -16,6 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             where: { slug },
             include: {
                 category: true,
+                location: true,
             },
         })
 

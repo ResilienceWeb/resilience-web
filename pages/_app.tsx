@@ -47,6 +47,10 @@ function App({ Component, pageProps }: AppProps) {
                     description:
                         'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
                 }}
+                twitter={{
+                    handle: '@ResilienceWebCB',
+                    cardType: 'summary_large_image',
+                }}
             />
             <Head>
                 <meta charSet="utf-8" />

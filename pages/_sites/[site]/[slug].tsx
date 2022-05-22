@@ -1,12 +1,13 @@
 import { memo } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
-import { NextSeo } from 'next-seo'
+import { NextSeo, LocalBusinessJsonLd } from 'next-seo'
 import { useRouter } from 'next/router'
-import { REMOTE_URL } from '@helpers/config'
+import { REMOTE_URL, REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import Layout from '@components/layout'
+import { Listing as ListingType } from '@prisma/client'
 import ListingDisplay from '@components/listing'
 
-function Listing({ listing }) {
+function Listing({ listing }: { listing: ListingType | any }) {
     const router = useRouter()
     if (router.isFallback) {
         return (
@@ -24,6 +25,17 @@ function Listing({ listing }) {
                     title: `${listing.title} | Cambridge Resilience Web`,
                     images: [{ url: listing.image }],
                 }}
+            />
+            <LocalBusinessJsonLd
+                type="Store"
+                id={`${PROTOCOL}://${listing.location.slug}.${REMOTE_HOSTNAME}/${listing.slug}`}
+                address={{
+                    addressCountry: 'GB',
+                    addressLocality: 'Cambridge',
+                    addressRegion: 'Cambridgeshire',
+                }}
+                name={listing.title}
+                description={listing.description}
             />
             <Layout>
                 <ListingDisplay listing={listing} />
