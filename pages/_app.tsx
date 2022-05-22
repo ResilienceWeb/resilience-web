@@ -65,7 +65,7 @@ function App({ Component, pageProps }: AppProps) {
             </Head>
             <Script
                 strategy="afterInteractive"
-                src="https://cabin.cambridgeresilienceweb.org.uk/hello.js"
+                src="https://cabin.resilienceweb.org.uk/hello.js"
             />
             <SessionProvider
                 refetchInterval={5 * 60}
