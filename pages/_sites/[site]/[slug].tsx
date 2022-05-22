@@ -28,7 +28,7 @@ function Listing({ listing }: { listing: ListingType | any }) {
             />
             <LocalBusinessJsonLd
                 type="Store"
-                id={`${PROTOCOL}://${listing.location.slug}.${REMOTE_HOSTNAME}/${listing.slug}`}
+                // id={`${PROTOCOL}://${listing.location.slug}.${REMOTE_HOSTNAME}/${listing.slug}`}
                 address={{
                     addressCountry: 'GB',
                     addressLocality: 'Cambridge',
@@ -36,6 +36,7 @@ function Listing({ listing }: { listing: ListingType | any }) {
                 }}
                 name={listing.title}
                 description={listing.description}
+                id={''}
             />
             <Layout>
                 <ListingDisplay listing={listing} />
