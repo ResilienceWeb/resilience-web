@@ -64,6 +64,10 @@ function App({ Component, pageProps }: AppProps) {
                 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
             </Head>
             <Script
+                strategy="afterInteractive"
+                src="https://cabin.cambridgeresilienceweb.org.uk/hello.js"
+            />
+            <Script
                 id="piwik-init"
                 strategy="afterInteractive"
                 dangerouslySetInnerHTML={{
