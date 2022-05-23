@@ -9,7 +9,7 @@ import ListingDisplay from '@components/listing'
 
 function Listing({ listing }: { listing: ListingType | any }) {
     const router = useRouter()
-    if (router.isFallback) {
+    if (router.isFallback || !listing) {
         return (
             <Layout>
                 <h1>Please wait…</h1>
@@ -50,14 +50,14 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
     const { listings } = data
     const paths = listings.map((l) => ({
         params: {
-            slug: `/${l.slug}`,
+            slug: l.slug,
             site: l.location.slug,
         },
     }))
 
     return {
         paths,
-        fallback: true,
+        fallback: 'blocking',
     }
 }
 
