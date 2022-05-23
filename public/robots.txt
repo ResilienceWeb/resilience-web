@@ -1,3 +1,5 @@
+Sitemap: https://resilienceweb.org.uk/sitemap.xml
+
 User-agent: *
 Allow: /*
 Disallow: /api/*

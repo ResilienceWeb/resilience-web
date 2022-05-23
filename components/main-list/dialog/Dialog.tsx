@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import NextLink from 'next/link'
 import chroma from 'chroma-js'
 import {
     Modal,
@@ -18,6 +19,7 @@ import {
     Tooltip,
     Text,
     Image,
+    Button,
     useToast,
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
@@ -65,12 +67,12 @@ const Dialog = ({
 
         setSubdomain(hostname.split('.')[0])
     }, [])
+
+    const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${item.slug}`
     const handleShareButtonClick = useCallback(() => {
-        void navigator.clipboard.writeText(
-            `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${item.slug}`,
-        )
+        void navigator.clipboard.writeText(individualListingLink)
         showCopiedToClipboardToast()
-    }, [item.slug, showCopiedToClipboardToast, subdomain])
+    }, [showCopiedToClipboardToast, individualListingLink])
 
     const socialLinks = (
         <>
@@ -198,9 +200,21 @@ const Dialog = ({
                             {socialLinks}
                         </HStack>
                     )}
+
                     <Box mt={4} mb={8}>
                         <DescriptionRichText html={item.description} />
                     </Box>
+                    <Link as={NextLink} href={individualListingLink}>
+                        <Button
+                            bg="rw.700"
+                            colorScheme="rw.700"
+                            mt={2}
+                            variant="solid"
+                            _hover={{ bg: 'rw.900' }}
+                        >
+                            View listing
+                        </Button>
+                    </Link>
                 </ModalBody>
 
                 {!isMobile && (
