@@ -60,6 +60,10 @@ function App({ Component, pageProps }: AppProps) {
                     content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
                 />
                 <meta name="og:image" content="static/preview-image.png" />
+                <meta
+                    name="google-site-verification"
+                    content="ChMwFePa1V0s36L1f6Gj4CaD74qxfcMSNas2w0GGu1Q"
+                />
                 <link
                     rel="shortcut icon"
                     href="/favicon.ico"
