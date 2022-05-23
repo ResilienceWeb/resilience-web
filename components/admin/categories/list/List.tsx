@@ -1,6 +1,6 @@
 import { Table, Tbody, Td, Th, Thead, Tr, Tag } from '@chakra-ui/react'
 import chroma from 'chroma-js'
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 
 const columns = [
     {
