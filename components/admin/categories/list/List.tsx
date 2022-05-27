@@ -1,6 +1,7 @@
-import { Table, Tbody, Td, Th, Thead, Tr, Tag } from '@chakra-ui/react'
-import chroma from 'chroma-js'
+import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { memo } from 'react'
+
+import CategoryTag from '@components/category-tag'
 
 const columns = [
     {
@@ -38,13 +39,9 @@ const List = ({ categories }) => {
                             if (column.accessor === 'color') {
                                 return (
                                     <Td key={index} width="100px">
-                                        <Tag
-                                            backgroundColor={chroma(cell)
-                                                .alpha(0.5)
-                                                .css()}
-                                        >
+                                        <CategoryTag mb={4} colorHex={cell}>
                                             {`#${cell}`}
-                                        </Tag>
+                                        </CategoryTag>
                                     </Td>
                                 )
                             }

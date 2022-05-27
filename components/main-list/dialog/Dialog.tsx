@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import NextLink from 'next/link'
-import chroma from 'chroma-js'
 import {
     Modal,
     ModalOverlay,
@@ -10,7 +9,6 @@ import {
     ModalBody,
     ModalCloseButton,
     Box,
-    Tag,
     Icon,
     HStack,
     Link,
@@ -29,6 +27,7 @@ import { GiNightSleep } from 'react-icons/gi'
 import { sanitizeLink } from '@helpers/utils'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import DescriptionRichText from '@components/main-list/description-rich-text'
+import CategoryTag from '@components/category-tag'
 
 const Dialog = ({
     isOpen,
@@ -138,14 +137,12 @@ const Dialog = ({
         </>
     )
 
-    const color = chroma(item.color)
-
     return (
         <Modal
             isCentered={!isMobile}
             isOpen={isOpen}
             onClose={onClose}
-            size={isMobile ? 'full' : 'xl'}
+            size={isMobile ? 'full' : '2xl'}
         >
             <ModalOverlay />
             <ModalContent opacity="1">
@@ -167,13 +164,9 @@ const Dialog = ({
                 />
                 <ModalBody>
                     <Flex justifyContent="space-between">
-                        <Tag
-                            mb={4}
-                            backgroundColor={color.alpha(0.5).css()}
-                            userSelect="none"
-                        >
+                        <CategoryTag mb={4} colorHex={item.color}>
                             {item.category}
-                        </Tag>
+                        </CategoryTag>
                         <Icon
                             as={HiShare}
                             cursor="pointer"

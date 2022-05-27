@@ -1,5 +1,4 @@
 import { memo } from 'react'
-import chroma from 'chroma-js'
 import {
     Button,
     Table,
@@ -9,9 +8,10 @@ import {
     Thead,
     Tr,
     Stack,
-    Tag,
     useColorModeValue as mode,
 } from '@chakra-ui/react'
+
+import CategoryTag from '@components/category-tag'
 
 const TableContent = ({ goToEdit, items, removeItem }) => {
     if (!items) return null
@@ -75,11 +75,10 @@ export const columns = [
         accessor: 'category',
         Cell: function StatusCell(category) {
             if (!category || !category.color) return null
-            const color = chroma(`#${category.color}`)
             return (
-                <Tag fontSize="xs" backgroundColor={color.alpha(0.5).css()}>
+                <CategoryTag fontSize="xs" colorHex={category.color}>
                     {category.label}
-                </Tag>
+                </CategoryTag>
             )
         },
     },

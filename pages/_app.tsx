@@ -64,6 +64,7 @@ function App({ Component, pageProps }: AppProps) {
                     name="google-site-verification"
                     content="ChMwFePa1V0s36L1f6Gj4CaD74qxfcMSNas2w0GGu1Q"
                 />
+                <link rel="canonical" href="https://resilienceweb.org.uk" />
                 <link
                     rel="shortcut icon"
                     href="/favicon.ico"

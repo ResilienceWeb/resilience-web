@@ -6,7 +6,6 @@ import {
     useBreakpointValue,
     Flex,
     Image,
-    Tag,
     HStack,
     Link,
     Icon,
@@ -21,6 +20,7 @@ import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 import { useAppContext } from '@store/hooks'
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import CategoryTag from '@components/category-tag'
 
 function Listing({ listing }) {
     const router = useRouter()
@@ -101,14 +101,13 @@ function Listing({ listing }) {
                                 <Heading as="h1" data-testid="Title" pb={2}>
                                     {listing.title}
                                 </Heading>
-                                <Tag
+                                <CategoryTag
                                     mb={2}
-                                    backgroundColor={`#${listing.category.color}`}
-                                    userSelect="none"
+                                    colorHex={listing.category.color}
                                     size="md"
                                 >
                                     {listing.category.label}
-                                </Tag>
+                                </CategoryTag>
                             </HStack>
                             {listing.seekingVolunteers && (
                                 <Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">

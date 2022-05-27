@@ -2,17 +2,10 @@ import { useCallback, useMemo, useEffect, memo } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import chroma from 'chroma-js'
-import {
-    Box,
-    Flex,
-    Tag,
-    Text,
-    Icon,
-    Tooltip,
-    Image,
-    chakra,
-} from '@chakra-ui/react'
+import { Box, Flex, Text, Icon, Tooltip, Image, chakra } from '@chakra-ui/react'
 import { HiUserGroup } from 'react-icons/hi'
+
+import CategoryTag from '@components/category-tag'
 
 import ImagePlaceholder from './image-placeholder'
 
@@ -99,14 +92,13 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
                         >
                             {dataItem.title}
                         </chakra.h2>
-                        <Tag
-                            backgroundColor={tagBackgroundColor}
-                            userSelect="none"
+                        <CategoryTag
+                            colorHex={dataItem.color}
                             height="26px"
                             minWidth="fit-content"
                         >
                             {dataItem.category}
-                        </Tag>
+                        </CategoryTag>
                     </Flex>
                     {dataItem.seekingVolunteers && (
                         <Flex>
