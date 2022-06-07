@@ -1,11 +1,11 @@
 import { memo, useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import {
     Box,
     Heading,
     useBreakpointValue,
     Flex,
-    Image,
     HStack,
     Link,
     Icon,
@@ -17,14 +17,12 @@ import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 
-import { useAppContext } from '@store/hooks'
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
 
 function Listing({ listing }) {
     const router = useRouter()
-    const { isMobile } = useAppContext()
     const [subdomain, setSubdomain] = useState<string>()
 
     useEffect(() => {
@@ -61,18 +59,17 @@ function Listing({ listing }) {
                 </Button>
                 <Image
                     src={listing.image}
-                    alt={`Image for article Title`}
-                    borderLeftRadius={!isMobile ? 'lg' : undefined}
-                    boxSize={useBreakpointValue({
-                        base: '100%',
-                        md: '700px',
-                    })}
-                    maxHeight="400px"
+                    alt={`Image for ${listing.title}`}
                     objectFit="cover"
-                    borderRadius={useBreakpointValue({
-                        base: 'none',
-                        md: 'lg',
-                    })}
+                    height="400px"
+                    width="700px"
+                    style={{
+                        maxHeight: '400px',
+                        borderRadius: useBreakpointValue({
+                            base: 'none',
+                            md: '8px',
+                        }),
+                    }}
                 />
                 <Flex
                     flexDirection={useBreakpointValue({

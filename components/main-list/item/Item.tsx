@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useEffect, memo } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import Image from 'next/image'
 import chroma from 'chroma-js'
-import { Box, Flex, Text, Icon, Tooltip, Image, chakra } from '@chakra-ui/react'
+import { Box, Flex, Text, Icon, Tooltip, chakra } from '@chakra-ui/react'
 import { HiUserGroup } from 'react-icons/hi'
 
 import CategoryTag from '@components/category-tag'
@@ -67,9 +68,13 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
                         alt={`${dataItem.label} cover image`}
                         src={dataItem.image}
                         objectFit="cover"
-                        width="100%"
+                        width="300px"
                         height="170px"
-                        borderTopRadius=".375rem"
+                        layout="responsive"
+                        style={{
+                            borderTopLeftRadius: '.375rem',
+                            borderTopRightRadius: '.375rem',
+                        }}
                     />
                 ) : (
                     categoryIndex !== null &&

@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import NextLink from 'next/link'
+import Image from 'next/image'
 import {
     Modal,
     ModalOverlay,
@@ -16,7 +17,6 @@ import {
     Flex,
     Tooltip,
     Text,
-    Image,
     Button,
     useToast,
 } from '@chakra-ui/react'
@@ -151,9 +151,12 @@ const Dialog = ({
                         alt={`${item.label} cover image`}
                         src={item.image}
                         objectFit="cover"
-                        width="100%"
-                        maxHeight="300px"
-                        borderTopRadius="0.375rem"
+                        width="672px"
+                        height="300px"
+                        style={{
+                            borderTopLeftRadius: '0.375rem',
+                            borderTopRightRadius: '0.375rem',
+                        }}
                     />
                 )}
 
