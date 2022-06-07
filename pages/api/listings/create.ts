@@ -36,6 +36,8 @@ const handler = async (
 
         const form = formidable({
             keepExtensions: true,
+            allowEmptyFiles: false,
+            maxFileSize: 5 * 1024 * 1024,
         })
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises

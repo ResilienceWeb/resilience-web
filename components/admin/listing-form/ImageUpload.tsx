@@ -14,11 +14,33 @@ import {
     Text,
 } from '@chakra-ui/react'
 
+import optimizeImage from '@helpers/optimizeImage'
+
 const ImageUpload = ({ field, form, formProps }) => {
     const fileInputRef = useRef<HTMLInputElement>()
     const [preview, setPreview] = useState<string | ArrayBuffer>()
 
     const hasImageAlready = field.value && !field.value.name
+
+    const handleFileInputChange = async (event) => {
+        const file = event.target.files[0]
+        const optimizedBlob = await optimizeImage(file)
+        const optimizedFile = new File([optimizedBlob], file.name, {
+            type: file.type,
+        })
+
+        if (optimizedFile?.type.substr(0, 5) === 'image') {
+            const reader = new FileReader()
+            reader.readAsDataURL(optimizedFile)
+            reader.onloadend = () => {
+                setPreview(reader.result)
+            }
+
+            formProps.setFieldValue('image', optimizedFile)
+        } else {
+            setPreview(null)
+        }
+    }
 
     return (
         <FormControl isInvalid={form.errors.image && form.touched.image}>
@@ -35,27 +57,14 @@ const ImageUpload = ({ field, form, formProps }) => {
                         type="file"
                         accept="image/*"
                         ref={fileInputRef}
-                        onChange={(event) => {
-                            const file = event.target.files[0]
-                            if (file?.type.substr(0, 5) === 'image') {
-                                const reader = new FileReader()
-                                reader.readAsDataURL(file)
-                                reader.onloadend = () => {
-                                    setPreview(reader.result)
-                                }
-
-                                formProps.setFieldValue('image', file)
-                            } else {
-                                setPreview(null)
-                            }
-                        }}
+                        onChange={(event) => void handleFileInputChange(event)}
                     />
                 </VisuallyHidden>
 
                 {hasImageAlready || preview ? (
                     <div style={{ width: '200px', height: '200px' }}>
                         <Image
-                            alt="Preview of file uploaded by user"
+                            alt="Preview of image uploaded by user"
                             src={preview ?? field.value}
                             layout="fill"
                             objectFit="contain"
