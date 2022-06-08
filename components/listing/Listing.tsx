@@ -57,20 +57,23 @@ function Listing({ listing }) {
                 >
                     Back to main list
                 </Button>
-                <Image
-                    src={listing.image}
-                    alt={`Image for ${listing.title}`}
-                    objectFit="cover"
-                    height="400px"
-                    width="700px"
-                    style={{
-                        maxHeight: '400px',
-                        borderRadius: useBreakpointValue({
-                            base: 'none',
-                            md: '8px',
-                        }),
-                    }}
-                />
+                {listing.image && (
+                    <Image
+                        src={listing.image}
+                        alt={`Image for ${listing.title}`}
+                        objectFit="cover"
+                        height="400px"
+                        width="700px"
+                        style={{
+                            maxHeight: '400px',
+                            // eslint-disable-next-line react-hooks/rules-of-hooks
+                            borderRadius: useBreakpointValue({
+                                base: 'none',
+                                md: '8px',
+                            }),
+                        }}
+                    />
+                )}
                 <Flex
                     flexDirection={useBreakpointValue({
                         base: 'column',
