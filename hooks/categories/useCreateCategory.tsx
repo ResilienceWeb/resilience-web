@@ -2,7 +2,6 @@
 import { useMutation, useQueryClient } from 'react-query'
 
 async function createCategoryRequest(categoryData) {
-    console.log(categoryData)
     const response = await fetch('/api/categories', {
         method: 'POST',
         headers: {
