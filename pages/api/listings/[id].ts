@@ -4,6 +4,7 @@ import type { File } from 'formidable'
 import { getSession } from 'next-auth/react'
 import { withSentry } from '@sentry/nextjs'
 import prisma from '../../../prisma/client'
+import { Prisma } from '@prisma/client'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 
@@ -28,7 +29,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 form.parse(req, async (_err, fields, files) => {
-                    const newData: Listing = {
+                    const tagsArray =
+                        (fields.tags as string) !== ''
+                            ? (fields.tags as string).split(',')
+                            : []
+                    const tagsToConnect = tagsArray.map((tagId) => ({
+                        id: Number(tagId),
+                    }))
+                    const removedTagsArray =
+                        (fields.removedTags as string) !== ''
+                            ? (fields.removedTags as string).split(',')
+                            : []
+                    const tagsToDisconnect = removedTagsArray.map((tagId) => ({
+                        id: Number(tagId),
+                    }))
+
+                    const newData: Prisma.ListingUncheckedUpdateInput = {
                         title: fields.title as string,
                         categoryId: parseInt(fields.category as string),
                         website: fields.website as string,
@@ -43,6 +59,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         ),
                         inactive: stringToBoolean(fields.inactive as string),
                         slug: fields.slug as string,
+                        tags: {
+                            connect: tagsToConnect,
+                            disconnect: tagsToDisconnect,
+                        },
                     }
 
                     let imageUrl = null

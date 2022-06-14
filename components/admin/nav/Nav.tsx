@@ -70,7 +70,7 @@ const Nav = () => {
                 icon: <Icon as={HiOutlineLockOpen} fontSize="lg" />,
             })
             links.push({
-                label: 'Categories',
+                label: 'Categories & Tags',
                 href: '/admin/categories',
                 icon: <Icon as={BiCategory} fontSize="lg" />,
             })

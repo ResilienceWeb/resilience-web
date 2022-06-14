@@ -2,6 +2,7 @@
 /// <reference path="./next-auth.d.ts" />
 
 type Listing = {
+    id: number
     title: string
     categoryId?: number
     locationId?: number
@@ -16,5 +17,6 @@ type Listing = {
     inactive: boolean
     slug: string
     image?: string
+    tags?: Tag[]
 }
 
