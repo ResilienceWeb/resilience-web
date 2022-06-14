@@ -4,10 +4,9 @@ import type { File } from 'formidable'
 import { getSession } from 'next-auth/react'
 import { withSentry } from '@sentry/nextjs'
 import prisma from '../../../prisma/client'
+import { Prisma } from '@prisma/client'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
-
-type ListingWithoutId = Omit<Listing, 'id'>
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
@@ -45,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         id: Number(tagId),
                     }))
 
-                    const newData = {
+                    const newData: Prisma.ListingUncheckedUpdateInput = {
                         title: fields.title as string,
                         categoryId: parseInt(fields.category as string),
                         website: fields.website as string,
