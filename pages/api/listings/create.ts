@@ -3,6 +3,7 @@ import formidable from 'formidable'
 import type { File } from 'formidable'
 import { getSession } from 'next-auth/react'
 import { withSentry } from '@sentry/nextjs'
+import { Prisma } from '@prisma/client'
 import prisma from '../../../prisma/client'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
@@ -42,7 +43,7 @@ const handler = async (
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         void form.parse(req, async (_err, fields, files) => {
-            const newData: Listing = {
+            const newData: Prisma.ListingUncheckedCreateInput = {
                 title: fields.title as string,
                 categoryId: parseInt(fields.category as string),
                 locationId: parseInt(fields.locationId as string),

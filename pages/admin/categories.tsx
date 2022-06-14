@@ -2,33 +2,41 @@ import { useMemo } from 'react'
 import { useSession } from 'next-auth/react'
 import {
     Box,
-    Stack,
-    StackDivider,
-    Heading,
     Spinner,
     Center,
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel,
 } from '@chakra-ui/react'
 import LayoutContainer from '@components/admin/layout-container'
 import { useCategories } from '@hooks/categories'
+import { useTags } from '@hooks/tags'
 import CategoriesHeader from '@components/admin/categories/header'
 import CategoriesList from '@components/admin/categories/list'
+import TagsHeader from '@components/admin/tags/header'
+import TagsList from '@components/admin/tags/list'
+
+const LoadingSpinner = () => (
+    <LayoutContainer>
+        <Center height="100%">
+            <Spinner size="xl" />
+        </Center>
+    </LayoutContainer>
+)
 
 export default function Categories() {
     const { data: session, status: sessionStatus } = useSession()
     const { categories, isLoading: isLoadingCategories } = useCategories()
+    const { tags, isLoading: isLoadingTags } = useTags()
 
     const orderedCategories = useMemo(() => {
         return categories?.sort((a, b) => a.label.localeCompare(b.label))
     }, [categories])
 
-    if (sessionStatus === 'loading' || isLoadingCategories) {
-        return (
-            <LayoutContainer>
-                <Center height="100%">
-                    <Spinner size="xl" />
-                </Center>
-            </LayoutContainer>
-        )
+    if (sessionStatus === 'loading') {
+        return <LoadingSpinner />
     }
 
     if (!session || !session.user.admin) return null
@@ -44,13 +52,33 @@ export default function Categories() {
                 maxWidth="3xl"
                 mx="auto"
             >
-                <Stack spacing="4" divider={<StackDivider />}>
-                    <Heading>Edit categories</Heading>
-                    <Box mt={6}>
-                        <CategoriesHeader />
-                        <CategoriesList categories={orderedCategories} />
-                    </Box>
-                </Stack>
+                <Tabs>
+                    <TabList>
+                        <Tab>Categories</Tab>
+                        <Tab>Tags</Tab>
+                    </TabList>
+
+                    <TabPanels>
+                        <TabPanel>
+                            <Box mt={6}>
+                                <CategoriesHeader />
+                                {isLoadingCategories ? (
+                                    <LoadingSpinner />
+                                ) : (
+                                    <CategoriesList
+                                        categories={orderedCategories}
+                                    />
+                                )}
+                            </Box>
+                        </TabPanel>
+                        <TabPanel>
+                            <Box mt={6}>
+                                <TagsHeader />
+                                <TagsList tags={tags} />
+                            </Box>
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
             </Box>
         </LayoutContainer>
     )

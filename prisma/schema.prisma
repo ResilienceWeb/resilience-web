@@ -67,21 +67,32 @@ model Location {
     title            String     @unique
     slug             String     @unique
     centralNodeLabel String     @default("Central Node")
-    Category         Category[]
-    Listing          Listing[]
+    categories       Category[]
+    listings         Listing[]
+    tags             Tag[]
 }
 
 model Category {
     createdAt  DateTime  @default(now()) @map("created_at")
     updatedAt  DateTime  @default(now()) @map("updated_at")
+    id         Int       @id @default(autoincrement())
     label      String    @unique(map: "categories.label_unique")
     color      String?   @default("f1f1f1")
-    id         Int       @id @default(autoincrement())
     listings   Listing[]
     location   Location? @relation(fields: [locationId], references: [id])
     locationId Int?
 
     @@map("categories")
+}
+
+model Tag {
+    id         Int       @id @default(autoincrement())
+    label      String    @unique(map: "tags.label_unique")
+    location   Location? @relation(fields: [locationId], references: [id])
+    locationId Int?
+    listings   Listing[]
+
+    @@map("tags")
 }
 
 model Listing {
@@ -105,6 +116,7 @@ model Listing {
     location          Location?        @relation(fields: [locationId], references: [id])
     locationId        Int?
     editPermissions   EditPermission[]
+    tags              Tag[]
 
     @@map("listings")
 }
