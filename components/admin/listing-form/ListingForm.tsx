@@ -1,7 +1,9 @@
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import { Formik, Form, Field, useField, FieldProps } from 'formik'
 import { Editor } from '@tinymce/tinymce-react'
-import { Category, Listing } from '@prisma/client'
+import ReactSelect from 'react-select'
+import type { Options } from 'react-select'
+import { Category } from '@prisma/client'
 import {
     chakra,
     Box,
@@ -19,6 +21,7 @@ import {
 } from '@chakra-ui/react'
 import { emailValidator, fieldRequiredValidator } from '@helpers/formValidation'
 import ImageUpload from './ImageUpload'
+import { useTags } from '@hooks/tags'
 
 const EditorField = (props) => {
     const { label, name, ...otherProps } = props
@@ -62,13 +65,52 @@ const EditorField = (props) => {
     )
 }
 
+const customMultiSelectStyles = {
+    container: () => ({
+        width: '100%',
+    }),
+}
+
 interface Props {
     categories: Category[]
     listing?: Listing
     handleSubmit: (data: any) => void
 }
 
+type TagOption = {
+    value: number
+    label: string
+}
+
 const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
+    const { tags } = useTags()
+
+    const tagOptions: Options<TagOption> = useMemo(() => {
+        if (!tags) return []
+
+        return tags.map((t) => ({
+            value: t.id,
+            label: t.label,
+        }))
+    }, [tags])
+
+    const initialTagsValues = useMemo(() => {
+        return listing?.tags.map((t) => ({
+            value: t.id,
+            label: t.label,
+        }))
+    }, [listing?.tags])
+
+    const handleSubmitForm = (data) => {
+        const currentListingTagIds = listing.tags.map((t) => t.id)
+        data.tags = data.tags.map((t) => t.value)
+        const removedTags = currentListingTagIds.filter(
+            (t) => !data.tags.includes(t),
+        )
+        data.removedTags = removedTags
+        handleSubmit(data)
+    }
+
     return (
         <Formik
             initialValues={{
@@ -85,9 +127,10 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                 inactive: listing?.inactive || false,
                 image: listing?.image,
                 slug: listing?.slug || '',
+                tags: initialTagsValues || '',
             }}
             enableReinitialize
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmitForm}
         >
             {(props) => {
                 return (
@@ -410,6 +453,79 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                             </chakra.div>
 
                             <chakra.div mb={3}>
+                                <Field name="tags">
+                                    {({ field, form }: FieldProps) => {
+                                        return (
+                                            <FormControl
+                                                isInvalid={Boolean(
+                                                    form.errors.tags &&
+                                                        form.touched.tags,
+                                                )}
+                                            >
+                                                <FormLabel
+                                                    htmlFor="tags"
+                                                    fontSize="sm"
+                                                >
+                                                    Tags
+                                                </FormLabel>
+                                                <InputGroup size="sm">
+                                                    <ReactSelect
+                                                        isMulti
+                                                        isSearchable={false}
+                                                        onChange={(
+                                                            option,
+                                                            changeData,
+                                                        ) => {
+                                                            let newValue
+                                                            if (
+                                                                changeData.action ===
+                                                                'select-option'
+                                                            ) {
+                                                                newValue = [
+                                                                    ...field.value,
+                                                                    changeData.option,
+                                                                ]
+                                                            } else if (
+                                                                changeData.action ===
+                                                                'remove-value'
+                                                            ) {
+                                                                newValue =
+                                                                    field.value.filter(
+                                                                        (v) =>
+                                                                            v.value !==
+                                                                            changeData
+                                                                                .removedValue
+                                                                                .value,
+                                                                    )
+                                                            }
+                                                            form.setFieldValue(
+                                                                field.name,
+                                                                newValue,
+                                                            )
+                                                        }}
+                                                        options={tagOptions.filter(
+                                                            (t) =>
+                                                                !field.value.includes(
+                                                                    t,
+                                                                ),
+                                                        )}
+                                                        placeholder="Tags"
+                                                        value={field.value}
+                                                        styles={
+                                                            customMultiSelectStyles
+                                                        }
+                                                    />
+                                                </InputGroup>
+                                                <FormErrorMessage>
+                                                    {form.errors.tags}
+                                                </FormErrorMessage>
+                                            </FormControl>
+                                        )
+                                    }}
+                                </Field>
+                            </chakra.div>
+
+                            <chakra.div mb={3}>
                                 <Field name="seekingVolunteers">
                                     {({ field, form }: FieldProps) => (
                                         <FormControl
@@ -462,7 +578,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                 fontSize="sm"
                                             >
                                                 Has the group been inactive for
-                                                longer than a year?
+                                                a while?
                                             </Text>
                                             <FormErrorMessage>
                                                 {form.errors.inactive}
