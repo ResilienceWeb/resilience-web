@@ -44,7 +44,7 @@ function Listing({ listing }: { listing: ListingType | any }) {
     )
 }
 
-export const getStaticPaths: GetStaticPaths = async (context) => {
+export const getStaticPaths: GetStaticPaths = async () => {
     const response = await fetch(`${REMOTE_URL}/api/listings`)
     const data = await response.json()
     const { listings } = data
