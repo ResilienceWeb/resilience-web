@@ -48,7 +48,7 @@ function App({ Component, pageProps }: AppProps) {
                         'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
                 }}
                 twitter={{
-                    handle: '@ResilienceWebCB',
+                    handle: '@ResilienceWeb',
                     cardType: 'summary_large_image',
                 }}
             />
