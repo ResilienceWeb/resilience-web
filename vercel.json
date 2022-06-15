@@ -8,13 +8,6 @@
             }
         },
         {
-            "src": "https://cambridge-uni.resilienceweb.org.uk",
-            "status": 301,
-            "headers": {
-                "Location": "https://cambridge-university.resilienceweb.org.uk"
-            }
-        },
-        {
             "src": "/city",
             "status": 301,
             "headers": {
