@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import nodemailer from 'nodemailer'
 import { withSentry } from '@sentry/nextjs'
-import config from '@helpers/config'
+import appConfig from '@helpers/config'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const { email, feedback } = req.body
 
-        await nodemailer.createTransport(config.emailServer).sendMail(
+        await nodemailer.createTransport(appConfig.emailServer).sendMail(
             {
                 to: 'cambridgeresilienceweb@gmail.com',
                 from: `${process.env.EMAIL_FROM}`,
