@@ -3,6 +3,7 @@ import { useAppContext } from '@store/hooks'
 import { Tag } from '@prisma/client'
 
 async function fetchTagsRequest({ queryKey }) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_key, { siteSlug }] = queryKey
     const response = await fetch(`/api/tags?site=${siteSlug}`)
     const { data: tags } = await response.json()
