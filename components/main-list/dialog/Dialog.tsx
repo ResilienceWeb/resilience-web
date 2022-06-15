@@ -19,6 +19,7 @@ import {
     Text,
     Button,
     useToast,
+    Tag,
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
@@ -42,6 +43,8 @@ const Dialog = ({
 }) => {
     const toast = useToast()
     const [subdomain, setSubdomain] = useState<string>()
+
+    console.log(item)
 
     const websiteSanitized = useMemo(
         () => sanitizeLink(item.website),
@@ -211,10 +214,23 @@ const Dialog = ({
                             View listing
                         </Button>
                     </Link>
+
+                    <Box mt={4} display="flex" justifyContent="flex-end">
+                        {item.tags.map((tag) => (
+                            <Tag
+                                backgroundColor="gray.300"
+                                userSelect="none"
+                                key={tag.id}
+                                mr={1}
+                            >
+                                #{tag.label}
+                            </Tag>
+                        ))}
+                    </Box>
                 </ModalBody>
 
                 {!isMobile && (
-                    <ModalFooter justifyContent="space-between">
+                    <ModalFooter justifyContent="space-between" py={2}>
                         {socialLinks}
                     </ModalFooter>
                 )}

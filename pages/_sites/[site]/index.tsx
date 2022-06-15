@@ -244,6 +244,7 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
             seekingVolunteers,
             inactive,
             slug,
+            tags,
         }) => {
             transformedData.nodes.push({
                 id,
@@ -261,6 +262,7 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
                 inactive,
                 color: `#${category.color}`,
                 slug,
+                tags,
             })
         },
     )
