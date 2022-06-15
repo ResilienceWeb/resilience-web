@@ -87,6 +87,7 @@ const handler = async (
 export const config = {
     api: {
         bodyParser: false,
+        externalResolver: true,
     },
 }
 

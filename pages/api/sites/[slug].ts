@@ -19,14 +19,18 @@ const handler = async (
                 slug,
             },
         })
-        res.status(200)
-        res.json({ site })
+        res.status(200).send({ site })
     } catch (e) {
-        res.status(500)
-        res.json({
+        res.status(500).send({
             error: `Unable to fetch site from database - ${e}`,
         })
     }
+}
+
+export const config = {
+    api: {
+        externalResolver: true,
+    },
 }
 
 export default withSentry(handler)

@@ -77,5 +77,11 @@ const handler = async (
     }
 }
 
+export const config = {
+    api: {
+        externalResolver: true,
+    },
+}
+
 export default withSentry(handler)
 
