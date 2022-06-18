@@ -44,8 +44,6 @@ const Dialog = ({
     const toast = useToast()
     const [subdomain, setSubdomain] = useState<string>()
 
-    console.log(item)
-
     const websiteSanitized = useMemo(
         () => sanitizeLink(item.website),
         [item.website],

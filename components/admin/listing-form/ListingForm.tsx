@@ -163,7 +163,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                 rounded="md"
                                             />
                                             <FormErrorMessage>
-                                                {form.errors.title}
+                                                {form.errors.title?.toString()}
                                             </FormErrorMessage>
                                         </FormControl>
                                     )}
@@ -192,7 +192,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                             </FormLabel>
                                             <EditorField name="description" />
                                             <FormErrorMessage>
-                                                {form.errors.description}
+                                                {form.errors.description?.toString()}
                                             </FormErrorMessage>
                                         </FormControl>
                                     )}
@@ -231,7 +231,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                 ))}
                                             </Select>
                                             <FormErrorMessage>
-                                                {form.errors.category}
+                                                {form.errors.category?.toString()}
                                             </FormErrorMessage>
                                         </FormControl>
                                     )}
@@ -266,7 +266,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                 rounded="md"
                                             />
                                             <FormErrorMessage>
-                                                {form.errors.email}
+                                                {form.errors.email?.toString()}
                                             </FormErrorMessage>
                                         </FormControl>
                                     )}
@@ -308,7 +308,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                     rounded="md"
                                                 />
                                                 <FormErrorMessage>
-                                                    {form.errors.website}
+                                                    {form.errors.website?.toString()}
                                                 </FormErrorMessage>
                                             </FormControl>
                                         )}
@@ -339,7 +339,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                     rounded="md"
                                                 />
                                                 <FormErrorMessage>
-                                                    {form.errors.facebook}
+                                                    {form.errors.facebook?.toString()}
                                                 </FormErrorMessage>
                                             </FormControl>
                                         )}
@@ -372,7 +372,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                     rounded="md"
                                                 />
                                                 <FormErrorMessage>
-                                                    {form.errors.twitter}
+                                                    {form.errors.twitter?.toString()}
                                                 </FormErrorMessage>
                                             </FormControl>
                                         )}
@@ -403,7 +403,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                     rounded="md"
                                                 />
                                                 <FormErrorMessage>
-                                                    {form.errors.instagram}
+                                                    {form.errors.instagram?.toString()}
                                                 </FormErrorMessage>
                                             </FormControl>
                                         )}
@@ -445,7 +445,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                 />
                                             </InputGroup>
                                             <FormErrorMessage>
-                                                {form.errors.slug}
+                                                {form.errors.slug?.toString()}
                                             </FormErrorMessage>
                                         </FormControl>
                                     )}
@@ -517,7 +517,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                     />
                                                 </InputGroup>
                                                 <FormErrorMessage>
-                                                    {form.errors.tags}
+                                                    {form.errors.tags?.toString()}
                                                 </FormErrorMessage>
                                             </FormControl>
                                         )
@@ -550,7 +550,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                 having additional volunteers?
                                             </Text>
                                             <FormErrorMessage>
-                                                {form.errors.seekingVolunteers}
+                                                {form.errors.seekingVolunteers?.toString()}
                                             </FormErrorMessage>
                                         </FormControl>
                                     )}
@@ -581,7 +581,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                 a while?
                                             </Text>
                                             <FormErrorMessage>
-                                                {form.errors.inactive}
+                                                {form.errors.inactive?.toString()}
                                             </FormErrorMessage>
                                         </FormControl>
                                     )}

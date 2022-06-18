@@ -279,8 +279,6 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
         }),
     )
 
-    console.log(siteData)
-
     // Main node
     transformedData.nodes.push({
         id: 999,
