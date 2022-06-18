@@ -57,7 +57,7 @@ export default NextAuth({
     adapter: PrismaAdapter(prisma),
     session: {
         strategy: 'database',
-        maxAge: 72 * 60 * 60,
+        maxAge: 720 * 60 * 60,
         updateAge: 24 * 60 * 60,
     },
     callbacks: {
