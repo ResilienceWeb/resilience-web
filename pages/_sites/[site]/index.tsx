@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import groupBy from 'lodash/groupBy'
@@ -43,14 +42,6 @@ type INetwork = {
 const Site = ({ data }) => {
     const router = useRouter()
 
-    if (router.isFallback) {
-        return (
-            <Center height="100vh">
-                <Spinner size="xl" />
-            </Center>
-        )
-    }
-
     const { isMobile } = useAppContext()
 
     const [isWebMode, setIsWebMode] = useState(undefined)
@@ -86,7 +77,8 @@ const Site = ({ data }) => {
     }, [])
 
     const filteredItems = useMemo(() => {
-        let results = data.nodes
+        if (!data) return []
+        let results = data?.nodes
             .filter((item) => !item.isDescriptive)
             .sort(sortStringsFunc)
 
@@ -110,19 +102,19 @@ const Site = ({ data }) => {
         }
 
         return results
-    }, [data.nodes, isVolunteer, selectedCategories, searchTermValue])
+    }, [data, isVolunteer, selectedCategories, searchTermValue])
 
     const descriptiveNodes = useMemo(
-        () => data.nodes.filter((item) => item.isDescriptive),
-        [data.nodes],
+        () => (data ? data.nodes.filter((item) => item.isDescriptive) : []),
+        [data],
     )
 
     const filteredNetworkData = useMemo(
         () => ({
-            edges: data.edges,
+            edges: data?.edges,
             nodes: [...filteredItems, ...descriptiveNodes],
         }),
-        [data.edges, filteredItems, descriptiveNodes],
+        [data?.edges, filteredItems, descriptiveNodes],
     )
 
     const selectNode = useCallback(
@@ -149,6 +141,14 @@ const Site = ({ data }) => {
         },
         [setIsVolunteer],
     )
+
+    if (router.isFallback) {
+        return (
+            <Center height="100vh">
+                <Spinner size="xl" />
+            </Center>
+        )
+    }
 
     return (
         <>
