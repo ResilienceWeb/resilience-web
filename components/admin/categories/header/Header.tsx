@@ -1,10 +1,10 @@
 import { Button, Flex, useDisclosure } from '@chakra-ui/react'
 import { memo, useCallback } from 'react'
 import { HiPlus } from 'react-icons/hi'
-import { useAppContext } from '@store/hooks'
 
+import { useAppContext } from '@store/hooks'
 import { useCreateCategory } from '@hooks/categories'
-import NewCategoryDialog from './new-category-dialog'
+import { NewCategoryDialog } from './category-dialog'
 
 const Header = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()

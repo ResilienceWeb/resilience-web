@@ -74,7 +74,11 @@ export default function Categories() {
                         <TabPanel>
                             <Box mt={6}>
                                 <TagsHeader />
-                                <TagsList tags={tags} />
+                                {isLoadingTags ? (
+                                    <LoadingSpinner />
+                                ) : (
+                                    <TagsList tags={tags} />
+                                )}
                             </Box>
                         </TabPanel>
                     </TabPanels>

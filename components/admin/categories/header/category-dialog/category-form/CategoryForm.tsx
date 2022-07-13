@@ -10,15 +10,22 @@ import {
 } from '@chakra-ui/react'
 import { Formik, Form, Field } from 'formik'
 import { HexColorPicker } from 'react-colorful'
+import { Category } from '@prisma/client'
 
 import { fieldRequiredValidator } from '@helpers/formValidation'
 
-const CategoryForm = ({ onSubmit }) => {
+const CategoryForm = ({
+    category,
+    onSubmit,
+}: {
+    category?: Category
+    onSubmit: (data: any) => void
+}) => {
     return (
         <Formik
             initialValues={{
-                label: '',
-                color: 'ffffff',
+                label: category?.label ?? '',
+                color: category?.color ?? 'ffffff',
             }}
             onSubmit={(values, actions) => {
                 actions.setSubmitting(false)
@@ -89,7 +96,7 @@ const CategoryForm = ({ onSubmit }) => {
                             type="submit"
                             _hover={{ bg: 'rw.900' }}
                         >
-                            Create
+                            {category ? 'Update' : 'Create'}
                         </Button>
                     </ModalFooter>
                 </Form>

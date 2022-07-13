@@ -45,15 +45,12 @@ const handler = async (
 
                 break
             }
-            case 'PUT': {
+            case 'PATCH': {
                 const category = await prisma.category.update({
                     where: {
-                        location: {
-                            slug: {
-                                contains: site,
-                            },
-                        },
+                        id: req.body.id,
                     },
+                    data: req.body,
                 })
 
                 res.status(200)
