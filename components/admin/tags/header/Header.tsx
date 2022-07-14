@@ -4,7 +4,7 @@ import { HiPlus } from 'react-icons/hi'
 import { useAppContext } from '@store/hooks'
 
 import { useCreateTag } from '@hooks/tags'
-import NewTagDialog from './new-tag-dialog'
+import { NewTagDialog } from './tag-dialog'
 
 const Header = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()

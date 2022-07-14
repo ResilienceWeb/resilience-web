@@ -25,9 +25,6 @@ export default function useCreateCategory() {
             queryClient.setQueryData('categories', (old) => [newCategory])
             return { previousCategories }
         },
-        // onError: (err, newListing, context) => {
-        //     queryClient.setQueryData('categories', context.previousCategories)
-        // },
         onSettled: () => {
             void queryClient.invalidateQueries('categories')
         },

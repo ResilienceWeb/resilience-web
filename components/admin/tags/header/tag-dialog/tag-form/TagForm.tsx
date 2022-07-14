@@ -8,13 +8,20 @@ import {
     FormErrorMessage,
 } from '@chakra-ui/react'
 import { Formik, Form, Field } from 'formik'
+import { Tag } from '@prisma/client'
 
 import { fieldRequiredValidator } from '@helpers/formValidation'
 
-const TagForm = ({ onSubmit }) => {
+const TagForm = ({
+    onSubmit,
+    tag,
+}: {
+    onSubmit: (data: any) => void
+    tag?: Tag
+}) => {
     return (
         <Formik
-            initialValues={{ label: '' }}
+            initialValues={{ label: tag?.label ?? '' }}
             onSubmit={(values, actions) => {
                 actions.setSubmitting(false)
                 onSubmit(values)
@@ -57,7 +64,7 @@ const TagForm = ({ onSubmit }) => {
                             type="submit"
                             _hover={{ bg: 'rw.900' }}
                         >
-                            Create
+                            {tag ? 'Update' : 'Create'}
                         </Button>
                     </ModalFooter>
                 </Form>

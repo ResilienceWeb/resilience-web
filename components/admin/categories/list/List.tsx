@@ -11,7 +11,6 @@ import {
 } from '@chakra-ui/react'
 import { memo, useCallback, useState } from 'react'
 
-import { useAppContext } from '@store/hooks'
 import CategoryTag from '@components/category-tag'
 import { useUpdateCategory } from '@hooks/categories'
 import { UpdateCategoryDialog } from '../header/category-dialog'
@@ -30,7 +29,6 @@ const columns = [
 const List = ({ categories }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { mutate: updateCategory } = useUpdateCategory()
-    const { selectedLocationId } = useAppContext()
 
     const [selectedCategoryId, setSelectedCategoryId] = useState(null)
     const selectedCategory = categories.find(
@@ -56,8 +54,6 @@ const List = ({ categories }) => {
     if (!categories) {
         return null
     }
-
-    console.log(categories, selectedCategoryId)
 
     return (
         <>
