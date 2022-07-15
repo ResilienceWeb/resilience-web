@@ -511,6 +511,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                                                         )}
                                                         placeholder="Tags"
                                                         value={field.value}
+                                                        isClearable={false}
                                                         styles={
                                                             customMultiSelectStyles
                                                         }
