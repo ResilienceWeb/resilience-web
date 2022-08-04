@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function createTagRequest(tagData) {
     const response = await fetch('/api/tags', {
@@ -20,13 +20,13 @@ export default function useCreateTag() {
 
     return useMutation(createTagRequest, {
         onMutate: async (newTag) => {
-            await queryClient.cancelQueries('tags')
-            const previousTags = queryClient.getQueryData('tags')
-            queryClient.setQueryData('tags', (old) => [newTag])
+            await queryClient.cancelQueries(['tags'])
+            const previousTags = queryClient.getQueryData(['tags'])
+            queryClient.setQueryData(['tags'], (old) => [newTag])
             return { previousTags }
         },
         onSettled: () => {
-            void queryClient.invalidateQueries('tags')
+            void queryClient.invalidateQueries(['tags'])
         },
     })
 }

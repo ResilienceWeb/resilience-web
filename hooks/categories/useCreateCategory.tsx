@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function createCategoryRequest(categoryData) {
     const response = await fetch('/api/categories', {
@@ -20,13 +20,13 @@ export default function useCreateCategory() {
 
     return useMutation(createCategoryRequest, {
         onMutate: async (newCategory) => {
-            await queryClient.cancelQueries('categories')
-            const previousCategories = queryClient.getQueryData('categories')
-            queryClient.setQueryData('categories', (old) => [newCategory])
+            await queryClient.cancelQueries(['categories'])
+            const previousCategories = queryClient.getQueryData(['categories'])
+            queryClient.setQueryData(['categories'], (old) => [newCategory])
             return { previousCategories }
         },
         onSettled: () => {
-            void queryClient.invalidateQueries('categories')
+            void queryClient.invalidateQueries(['categories'])
         },
     })
 }

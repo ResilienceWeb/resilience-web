@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 async function fetchSitesRequest() {
     const response = await fetch('/api/sites')
@@ -12,7 +12,7 @@ export default function useSites() {
         data: sites,
         isLoading,
         isError,
-    } = useQuery('sites', fetchSitesRequest)
+    } = useQuery(['sites'], fetchSitesRequest)
 
     return {
         sites,

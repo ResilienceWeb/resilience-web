@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useAppContext } from '@store/hooks'
 import { Tag } from '@prisma/client'
 

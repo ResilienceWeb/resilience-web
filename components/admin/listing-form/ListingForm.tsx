@@ -102,12 +102,14 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
     }, [listing?.tags])
 
     const handleSubmitForm = (data) => {
-        const currentListingTagIds = listing.tags.map((t) => t.id)
-        data.tags = data.tags.map((t) => t.value)
-        const removedTags = currentListingTagIds.filter(
-            (t) => !data.tags.includes(t),
-        )
-        data.removedTags = removedTags
+        data.tags = data.tags?.map((t) => t.value)
+        if (listing) {
+            const currentListingTagIds = listing?.tags.map((t) => t.id)
+            const removedTags = currentListingTagIds.filter(
+                (t) => !data.tags.includes(t),
+            )
+            data.removedTags = removedTags
+        }
         handleSubmit(data)
     }
 
@@ -127,7 +129,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                 inactive: listing?.inactive || false,
                 image: listing?.image,
                 slug: listing?.slug || '',
-                tags: initialTagsValues || '',
+                tags: initialTagsValues || [],
             }}
             enableReinitialize
             onSubmit={handleSubmitForm}

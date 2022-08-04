@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function deleteListingRequest({ id }) {
     const response = await fetch(`/api/listings/${id}`, {
@@ -23,7 +23,7 @@ export default function useDeleteListing() {
             )
         },
         onSettled: () => {
-            void queryClient.invalidateQueries('listings')
+            void queryClient.invalidateQueries(['listings'])
         },
     })
 }

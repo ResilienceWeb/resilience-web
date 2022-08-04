@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
 async function fetchPermissionsRequest() {
@@ -15,7 +15,7 @@ export default function usePermissions() {
         data: permissions,
         isLoading,
         isError,
-    } = useQuery('permissions', fetchPermissionsRequest, {
+    } = useQuery(['permissions'], fetchPermissionsRequest, {
         enabled: Boolean(session),
     })
 

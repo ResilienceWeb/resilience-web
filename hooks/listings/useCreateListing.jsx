@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function createListingRequest(listingData) {
     const formData = new FormData()
@@ -22,16 +22,16 @@ export default function useCreateListing() {
 
     return useMutation(createListingRequest, {
         onMutate: async (newListing) => {
-            await queryClient.cancelQueries('listings')
-            const previousListings = queryClient.getQueryData('listings')
+            await queryClient.cancelQueries(['listings'])
+            const previousListings = queryClient.getQueryData(['listings'])
             queryClient.setQueryData(['listings', newListing.id], newListing)
             return { previousListings, newListing }
         },
         onError: (err, newListing, context) => {
-            queryClient.setQueryData('listings', context.previousListings)
+            queryClient.setQueryData(['listings'], context.previousListings)
         },
         onSettled: () => {
-            void queryClient.invalidateQueries('listings')
+            void queryClient.invalidateQueries(['listings'])
         },
     })
 }

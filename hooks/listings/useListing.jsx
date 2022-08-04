@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 export async function fetchListingsRequest(slug) {
     const response = await fetch(`/api/listing/${slug}`)
@@ -12,7 +12,7 @@ export default function useListing(slug) {
         data: listing,
         isLoading,
         isError,
-    } = useQuery(`listing-${slug}`, () => fetchListingsRequest(slug)) // Figure out better RQ caching
+    } = useQuery([`listing-${slug}`], () => fetchListingsRequest(slug)) // Figure out better RQ caching
 
     return {
         listing,

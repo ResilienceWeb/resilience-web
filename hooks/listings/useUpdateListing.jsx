@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function updateListingRequest(listingData) {
     const formData = new FormData()
@@ -39,7 +39,7 @@ export default function useUpdateListing() {
             )
         },
         onSettled: () => {
-            void queryClient.invalidateQueries('listings')
+            void queryClient.invalidateQueries(['listings'])
         },
     })
 }
