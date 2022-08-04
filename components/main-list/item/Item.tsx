@@ -71,6 +71,7 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
                         width="300px"
                         height="170px"
                         layout="responsive"
+                        unoptimized
                         style={{
                             borderTopLeftRadius: '.375rem',
                             borderTopRightRadius: '.375rem',

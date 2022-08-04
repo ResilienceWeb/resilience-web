@@ -106,6 +106,7 @@ const Nav = () => {
                                     src={LogoImage}
                                     width="148"
                                     height="50"
+                                    unoptimized
                                 />
                             </button>
                         </Link>

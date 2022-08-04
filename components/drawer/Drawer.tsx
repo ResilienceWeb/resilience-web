@@ -27,6 +27,7 @@ const Drawer = ({ items, selectNode }) => {
                         src={LogoImage}
                         width="306"
                         height="104"
+                        unoptimized
                     />
                 </Flex>
             </Link>

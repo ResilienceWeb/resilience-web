@@ -141,6 +141,7 @@ const Header = ({
                             src="/logo.png"
                             width="306"
                             height="104"
+                            unoptimized
                         />
                     </Box>
                     <chakra.div paddingTop={4} width={'95%'}>

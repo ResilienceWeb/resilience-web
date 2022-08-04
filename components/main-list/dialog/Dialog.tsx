@@ -154,6 +154,7 @@ const Dialog = ({
                         objectFit="cover"
                         width="672px"
                         height="300px"
+                        unoptimized
                         style={{
                             borderTopLeftRadius: '0.375rem',
                             borderTopRightRadius: '0.375rem',

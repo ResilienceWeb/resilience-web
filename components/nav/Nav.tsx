@@ -84,6 +84,7 @@ export default function MainNav() {
                                         src={LogoImage}
                                         width="145"
                                         height="50"
+                                        unoptimized
                                     />
                                 </button>
                             </Link>
