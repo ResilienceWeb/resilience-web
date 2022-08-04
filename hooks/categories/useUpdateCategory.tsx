@@ -20,9 +20,9 @@ export default function useUpdateCategory() {
 
     return useMutation(updateCategoryRequest, {
         onMutate: async (newCategory) => {
-            await queryClient.cancelQueries('categories')
-            const previousCategories = queryClient.getQueryData('categories')
-            queryClient.setQueryData('categories', (old) => [newCategory])
+            await queryClient.cancelQueries(['categories'])
+            const previousCategories = queryClient.getQueryData(['categories'])
+            queryClient.setQueryData(['categories'], (old) => [newCategory])
             return { previousCategories, newCategory }
         },
         onError: (err, newCategory, context) => {
@@ -32,7 +32,7 @@ export default function useUpdateCategory() {
             )
         },
         onSettled: () => {
-            void queryClient.invalidateQueries('categories')
+            void queryClient.invalidateQueries(['categories'])
         },
     })
 }
