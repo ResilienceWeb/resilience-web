@@ -1,133 +1,133 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Account {
-    id                String    @id @default(cuid())
-    userId            String    @map("user_id")
-    type              String    @map("provider_type")
-    provider          String    @map("provider_id")
-    providerAccountId String    @map("provider_account_id")
-    refreshToken      String?   @map("refresh_token")
-    accessToken       String?   @map("access_token")
-    expires_in        DateTime? @map("access_token_expires")
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String?
-    session_state     String?
+  id                String    @id @default(cuid())
+  userId            String    @map("user_id")
+  type              String    @map("provider_type")
+  provider          String    @map("provider_id")
+  providerAccountId String    @map("provider_account_id")
+  refreshToken      String?   @map("refresh_token")
+  accessToken       String?   @map("access_token")
+  expires_in        DateTime? @map("access_token_expires")
+  expires_at        Int?
+  id_token          String?
+  scope             String?
+  session_state     String?
+  token_type        String?
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@index([providerAccountId], map: "providerAccountId")
-    @@index([userId], map: "userId")
-    @@map("accounts")
+  @@index([providerAccountId], map: "providerAccountId")
+  @@index([userId], map: "userId")
+  @@map("accounts")
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique(map: "users.email_unique")
-    emailVerified DateTime? @map("email_verified")
-    image         String?
-    admin         Boolean   @default(false)
-    accounts      Account[]
-    sessions      Session[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique(map: "users.email_unique")
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  admin         Boolean   @default(false)
+  accounts      Account[]
+  sessions      Session[]
 
-    @@map("users")
+  @@map("users")
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String?  @unique @map("session_token")
-    userId       String   @map("user_id")
-    expires      DateTime
+  id           String   @id @default(cuid())
+  userId       String   @map("user_id")
+  expires      DateTime
+  sessionToken String?  @unique @map("session_token")
+  user         User     @relation(fields: [userId], references: [id])
 
-    user User @relation(fields: [userId], references: [id])
-
-    @@map("sessions")
+  @@map("sessions")
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique(map: "verification_requests.token_unique")
-    expires    DateTime
+  identifier String
+  token      String   @unique(map: "verification_requests.token_unique")
+  expires    DateTime
 
-    @@unique([identifier, token])
-    @@map("verification_requests")
+  @@unique([identifier, token])
+  @@map("verification_requests")
 }
 
 model Location {
-    id               Int        @id @default(autoincrement())
-    title            String     @unique
-    slug             String     @unique
-    centralNodeLabel String     @default("Central Node")
-    categories       Category[]
-    listings         Listing[]
-    tags             Tag[]
+  id               Int        @id @default(autoincrement())
+  title            String     @unique
+  slug             String     @unique
+  centralNodeLabel String     @default("Central Node")
+  categories       Category[]
+  listings         Listing[]
+  tags             Tag[]
 }
 
 model Category {
-    createdAt  DateTime  @default(now()) @map("created_at")
-    updatedAt  DateTime  @default(now()) @map("updated_at")
-    id         Int       @id @default(autoincrement())
-    label      String    @unique(map: "categories.label_unique")
-    color      String?   @default("f1f1f1")
-    listings   Listing[]
-    location   Location? @relation(fields: [locationId], references: [id])
-    locationId Int?
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @default(now()) @map("updated_at")
+  label      String    @unique(map: "categories.label_unique")
+  color      String?   @default("f1f1f1")
+  id         Int       @id @default(autoincrement())
+  locationId Int?
+  location   Location? @relation(fields: [locationId], references: [id])
+  listings   Listing[]
 
-    @@map("categories")
+  @@map("categories")
 }
 
 model Tag {
-    id         Int       @id @default(autoincrement())
-    label      String    @unique(map: "tags.label_unique")
-    location   Location? @relation(fields: [locationId], references: [id])
-    locationId Int?
-    listings   Listing[]
+  id         Int       @id @default(autoincrement())
+  label      String    @unique(map: "tags.label_unique")
+  locationId Int?
+  location   Location? @relation(fields: [locationId], references: [id])
+  listings   Listing[]
 
-    @@map("tags")
+  @@map("tags")
 }
 
 model Listing {
-    id                Int              @id @default(autoincrement())
-    createdAt         DateTime         @default(now()) @map("created_at")
-    updatedAt         DateTime         @default(now()) @map("updated_at")
-    title             String
-    slug              String?          @unique
-    website           String?
-    description       String?
-    facebook          String?
-    twitter           String?
-    instagram         String?
-    email             String?
-    notes             String?
-    inactive          Boolean          @default(false)
-    seekingVolunteers Boolean?         @map("seeking_volunteers")
-    image             String?
-    category          Category?        @relation(fields: [categoryId], references: [id])
-    categoryId        Int?
-    location          Location?        @relation(fields: [locationId], references: [id])
-    locationId        Int?
-    editPermissions   EditPermission[]
-    tags              Tag[]
+  id                Int              @id @default(autoincrement())
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @default(now()) @map("updated_at")
+  title             String
+  website           String?
+  description       String?
+  facebook          String?
+  twitter           String?
+  instagram         String?
+  email             String?
+  notes             String?
+  inactive          Boolean          @default(false)
+  seekingVolunteers Boolean?         @map("seeking_volunteers")
+  categoryId        Int?
+  image             String?
+  slug              String?          @unique
+  locationId        Int?
+  category          Category?        @relation(fields: [categoryId], references: [id])
+  location          Location?        @relation(fields: [locationId], references: [id])
+  editPermissions   EditPermission[]
+  tags              Tag[]
+  listings_B        Listing[]        @relation("related")
+  listings_A        Listing[]        @relation("related")
 
-    @@map("listings")
+  @@map("listings")
 }
 
 model EditPermission {
-    id        Int      @id @default(autoincrement())
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @default(now()) @map("updated_at")
-    listingId Int
-    email     String   @default("TOREPLACE")
-    listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  listingId Int
+  email     String   @default("TOREPLACE")
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
 
-    @@map("edit_permissions")
+  @@map("edit_permissions")
 }
