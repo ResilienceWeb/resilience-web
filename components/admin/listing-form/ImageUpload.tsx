@@ -11,7 +11,6 @@ import {
     Flex,
     Stack,
     Icon,
-    Text,
 } from '@chakra-ui/react'
 
 import optimizeImage from '@helpers/optimizeImage'
@@ -127,7 +126,6 @@ const ImageUpload = ({ field, form, formProps }) => {
                                         />
                                     </VisuallyHidden>
                                 </chakra.label>
-                                <Text pl={1}>or drag and drop</Text>
                             </Flex>
                         </Stack>
                     </Flex>

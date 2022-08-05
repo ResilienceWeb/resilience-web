@@ -1,4 +1,12 @@
-import { Flex, Heading, Text, Button, Icon, Link } from '@chakra-ui/react'
+import {
+    Container,
+    Flex,
+    Heading,
+    Text,
+    Button,
+    Icon,
+    Link,
+} from '@chakra-ui/react'
 import { FaDiscord } from 'react-icons/fa'
 
 import { useAppContext } from '@store/hooks'
@@ -7,40 +15,41 @@ const JoinTheCommunity = () => {
     const { isMobile } = useAppContext()
 
     return (
-        <Flex justifyContent="flex-start" width="100%" maxW="7xl" my="3rem">
-            {!isMobile && <CommunityIcon />}
-            <Flex
-                direction="column"
-                px={{ base: '1rem', md: '2rem' }}
-                alignItems="flex-start"
-                justifyContent="center"
-            >
-                <Text
-                    fontSize="x-large"
-                    color="blackAlpha.700"
-                    fontWeight="500"
+        <Container maxW="7xl">
+            <Flex justifyContent="flex-start" width="100%" my="3rem">
+                {!isMobile && <CommunityIcon />}
+                <Flex
+                    direction="column"
+                    alignItems="flex-start"
+                    justifyContent="center"
                 >
-                    Want to get involved?
-                </Text>
-                <Heading as="h2" fontSize="xx-large">
-                    Keep up to date with new features, and help us with feedback
-                    and ideas.
-                </Heading>
-                <Link href="https://discord.gg/SHj2wmRDwR" isExternal>
-                    <Button
-                        bg="rw.700"
-                        colorScheme="rw.700"
-                        mt={8}
-                        variant="solid"
-                        size="lg"
-                        leftIcon={<FaDiscord />}
-                        _hover={{ bg: 'rw.900' }}
+                    <Text
+                        fontSize="x-large"
+                        color="blackAlpha.700"
+                        fontWeight="500"
                     >
-                        Join the Community
-                    </Button>
-                </Link>
+                        Want to get involved?
+                    </Text>
+                    <Heading as="h2" fontSize="xx-large">
+                        Keep up to date with new features, and help us with
+                        feedback and ideas.
+                    </Heading>
+                    <Link href="https://discord.gg/SHj2wmRDwR" isExternal>
+                        <Button
+                            bg="rw.700"
+                            colorScheme="rw.700"
+                            mt={8}
+                            variant="solid"
+                            size="lg"
+                            leftIcon={<FaDiscord />}
+                            _hover={{ bg: 'rw.900' }}
+                        >
+                            Join the Community
+                        </Button>
+                    </Link>
+                </Flex>
             </Flex>
-        </Flex>
+        </Container>
     )
 }
 
