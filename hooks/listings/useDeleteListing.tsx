@@ -16,12 +16,6 @@ export default function useDeleteListing() {
         onSuccess: (data) => {
             queryClient.setQueryData(['listings', { id: data.id }], data)
         },
-        onError: (err, deletedListing, context) => {
-            queryClient.setQueryData(
-                ['listings', context.newListing.id],
-                context.previousListing,
-            )
-        },
         onSettled: () => {
             void queryClient.invalidateQueries(['listings'])
         },
