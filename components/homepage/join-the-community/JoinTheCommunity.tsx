@@ -4,11 +4,13 @@ import {
     Heading,
     Text,
     Button,
+    Box,
     Icon,
     Link,
 } from '@chakra-ui/react'
 import { FaDiscord } from 'react-icons/fa'
 
+import SignupForm from '@components/signup-form'
 import { useAppContext } from '@store/hooks'
 
 const JoinTheCommunity = () => {
@@ -20,8 +22,9 @@ const JoinTheCommunity = () => {
                 {!isMobile && <CommunityIcon />}
                 <Flex
                     direction="column"
+                    px={{ base: '0', md: '1rem' }}
                     alignItems="flex-start"
-                    justifyContent="center"
+                    justifyContent="flex-start"
                 >
                     <Text
                         fontSize="x-large"
@@ -32,15 +35,25 @@ const JoinTheCommunity = () => {
                     </Text>
                     <Heading as="h2" fontSize="xx-large">
                         Keep up to date with new features, and help us with
-                        feedback and ideas.
+                        feedback and ideas
+                    </Heading>
+                    <Heading as="h3" fontSize="x-large" mt="6">
+                        1. Subscribe to our mailing list
+                    </Heading>
+                    <Box mt={2}>
+                        <SignupForm />
+                    </Box>
+
+                    <Heading as="h3" fontSize="x-large" mt="6">
+                        2. Join our Discord community
                     </Heading>
                     <Link href="https://discord.gg/SHj2wmRDwR" isExternal>
                         <Button
                             bg="rw.700"
                             colorScheme="rw.700"
-                            mt={8}
+                            mt={2}
                             variant="solid"
-                            size="lg"
+                            size="md"
                             leftIcon={<FaDiscord />}
                             _hover={{ bg: 'rw.900' }}
                         >
@@ -60,7 +73,7 @@ const CommunityIcon = () => {
         <Icon
             xmlns="http://www.w3.org/2000/svg"
             width="809"
-            height="529"
+            height="429"
             viewBox="0 0 809 629"
             backgroundColor="gray.200"
             borderRadius="12px"

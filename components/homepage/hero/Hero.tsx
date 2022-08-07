@@ -17,24 +17,24 @@ export default function Hero() {
     return (
         <Container maxW="7xl">
             <Stack
-                align={'center'}
+                align="center"
                 spacing={{ base: 8, md: 10 }}
                 py={{ base: '0', md: '1rem' }}
                 direction={{ base: 'column', md: 'row' }}
             >
-                <Stack flex={1} spacing={{ base: 5, md: 10 }}>
+                <Stack flex={1} spacing={{ base: 5, md: 8 }}>
                     <Heading
                         fontWeight={600}
                         fontSize={{ base: '3xl', md: '6xl' }}
                         lineHeight={1.1}
                     >
-                        <Text as={'span'} position={'relative'}>
+                        <Text as="span" position="relative">
                             Cambridge
                         </Text>
                         <br />
-                        <Text as={'span'}>Resilience Web</Text>
+                        <Text as="span">Resilience Web</Text>
                     </Heading>
-                    <Text color={'gray.500'} fontSize="18" maxW={'3xl'}>
+                    <Text color="blackAlpha.700" fontSize="18" maxW="3xl">
                         Two webs of resilience, showing the environmental and
                         social justice groups in Cambridge, UK. These webs are
                         useful for finding local like-minded organisations,
@@ -42,10 +42,10 @@ export default function Hero() {
                         collaboration across Cambridge.
                     </Text>
                     <Text
-                        color={'gray.500'}
+                        color="blackAlpha.700"
                         fontWeight="600"
                         fontSize="20"
-                        maxW={'3xl'}
+                        maxW="3xl"
                     >
                         Be part of a growing movement of positive change...
                     </Text>
@@ -84,10 +84,10 @@ export default function Hero() {
                 {!isMobile && (
                     <Flex
                         flex={1}
-                        justify={'center'}
-                        align={'center'}
-                        position={'relative'}
-                        w={'full'}
+                        justify="center"
+                        align="center"
+                        position="relative"
+                        w="full"
                     >
                         <Illustration height="20rem" mt={{ base: 0, sm: 8 }} />
                     </Flex>
