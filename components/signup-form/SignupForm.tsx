@@ -28,7 +28,9 @@ const SignupForm = () => {
                         bg="rw.700"
                         colorScheme="rw.700"
                         color="white"
+                        borderLeftRadius="none"
                         borderRightRadius="md"
+                        border="none"
                         cursor="pointer"
                         fontWeight={600}
                         _hover={{ bg: 'rw.900' }}

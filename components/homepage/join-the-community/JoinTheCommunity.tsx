@@ -35,7 +35,7 @@ const JoinTheCommunity = () => {
                     </Text>
                     <Heading as="h2" fontSize="xx-large">
                         Keep up to date with new features, and help us with
-                        feedback and ideas
+                        feedback and ideas:
                     </Heading>
                     <Heading as="h3" fontSize="x-large" mt="6">
                         1. Subscribe to our mailing list
