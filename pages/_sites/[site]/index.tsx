@@ -14,6 +14,7 @@ import { REMOTE_URL } from '@helpers/config'
 import MainList from '@components/main-list'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
+import { useLocalStorage } from '@hooks/application'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
     ssr: false,
@@ -45,7 +46,7 @@ const Site = ({ data }) => {
 
     const { isMobile } = useAppContext()
 
-    const [isWebMode, setIsWebMode] = useState(undefined)
+    const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', true)
     const [isVolunteer, setIsVolunteer] = useState(false)
 
     const [searchTerm, setSearchTerm] = useState('')

@@ -1,36 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function useLocalStorage(key, initialValue) {
-    const isBrowser: boolean = ((): boolean => typeof window !== 'undefined')()
+    const [storedValue, setStoredValue] = useState(initialValue)
 
-    const [storedValue, setStoredValue] = useState(() => {
-        try {
-            if (isBrowser) {
-                const item = window.localStorage.getItem(key)
-                return item ? JSON.parse(item) : initialValue
-            } else {
-                return null
-            }
-        } catch (error) {
-            console.error(error)
-            return initialValue
+    useEffect(() => {
+        if (JSON.parse(localStorage.getItem(key))) {
+            setStoredValue(JSON.parse(localStorage.getItem(key)))
         }
-    })
+    }, [key])
 
-    const setValue = (value) => {
-        try {
-            // Allow value to be a function so we have same API as useState
-            const valueToStore =
-                value instanceof Function ? value(storedValue) : value
-
-            if (isBrowser) {
-                setStoredValue(valueToStore)
-                window.localStorage.setItem(key, JSON.stringify(valueToStore))
-            }
-        } catch (error) {
-            console.error(error)
+    useEffect(() => {
+        if (storedValue !== initialValue) {
+            localStorage.setItem(key, JSON.stringify(storedValue))
         }
-    }
+    }, [initialValue, key, storedValue])
 
-    return [storedValue, setValue]
+    return [storedValue, setStoredValue]
 }
