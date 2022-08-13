@@ -13,6 +13,9 @@ import { REMOTE_URL } from '@helpers/config'
 import MainList from '@components/main-list'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
+import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders'
+import { configureScope } from '@sentry/nextjs'
+import { calcLength } from 'framer-motion'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
     ssr: false,
@@ -215,6 +218,15 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
 }) => {
     if (!params) throw new Error('No path parameters found')
     const { site } = params
+
+    const { sites } = await fetch(`${REMOTE_URL}/api/sites`).then((res) =>
+        res.json(),
+    )
+    const paths = sites.map((l) => `/${l.slug}`)
+
+    if (!paths.includes(site)) {
+        return { notFound: true, revalidate: 30 }
+    }
 
     const { listings } = await fetch(
         `${REMOTE_URL}/api/listings?site=${site}`,
