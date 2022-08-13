@@ -4,6 +4,7 @@ import groupBy from 'lodash/groupBy'
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { Box, Center, Spinner } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
+import chroma from 'chroma-js'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
@@ -256,6 +257,10 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
             slug,
             tags,
         }) => {
+            const accessibleTextColor =
+                chroma.contrast('#3f3f40', `#${category.color}`) > 4.5
+                    ? '#3f3f40'
+                    : '#fff'
             transformedData.nodes.push({
                 id,
                 label: title,
@@ -271,6 +276,9 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
                 seekingVolunteers,
                 inactive,
                 color: `#${category.color}`,
+                font: {
+                    color: accessibleTextColor,
+                },
                 slug,
                 tags,
             })

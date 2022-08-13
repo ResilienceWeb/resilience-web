@@ -62,13 +62,6 @@ const options = {
     height: '100%',
 }
 
-// Network.propTypes = {
-// 	data: PropTypes.object.isRequired,
-// 	selectedId: PropTypes.number,
-// 	setSelectedId: PropTypes.func.isRequired,
-// 	setNetwork: PropTypes.func.isRequired,
-// };
-
 const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
