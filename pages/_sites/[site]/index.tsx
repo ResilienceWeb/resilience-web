@@ -221,9 +221,8 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
     const { sites } = await fetch(`${REMOTE_URL}/api/sites`).then((res) =>
         res.json(),
     )
-    const paths = sites.map((l) => `${l.slug}`)
-    console.log(paths)
 
+    const paths = sites.map((l) => `${l.slug}`)
     if (!paths.includes(site)) {
         return { notFound: true, revalidate: 30 }
     }
