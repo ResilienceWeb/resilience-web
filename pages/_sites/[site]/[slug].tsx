@@ -23,7 +23,7 @@ function Listing({ listing }: { listing: ListingType | any }) {
                 title={`${listing.title} | Cambridge Resilience Web`}
                 openGraph={{
                     title: `${listing.title} | Cambridge Resilience Web`,
-                    images: [{ url: listing.image }],
+                    images: [{ url: listing.listingImage }],
                 }}
             />
             <LocalBusinessJsonLd

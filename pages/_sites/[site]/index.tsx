@@ -46,7 +46,7 @@ const Site = ({ data }) => {
 
     const { isMobile } = useAppContext()
 
-    const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', true)
+    const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', undefined)
     const [isVolunteer, setIsVolunteer] = useState(false)
 
     const [searchTerm, setSearchTerm] = useState('')
@@ -267,7 +267,7 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
                 title,
                 category: category.label,
                 description,
-                image: image ?? '',
+                listingImage: image ?? '',
                 website,
                 facebook,
                 twitter,
@@ -279,6 +279,7 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
                 font: {
                     color: accessibleTextColor,
                 },
+                opacity: inactive ? 0.4 : 1,
                 slug,
                 tags,
             })
@@ -305,6 +306,10 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
         isDescriptive: true,
         font: {
             size: 46,
+        },
+        fixed: {
+            x: 500,
+            y: 700,
         },
     })
 

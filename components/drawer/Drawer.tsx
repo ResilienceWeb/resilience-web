@@ -11,12 +11,7 @@ const Drawer = ({ items, selectNode }) => {
         [items],
     )
 
-    const handleClick = useCallback(
-        (id) => {
-            selectNode(id)
-        },
-        [selectNode],
-    )
+    const handleClick = useCallback((id) => selectNode(id), [selectNode])
 
     return (
         <div className={styles.drawer}>

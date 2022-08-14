@@ -57,9 +57,9 @@ function Listing({ listing }) {
                 >
                     Back to main list
                 </Button>
-                {listing.image && (
+                {listing.listingImage && (
                     <Image
-                        src={listing.image}
+                        src={listing.listingImage}
                         alt={`Image for ${listing.title}`}
                         objectFit="cover"
                         height="400px"

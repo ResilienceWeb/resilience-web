@@ -147,10 +147,10 @@ const Dialog = ({
         >
             <ModalOverlay />
             <ModalContent opacity="1">
-                {item.image && (
+                {item.listingImage && (
                     <Image
                         alt={`${item.label} cover image`}
-                        src={item.image}
+                        src={item.listingImage}
                         objectFit="cover"
                         width="672px"
                         height="300px"

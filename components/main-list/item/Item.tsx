@@ -63,10 +63,10 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
                 _hover={{ boxShadow: 'xl' }}
                 ref={ref}
             >
-                {dataItem.image ? (
+                {dataItem.listingImage ? (
                     <Image
                         alt={`${dataItem.label} cover image`}
-                        src={dataItem.image}
+                        src={dataItem.listingImage}
                         objectFit="cover"
                         width="300px"
                         height="170px"

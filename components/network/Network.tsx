@@ -41,7 +41,7 @@ const options = {
         solver: 'forceAtlas2Based',
         stabilization: {
             enabled: true,
-            iterations: 150,
+            iterations: 100,
             fit: true,
         },
         timestep: 0.35,
