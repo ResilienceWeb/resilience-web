@@ -226,8 +226,7 @@ const NAV_ITEMS = [
     },
     {
         label: 'University',
-        href: '/university',
-        isExternal: true,
+        href: `${PROTOCOL}://cambridge-university.${REMOTE_HOSTNAME}`,
     },
     {
         label: 'Donate',

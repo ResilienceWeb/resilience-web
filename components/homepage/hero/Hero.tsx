@@ -65,7 +65,9 @@ export default function Hero() {
                                 City
                             </Button>
                         </Link>
-                        <Link href="https://lm687.shinyapps.io/code" isExternal>
+                        <Link
+                            href={`${PROTOCOL}://cambridge-university.${REMOTE_HOSTNAME}`}
+                        >
                             <Button
                                 bg="rw.700"
                                 colorScheme="rw.700"
