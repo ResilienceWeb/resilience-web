@@ -38,6 +38,8 @@ function Listing({ listing }) {
         void router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
     }, [router, subdomain])
 
+    console.log(listing)
+
     return (
         <>
             <Box
@@ -57,13 +59,14 @@ function Listing({ listing }) {
                 >
                     Back to main list
                 </Button>
-                {listing.listingImage && (
+                {listing.image && (
                     <Image
-                        src={listing.listingImage}
+                        src={listing.image}
                         alt={`Image for ${listing.title}`}
                         objectFit="cover"
                         height="400px"
                         width="700px"
+                        unoptimized
                         style={{
                             maxHeight: '400px',
                             // eslint-disable-next-line react-hooks/rules-of-hooks

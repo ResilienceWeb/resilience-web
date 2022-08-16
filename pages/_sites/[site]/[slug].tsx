@@ -20,9 +20,9 @@ function Listing({ listing }: { listing: ListingType | any }) {
     return (
         <>
             <NextSeo
-                title={`${listing.title} | Cambridge Resilience Web`}
+                title={`${listing.title} | Resilience Web`}
                 openGraph={{
-                    title: `${listing.title} | Cambridge Resilience Web`,
+                    title: `${listing.title} | Resilience Web`,
                     images: [{ url: listing.listingImage }],
                 }}
             />
