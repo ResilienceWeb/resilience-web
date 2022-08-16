@@ -38,8 +38,6 @@ function Listing({ listing }) {
         void router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
     }, [router, subdomain])
 
-    console.log(listing)
-
     return (
         <>
             <Box
@@ -68,7 +66,6 @@ function Listing({ listing }) {
                         width="700px"
                         unoptimized
                         style={{
-                            maxHeight: '400px',
                             // eslint-disable-next-line react-hooks/rules-of-hooks
                             borderRadius: useBreakpointValue({
                                 base: 'none',

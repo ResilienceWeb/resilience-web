@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect, memo } from 'react'
+import { useCallback, useMemo, useEffect, useState, memo } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
@@ -11,8 +11,16 @@ import CategoryTag from '@components/category-tag'
 import ImagePlaceholder from './image-placeholder'
 
 const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
+    const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
+        useState<boolean>(true)
     const { ref, inView } = useInView()
     const animation = useAnimation()
+
+    useEffect(() => {
+        setInterval(() => {
+            setIsWithinAFewSecondsOfRender(false)
+        }, 3000)
+    }, [])
 
     useEffect(() => {
         if (inView) {
@@ -72,6 +80,7 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
                         height="170px"
                         layout="responsive"
                         unoptimized
+                        priority={inView && isWithinAFewSecondsOfRender}
                         style={{
                             borderTopLeftRadius: '.375rem',
                             borderTopRightRadius: '.375rem',
