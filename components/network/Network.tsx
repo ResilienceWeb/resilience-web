@@ -49,7 +49,7 @@ const options = {
     interaction: {
         zoomView: true,
         hover: true,
-        dragView: false,
+        dragView: true,
         navigationButtons: true,
         keyboard: {
             enabled: true,
