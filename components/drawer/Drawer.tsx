@@ -1,18 +1,63 @@
-import { useCallback, useMemo, memo } from 'react'
+import { memo } from 'react'
+import Select from 'react-select'
 import Image from 'next/image'
-import { Flex, Link } from '@chakra-ui/react'
-import { sortStringsFunc } from '@helpers/utils'
+import chroma from 'chroma-js'
+import { Flex, Link, InputGroup, useBreakpointValue } from '@chakra-ui/react'
+
 import styles from './Drawer.module.scss'
 import LogoImage from '../../public/logo.png'
 
-const Drawer = ({ items, selectNode }) => {
-    const sortedItems = useMemo(
-        () => items.filter((i) => !i.isDescriptive).sort(sortStringsFunc),
-        [items],
-    )
+const customMultiSelectStyles = {
+    container: () => ({
+        width: '100%',
+    }),
+    control: (provided) => {
+        return {
+            ...provided,
+            borderColor: '#E2E8F0',
+            borderRadius: '0.375rem',
+        }
+    },
+    placeholder: (provided) => {
+        return {
+            ...provided,
+            color: '#718096',
+        }
+    },
+    option: (provided, state) => {
+        return {
+            ...provided,
+            color: state.data.color,
+        }
+    },
+    multiValue: (styles, { data }) => {
+        const color = data.color ? chroma(data.color) : chroma('#718096')
+        return {
+            ...styles,
+            fontSize: '14px',
+            backgroundColor: color.alpha(0.5).css(),
+        }
+    },
+    multiValueLabel: (styles) => ({
+        ...styles,
+        color: '#000',
+    }),
+    multiValueRemove: (styles, { data }) => ({
+        ...styles,
+        color: data.color,
+        ':hover': {
+            backgroundColor: data.color,
+            color: 'white',
+        },
+    }),
+}
 
-    const handleClick = useCallback((id) => selectNode(id), [selectNode])
-
+const Drawer = ({
+    categories,
+    tags,
+    handleTagSelection,
+    handleCategorySelection,
+}) => {
     return (
         <div className={styles.drawer}>
             <Link href="/">
@@ -26,19 +71,37 @@ const Drawer = ({ items, selectNode }) => {
                     />
                 </Flex>
             </Link>
-            {sortedItems.map((item, index) => (
-                <div key={item.id}>
-                    <div
-                        className={styles.item}
-                        onClick={() => handleClick(item.id)}
-                        onKeyUp={() => handleClick(item.id)}
-                        role="button"
-                        tabIndex={index}
-                    >
-                        {item.label}
-                    </div>
-                </div>
-            ))}
+            <Flex
+                direction="column"
+                alignItems="center"
+                gap="1.25rem"
+                mt="2rem"
+            >
+                <InputGroup
+                    maxW={useBreakpointValue({ base: 'initial', md: '280px' })}
+                >
+                    <Select
+                        isMulti
+                        isSearchable={false}
+                        onChange={handleCategorySelection}
+                        options={categories}
+                        placeholder="Filter by category"
+                        styles={customMultiSelectStyles}
+                    />
+                </InputGroup>
+                <InputGroup
+                    maxW={useBreakpointValue({ base: 'initial', md: '280px' })}
+                >
+                    <Select
+                        isMulti
+                        isSearchable={false}
+                        onChange={handleTagSelection}
+                        options={tags}
+                        placeholder="Filter by tag"
+                        styles={customMultiSelectStyles}
+                    />
+                </InputGroup>
+            </Flex>
         </div>
     )
 }

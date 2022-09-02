@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { Box, Center, Spinner } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
 import chroma from 'chroma-js'
+import intersection from 'lodash/intersection'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
@@ -14,6 +15,7 @@ import { REMOTE_URL } from '@helpers/config'
 import MainList from '@components/main-list'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
+import { useTags } from '@hooks/tags'
 import { useLocalStorage } from '@hooks/application'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
@@ -57,10 +59,14 @@ const Site = ({ data }) => {
     const [selectedCategories, setSelectedCategories] = useState([])
     const [categories, setCategories] = useState({})
 
+    const [selectedTags, setSelectedTags] = useState([])
+    const [tags, setTags] = useState({})
+
     const [selectedId, setSelectedId] = useState()
     const [network, setNetwork] = useState<INetwork>()
 
     const { categories: fetchedCategories } = useCategories()
+    const { tags: fetchedTags } = useTags()
 
     useEffect(() => {
         if (!fetchedCategories) return
@@ -74,8 +80,23 @@ const Site = ({ data }) => {
         )
     }, [fetchedCategories])
 
+    useEffect(() => {
+        if (!fetchedTags) return
+
+        setTags(
+            fetchedTags.map((c) => ({
+                value: c.label,
+                label: c.label,
+            })),
+        )
+    }, [fetchedTags])
+
     const handleCategorySelection = useCallback((value) => {
         setSelectedCategories(value)
+    }, [])
+
+    const handleTagSelection = useCallback((value) => {
+        setSelectedTags(value)
     }, [])
 
     const filteredItems = useMemo(() => {
@@ -95,6 +116,14 @@ const Site = ({ data }) => {
             )
         }
 
+        if (selectedTags.length > 0) {
+            const tags = selectedTags.map((c) => c.label)
+            results = results.filter((item) => {
+                const itemTags = item.tags.map((c) => c.label)
+                return intersection(tags, itemTags).length > 0
+            })
+        }
+
         if (searchTermValue) {
             results = results.filter((item) =>
                 removeNonAlphaNumeric(item.title)
@@ -104,7 +133,7 @@ const Site = ({ data }) => {
         }
 
         return results
-    }, [data, isVolunteer, selectedCategories, searchTermValue])
+    }, [data, isVolunteer, selectedCategories, selectedTags, searchTermValue])
 
     const descriptiveNodes = useMemo(
         () => (data ? data.nodes.filter((item) => item.isDescriptive) : []),
@@ -119,14 +148,14 @@ const Site = ({ data }) => {
         [data?.edges, filteredItems, descriptiveNodes],
     )
 
-    const selectNode = useCallback(
-        (id) => {
-            if (!network) return
-            network.selectNodes([id])
-            setSelectedId(id)
-        },
-        [network],
-    )
+    // const selectNode = useCallback(
+    //     (id) => {
+    //         if (!network) return
+    //         network.selectNodes([id])
+    //         setSelectedId(id)
+    //     },
+    //     [network],
+    // )
 
     const handleSwitchChange = useCallback(
         (event) => {
@@ -154,12 +183,17 @@ const Site = ({ data }) => {
 
     return (
         <>
-            {isWebMode && (
-                <Drawer items={filteredItems} selectNode={selectNode} />
+            {!isMobile && (
+                <Drawer
+                    categories={categories}
+                    tags={tags}
+                    handleCategorySelection={handleCategorySelection}
+                    handleTagSelection={handleTagSelection}
+                />
             )}
             <Box
                 height="100vh"
-                ml={isWebMode ? '18.75rem' : '0'}
+                ml={isMobile ? '0' : '18.75rem'}
                 position="relative"
             >
                 <Header
@@ -167,11 +201,13 @@ const Site = ({ data }) => {
                     handleCategorySelection={handleCategorySelection}
                     handleSearchTermChange={handleSearchTermChange}
                     handleSwitchChange={handleSwitchChange}
+                    handleTagSelection={handleTagSelection}
                     handleVolunteerSwitchChange={handleVolunteerSwitchChange}
                     isMobile={isMobile}
                     isWebMode={isWebMode}
                     isVolunteer={isVolunteer}
                     searchTerm={searchTerm}
+                    tags={tags}
                 />
                 {isWebMode && (
                     <NetworkComponent

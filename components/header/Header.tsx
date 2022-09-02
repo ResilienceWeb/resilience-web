@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import NextLink from 'next/link'
 import Select from 'react-select'
 import chroma from 'chroma-js'
@@ -13,7 +14,6 @@ import {
     HStack,
     Link,
     chakra,
-    useBreakpointValue,
 } from '@chakra-ui/react'
 import { HiOutlineSearch, HiHome } from 'react-icons/hi'
 import ModeSwitch from '@components/mode-switch'
@@ -44,7 +44,7 @@ const customMultiSelectStyles = {
         }
     },
     multiValue: (styles, { data }) => {
-        const color = chroma(data.color)
+        const color = data.color ? chroma(data.color) : chroma('#718096')
         return {
             ...styles,
             fontSize: '14px',
@@ -70,11 +70,13 @@ const Header = ({
     handleCategorySelection,
     handleSearchTermChange,
     handleSwitchChange,
+    handleTagSelection,
     handleVolunteerSwitchChange,
     isMobile,
     isWebMode,
     isVolunteer,
     searchTerm,
+    tags,
 }) => {
     const content = (
         <>
@@ -96,18 +98,30 @@ const Header = ({
                     _placeholder={{ color: '#718096', opacity: 1 }}
                 />
             </InputGroup>
-            <InputGroup
-                maxW={useBreakpointValue({ base: 'initial', md: '300px' })}
-            >
-                <Select
-                    isMulti
-                    isSearchable={false}
-                    onChange={handleCategorySelection}
-                    options={categories}
-                    placeholder="Filter by category"
-                    styles={customMultiSelectStyles}
-                />
-            </InputGroup>
+            {isMobile && (
+                <>
+                    <InputGroup>
+                        <Select
+                            isMulti
+                            isSearchable={false}
+                            onChange={handleCategorySelection}
+                            options={categories}
+                            placeholder="Filter by category"
+                            styles={customMultiSelectStyles}
+                        />
+                    </InputGroup>
+                    <InputGroup>
+                        <Select
+                            isMulti
+                            isSearchable={false}
+                            onChange={handleTagSelection}
+                            options={tags}
+                            placeholder="Filter by tag"
+                            styles={customMultiSelectStyles}
+                        />
+                    </InputGroup>
+                </>
+            )}
             <VolunteerSwitch
                 checked={isVolunteer}
                 handleSwitchChange={handleVolunteerSwitchChange}
@@ -186,4 +200,4 @@ const Header = ({
     )
 }
 
-export default Header
+export default memo(Header)

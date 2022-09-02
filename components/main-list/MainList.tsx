@@ -1,12 +1,6 @@
 import { memo, useCallback, useState, useMemo } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import {
-    chakra,
-    Flex,
-    Grid,
-    useBreakpointValue,
-    useDisclosure,
-} from '@chakra-ui/react'
+import { chakra, Flex, Grid, useDisclosure } from '@chakra-ui/react'
 
 import { useCategories } from '@hooks/categories'
 import Footer from '@components/footer'
@@ -36,10 +30,10 @@ const MainList = ({ filteredItems, isMobile }) => {
 
     const { categories } = useCategories()
     const categoriesIndexes = useMemo(() => {
-        const categoriesIndexexObj = {}
-        categories?.map((c, i) => (categoriesIndexexObj[c.label] = i))
+        const categoriesIndexesObj = {}
+        categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))
 
-        return categoriesIndexexObj
+        return categoriesIndexesObj
     }, [categories])
 
     return (
@@ -48,25 +42,15 @@ const MainList = ({ filteredItems, isMobile }) => {
                 alignItems="center"
                 flexDirection="column"
                 minHeight="calc(100vh - 112px)"
-                py={10}
+                py="1rem"
             >
-                <chakra.span fontSize="14px" marginTop={2}>
-                    {filteredItems.length} listings
-                </chakra.span>
-                <chakra.div
-                    marginTop={4}
-                    width={useBreakpointValue({
-                        base: '95%',
-                        md: '85%',
-                        lg: '70%',
-                    })}
-                >
+                <chakra.div marginTop={4} mx="2rem" maxW="1400px">
                     <Grid
                         templateColumns={{
                             base: '1fr',
                             md: 'repeat(3, 1fr)',
                         }}
-                        gap={6}
+                        gap="1rem"
                     >
                         <AnimatePresence>
                             {filteredItems.map((item) => (
