@@ -1,12 +1,12 @@
 {
-    "routes": [
-        {
-            "src": "/city",
-            "status": 301,
-            "headers": {
-                "Location": "/"
-            }
-        }
-    ]
+  "routes": [
+    {
+      "src": "/city",
+      "status": 301,
+      "headers": {
+        "Location": "/"
+      }
+    }
+  ]
 }
 

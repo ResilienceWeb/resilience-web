@@ -2,32 +2,31 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function createTagRequest(tagData) {
-    const response = await fetch('/api/tags', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-        },
-        body: JSON.stringify(tagData),
-    })
+  const response = await fetch('/api/tags', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify(tagData),
+  })
 
-    const data = await response.json()
-    const { tag } = data
-    return tag
+  const data = await response.json()
+  const { tag } = data
+  return tag
 }
 
 export default function useCreateTag() {
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
 
-    return useMutation(createTagRequest, {
-        onMutate: async (newTag) => {
-            await queryClient.cancelQueries(['tags'])
-            const previousTags = queryClient.getQueryData(['tags'])
-            queryClient.setQueryData(['tags'], (old) => [newTag])
-            return { previousTags }
-        },
-        onSettled: () => {
-            void queryClient.invalidateQueries(['tags'])
-        },
-    })
+  return useMutation(createTagRequest, {
+    onMutate: async (newTag) => {
+      await queryClient.cancelQueries(['tags'])
+      const previousTags = queryClient.getQueryData(['tags'])
+      queryClient.setQueryData(['tags'], (old) => [newTag])
+      return { previousTags }
+    },
+    onSettled: () => {
+      void queryClient.invalidateQueries(['tags'])
+    },
+  })
 }
-

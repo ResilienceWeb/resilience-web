@@ -4,33 +4,33 @@ import { Location } from '@prisma/client'
 import prisma from '../../../prisma/client'
 
 type ResponseData = {
-    error?: string
-    site?: Location
+  error?: string
+  site?: Location
 }
 
 const handler = async (
-    req: NextApiRequest,
-    res: NextApiResponse<ResponseData>,
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseData>,
 ) => {
-    try {
-        const { slug } = req.query
-        const site = await prisma.location.findFirst({
-            where: {
-                slug,
-            },
-        })
-        res.status(200).send({ site })
-    } catch (e) {
-        res.status(500).send({
-            error: `Unable to fetch site from database - ${e}`,
-        })
-    }
+  try {
+    const { slug } = req.query
+    const site = await prisma.location.findFirst({
+      where: {
+        slug,
+      },
+    })
+    res.status(200).send({ site })
+  } catch (e) {
+    res.status(500).send({
+      error: `Unable to fetch site from database - ${e}`,
+    })
+  }
 }
 
 export const config = {
-    api: {
-        externalResolver: true,
-    },
+  api: {
+    externalResolver: true,
+  },
 }
 
 export default withSentry(handler)

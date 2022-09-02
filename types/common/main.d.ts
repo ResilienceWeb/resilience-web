@@ -2,21 +2,20 @@
 /// <reference path="./next-auth.d.ts" />
 
 type Listing = {
-    id: number
-    title: string
-    categoryId?: number
-    locationId?: number
-    website?: string
-    description: string
-    email?: string
-    facebook?: string
-    instagram?: string
-    twitter?: string
-    notes?: string
-    seekingVolunteers: boolean
-    inactive: boolean
-    slug: string
-    image?: string
-    tags?: Tag[]
+  id: number
+  title: string
+  categoryId?: number
+  locationId?: number
+  website?: string
+  description: string
+  email?: string
+  facebook?: string
+  instagram?: string
+  twitter?: string
+  notes?: string
+  seekingVolunteers: boolean
+  inactive: boolean
+  slug: string
+  image?: string
+  tags?: Tag[]
 }
-
