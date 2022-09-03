@@ -10,6 +10,7 @@ import {
   Link,
   Icon,
   Button,
+  Tag,
   Text,
   Tooltip,
 } from '@chakra-ui/react'
@@ -113,71 +114,62 @@ function Listing({ listing }) {
                 </Tooltip>
               )}
             </Box>
-            <Box
-              display={useBreakpointValue({
-                base: 'flex',
-                md: 'block',
-              })}
-              justifyContent="space-between"
-            >
-              <HStack justifyContent="space-between">
-                {listing.website && (
-                  <Link href={listing.website} rel="noreferrer" target="_blank">
-                    <Button
-                      size="md"
-                      bg="rw.700"
-                      colorScheme="rw.700"
-                      rightIcon={<ExternalLinkIcon />}
-                      mt={8}
-                      _hover={{ bg: 'rw.900' }}
-                    >
-                      Visit website
-                    </Button>
+            <HStack justifyContent="space-between" mt={8} width="100%">
+              {listing.website && (
+                <Link href={listing.website} rel="noreferrer" target="_blank">
+                  <Button
+                    size="md"
+                    bg="rw.700"
+                    colorScheme="rw.700"
+                    rightIcon={<ExternalLinkIcon />}
+                    _hover={{ bg: 'rw.900' }}
+                  >
+                    Visit website
+                  </Button>
+                </Link>
+              )}
+              <HStack spacing={4}>
+                {listing.facebook && (
+                  <Link href={listing.facebook} target="_blank">
+                    <Icon
+                      as={SiFacebook}
+                      color="gray.600"
+                      cursor="pointer"
+                      w={8}
+                      h={8}
+                      transition="color 150ms"
+                      _hover={{ color: 'gray.500' }}
+                    />
                   </Link>
                 )}
-                <HStack spacing={4}>
-                  {listing.facebook && (
-                    <Link href={listing.facebook} target="_blank">
-                      <Icon
-                        as={SiFacebook}
-                        color="gray.600"
-                        cursor="pointer"
-                        w={8}
-                        h={8}
-                        transition="color 150ms"
-                        _hover={{ color: 'gray.500' }}
-                      />
-                    </Link>
-                  )}
-                  {listing.twitter && (
-                    <Link href={listing.twitter} target="_blank">
-                      <Icon
-                        as={SiTwitter}
-                        color="gray.600"
-                        cursor="pointer"
-                        w={8}
-                        h={8}
-                        transition="color 150ms"
-                        _hover={{ color: 'gray.500' }}
-                      />
-                    </Link>
-                  )}
-                  {listing.instagram && (
-                    <Link href={listing.instagram} target="_blank">
-                      <Icon
-                        as={SiInstagram}
-                        color="gray.600"
-                        cursor="pointer"
-                        w={8}
-                        h={8}
-                        transition="color 150ms"
-                        _hover={{ color: 'gray.500' }}
-                      />
-                    </Link>
-                  )}
-                </HStack>
+                {listing.twitter && (
+                  <Link href={listing.twitter} target="_blank">
+                    <Icon
+                      as={SiTwitter}
+                      color="gray.600"
+                      cursor="pointer"
+                      w={8}
+                      h={8}
+                      transition="color 150ms"
+                      _hover={{ color: 'gray.500' }}
+                    />
+                  </Link>
+                )}
+                {listing.instagram && (
+                  <Link href={listing.instagram} target="_blank">
+                    <Icon
+                      as={SiInstagram}
+                      color="gray.600"
+                      cursor="pointer"
+                      w={8}
+                      h={8}
+                      transition="color 150ms"
+                      _hover={{ color: 'gray.500' }}
+                    />
+                  </Link>
+                )}
               </HStack>
-            </Box>
+            </HStack>
           </Box>
         </Flex>
         <Box
@@ -188,6 +180,28 @@ function Listing({ listing }) {
           })}
         >
           <DescriptionRichText html={listing.description} />
+        </Box>
+
+        <Box
+          mt={4}
+          mb={8}
+          px={useBreakpointValue({
+            base: 4,
+            md: 2,
+          })}
+          display="flex"
+          justifyContent="flex-end"
+        >
+          {listing.tags.map((tag) => (
+            <Tag
+              backgroundColor="gray.300"
+              userSelect="none"
+              key={tag.id}
+              mr={1}
+            >
+              #{tag.label}
+            </Tag>
+          ))}
         </Box>
       </Box>
     </>
