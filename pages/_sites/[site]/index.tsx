@@ -4,7 +4,6 @@ import groupBy from 'lodash/groupBy'
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { Box, Center, Spinner } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
-import chroma from 'chroma-js'
 import intersection from 'lodash/intersection'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'

@@ -98,7 +98,7 @@ function Listing({ listing }) {
             width="100%"
           >
             <Box>
-              <HStack>
+              <HStack justifyContent="space-between">
                 <Heading as="h1" data-testid="Title" pb={2}>
                   {listing.title}
                 </Heading>

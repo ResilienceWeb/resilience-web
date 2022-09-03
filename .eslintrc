@@ -22,6 +22,7 @@
     "plugin:promise/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:@next/next/recommended",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
@@ -82,6 +83,7 @@
     "react/jsx-props-no-spreading": 0,
     "react/react-in-jsx-scope": 0,
     "react/prop-types": 0,
+    "react/no-unknown-property": 0,
     "import/default": 1,
     "import/export": 1,
     "import/named": 1,
