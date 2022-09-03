@@ -10,6 +10,7 @@ import intersection from 'lodash/intersection'
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 
+import { selectMoreAccessibleColor } from '@helpers/colors'
 import { useAppContext } from '@store/hooks'
 import { REMOTE_URL } from '@helpers/config'
 import MainList from '@components/main-list'
@@ -284,10 +285,11 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
       slug,
       tags,
     }) => {
-      const accessibleTextColor =
-        chroma.contrast('#3f3f40', `#${category.color}`) > 4.5
-          ? '#3f3f40'
-          : '#fff'
+      const accessibleTextColor = selectMoreAccessibleColor(
+        `#${category.color}`,
+        '#3f3f40',
+        '#fff',
+      )
       transformedData.nodes.push({
         id,
         label: title,

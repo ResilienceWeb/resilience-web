@@ -68,9 +68,24 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
         onClick={openDialog}
         boxShadow="md"
         opacity={dataItem.inactive ? 0.7 : 1}
+        position="relative"
         _hover={{ boxShadow: 'xl' }}
         ref={ref}
       >
+        <CategoryTag
+          alpha={1}
+          colorHex={dataItem.color}
+          height="26px"
+          minWidth="fit-content"
+          boxShadow="lg"
+          position="absolute"
+          zIndex="2"
+          top="4px"
+          right="4px"
+        >
+          {dataItem.category}
+        </CategoryTag>
+
         {dataItem.listingImage ? (
           <Image
             alt={`${dataItem.label} cover image`}
@@ -107,17 +122,14 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
             >
               {dataItem.title}
             </chakra.h2>
-            <CategoryTag
-              colorHex={dataItem.color}
-              height="26px"
-              minWidth="fit-content"
-            >
-              {dataItem.category}
-            </CategoryTag>
           </Flex>
           {dataItem.seekingVolunteers && (
             <Flex>
-              <Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">
+              <Tooltip
+                backgroundColor="whiteAlpha.900"
+                borderRadius="md"
+                label="This group is seeking volunteers or members. Get in touch with them if you'd like to help."
+              >
                 <Text color="rw.900" fontSize="sm">
                   Seeking volunteers <Icon as={HiUserGroup} />
                 </Text>

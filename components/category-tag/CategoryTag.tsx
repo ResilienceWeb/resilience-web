@@ -1,12 +1,25 @@
-import { Tag } from '@chakra-ui/react'
+import { Tag, Text } from '@chakra-ui/react'
 import chroma from 'chroma-js'
 
-const CategoryTag = ({ children, colorHex, ...props }) => {
+import { selectMoreAccessibleColor } from '@helpers/colors'
+
+const CategoryTag = ({ children, colorHex, alpha = 1, ...props }) => {
   const color = chroma(colorHex)
 
+  const accessibleTextColor = selectMoreAccessibleColor(
+    colorHex,
+    '#3f3f40',
+    '#fff',
+  )
+
   return (
-    <Tag backgroundColor={color.alpha(0.5).css()} userSelect="none" {...props}>
-      {children}
+    <Tag
+      backgroundColor={color.alpha(alpha).css()}
+      userSelect="none"
+      flexShrink="0"
+      {...props}
+    >
+      <Text color={accessibleTextColor}>{children}</Text>
     </Tag>
   )
 }
