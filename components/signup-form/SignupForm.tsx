@@ -10,7 +10,7 @@ const SignupForm = () => {
     >
       <InputGroup size="md">
         <Input
-          pr="8.5rem"
+          pr="10.5rem"
           type="email"
           name="member[email]"
           placeholder="Your email address"
