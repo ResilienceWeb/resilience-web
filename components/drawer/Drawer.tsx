@@ -4,6 +4,7 @@ import Image from 'next/image'
 import chroma from 'chroma-js'
 import { Flex, Link, InputGroup, useBreakpointValue } from '@chakra-ui/react'
 
+import { REMOTE_URL } from '@helpers/config'
 import styles from './Drawer.module.scss'
 import LogoImage from '../../public/logo.png'
 
@@ -60,7 +61,7 @@ const Drawer = ({
 }) => {
   return (
     <div className={styles.drawer}>
-      <Link href="/">
+      <Link href={REMOTE_URL}>
         <Flex justifyContent="center" my={2} px={4}>
           <Image
             alt="Cambridge Resilience Web logo"
