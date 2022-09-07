@@ -41,10 +41,11 @@ const MainList = ({ filteredItems, isMobile }) => {
       <Flex
         alignItems="center"
         flexDirection="column"
-        minHeight="calc(100vh - 112px)"
+        minHeight="calc(100vh - 302px)"
         py="1rem"
+        px="2rem"
       >
-        <chakra.div marginTop={4} mx="2rem" maxW="1400px">
+        <chakra.div marginTop={4} width="100%" maxW="1400px">
           <Grid
             templateColumns={{
               base: '1fr',

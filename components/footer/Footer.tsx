@@ -70,7 +70,7 @@ export default function Footer() {
       borderTopColor="gray.200"
       borderTopWidth="1px"
     >
-      <Container as={Stack} maxW={'6xl'} py={10}>
+      <Container as={Stack} maxW={'7xl'} py={10}>
         <SimpleGrid
           templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 2fr' }}
           spacing={8}
