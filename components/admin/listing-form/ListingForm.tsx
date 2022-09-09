@@ -46,16 +46,11 @@ const EditorField = (props) => {
         onBlur={handleBlur}
         init={{
           height: 500,
-          menubar: false,
-          plugins: [
-            'advlist autolink lists link anchor',
-            'visualblocks code fullscreen',
-            'table paste code help wordcount',
-          ],
-          toolbar:
-            'undo redo | formatselect | ' +
-            'bold italic backcolor | bullist numlist |' +
-            'help',
+          menubar: 'file edit view insert format tools table tc help',
+          toolbar: true,
+          plugins:
+            'media advlist autolink lists link anchor image code fullscreen table paste code emoticons help',
+          selector: 'textarea',
         }}
       ></Editor>
       {meta.touched && meta.error ? (
