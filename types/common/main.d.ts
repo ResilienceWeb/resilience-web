@@ -18,4 +18,6 @@ type Listing = {
   slug: string
   image?: string
   tags?: Tag[]
+  relations?: Listing[]
+  relationOf?: Listing[]
 }

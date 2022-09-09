@@ -18,6 +18,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         category: true,
         location: true,
         tags: true,
+        relations: true,
+        relationOf: true,
       },
     })
 

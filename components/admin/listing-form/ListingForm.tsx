@@ -4,6 +4,7 @@ import { Editor } from '@tinymce/tinymce-react'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import { Category } from '@prisma/client'
+import uniqBy from 'lodash/uniqBy'
 import {
   chakra,
   Box,
@@ -22,6 +23,7 @@ import {
 import { emailValidator, fieldRequiredValidator } from '@helpers/formValidation'
 import ImageUpload from './ImageUpload'
 import { useTags } from '@hooks/tags'
+import { useListings } from '@hooks/listings'
 
 const EditorField = (props) => {
   const { label, name, ...otherProps } = props
@@ -79,6 +81,12 @@ type TagOption = {
 
 const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
   const { tags } = useTags()
+  const { listings } = useListings()
+
+  const allRelations = useMemo(
+    () => uniqBy([...listing.relations, ...listing.relationOf], (l) => l.id),
+    [listing.relationOf, listing.relations],
+  )
 
   const tagOptions: Options<TagOption> = useMemo(() => {
     if (!tags) return []
@@ -89,6 +97,17 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
     }))
   }, [tags])
 
+  const relationOptions: Options<TagOption> = useMemo(() => {
+    if (!listings) return []
+
+    return listings
+      .filter((l) => l.title !== listing.title)
+      .map((l) => ({
+        value: l.id,
+        label: l.title,
+      }))
+  }, [listing.title, listings])
+
   const initialTagsValues = useMemo(() => {
     return listing?.tags.map((t) => ({
       value: t.id,
@@ -96,14 +115,28 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
     }))
   }, [listing?.tags])
 
+  const initialRelationsValues = useMemo(() => {
+    return listing?.relations.map((l) => ({
+      value: l.id,
+      label: l.title,
+    }))
+  }, [listing?.relations])
+
   const handleSubmitForm = (data) => {
     data.tags = data.tags?.map((t) => t.value)
+    data.relations = data.relations?.map((l) => l.value)
     if (listing) {
       const currentListingTagIds = listing?.tags.map((t) => t.id)
       const removedTags = currentListingTagIds.filter(
         (t) => !data.tags.includes(t),
       )
       data.removedTags = removedTags
+
+      const currentListingRelationIds = listing?.relations.map((r) => r.id)
+      const removedRelations = currentListingRelationIds.filter(
+        (l) => !data.relations.includes(l),
+      )
+      data.removedRelations = removedRelations
     }
     handleSubmit(data)
   }
@@ -125,6 +158,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
         image: listing?.image,
         slug: listing?.slug || '',
         tags: initialTagsValues || [],
+        relations: initialRelationsValues || [],
       }}
       enableReinitialize
       onSubmit={handleSubmitForm}
@@ -441,6 +475,55 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                     )
                   }}
                 </Field>
+              </chakra.div>
+
+              <chakra.div mb={3}>
+                <Field name="relations">
+                  {({ field, form }: FieldProps) => {
+                    return (
+                      <FormControl
+                        isInvalid={Boolean(
+                          form.errors.relations && form.touched.relations,
+                        )}
+                      >
+                        <FormLabel htmlFor="relations" fontSize="sm">
+                          Relations
+                        </FormLabel>
+                        <InputGroup size="sm">
+                          <ReactSelect
+                            isMulti
+                            isSearchable
+                            onChange={(option, changeData) => {
+                              let newValue
+                              if (changeData.action === 'select-option') {
+                                newValue = [...field.value, changeData.option]
+                              } else if (changeData.action === 'remove-value') {
+                                newValue = field.value.filter(
+                                  (v) =>
+                                    v.value !== changeData.removedValue.value,
+                                )
+                              }
+                              form.setFieldValue(field.name, newValue)
+                            }}
+                            options={relationOptions.filter(
+                              (t) => !field.value.includes(t),
+                            )}
+                            placeholder="Relations"
+                            value={field.value}
+                            isClearable={false}
+                            styles={customMultiSelectStyles}
+                          />
+                        </InputGroup>
+                        <FormErrorMessage>
+                          {form.errors.relations?.toString()}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )
+                  }}
+                </Field>
+                <Text color="gray.500" fontSize="sm">
+                  What other listings is it related to?
+                </Text>
               </chakra.div>
 
               <chakra.div mb={3}>

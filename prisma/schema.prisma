@@ -115,8 +115,8 @@ model Listing {
   location          Location?        @relation(fields: [locationId], references: [id])
   editPermissions   EditPermission[]
   tags              Tag[]
-  listings_B        Listing[]        @relation("related")
-  listings_A        Listing[]        @relation("related")
+  relations         Listing[]        @relation("related")
+  relationOf        Listing[]        @relation("related")
 
   @@map("listings")
 }

@@ -44,6 +44,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             id: Number(tagId),
           }))
 
+          const relationsArray =
+            (fields.relations as string) !== ''
+              ? (fields.relations as string).split(',')
+              : []
+          const relationsToConnect = relationsArray.map((relationId) => ({
+            id: Number(relationId),
+          }))
+          const removedRelationsArray =
+            (fields.removedRelations as string) !== ''
+              ? (fields.removedRelations as string).split(',')
+              : []
+          const relationsToDisconnect = removedRelationsArray.map(
+            (relationId) => ({
+              id: Number(relationId),
+            }),
+          )
+
           const newData: Prisma.ListingUncheckedUpdateInput = {
             title: fields.title as string,
             categoryId: parseInt(fields.category as string),
@@ -62,6 +79,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             tags: {
               connect: tagsToConnect,
               disconnect: tagsToDisconnect,
+            },
+            relations: {
+              connect: relationsToConnect,
+              disconnect: relationsToDisconnect,
+            },
+            relationOf: {
+              connect: relationsToConnect,
+              disconnect: relationsToDisconnect,
             },
           }
 
