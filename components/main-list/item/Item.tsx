@@ -10,7 +10,7 @@ import CategoryTag from '@components/category-tag'
 
 import ImagePlaceholder from './image-placeholder'
 
-const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
+const Item = ({ categoriesIndexes, dataItem, onOpenDialog, simplified }) => {
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
   const { ref, inView } = useInView()
@@ -57,7 +57,7 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
       initial={{ opacity: 0, y: 50 }}
       exit={{ opacity: 0 }}
       animate={animation}
-      whileHover={{ scale: 1.05 }}
+      whileHover={{ scale: simplified ? 1 : 1.05 }}
     >
       <chakra.div
         height="fit-content"
@@ -123,7 +123,7 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
               {dataItem.title}
             </chakra.h2>
           </Flex>
-          {dataItem.seekingVolunteers && (
+          {dataItem.seekingVolunteers && !simplified && (
             <Flex>
               <Tooltip
                 backgroundColor="whiteAlpha.900"
