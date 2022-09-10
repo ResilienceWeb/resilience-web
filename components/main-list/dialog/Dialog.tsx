@@ -147,10 +147,10 @@ const Dialog = ({
     >
       <ModalOverlay />
       <ModalContent opacity="1">
-        {item.listingImage && (
+        {item.image && (
           <Image
             alt={`${item.label} cover image`}
-            src={item.listingImage}
+            src={item.image}
             objectFit="cover"
             width="672px"
             height="300px"
@@ -166,8 +166,8 @@ const Dialog = ({
         <ModalCloseButton size="lg" backgroundColor="rgba(160,174,192,0.4)" />
         <ModalBody>
           <Flex justifyContent="space-between">
-            <CategoryTag mb={4} colorHex={item.color}>
-              {item.category}
+            <CategoryTag mb={4} colorHex={item.category.color}>
+              {item.category.label}
             </CategoryTag>
             <Icon
               as={HiShare}

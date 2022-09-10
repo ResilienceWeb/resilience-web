@@ -23,7 +23,7 @@ function Listing({ listing }: { listing: ListingType | any }) {
         title={`${listing.title} | Resilience Web`}
         openGraph={{
           title: `${listing.title} | Resilience Web`,
-          images: [{ url: listing.listingImage }],
+          images: [{ url: listing.image }],
         }}
       />
       <LocalBusinessJsonLd
@@ -64,6 +64,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const response = await fetch(`${REMOTE_URL}/api/listing/${params.slug}`)
   const data = await response.json()
+  // TODO: map data to only return what is needed
   const { listing } = data
 
   return {
