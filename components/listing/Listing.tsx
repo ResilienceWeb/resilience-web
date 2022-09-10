@@ -40,6 +40,7 @@ function Listing({ listing }) {
   }, [])
 
   const goBack = useCallback(() => {
+    // void router.back()
     void router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
   }, [router, subdomain])
 
@@ -194,7 +195,7 @@ function Listing({ listing }) {
               </Heading>
               <Grid
                 templateColumns={{
-                  base: '1fr',
+                  base: '1fr 1fr',
                   md: 'repeat(3, 1fr)',
                 }}
                 gap="1rem"
@@ -205,9 +206,10 @@ function Listing({ listing }) {
                     <Item
                       categoriesIndexes={categoriesIndexes}
                       dataItem={listing}
-                      onOpenDialog={async () => {
+                      handleClick={() => {
                         const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${listing.slug}`
-                        await router.push(individualListingLink)
+                        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                        router.push(individualListingLink)
                       }}
                       key={listing.id}
                       simplified
