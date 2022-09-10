@@ -1,13 +1,16 @@
-import { memo, useCallback, useState, useMemo } from 'react'
+import { memo, useCallback, useEffect, useState, useMemo } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { chakra, Flex, Grid, useDisclosure } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 
 import { useCategories } from '@hooks/categories'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import Footer from '@components/footer'
 import Dialog from './dialog'
 import Item from './item'
 
 const MainList = ({ filteredItems, isMobile }) => {
+  const router = useRouter()
   const [selectedDataItem, setSelectedDataItem] = useState()
   const {
     isOpen: isDialogOpen,
@@ -15,12 +18,28 @@ const MainList = ({ filteredItems, isMobile }) => {
     onClose: onCloseDialog,
   } = useDisclosure()
 
-  const handleOpenDialog = useCallback(
-    (item) => {
+  const [subdomain, setSubdomain] = useState<string>()
+
+  useEffect(() => {
+    const hostname = window.location.hostname
+    if (!hostname.includes('.')) {
+      return null
+    }
+
+    setSubdomain(hostname.split('.')[0])
+  }, [])
+
+  const handleItemClick = useCallback(
+    async (item) => {
       setSelectedDataItem(item)
-      onOpenDialog()
+      if (isMobile) {
+        const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${item.slug}`
+        await router.push(individualListingLink)
+      } else {
+        onOpenDialog()
+      }
     },
-    [onOpenDialog],
+    [isMobile, onOpenDialog, router, subdomain],
   )
 
   const handleCloseDialog = useCallback(() => {
@@ -58,7 +77,7 @@ const MainList = ({ filteredItems, isMobile }) => {
                 <Item
                   categoriesIndexes={categoriesIndexes}
                   dataItem={item}
-                  onOpenDialog={handleOpenDialog}
+                  handleClick={handleItemClick}
                   key={item.id}
                 />
               ))}

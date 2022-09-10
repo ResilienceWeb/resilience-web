@@ -13,7 +13,7 @@ import ImagePlaceholder from './image-placeholder'
 const Item = ({
   categoriesIndexes,
   dataItem,
-  onOpenDialog,
+  handleClick,
   simplified = false,
 }) => {
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
@@ -43,9 +43,9 @@ const Item = ({
     }
   }, [animation, inView])
 
-  const openDialog = useCallback(() => {
-    onOpenDialog(dataItem)
-  }, [dataItem, onOpenDialog])
+  const onClick = useCallback(() => {
+    handleClick(dataItem)
+  }, [dataItem, handleClick])
 
   const tagBackgroundColor = useMemo(
     () => chroma(dataItem.category.color).alpha(0.5).css(),
@@ -70,7 +70,7 @@ const Item = ({
         borderRadius="5px"
         backgroundColor="#ffffff"
         transition="transform 300ms ease-in-out, box-shadow 300ms ease-in-out"
-        onClick={openDialog}
+        onClick={onClick}
         boxShadow="md"
         opacity={dataItem.inactive ? 0.7 : 1}
         position="relative"

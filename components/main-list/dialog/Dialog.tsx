@@ -207,7 +207,7 @@ const Dialog = ({
               variant="solid"
               _hover={{ bg: 'rw.900' }}
             >
-              View listing
+              See more
             </Button>
           </Link>
 
