@@ -30,11 +30,11 @@ const MainList = ({ filteredItems, isMobile }) => {
   }, [])
 
   const handleItemClick = useCallback(
-    async (item) => {
+    (item) => {
       setSelectedDataItem(item)
       if (isMobile) {
         const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${item.slug}`
-        await router.push(individualListingLink)
+        void router.push(individualListingLink)
       } else {
         onOpenDialog()
       }
