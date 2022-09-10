@@ -43,13 +43,13 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
   }, [dataItem, onOpenDialog])
 
   const tagBackgroundColor = useMemo(
-    () => chroma(dataItem.category.color).alpha(0.5).css(),
-    [dataItem.category.color],
+    () => chroma(dataItem.color).alpha(0.5).css(),
+    [dataItem.color],
   )
 
   const categoryIndex = useMemo(
-    () => categoriesIndexes?.[dataItem.category.label],
-    [categoriesIndexes, dataItem.category.label],
+    () => categoriesIndexes?.[dataItem.category],
+    [categoriesIndexes, dataItem.category],
   )
 
   return (
@@ -74,7 +74,7 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
       >
         <CategoryTag
           alpha={1}
-          colorHex={dataItem.category.color}
+          colorHex={dataItem.color}
           height="26px"
           minWidth="fit-content"
           boxShadow="lg"
@@ -83,13 +83,13 @@ const Item = ({ categoriesIndexes, dataItem, onOpenDialog }) => {
           top="4px"
           right="4px"
         >
-          {dataItem.category.label}
+          {dataItem.category}
         </CategoryTag>
 
-        {dataItem.image ? (
+        {dataItem.listingImage ? (
           <Image
-            alt={`${dataItem.title} cover image`}
-            src={dataItem.image}
+            alt={`${dataItem.label} cover image`}
+            src={dataItem.listingImage}
             objectFit="cover"
             width="300px"
             height="170px"

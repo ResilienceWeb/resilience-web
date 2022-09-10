@@ -111,9 +111,7 @@ const Site = ({ data }) => {
 
     if (selectedCategories.length > 0) {
       const categories = selectedCategories.map((c) => c.label)
-      results = results.filter((item) =>
-        categories.includes(item.category.label),
-      )
+      results = results.filter((item) => categories.includes(item.category))
     }
 
     if (selectedTags.length > 0) {
@@ -285,7 +283,6 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
       inactive,
       slug,
       tags,
-      relations,
     }) => {
       const accessibleTextColor = selectMoreAccessibleColor(
         `#${category.color}`,
@@ -294,9 +291,11 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
       )
       transformedData.nodes.push({
         id,
+        label: title,
         title,
+        category: category.label,
         description,
-        image: image ?? '',
+        listingImage: image ?? '',
         website,
         facebook,
         twitter,
@@ -304,28 +303,18 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
         email,
         seekingVolunteers,
         inactive,
-        category: {
-          color: `#${category.color}`,
-          label: category.label,
-        },
-        slug,
-        tags,
-        relations,
-        // below are for vis-network node styling and data
-        label: title,
         color: `#${category.color}`,
         font: {
           color: accessibleTextColor,
         },
         opacity: inactive ? 0.4 : 1,
+        slug,
+        tags,
       })
     },
   )
 
-  let groupedByCategory = groupBy(
-    transformedData.nodes,
-    (n) => n.category.label,
-  )
+  let groupedByCategory = groupBy(transformedData.nodes, 'category')
 
   groupedByCategory = Object.fromEntries(
     Object.entries(groupedByCategory).filter(([key]) => {
