@@ -23,6 +23,7 @@ import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 const customMultiSelectStyles = {
   container: () => ({
     width: '100%',
+    zIndex: 3,
   }),
   control: (provided) => {
     return {

@@ -43,7 +43,7 @@ const MainList = ({ filteredItems, isMobile }) => {
         flexDirection="column"
         minHeight="calc(100vh - 302px)"
         py="1rem"
-        px="2rem"
+        px={isMobile ? '1rem' : '2rem'}
       >
         <chakra.div marginTop={4} width="100%" maxW="1400px">
           <Grid

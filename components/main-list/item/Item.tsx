@@ -10,7 +10,12 @@ import CategoryTag from '@components/category-tag'
 
 import ImagePlaceholder from './image-placeholder'
 
-const Item = ({ categoriesIndexes, dataItem, onOpenDialog, simplified }) => {
+const Item = ({
+  categoriesIndexes,
+  dataItem,
+  onOpenDialog,
+  simplified = false,
+}) => {
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
   const { ref, inView } = useInView()
