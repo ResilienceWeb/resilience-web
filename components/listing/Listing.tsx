@@ -40,8 +40,8 @@ function Listing({ listing }) {
   }, [])
 
   const goBack = useCallback(() => {
-    void router.back()
-    // void router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
+    // void router.back()
+    void router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
   }, [router, subdomain])
 
   const { categories } = useCategories()
