@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useState, useMemo } from 'react'
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import {
@@ -24,6 +25,7 @@ import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
 import { useCategories } from '@hooks/categories'
 import Item from '@components/main-list/item'
+import { encodeUriElements } from '@helpers/routes'
 
 function Listing({ listing }) {
   const router = useRouter()
@@ -176,16 +178,25 @@ function Listing({ listing }) {
           </Box>
 
           <Box mt={4} mb={8} display="flex" justifyContent="flex-end">
-            {listing.tags.map((tag) => (
-              <Tag
-                backgroundColor="gray.300"
-                userSelect="none"
-                key={tag.id}
-                mr={1}
-              >
-                #{tag.label}
-              </Tag>
-            ))}
+            {listing.tags.map((tag) => {
+              const urlEncodedTag = encodeUriElements([tag.label])
+              return (
+                <Link
+                  as={NextLink}
+                  key={tag.id}
+                  href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
+                >
+                  <Tag
+                    backgroundColor="gray.300"
+                    userSelect="none"
+                    mr={1}
+                    cursor="pointer"
+                  >
+                    #{tag.label}
+                  </Tag>
+                </Link>
+              )
+            })}
           </Box>
 
           {listing.relations.length > 0 && (
