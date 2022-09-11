@@ -78,6 +78,7 @@ const Header = ({
   isVolunteer,
   searchTerm,
   tags,
+  selectedTags,
 }) => {
   const content = (
     <>
@@ -117,6 +118,7 @@ const Header = ({
               options={tags}
               placeholder="Filter by tag"
               styles={customMultiSelectStyles}
+              value={selectedTags}
             />
           </InputGroup>
         </>

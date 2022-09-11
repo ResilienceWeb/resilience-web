@@ -240,6 +240,7 @@ const Site = ({ data }) => {
           isVolunteer={isVolunteer}
           searchTerm={searchTerm}
           tags={tags}
+          selectedTags={selectedTags}
         />
         {isWebMode && (
           <NetworkComponent
