@@ -10,6 +10,7 @@ import {
   SimpleGrid,
   VisuallyHidden,
 } from '@chakra-ui/react'
+import NextLink from 'next/link'
 import { ReactNode } from 'react'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
 import Image from 'next/image'
@@ -111,8 +112,12 @@ export default function Footer() {
           </Stack>
           <Stack align="flex-start">
             <ListHeader>Useful links</ListHeader>
-            <Link href={`${REMOTE_URL}/about`}>About us</Link>
-            <Link href={`${REMOTE_URL}/how-it-works`}>How it works</Link>
+            <Link as={NextLink} href={`${REMOTE_URL}/about`}>
+              About us
+            </Link>
+            <Link as={NextLink} href={`${REMOTE_URL}/how-it-works`}>
+              How it works
+            </Link>
             <Link
               href="https://opencollective.com/resilience-web/donate"
               target="_blank"

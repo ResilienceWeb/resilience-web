@@ -8,6 +8,7 @@ import {
   Icon,
   Link,
 } from '@chakra-ui/react'
+import NextLink from 'next/link'
 import { useAppContext } from '@store/hooks'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
@@ -49,7 +50,10 @@ export default function Hero() {
             Be part of a growing movement of positive change...
           </Text>
           <Stack spacing={{ base: 4, sm: 6 }} direction="row">
-            <Link href={`${PROTOCOL}://cambridge-city.${REMOTE_HOSTNAME}`}>
+            <Link
+              as={NextLink}
+              href={`${PROTOCOL}://cambridge-city.${REMOTE_HOSTNAME}`}
+            >
               <Button
                 rounded="full"
                 px={6}
@@ -63,6 +67,7 @@ export default function Hero() {
               </Button>
             </Link>
             <Link
+              as={NextLink}
               href={`${PROTOCOL}://cambridge-university.${REMOTE_HOSTNAME}`}
             >
               <Button
