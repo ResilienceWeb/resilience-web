@@ -11,7 +11,8 @@ import type { ParsedUrlQuery } from 'querystring'
 
 import { selectMoreAccessibleColor } from '@helpers/colors'
 import { useAppContext } from '@store/hooks'
-import { REMOTE_URL } from '@helpers/config'
+import { REMOTE_URL, PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { encodeUriElements, decodeUriElements } from '@helpers/routes'
 import MainList from '@components/main-list'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
@@ -60,13 +61,27 @@ const Site = ({ data }) => {
   const [categories, setCategories] = useState({})
 
   const [selectedTags, setSelectedTags] = useState([])
-  const [tags, setTags] = useState({})
+  const [tags, setTags] = useState([])
 
   const [selectedId, setSelectedId] = useState()
   const [network, setNetwork] = useState<INetwork>()
 
   const { categories: fetchedCategories } = useCategories()
   const { tags: fetchedTags } = useTags()
+
+  useEffect(() => {
+    const tagsFromQueryParam = router.query.tags
+    if (!tagsFromQueryParam) {
+      return
+    }
+
+    const tagValuesArray = decodeUriElements(tagsFromQueryParam as string)
+    const fullTagsFromQuery = tags.filter((t) =>
+      tagValuesArray.includes(t.value),
+    )
+    setTimeout(() => setSelectedTags(fullTagsFromQuery), 500)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.tags])
 
   useEffect(() => {
     if (!fetchedCategories) return
@@ -95,9 +110,29 @@ const Site = ({ data }) => {
     setSelectedCategories(value)
   }, [])
 
-  const handleTagSelection = useCallback((value) => {
-    setSelectedTags(value)
+  const [subdomain, setSubdomain] = useState<string>()
+
+  useEffect(() => {
+    const hostname = window.location.hostname
+    if (!hostname.includes('.')) {
+      return null
+    }
+
+    setSubdomain(hostname.split('.')[0])
   }, [])
+
+  const handleTagSelection = useCallback(
+    (value) => {
+      const tagsLabels = value.map((t) => t.value)
+      const uriEncodedTags = encodeUriElements(tagsLabels)
+      void router.replace({
+        pathname: `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`,
+        query: { tags: uriEncodedTags },
+      })
+      setSelectedTags(value)
+    },
+    [router, subdomain],
+  )
 
   const filteredItems = useMemo(() => {
     if (!data) return []
@@ -187,6 +222,7 @@ const Site = ({ data }) => {
         <Drawer
           categories={categories}
           tags={tags}
+          selectedTags={selectedTags}
           handleCategorySelection={handleCategorySelection}
           handleTagSelection={handleTagSelection}
         />

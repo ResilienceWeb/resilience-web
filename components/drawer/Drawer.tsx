@@ -1,3 +1,4 @@
+import NextLink from 'next/link'
 import { memo } from 'react'
 import Select from 'react-select'
 import Image from 'next/image'
@@ -56,12 +57,13 @@ const customMultiSelectStyles = {
 const Drawer = ({
   categories,
   tags,
+  selectedTags,
   handleTagSelection,
   handleCategorySelection,
 }) => {
   return (
     <div className={styles.drawer}>
-      <Link href={REMOTE_URL}>
+      <Link as={NextLink} href={REMOTE_URL}>
         <Flex justifyContent="center" my={2} px={4}>
           <Image
             alt="Cambridge Resilience Web logo"
@@ -91,6 +93,7 @@ const Drawer = ({
             options={tags}
             placeholder="Filter by tag"
             styles={customMultiSelectStyles}
+            value={selectedTags}
           />
         </InputGroup>
       </Flex>
