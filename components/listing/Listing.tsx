@@ -180,7 +180,6 @@ function Listing({ listing }) {
           <Box mt={4} mb={8} display="flex" justifyContent="flex-end">
             {listing.tags.map((tag) => {
               const urlEncodedTag = encodeUriElements([tag.label])
-              console.log(urlEncodedTag)
               return (
                 <NextLink
                   key={tag.id}

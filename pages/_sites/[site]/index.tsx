@@ -81,7 +81,7 @@ const Site = ({ data }) => {
     )
     setTimeout(() => setSelectedTags(fullTagsFromQuery), 1500)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query.tags])
+  }, [router.pathname, router.query.tags, tags])
 
   useEffect(() => {
     if (!fetchedCategories) return
