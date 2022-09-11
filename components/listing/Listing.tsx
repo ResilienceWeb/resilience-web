@@ -180,11 +180,14 @@ function Listing({ listing }) {
           <Box mt={4} mb={8} display="flex" justifyContent="flex-end">
             {listing.tags.map((tag) => {
               const urlEncodedTag = encodeUriElements([tag.label])
+              console.log(urlEncodedTag)
               return (
-                <Link
-                  as={NextLink}
+                <NextLink
                   key={tag.id}
-                  href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
+                  href={{
+                    pathname: `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`,
+                    query: { tags: urlEncodedTag },
+                  }}
                 >
                   <Tag
                     backgroundColor="gray.300"
@@ -194,7 +197,7 @@ function Listing({ listing }) {
                   >
                     #{tag.label}
                   </Tag>
-                </Link>
+                </NextLink>
               )
             })}
           </Box>
