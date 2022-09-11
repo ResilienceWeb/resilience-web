@@ -20,7 +20,7 @@ import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 
 import { useAppContext } from '@store/hooks'
 import DescriptionRichText from '@components/main-list/description-rich-text'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
 import { useCategories } from '@hooks/categories'
 import Item from '@components/main-list/item'
@@ -29,6 +29,17 @@ function Listing({ listing }) {
   const router = useRouter()
   const [subdomain, setSubdomain] = useState<string>()
   const { isMobile } = useAppContext()
+  const [previousUrl, setPreviousUrl] = useState()
+  console.log('PREVIOUS URL', previousUrl)
+
+  useEffect(() => {
+    const getPreviousUrl = async () => {
+      const response = await fetch(`/api/previous-url`)
+      const result = await response.json()
+      setPreviousUrl(result)
+    }
+    void getPreviousUrl()
+  }, [])
 
   useEffect(() => {
     const hostname = window.location.hostname
