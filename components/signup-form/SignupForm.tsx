@@ -10,12 +10,12 @@ const SignupForm = () => {
     >
       <InputGroup size="md">
         <Input
-          pr="10.5rem"
           type="email"
           name="member[email]"
           placeholder="Your email address"
           background="white"
           textColor="gray.900"
+          width="22rem"
           _placeholder={{ color: 'gray.700' }}
         />
         <InputRightElement width="8.5rem">
