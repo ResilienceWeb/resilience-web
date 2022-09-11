@@ -193,6 +193,8 @@ function Listing({ listing }) {
                     userSelect="none"
                     mr={1}
                     cursor="pointer"
+                    transition="background-color 0.2s ease"
+                    _hover={{ bgColor: 'gray.400' }}
                   >
                     #{tag.label}
                   </Tag>

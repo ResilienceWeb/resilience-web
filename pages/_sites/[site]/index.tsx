@@ -79,7 +79,7 @@ const Site = ({ data }) => {
     const fullTagsFromQuery = tags.filter((t) =>
       tagValuesArray.includes(t.value),
     )
-    setTimeout(() => setSelectedTags(fullTagsFromQuery), 1500)
+    setTimeout(() => setSelectedTags(fullTagsFromQuery), 1000)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.pathname, router.query.tags, tags])
 
