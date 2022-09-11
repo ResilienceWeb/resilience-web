@@ -17,6 +17,9 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   swcMinify: true,
+  experimental: {
+    scrollRestoration: true,
+  },
 }
 
 // const sentryWebpackPluginOptions = {
