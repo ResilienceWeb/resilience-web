@@ -12,7 +12,9 @@ export default function useSites() {
     data: sites,
     isLoading,
     isError,
-  } = useQuery(['sites'], fetchSitesRequest)
+  } = useQuery(['sites'], fetchSitesRequest, {
+    refetchOnWindowFocus: false,
+  })
 
   return {
     sites,
