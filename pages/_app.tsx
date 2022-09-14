@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import type { AppProps } from 'next/app'
 import Script from 'next/script'
 import { DefaultSeo } from 'next-seo'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
@@ -35,7 +34,7 @@ const theme = extendTheme({
 
 const queryClient = new QueryClient()
 
-function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }) {
   return (
     <>
       <DefaultSeo
