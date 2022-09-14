@@ -135,8 +135,6 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
     handleSubmit(data)
   }
 
-  console.log('******', initialTagsValues)
-
   return (
     <Formik
       initialValues={{
@@ -430,7 +428,6 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
               <chakra.div mb={3}>
                 <Field name="tags">
                   {({ field, form }: FieldProps) => {
-                    console.log(field.value)
                     return (
                       <FormControl
                         isInvalid={Boolean(

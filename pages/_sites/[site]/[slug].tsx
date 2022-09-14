@@ -2,9 +2,10 @@ import { memo } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { NextSeo, LocalBusinessJsonLd } from 'next-seo'
 import { useRouter } from 'next/router'
+import truncate from 'lodash/truncate'
+import { Listing as ListingType } from '@prisma/client'
 import { REMOTE_URL, REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import Layout from '@components/layout'
-import { Listing as ListingType } from '@prisma/client'
 import ListingDisplay from '@components/listing'
 
 function Listing({ listing }: { listing: ListingType | any }) {
@@ -17,12 +18,23 @@ function Listing({ listing }: { listing: ListingType | any }) {
     )
   }
 
+  const descriptionStrippedOfHtml = listing.description.replace(
+    /<[^>]*>?/gm,
+    '',
+  )
+  const truncatedDescription = truncate(descriptionStrippedOfHtml, {
+    length: 160,
+    separator: /,.? +/,
+  })
+
   return (
     <>
       <NextSeo
         title={`${listing.title} | Resilience Web`}
+        description={truncatedDescription}
         openGraph={{
           title: `${listing.title} | Resilience Web`,
+          description: truncatedDescription,
           images: [{ url: listing.image }],
         }}
       />
