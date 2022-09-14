@@ -4,7 +4,6 @@ import { Editor } from '@tinymce/tinymce-react'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import { Category } from '@prisma/client'
-import uniqBy from 'lodash/uniqBy'
 import {
   chakra,
   Box,
@@ -54,7 +53,7 @@ const EditorField = (props) => {
             'media advlist autolink lists link anchor image code fullscreen table paste code emoticons help',
           selector: 'textarea',
         }}
-      ></Editor>
+      />
       {meta.touched && meta.error ? (
         <div className="error">{meta.error}</div>
       ) : null}
@@ -82,11 +81,6 @@ type TagOption = {
 const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
   const { tags } = useTags()
   const { listings } = useListings()
-
-  const allRelations = useMemo(
-    () => uniqBy([...listing.relations, ...listing.relationOf], (l) => l.id),
-    [listing.relationOf, listing.relations],
-  )
 
   const tagOptions: Options<TagOption> = useMemo(() => {
     if (!tags) return []
@@ -140,6 +134,8 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
     }
     handleSubmit(data)
   }
+
+  console.log('******', initialTagsValues)
 
   return (
     <Formik
@@ -434,6 +430,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
               <chakra.div mb={3}>
                 <Field name="tags">
                   {({ field, form }: FieldProps) => {
+                    console.log(field.value)
                     return (
                       <FormControl
                         isInvalid={Boolean(
@@ -451,7 +448,10 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                               let newValue
                               if (changeData.action === 'select-option') {
                                 newValue = [...field.value, changeData.option]
-                              } else if (changeData.action === 'remove-value') {
+                              } else if (
+                                changeData.action === 'remove-value' ||
+                                changeData.action === 'pop-value'
+                              ) {
                                 newValue = field.value.filter(
                                   (v) =>
                                     v.value !== changeData.removedValue.value,
@@ -459,9 +459,9 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                               }
                               form.setFieldValue(field.name, newValue)
                             }}
-                            options={tagOptions.filter(
-                              (t) => !field.value.includes(t),
-                            )}
+                            options={tagOptions.filter((t) => {
+                              return !field.value.includes(t)
+                            })}
                             placeholder="Tags"
                             value={field.value}
                             isClearable={false}
@@ -497,7 +497,10 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                               let newValue
                               if (changeData.action === 'select-option') {
                                 newValue = [...field.value, changeData.option]
-                              } else if (changeData.action === 'remove-value') {
+                              } else if (
+                                changeData.action === 'remove-value' ||
+                                changeData.action === 'pop-value'
+                              ) {
                                 newValue = field.value.filter(
                                   (v) =>
                                     v.value !== changeData.removedValue.value,
@@ -506,7 +509,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                               form.setFieldValue(field.name, newValue)
                             }}
                             options={relationOptions.filter(
-                              (t) => !field.value.includes(t),
+                              (t) => !field?.value?.includes(t),
                             )}
                             placeholder="Relations"
                             value={field.value}
