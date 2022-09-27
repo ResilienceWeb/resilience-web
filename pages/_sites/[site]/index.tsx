@@ -356,6 +356,7 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
         color: `#${category.color}`,
         font: {
           color: accessibleTextColor,
+          size: 28,
         },
         opacity: inactive ? 0.4 : 1,
       })
@@ -382,11 +383,11 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
     color: '#fcba03',
     isDescriptive: true,
     font: {
-      size: 46,
+      size: 56,
     },
     fixed: {
-      x: 500,
-      y: 700,
+      x: true,
+      y: true,
     },
   })
 
