@@ -7,6 +7,8 @@ import {
   Box,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
+  IconButton,
   Flex,
   Input,
   Button,
@@ -15,7 +17,7 @@ import {
   Link,
   chakra,
 } from '@chakra-ui/react'
-import { HiOutlineSearch, HiHome } from 'react-icons/hi'
+import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import ModeSwitch from '@components/mode-switch'
 import VolunteerSwitch from '@components/volunteer-switch'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
@@ -73,6 +75,7 @@ const Header = ({
   handleSwitchChange,
   handleTagSelection,
   handleVolunteerSwitchChange,
+  handleClearSearchTermValue,
   isMobile,
   isWebMode,
   isVolunteer,
@@ -97,6 +100,18 @@ const Header = ({
           }}
           _placeholder={{ color: '#718096', opacity: 1 }}
         />
+        {searchTerm !== '' && (
+          <InputRightElement>
+            <IconButton
+              aria-label="Clear search input"
+              icon={<HiOutlineX />}
+              onClick={() => handleClearSearchTermValue()}
+              size="md"
+              colorScheme="rw.900"
+              variant="ghost"
+            />
+          </InputRightElement>
+        )}
       </InputGroup>
       {isMobile && (
         <>

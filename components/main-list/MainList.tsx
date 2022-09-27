@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useState, useMemo } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import { chakra, Flex, Grid, useDisclosure } from '@chakra-ui/react'
+import { chakra, Flex, Grid, Center, useDisclosure } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 import { useCategories } from '@hooks/categories'
@@ -65,24 +65,28 @@ const MainList = ({ filteredItems, isMobile }) => {
         px={isMobile ? '1rem' : '2rem'}
       >
         <chakra.div marginTop={4} width="100%" maxW="1400px">
-          <Grid
-            templateColumns={{
-              base: '1fr',
-              md: 'repeat(3, 1fr)',
-            }}
-            gap="1rem"
-          >
-            <AnimatePresence>
-              {filteredItems.map((item) => (
-                <Item
-                  categoriesIndexes={categoriesIndexes}
-                  dataItem={item}
-                  handleClick={handleItemClick}
-                  key={item.id}
-                />
-              ))}
-            </AnimatePresence>
-          </Grid>
+          {filteredItems.length > 0 ? (
+            <Grid
+              templateColumns={{
+                base: '1fr',
+                md: 'repeat(3, 1fr)',
+              }}
+              gap="1rem"
+            >
+              <AnimatePresence>
+                {filteredItems.map((item) => (
+                  <Item
+                    categoriesIndexes={categoriesIndexes}
+                    dataItem={item}
+                    handleClick={handleItemClick}
+                    key={item.id}
+                  />
+                ))}
+              </AnimatePresence>
+            </Grid>
+          ) : (
+            <Center mt="2rem">No groups matched your search criteria</Center>
+          )}
         </chakra.div>
       </Flex>
       <Footer />

@@ -54,9 +54,11 @@ const Site = ({ data }) => {
 
   const [searchTerm, setSearchTerm] = useState('')
   const [searchTermValue] = useDebounce(searchTerm, 500)
-  const handleSearchTermChange = useCallback((event) => {
-    setSearchTerm(event.target.value)
-  }, [])
+  const handleSearchTermChange = useCallback(
+    (event) => setSearchTerm(event.target.value),
+    [],
+  )
+  const handleClearSearchTermValue = useCallback(() => setSearchTerm(''), [])
   const [selectedCategories, setSelectedCategories] = useState([])
   const [categories, setCategories] = useState({})
 
@@ -231,6 +233,7 @@ const Site = ({ data }) => {
         <Header
           categories={categories}
           handleCategorySelection={handleCategorySelection}
+          handleClearSearchTermValue={handleClearSearchTermValue}
           handleSearchTermChange={handleSearchTermChange}
           handleSwitchChange={handleSwitchChange}
           handleTagSelection={handleTagSelection}
