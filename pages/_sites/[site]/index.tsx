@@ -360,6 +360,13 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
         },
         opacity: inactive ? 0.4 : 1,
       })
+
+      relations.map((relation) => {
+        transformedData.edges.push({
+          from: id,
+          to: relation.id,
+        })
+      })
     },
   )
 
