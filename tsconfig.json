@@ -43,8 +43,6 @@
 		"**/*.ts",
 		"**/*.tsx",
 		"./next.config.js",
-		"./sentry.client.config.js",
-		"./sentry.server.config.js",
 		"./pages/_error.js"
 	],
 	"exclude": [

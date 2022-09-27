@@ -1,6 +1,5 @@
 import { Category } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { withSentry } from '@sentry/nextjs'
 import prisma from '../../../prisma/client'
 
 type ResponseData = {
@@ -80,4 +79,4 @@ export const config = {
   },
 }
 
-export default withSentry(handler)
+export default handler

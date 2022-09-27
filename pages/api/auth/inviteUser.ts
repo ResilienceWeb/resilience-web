@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import sgMail from '@sendgrid/mail'
 import { getSession } from 'next-auth/react'
-import { withSentry } from '@sentry/nextjs'
 import { REMOTE_URL } from '@helpers/config'
 import { htmlTemplate, textTemplate } from '@helpers/emailTemplates'
 
@@ -104,4 +103,4 @@ export const config = {
   },
 }
 
-export default withSentry(handler)
+export default handler

@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import nodemailer from 'nodemailer'
-import { withSentry } from '@sentry/nextjs'
 import appConfig from '@helpers/config'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -41,4 +40,4 @@ export const config = {
   },
 }
 
-export default withSentry(handler)
+export default handler

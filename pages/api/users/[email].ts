@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
-import { withSentry } from '@sentry/nextjs'
 import prisma from '../../../prisma/client'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -34,4 +33,4 @@ export const config = {
   },
 }
 
-export default withSentry(handler)
+export default handler

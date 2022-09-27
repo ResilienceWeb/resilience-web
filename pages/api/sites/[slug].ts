@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { withSentry } from '@sentry/nextjs'
 import { Location } from '@prisma/client'
 import prisma from '../../../prisma/client'
 
@@ -33,4 +32,4 @@ export const config = {
   },
 }
 
-export default withSentry(handler)
+export default handler

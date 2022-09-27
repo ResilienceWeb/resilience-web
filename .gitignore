@@ -37,6 +37,3 @@ yarn-error.log*
 .vercel
 
 .aws
-
-# Sentry
-.sentryclirc

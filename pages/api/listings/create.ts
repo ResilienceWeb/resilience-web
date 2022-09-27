@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
 import type { File } from 'formidable'
 import { getSession } from 'next-auth/react'
-import { withSentry } from '@sentry/nextjs'
 import { Prisma } from '@prisma/client'
 import prisma from '../../../prisma/client'
 import uploadImage from '@helpers/uploadImage'
@@ -89,4 +88,4 @@ export const config = {
   },
 }
 
-export default withSentry(handler)
+export default handler
