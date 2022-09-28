@@ -17,13 +17,21 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
   const filteredItems = useMemo(() => {
     if (!items) return []
 
-    const results = items.filter((item) =>
+    let results = items.filter((item) =>
       removeNonAlphaNumeric(item.title)
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase()),
     )
+
+    if (selectedCategories.length > 0) {
+      const categories = selectedCategories.map((c) => c.label)
+      results = results.filter((item) =>
+        categories.includes(item.category.label),
+      )
+    }
+
     return results
-  }, [items, searchTerm])
+  }, [items, searchTerm, selectedCategories])
 
   const goToEdit = useCallback(
     async (dataItem) => {
