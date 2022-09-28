@@ -1,7 +1,6 @@
 import { memo } from 'react'
 import NextLink from 'next/link'
 import Select from 'react-select'
-import chroma from 'chroma-js'
 import Image from 'next/image'
 import {
   Box,
@@ -21,52 +20,7 @@ import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import ModeSwitch from '@components/mode-switch'
 import VolunteerSwitch from '@components/volunteer-switch'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
-
-const customMultiSelectStyles = {
-  container: () => ({
-    width: '100%',
-    zIndex: 3,
-  }),
-  control: (provided) => {
-    return {
-      ...provided,
-      borderColor: '#E2E8F0',
-      borderRadius: '0.375rem',
-    }
-  },
-  placeholder: (provided) => {
-    return {
-      ...provided,
-      color: '#718096',
-    }
-  },
-  option: (provided, state) => {
-    return {
-      ...provided,
-      color: state.data.color,
-    }
-  },
-  multiValue: (styles, { data }) => {
-    const color = data.color ? chroma(data.color) : chroma('#718096')
-    return {
-      ...styles,
-      fontSize: '14px',
-      backgroundColor: color.alpha(0.5).css(),
-    }
-  },
-  multiValueLabel: (styles) => ({
-    ...styles,
-    color: '#000',
-  }),
-  multiValueRemove: (styles, { data }) => ({
-    ...styles,
-    color: data.color,
-    ':hover': {
-      backgroundColor: data.color,
-      color: 'white',
-    },
-  }),
-}
+import customMultiSelectStyles from '@styles/select-styles'
 
 const Header = ({
   categories,

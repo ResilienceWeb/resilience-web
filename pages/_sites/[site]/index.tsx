@@ -210,6 +210,12 @@ const Site = ({ data }) => {
     [setIsVolunteer],
   )
 
+  useEffect(() => {
+    if (isMobile) {
+      setIsWebMode(false)
+    }
+  }, [isMobile, setIsWebMode])
+
   if (router.isFallback) {
     return (
       <Center height="100vh">

@@ -31,7 +31,10 @@
 			],
 			"@store/*": [
 				"store/*"
-			]
+			],
+			"@styles/*": [
+				"styles/*"
+			],
 		},
 		"typeRoots": [
 			"./node_modules/@types",
