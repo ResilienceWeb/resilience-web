@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState, memo } from 'react'
+import { useCallback, useState, useMemo, memo } from 'react'
 import { Heading, Text, Box, Stack } from '@chakra-ui/react'
 
 import DeleteConfirmationDialog from './delete-confirmation-dialog'
@@ -9,19 +9,21 @@ import TableActions from './table/TableActions'
 
 const EditableList = ({ deleteListing, isAdmin, items }) => {
   const router = useRouter()
-  const [data, setData] = useState(items)
-  const [filter, setFilter] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategories, setSelectedCategories] = useState([])
   const [isDeleteConfirmationOpenWithId, setIsDeleteConfirmationOpenWithId] =
     useState()
 
-  useEffect(() => {
-    const filtered = items.filter((item) =>
+  const filteredItems = useMemo(() => {
+    if (!items) return []
+
+    const results = items.filter((item) =>
       removeNonAlphaNumeric(item.title)
         ?.toLowerCase()
-        .includes(filter.toLowerCase()),
+        .includes(searchTerm.toLowerCase()),
     )
-    setData(filtered)
-  }, [filter, items])
+    return results
+  }, [items, searchTerm])
 
   const goToEdit = useCallback(
     async (dataItem) => {
@@ -46,11 +48,15 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
     closeRemoveDialog()
   }, [closeRemoveDialog, deleteListing, isDeleteConfirmationOpenWithId])
 
-  const handleFilterChange = useCallback((event) => {
-    setFilter(event.target.value)
+  const handleSearchTermChange = useCallback((event) => {
+    setSearchTerm(event.target.value)
   }, [])
 
-  if (!data) return null
+  const handleSelectedCategoriesChange = useCallback((value) => {
+    setSelectedCategories(value)
+  }, [])
+
+  if (!filteredItems) return null
 
   return (
     <>
@@ -70,7 +76,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
           <Heading>Listings</Heading>
           {isAdmin ? (
             <Text color={'gray.600'} fontSize="sm">
-              There are {data.length} listings
+              There are {filteredItems.length} listings
             </Text>
           ) : (
             <Text color={'gray.600'} fontSize="sm">
@@ -81,12 +87,18 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
           )}
         </Box>
         <TableActions
-          filterValue={filter}
-          onFilterChange={handleFilterChange}
+          searchTerm={searchTerm}
+          handleSearchTermChange={handleSearchTermChange}
           goToCreateListing={goToCreateListing}
+          selectedCategories={selectedCategories}
+          handleSelectedCategoriesChange={handleSelectedCategoriesChange}
         />
       </Stack>
-      <Table goToEdit={goToEdit} removeItem={openRemoveDialog} items={data} />
+      <Table
+        goToEdit={goToEdit}
+        removeItem={openRemoveDialog}
+        items={filteredItems}
+      />
       <DeleteConfirmationDialog
         isOpen={isDeleteConfirmationOpenWithId}
         onClose={closeRemoveDialog}
