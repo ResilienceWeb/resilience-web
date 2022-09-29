@@ -95,12 +95,12 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
     if (!listings) return []
 
     return listings
-      .filter((l) => l.title !== listing.title)
+      .filter((l) => l.title !== listing?.title)
       .map((l) => ({
         value: l.id,
         label: l.title,
       }))
-  }, [listing.title, listings])
+  }, [listing?.title, listings])
 
   const initialTagsValues = useMemo(() => {
     return listing?.tags.map((t) => ({
