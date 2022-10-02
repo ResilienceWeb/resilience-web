@@ -4,8 +4,8 @@ import { useSession } from 'next-auth/react'
 async function fetchPermissionsRequest() {
   const response = await fetch('/api/permissions')
   const data = await response.json()
-  const { editPermissions } = data
-  return editPermissions
+  const { permissions } = data
+  return permissions
 }
 
 export default function usePermissions() {
@@ -15,7 +15,7 @@ export default function usePermissions() {
     data: permissions,
     isLoading,
     isError,
-  } = useQuery(['permissions'], fetchPermissionsRequest, {
+  } = useQuery(['permission'], fetchPermissionsRequest, {
     enabled: Boolean(session),
   })
 

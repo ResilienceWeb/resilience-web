@@ -1,105 +1,212 @@
-import { memo, useEffect, useMemo, useState } from 'react'
-import { Table, Tbody, Td, Th, Thead, Tr, Tag } from '@chakra-ui/react'
-import chroma from 'chroma-js'
+import { memo, useCallback, useMemo } from 'react'
+import { Formik, Form, Field, FieldProps } from 'formik'
+import isEqual from 'lodash/isEqual'
+import {
+  Text,
+  Box,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  InputGroup,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Button,
+} from '@chakra-ui/react'
+import Select from 'react-select'
+import { useListings } from '@hooks/listings'
+import { useUpdatePermission } from '@hooks/permissions'
 
-const columns = [
-  {
-    Header: 'User email',
-    accessor: 'email',
-  },
-  {
-    Header: 'Listing',
-    accessor: 'listing',
-  },
-  {
-    Header: 'Account created?',
-    accessor: 'accountCreated',
-  },
-]
-
-export async function fetchUser(email) {
-  const response = await fetch(`/api/users/${email}`)
-  const data = await response.json()
-  const { user } = data
-  return user
+const customMultiSelectStyles = {
+  container: (provided) => ({
+    ...provided,
+    width: '100%',
+  }),
 }
 
 const PermissionsList = ({ permissions }) => {
-  const [userRegistrationsMap, setUserRegistrationsMap] = useState({})
+  const { listings } = useListings()
+  const { mutate: updatePermission, isLoading: isUpdatingPermission } =
+    useUpdatePermission()
 
-  useEffect(() => {
-    async function fetchData() {
-      const userRegistrationsResult = {}
-      await Promise.allSettled(
-        permissions.map(async (p) => {
-          const isUserRegistered = await fetchUser(p.email)
-          userRegistrationsResult[p.email] = Boolean(isUserRegistered)
-        }),
+  console.log('permissions', permissions)
+
+  const onSubmit = useCallback(
+    (data) => {
+      const listingIdsAdded = data.listings.map((l) => l.value)
+      const listingsToAdd = listings.filter((l) =>
+        listingIdsAdded.includes(l.id),
       )
-      setUserRegistrationsMap(userRegistrationsResult)
-    }
-    void fetchData()
-  }, [permissions])
-
-  const permissionsForDisplay = useMemo(() => {
-    if (!permissions || !Object.keys(userRegistrationsMap).length) return []
-
-    const result = permissions.map((p) => {
-      return {
-        email: p.email,
-        listing: p.listing.title,
-        accountCreated: userRegistrationsMap[p.email] ? 'Yes' : 'No',
+      const dataToSubmit = {
+        email: data.email,
+        listings: listingsToAdd,
       }
-    })
+      updatePermission(dataToSubmit)
+    },
+    [listings, updatePermission],
+  )
 
-    return result
-  }, [permissions, userRegistrationsMap])
+  const listingOptions = useMemo(() => {
+    if (!listings) return []
 
-  if (!permissionsForDisplay) return null
+    return listings.map((l) => ({
+      value: l.id,
+      label: l.title,
+    }))
+  }, [listings])
 
   return (
-    <Table my="8" borderWidth="1px" fontSize="sm" background="#ffffff">
-      <Thead bg={'gray.50'}>
-        <Tr>
-          {columns.map((column, index) => (
-            <Th whiteSpace="nowrap" scope="col" key={index}>
-              {column.Header}
-            </Th>
-          ))}
-        </Tr>
-      </Thead>
-      <Tbody>
-        {permissionsForDisplay.map((row, index) => (
-          <Tr key={index}>
-            {columns.map((column, index) => {
-              const cell = row[column.accessor]
+    <Accordion allowMultiple defaultIndex={[0]}>
+      {permissions.map((permission) => {
+        const { listings, user, email } = permission
 
-              if (column.accessor === 'accountCreated') {
-                return (
-                  <Td key={index} width="100px">
-                    <Tag
-                      backgroundColor={
-                        cell === 'Yes'
-                          ? chroma('green').alpha(0.5).css()
-                          : chroma('gray').alpha(0.5).css()
-                      }
-                    >
-                      {cell}
-                    </Tag>
-                  </Td>
-                )
-              }
+        const getListingSelectedOptions = () => {
+          if (!listings) return []
 
-              return (
-                <Td key={index} maxWidth="100px">
-                  {cell}
-                </Td>
-              )
-            })}
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
+          return listings.map((l) => ({
+            value: l.id,
+            label: l.title,
+          }))
+        }
+
+        return (
+          <AccordionItem key={permission.id} bgColor="whiteAlpha.800">
+            <h2>
+              <AccordionButton _hover={{ bgColor: 'gray.50' }}>
+                <Box flex="1" textAlign="left">
+                  {email} ∙ <strong>{listings.length}</strong>{' '}
+                  {listings.length > 1 ? 'listings' : 'listing'}
+                  {!user.emailVerified && (
+                    <>
+                      {' '}
+                      ∙
+                      <Text display="inline" textColor="orange.500">
+                        {' '}
+                        not signed up yet
+                      </Text>
+                    </>
+                  )}
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              {user.emailVerified ? (
+                <Formik
+                  enableReinitialize
+                  initialValues={{
+                    email: permission.email,
+                    listings: getListingSelectedOptions(),
+                  }}
+                  onSubmit={(values, actions) => {
+                    actions.setSubmitting(false)
+                    onSubmit(values)
+                  }}
+                >
+                  {(props) => {
+                    console.log(
+                      props.initialValues.listings,
+                      props.values.listings,
+                    )
+                    return (
+                      <Form>
+                        <Field name="listings">
+                          {({ field, form }: FieldProps) => {
+                            return (
+                              <FormControl
+                                isInvalid={Boolean(
+                                  form.errors.listings && form.touched.listings,
+                                )}
+                              >
+                                <FormLabel htmlFor="listings">
+                                  Listings this user can edit
+                                </FormLabel>
+                                <InputGroup size="sm" bgColor="whiteAlpha.800">
+                                  <Select
+                                    isMulti
+                                    isSearchable
+                                    menuPortalTarget={document.body}
+                                    onChange={(option, changeData) => {
+                                      let newValue
+                                      if (
+                                        changeData.action === 'select-option'
+                                      ) {
+                                        newValue = [
+                                          ...field.value,
+                                          changeData.option,
+                                        ]
+                                      } else if (
+                                        changeData.action === 'remove-value' ||
+                                        changeData.action === 'pop-value'
+                                      ) {
+                                        newValue = field.value.filter(
+                                          (v) =>
+                                            v.value !==
+                                            changeData.removedValue.value,
+                                        )
+                                      }
+                                      form.setFieldValue(field.name, newValue)
+                                    }}
+                                    options={listingOptions}
+                                    placeholder=""
+                                    isClearable={false}
+                                    styles={customMultiSelectStyles}
+                                    value={field.value}
+                                  />
+                                </InputGroup>
+                                <FormErrorMessage>
+                                  {form.errors.listings?.toString()}
+                                </FormErrorMessage>
+                              </FormControl>
+                            )
+                          }}
+                        </Field>
+
+                        <Box
+                          pt={3}
+                          bg="gray.50"
+                          textAlign="left"
+                          bgColor="whiteAlpha.800"
+                        >
+                          <Button
+                            bg="rw.700"
+                            colorScheme="rw.700"
+                            disabled={
+                              !props.isValid ||
+                              isEqual(
+                                props.initialValues.listings,
+                                props.values.listings,
+                              )
+                            }
+                            isLoading={isUpdatingPermission}
+                            size="md"
+                            type="submit"
+                            _hover={{ bg: 'rw.900' }}
+                          >
+                            Update permissions
+                          </Button>
+                          {/* <Text fontSize="sm" color="blackAlpha.600">
+                          This sends an email to the user with the new
+                          permissions
+                        </Text> */}
+                        </Box>
+                      </Form>
+                    )
+                  }}
+                </Formik>
+              ) : (
+                <Text fontSize="sm">
+                  You cannot give this user additional permissions until they
+                  activate their account.
+                </Text>
+              )}
+            </AccordionPanel>
+          </AccordionItem>
+        )
+      })}
+    </Accordion>
   )
 }
 

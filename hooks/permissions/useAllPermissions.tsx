@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 async function fetchPermissionsRequest() {
   const response = await fetch('/api/permissions/all')
   const data = await response.json()
-  const { editPermissions } = data
-  return editPermissions
+  const { permissions } = data
+  return permissions
 }
 
 export default function usePermissions() {
@@ -12,7 +12,7 @@ export default function usePermissions() {
     data: permissions,
     isLoading,
     isError,
-  } = useQuery(['permissions'], fetchPermissionsRequest)
+  } = useQuery(['permission'], fetchPermissionsRequest)
 
   return {
     permissions,

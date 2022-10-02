@@ -1,12 +1,14 @@
-import { Formik, Form, Field, FormikHelpers } from 'formik'
+import { Formik, Form, Field, FormikHelpers, FieldProps } from 'formik'
 import { useEffect, useCallback, useMemo } from 'react'
+import Select from 'react-select'
+import type { Options } from 'react-select'
 import {
   chakra,
   Box,
   Button,
   Heading,
   Input,
-  Select,
+  InputGroup,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -20,13 +22,23 @@ import {
 import { signIn, useSession } from 'next-auth/react'
 import LayoutContainer from '@components/admin/layout-container'
 import { useListings } from '@hooks/listings'
-import { sortStringsFunc } from '@helpers/utils'
 import { emailRequiredValidator } from '@helpers/formValidation'
 import { REMOTE_URL } from '@helpers/config'
 
+const customMultiSelectStyles = {
+  container: () => ({
+    width: '100%',
+  }),
+}
+
 interface FormValues {
   email: string
-  listing: string
+  listings: string[]
+}
+
+type ListingOption = {
+  value: number
+  label: string
 }
 
 export default function Invite() {
@@ -43,12 +55,21 @@ export default function Invite() {
     void signInIfNeeded()
   }, [session, sessionStatus])
 
-  const orderedListings = useMemo(() => {
-    return listings?.sort(sortStringsFunc)
+  const listingOptions: Options<ListingOption> = useMemo(() => {
+    if (!listings) return []
+
+    return listings.map((l) => ({
+      value: l.id,
+      label: l.title,
+    }))
   }, [listings])
 
   const inviteUser = useCallback(
     async (data, actions: FormikHelpers<FormValues>) => {
+      const listingIdsAdded = data.listings.map((l) => l.value)
+      const listingsToAdd = listings?.filter((l) =>
+        listingIdsAdded.includes(l.id),
+      )
       const response = await fetch(`${REMOTE_URL}/api/auth/inviteUser`, {
         method: 'POST',
         headers: {
@@ -56,12 +77,13 @@ export default function Invite() {
         },
         body: JSON.stringify({
           email: data.email,
-          listing: listings?.find((l) => l.id == data.listing),
+          listings: listingsToAdd,
         }),
       })
       const result = await response.json()
+      console.log(result, response)
 
-      if (!result.error) {
+      if (response.status === 200) {
         toast({
           title: 'Success',
           description: `Invite sent to ${data.email}`,
@@ -70,6 +92,15 @@ export default function Invite() {
           isClosable: true,
         })
         actions.setFieldValue('email', '', false)
+        actions.setFieldValue('listings', [])
+      } else if (response.status === 409) {
+        toast({
+          title: 'User already invited',
+          description: `This user already received an invite. Please use Permissions page to edit their permissions.`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        })
       } else {
         toast({
           title: 'Error',
@@ -86,9 +117,9 @@ export default function Invite() {
   const initialValues = useMemo<FormValues>(
     () => ({
       email: '',
-      listing: listings ? listings[0].id : '',
+      listings: [],
     }),
-    [listings],
+    [],
   )
 
   if (sessionStatus === 'loading' || isLoadingListings) {
@@ -139,29 +170,53 @@ export default function Invite() {
                     </Field>
                   </chakra.div>
                   <chakra.div mb={3}>
-                    <Field name="listing">
-                      {({ field, form }) => (
-                        <FormControl
-                          isInvalid={
-                            form.errors.listing && form.touched.listing
-                          }
-                        >
-                          <FormLabel htmlFor="listing">Listing</FormLabel>
-                          <Select {...field} background="white">
-                            {orderedListings.map((l) => (
-                              <option key={l.id} value={l.id}>
-                                {l.title}
-                              </option>
-                            ))}
-                          </Select>
-                          <FormErrorMessage>
-                            {form.errors.listing}
-                          </FormErrorMessage>
-                          <FormHelperText>
-                            The listing the user will be able to edit
-                          </FormHelperText>
-                        </FormControl>
-                      )}
+                    <Field name="listings">
+                      {({ field, form }: FieldProps) => {
+                        return (
+                          <FormControl
+                            isInvalid={Boolean(
+                              form.errors.listings && form.touched.listings,
+                            )}
+                          >
+                            <FormLabel htmlFor="listings">Listings</FormLabel>
+                            <InputGroup size="sm">
+                              <Select
+                                isMulti
+                                isSearchable
+                                onChange={(option, changeData) => {
+                                  let newValue
+                                  if (changeData.action === 'select-option') {
+                                    newValue = [
+                                      ...field.value,
+                                      changeData.option,
+                                    ]
+                                  } else if (
+                                    changeData.action === 'remove-value' ||
+                                    changeData.action === 'pop-value'
+                                  ) {
+                                    newValue = field.value.filter(
+                                      (v) =>
+                                        v.value !==
+                                        changeData.removedValue.value,
+                                    )
+                                  }
+                                  form.setFieldValue(field.name, newValue)
+                                }}
+                                options={listingOptions}
+                                placeholder=""
+                                isClearable={false}
+                                styles={customMultiSelectStyles}
+                              />
+                            </InputGroup>
+                            <FormErrorMessage>
+                              {form.errors.listings?.toString()}
+                            </FormErrorMessage>
+                            <FormHelperText>
+                              The listings the user will be able to edit
+                            </FormHelperText>
+                          </FormControl>
+                        )
+                      }}
                     </Field>
                   </chakra.div>
 
