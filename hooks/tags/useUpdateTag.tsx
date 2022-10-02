@@ -22,7 +22,7 @@ export default function useUpdateTag() {
     onMutate: async (newTag) => {
       await queryClient.cancelQueries(['tags'])
       const previousTags = queryClient.getQueryData(['tags'])
-      queryClient.setQueryData(['tags'], (old) => [newTag])
+      queryClient.setQueryData(['tags'], newTag)
       return { previousTags, newTag }
     },
     onError: (err, newCategory, context) => {
