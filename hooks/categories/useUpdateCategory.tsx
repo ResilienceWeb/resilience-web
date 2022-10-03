@@ -22,7 +22,7 @@ export default function useUpdateCategory() {
     onMutate: async (newCategory) => {
       await queryClient.cancelQueries(['categories'])
       const previousCategories = queryClient.getQueryData(['categories'])
-      queryClient.setQueryData(['categories'], (old) => [newCategory])
+      queryClient.setQueryData(['categories'], newCategory)
       return { previousCategories, newCategory }
     },
     onError: (err, newCategory, context) => {

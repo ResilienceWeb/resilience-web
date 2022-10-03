@@ -16,4 +16,4 @@ Currently online at [https://resilienceweb.org.uk](https://resilienceweb.org.uk)
 * Dependencies of this project are listed in package.json, and I will update them at a regular interval
 * For the network visualisation, I used react-graph-vis which is a wrapper around [vis.js](https://visjs.org/)
 
-[![Powered by Vercel](https://cambridgeresilienceweb.org.uk/powered-by-vercel.svg)](https://vercel.com?utm_source=cambridge-resilience-web&utm_campaign=oss)
+[![Powered by Vercel](https://resilienceweb.org.uk/powered-by-vercel.svg)](https://vercel.com?utm_source=resilience-web&utm_campaign=oss)
