@@ -12,17 +12,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    const editPermissions = await prisma.editPermission.findMany({
+    const permissions = await prisma.permission.findMany({
       include: {
-        listing: true,
+        listings: true,
+        user: true,
       },
     })
     res.status(200)
-    res.json({ editPermissions })
+    res.json({ permissions })
   } catch (e) {
     res.status(500)
     res.json({
-      error: `Unable to fetch edit permissions from database - ${e}`,
+      error: `Unable to fetch permissions from database - ${e}`,
     })
   }
 }
