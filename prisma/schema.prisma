@@ -69,7 +69,7 @@ model Location {
   categories       Category[]
   listings         Listing[]
   tags             Tag[]
-  Permission       Permission[]
+  permission       Permission[]
 }
 
 model Category {
