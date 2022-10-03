@@ -62,14 +62,15 @@ model VerificationToken {
 }
 
 model Location {
-  id               Int          @id @default(autoincrement())
-  title            String       @unique
-  slug             String       @unique
-  centralNodeLabel String       @default("Central Node")
+  id               Int         @id @default(autoincrement())
+  title            String      @unique
+  slug             String      @unique
+  centralNodeLabel String      @default("Central Node")
   categories       Category[]
   listings         Listing[]
   tags             Tag[]
-  Permission       Permission[]
+  Permission       Permission? @relation(fields: [permissionId], references: [id])
+  permissionId     Int?
 }
 
 model Category {
