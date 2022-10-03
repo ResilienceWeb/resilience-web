@@ -31,8 +31,6 @@ const PermissionsList = ({ permissions }) => {
   const { mutate: updatePermission, isLoading: isUpdatingPermission } =
     useUpdatePermission()
 
-  console.log('permissions', permissions)
-
   const onSubmit = useCallback(
     (data) => {
       const listingIdsAdded = data.listings.map((l) => l.value)
@@ -106,10 +104,6 @@ const PermissionsList = ({ permissions }) => {
                   }}
                 >
                   {(props) => {
-                    console.log(
-                      props.initialValues.listings,
-                      props.values.listings,
-                    )
                     return (
                       <Form>
                         <Field name="listings">
