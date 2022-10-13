@@ -8,8 +8,9 @@ import { SessionProvider } from 'next-auth/react'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/500.css'
 import '@fontsource/poppins/600.css'
-import '../styles/colors.css'
-import '../styles/styles.global.scss'
+import '@styles/colors.css'
+import '@styles/styles.global.scss'
+import '@styles/vis-network.min.css'
 import StoreProvider from '@store/StoreProvider'
 
 const theme = extendTheme({
@@ -78,7 +79,7 @@ function App({ Component, pageProps }) {
               <Component {...pageProps} />
             </ChakraProvider>
           </StoreProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </QueryClientProvider>
       </SessionProvider>
     </>

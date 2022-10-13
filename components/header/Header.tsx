@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react'
 import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import ModeSwitch from '@components/mode-switch'
-import VolunteerSwitch from '@components/volunteer-switch'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import customMultiSelectStyles from '@styles/select-styles'
 
@@ -28,11 +27,9 @@ const Header = ({
   handleSearchTermChange,
   handleSwitchChange,
   handleTagSelection,
-  handleVolunteerSwitchChange,
   handleClearSearchTermValue,
   isMobile,
   isWebMode,
-  isVolunteer,
   searchTerm,
   tags,
   selectedTags,
@@ -92,10 +89,6 @@ const Header = ({
           </InputGroup>
         </>
       )}
-      <VolunteerSwitch
-        checked={isVolunteer}
-        handleSwitchChange={handleVolunteerSwitchChange}
-      />
     </>
   )
 

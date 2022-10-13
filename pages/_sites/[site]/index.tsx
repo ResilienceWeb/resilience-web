@@ -205,7 +205,7 @@ const Site = ({ data }) => {
   const handleVolunteerSwitchChange = useCallback(
     (event) => {
       setSelectedId(null)
-      setIsVolunteer(!(event.target.value == 'true'))
+      setIsVolunteer(event.target.checked)
     },
     [setIsVolunteer],
   )
@@ -233,6 +233,8 @@ const Site = ({ data }) => {
           selectedTags={selectedTags}
           handleCategorySelection={handleCategorySelection}
           handleTagSelection={handleTagSelection}
+          handleVolunteerSwitchChange={handleVolunteerSwitchChange}
+          isVolunteer={isVolunteer}
         />
       )}
       <Box height="100vh" ml={isMobile ? '0' : '18.75rem'} position="relative">
@@ -243,10 +245,8 @@ const Site = ({ data }) => {
           handleSearchTermChange={handleSearchTermChange}
           handleSwitchChange={handleSwitchChange}
           handleTagSelection={handleTagSelection}
-          handleVolunteerSwitchChange={handleVolunteerSwitchChange}
           isMobile={isMobile}
           isWebMode={isWebMode}
-          isVolunteer={isVolunteer}
           searchTerm={searchTerm}
           tags={tags}
           selectedTags={selectedTags}
