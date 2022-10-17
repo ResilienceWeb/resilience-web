@@ -104,7 +104,7 @@ export default function Footer() {
               </SocialButton>
               <SocialButton
                 label={'Github'}
-                href="https://github.com/Cambridge-Resilience-Web/cambridge-resilience-web"
+                href="https://github.com/ResilienceWeb/resilience-web"
               >
                 <FaGithub />
               </SocialButton>
