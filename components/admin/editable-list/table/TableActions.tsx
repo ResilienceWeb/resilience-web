@@ -18,7 +18,6 @@ const TableActions = ({
   handleSearchTermChange,
   handleSelectedCategoriesChange,
   goToCreateListing,
-  selectedCategories,
 }) => {
   const { data: session } = useSession()
 

@@ -122,7 +122,7 @@ const PermissionsList = ({ permissions }) => {
                                     isMulti
                                     isSearchable
                                     menuPortalTarget={document.body}
-                                    onChange={(option, changeData) => {
+                                    onChange={(_option, changeData) => {
                                       let newValue
                                       if (
                                         changeData.action === 'select-option'

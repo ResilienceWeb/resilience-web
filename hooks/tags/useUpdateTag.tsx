@@ -25,7 +25,7 @@ export default function useUpdateTag() {
       queryClient.setQueryData(['tags'], newTag)
       return { previousTags, newTag }
     },
-    onError: (err, newCategory, context) => {
+    onError: (_err, _newCategory, context) => {
       queryClient.setQueryData(
         ['tags', context.newTag.id],
         context.previousTags,

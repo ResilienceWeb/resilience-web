@@ -66,6 +66,7 @@ const Site = ({ data }) => {
   const [tags, setTags] = useState([])
 
   const [selectedId, setSelectedId] = useState()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [network, setNetwork] = useState<INetwork>()
 
   const { categories: fetchedCategories } = useCategories()
@@ -423,7 +424,7 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
     })
 
     // From category node to all subitems
-    groupedByCategory[category].map((item) => {
+    groupedByCategory[category].forEach((item) => {
       transformedData.edges.push({
         from: categoryId,
         to: item.id,

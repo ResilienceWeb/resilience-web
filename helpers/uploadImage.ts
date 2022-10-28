@@ -19,7 +19,7 @@ const uploadImage = (image: File, oldImageKey?: string) => {
 
       let imageUrl
       doSpace
-        .upload(params, function (err, data) {
+        .upload(params, function (err, _data) {
           if (err) {
             console.error(err)
             reject(err)

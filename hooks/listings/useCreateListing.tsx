@@ -3,7 +3,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function createListingRequest(listingData) {
   const formData = new FormData()
-  Object.keys(listingData).map((key) => formData.append(key, listingData[key]))
+  Object.keys(listingData).forEach((key) =>
+    formData.append(key, listingData[key]),
+  )
 
   const response = await fetch('/api/listings/create', {
     method: 'POST',
@@ -25,7 +27,7 @@ export default function useCreateListing() {
       queryClient.setQueryData(['listings', newListing.id], newListing)
       return { previousListings, newListing }
     },
-    onError: (err, newListing, context) => {
+    onError: (_err, _newListing, context) => {
       queryClient.setQueryData(['listings'], context.previousListings)
     },
     onSettled: () => {

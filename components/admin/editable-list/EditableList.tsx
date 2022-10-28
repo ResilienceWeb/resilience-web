@@ -98,7 +98,6 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
           searchTerm={searchTerm}
           handleSearchTermChange={handleSearchTermChange}
           goToCreateListing={goToCreateListing}
-          selectedCategories={selectedCategories}
           handleSelectedCategoriesChange={handleSelectedCategoriesChange}
         />
       </Stack>

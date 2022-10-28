@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { memo, useMemo } from 'react'
 import { Formik, Form, Field, useField, FieldProps } from 'formik'
 import { Editor } from '@tinymce/tinymce-react'
@@ -441,7 +442,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           <ReactSelect
                             isMulti
                             isSearchable={false}
-                            onChange={(option, changeData) => {
+                            onChange={(_option, changeData) => {
                               let newValue
                               if (changeData.action === 'select-option') {
                                 newValue = [...field.value, changeData.option]
@@ -490,7 +491,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           <ReactSelect
                             isMulti
                             isSearchable
-                            onChange={(option, changeData) => {
+                            onChange={(_option, changeData) => {
                               let newValue
                               if (changeData.action === 'select-option') {
                                 newValue = [...field.value, changeData.option]

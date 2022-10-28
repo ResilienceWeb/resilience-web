@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
 import type { File } from 'formidable'

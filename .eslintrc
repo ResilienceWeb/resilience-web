@@ -11,7 +11,8 @@
     "import",
     "jsx-a11y",
     "@typescript-eslint",
-    "promise"
+    "promise",
+    "sonarjs"
   ],
   "extends": [
     "plugin:import/recommended",
@@ -23,6 +24,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@next/next/recommended",
+    "plugin:sonarjs/recommended",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
@@ -70,6 +72,7 @@
     "no-useless-escape": 0,
     "no-var": 1,
     "no-mixed-spaces-and-tabs": 1,
+    "no-unused-vars": 0,
     "prefer-const": 1,
     "prettier/prettier": 0,
     "quotes": [
@@ -94,7 +97,16 @@
     "jsx-a11y/anchor-is-valid": 1,
     "jsx-a11y/label-has-associated-control": 1,
     "@typescript-eslint/ban-ts-comment": 0,
-    "@typescript-eslint/no-unused-vars": 1,
+    "@typescript-eslint/no-unused-vars": [
+      1,
+      {
+        "args": "all",
+        "caughtErrors": "none",
+        "ignoreRestSiblings": true,
+        "vars": "all",
+        "argsIgnorePattern": "^_"
+      }
+    ],
     "@typescript-eslint/no-unsafe-assignment": 0,
     "@typescript-eslint/no-unsafe-member-access": 0,
     "@typescript-eslint/restrict-template-expressions": 0,

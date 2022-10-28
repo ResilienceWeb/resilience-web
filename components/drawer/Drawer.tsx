@@ -7,7 +7,6 @@ import {
   Flex,
   Link,
   InputGroup,
-  Text,
   Heading,
   useBreakpointValue,
 } from '@chakra-ui/react'

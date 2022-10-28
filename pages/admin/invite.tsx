@@ -183,7 +183,7 @@ export default function Invite() {
                               <Select
                                 isMulti
                                 isSearchable
-                                onChange={(option, changeData) => {
+                                onChange={(_option, changeData) => {
                                   let newValue
                                   if (changeData.action === 'select-option') {
                                     newValue = [

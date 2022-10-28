@@ -79,7 +79,7 @@ function App({ Component, pageProps }) {
               <Component {...pageProps} />
             </ChakraProvider>
           </StoreProvider>
-          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </SessionProvider>
     </>

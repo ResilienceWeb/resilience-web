@@ -34,6 +34,5 @@ export const sanitizeLink = (link: string) => {
 }
 
 export const removeNonAlphaNumeric = (str: string) => {
-  const result = str.replace(/[^\w\s]/gi, '')
-  return result
+  return str.replace(/[^\w\s]/gi, '')
 }

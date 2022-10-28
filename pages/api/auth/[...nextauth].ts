@@ -11,12 +11,7 @@ export default NextAuth({
     EmailProvider({
       server: config.emailServer,
       from: `Cambridge Resilience Web <${process.env.EMAIL_FROM}>`,
-      async sendVerificationRequest({
-        identifier: email,
-        url,
-        token,
-        provider,
-      }) {
+      async sendVerificationRequest({ identifier: email, url, provider }) {
         return new Promise((resolve, reject) => {
           const { server, from } = provider
           nodemailer.createTransport(server).sendMail(

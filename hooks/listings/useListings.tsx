@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useAppContext } from '@store/hooks'
 
 async function fetchListingsRequest({ queryKey }) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_key, { siteSlug }] = queryKey
   const response = await fetch(`/api/listings?site=${siteSlug}`)
   const data = await response.json()

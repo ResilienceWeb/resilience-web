@@ -72,10 +72,10 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
   const events = useMemo(
     () => ({
       select: function (event) {
-        const { nodes, edges } = event
+        const { nodes } = event
         setSelectedId(nodes[0])
       },
-      showPopup: function (event) {
+      showPopup: function (_event) {
         console.log('show popup?')
       },
     }),

@@ -47,7 +47,7 @@ const CategoryForm = ({
           </chakra.div>
           <chakra.div mb={5}>
             <Field name="color">
-              {({ field, form }) => (
+              {({ _field, form }) => (
                 <FormControl isInvalid={form.errors.color}>
                   <FormLabel htmlFor="color">Category color</FormLabel>
                   <HexColorPicker

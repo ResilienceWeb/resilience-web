@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../prisma/client'
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
   try {
     const sites = await prisma.location.findMany()
     res.status(200).json({ sites })
