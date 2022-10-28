@@ -18,7 +18,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    const { email, listings } = req.body
+    const email = req.body.email.trim()
+    const { listings } = req.body
 
     if (!email) {
       res.status(400)
