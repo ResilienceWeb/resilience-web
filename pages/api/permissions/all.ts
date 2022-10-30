@@ -13,6 +13,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const permissions = await prisma.permission.findMany({
+      where: {
+        user: {
+          admin: false,
+        },
+      },
       include: {
         listings: true,
         locations: true,

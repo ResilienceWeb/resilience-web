@@ -7,9 +7,11 @@ import LayoutContainer from '@components/admin/layout-container'
 import EditableList from '@components/admin/editable-list'
 import { useListings, useDeleteListing } from '@hooks/listings'
 import { usePermissions } from '@hooks/permissions'
+import { useAppContext } from '@store/hooks'
 
 const Admin = () => {
   const { data: session, status: sessionStatus } = useSession()
+  const { selectedLocationId } = useAppContext()
 
   const {
     listings,
@@ -31,11 +33,23 @@ const Admin = () => {
   }, [session, sessionStatus, query.activate])
 
   const allowedListings = useMemo(() => {
-    if (!session || isLoadingPermissions) return null
+    if (!session || isLoadingPermissions || isLoadingListings) return null
     if (session.user.admin) return listings
 
-    return listings?.filter((listing) => permissions?.includes(listing.id))
-  }, [listings, permissions, session, isLoadingPermissions])
+    if (permissions.siteIds.includes(selectedLocationId)) return listings
+
+    return listings.filter((listing) => {
+      return permissions?.listingIds.includes(listing.id)
+    })
+  }, [
+    session,
+    isLoadingPermissions,
+    isLoadingListings,
+    listings,
+    permissions.siteIds,
+    permissions?.listingIds,
+    selectedLocationId,
+  ])
 
   if (sessionStatus === 'loading') {
     return (

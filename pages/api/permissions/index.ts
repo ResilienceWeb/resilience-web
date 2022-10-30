@@ -27,7 +27,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     switch (req.method) {
       case 'GET':
         const listingIdsArray = permission.listings.map((l) => l.id)
-        res.json({ permissions: listingIdsArray })
+        const siteIdsArray = permission.locations.map((l) => l.id)
+        res.json({ listingIds: listingIdsArray, siteIds: siteIdsArray })
         res.status(200)
 
         break

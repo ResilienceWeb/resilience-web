@@ -81,7 +81,6 @@ export default function Invite() {
         }),
       })
       const result = await response.json()
-      console.log(result, response)
 
       if (response.status === 200) {
         toast({

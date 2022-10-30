@@ -2,7 +2,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function updatePermissionRequest(permissionData) {
-  console.log(permissionData)
   const response = await fetch('/api/permissions', {
     method: 'PUT',
     headers: {

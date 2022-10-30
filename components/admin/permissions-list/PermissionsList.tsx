@@ -134,169 +134,158 @@ const PermissionsList = ({ permissions }) => {
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4}>
-              {user.emailVerified ? (
-                <Formik
-                  enableReinitialize
-                  initialValues={{
-                    email: permission.email,
-                    listings: getListingSelectedOptions(),
-                    sites: getSitesSelectedOptions(),
-                  }}
-                  onSubmit={(values, actions) => {
-                    actions.setSubmitting(false)
-                    onSubmit(values)
-                  }}
-                >
-                  {(props) => {
-                    return (
-                      <Form>
-                        <Field name="sites">
-                          {({ field, form }: FieldProps) => {
-                            return (
-                              <FormControl
-                                isInvalid={Boolean(
-                                  form.errors.sites && form.touched.sites,
-                                )}
-                              >
-                                <FormLabel htmlFor="sites">
-                                  Sites this user has full access to
-                                </FormLabel>
-                                <InputGroup size="sm" bgColor="whiteAlpha.800">
-                                  <Select
-                                    isMulti
-                                    isSearchable
-                                    menuPortalTarget={document.body}
-                                    onChange={(_option, changeData) => {
-                                      let newValue
-                                      if (
-                                        changeData.action === 'select-option'
-                                      ) {
-                                        newValue = [
-                                          ...field.value,
-                                          changeData.option,
-                                        ]
-                                      } else if (
-                                        changeData.action === 'remove-value' ||
-                                        changeData.action === 'pop-value'
-                                      ) {
-                                        newValue = field.value.filter(
-                                          (v) =>
-                                            v.value !==
-                                            changeData.removedValue.value,
-                                        )
-                                      }
-                                      form.setFieldValue(field.name, newValue)
-                                    }}
-                                    options={siteOptions}
-                                    placeholder=""
-                                    isClearable={false}
-                                    styles={customMultiSelectStyles}
-                                    value={field.value}
-                                  />
-                                </InputGroup>
-                                <FormErrorMessage>
-                                  {form.errors.sites?.toString()}
-                                </FormErrorMessage>
-                              </FormControl>
-                            )
-                          }}
-                        </Field>
+              <Formik
+                enableReinitialize
+                initialValues={{
+                  email: permission.email,
+                  listings: getListingSelectedOptions(),
+                  sites: getSitesSelectedOptions(),
+                }}
+                onSubmit={(values, actions) => {
+                  actions.setSubmitting(false)
+                  onSubmit(values)
+                }}
+              >
+                {(props) => {
+                  return (
+                    <Form>
+                      <Field name="sites">
+                        {({ field, form }: FieldProps) => {
+                          return (
+                            <FormControl
+                              isInvalid={Boolean(
+                                form.errors.sites && form.touched.sites,
+                              )}
+                            >
+                              <FormLabel htmlFor="sites">
+                                Sites this user has full access to
+                              </FormLabel>
+                              <InputGroup size="sm" bgColor="whiteAlpha.800">
+                                <Select
+                                  isMulti
+                                  isSearchable
+                                  menuPortalTarget={document.body}
+                                  onChange={(_option, changeData) => {
+                                    let newValue
+                                    if (changeData.action === 'select-option') {
+                                      newValue = [
+                                        ...field.value,
+                                        changeData.option,
+                                      ]
+                                    } else if (
+                                      changeData.action === 'remove-value' ||
+                                      changeData.action === 'pop-value'
+                                    ) {
+                                      newValue = field.value.filter(
+                                        (v) =>
+                                          v.value !==
+                                          changeData.removedValue.value,
+                                      )
+                                    }
+                                    form.setFieldValue(field.name, newValue)
+                                  }}
+                                  options={siteOptions}
+                                  placeholder=""
+                                  isClearable={false}
+                                  styles={customMultiSelectStyles}
+                                  value={field.value}
+                                />
+                              </InputGroup>
+                              <FormErrorMessage>
+                                {form.errors.sites?.toString()}
+                              </FormErrorMessage>
+                            </FormControl>
+                          )
+                        }}
+                      </Field>
 
-                        <Field name="listings">
-                          {({ field, form }: FieldProps) => {
-                            return (
-                              <FormControl
-                                isInvalid={Boolean(
-                                  form.errors.listings && form.touched.listings,
-                                )}
-                                mt="1rem"
-                              >
-                                <FormLabel htmlFor="listings">
-                                  Individual listings this user can edit
-                                </FormLabel>
-                                <InputGroup size="sm" bgColor="whiteAlpha.800">
-                                  <Select
-                                    isMulti
-                                    isSearchable
-                                    menuPortalTarget={document.body}
-                                    onChange={(_option, changeData) => {
-                                      let newValue
-                                      if (
-                                        changeData.action === 'select-option'
-                                      ) {
-                                        newValue = [
-                                          ...field.value,
-                                          changeData.option,
-                                        ]
-                                      } else if (
-                                        changeData.action === 'remove-value' ||
-                                        changeData.action === 'pop-value'
-                                      ) {
-                                        newValue = field.value.filter(
-                                          (v) =>
-                                            v.value !==
-                                            changeData.removedValue.value,
-                                        )
-                                      }
-                                      form.setFieldValue(field.name, newValue)
-                                    }}
-                                    options={listingOptions}
-                                    placeholder=""
-                                    isClearable={false}
-                                    styles={customMultiSelectStyles}
-                                    value={field.value}
-                                  />
-                                </InputGroup>
-                                <FormErrorMessage>
-                                  {form.errors.listings?.toString()}
-                                </FormErrorMessage>
-                              </FormControl>
-                            )
-                          }}
-                        </Field>
+                      <Field name="listings">
+                        {({ field, form }: FieldProps) => {
+                          return (
+                            <FormControl
+                              isInvalid={Boolean(
+                                form.errors.listings && form.touched.listings,
+                              )}
+                              mt="1rem"
+                            >
+                              <FormLabel htmlFor="listings">
+                                Individual listings this user can edit
+                              </FormLabel>
+                              <InputGroup size="sm" bgColor="whiteAlpha.800">
+                                <Select
+                                  isMulti
+                                  isSearchable
+                                  menuPortalTarget={document.body}
+                                  onChange={(_option, changeData) => {
+                                    let newValue
+                                    if (changeData.action === 'select-option') {
+                                      newValue = [
+                                        ...field.value,
+                                        changeData.option,
+                                      ]
+                                    } else if (
+                                      changeData.action === 'remove-value' ||
+                                      changeData.action === 'pop-value'
+                                    ) {
+                                      newValue = field.value.filter(
+                                        (v) =>
+                                          v.value !==
+                                          changeData.removedValue.value,
+                                      )
+                                    }
+                                    form.setFieldValue(field.name, newValue)
+                                  }}
+                                  options={listingOptions}
+                                  placeholder=""
+                                  isClearable={false}
+                                  styles={customMultiSelectStyles}
+                                  value={field.value}
+                                />
+                              </InputGroup>
+                              <FormErrorMessage>
+                                {form.errors.listings?.toString()}
+                              </FormErrorMessage>
+                            </FormControl>
+                          )
+                        }}
+                      </Field>
 
-                        <Box
-                          pt={3}
-                          bg="gray.50"
-                          textAlign="left"
-                          bgColor="whiteAlpha.800"
+                      <Box
+                        pt={3}
+                        bg="gray.50"
+                        textAlign="left"
+                        bgColor="whiteAlpha.800"
+                      >
+                        <Button
+                          bg="rw.700"
+                          colorScheme="rw.700"
+                          disabled={
+                            !props.isValid ||
+                            (isEqual(
+                              props.initialValues.listings,
+                              props.values.listings,
+                            ) &&
+                              isEqual(
+                                props.initialValues.sites,
+                                props.values.sites,
+                              ))
+                          }
+                          isLoading={isUpdatingPermission}
+                          size="md"
+                          type="submit"
+                          _hover={{ bg: 'rw.900' }}
                         >
-                          <Button
-                            bg="rw.700"
-                            colorScheme="rw.700"
-                            disabled={
-                              !props.isValid ||
-                              (isEqual(
-                                props.initialValues.listings,
-                                props.values.listings,
-                              ) &&
-                                isEqual(
-                                  props.initialValues.sites,
-                                  props.values.sites,
-                                ))
-                            }
-                            isLoading={isUpdatingPermission}
-                            size="md"
-                            type="submit"
-                            _hover={{ bg: 'rw.900' }}
-                          >
-                            Update permissions
-                          </Button>
-                          {/* <Text fontSize="sm" color="blackAlpha.600">
+                          Update permissions
+                        </Button>
+                        {/* <Text fontSize="sm" color="blackAlpha.600">
                           This sends an email to the user with the new
                           permissions
                         </Text> */}
-                        </Box>
-                      </Form>
-                    )
-                  }}
-                </Formik>
-              ) : (
-                <Text fontSize="sm">
-                  You cannot give this user additional permissions until they
-                  activate their account.
-                </Text>
-              )}
+                      </Box>
+                    </Form>
+                  )
+                }}
+              </Formik>
             </AccordionPanel>
           </AccordionItem>
         )

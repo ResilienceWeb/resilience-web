@@ -3,9 +3,7 @@ import { useSession } from 'next-auth/react'
 
 async function fetchPermissionsRequest() {
   const response = await fetch('/api/permissions')
-  const data = await response.json()
-  const { permissions } = data
-  return permissions
+  return await response.json()
 }
 
 export default function usePermissions() {
