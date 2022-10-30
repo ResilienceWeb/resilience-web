@@ -12,7 +12,7 @@ export default function usePermissions() {
     data: permissions,
     isLoading,
     isError,
-  } = useQuery(['permission'], fetchPermissionsRequest)
+  } = useQuery(['all-permissions'], fetchPermissionsRequest)
 
   return {
     permissions,

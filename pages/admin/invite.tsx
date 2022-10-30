@@ -80,7 +80,6 @@ export default function Invite() {
           listings: listingsToAdd,
         }),
       })
-      const result = await response.json()
 
       if (response.status === 200) {
         toast({

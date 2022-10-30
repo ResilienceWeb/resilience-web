@@ -6,9 +6,15 @@ import DeleteConfirmationDialog from './delete-confirmation-dialog'
 import { removeNonAlphaNumeric } from '@helpers/utils'
 import Table from './table/Table'
 import TableActions from './table/TableActions'
+import { usePermissions } from '@hooks/permissions'
+import { useAppContext } from '@store/hooks'
+import { useSites } from '@hooks/sites'
 
 const EditableList = ({ deleteListing, isAdmin, items }) => {
   const router = useRouter()
+  const { permissions } = usePermissions()
+  const { sites } = useSites()
+  const { selectedLocationId } = useAppContext()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState([])
   const [isDeleteConfirmationOpenWithId, setIsDeleteConfirmationOpenWithId] =
@@ -64,6 +70,21 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
     setSelectedCategories(value)
   }, [])
 
+  const explanatoryText = useMemo(() => {
+    if (isAdmin) {
+      return 'You are an admin. You can see all the listings on each site, as well as invite people, or edit categories or tags on each site.'
+    }
+
+    const selectedSiteName = sites.find(
+      (s) => s.id === selectedLocationId,
+    ).title
+    if (permissions.siteIds.includes(selectedLocationId)) {
+      return `You have access to edit any listing on the ${selectedSiteName} site.`
+    }
+
+    return 'You have access to edit the listings below. If you think you should be able to edit a group not included below, please get in touch at cambridgeresilienceweb@gmail.com.'
+  }, [isAdmin, permissions.siteIds, selectedLocationId, sites])
+
   if (!filteredItems) return null
 
   return (
@@ -82,17 +103,9 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
       >
         <Box px={4}>
           <Heading>Listings</Heading>
-          {isAdmin ? (
-            <Text color={'gray.600'} fontSize="sm">
-              There are {filteredItems.length} listings
-            </Text>
-          ) : (
-            <Text color={'gray.600'} fontSize="sm">
-              The list below only includes groups that you have edit access to.
-              If you think you should be able to edit a group not included
-              below, please get in touch at cambridgeresilienceweb@gmail.com
-            </Text>
-          )}
+          <Text color={'gray.600'} fontSize="sm">
+            {explanatoryText}
+          </Text>
         </Box>
         <TableActions
           searchTerm={searchTerm}

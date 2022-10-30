@@ -25,6 +25,8 @@ export default function Permissions() {
     )
   }
 
+  console.log(permissions)
+
   if (!session || !session.user.admin || !permissions) return null
 
   return (

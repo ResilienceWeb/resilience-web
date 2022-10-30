@@ -46,7 +46,7 @@ const Admin = () => {
     isLoadingPermissions,
     isLoadingListings,
     listings,
-    permissions.siteIds,
+    permissions?.siteIds,
     permissions?.listingIds,
     selectedLocationId,
   ])
