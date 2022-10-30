@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { memo, useCallback, useMemo } from 'react'
 import { Formik, Form, Field, FieldProps } from 'formik'
 import isEqual from 'lodash/isEqual'
@@ -14,9 +15,11 @@ import {
   FormErrorMessage,
   FormLabel,
   Button,
+  chakra,
 } from '@chakra-ui/react'
 import Select from 'react-select'
 import { useListings } from '@hooks/listings'
+import { useSites } from '@hooks/sites'
 import { useUpdatePermission } from '@hooks/permissions'
 
 const customMultiSelectStyles = {
@@ -26,8 +29,19 @@ const customMultiSelectStyles = {
   }),
 }
 
+const SeparatedElement = chakra('span', {
+  baseStyle: {
+    _notLast: {
+      _after: {
+        content: '" ∙ "',
+      },
+    },
+  },
+})
+
 const PermissionsList = ({ permissions }) => {
   const { listings } = useListings()
+  const { sites } = useSites()
   const { mutate: updatePermission, isLoading: isUpdatingPermission } =
     useUpdatePermission()
 
@@ -37,13 +51,18 @@ const PermissionsList = ({ permissions }) => {
       const listingsToAdd = listings.filter((l) =>
         listingIdsAdded.includes(l.id),
       )
+
+      const siteIdsAdded = data.sites.map((s) => s.value)
+      const sitesToAdd = sites.filter((s) => siteIdsAdded.includes(s.id))
+
       const dataToSubmit = {
         email: data.email,
         listings: listingsToAdd,
+        sites: sitesToAdd,
       }
       updatePermission(dataToSubmit)
     },
-    [listings, updatePermission],
+    [listings, sites, updatePermission],
   )
 
   const listingOptions = useMemo(() => {
@@ -55,10 +74,19 @@ const PermissionsList = ({ permissions }) => {
     }))
   }, [listings])
 
+  const siteOptions = useMemo(() => {
+    if (!sites) return []
+
+    return sites.map((l) => ({
+      value: l.id,
+      label: l.title,
+    }))
+  }, [sites])
+
   return (
     <Accordion allowMultiple defaultIndex={[0]}>
       {permissions.map((permission) => {
-        const { listings, user, email } = permission
+        const { listings, user, email, locations: sites } = permission
 
         const getListingSelectedOptions = () => {
           if (!listings) return []
@@ -69,22 +97,37 @@ const PermissionsList = ({ permissions }) => {
           }))
         }
 
+        const getSitesSelectedOptions = () => {
+          if (!sites) return []
+
+          return sites.map((s) => ({
+            value: s.id,
+            label: s.title,
+          }))
+        }
+
         return (
           <AccordionItem key={permission.id} bgColor="whiteAlpha.800">
             <h2>
               <AccordionButton _hover={{ bgColor: 'gray.50' }}>
                 <Box flex="1" textAlign="left">
-                  {email} ∙ <strong>{listings.length}</strong>{' '}
-                  {listings.length > 1 ? 'listings' : 'listing'}
+                  <SeparatedElement>{email}</SeparatedElement>
+                  <SeparatedElement>
+                    <strong>{sites.length}</strong>{' '}
+                    {sites.length === 0 || sites.length > 1 ? 'sites' : 'site'}
+                  </SeparatedElement>
+                  <SeparatedElement>
+                    <strong>{listings.length}</strong>{' '}
+                    {listings.length === 0 || listings.length > 1
+                      ? 'listings'
+                      : 'listing'}
+                  </SeparatedElement>
                   {!user.emailVerified && (
-                    <>
-                      {' '}
-                      ∙
+                    <SeparatedElement>
                       <Text display="inline" textColor="orange.500">
-                        {' '}
                         not signed up yet
                       </Text>
-                    </>
+                    </SeparatedElement>
                   )}
                 </Box>
                 <AccordionIcon />
@@ -97,6 +140,7 @@ const PermissionsList = ({ permissions }) => {
                   initialValues={{
                     email: permission.email,
                     listings: getListingSelectedOptions(),
+                    sites: getSitesSelectedOptions(),
                   }}
                   onSubmit={(values, actions) => {
                     actions.setSubmitting(false)
@@ -106,6 +150,58 @@ const PermissionsList = ({ permissions }) => {
                   {(props) => {
                     return (
                       <Form>
+                        <Field name="sites">
+                          {({ field, form }: FieldProps) => {
+                            return (
+                              <FormControl
+                                isInvalid={Boolean(
+                                  form.errors.sites && form.touched.sites,
+                                )}
+                              >
+                                <FormLabel htmlFor="sites">
+                                  Sites this user has full access to
+                                </FormLabel>
+                                <InputGroup size="sm" bgColor="whiteAlpha.800">
+                                  <Select
+                                    isMulti
+                                    isSearchable
+                                    menuPortalTarget={document.body}
+                                    onChange={(_option, changeData) => {
+                                      let newValue
+                                      if (
+                                        changeData.action === 'select-option'
+                                      ) {
+                                        newValue = [
+                                          ...field.value,
+                                          changeData.option,
+                                        ]
+                                      } else if (
+                                        changeData.action === 'remove-value' ||
+                                        changeData.action === 'pop-value'
+                                      ) {
+                                        newValue = field.value.filter(
+                                          (v) =>
+                                            v.value !==
+                                            changeData.removedValue.value,
+                                        )
+                                      }
+                                      form.setFieldValue(field.name, newValue)
+                                    }}
+                                    options={siteOptions}
+                                    placeholder=""
+                                    isClearable={false}
+                                    styles={customMultiSelectStyles}
+                                    value={field.value}
+                                  />
+                                </InputGroup>
+                                <FormErrorMessage>
+                                  {form.errors.sites?.toString()}
+                                </FormErrorMessage>
+                              </FormControl>
+                            )
+                          }}
+                        </Field>
+
                         <Field name="listings">
                           {({ field, form }: FieldProps) => {
                             return (
@@ -113,9 +209,10 @@ const PermissionsList = ({ permissions }) => {
                                 isInvalid={Boolean(
                                   form.errors.listings && form.touched.listings,
                                 )}
+                                mt="1rem"
                               >
                                 <FormLabel htmlFor="listings">
-                                  Listings this user can edit
+                                  Individual listings this user can edit
                                 </FormLabel>
                                 <InputGroup size="sm" bgColor="whiteAlpha.800">
                                   <Select
@@ -169,10 +266,14 @@ const PermissionsList = ({ permissions }) => {
                             colorScheme="rw.700"
                             disabled={
                               !props.isValid ||
-                              isEqual(
+                              (isEqual(
                                 props.initialValues.listings,
                                 props.values.listings,
-                              )
+                              ) &&
+                                isEqual(
+                                  props.initialValues.sites,
+                                  props.values.sites,
+                                ))
                             }
                             isLoading={isUpdatingPermission}
                             size="md"

@@ -2,6 +2,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function updatePermissionRequest(permissionData) {
+  console.log(permissionData)
   const response = await fetch('/api/permissions', {
     method: 'PUT',
     headers: {
@@ -20,7 +21,6 @@ export default function useUpdatePermission() {
 
   return useMutation(updatePermissionRequest, {
     onMutate: async (newPermission) => {
-      console.log('newPermission', newPermission)
       await queryClient.cancelQueries([
         'permission',
         { email: newPermission.email },

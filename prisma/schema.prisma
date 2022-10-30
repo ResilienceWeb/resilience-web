@@ -37,7 +37,7 @@ model User {
   admin         Boolean      @default(false)
   accounts      Account[]
   sessions      Session[]
-  Permission    Permission[]
+  permission    Permission[]
 
   @@map("users")
 }

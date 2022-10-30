@@ -15,6 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const permissions = await prisma.permission.findMany({
       include: {
         listings: true,
+        locations: true,
         user: true,
       },
     })

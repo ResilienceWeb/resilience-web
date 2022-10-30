@@ -13,12 +13,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    const { email: targetEmail, listings } = req.body
+    const { email: targetEmail, listings, sites } = req.body
 
     const email = targetEmail ?? session?.user.email
     const permission = await prisma.permission.findUnique({
       include: {
         listings: true,
+        locations: true,
       },
       where: { email },
     })
@@ -31,14 +32,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         break
       case 'PUT':
+        const allSitesToDisconnect = permission.locations.map((l) => ({
+          id: l.id,
+        }))
         const allListingsToDisconnect = permission.listings.map((l) => ({
           id: l.id,
         }))
+
         const updatedDataDisconnect: Prisma.PermissionUpdateArgs = {
           where: {
             email: targetEmail,
           },
           data: {
+            locations: {
+              disconnect: allSitesToDisconnect,
+            },
             listings: {
               disconnect: allListingsToDisconnect,
             },
@@ -46,12 +54,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
         await prisma.permission.update(updatedDataDisconnect)
 
+        const sitesToConnect = sites.map((s) => ({ id: s.id }))
         const listingsToConnect = listings.map((l) => ({ id: l.id }))
         const updatedDataConnect: Prisma.PermissionUpdateArgs = {
           where: {
             email: targetEmail,
           },
           data: {
+            locations: {
+              connect: sitesToConnect,
+            },
             listings: {
               connect: listingsToConnect,
             },
