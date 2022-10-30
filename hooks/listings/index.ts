@@ -1,4 +1,5 @@
 export { default as useListings } from './useListings'
+export { default as useAllListings } from './useAllListings'
 export { default as useListing } from './useListing'
 export { default as useCreateListing } from './useCreateListing'
 export { default as useUpdateListing } from './useUpdateListing'

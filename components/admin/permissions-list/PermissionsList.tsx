@@ -18,7 +18,7 @@ import {
   chakra,
 } from '@chakra-ui/react'
 import Select from 'react-select'
-import { useListings } from '@hooks/listings'
+import { useAllListings } from '@hooks/listings'
 import { useSites } from '@hooks/sites'
 import { useUpdatePermission } from '@hooks/permissions'
 
@@ -40,10 +40,12 @@ const SeparatedElement = chakra('span', {
 })
 
 const PermissionsList = ({ permissions }) => {
-  const { listings } = useListings()
+  const { listings } = useAllListings()
   const { sites } = useSites()
   const { mutate: updatePermission, isLoading: isUpdatingPermission } =
     useUpdatePermission()
+
+  console.log(listings)
 
   const onSubmit = useCallback(
     (data) => {

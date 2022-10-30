@@ -19,6 +19,8 @@ const SiteSelector = () => {
   const { sites } = useSites()
   const { permissions } = usePermissions()
 
+  console.log(permissions?.listingIds)
+
   const siteOptions: Options<SiteOption> = useMemo(() => {
     if (!sites || !permissions) return []
 

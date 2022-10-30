@@ -25,8 +25,11 @@ import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { HiViewList, HiUsers, HiOutlineLockOpen } from 'react-icons/hi'
 import { BsPersonCircle } from 'react-icons/bs'
 import { BiCategory } from 'react-icons/bi'
+
 import SiteSelector from './site-selector'
 import LogoImage from '../../../public/logo.png'
+import { usePermissions } from '@hooks/permissions'
+import { useAppContext } from '@store/hooks'
 
 const NavLink = ({ children, href }) => (
   <Link
@@ -49,6 +52,12 @@ const Nav = () => {
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const { permissions } = usePermissions()
+  const { selectedLocationId } = useAppContext()
+  const isAdminOfSelectedSite = useMemo(() => {
+    return permissions?.siteIds.includes(selectedLocationId)
+  }, [permissions?.siteIds, selectedLocationId])
+
   const Links = useMemo(() => {
     const links = [
       {
@@ -69,6 +78,9 @@ const Nav = () => {
         href: '/admin/permissions',
         icon: <Icon as={HiOutlineLockOpen} fontSize="lg" />,
       })
+    }
+
+    if (session?.user.admin || isAdminOfSelectedSite) {
       links.push({
         label: 'Categories & Tags',
         href: '/admin/categories',
@@ -77,7 +89,7 @@ const Nav = () => {
     }
 
     return links
-  }, [session?.user.admin])
+  }, [isAdminOfSelectedSite, session?.user.admin])
 
   const handleSignOut = useCallback(() => void signOut(), [])
 

@@ -1,18 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../prisma/client'
 
-const DEFAULT_LOCATION_SLUG = 'cambridge-city'
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { site } = req.query
   try {
     const listings = await prisma.listing.findMany({
       where: {
-        location: {
-          slug: {
-            contains: site ?? DEFAULT_LOCATION_SLUG,
-          },
-        },
+        ...(site
+          ? {
+              location: {
+                slug: {
+                  contains: site,
+                },
+              },
+            }
+          : {}),
       },
       include: {
         category: true,
