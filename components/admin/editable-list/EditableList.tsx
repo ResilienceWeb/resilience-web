@@ -75,9 +75,10 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
       return 'You are an admin. You can see all the listings on each site, as well as invite people, or edit categories or tags on each site.'
     }
 
-    const selectedSiteName = sites.find(
+    const selectedSiteName = sites?.find(
       (s) => s.id === selectedLocationId,
     ).title
+
     if (permissions.siteIds.includes(selectedLocationId)) {
       return `You have access to edit any listing on the ${selectedSiteName} site.`
     }

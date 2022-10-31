@@ -45,8 +45,6 @@ const PermissionsList = ({ permissions }) => {
   const { mutate: updatePermission, isLoading: isUpdatingPermission } =
     useUpdatePermission()
 
-  console.log(listings)
-
   const onSubmit = useCallback(
     (data) => {
       const listingIdsAdded = data.listings.map((l) => l.value)

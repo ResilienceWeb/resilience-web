@@ -2,11 +2,12 @@ import { memo, useMemo, useCallback } from 'react'
 import Select from 'react-select'
 import { Text } from '@chakra-ui/react'
 import type { Options } from 'react-select'
+import { useSession } from 'next-auth/react'
+import uniq from 'lodash/uniq'
 
 import { useAppContext } from '@store/hooks'
 import { useSites } from '@hooks/sites'
 import { usePermissions } from '@hooks/permissions'
-import { useSession } from 'next-auth/react'
 
 type SiteOption = {
   value: string
@@ -15,11 +16,17 @@ type SiteOption = {
 
 const SiteSelector = () => {
   const { data: session } = useSession()
-  const { selectedSiteSlug, setSelectedSiteSlug } = useAppContext()
+  const { selectedSiteSlug, selectedLocationId, setSelectedSiteSlug } =
+    useAppContext()
   const { sites } = useSites()
   const { permissions } = usePermissions()
 
-  console.log(permissions?.listingIds)
+  const selectedSite = useMemo(
+    () => sites?.find((s) => s.id === selectedLocationId),
+    [selectedLocationId, sites],
+  )
+
+  console.log(permissions)
 
   const siteOptions: Options<SiteOption> = useMemo(() => {
     if (!sites || !permissions) return []
