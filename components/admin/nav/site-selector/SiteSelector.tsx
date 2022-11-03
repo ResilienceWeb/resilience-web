@@ -3,7 +3,6 @@ import Select from 'react-select'
 import { Text } from '@chakra-ui/react'
 import type { Options } from 'react-select'
 import { useSession } from 'next-auth/react'
-import uniq from 'lodash/uniq'
 
 import { useAppContext } from '@store/hooks'
 import { useSites } from '@hooks/sites'
@@ -16,17 +15,20 @@ type SiteOption = {
 
 const SiteSelector = () => {
   const { data: session } = useSession()
-  const { selectedSiteSlug, selectedLocationId, setSelectedSiteSlug } =
-    useAppContext()
+  const { selectedSiteSlug, setSelectedSiteSlug } = useAppContext()
   const { sites } = useSites()
   const { permissions } = usePermissions()
 
-  const selectedSite = useMemo(
-    () => sites?.find((s) => s.id === selectedLocationId),
-    [selectedLocationId, sites],
-  )
+  const allUniqueSiteIds = useMemo(() => {
+    if (!permissions) {
+      return []
+    }
 
-  console.log(permissions)
+    const allSiteIds = permissions.fullPermissionData.listings.map(
+      (listing) => listing.locationId,
+    )
+    return Array.from(new Set(allSiteIds))
+  }, [permissions])
 
   const siteOptions: Options<SiteOption> = useMemo(() => {
     if (!sites || !permissions) return []
@@ -37,12 +39,17 @@ const SiteSelector = () => {
 
     const allowedSites = session.user.admin
       ? sites
-      : sites.filter((s) => permissions.siteIds?.includes(s.id))
+      : sites.filter(
+          (s) =>
+            permissions.siteIds?.includes(s.id) ||
+            allUniqueSiteIds.includes(s.id),
+        )
     return allowedSites.map((s) => ({
       value: s.slug,
       label: s.title,
     }))
   }, [
+    allUniqueSiteIds,
     permissions,
     selectedSiteSlug,
     session?.user.admin,

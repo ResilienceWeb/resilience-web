@@ -9,7 +9,10 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react'
+
 import LayoutContainer from '@components/admin/layout-container'
 import { useCategories } from '@hooks/categories'
 import { useTags } from '@hooks/tags'
@@ -17,6 +20,7 @@ import CategoriesHeader from '@components/admin/categories/header'
 import CategoriesList from '@components/admin/categories/list'
 import TagsHeader from '@components/admin/tags/header'
 import TagsList from '@components/admin/tags/list'
+import { useHasPermissionForCurrentSite } from '@hooks/permissions'
 
 const LoadingSpinner = () => (
   <LayoutContainer>
@@ -30,6 +34,7 @@ export default function Categories() {
   const { data: session, status: sessionStatus } = useSession()
   const { categories, isLoading: isLoadingCategories } = useCategories()
   const { tags, isLoading: isLoadingTags } = useTags()
+  const hasPermission = useHasPermissionForCurrentSite()
 
   const orderedCategories = useMemo(() => {
     return categories?.sort((a, b) => a.label.localeCompare(b.label))
@@ -39,7 +44,16 @@ export default function Categories() {
     return <LoadingSpinner />
   }
 
-  if (!session || !session.user.admin) return null
+  if (!session || !hasPermission) {
+    return (
+      <LayoutContainer>
+        <Alert status="warning">
+          <AlertIcon />
+          You don't have access to edit Categories & Tags for this site.
+        </Alert>
+      </LayoutContainer>
+    )
+  }
 
   return (
     <LayoutContainer>
