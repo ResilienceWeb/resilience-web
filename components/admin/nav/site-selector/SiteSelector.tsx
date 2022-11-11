@@ -33,7 +33,7 @@ const SiteSelector = () => {
   const siteOptions: Options<SiteOption> = useMemo(() => {
     if (!sites || !permissions) return []
 
-    const allowedSites = session.user.admin
+    const allowedSites = session?.user.admin
       ? sites
       : sites.filter(
           (s) =>
@@ -45,7 +45,7 @@ const SiteSelector = () => {
       value: s.slug,
       label: s.title,
     }))
-  }, [allUniqueSiteIds, permissions, session.user.admin, sites])
+  }, [allUniqueSiteIds, permissions, session?.user.admin, sites])
 
   const selectedOption = useMemo(
     () => siteOptions.find((s) => s.value === selectedSiteSlug),
