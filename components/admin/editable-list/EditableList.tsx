@@ -104,7 +104,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
       >
         <Box px={4}>
           <Heading>Listings</Heading>
-          <Text color={'gray.600'} fontSize="sm">
+          <Text color={'gray.600'} fontSize="sm" maxW="500px">
             {explanatoryText}
           </Text>
         </Box>
