@@ -1,4 +1,4 @@
-import { memo, useMemo, useCallback } from 'react'
+import { memo, useMemo, useCallback, useEffect } from 'react'
 import Select from 'react-select'
 import { Text } from '@chakra-ui/react'
 import type { Options } from 'react-select'
@@ -33,10 +33,6 @@ const SiteSelector = () => {
   const siteOptions: Options<SiteOption> = useMemo(() => {
     if (!sites || !permissions) return []
 
-    if (sites.length && !selectedSiteSlug) {
-      setSelectedSiteSlug(sites[0].slug)
-    }
-
     const allowedSites = session.user.admin
       ? sites
       : sites.filter(
@@ -44,18 +40,12 @@ const SiteSelector = () => {
             permissions.siteIds?.includes(s.id) ||
             allUniqueSiteIds.includes(s.id),
         )
+
     return allowedSites.map((s) => ({
       value: s.slug,
       label: s.title,
     }))
-  }, [
-    allUniqueSiteIds,
-    permissions,
-    selectedSiteSlug,
-    session?.user.admin,
-    setSelectedSiteSlug,
-    sites,
-  ])
+  }, [allUniqueSiteIds, permissions, session.user.admin, sites])
 
   const selectedOption = useMemo(
     () => siteOptions.find((s) => s.value === selectedSiteSlug),
@@ -68,6 +58,12 @@ const SiteSelector = () => {
     },
     [setSelectedSiteSlug],
   )
+
+  useEffect(() => {
+    if (siteOptions.length === 1) {
+      setSelectedSiteSlug(siteOptions[0].value)
+    }
+  }, [siteOptions, setSelectedSiteSlug])
 
   if (siteOptions.length === 1) {
     return (
