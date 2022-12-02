@@ -17,7 +17,7 @@ export default function SignIn({ csrfToken }) {
         <Box bgColor="#ffffff" p={12} borderRadius={12} opacity="0.9">
           <Box mb={16} display="flex" justifyContent="center">
             <Image
-              alt="Cambridge Resilience Web logo"
+              alt="Resilience Web logo"
               src={LogoImage}
               width="306"
               height="104"

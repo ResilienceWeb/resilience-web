@@ -21,10 +21,10 @@ const HowItWorks = () => {
   return (
     <>
       <NextSeo
-        title="How it works | Cambridge Resilience Web"
+        title="How it works | Resilience Web"
         description="Two webs of resilience, showing the environmental and social justice groups in Cambridge"
         openGraph={{
-          title: 'How it works | Cambridge Resilience Web',
+          title: 'How it works | Resilience Web',
           description:
             'Two webs of resilience, showing the environmental and social justice groups in Cambridge',
         }}
@@ -118,7 +118,7 @@ function Features() {
       >
         <Image
           src={crwScreenshot1}
-          alt="Screenshot of the admin dashboard of Cambridge Resilience Web"
+          alt="Screenshot of the admin dashboard of the Resilience Web"
         />
         <Box>
           <chakra.h2

@@ -30,7 +30,7 @@ export const simpleHtmlTemplate = ({
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 	  <tr>
 		<td align="center" style="padding: 10px 0px 20px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
-		  <strong>Cambridge Resilience Web</strong>
+		  <strong>Resilience Web</strong>
 		</td>
 	  </tr>
 	</table>
@@ -89,7 +89,7 @@ export const htmlTemplate = ({
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 	  <tr>
 		<td align="center" style="padding: 10px 0px 20px 0px; font-size: 24px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
-		  <strong>Cambridge Resilience Web</strong>
+		  <strong>Resilience Web</strong>
 		</td>
 	  </tr>
 	</table>
@@ -135,4 +135,4 @@ export const htmlTemplate = ({
 
 // Email text body – fallback for email clients that don't render HTML
 export const textTemplate = ({ url }: { url: string }) =>
-  `Sign in to Cambridge Resilience Web\n${url}\n\n`
+  `Sign in to Resilience Web\n${url}\n\n`

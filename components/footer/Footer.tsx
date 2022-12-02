@@ -79,7 +79,7 @@ export default function Footer() {
           <Stack spacing={6}>
             <Box>
               <Image
-                alt="Cambridge Resilience Web logo"
+                alt="Resilience Web logo"
                 src={LogoImage}
                 width="148"
                 height="55"

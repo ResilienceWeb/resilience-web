@@ -114,7 +114,7 @@ const Nav = () => {
             <Link as={NextLink} href="/">
               <button>
                 <Image
-                  alt="Cambridge Resilience Web logo"
+                  alt="Resilience Web logo"
                   src={LogoImage}
                   width="148"
                   height="50"

@@ -39,11 +39,11 @@ function App({ Component, pageProps }) {
   return (
     <>
       <DefaultSeo
-        title="Cambridge Resilience Web"
+        title="Resilience Web"
         openGraph={{
           type: 'website',
           locale: 'en_GB',
-          title: 'Cambridge Resilience Web',
+          title: 'Resilience Web',
           description:
             'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
         }}

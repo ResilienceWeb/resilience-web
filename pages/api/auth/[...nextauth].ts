@@ -10,15 +10,15 @@ export default NextAuth({
   providers: [
     EmailProvider({
       server: config.emailServer,
-      from: `Cambridge Resilience Web <${process.env.EMAIL_FROM}>`,
+      from: `Resilience Web <${process.env.EMAIL_FROM}>`,
       async sendVerificationRequest({ identifier: email, url, provider }) {
         return new Promise((resolve, reject) => {
           const { server, from } = provider
           nodemailer.createTransport(server).sendMail(
             {
               to: email,
-              from: `Cambridge Resilience Web <${from}>`,
-              subject: `Sign in to Cambridge Resilience Web`,
+              from: `Resilience Web <${from}>`,
+              subject: `Sign in to the Resilience Web`,
               text: textTemplate({ url }),
               html: simpleHtmlTemplate({
                 url,

@@ -77,7 +77,7 @@ export default function MainNav() {
               <Link as={NextLink} href="/">
                 <button>
                   <Image
-                    alt="Cambridge Resilience Web logo"
+                    alt="Resilience Web logo"
                     src={LogoImage}
                     width="145"
                     height="50"
