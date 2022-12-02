@@ -1,6 +1,6 @@
 import { REMOTE_URL } from '@helpers/config'
 
-function generateSiteMap(paths) {
+function generateSiteMap(items) {
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
      <url>
@@ -12,11 +12,12 @@ function generateSiteMap(paths) {
      <url>
        <loc>https://resilienceweb.org.uk/how-it-works</loc>
      </url>
-     ${paths
-       .map((path) => {
+     ${items
+       .map((item) => {
          return `
        <url>
-           <loc>${path}</loc>
+           <loc>${item.loc}</loc>
+           <lastmod>${item.lastmod}</lastmod>
        </url>
      `
        })
@@ -33,11 +34,15 @@ export async function getServerSideProps({ res }) {
   const response = await fetch(`${REMOTE_URL}/api/listings`)
   const data = await response.json()
   const { listings } = data
-  const paths = listings.map(
-    (l) => `https://${l.location.slug}.resilienceweb.org.uk/${l.slug}`,
-  )
+  const pathItems = listings
+    .filter((l) => l.image !== null)
+    .filter((l) => l.description !== '')
+    .map((l) => ({
+      loc: `https://${l.location.slug}.resilienceweb.org.uk/${l.slug}`,
+      lastmod: l.updatedAt,
+    }))
 
-  const sitemap = generateSiteMap(paths)
+  const sitemap = generateSiteMap(pathItems)
 
   res.setHeader('Content-Type', 'text/xml')
   // we send the XML to the browser
