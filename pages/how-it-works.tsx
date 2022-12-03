@@ -1,5 +1,5 @@
 import { NextSeo } from 'next-seo'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import {
   Box,
   Heading,

@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import NextLink from 'next/link'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import {
   Modal,
   ModalOverlay,
@@ -152,8 +152,8 @@ const Dialog = ({
             alt={`${item.label} cover image`}
             src={item.image}
             objectFit="cover"
-            width="672px"
-            height="300px"
+            width="672"
+            height="300"
             unoptimized
             style={{
               borderTopLeftRadius: '0.375rem',

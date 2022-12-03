@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import NextLink from 'next/link'
 import Select from 'react-select'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import {
   Box,
   InputGroup,

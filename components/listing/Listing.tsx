@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useState, useMemo } from 'react'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import {
   Box,
   Heading,
@@ -73,8 +73,8 @@ function Listing({ listing }) {
             src={listing.image}
             alt={`Image for ${listing.title}`}
             objectFit="cover"
-            height="400px"
-            width="700px"
+            height="400"
+            width="700"
             unoptimized
             style={{
               borderRadius: isMobile ? 'none' : '8px',
