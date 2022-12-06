@@ -27,7 +27,7 @@
     "aws-sdk": "2.1069.0",
     "chroma-js": "2.4.2",
     "classnames": "2.3.2",
-    "formidable": "2.0.1",
+    "formidable": "2.1.1",
     "formik": "2.2.9",
     "framer-motion": "7.6.18",
     "graphql": "16.5.0",
