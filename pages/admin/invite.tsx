@@ -24,6 +24,7 @@ import LayoutContainer from '@components/admin/layout-container'
 import { useListings } from '@hooks/listings'
 import { emailRequiredValidator } from '@helpers/formValidation'
 import { REMOTE_URL } from '@helpers/config'
+import { useHasPermissionForCurrentSite } from '@hooks/permissions'
 
 const customMultiSelectStyles = {
   container: () => ({
@@ -44,6 +45,7 @@ type ListingOption = {
 export default function Invite() {
   const { data: session, status: sessionStatus } = useSession()
   const { listings, isLoading: isLoadingListings } = useListings()
+  const hasPermissionForSite = useHasPermissionForCurrentSite()
   const toast = useToast()
 
   useEffect(() => {
@@ -130,7 +132,7 @@ export default function Invite() {
     )
   }
 
-  if (!session || !session.user.admin) return null
+  // if (!session || !hasPermissionForSite) return null
 
   return (
     <LayoutContainer>

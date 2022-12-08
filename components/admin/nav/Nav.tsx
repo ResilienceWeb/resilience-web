@@ -67,12 +67,15 @@ const Nav = () => {
       },
     ]
 
-    if (session?.user.admin) {
+    if (session?.user.admin || isAdminOfSelectedSite) {
       links.push({
         label: 'Invite',
         href: '/admin/invite',
         icon: <Icon as={HiUsers} fontSize="lg" />,
       })
+    }
+
+    if (session?.user.admin) {
       links.push({
         label: 'Permissions',
         href: '/admin/permissions',

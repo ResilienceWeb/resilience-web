@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { Box, Center, Spinner } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
 import intersection from 'lodash/intersection'
+import useLocalStorage from 'use-local-storage'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
@@ -17,7 +18,6 @@ import MainList from '@components/main-list'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
 import { useTags } from '@hooks/tags'
-import { useLocalStorage } from '@hooks/application'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,

@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
+import useLocalStorage from 'use-local-storage'
 import { useMediaQuerySSR } from '@hooks/application'
 import { AppContext } from '@store/AppContext'
 
@@ -6,7 +7,8 @@ const DEFAULT_SELECTED_SITE = 'cambridge-city'
 
 const StoreProvider = ({ children }) => {
   const isMobile = useMediaQuerySSR('(max-width: 760px)')
-  const [selectedSiteSlug, setSelectedSiteSlug] = useState(
+  const [selectedSiteSlug, setSelectedSiteSlug] = useLocalStorage(
+    'selected-web',
     DEFAULT_SELECTED_SITE,
   )
   const [sites, setSites] = useState([])
@@ -35,7 +37,7 @@ const StoreProvider = ({ children }) => {
     if (subdomain && subdomain !== 'resilienceweb') {
       setSelectedSiteSlug(subdomain)
     }
-  }, [subdomain])
+  }, [setSelectedSiteSlug, subdomain])
 
   const selectedLocationId = useMemo(() => {
     if (sites) {
