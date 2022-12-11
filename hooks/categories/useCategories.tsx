@@ -4,8 +4,8 @@ import { Category } from '@prisma/client'
 
 async function fetchCategoriesRequest({ queryKey }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_key, { siteSlug }] = queryKey
-  const response = await fetch(`/api/categories?site=${siteSlug}`)
+  const [_key, { webSlug }] = queryKey
+  const response = await fetch(`/api/categories?web=${webSlug}`)
   const { data: categories } = await response.json()
   return categories
 }
@@ -15,12 +15,12 @@ export default function useCategories(): {
   isLoading: boolean
   isError: boolean
 } {
-  const { selectedSiteSlug: siteSlug } = useAppContext()
+  const { selectedWebSlug: webSlug } = useAppContext()
   const {
     data: categories,
     isLoading,
     isError,
-  } = useQuery(['categories', { siteSlug }], fetchCategoriesRequest, {
+  } = useQuery(['categories', { webSlug }], fetchCategoriesRequest, {
     refetchOnWindowFocus: false,
   })
 

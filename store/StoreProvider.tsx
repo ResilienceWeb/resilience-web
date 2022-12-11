@@ -3,15 +3,15 @@ import useLocalStorage from 'use-local-storage'
 import { useMediaQuerySSR } from '@hooks/application'
 import { AppContext } from '@store/AppContext'
 
-const DEFAULT_SELECTED_SITE = 'cambridge-city'
+const DEFAULT_SELECTED_WEB = 'cambridge-city'
 
 const StoreProvider = ({ children }) => {
   const isMobile = useMediaQuerySSR('(max-width: 760px)')
-  const [selectedSiteSlug, setSelectedSiteSlug] = useLocalStorage(
+  const [selectedWebSlug, setSelectedWebSlug] = useLocalStorage(
     'selected-web',
-    DEFAULT_SELECTED_SITE,
+    DEFAULT_SELECTED_WEB,
   )
-  const [sites, setSites] = useState([])
+  const [webs, setWebs] = useState([])
   const [subdomain, setSubdomain] = useState<string>()
 
   useEffect(() => {
@@ -24,35 +24,35 @@ const StoreProvider = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    async function fetchSites() {
-      const response = await fetch('/api/sites')
+    async function fetchWebs() {
+      const response = await fetch('/api/webs')
       const data = await response.json()
-      const { sites } = data
-      setSites(sites)
+      const { webs } = data
+      setWebs(webs)
     }
-    void fetchSites()
+    void fetchWebs()
   }, [])
 
   useEffect(() => {
     if (subdomain && subdomain !== 'resilienceweb') {
-      setSelectedSiteSlug(subdomain)
+      setSelectedWebSlug(subdomain)
     }
-  }, [setSelectedSiteSlug, subdomain])
+  }, [setSelectedWebSlug, subdomain])
 
   const selectedLocationId = useMemo(() => {
-    if (sites) {
-      return sites.find((site) => site.slug === selectedSiteSlug)?.id
+    if (webs) {
+      return webs.find((web) => web.slug === selectedWebSlug)?.id
     }
-  }, [selectedSiteSlug, sites])
+  }, [selectedWebSlug, webs])
 
   return (
     <AppContext.Provider
       value={{
         isMobile,
-        selectedSiteSlug,
-        setSelectedSiteSlug,
+        selectedWebSlug,
+        setSelectedWebSlug,
         selectedLocationId,
-        sites,
+        webs,
       }}
     >
       {children}

@@ -2,15 +2,15 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../prisma/client'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { site } = req.query
+  const { web } = req.query
   try {
     const listings = await prisma.listing.findMany({
       where: {
-        ...(site
+        ...(web
           ? {
               location: {
                 slug: {
-                  contains: site,
+                  contains: web,
                 },
               },
             }

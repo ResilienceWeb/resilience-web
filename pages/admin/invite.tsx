@@ -26,8 +26,8 @@ import LayoutContainer from '@components/admin/layout-container'
 import { useListings } from '@hooks/listings'
 import { emailRequiredValidator } from '@helpers/formValidation'
 import { REMOTE_URL } from '@helpers/config'
-import { useHasPermissionForCurrentSite } from '@hooks/permissions'
-import { useSelectedWebName } from '@hooks/sites'
+import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
+import { useSelectedWebName } from '@hooks/webs'
 import { useAppContext } from '@store/hooks'
 
 const customMultiSelectStyles = {
@@ -49,7 +49,7 @@ type ListingOption = {
 export default function Invite() {
   const { data: session, status: sessionStatus } = useSession()
   const { listings, isLoading: isLoadingListings } = useListings()
-  const hasPermissionForCurrentWeb = useHasPermissionForCurrentSite()
+  const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
   const selectedWebName = useSelectedWebName()
   const { selectedLocationId } = useAppContext()
   const toast = useToast()

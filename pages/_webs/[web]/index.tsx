@@ -30,10 +30,10 @@ const Header = dynamic(() => import('@components/header'), {
 })
 
 interface PathProps extends ParsedUrlQuery {
-  site: string
+  web: string
 }
 
-interface SiteProps {
+interface WebProps {
   data: {
     nodes: any[]
     edges: any[]
@@ -44,7 +44,7 @@ type INetwork = {
   selectNodes: (ids: string[]) => void
 }
 
-const Site = ({ data }) => {
+const Web = ({ data }) => {
   const router = useRouter()
 
   const { isMobile } = useAppContext()
@@ -270,15 +270,15 @@ const Site = ({ data }) => {
 }
 
 export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
-  const response = await fetch(`${REMOTE_URL}/api/sites`)
+  const response = await fetch(`${REMOTE_URL}/api/webs`)
   const data = await response.json()
-  const { sites } = data
-  const paths = sites.map((l) => `/${l.slug}`)
+  const { webs } = data
+  const paths = webs.map((l) => `/${l.slug}`)
 
   return {
     paths: paths.map((path) => ({
       params: {
-        site: path,
+        web: path,
       },
     })),
     fallback: true,
@@ -288,28 +288,28 @@ export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
 const startsWithCapitalLetter = (word) =>
   word.charCodeAt(0) >= 65 && word.charCodeAt(0) <= 90
 
-export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
+export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   params,
 }) => {
   if (!params) throw new Error('No path parameters found')
-  const { site } = params
+  const { web } = params
 
-  const { sites } = await fetch(`${REMOTE_URL}/api/sites`).then((res) =>
+  const { webs } = await fetch(`${REMOTE_URL}/api/webs`).then((res) =>
     res.json(),
   )
 
-  const paths = sites.map((l) => `${l.slug}`)
-  if (!paths.includes(site)) {
+  const paths = webs.map((l) => `${l.slug}`)
+  if (!paths.includes(web)) {
     return { notFound: true, revalidate: 30 }
   }
 
   const { listings } = await fetch(
-    `${REMOTE_URL}/api/listings?site=${site}`,
+    `${REMOTE_URL}/api/listings?web=${web}`,
   ).then((res) => res.json())
 
-  const { site: siteData } = await fetch(
-    `${REMOTE_URL}/api/sites/${site}`,
-  ).then((res) => res.json())
+  const { web: webData } = await fetch(`${REMOTE_URL}/api/webs/${web}`).then(
+    (res) => res.json(),
+  )
 
   const transformedData = {
     nodes: [],
@@ -393,7 +393,7 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
   // Main node
   transformedData.nodes.push({
     id: 999,
-    label: siteData.title,
+    label: webData.title,
     color: '#fcba03',
     isDescriptive: true,
     font: {
@@ -444,4 +444,4 @@ export const getStaticProps: GetStaticProps<SiteProps, PathProps> = async ({
   }
 }
 
-export default memo(Site)
+export default memo(Web)

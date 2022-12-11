@@ -5,8 +5,8 @@ async function fetchPermissionsRequest() {
   const response = await fetch('/api/permissions')
   const data = await response.json()
   const listingIds = data.permission.listings.map((l) => l.id)
-  const siteIds = data.permission.locations.map((l) => l.id)
-  return { listingIds, siteIds, fullPermissionData: data.permission }
+  const webIds = data.permission.locations.map((l) => l.id)
+  return { listingIds, webIds, fullPermissionData: data.permission }
 }
 
 export default function usePermissions() {

@@ -26,7 +26,7 @@ export default function middleware(req: NextRequest) {
           .replace(`.resilienceweb.org.uk`, '')
       : hostname.replace(`.localhost:3000`, '')
 
-  if (pathname.startsWith(`/_sites`)) {
+  if (pathname.startsWith(`/_webs`)) {
     return new Response(null, {
       status: 404,
     })
@@ -55,7 +55,7 @@ export default function middleware(req: NextRequest) {
       return NextResponse.rewrite(url)
     }
 
-    url.pathname = `/_sites/${currentHost}${pathname}`
+    url.pathname = `/_webs/${currentHost}${pathname}`
     return NextResponse.rewrite(url)
   }
 }

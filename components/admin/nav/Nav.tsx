@@ -26,7 +26,7 @@ import { HiViewList, HiUsers, HiOutlineLockOpen } from 'react-icons/hi'
 import { BsPersonCircle } from 'react-icons/bs'
 import { BiCategory } from 'react-icons/bi'
 
-import SiteSelector from './site-selector'
+import WebSelector from './web-selector'
 import LogoImage from '../../../public/logo.png'
 import { usePermissions } from '@hooks/permissions'
 import { useAppContext } from '@store/hooks'
@@ -54,9 +54,9 @@ const Nav = () => {
 
   const { permissions } = usePermissions()
   const { selectedLocationId } = useAppContext()
-  const isAdminOfSelectedSite = useMemo(() => {
-    return permissions?.siteIds.includes(selectedLocationId)
-  }, [permissions?.siteIds, selectedLocationId])
+  const isAdminOfSelectedWeb = useMemo(() => {
+    return permissions?.webIds.includes(selectedLocationId)
+  }, [permissions?.webIds, selectedLocationId])
 
   const Links = useMemo(() => {
     const links = [
@@ -67,7 +67,7 @@ const Nav = () => {
       },
     ]
 
-    if (session?.user.admin || isAdminOfSelectedSite) {
+    if (session?.user.admin || isAdminOfSelectedWeb) {
       links.push({
         label: 'Categories & Tags',
         href: '/admin/categories',
@@ -90,7 +90,7 @@ const Nav = () => {
     }
 
     return links
-  }, [isAdminOfSelectedSite, session?.user.admin])
+  }, [isAdminOfSelectedWeb, session?.user.admin])
 
   const handleSignOut = useCallback(() => void signOut(), [])
 
@@ -154,7 +154,7 @@ const Nav = () => {
         </HStack>
         <Flex alignItems={'center'}>
           <Box mr="1rem">
-            <SiteSelector />
+            <WebSelector />
           </Box>
           <Menu>
             <MenuButton
