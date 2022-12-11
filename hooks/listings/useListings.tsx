@@ -4,20 +4,20 @@ import { useAppContext } from '@store/hooks'
 
 async function fetchListingsRequest({ queryKey }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_key, { siteSlug }] = queryKey
-  const response = await fetch(`/api/listings?site=${siteSlug}`)
+  const [_key, { webSlug }] = queryKey
+  const response = await fetch(`/api/listings?web=${webSlug}`)
   const data = await response.json()
   const { listings } = data
   return listings
 }
 
 export default function useListings() {
-  const { selectedSiteSlug: siteSlug } = useAppContext()
+  const { selectedWebSlug: webSlug } = useAppContext()
   const {
     data: listings,
     isLoading,
     isError,
-  } = useQuery(['listings', { siteSlug }], fetchListingsRequest)
+  } = useQuery(['listings', { webSlug }], fetchListingsRequest)
 
   return {
     listings,

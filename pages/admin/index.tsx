@@ -36,7 +36,7 @@ const Admin = () => {
     if (!session || isLoadingPermissions || isLoadingListings) return null
     if (session.user.admin) return listings
 
-    if (permissions.siteIds.includes(selectedLocationId)) return listings
+    if (permissions.webIds.includes(selectedLocationId)) return listings
 
     return listings.filter((listing) => {
       return permissions?.listingIds.includes(listing.id)
@@ -46,7 +46,7 @@ const Admin = () => {
     isLoadingPermissions,
     isLoadingListings,
     listings,
-    permissions?.siteIds,
+    permissions?.webIds,
     permissions?.listingIds,
     selectedLocationId,
   ])

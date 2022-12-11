@@ -21,7 +21,7 @@ import CategoriesHeader from '@components/admin/categories/header'
 import CategoriesList from '@components/admin/categories/list'
 import TagsHeader from '@components/admin/tags/header'
 import TagsList from '@components/admin/tags/list'
-import { useHasPermissionForCurrentSite } from '@hooks/permissions'
+import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
 
 const LoadingSpinner = () => (
   <LayoutContainer>
@@ -36,7 +36,7 @@ export default function Categories() {
   const { data: session, status: sessionStatus } = useSession()
   const { categories, isLoading: isLoadingCategories } = useCategories()
   const { tags, isLoading: isLoadingTags } = useTags()
-  const hasPermissionForCurrentWeb = useHasPermissionForCurrentSite()
+  const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
 
   const orderedCategories = useMemo(() => {
     return categories?.sort((a, b) => a.label.localeCompare(b.label))

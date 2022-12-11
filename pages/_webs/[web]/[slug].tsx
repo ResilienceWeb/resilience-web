@@ -63,7 +63,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = listings.map((l) => ({
     params: {
       slug: l.slug,
-      site: l.location.slug,
+      web: l.location.slug,
     },
   }))
 

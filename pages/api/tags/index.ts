@@ -12,7 +12,7 @@ const handler = async (
   res: NextApiResponse<ResponseData>,
 ) => {
   try {
-    const { site } = req.query
+    const { web } = req.query
 
     switch (req.method) {
       case 'GET': {
@@ -20,7 +20,7 @@ const handler = async (
           where: {
             location: {
               slug: {
-                contains: site || 'cambridge-city',
+                contains: web || 'cambridge-city',
               },
             },
           },

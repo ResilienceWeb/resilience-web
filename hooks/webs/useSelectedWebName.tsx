@@ -1,10 +1,10 @@
 import { useAppContext } from '@store/hooks'
-import { useSites } from '@hooks/sites'
+import { useWebs } from '@hooks/webs'
 
 export default function useSelectedWebName() {
   const { selectedLocationId } = useAppContext()
-  const { sites } = useSites()
+  const { webs } = useWebs()
 
-  return sites?.find((s) => s.id === selectedLocationId)?.title
+  return webs?.find((s) => s.id === selectedLocationId)?.title
 }
 

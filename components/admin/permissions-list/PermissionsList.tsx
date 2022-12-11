@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react'
 import Select from 'react-select'
 import { useAllListings } from '@hooks/listings'
-import { useSites } from '@hooks/sites'
+import { useWebs } from '@hooks/webs'
 import { useUpdatePermission } from '@hooks/permissions'
 
 const customMultiSelectStyles = {
@@ -41,7 +41,7 @@ const SeparatedElement = chakra('span', {
 
 const PermissionsList = ({ permissions }) => {
   const { listings } = useAllListings()
-  const { sites } = useSites()
+  const { webs } = useWebs()
   const { mutate: updatePermission, isLoading: isUpdatingPermission } =
     useUpdatePermission()
 
@@ -52,17 +52,17 @@ const PermissionsList = ({ permissions }) => {
         listingIdsAdded.includes(l.id),
       )
 
-      const siteIdsAdded = data.sites.map((s) => s.value)
-      const sitesToAdd = sites.filter((s) => siteIdsAdded.includes(s.id))
+      const webIdsAdded = data.webs.map((s) => s.value)
+      const websToAdd = webs.filter((s) => webIdsAdded.includes(s.id))
 
       const dataToSubmit = {
         email: data.email,
         listings: listingsToAdd,
-        sites: sitesToAdd,
+        webs: websToAdd,
       }
       updatePermission(dataToSubmit)
     },
-    [listings, sites, updatePermission],
+    [listings, webs, updatePermission],
   )
 
   const listingOptions = useMemo(() => {
@@ -74,19 +74,19 @@ const PermissionsList = ({ permissions }) => {
     }))
   }, [listings])
 
-  const siteOptions = useMemo(() => {
-    if (!sites) return []
+  const webOptions = useMemo(() => {
+    if (!webs) return []
 
-    return sites.map((l) => ({
+    return webs.map((l) => ({
       value: l.id,
       label: l.title,
     }))
-  }, [sites])
+  }, [webs])
 
   return (
     <Accordion allowMultiple defaultIndex={[0]}>
       {permissions.map((permission) => {
-        const { listings, user, email, locations: sites } = permission
+        const { listings, user, email, locations: webs } = permission
 
         const getListingSelectedOptions = () => {
           if (!listings) return []
@@ -97,10 +97,10 @@ const PermissionsList = ({ permissions }) => {
           }))
         }
 
-        const getSitesSelectedOptions = () => {
-          if (!sites) return []
+        const getWebsSelectedOptions = () => {
+          if (!webs) return []
 
-          return sites.map((s) => ({
+          return webs.map((s) => ({
             value: s.id,
             label: s.title,
           }))
@@ -113,8 +113,8 @@ const PermissionsList = ({ permissions }) => {
                 <Box flex="1" textAlign="left">
                   <SeparatedElement>{email}</SeparatedElement>
                   <SeparatedElement>
-                    <strong>{sites.length}</strong>{' '}
-                    {sites.length === 0 || sites.length > 1 ? 'sites' : 'site'}
+                    <strong>{webs.length}</strong>{' '}
+                    {webs.length === 0 || webs.length > 1 ? 'webs' : 'web'}
                   </SeparatedElement>
                   <SeparatedElement>
                     <strong>{listings.length}</strong>{' '}
@@ -139,7 +139,7 @@ const PermissionsList = ({ permissions }) => {
                 initialValues={{
                   email: permission.email,
                   listings: getListingSelectedOptions(),
-                  sites: getSitesSelectedOptions(),
+                  webs: getWebsSelectedOptions(),
                 }}
                 onSubmit={(values, actions) => {
                   actions.setSubmitting(false)
@@ -149,16 +149,16 @@ const PermissionsList = ({ permissions }) => {
                 {(props) => {
                   return (
                     <Form>
-                      <Field name="sites">
+                      <Field name="webs">
                         {({ field, form }: FieldProps) => {
                           return (
                             <FormControl
                               isInvalid={Boolean(
-                                form.errors.sites && form.touched.sites,
+                                form.errors.webs && form.touched.webs,
                               )}
                             >
-                              <FormLabel htmlFor="sites">
-                                Sites this user has full access to
+                              <FormLabel htmlFor="webs">
+                                Webs this user has full access to
                               </FormLabel>
                               <InputGroup size="sm" bgColor="whiteAlpha.800">
                                 <Select
@@ -184,7 +184,7 @@ const PermissionsList = ({ permissions }) => {
                                     }
                                     form.setFieldValue(field.name, newValue)
                                   }}
-                                  options={siteOptions}
+                                  options={webOptions}
                                   placeholder=""
                                   isClearable={false}
                                   styles={customMultiSelectStyles}
@@ -192,7 +192,7 @@ const PermissionsList = ({ permissions }) => {
                                 />
                               </InputGroup>
                               <FormErrorMessage>
-                                {form.errors.sites?.toString()}
+                                {form.errors.webs?.toString()}
                               </FormErrorMessage>
                             </FormControl>
                           )
@@ -266,8 +266,8 @@ const PermissionsList = ({ permissions }) => {
                               props.values.listings,
                             ) &&
                               isEqual(
-                                props.initialValues.sites,
-                                props.values.sites,
+                                props.initialValues.webs,
+                                props.values.webs,
                               ))
                           }
                           isLoading={isUpdatingPermission}

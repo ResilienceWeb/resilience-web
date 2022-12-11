@@ -8,12 +8,12 @@ import Table from './table/Table'
 import TableActions from './table/TableActions'
 import { usePermissions } from '@hooks/permissions'
 import { useAppContext } from '@store/hooks'
-import { useSites } from '@hooks/sites'
+import { useWebs } from '@hooks/webs'
 
 const EditableList = ({ deleteListing, isAdmin, items }) => {
   const router = useRouter()
   const { permissions } = usePermissions()
-  const { sites } = useSites()
+  const { webs } = useWebs()
   const { selectedLocationId } = useAppContext()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState([])
@@ -72,19 +72,17 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
 
   const explanatoryText = useMemo(() => {
     if (isAdmin) {
-      return 'You are an admin. You can see all the listings on each site, as well as invite people, or edit categories or tags on each site.'
+      return 'You are an admin. You can see all the listings on each web, as well as invite people, or edit categories or tags on each web.'
     }
 
-    const selectedSiteName = sites?.find(
-      (s) => s.id === selectedLocationId,
-    ).title
+    const selectedWebName = webs?.find((s) => s.id === selectedLocationId).title
 
-    if (permissions.siteIds.includes(selectedLocationId)) {
-      return `You have access to edit any listing on the ${selectedSiteName} site.`
+    if (permissions.webIds.includes(selectedLocationId)) {
+      return `You have access to edit any listing on the ${selectedWebName} web.`
     }
 
-    return 'You have access to edit the listings below. If you think you should be able to edit a group not included below, please get in touch at cambridgeresilienceweb@gmail.com.'
-  }, [isAdmin, permissions.siteIds, selectedLocationId, sites])
+    return 'You have access to edit the listings below. If you think you should be able to edit a listing not included below, please get in touch at cambridgeresilienceweb@gmail.com.'
+  }, [isAdmin, permissions.webIds, selectedLocationId, webs])
 
   if (!filteredItems) return null
 
