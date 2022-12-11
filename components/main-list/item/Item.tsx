@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useEffect, useState, memo } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import chroma from 'chroma-js'
 import { Box, Flex, Text, Icon, Tooltip, chakra } from '@chakra-ui/react'
 import { HiUserGroup } from 'react-icons/hi'
@@ -96,8 +96,8 @@ const Item = ({
             alt={`${dataItem.title} cover image`}
             src={dataItem.image}
             objectFit="cover"
-            width="300px"
-            height="170px"
+            width="300"
+            height="170"
             layout="responsive"
             unoptimized
             priority={inView && isWithinAFewSecondsOfRender}

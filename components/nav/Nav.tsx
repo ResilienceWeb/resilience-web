@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import NextLink from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -146,16 +146,14 @@ const DesktopNav = ({ currentPathname }) => {
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <NextLink href={navItem.href} passHref>
-              <Link isExternal={navItem.isExternal}>
-                <button
-                  className={classnames(
-                    styles.navLink,
-                    currentPathname === navItem.href && styles.active,
-                  )}
-                >
-                  {navItem.label}
-                </button>
-              </Link>
+              <button
+                className={classnames(
+                  styles.navLink,
+                  currentPathname === navItem.href && styles.active,
+                )}
+              >
+                {navItem.label}
+              </button>
             </NextLink>
           </Popover>
         </Box>

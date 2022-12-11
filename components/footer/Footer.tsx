@@ -13,7 +13,7 @@ import {
 import NextLink from 'next/link'
 import { ReactNode } from 'react'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 
 import { REMOTE_URL } from '@helpers/config'
 import SignupForm from '@components/signup-form'
