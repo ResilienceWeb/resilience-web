@@ -8,6 +8,7 @@ import { htmlTemplate, textTemplate } from '@helpers/emailTemplates'
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const session = await getSession({ req })
