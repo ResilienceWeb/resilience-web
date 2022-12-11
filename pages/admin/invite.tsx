@@ -1,5 +1,6 @@
 import { Formik, Form, Field, FormikHelpers, FieldProps } from 'formik'
 import { useEffect, useCallback, useMemo } from 'react'
+import { useRouter } from 'next/router'
 import Select from 'react-select'
 import type { Options } from 'react-select'
 import {
@@ -7,6 +8,7 @@ import {
   Box,
   Button,
   Heading,
+  Checkbox,
   Input,
   InputGroup,
   FormControl,
@@ -25,6 +27,8 @@ import { useListings } from '@hooks/listings'
 import { emailRequiredValidator } from '@helpers/formValidation'
 import { REMOTE_URL } from '@helpers/config'
 import { useHasPermissionForCurrentSite } from '@hooks/permissions'
+import { useSelectedWebName } from '@hooks/sites'
+import { useAppContext } from '@store/hooks'
 
 const customMultiSelectStyles = {
   container: () => ({
@@ -45,8 +49,11 @@ type ListingOption = {
 export default function Invite() {
   const { data: session, status: sessionStatus } = useSession()
   const { listings, isLoading: isLoadingListings } = useListings()
-  const hasPermissionForSite = useHasPermissionForCurrentSite()
+  const hasPermissionForCurrentWeb = useHasPermissionForCurrentSite()
+  const selectedWebName = useSelectedWebName()
+  const { selectedLocationId } = useAppContext()
   const toast = useToast()
+  const router = useRouter()
 
   useEffect(() => {
     async function signInIfNeeded() {
@@ -68,19 +75,25 @@ export default function Invite() {
 
   const inviteUser = useCallback(
     async (data, actions: FormikHelpers<FormValues>) => {
-      const listingIdsAdded = data.listings.map((l) => l.value)
-      const listingsToAdd = listings?.filter((l) =>
-        listingIdsAdded.includes(l.id),
-      )
+      const body: { email: string; web?: string; listings?: any } = {
+        email: data.email,
+      }
+      if (data.web === true) {
+        body.web = selectedLocationId
+      } else {
+        const listingIdsAdded = data.listings.map((l) => l.value)
+        const listingsToAdd = listings?.filter((l) =>
+          listingIdsAdded.includes(l.id),
+        )
+        body.listings = listingsToAdd
+      }
+
       const response = await fetch(`${REMOTE_URL}/api/auth/inviteUser`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
         },
-        body: JSON.stringify({
-          email: data.email,
-          listings: listingsToAdd,
-        }),
+        body: JSON.stringify(body),
       })
 
       if (response.status === 200) {
@@ -111,7 +124,7 @@ export default function Invite() {
         })
       }
     },
-    [listings, toast],
+    [listings, selectedLocationId, toast],
   )
 
   const initialValues = useMemo<FormValues>(
@@ -132,109 +145,146 @@ export default function Invite() {
     )
   }
 
-  // if (!session || !hasPermissionForSite) return null
+  if (!session) return null
+
+  if (!hasPermissionForCurrentWeb) {
+    void router.push('/admin')
+  }
 
   return (
     <LayoutContainer>
-      <Box
-        px={{
-          base: '4',
-          md: '10',
-        }}
-        py={4}
-        maxWidth="3xl"
-        mx="auto"
-      >
+      <Box px={{ base: '4', md: '10' }} py={4} maxWidth="3xl" mx="auto">
         <Stack spacing="4" divider={<StackDivider />}>
           <Heading>Invite user</Heading>
 
-          <Box mt={6} maxW="400px">
-            <Formik initialValues={initialValues} onSubmit={inviteUser}>
-              {(props) => (
-                <Form>
-                  <chakra.div mb={3}>
-                    <Field
-                      name="email"
-                      type="email"
-                      validate={emailRequiredValidator}
-                    >
-                      {({ field, form }) => (
-                        <FormControl isInvalid={form.errors.email}>
-                          <FormLabel htmlFor="email">Email</FormLabel>
-                          <Input {...field} id="email" background="white" />
-                          <FormErrorMessage>
-                            {form.errors.email}
-                          </FormErrorMessage>
-                        </FormControl>
-                      )}
-                    </Field>
-                  </chakra.div>
-                  <chakra.div mb={3}>
-                    <Field name="listings">
-                      {({ field, form }: FieldProps) => {
-                        return (
-                          <FormControl
-                            isInvalid={Boolean(
-                              form.errors.listings && form.touched.listings,
-                            )}
-                          >
-                            <FormLabel htmlFor="listings">Listings</FormLabel>
-                            <InputGroup size="sm">
-                              <Select
-                                isMulti
-                                isSearchable
-                                onChange={(_option, changeData) => {
-                                  let newValue
-                                  if (changeData.action === 'select-option') {
-                                    newValue = [
-                                      ...field.value,
-                                      changeData.option,
-                                    ]
-                                  } else if (
-                                    changeData.action === 'remove-value' ||
-                                    changeData.action === 'pop-value'
-                                  ) {
-                                    newValue = field.value.filter(
-                                      (v) =>
-                                        v.value !==
-                                        changeData.removedValue.value,
-                                    )
-                                  }
-                                  form.setFieldValue(field.name, newValue)
-                                }}
-                                options={listingOptions}
-                                placeholder=""
-                                isClearable={false}
-                                styles={customMultiSelectStyles}
-                              />
-                            </InputGroup>
+          <Box
+            shadow="base"
+            rounded={[null, 'md']}
+            overflow={{ sm: 'hidden' }}
+            bg="white"
+            padding="1rem"
+          >
+            <Box maxW="450px">
+              <Formik initialValues={initialValues} onSubmit={inviteUser}>
+                {(props) => (
+                  <Form>
+                    <chakra.div mb={3}>
+                      <Field
+                        name="email"
+                        type="email"
+                        validate={emailRequiredValidator}
+                      >
+                        {({ field, form }) => (
+                          <FormControl isInvalid={form.errors.email}>
+                            <FormLabel htmlFor="email">Email</FormLabel>
+                            <Input {...field} id="email" background="white" />
                             <FormErrorMessage>
-                              {form.errors.listings?.toString()}
+                              {form.errors.email}
                             </FormErrorMessage>
-                            <FormHelperText>
-                              The listings the user will be able to edit
-                            </FormHelperText>
                           </FormControl>
-                        )
-                      }}
-                    </Field>
-                  </chakra.div>
+                        )}
+                      </Field>
+                    </chakra.div>
+                    <chakra.div mb={3}>
+                      <Field name="listings">
+                        {({ field, form }: FieldProps) => {
+                          return (
+                            <FormControl
+                              isDisabled={props.values.web === true}
+                              isInvalid={Boolean(
+                                form.errors.listings && form.touched.listings,
+                              )}
+                            >
+                              <FormLabel htmlFor="listings">Listings</FormLabel>
+                              <InputGroup size="sm">
+                                <Select
+                                  isMulti
+                                  isSearchable
+                                  isDisabled={props.values.web === true}
+                                  onChange={(_option, changeData) => {
+                                    let newValue
+                                    if (changeData.action === 'select-option') {
+                                      newValue = [
+                                        ...field.value,
+                                        changeData.option,
+                                      ]
+                                    } else if (
+                                      changeData.action === 'remove-value' ||
+                                      changeData.action === 'pop-value'
+                                    ) {
+                                      newValue = field.value.filter(
+                                        (v) =>
+                                          v.value !==
+                                          changeData.removedValue.value,
+                                      )
+                                    }
+                                    form.setFieldValue(field.name, newValue)
+                                  }}
+                                  options={listingOptions}
+                                  placeholder=""
+                                  isClearable={false}
+                                  styles={customMultiSelectStyles}
+                                />
+                              </InputGroup>
+                              <FormErrorMessage>
+                                {form.errors.listings?.toString()}
+                              </FormErrorMessage>
+                              <FormHelperText>
+                                The listings the user will be able to edit
+                              </FormHelperText>
+                            </FormControl>
+                          )
+                        }}
+                      </Field>
+                    </chakra.div>
 
-                  <Button
-                    bg="rw.700"
-                    colorScheme="rw.700"
-                    mt={4}
-                    variant="solid"
-                    disabled={!props.isValid}
-                    isLoading={props.isSubmitting}
-                    type="submit"
-                    _hover={{ bg: 'rw.900' }}
-                  >
-                    Send invite
-                  </Button>
-                </Form>
-              )}
-            </Formik>
+                    <chakra.div my="2rem">
+                      <Field name="web">
+                        {({ field, form }: FieldProps) => {
+                          return (
+                            <FormControl
+                              isInvalid={Boolean(
+                                form.errors.listings && form.touched.listings,
+                              )}
+                            >
+                              <Checkbox
+                                isChecked={field.value}
+                                id="web"
+                                onChange={field.onChange}
+                              >
+                                Give full access to{' '}
+                                <strong>{selectedWebName}</strong>
+                              </Checkbox>
+                              <FormErrorMessage>
+                                {form.errors.web?.toString()}
+                              </FormErrorMessage>
+                              <FormHelperText>
+                                Checking this box gives the invited user full
+                                access to add/edit listings, categories and tags
+                                as well as invite others. Use this carefully.
+                              </FormHelperText>
+                            </FormControl>
+                          )
+                        }}
+                      </Field>
+                    </chakra.div>
+
+                    <Button
+                      bg="rw.700"
+                      colorScheme="rw.700"
+                      mt={4}
+                      variant="solid"
+                      disabled={!props.isValid}
+                      isLoading={props.isSubmitting}
+                      type="submit"
+                      _hover={{ bg: 'rw.900' }}
+                    >
+                      Send invite
+                    </Button>
+                  </Form>
+                )}
+              </Formik>
+            </Box>
           </Box>
         </Stack>
       </Box>

@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const email = req.body.email.trim()
-    const { listings } = req.body
+    const { listings, web: webId } = req.body
 
     if (!email) {
       res.status(400)
@@ -28,10 +28,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    if (!listings) {
+    if (!listings && !webId) {
       res.status(400)
       res.json({
-        error: `Listing not provided. Please make sure it's included in the request body.`,
+        error: `Listing or web not provided. Please make sure at least one included in the request body.`,
       })
     }
 
@@ -52,7 +52,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const user = await prisma.user.upsert(newUserData)
 
-    const listingsToConnect = listings.map((listing) => ({ id: listing.id }))
+    const listingsToConnect = listings
+      ? listings.map((listing) => ({ id: listing.id }))
+      : []
+
     const newData: Prisma.PermissionUpsertArgs = {
       where: {
         email,
@@ -66,6 +69,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         listings: {
           connect: listingsToConnect,
         },
+        locations: {
+          connect: {
+            id: webId,
+          },
+        },
       },
       update: {
         user: {
@@ -76,6 +84,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         listings: {
           connect: listingsToConnect,
         },
+        locations: {
+          connect: {
+            id: webId,
+          },
+        },
       },
     }
     const permission = await prisma.permission.upsert(newData)
@@ -83,8 +96,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const emailEncoded = encodeURIComponent(email)
     const callToActionButtonUrl = `${REMOTE_URL}/admin?activate=${emailEncoded}`
 
-    const listingTitles = listings.map((l) => l.title)
-    const listingTitlesConcatenated = listingTitles.join(', ')
+    let titles = ''
+
+    if (listings) {
+      const titlesArray = listings.map((l) => l.title)
+      titles = titlesArray.join(', ')
+    } else {
+      const web = await prisma.location.findFirst({
+        where: {
+          id: webId,
+        },
+      })
+      titles = web.title
+    }
 
     if (permission) {
       const msg = {
@@ -96,7 +120,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           url: callToActionButtonUrl,
           email,
           buttonText: 'Activate account',
-          mainText: `<p>You're invited to manage the groups <b>${listingTitlesConcatenated}</b> on the Resilience Web, a digital mapping of organisations in Cambridge that are working to create a more resilient, more equitable and greener future for Cambridge and its residents.</p>`,
+          mainText: `<p>You are invited to be an admin of <b>${titles}</b> on the Resilience Web, a digital mapping of organisations in Cambridge that are working to create a more resilient, more equitable and greener future for Cambridge and its residents.</p>`,
           secondaryText: `<p>There is lots of great work being done in Cambridge by the multitude of Cambridge-based groups working to make a positive difference in the areas of the environment and civil society. However, there wasn't a single place to go that showed all the organisations and how they are connected. These webs, in the first instance, are therefore a tool to help potential volunteers to discover organisations such as yours. Additionally, we want to facilitate collaboration and cross pollination across organisations where desired, and are looking into running events in the future that would enable this.</p>
 					<p>We hope you are excited to be a part of the Resilience Web, and that you will share it with members of your organisation!  If you have any questions about the web, or if you would rather not be included on it, please let me know by replying to this email.</p>
 					<p>Please give this a go, and we would love to hear any feedback you have about the web itself, how it is to use, and how it could be most useful to your organization.</p>

@@ -78,6 +78,12 @@ const SiteSelector = () => {
       options={siteOptions}
       value={selectedOption}
       onChange={handleSiteChange}
+      styles={{
+        menu: (baseStyles, state) => ({
+          ...baseStyles,
+          zIndex: 10,
+        }),
+      }}
     />
   )
 }

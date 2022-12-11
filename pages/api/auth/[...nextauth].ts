@@ -14,10 +14,11 @@ export default NextAuth({
       async sendVerificationRequest({ identifier: email, url, provider }) {
         return new Promise((resolve, reject) => {
           const { server, from } = provider
+          console.log(provider)
           nodemailer.createTransport(server).sendMail(
             {
               to: email,
-              from: `Resilience Web <${from}>`,
+              from,
               subject: `Sign in to the Resilience Web`,
               text: textTemplate({ url }),
               html: simpleHtmlTemplate({

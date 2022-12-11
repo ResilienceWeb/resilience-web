@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import {
   Box,
   Spinner,
@@ -31,10 +32,11 @@ const LoadingSpinner = () => (
 )
 
 export default function Categories() {
+  const router = useRouter()
   const { data: session, status: sessionStatus } = useSession()
   const { categories, isLoading: isLoadingCategories } = useCategories()
   const { tags, isLoading: isLoadingTags } = useTags()
-  const hasPermission = useHasPermissionForCurrentSite()
+  const hasPermissionForCurrentWeb = useHasPermissionForCurrentSite()
 
   const orderedCategories = useMemo(() => {
     return categories?.sort((a, b) => a.label.localeCompare(b.label))
@@ -44,7 +46,7 @@ export default function Categories() {
     return <LoadingSpinner />
   }
 
-  if (!session || !hasPermission) {
+  if (!session) {
     return (
       <LayoutContainer>
         <Alert status="warning">
@@ -53,6 +55,10 @@ export default function Categories() {
         </Alert>
       </LayoutContainer>
     )
+  }
+
+  if (!hasPermissionForCurrentWeb) {
+    void router.push('/admin')
   }
 
   return (

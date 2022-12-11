@@ -69,6 +69,12 @@ const Nav = () => {
 
     if (session?.user.admin || isAdminOfSelectedSite) {
       links.push({
+        label: 'Categories & Tags',
+        href: '/admin/categories',
+        icon: <Icon as={BiCategory} fontSize="lg" />,
+      })
+
+      links.push({
         label: 'Invite',
         href: '/admin/invite',
         icon: <Icon as={HiUsers} fontSize="lg" />,
@@ -80,14 +86,6 @@ const Nav = () => {
         label: 'Permissions',
         href: '/admin/permissions',
         icon: <Icon as={HiOutlineLockOpen} fontSize="lg" />,
-      })
-    }
-
-    if (session?.user.admin || isAdminOfSelectedSite) {
-      links.push({
-        label: 'Categories & Tags',
-        href: '/admin/categories',
-        icon: <Icon as={BiCategory} fontSize="lg" />,
       })
     }
 
