@@ -11,7 +11,7 @@ import { useAppContext } from '@store/hooks'
 
 const Admin = () => {
   const { data: session, status: sessionStatus } = useSession()
-  const { selectedLocationId } = useAppContext()
+  const { selectedWebId } = useAppContext()
 
   const {
     listings,
@@ -36,7 +36,7 @@ const Admin = () => {
     if (!session || isLoadingPermissions || isLoadingListings) return null
     if (session.user.admin) return listings
 
-    if (permissions.webIds.includes(selectedLocationId)) return listings
+    if (permissions.webIds.includes(selectedWebId)) return listings
 
     return listings.filter((listing) => {
       return permissions?.listingIds.includes(listing.id)
@@ -48,7 +48,7 @@ const Admin = () => {
     listings,
     permissions?.webIds,
     permissions?.listingIds,
-    selectedLocationId,
+    selectedWebId,
   ])
 
   if (sessionStatus === 'loading') {

@@ -10,17 +10,17 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { mutate: createTag } = useCreateTag()
 
-  const { selectedLocationId } = useAppContext()
+  const { selectedWebId } = useAppContext()
 
   const handleSubmit = useCallback(
     (data) => {
       onClose()
       createTag({
         ...data,
-        locationId: selectedLocationId,
+        locationId: selectedWebId,
       })
     },
-    [createTag, onClose, selectedLocationId],
+    [createTag, onClose, selectedWebId],
   )
 
   return (

@@ -12,7 +12,7 @@ export default function NewListing() {
   const router = useRouter()
   const { categories } = useCategories()
   const { mutate: createListing } = useCreateListing()
-  const { selectedLocationId } = useAppContext()
+  const { selectedWebId } = useAppContext()
 
   const goBack = useCallback(() => {
     router.back()
@@ -20,11 +20,11 @@ export default function NewListing() {
 
   const handleSubmit = useCallback(
     (data) => {
-      data.locationId = selectedLocationId
+      data.webId = selectedWebId
       createListing(data)
       goBack()
     },
-    [createListing, goBack, selectedLocationId],
+    [createListing, goBack, selectedWebId],
   )
 
   if (!categories) {

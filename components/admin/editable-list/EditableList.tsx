@@ -14,7 +14,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
   const router = useRouter()
   const { permissions } = usePermissions()
   const { webs } = useWebs()
-  const { selectedLocationId } = useAppContext()
+  const { selectedWebId } = useAppContext()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState([])
   const [isDeleteConfirmationOpenWithId, setIsDeleteConfirmationOpenWithId] =
@@ -75,14 +75,14 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
       return 'You are an admin. You can see all the listings on each web, as well as invite people, or edit categories or tags on each web.'
     }
 
-    const selectedWebName = webs?.find((s) => s.id === selectedLocationId).title
+    const selectedWebName = webs?.find((s) => s.id === selectedWebId).title
 
-    if (permissions.webIds.includes(selectedLocationId)) {
+    if (permissions.webIds.includes(selectedWebId)) {
       return `You have access to edit any listing on the ${selectedWebName} web.`
     }
 
     return 'You have access to edit the listings below. If you think you should be able to edit a listing not included below, please get in touch at cambridgeresilienceweb@gmail.com.'
-  }, [isAdmin, permissions.webIds, selectedLocationId, webs])
+  }, [isAdmin, permissions.webIds, selectedWebId, webs])
 
   if (!filteredItems) return null
 

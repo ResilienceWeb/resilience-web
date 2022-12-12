@@ -10,17 +10,17 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { mutate: createCategory } = useCreateCategory()
 
-  const { selectedLocationId } = useAppContext()
+  const { selectedWebId } = useAppContext()
 
   const handleSubmit = useCallback(
     (data) => {
       onClose()
       createCategory({
         ...data,
-        locationId: selectedLocationId,
+        locationId: selectedWebId,
       })
     },
-    [createCategory, onClose, selectedLocationId],
+    [createCategory, onClose, selectedWebId],
   )
 
   return (

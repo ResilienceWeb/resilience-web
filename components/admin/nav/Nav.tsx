@@ -53,10 +53,10 @@ const Nav = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { permissions } = usePermissions()
-  const { selectedLocationId } = useAppContext()
+  const { selectedWebId } = useAppContext()
   const isAdminOfSelectedWeb = useMemo(() => {
-    return permissions?.webIds.includes(selectedLocationId)
-  }, [permissions?.webIds, selectedLocationId])
+    return permissions?.webIds.includes(selectedWebId)
+  }, [permissions?.webIds, selectedWebId])
 
   const Links = useMemo(() => {
     const links = [

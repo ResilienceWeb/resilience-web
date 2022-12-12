@@ -51,7 +51,7 @@ export default function Invite() {
   const { listings, isLoading: isLoadingListings } = useListings()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
   const selectedWebName = useSelectedWebName()
-  const { selectedLocationId } = useAppContext()
+  const { selectedWebId } = useAppContext()
   const toast = useToast()
   const router = useRouter()
 
@@ -79,7 +79,7 @@ export default function Invite() {
         email: data.email,
       }
       if (data.web === true) {
-        body.web = selectedLocationId
+        body.web = selectedWebId
       } else {
         const listingIdsAdded = data.listings.map((l) => l.value)
         const listingsToAdd = listings?.filter((l) =>
@@ -124,7 +124,7 @@ export default function Invite() {
         })
       }
     },
-    [listings, selectedLocationId, toast],
+    [listings, selectedWebId, toast],
   )
 
   const initialValues = useMemo<FormValues>(

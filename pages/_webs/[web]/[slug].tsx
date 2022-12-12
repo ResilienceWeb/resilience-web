@@ -1,10 +1,10 @@
 import { memo } from 'react'
 import { GetStaticProps, GetStaticPaths } from 'next'
-import { NextSeo, LocalBusinessJsonLd } from 'next-seo'
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import truncate from 'lodash/truncate'
 import { Listing as ListingType } from '@prisma/client'
-import { REMOTE_URL, REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
+import { REMOTE_URL } from '@helpers/config'
 import Layout from '@components/layout'
 import ListingDisplay from '@components/listing'
 
@@ -38,7 +38,7 @@ function Listing({ listing }: { listing: ListingType | any }) {
           images: [{ url: listing.image }],
         }}
       />
-      <LocalBusinessJsonLd
+      {/* <LocalBusinessJsonLd
         type="Store"
         id={`${PROTOCOL}://${listing.location.slug}.${REMOTE_HOSTNAME}/${listing.slug}`}
         address={{
@@ -48,7 +48,7 @@ function Listing({ listing }: { listing: ListingType | any }) {
         }}
         name={listing.title}
         description={listing.description}
-      />
+      /> */}
       <Layout>
         <ListingDisplay listing={listing} />
       </Layout>

@@ -6,13 +6,13 @@ import { usePermissions } from '@hooks/permissions'
 
 export default function useHasPermissionForCurrentWeb() {
   const { permissions } = usePermissions()
-  const { selectedLocationId } = useAppContext()
+  const { selectedWebId } = useAppContext()
   const { data: session, status: sessionStatus } = useSession()
 
   // eslint-disable-next-line sonarjs/prefer-immediate-return
   const hasPermission = useMemo(
-    () => permissions?.webIds?.includes(selectedLocationId),
-    [permissions?.webIds, selectedLocationId],
+    () => permissions?.webIds?.includes(selectedWebId),
+    [permissions?.webIds, selectedWebId],
   )
 
   return (

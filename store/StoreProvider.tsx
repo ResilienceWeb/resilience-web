@@ -39,7 +39,7 @@ const StoreProvider = ({ children }) => {
     }
   }, [setSelectedWebSlug, subdomain])
 
-  const selectedLocationId = useMemo(() => {
+  const selectedWebId = useMemo(() => {
     if (webs) {
       return webs.find((web) => web.slug === selectedWebSlug)?.id
     }
@@ -51,7 +51,7 @@ const StoreProvider = ({ children }) => {
         isMobile,
         selectedWebSlug,
         setSelectedWebSlug,
-        selectedLocationId,
+        selectedWebId,
         webs,
       }}
     >
