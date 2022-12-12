@@ -96,9 +96,9 @@ model Tag {
 }
 
 model Listing {
-  id                Int              @id @default(autoincrement())
-  createdAt         DateTime         @default(now()) @map("created_at")
-  updatedAt         DateTime         @default(now()) @map("updated_at")
+  id                Int          @id @default(autoincrement())
+  createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @default(now()) @map("updated_at")
   title             String
   website           String?
   description       String?
@@ -107,19 +107,18 @@ model Listing {
   instagram         String?
   email             String?
   notes             String?
-  inactive          Boolean          @default(false)
-  seekingVolunteers Boolean?         @map("seeking_volunteers")
+  inactive          Boolean      @default(false)
+  seekingVolunteers Boolean?     @map("seeking_volunteers")
   categoryId        Int?
   image             String?
-  slug              String?          @unique
+  slug              String?      @unique
   locationId        Int?
-  category          Category?        @relation(fields: [categoryId], references: [id])
-  location          Location?        @relation(fields: [locationId], references: [id])
-  editPermissions   EditPermission[]
+  category          Category?    @relation(fields: [categoryId], references: [id])
+  location          Location?    @relation(fields: [locationId], references: [id])
   permissions       Permission[]
   tags              Tag[]
-  relations         Listing[]        @relation("related")
-  relationOf        Listing[]        @relation("related")
+  relations         Listing[]    @relation("related")
+  relationOf        Listing[]    @relation("related")
 
   @@map("listings")
 }
@@ -133,15 +132,4 @@ model Permission {
 
   locations Location[]
   listings  Listing[]
-}
-
-model EditPermission {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
-  listingId Int
-  email     String   @default("TOREPLACE")
-  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
-
-  @@map("edit_permissions")
 }
