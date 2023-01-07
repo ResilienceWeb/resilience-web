@@ -75,13 +75,14 @@ model Location {
 model Category {
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime  @default(now()) @map("updated_at")
-  label      String    @unique(map: "categories.label_unique")
+  label      String
   color      String?   @default("f1f1f1")
   id         Int       @id @default(autoincrement())
   locationId Int?
   location   Location? @relation(fields: [locationId], references: [id])
   listings   Listing[]
 
+  @@unique([locationId, label], name: "categoryIdentifier")
   @@map("categories")
 }
 
