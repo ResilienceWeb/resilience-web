@@ -56,6 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const listingsToConnect = listings
       ? listings.map((listing) => ({ id: listing.id }))
       : []
+    const webIdToConnect = webId ? { id: webId } : []
 
     const newData: Prisma.PermissionUpsertArgs = {
       where: {
@@ -71,9 +72,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           connect: listingsToConnect,
         },
         locations: {
-          connect: {
-            id: webId,
-          },
+          connect: webIdToConnect,
         },
       },
       update: {
@@ -86,9 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           connect: listingsToConnect,
         },
         locations: {
-          connect: {
-            id: webId,
-          },
+          connect: webIdToConnect,
         },
       },
     }
