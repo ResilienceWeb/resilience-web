@@ -63,8 +63,13 @@ const EditorField = (props) => {
 }
 
 const customMultiSelectStyles = {
-  container: () => ({
+  container: (baseStyles) => ({
+    ...baseStyles,
     width: '100%',
+  }),
+  menuPortal: (baseStyles) => ({
+    ...baseStyles,
+    zIndex: 10,
   }),
 }
 
@@ -442,6 +447,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           <ReactSelect
                             isMulti
                             isSearchable={false}
+                            menuPortalTarget={document.body}
                             onChange={(_option, changeData) => {
                               let newValue
                               if (changeData.action === 'select-option') {
@@ -491,6 +497,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           <ReactSelect
                             isMulti
                             isSearchable
+                            menuPortalTarget={document.body}
                             onChange={(_option, changeData) => {
                               let newValue
                               if (changeData.action === 'select-option') {

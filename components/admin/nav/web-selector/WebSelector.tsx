@@ -78,7 +78,12 @@ const WebSelector = () => {
       options={webOptions}
       value={selectedOption}
       onChange={handleWebChange}
+      isSearchable={false}
       styles={{
+        container: (baseStyles) => ({
+          ...baseStyles,
+          minWidth: '250px',
+        }),
         menu: (baseStyles) => ({
           ...baseStyles,
           zIndex: 10,
