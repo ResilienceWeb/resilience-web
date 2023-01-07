@@ -34,6 +34,10 @@ const customMultiSelectStyles = {
   container: () => ({
     width: '100%',
   }),
+  menuPortal: (baseStyles) => ({
+    ...baseStyles,
+    zIndex: 10,
+  }),
 }
 
 interface FormValues {
@@ -201,6 +205,7 @@ export default function Invite() {
                                   isMulti
                                   isSearchable
                                   isDisabled={props.values.web === true}
+                                  menuPortalTarget={document.body}
                                   onChange={(_option, changeData) => {
                                     let newValue
                                     if (changeData.action === 'select-option') {
