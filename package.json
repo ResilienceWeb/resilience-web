@@ -1,6 +1,7 @@
 {
   "name": "cambridge-resilience-web",
   "version": "0.1.0",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev -p ${PORT:-3000}",
     "build": "next build",
