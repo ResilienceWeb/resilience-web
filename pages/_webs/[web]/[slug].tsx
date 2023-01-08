@@ -38,17 +38,6 @@ function Listing({ listing }: { listing: ListingType | any }) {
           images: [{ url: listing.image }],
         }}
       />
-      {/* <LocalBusinessJsonLd
-        type="Store"
-        id={`${PROTOCOL}://${listing.location.slug}.${REMOTE_HOSTNAME}/${listing.slug}`}
-        address={{
-          addressCountry: 'GB',
-          addressLocality: 'Cambridge',
-          addressRegion: 'Cambridgeshire',
-        }}
-        name={listing.title}
-        description={listing.description}
-      /> */}
       <Layout>
         <ListingDisplay listing={listing} />
       </Layout>

@@ -1,7 +1,8 @@
+import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
+import { NextSeo } from 'next-seo'
 import groupBy from 'lodash/groupBy'
-import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { Box, Center, Spinner } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
 import intersection from 'lodash/intersection'
@@ -18,6 +19,7 @@ import MainList from '@components/main-list'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
 import { useTags } from '@hooks/tags'
+import { useSelectedWebName } from '@hooks/webs'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
@@ -48,7 +50,7 @@ const Web = ({ data }) => {
   const router = useRouter()
 
   const { isMobile } = useAppContext()
-
+  const selectedWebName = useSelectedWebName()
   const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
 
@@ -227,6 +229,10 @@ const Web = ({ data }) => {
 
   return (
     <>
+      <NextSeo
+        title={`${selectedWebName} Resilience Web`}
+        openGraph={{ title: `${selectedWebName} Resilience Web` }}
+      />
       {!isMobile && (
         <Drawer
           categories={categories}

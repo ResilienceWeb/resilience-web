@@ -22,11 +22,11 @@ const HowItWorks = () => {
     <>
       <NextSeo
         title="How it works | Resilience Web"
-        description="Two webs of resilience, showing the environmental and social justice groups in Cambridge"
+        description="Two webs of resilience, showing the environmental and social justice groups in your city"
         openGraph={{
           title: 'How it works | Resilience Web',
           description:
-            'Two webs of resilience, showing the environmental and social justice groups in Cambridge',
+            'Two webs of resilience, showing the environmental and social justice groups in your city',
         }}
       />
       <Layout applyPostStyling>

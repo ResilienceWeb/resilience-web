@@ -257,8 +257,8 @@ export default function Invite() {
                                 id="web"
                                 onChange={field.onChange}
                               >
-                                Give full access to{' '}
-                                <strong>{selectedWebName}</strong>
+                                Give full access to the{' '}
+                                <strong>{selectedWebName}</strong> web
                               </Checkbox>
                               <FormErrorMessage>
                                 {form.errors.web?.toString()}

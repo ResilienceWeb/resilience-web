@@ -12,11 +12,11 @@ const About = ({ page }) => {
     <>
       <NextSeo
         title="About | Resilience Web"
-        description="Two webs of resilience, showing the environmental and social justice groups in Cambridge"
+        description="Two webs of resilience, showing the environmental and social justice groups in your city"
         openGraph={{
           title: 'About | Resilience Web',
           description:
-            'Two webs of resilience, showing the environmental and social justice groups in Cambridge',
+            'Two webs of resilience, showing the environmental and social justice groups in your city',
           url: 'https://resilienceweb.org.uk/about',
         }}
       />
