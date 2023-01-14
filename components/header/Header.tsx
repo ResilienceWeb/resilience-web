@@ -14,12 +14,14 @@ import {
   VStack,
   HStack,
   Link,
+  Heading,
   chakra,
 } from '@chakra-ui/react'
 import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import ModeSwitch from '@components/mode-switch'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import customMultiSelectStyles from '@styles/select-styles'
+import { useSelectedWebName } from '@hooks/webs'
 
 const Header = ({
   categories,
@@ -34,65 +36,7 @@ const Header = ({
   tags,
   selectedTags,
 }) => {
-  const content = (
-    <>
-      {isMobile && (
-        <>
-          <InputGroup maxW={isWebMode ? '250px' : isMobile ? '100%' : '300px'}>
-            <InputLeftElement color="gray.500" fontSize="lg">
-              <HiOutlineSearch />
-            </InputLeftElement>
-            <Input
-              onChange={handleSearchTermChange}
-              placeholder="Search"
-              value={searchTerm}
-              style={{
-                backgroundColor: '#ffffff',
-                height: '38px',
-                width: '100%',
-              }}
-              _placeholder={{ color: '#718096', opacity: 1 }}
-            />
-            {searchTerm !== '' && (
-              <InputRightElement>
-                <IconButton
-                  aria-label="Clear search input"
-                  icon={<HiOutlineX />}
-                  onClick={() => handleClearSearchTermValue()}
-                  size="md"
-                  colorScheme="rw.900"
-                  variant="ghost"
-                />
-              </InputRightElement>
-            )}
-          </InputGroup>
-          <InputGroup>
-            <Select
-              isMulti
-              isSearchable={false}
-              menuPortalTarget={document.body}
-              onChange={handleCategorySelection}
-              options={categories}
-              placeholder="Filter by category"
-              styles={customMultiSelectStyles}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Select
-              isMulti
-              isSearchable={false}
-              menuPortalTarget={document.body}
-              onChange={handleTagSelection}
-              options={tags}
-              placeholder="Filter by tag"
-              styles={customMultiSelectStyles}
-              value={selectedTags}
-            />
-          </InputGroup>
-        </>
-      )}
-    </>
-  )
+  const selectedWebName = useSelectedWebName()
 
   if (isMobile) {
     return (
@@ -124,7 +68,61 @@ const Header = ({
             />
           </Box>
           <chakra.div paddingTop={4} width={'95%'}>
-            <VStack spacing={2}>{content}</VStack>
+            <VStack spacing={2}>
+              <InputGroup
+                maxW={isWebMode ? '250px' : isMobile ? '100%' : '300px'}
+              >
+                <InputLeftElement color="gray.500" fontSize="lg">
+                  <HiOutlineSearch />
+                </InputLeftElement>
+                <Input
+                  onChange={handleSearchTermChange}
+                  placeholder="Search"
+                  value={searchTerm}
+                  style={{
+                    backgroundColor: '#ffffff',
+                    height: '38px',
+                    width: '100%',
+                  }}
+                  _placeholder={{ color: '#718096', opacity: 1 }}
+                />
+                {searchTerm !== '' && (
+                  <InputRightElement>
+                    <IconButton
+                      aria-label="Clear search input"
+                      icon={<HiOutlineX />}
+                      onClick={() => handleClearSearchTermValue()}
+                      size="md"
+                      colorScheme="rw.900"
+                      variant="ghost"
+                    />
+                  </InputRightElement>
+                )}
+              </InputGroup>
+              <InputGroup>
+                <Select
+                  isMulti
+                  isSearchable={false}
+                  menuPortalTarget={document.body}
+                  onChange={handleCategorySelection}
+                  options={categories}
+                  placeholder="Filter by category"
+                  styles={customMultiSelectStyles}
+                />
+              </InputGroup>
+              <InputGroup>
+                <Select
+                  isMulti
+                  isSearchable={false}
+                  menuPortalTarget={document.body}
+                  onChange={handleTagSelection}
+                  options={tags}
+                  placeholder="Filter by tag"
+                  styles={customMultiSelectStyles}
+                  value={selectedTags}
+                />
+              </InputGroup>
+            </VStack>
           </chakra.div>
         </Flex>
       </>
@@ -144,7 +142,9 @@ const Header = ({
         h="14"
       >
         <HStack spacing={2} width="100%">
-          {content}
+          <Heading as="h2" color="gray.700" fontSize="1.75rem" px="10px">
+            {selectedWebName}
+          </Heading>
         </HStack>
         <ModeSwitch
           checked={isWebMode}

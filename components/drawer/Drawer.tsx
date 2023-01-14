@@ -49,7 +49,13 @@ const Drawer = ({
               />
             </Flex>
           </Link>
-          <Heading as="h2" fontSize="1.75rem" px="10px" mt="2rem">
+          <Heading
+            as="h2"
+            color="gray.700"
+            fontSize="1.75rem"
+            px="10px"
+            mt="2rem"
+          >
             Filters
           </Heading>
           <Flex direction="column" alignItems="center" gap="1.25rem" mt="1rem">
