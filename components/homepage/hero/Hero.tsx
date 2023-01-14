@@ -19,27 +19,28 @@ export default function Hero() {
     <Container maxW="7xl">
       <Stack
         align="center"
-        spacing={{ base: 8, md: 10 }}
+        spacing={{ base: 8, md: 4 }}
         py={{ base: '0', md: '1rem' }}
         direction={{ base: 'column', md: 'row' }}
       >
         <Stack flex={1} spacing={{ base: 5, md: 8 }}>
           <Heading
             fontWeight={600}
-            fontSize={{ base: '3xl', md: '6xl' }}
+            fontSize={{ base: '42px', md: '44px' }}
             lineHeight={1.1}
           >
             <Text as="span" position="relative">
-              Cambridge
+              Celebrating place-based
             </Text>
             <br />
-            <Text as="span">Resilience Web</Text>
+            <Text as="span">community action</Text>
           </Heading>
           <Text color="blackAlpha.700" fontSize="18" maxW="3xl">
-            Two webs of resilience, showing the environmental and social justice
-            groups in Cambridge, UK. These webs are useful for finding local
-            like-minded organisations, seeing common connections and
-            contributing to proactive collaboration across Cambridge.
+            A Resilience Web is a holistic visualisation of environmental and
+            social justice groups in a place, curated by people who live there.
+            These webs are intended to help the discovery, collaboration and
+            networking between activists and groups around issues that they care
+            about.
           </Text>
           <Text
             color="blackAlpha.700"
