@@ -77,9 +77,7 @@ const List = ({ categories }) => {
                 if (column.accessor === 'color') {
                   return (
                     <Td key={index} width="100px">
-                      <CategoryTag mb={4} colorHex={cell}>
-                        {`#${cell}`}
-                      </CategoryTag>
+                      <CategoryTag colorHex={cell}>{`#${cell}`}</CategoryTag>
                     </Td>
                   )
                 }
