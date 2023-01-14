@@ -37,6 +37,10 @@ const customMultiSelectStyles = {
       color: 'white',
     },
   }),
+  menuPortal: (baseStyles) => ({
+    ...baseStyles,
+    zIndex: 10,
+  }),
 }
 
 export default customMultiSelectStyles

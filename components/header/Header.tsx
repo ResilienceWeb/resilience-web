@@ -36,40 +36,41 @@ const Header = ({
 }) => {
   const content = (
     <>
-      <InputGroup maxW={isWebMode ? '250px' : isMobile ? '100%' : '300px'}>
-        <InputLeftElement color="gray.500" fontSize="lg">
-          <HiOutlineSearch />
-        </InputLeftElement>
-        <Input
-          onChange={handleSearchTermChange}
-          placeholder="Search"
-          value={searchTerm}
-          style={{
-            backgroundColor: '#ffffff',
-            height: '38px',
-            width: '100%',
-          }}
-          _placeholder={{ color: '#718096', opacity: 1 }}
-        />
-        {searchTerm !== '' && (
-          <InputRightElement>
-            <IconButton
-              aria-label="Clear search input"
-              icon={<HiOutlineX />}
-              onClick={() => handleClearSearchTermValue()}
-              size="md"
-              colorScheme="rw.900"
-              variant="ghost"
-            />
-          </InputRightElement>
-        )}
-      </InputGroup>
       {isMobile && (
         <>
+          <InputGroup maxW={isWebMode ? '250px' : isMobile ? '100%' : '300px'}>
+            <InputLeftElement color="gray.500" fontSize="lg">
+              <HiOutlineSearch />
+            </InputLeftElement>
+            <Input
+              onChange={handleSearchTermChange}
+              placeholder="Search"
+              value={searchTerm}
+              style={{
+                backgroundColor: '#ffffff',
+                height: '38px',
+                width: '100%',
+              }}
+              _placeholder={{ color: '#718096', opacity: 1 }}
+            />
+            {searchTerm !== '' && (
+              <InputRightElement>
+                <IconButton
+                  aria-label="Clear search input"
+                  icon={<HiOutlineX />}
+                  onClick={() => handleClearSearchTermValue()}
+                  size="md"
+                  colorScheme="rw.900"
+                  variant="ghost"
+                />
+              </InputRightElement>
+            )}
+          </InputGroup>
           <InputGroup>
             <Select
               isMulti
               isSearchable={false}
+              menuPortalTarget={document.body}
               onChange={handleCategorySelection}
               options={categories}
               placeholder="Filter by category"
@@ -80,6 +81,7 @@ const Header = ({
             <Select
               isMulti
               isSearchable={false}
+              menuPortalTarget={document.body}
               onChange={handleTagSelection}
               options={tags}
               placeholder="Filter by tag"

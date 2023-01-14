@@ -240,8 +240,11 @@ const Web = ({ data }) => {
           selectedTags={selectedTags}
           handleCategorySelection={handleCategorySelection}
           handleTagSelection={handleTagSelection}
+          handleClearSearchTermValue={handleClearSearchTermValue}
+          handleSearchTermChange={handleSearchTermChange}
           handleVolunteerSwitchChange={handleVolunteerSwitchChange}
           isVolunteer={isVolunteer}
+          searchTerm={searchTerm}
         />
       )}
       <Box height="100vh" ml={isMobile ? '0' : '18.75rem'} position="relative">

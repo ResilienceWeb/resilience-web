@@ -6,10 +6,15 @@ import {
   Box,
   Flex,
   Link,
+  Input,
   InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  IconButton,
   Heading,
   useBreakpointValue,
 } from '@chakra-ui/react'
+import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
 
 import VolunteerSwitch from '@components/volunteer-switch'
 import customMultiSelectStyles from '@styles/select-styles'
@@ -23,8 +28,11 @@ const Drawer = ({
   selectedTags,
   handleTagSelection,
   handleCategorySelection,
+  handleClearSearchTermValue,
+  handleSearchTermChange,
   handleVolunteerSwitchChange,
   isVolunteer,
+  searchTerm,
 }) => {
   return (
     <div className={styles.drawer}>
@@ -48,9 +56,40 @@ const Drawer = ({
             <InputGroup
               maxW={useBreakpointValue({ base: 'initial', md: '280px' })}
             >
+              <InputLeftElement color="gray.500" fontSize="lg">
+                <HiOutlineSearch />
+              </InputLeftElement>
+              <Input
+                onChange={handleSearchTermChange}
+                placeholder="Search"
+                value={searchTerm}
+                style={{
+                  backgroundColor: '#ffffff',
+                  height: '38px',
+                  width: '100%',
+                }}
+                _placeholder={{ color: '#718096', opacity: 1 }}
+              />
+              {searchTerm !== '' && (
+                <InputRightElement>
+                  <IconButton
+                    aria-label="Clear search input"
+                    icon={<HiOutlineX />}
+                    onClick={() => handleClearSearchTermValue()}
+                    size="md"
+                    colorScheme="rw.900"
+                    variant="ghost"
+                  />
+                </InputRightElement>
+              )}
+            </InputGroup>
+            <InputGroup
+              maxW={useBreakpointValue({ base: 'initial', md: '280px' })}
+            >
               <Select
                 isMulti
                 isSearchable={false}
+                menuPortalTarget={document.body}
                 onChange={handleCategorySelection}
                 options={categories}
                 placeholder="Category"
@@ -63,6 +102,7 @@ const Drawer = ({
               <Select
                 isMulti
                 isSearchable={false}
+                menuPortalTarget={document.body}
                 onChange={handleTagSelection}
                 options={tags}
                 placeholder="Tag"
