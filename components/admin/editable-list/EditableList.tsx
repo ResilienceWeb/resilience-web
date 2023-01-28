@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useCallback, useState, useMemo, memo } from 'react'
-import { Heading, Text, Box, Stack } from '@chakra-ui/react'
+import { Heading, Text, Box, Stack, Link } from '@chakra-ui/react'
 
 import DeleteConfirmationDialog from './delete-confirmation-dialog'
 import { removeNonAlphaNumeric } from '@helpers/utils'
@@ -9,12 +9,13 @@ import TableActions from './table/TableActions'
 import { usePermissions } from '@hooks/permissions'
 import { useAppContext } from '@store/hooks'
 import { useWebs } from '@hooks/webs'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 const EditableList = ({ deleteListing, isAdmin, items }) => {
   const router = useRouter()
   const { permissions } = usePermissions()
   const { webs } = useWebs()
-  const { selectedWebId } = useAppContext()
+  const { selectedWebId, selectedWebSlug } = useAppContext()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState([])
   const [isDeleteConfirmationOpenWithId, setIsDeleteConfirmationOpenWithId] =
@@ -104,6 +105,17 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
           <Heading>Listings</Heading>
           <Text color={'gray.600'} fontSize="sm" maxW="500px">
             {explanatoryText}
+          </Text>
+          <Text color={'gray.600'} fontSize="sm" maxW="500px" mt="1rem">
+            This web is publicly accessible at{' '}
+            <Link
+              href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
+              target="_blank"
+              fontWeight="bold"
+              color="rw.900"
+            >
+              {`${selectedWebSlug}.${REMOTE_HOSTNAME}`}
+            </Link>
           </Text>
         </Box>
         <TableActions
