@@ -50,7 +50,7 @@ export default function Hero() {
           >
             Be part of a growing movement of positive change...
           </Text>
-          <Stack spacing={{ base: 4, sm: 6 }} direction="row">
+          <Stack spacing={{ base: 4, sm: 6 }} direction="column">
             <Link
               as={NextLink}
               href={`${PROTOCOL}://cambridge-city.${REMOTE_HOSTNAME}`}
@@ -64,7 +64,7 @@ export default function Hero() {
                 data-cabin-event="navigate-city"
                 _hover={{ bg: 'rw.900' }}
               >
-                City
+                Cambridge City
               </Button>
             </Link>
             <Link
@@ -80,7 +80,7 @@ export default function Hero() {
                 data-cabin-event="navigate-uni"
                 _hover={{ bg: 'rw.900' }}
               >
-                University
+                University of Cambridge
               </Button>
             </Link>
           </Stack>

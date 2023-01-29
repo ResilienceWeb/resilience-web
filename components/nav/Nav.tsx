@@ -210,14 +210,6 @@ const NAV_ITEMS = [
     href: '/how-it-works',
   },
   {
-    label: 'City',
-    href: `${PROTOCOL}://cambridge-city.${REMOTE_HOSTNAME}`,
-  },
-  {
-    label: 'University',
-    href: `${PROTOCOL}://cambridge-university.${REMOTE_HOSTNAME}`,
-  },
-  {
     label: 'Donate',
     href: 'https://opencollective.com/resilience-web',
     isExternal: true,
