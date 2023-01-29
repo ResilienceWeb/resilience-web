@@ -70,6 +70,7 @@ model Location {
   listings         Listing[]
   tags             Tag[]
   permission       Permission[]
+  public           Boolean      @default(false)
 }
 
 model Category {
