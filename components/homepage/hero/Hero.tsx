@@ -64,7 +64,7 @@ export default function Hero() {
                 data-cabin-event="navigate-city"
                 _hover={{ bg: 'rw.900' }}
               >
-                Cambridge City
+                Cambridge
               </Button>
             </Link>
             <Link
@@ -81,6 +81,19 @@ export default function Hero() {
                 _hover={{ bg: 'rw.900' }}
               >
                 University of Cambridge
+              </Button>
+            </Link>
+            <Link as={NextLink} href={`${PROTOCOL}://york.${REMOTE_HOSTNAME}`}>
+              <Button
+                bg="rw.700"
+                colorScheme="rw.700"
+                rounded="full"
+                px={6}
+                size="lg"
+                data-cabin-event="navigate-york"
+                _hover={{ bg: 'rw.900' }}
+              >
+                York
               </Button>
             </Link>
           </Stack>
