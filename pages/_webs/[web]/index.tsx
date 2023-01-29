@@ -19,7 +19,6 @@ import MainList from '@components/main-list'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
 import { useTags } from '@hooks/tags'
-import { useSelectedWebName } from '@hooks/webs'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
@@ -46,11 +45,10 @@ type INetwork = {
   selectNodes: (ids: string[]) => void
 }
 
-const Web = ({ data }) => {
+const Web = ({ data, selectedWebName }) => {
   const router = useRouter()
 
   const { isMobile } = useAppContext()
-  const selectedWebName = useSelectedWebName()
   const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
 
@@ -230,8 +228,8 @@ const Web = ({ data }) => {
   return (
     <>
       <NextSeo
-        title={`${selectedWebName} Resilience Web`}
-        openGraph={{ title: `${selectedWebName} Resilience Web` }}
+        title={`${selectedWebName} | Resilience Web`}
+        openGraph={{ title: `${selectedWebName} | Resilience Web` }}
       />
       {!isMobile && (
         <Drawer
@@ -448,6 +446,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   return {
     props: {
       data: transformedData,
+      selectedWebName: webData.title,
     },
     revalidate: 30,
   }
