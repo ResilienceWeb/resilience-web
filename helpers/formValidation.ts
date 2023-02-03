@@ -1,4 +1,5 @@
 const emailRegex = new RegExp(/\S+@\S+\.\S+/)
+const urlRegex = new RegExp(/^[a-zA-Z 0-9\-]*$/)
 
 export const emailValidator = (value: string) => {
   if (value === '') return false
@@ -10,6 +11,12 @@ export const emailValidator = (value: string) => {
 export const emailRequiredValidator = (value: string) => {
   if (!value || value === '') return 'Email is required'
   return emailRegex.test(value) ? '' : 'Please enter a valid email.'
+}
+
+export const urlValidator = (value: string) => {
+  return urlRegex.test(value)
+    ? ''
+    : 'Please only use letters, numbers and dashes'
 }
 
 export const fieldRequiredValidator = (value) => {

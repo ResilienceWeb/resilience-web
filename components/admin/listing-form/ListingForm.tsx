@@ -1,6 +1,13 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import { memo, useMemo } from 'react'
-import { Formik, Form, Field, useField, FieldProps } from 'formik'
+import { memo, useEffect, useMemo } from 'react'
+import {
+  Formik,
+  Form,
+  Field,
+  useField,
+  FieldProps,
+  useFormikContext,
+} from 'formik'
 import { Editor } from '@tinymce/tinymce-react'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
@@ -20,10 +27,15 @@ import {
   HStack,
   Text,
 } from '@chakra-ui/react'
-import { emailValidator, fieldRequiredValidator } from '@helpers/formValidation'
+import {
+  emailValidator,
+  fieldRequiredValidator,
+  urlValidator,
+} from '@helpers/formValidation'
 import ImageUpload from './ImageUpload'
 import { useTags } from '@hooks/tags'
 import { useListings } from '@hooks/listings'
+import { useAppContext } from '@store/hooks'
 
 const EditorField = (props) => {
   const { label, name, ...otherProps } = props
@@ -59,6 +71,64 @@ const EditorField = (props) => {
         <div className="error">{meta.error}</div>
       ) : null}
     </>
+  )
+}
+
+const SlugField = () => {
+  const { selectedWebSlug } = useAppContext()
+  const {
+    values: { title },
+    setFieldValue,
+  } = useFormikContext<any>()
+
+  useEffect(() => {
+    const generatedSlug = title
+      .toLowerCase()
+      .trim()
+      .replace(/ /g, '-')
+      .replace(/[^a-z0-9-]/gi, '')
+      .trim()
+
+    if (title.trim() !== '') {
+      setFieldValue('slug', generatedSlug)
+    }
+  }, [setFieldValue, title])
+
+  return (
+    <Field name="slug" validate={urlValidator}>
+      {({ field, form }: FieldProps) => {
+        console.log(field)
+
+        return (
+          <FormControl
+            isInvalid={Boolean(form.errors.slug && form.touched.slug)}
+          >
+            <FormLabel htmlFor="slug" fontSize="sm">
+              Url
+            </FormLabel>
+            <InputGroup size="sm">
+              <InputLeftAddon
+                bg="gray.50"
+                color="gray.500"
+                rounded="md"
+                userSelect="none"
+              >
+                {`${selectedWebSlug}.resilienceweb.org.uk/`}
+              </InputLeftAddon>
+              <Input
+                {...field}
+                id="slug"
+                fontSize="sm"
+                shadow="sm"
+                size="sm"
+                rounded="md"
+              />
+            </InputGroup>
+            <FormErrorMessage>{form.errors.slug?.toString()}</FormErrorMessage>
+          </FormControl>
+        )
+      }}
+    </Field>
   )
 }
 
@@ -397,38 +467,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
               </HStack>
 
               <chakra.div mb={3}>
-                <Field name="slug">
-                  {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(form.errors.slug && form.touched.slug)}
-                    >
-                      <FormLabel htmlFor="slug" fontSize="sm">
-                        Url
-                      </FormLabel>
-                      <InputGroup size="sm">
-                        <InputLeftAddon
-                          bg="gray.50"
-                          color="gray.500"
-                          rounded="md"
-                          userSelect="none"
-                        >
-                          resilienceweb.org.uk/
-                        </InputLeftAddon>
-                        <Input
-                          {...field}
-                          id="slug"
-                          fontSize="sm"
-                          shadow="sm"
-                          size="sm"
-                          rounded="md"
-                        />
-                      </InputGroup>
-                      <FormErrorMessage>
-                        {form.errors.slug?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
+                <SlugField />
               </chakra.div>
 
               <chakra.div mb={3}>

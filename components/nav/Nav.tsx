@@ -21,7 +21,6 @@ import {
 import { HamburgerIcon, CloseIcon, ChatIcon } from '@chakra-ui/icons'
 
 import { useAppContext } from '@store/hooks'
-import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import FeedbackDialog from '../feedback-dialog'
 import LogoImage from '../../public/logo.png'
 import styles from './Nav.module.scss'
