@@ -12,7 +12,9 @@ export default function useListing(slug) {
     data: listing,
     isLoading,
     isError,
-  } = useQuery([`listing-${slug}`], () => fetchListingsRequest(slug)) // Figure out better RQ caching
+  } = useQuery([`listing-${slug}`], () => fetchListingsRequest(slug), {
+    enabled: slug !== undefined && slug !== '',
+  }) // Figure out better RQ caching
 
   return {
     listing,

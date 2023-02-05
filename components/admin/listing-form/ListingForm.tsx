@@ -97,8 +97,6 @@ const SlugField = () => {
   return (
     <Field name="slug" validate={urlValidator}>
       {({ field, form }: FieldProps) => {
-        console.log(field)
-
         return (
           <FormControl
             isInvalid={Boolean(form.errors.slug && form.touched.slug)}

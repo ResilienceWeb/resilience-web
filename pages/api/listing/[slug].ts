@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const { slug } = req.query
-    const listing = await prisma.listing.findUnique({
+    const listing = await prisma.listing.findFirst({
       where: { slug },
       include: {
         category: true,

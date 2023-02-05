@@ -113,8 +113,8 @@ model Listing {
   seekingVolunteers Boolean?     @map("seeking_volunteers")
   categoryId        Int?
   image             String?
-  slug              String?      @unique
-  locationId        Int?
+  slug              String
+  locationId        Int
   category          Category?    @relation(fields: [categoryId], references: [id])
   location          Location?    @relation(fields: [locationId], references: [id])
   permissions       Permission[]
@@ -122,6 +122,7 @@ model Listing {
   relations         Listing[]    @relation("related")
   relationOf        Listing[]    @relation("related")
 
+  @@unique([locationId, slug])
   @@map("listings")
 }
 
