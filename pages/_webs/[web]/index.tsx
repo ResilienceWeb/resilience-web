@@ -376,10 +376,18 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
       })
 
       relations.map((relation) => {
-        transformedData.edges.push({
+        const newEdge = {
           from: id,
           to: relation.id,
-        })
+          dashes: true,
+        }
+        if (
+          !transformedData.edges.find(
+            (e) => e.from === newEdge.to && e.to === newEdge.from,
+          )
+        ) {
+          transformedData.edges.push(newEdge)
+        }
       })
     },
   )
@@ -420,6 +428,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
       label: category,
       color: '#c3c4c7',
       isDescriptive: true,
+      shape: 'ellipse',
     })
     categoryIndex++
 
