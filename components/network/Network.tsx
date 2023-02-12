@@ -30,10 +30,7 @@ const options = {
   },
   physics: {
     forceAtlas2Based: {
-      gravitationalConstant: -26,
-      centralGravity: 0.003,
-      springLength: 230,
-      springConstant: 0.18,
+      centralGravity: 0.005,
     },
     maxVelocity: 146,
     solver: 'forceAtlas2Based',
@@ -42,7 +39,7 @@ const options = {
       iterations: 100,
       fit: true,
     },
-    timestep: 0.35,
+    timestep: 0.9,
   },
   interaction: {
     zoomView: true,

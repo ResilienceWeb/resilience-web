@@ -429,6 +429,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
       color: '#c3c4c7',
       isDescriptive: true,
       shape: 'ellipse',
+      mass: 3,
     })
     categoryIndex++
 
@@ -436,7 +437,14 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
     transformedData.edges.push({
       from: 999,
       to: categoryId,
-      length: 2000,
+      width: 2,
+      selectedWidth: 3,
+      length: 700,
+      smooth: {
+        enabled: true,
+        type: 'continuous',
+        roundness: 0,
+      },
     })
 
     // From category node to all subitems
