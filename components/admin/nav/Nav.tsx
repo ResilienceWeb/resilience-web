@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { HiViewList, HiUsers, HiOutlineLockOpen } from 'react-icons/hi'
+import { FiSettings } from 'react-icons/fi'
 import { BsPersonCircle } from 'react-icons/bs'
 import { BiCategory } from 'react-icons/bi'
 
@@ -32,17 +33,7 @@ import { usePermissions } from '@hooks/permissions'
 import { useAppContext } from '@store/hooks'
 
 const NavLink = ({ children, href }) => (
-  <Link
-    as={NextLink}
-    px={2}
-    py={1}
-    rounded={'md'}
-    _hover={{
-      textDecoration: 'none',
-      bg: useColorModeValue('gray.200', 'gray.700'),
-    }}
-    href={href}
-  >
+  <Link as={NextLink} px={2} py={1} rounded={'md'} href={href}>
     {children}
   </Link>
 )
@@ -82,11 +73,18 @@ const Nav = () => {
     }
 
     if (session?.user.admin) {
-      links.push({
-        label: 'Permissions',
-        href: '/admin/permissions',
-        icon: <Icon as={HiOutlineLockOpen} fontSize="lg" />,
-      })
+      links.push(
+        {
+          label: 'Permissions',
+          href: '/admin/permissions',
+          icon: <Icon as={HiOutlineLockOpen} fontSize="lg" />,
+        },
+        {
+          label: 'Web Settings',
+          href: '/admin/web-settings',
+          icon: <Icon as={FiSettings} fontSize="lg" />,
+        },
+      )
     }
 
     return links
@@ -140,7 +138,7 @@ const Nav = () => {
                   rounded="md"
                   transition="all 0.2s"
                   _hover={{
-                    bg: '#e2e8f0',
+                    bg: 'blackAlpha.100',
                   }}
                   _activeLink={{
                     bg: 'blackAlpha.100',

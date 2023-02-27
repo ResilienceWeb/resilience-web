@@ -13,12 +13,26 @@ const handler = async (
 ) => {
   try {
     const { slug } = req.query
-    const web = await prisma.location.findFirst({
-      where: {
-        slug,
-      },
-    })
-    res.status(200).send({ web })
+    switch (req.method) {
+      case 'GET':
+        const web = await prisma.location.findFirst({
+          where: {
+            slug,
+          },
+        })
+        res.status(200).send({ web })
+        break
+      case 'PATCH':
+        const updatedWeb = await prisma.location.update({
+          where: {
+            slug,
+          },
+          data: req.body,
+        })
+        res.status(200)
+        res.json({ web: updatedWeb })
+        break
+    }
   } catch (e) {
     res.status(500).send({
       error: `Unable to fetch web from database - ${e}`,

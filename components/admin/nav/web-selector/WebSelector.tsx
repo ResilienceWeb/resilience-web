@@ -41,7 +41,7 @@ const WebSelector = () => {
             allUniqueWebIds.includes(s.id),
         )
 
-    return allowedWebs.map((s) => ({
+    return allowedWebs?.map((s) => ({
       value: s.slug,
       label: s.title,
     }))

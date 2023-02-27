@@ -249,7 +249,7 @@ export default function Invite() {
                           return (
                             <FormControl
                               isInvalid={Boolean(
-                                form.errors.listings && form.touched.listings,
+                                form.errors.web && form.touched.web,
                               )}
                             >
                               <Checkbox
