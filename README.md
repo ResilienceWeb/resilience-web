@@ -2,8 +2,6 @@ Inspiration: [https://www.transitioncambridge.org/thewiki/wiki-uploads/TTEvents.
 
 Currently online at [https://resilienceweb.org.uk](https://resilienceweb.org.uk)
 
-<a href="https://www.buymeacoffee.com/diner" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-
 ## Running the app locally
 * Make sure you have Node.js installed from https://nodejs.org
 * Once you clone the repo locally, run `npm install` from the command line in the root directory of this project
