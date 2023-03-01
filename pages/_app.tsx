@@ -5,6 +5,7 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { SessionProvider } from 'next-auth/react'
+import { Analytics } from '@vercel/analytics/react'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/500.css'
 import '@fontsource/poppins/600.css'
@@ -81,6 +82,7 @@ function App({ Component, pageProps }) {
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </SessionProvider>
+      <Analytics />
     </>
   )
 }
