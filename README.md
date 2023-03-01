@@ -21,6 +21,7 @@ Currently online at [https://resilienceweb.org.uk](https://resilienceweb.org.uk)
 - To create the local database run the `npm run db:up` command
 - To populate it run the `npx prisma migrate dev` command
 - To view the databases contents run the `npm run db` command
+- Once you are done with the database you can run the `npm run db:down` command to shut it down, and don't worry your data will be saved for next time!
 
 ## Deploying updates
 
