@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  database:
+    image: postgres:latest
+    container_name: database
+    restart: always
+    hostname: ${DATABASE_HOST}
+    env_file:
+      - .env
+    volumes:
+      - resilience-web-data:/var/lib/postgresql/data
+    ports:
+      - '${DATABASE_PORT}:5432'
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+
+volumes:
+  resilience-web-data:
+
