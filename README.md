@@ -18,9 +18,10 @@ Currently online at [https://resilienceweb.org.uk](https://resilienceweb.org.uk)
 
 - Make sure you have a valid `.env` file, the example DATABASE_URL environment variable will be used in this process
 - Make sure you have docker installed from https://www.docker.com/
-- To create the local database run the `npm run db:up` command
-- To populate it run the `npx prisma migrate dev` command
-- To view the databases contents run the `npm run db` command
+- To create the local database run `npm run db:up`
+- To prepare the database with tables run `npx prisma migrate dev`
+- To seed the database with some initial data run `npx prisma db seed`
+- To view the databases contents run `npm run db`
 - Once you are done with the database you can run the `npm run db:down` command to shut it down, and don't worry your data will be saved for next time!
 
 ## Deploying updates
