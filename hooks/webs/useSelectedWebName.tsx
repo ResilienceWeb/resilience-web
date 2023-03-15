@@ -1,10 +1,10 @@
 import { useAppContext } from '@store/hooks'
-import { useWebs } from '@hooks/webs'
+import { useWebListings } from '@hooks/webs'
 
 export default function useSelectedWebName() {
   const { selectedWebId } = useAppContext()
-  const { webs } = useWebs()
+  const { webListings } = useWebListings()
 
-  return webs?.find((s) => s.id === selectedWebId)?.title
+  return webListings.find((s) => s.id === selectedWebId)?.title
 }
 

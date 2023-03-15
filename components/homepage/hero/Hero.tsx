@@ -11,11 +11,11 @@ import {
 import NextLink from 'next/link'
 import { useAppContext } from '@store/hooks'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
-import { useWebDetails } from '@hooks/webs'
+import { useWebs } from '@hooks/webs'
 
 export default function Hero() {
   const { isMobile } = useAppContext()
-  const { webDetails } = useWebDetails()
+  const { webs } = useWebs()
 
   return (
     <Container maxW="7xl">
@@ -53,7 +53,7 @@ export default function Hero() {
             Be part of a growing movement of positive change...
           </Text>
           <Stack spacing={{ base: 4, sm: 6 }} direction="column">
-            {webDetails.map((web) => (
+            {webs.map((web) => (
               <Link
                 key={web.id}
                 as={NextLink}

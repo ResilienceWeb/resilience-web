@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react'
 import Select from 'react-select'
 import { useAllListings } from '@hooks/listings'
-import { useWebs } from '@hooks/webs'
+import { useWebListings } from '@hooks/webs'
 import { useUpdatePermission } from '@hooks/permissions'
 
 const customMultiSelectStyles = {
@@ -41,7 +41,7 @@ const SeparatedElement = chakra('span', {
 
 const PermissionsList = ({ permissions }) => {
   const { listings } = useAllListings()
-  const { webs } = useWebs()
+  const { webListings } = useWebListings()
   const { mutate: updatePermission, isLoading: isUpdatingPermission } =
     useUpdatePermission()
 
@@ -53,7 +53,7 @@ const PermissionsList = ({ permissions }) => {
       )
 
       const webIdsAdded = data.webs.map((s) => s.value)
-      const websToAdd = webs.filter((s) => webIdsAdded.includes(s.id))
+      const websToAdd = webListings.filter((s) => webIdsAdded.includes(s.id))
 
       const dataToSubmit = {
         email: data.email,
@@ -62,7 +62,7 @@ const PermissionsList = ({ permissions }) => {
       }
       updatePermission(dataToSubmit)
     },
-    [listings, webs, updatePermission],
+    [listings, webListings, updatePermission],
   )
 
   const listingOptions = useMemo(() => {
@@ -75,13 +75,11 @@ const PermissionsList = ({ permissions }) => {
   }, [listings])
 
   const webOptions = useMemo(() => {
-    if (!webs) return []
-
-    return webs.map((l) => ({
+    return webListings.map((l) => ({
       value: l.id,
       label: l.title,
     }))
-  }, [webs])
+  }, [webListings])
 
   return (
     <Accordion allowMultiple defaultIndex={[0]}>

@@ -5,7 +5,7 @@ import type { Options } from 'react-select'
 import { useSession } from 'next-auth/react'
 
 import { useAppContext } from '@store/hooks'
-import { useWebs } from '@hooks/webs'
+import { useWebListings } from '@hooks/webs'
 import { usePermissions } from '@hooks/permissions'
 
 type WebOption = {
@@ -16,7 +16,7 @@ type WebOption = {
 const WebSelector = () => {
   const { data: session } = useSession()
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
-  const { webs } = useWebs()
+  const { webListings } = useWebListings()
   const { permissions } = usePermissions()
 
   const allUniqueWebIds = useMemo(() => {
@@ -31,11 +31,11 @@ const WebSelector = () => {
   }, [permissions])
 
   const webOptions: Options<WebOption> = useMemo(() => {
-    if (!webs || !permissions) return []
+    if (!webListings || !permissions) return []
 
     const allowedWebs = session?.user.admin
-      ? webs
-      : webs.filter(
+      ? webListings
+      : webListings.filter(
           (s) =>
             permissions.webIds?.includes(s.id) ||
             allUniqueWebIds.includes(s.id),
@@ -45,7 +45,7 @@ const WebSelector = () => {
       value: s.slug,
       label: s.title,
     }))
-  }, [allUniqueWebIds, permissions, session?.user.admin, webs])
+  }, [allUniqueWebIds, permissions, session?.user.admin, webListings])
 
   const selectedOption = useMemo(
     () => webOptions.find((s) => s.value === selectedWebSlug),

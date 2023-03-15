@@ -8,13 +8,13 @@ import Table from './table/Table'
 import TableActions from './table/TableActions'
 import { usePermissions } from '@hooks/permissions'
 import { useAppContext } from '@store/hooks'
-import { useWebs } from '@hooks/webs'
+import { useWebListings } from '@hooks/webs'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 const EditableList = ({ deleteListing, isAdmin, items }) => {
   const router = useRouter()
   const { permissions } = usePermissions()
-  const { webs } = useWebs()
+  const { webListings } = useWebListings()
   const { selectedWebId, selectedWebSlug } = useAppContext()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState([])
@@ -76,14 +76,16 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
       return 'You are an admin. You can see all the listings on each web, as well as invite people, or edit categories or tags on each web.'
     }
 
-    const selectedWebName = webs?.find((s) => s.id === selectedWebId).title
+    const selectedWebName = webListings.find(
+      (s) => s.id === selectedWebId,
+    )?.title
 
     if (permissions?.webIds.includes(selectedWebId)) {
       return `You have access to edit any listing or add new listings on the ${selectedWebName} Resilience Web.`
     }
 
     return 'You have access to edit the listings below. If you think you should be able to edit a listing not included below, please get in touch at cambridgeresilienceweb@gmail.com.'
-  }, [isAdmin, permissions?.webIds, selectedWebId, webs])
+  }, [isAdmin, permissions?.webIds, selectedWebId, webListings])
 
   if (!filteredItems) return null
 
