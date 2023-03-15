@@ -6,6 +6,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormHelperText,
+  Button
 } from '@chakra-ui/react'
 import { Formik, Form, Field } from 'formik'
 
@@ -66,8 +67,8 @@ const SignupForm = () => {
                 </FormControl>
               )}
             </Field>
-            <InputRightElement width="8.5rem">
-              <Input
+            <InputRightElement width="8.5rem" justifyContent="flex-end">
+              <Button
                 type="submit"
                 h="100%"
                 size="md"
@@ -81,7 +82,9 @@ const SignupForm = () => {
                 fontWeight={600}
                 _hover={{ bg: 'rw.900' }}
                 disabled={!props.isValid}
-              />
+              >
+                Submit
+              </Button>
             </InputRightElement>
           </InputGroup>
         </Form>
