@@ -1,43 +1,92 @@
-import { InputGroup, Input, InputRightElement } from '@chakra-ui/react'
+import { useCallback, useState } from 'react'
+import {
+  InputGroup,
+  Input,
+  InputRightElement,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+} from '@chakra-ui/react'
+import { Formik, Form, Field } from 'formik'
+
+import { fieldRequiredValidator } from '@helpers/formValidation'
 
 const SignupForm = () => {
+  const [isSuccess, setIsSuccess] = useState(false)
+
+  const onSubmit = useCallback(async (data) => {
+    const response = await fetch('/api/newsletter-subscribe', {
+      method: 'POST',
+      body: JSON.stringify({ email: data.email }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    if (response.status === 201) {
+      setIsSuccess(true)
+    } else {
+      setIsSuccess(false)
+    }
+  }, [])
+
   return (
-    <form
-      action="https://www.getrevue.co/profile/resilienceweb/add_subscriber"
-      method="post"
-      name="revue-form"
-      target="_blank"
+    <Formik
+      initialValues={{
+        email: '',
+      }}
+      onSubmit={(values, actions) => {
+        actions.setSubmitting(false)
+        void onSubmit(values)
+      }}
     >
-      <InputGroup size="md">
-        <Input
-          type="email"
-          name="member[email]"
-          placeholder="Your email address"
-          background="white"
-          textColor="gray.900"
-          width="22rem"
-          _placeholder={{ color: 'gray.700' }}
-        />
-        <InputRightElement width="8.5rem">
-          <Input
-            type="submit"
-            value="Subscribe"
-            name="member[subscribe]"
-            h="100%"
-            size="md"
-            bg="rw.700"
-            colorScheme="rw.700"
-            color="white"
-            borderLeftRadius="none"
-            borderRightRadius="md"
-            border="none"
-            cursor="pointer"
-            fontWeight={600}
-            _hover={{ bg: 'rw.900' }}
-          />
-        </InputRightElement>
-      </InputGroup>
-    </form>
+      {(props) => (
+        <Form>
+          <InputGroup size="md">
+            <Field name="email" validate={fieldRequiredValidator}>
+              {({ field, form }) => (
+                <FormControl isInvalid={form.errors.email}>
+                  <Input
+                    {...field}
+                    type="email"
+                    id="email"
+                    placeholder="Your email address"
+                    background="white"
+                    textColor="gray.900"
+                    width="22rem"
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    _placeholder={{ color: 'gray.700' }}
+                  />
+                  <FormErrorMessage>
+                    You forgot to enter your email :)
+                  </FormErrorMessage>
+                  {isSuccess && (
+                    <FormHelperText fontWeight="700" textColor="rw.700">
+                      You have subscribed successfully 🎉
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              )}
+            </Field>
+            <InputRightElement width="8.5rem">
+              <Input
+                type="submit"
+                h="100%"
+                size="md"
+                bg="rw.700"
+                colorScheme="rw.700"
+                color="white"
+                borderLeftRadius="none"
+                borderRightRadius="md"
+                border="none"
+                cursor="pointer"
+                fontWeight={600}
+                _hover={{ bg: 'rw.900' }}
+                disabled={!props.isValid}
+              />
+            </InputRightElement>
+          </InputGroup>
+        </Form>
+      )}
+    </Formik>
   )
 }
 

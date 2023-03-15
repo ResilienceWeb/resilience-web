@@ -8,9 +8,9 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"editor.formatOnSave": true,
-	"eslint.alwaysShowStatus": true,
 	"eslint.enable": true,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},
+  "files.insertFinalNewline": true
 }
