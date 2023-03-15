@@ -36,6 +36,7 @@
 		"framer-motion": "10.0.1",
 		"graphql": "16.5.0",
 		"graphql-request": "4.3.0",
+		"isomorphic-unfetch": "4.0.2",
 		"lodash-es": "4.17.21",
 		"next": "13.2.3",
 		"next-auth": "4.20.1",
