@@ -1,3 +1,4 @@
+export { default as useWebDetails } from './useWebDetails'
 export { default as useWebs } from './useWebs'
 export { default as useWeb } from './useWeb'
 export { default as useUpdateWeb } from './useUpdateWeb'

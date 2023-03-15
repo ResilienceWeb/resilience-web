@@ -11,9 +11,11 @@ import {
 import NextLink from 'next/link'
 import { useAppContext } from '@store/hooks'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { useWebDetails } from '@hooks/webs'
 
 export default function Hero() {
   const { isMobile } = useAppContext()
+  const { webDetails } = useWebDetails()
 
   return (
     <Container maxW="7xl">
@@ -51,51 +53,25 @@ export default function Hero() {
             Be part of a growing movement of positive change...
           </Text>
           <Stack spacing={{ base: 4, sm: 6 }} direction="column">
-            <Link
-              as={NextLink}
-              href={`${PROTOCOL}://cambridge-city.${REMOTE_HOSTNAME}`}
-            >
-              <Button
-                rounded="full"
-                px={6}
-                bg="rw.700"
-                colorScheme="rw.700"
-                size="lg"
-                data-cabin-event="navigate-city"
-                _hover={{ bg: 'rw.900' }}
+            {webDetails.map((web) => (
+              <Link
+                key={web.id}
+                as={NextLink}
+                href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
               >
-                Cambridge
-              </Button>
-            </Link>
-            <Link
-              as={NextLink}
-              href={`${PROTOCOL}://cambridge-university.${REMOTE_HOSTNAME}`}
-            >
-              <Button
-                bg="rw.700"
-                colorScheme="rw.700"
-                rounded="full"
-                px={6}
-                size="lg"
-                data-cabin-event="navigate-uni"
-                _hover={{ bg: 'rw.900' }}
-              >
-                University of Cambridge
-              </Button>
-            </Link>
-            <Link as={NextLink} href={`${PROTOCOL}://york.${REMOTE_HOSTNAME}`}>
-              <Button
-                bg="rw.700"
-                colorScheme="rw.700"
-                rounded="full"
-                px={6}
-                size="lg"
-                data-cabin-event="navigate-york"
-                _hover={{ bg: 'rw.900' }}
-              >
-                York
-              </Button>
-            </Link>
+                <Button
+                  rounded="full"
+                  px={6}
+                  bg="rw.700"
+                  colorScheme="rw.700"
+                  size="lg"
+                  data-cabin-event="navigate-city"
+                  _hover={{ bg: 'rw.900' }}
+                >
+                  {web.title}
+                </Button>
+              </Link>
+            ))}
           </Stack>
         </Stack>
 
