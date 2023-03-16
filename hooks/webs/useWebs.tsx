@@ -2,21 +2,20 @@ import type { Location } from '@prisma/client'
 import { REMOTE_URL } from '@helpers/config'
 import { useQuery } from '@tanstack/react-query'
 
-const route = '/api/webs'
-
-export async function fetchWebsRequest(isSSR = false) {
+export async function fetchWebsRequest(isSSR = false, withListings = false) {
+  const route = withListings ? `/api/webs?withListings=true` : '/api/webs'
   const response = await fetch(isSSR ? `${REMOTE_URL}${route}` : route)
   const data: { webs: Location[] } = await response.json()
   const { webs } = data
   return webs || []
 }
 
-export default function useWebs() {
+export default function useWebs({ withListings = false } = {}) {
   const {
     data: webs,
     isLoading,
     isError,
-  } = useQuery(['webs'], () => fetchWebsRequest(false), {
+  } = useQuery(['webs'], () => fetchWebsRequest(false, withListings), {
     refetchOnWindowFocus: false,
   })
 

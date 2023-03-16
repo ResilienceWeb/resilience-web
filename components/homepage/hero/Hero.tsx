@@ -53,7 +53,7 @@ export default function Hero() {
             Be part of a growing movement of positive change...
           </Text>
           <Stack spacing={{ base: 4, sm: 6 }} direction="column">
-            {webs.map((web) => (
+            {webs.filter((web) => web.public).map((web) => (
               <Link
                 key={web.id}
                 as={NextLink}

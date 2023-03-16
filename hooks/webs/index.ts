@@ -1,5 +1,4 @@
 export { default as useWebs } from './useWebs'
-export { default as useWebListings } from './useWebListings'
 export { default as useWeb } from './useWeb'
 export { default as useUpdateWeb } from './useUpdateWeb'
 export { default as useSelectedWebName } from './useSelectedWebName'
