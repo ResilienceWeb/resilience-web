@@ -1,20 +1,29 @@
 import { useQuery } from '@tanstack/react-query'
 
-export async function fetchListingsRequest(slug) {
-  const response = await fetch(`/api/listing/${slug}`)
+import { useAppContext } from '@store/hooks'
+
+export async function fetchListingsRequest({ queryKey }) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_key, { webSlug, listingSlug }] = queryKey
+  const response = await fetch(`/api/listing/${listingSlug}?web=${webSlug}`)
   const data = await response.json()
   const { listing } = data
   return listing
 }
 
-export default function useListing(slug) {
+export default function useListing(listingSlug) {
+  const { selectedWebSlug: webSlug } = useAppContext()
   const {
     data: listing,
     isLoading,
     isError,
-  } = useQuery([`listing-${slug}`], () => fetchListingsRequest(slug), {
-    enabled: slug !== undefined && slug !== '',
-  }) // Figure out better RQ caching
+  } = useQuery(['listing', { webSlug, listingSlug }], fetchListingsRequest, {
+    enabled:
+      listingSlug !== undefined &&
+      listingSlug !== '' &&
+      webSlug !== undefined &&
+      webSlug !== '',
+  })
 
   return {
     listing,
