@@ -1,21 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Location } from '@prisma/client'
 import prisma from '../../../prisma/client'
+import type { Result } from '../type.d'
 
-type ResponseData = {
-  error?: string
-  web?: Location
+type Data = {
+  web: null | Location
 }
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>,
+  res: NextApiResponse<Result<Data>>,
 ) => {
   try {
     const { slug } = req.query
     switch (req.method) {
       case 'GET':
-        const web = await prisma.location.findFirst({
+        const web: Data['web'] = await prisma.location.findFirst({
           where: {
             slug,
           },
@@ -23,7 +23,7 @@ const handler = async (
         res.status(200).send({ web })
         break
       case 'PATCH':
-        const updatedWeb = await prisma.location.update({
+        const updatedWeb: Data['web'] = await prisma.location.update({
           where: {
             slug,
           },

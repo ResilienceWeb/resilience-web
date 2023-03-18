@@ -16,7 +16,7 @@ type WebOption = {
 const WebSelector = () => {
   const { data: session } = useSession()
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
-  const { webs } = useWebs()
+  const { webs } = useWebs({ withListings: true })
   const { permissions } = usePermissions()
 
   const allUniqueWebIds = useMemo(() => {

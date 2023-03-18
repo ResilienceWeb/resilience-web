@@ -41,7 +41,7 @@ const SeparatedElement = chakra('span', {
 
 const PermissionsList = ({ permissions }) => {
   const { listings } = useAllListings()
-  const { webs } = useWebs()
+  const { webs } = useWebs({ withListings: true })
   const { mutate: updatePermission, isLoading: isUpdatingPermission } =
     useUpdatePermission()
 
@@ -75,8 +75,6 @@ const PermissionsList = ({ permissions }) => {
   }, [listings])
 
   const webOptions = useMemo(() => {
-    if (!webs) return []
-
     return webs.map((l) => ({
       value: l.id,
       label: l.title,

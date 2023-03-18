@@ -1,17 +1,29 @@
+import type { Location } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../prisma/client'
+import type { Result } from '../type.d'
+import { stringToBoolean } from '@helpers/utils'
 
-const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
+interface Data {
+  webs: null | Location[]
+}
+
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<Result<Data>>,
+) => {
+  const withListings = req.query.withListings ? stringToBoolean(req.query.withListings as string) : false
+
   try {
-    const webs = await prisma.location.findMany({
-      include: {
+    const webs: Data['webs'] = await prisma.location.findMany({
+      include: withListings ? {
         listings: {
           select: {
             id: true,
             locationId: true,
           },
         },
-      },
+      } : null,
     })
     res.status(200).json({ webs })
   } catch (e) {

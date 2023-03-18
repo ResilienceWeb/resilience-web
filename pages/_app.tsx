@@ -2,7 +2,11 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { DefaultSeo } from 'next-seo'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+import {
+  Hydrate,
+  QueryClientProvider,
+  QueryClient,
+} from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { SessionProvider } from 'next-auth/react'
 import { Analytics } from '@vercel/analytics/react'
@@ -74,11 +78,13 @@ function App({ Component, pageProps }) {
       />
       <SessionProvider refetchInterval={5 * 60} session={pageProps.session}>
         <QueryClientProvider client={queryClient}>
-          <StoreProvider>
-            <ChakraProvider theme={theme}>
-              <Component {...pageProps} />
-            </ChakraProvider>
-          </StoreProvider>
+          <Hydrate state={pageProps.dehydratedState}>
+            <StoreProvider>
+              <ChakraProvider theme={theme}>
+                <Component {...pageProps} />
+              </ChakraProvider>
+            </StoreProvider>
+          </Hydrate>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </SessionProvider>

@@ -3,8 +3,13 @@ import { useWebs } from '@hooks/webs'
 
 export default function useSelectedWebName() {
   const { selectedWebId } = useAppContext()
-  const { webs } = useWebs()
+  const { webs, isLoading } = useWebs()
 
-  return webs?.find((s) => s.id === selectedWebId)?.title
+  if (isLoading) {
+    return ''
+  } else {
+    return webs.find((s) => s.id === selectedWebId)?.title
+  }
+
 }
 
