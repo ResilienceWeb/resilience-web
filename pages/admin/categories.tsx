@@ -42,7 +42,7 @@ export default function Categories() {
     return categories?.sort((a, b) => a.label.localeCompare(b.label))
   }, [categories])
 
-  if (sessionStatus === 'loading') {
+  if (sessionStatus === 'loading' || isLoadingCategories) {
     return <LoadingSpinner />
   }
 
@@ -82,11 +82,7 @@ export default function Categories() {
             <TabPanel>
               <Box mt={6}>
                 <CategoriesHeader />
-                {isLoadingCategories ? (
-                  <LoadingSpinner />
-                ) : (
-                  <CategoriesList categories={orderedCategories} />
-                )}
+                <CategoriesList categories={orderedCategories} />
               </Box>
             </TabPanel>
             <TabPanel>
