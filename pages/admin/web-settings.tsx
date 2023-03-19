@@ -95,53 +95,56 @@ export default function Settings() {
               initialValues={{
                 public: Boolean(webData?.public),
               }}
+              enableReinitialize
               onSubmit={onSubmit}
             >
-              {(props) => (
-                <Form>
-                  <chakra.div mb="1rem">
-                    <Field name="public">
-                      {({ field, form }: FieldProps) => {
-                        return (
-                          <FormControl
-                            isInvalid={Boolean(
-                              form.errors.public && form.touched.public,
-                            )}
-                          >
-                            <Checkbox
-                              isChecked={field.value}
-                              id="public"
-                              onChange={field.onChange}
+              {(props) => {
+                return (
+                  <Form>
+                    <chakra.div mb="1rem">
+                      <Field name="public">
+                        {({ field, form }: FieldProps) => {
+                          return (
+                            <FormControl
+                              isInvalid={Boolean(
+                                form.errors.public && form.touched.public,
+                              )}
                             >
-                              Public
-                            </Checkbox>
-                            <FormErrorMessage>
-                              {form.errors.public?.toString()}
-                            </FormErrorMessage>
-                            <FormHelperText>
-                              Is this web ready to be publicly visible on the
-                              website homepage?
-                            </FormHelperText>
-                          </FormControl>
-                        )
-                      }}
-                    </Field>
-                  </chakra.div>
+                              <Checkbox
+                                isChecked={field.value}
+                                id="public"
+                                onChange={field.onChange}
+                              >
+                                Public
+                              </Checkbox>
+                              <FormErrorMessage>
+                                {form.errors.public?.toString()}
+                              </FormErrorMessage>
+                              <FormHelperText>
+                                Is this web ready to be publicly visible on the
+                                website homepage?
+                              </FormHelperText>
+                            </FormControl>
+                          )
+                        }}
+                      </Field>
+                    </chakra.div>
 
-                  <Button
-                    bg="rw.700"
-                    colorScheme="rw.700"
-                    mt={4}
-                    variant="solid"
-                    disabled={!props.isValid}
-                    isLoading={isLoading}
-                    type="submit"
-                    _hover={{ bg: 'rw.900' }}
-                  >
-                    Update
-                  </Button>
-                </Form>
-              )}
+                    <Button
+                      bg="rw.700"
+                      colorScheme="rw.700"
+                      mt={4}
+                      variant="solid"
+                      isDisabled={!props.isValid || !props.dirty}
+                      isLoading={isLoading}
+                      type="submit"
+                      _hover={{ bg: 'rw.900' }}
+                    >
+                      Update
+                    </Button>
+                  </Form>
+                )
+              }}
             </Formik>
           </Box>
         </Stack>

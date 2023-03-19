@@ -257,7 +257,7 @@ const PermissionsList = ({ permissions }) => {
                         <Button
                           bg="rw.700"
                           colorScheme="rw.700"
-                          disabled={
+                          isDisabled={
                             !props.isValid ||
                             (isEqual(
                               props.initialValues.listings,
