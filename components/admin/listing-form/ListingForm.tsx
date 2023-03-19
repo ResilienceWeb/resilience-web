@@ -630,7 +630,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
               <Button
                 bg="rw.700"
                 colorScheme="rw.700"
-                disabled={!props.isValid}
+                isDisabled={!props.isValid}
                 isLoading={props.isSubmitting}
                 size="md"
                 type="submit"

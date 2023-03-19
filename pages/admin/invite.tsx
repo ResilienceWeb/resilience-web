@@ -279,7 +279,7 @@ export default function Invite() {
                       colorScheme="rw.700"
                       mt={4}
                       variant="solid"
-                      disabled={!props.isValid}
+                      isDisabled={!props.isValid}
                       isLoading={props.isSubmitting}
                       type="submit"
                       _hover={{ bg: 'rw.900' }}

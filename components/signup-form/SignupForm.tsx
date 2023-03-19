@@ -6,7 +6,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormHelperText,
-  Button
+  Button,
 } from '@chakra-ui/react'
 import { Formik, Form, Field } from 'formik'
 
@@ -80,8 +80,8 @@ const SignupForm = () => {
                 border="none"
                 cursor="pointer"
                 fontWeight={600}
+                isDisabled={!props.isValid}
                 _hover={{ bg: 'rw.900' }}
-                disabled={!props.isValid}
               >
                 Submit
               </Button>
