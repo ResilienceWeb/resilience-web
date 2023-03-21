@@ -26,27 +26,12 @@ interface WebProps {
   }
 }
 
-const CtrlShiftWeb = () => {
+const CtrlShiftWeb = ({ surveyAnswers }) => {
   const router = useRouter()
 
+  console.log(surveyAnswers)
+
   const { isMobile } = useAppContext()
-
-  // useEffect(() => {
-  //   const fetchSurvey = async () => {
-  //     const result = await fetch(
-  //       'https://marketplace.humhub.com/api/v1/survey',
-  //       {
-  //         headers: {
-  //           Authentication:
-  //             'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjY3MH0.qPEf2Jy9_lM3mRIQXPpNfZz-ayGX7PJtr6ZeBVGzkHYRz3KWtclLwwWK-UUOb0TzRWZ3UmXklK83TxkHqVIgQA',
-  //         },
-  //       },
-  //     )
-  //     console.log(result)
-  //   }
-
-  //   void fetchSurvey()
-  // }, [])
 
   if (router.isFallback) {
     return (
@@ -64,17 +49,19 @@ const CtrlShiftWeb = () => {
 }
 
 export const getStaticProps: GetStaticProps<WebProps, PathProps> = async () => {
-  const result = await fetch(
-    'https://vive.transitiontogether.org.uk/api/v1/survey/6',
+  const response = await fetch(
+    'https://vive.transitiontogether.org.uk/api/v1/survey/6/answers',
     {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json;charset=utf-8',
+        'Content-Type': 'application/json',
         Authorization:
           'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjY3MH0.qPEf2Jy9_lM3mRIQXPpNfZz-ayGX7PJtr6ZeBVGzkHYRz3KWtclLwwWK-UUOb0TzRWZ3UmXklK83TxkHqVIgQA',
       },
     },
   )
-  console.log(result)
+  const data = await response.json()
+  console.log(data.results)
 
   return {
     props: {
@@ -82,6 +69,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async () => {
         nodes: [],
         edges: [],
       },
+      surveyAnswers: data.results,
       selectedWebName: 'Ctrl Shift',
     },
     revalidate: 30,
