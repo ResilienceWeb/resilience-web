@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
 import { useSession } from 'next-auth/react'
@@ -12,18 +13,36 @@ import {
   Collapse,
   Link,
   Popover,
+  PopoverTrigger,
+  PopoverContent,
   Button,
   IconButton,
   Tooltip,
   useColorModeValue,
   useDisclosure,
+  Icon,
 } from '@chakra-ui/react'
-import { HamburgerIcon, CloseIcon, ChatIcon } from '@chakra-ui/icons'
+import {
+  HamburgerIcon,
+  CloseIcon,
+  ChatIcon,
+  ChevronRightIcon,
+  ChevronDownIcon,
+} from '@chakra-ui/icons'
 
 import { useAppContext } from '@store/hooks'
+import { useWebs } from '@hooks/webs'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import FeedbackDialog from '../feedback-dialog'
 import LogoImage from '../../public/logo.png'
 import styles from './Nav.module.scss'
+
+interface NavItem {
+  label: string
+  subLabel?: string
+  children?: Array<NavItem>
+  href?: string
+}
 
 export default function MainNav() {
   const { data: session } = useSession()
@@ -31,11 +50,42 @@ export default function MainNav() {
   const router = useRouter()
   const { isMobile } = useAppContext()
 
+  const { webs } = useWebs()
+  console.log(webs)
+
   const {
     isOpen: isFeedbackDialogOpen,
     onOpen: onOpenFeedbackDialog,
     onClose: onCloseFeedbackDialog,
   } = useDisclosure()
+
+  const navItems = useMemo(() => {
+    return [
+      {
+        label: 'Webs',
+        href: '#',
+        children: webs
+          .filter((web) => web.public)
+          .map((web) => ({
+            label: web.title,
+            href: `${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`,
+          })),
+      },
+      {
+        label: 'About',
+        href: '/about',
+      },
+      {
+        label: 'How it works',
+        href: '/how-it-works',
+      },
+      {
+        label: 'Donate',
+        href: 'https://opencollective.com/resilience-web',
+        isExternal: true,
+      },
+    ]
+  }, [])
 
   return (
     <>
@@ -90,7 +140,10 @@ export default function MainNav() {
                 alignItems="center"
                 ml={10}
               >
-                <DesktopNav currentPathname={router.pathname} />
+                <DesktopNav
+                  currentPathname={router.pathname}
+                  navItems={navItems}
+                />
               </Flex>
             </Flex>
           </Flex>
@@ -127,7 +180,7 @@ export default function MainNav() {
         </Flex>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
-        <MobileNav />
+        <MobileNav navItems={navItems} />
       </Collapse>
 
       <FeedbackDialog
@@ -138,22 +191,40 @@ export default function MainNav() {
   )
 }
 
-const DesktopNav = ({ currentPathname }) => {
+const DesktopNav = ({ currentPathname, navItems }) => {
   return (
     <Stack direction={'row'} spacing={8}>
-      {NAV_ITEMS.map((navItem) => (
+      {navItems.map((navItem) => (
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
-            <NextLink href={navItem.href} passHref>
-              <button
-                className={classnames(
-                  styles.navLink,
-                  currentPathname === navItem.href && styles.active,
-                )}
+            <PopoverTrigger>
+              <NextLink href={navItem.href} passHref>
+                <button
+                  className={classnames(
+                    styles.navLink,
+                    currentPathname === navItem.href && styles.active,
+                  )}
+                >
+                  {navItem.label}
+                </button>
+              </NextLink>
+            </PopoverTrigger>
+
+            {navItem.children && (
+              <PopoverContent
+                border={0}
+                boxShadow={'xl'}
+                bg="white"
+                p={2}
+                rounded={'xl'}
               >
-                {navItem.label}
-              </button>
-            </NextLink>
+                <Stack>
+                  {navItem.children.map((child) => (
+                    <DesktopSubNav key={child.label} {...child} />
+                  ))}
+                </Stack>
+              </PopoverContent>
+            )}
           </Popover>
         </Box>
       ))}
@@ -161,23 +232,61 @@ const DesktopNav = ({ currentPathname }) => {
   )
 }
 
-const MobileNav = () => {
+const DesktopSubNav = ({ label, href }) => {
+  return (
+    <Link
+      href={href}
+      role={'group'}
+      display={'block'}
+      p={2}
+      rounded={'md'}
+      _hover={{ bg: useColorModeValue('green.50', 'gray.900') }}
+    >
+      <Stack direction={'row'} align={'center'}>
+        <Box>
+          <Text
+            transition={'all .3s ease'}
+            _groupHover={{ color: 'rw.700' }}
+            fontWeight={500}
+          >
+            {label}
+          </Text>
+        </Box>
+        <Flex
+          transition={'all .3s ease'}
+          transform={'translateX(-10px)'}
+          opacity={0}
+          _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
+          justify={'flex-end'}
+          align={'center'}
+          flex={1}
+        >
+          <Icon color={'rw.700'} w={5} h={5} as={ChevronRightIcon} />
+        </Flex>
+      </Stack>
+    </Link>
+  )
+}
+
+const MobileNav = ({ navItems }) => {
   return (
     <Stack
       bg={useColorModeValue('white', 'gray.800')}
       p={4}
       display={{ md: 'none' }}
     >
-      {NAV_ITEMS.map((navItem) => (
+      {navItems.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
     </Stack>
   )
 }
 
-const MobileNavItem = ({ label, href }: { label: string; href: string }) => {
+const MobileNavItem = ({ label, children, href }: NavItem) => {
+  const { isOpen, onToggle } = useDisclosure()
+
   return (
-    <Stack spacing={4}>
+    <Stack spacing={4} onClick={children && onToggle}>
       <Flex
         py={2}
         as={Link}
@@ -194,23 +303,34 @@ const MobileNavItem = ({ label, href }: { label: string; href: string }) => {
         >
           {label}
         </Text>
+        {children && (
+          <Icon
+            as={ChevronDownIcon}
+            transition={'all .25s ease-in-out'}
+            transform={isOpen ? 'rotate(180deg)' : ''}
+            w={6}
+            h={6}
+          />
+        )}
       </Flex>
+
+      <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
+        <Stack
+          mt={2}
+          pl={4}
+          borderLeft={1}
+          borderStyle={'solid'}
+          borderColor={useColorModeValue('gray.200', 'gray.700')}
+          align={'start'}
+        >
+          {children &&
+            children.map((child) => (
+              <Link key={child.label} py={2} href={child.href}>
+                {child.label}
+              </Link>
+            ))}
+        </Stack>
+      </Collapse>
     </Stack>
   )
 }
-
-const NAV_ITEMS = [
-  {
-    label: 'About',
-    href: '/about',
-  },
-  {
-    label: 'How it works',
-    href: '/how-it-works',
-  },
-  {
-    label: 'Donate',
-    href: 'https://opencollective.com/resilience-web',
-    isExternal: true,
-  },
-]
