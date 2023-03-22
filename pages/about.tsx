@@ -3,9 +3,11 @@ import { NextSeo } from 'next-seo'
 import { GraphQLClient } from 'graphql-request'
 import ReactMarkdown from 'react-markdown'
 import { Box, Heading, useBreakpointValue, Flex } from '@chakra-ui/react'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 
 import ErrorBoundary from '@components/error-boundary'
 import Layout from '@components/layout'
+import { fetchWebsRequest } from 'hooks/webs/useWebs'
 
 const About = ({ page }) => {
   return (
@@ -45,6 +47,9 @@ const About = ({ page }) => {
 export const getStaticProps: GetStaticProps = async () => {
   const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL)
 
+  const queryClient = new QueryClient()
+  await queryClient.fetchQuery(['webs'], () => fetchWebsRequest(true))
+
   const { page } = await graphcms.request(`
 	{
 		page(where: {slug: "about"}) {
@@ -59,6 +64,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       page,
+      dehydratedState: dehydrate(queryClient),
     },
     revalidate: 60,
   }

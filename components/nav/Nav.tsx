@@ -51,7 +51,6 @@ export default function MainNav() {
   const { isMobile } = useAppContext()
 
   const { webs } = useWebs()
-  console.log(webs)
 
   const {
     isOpen: isFeedbackDialogOpen,
@@ -65,7 +64,7 @@ export default function MainNav() {
         label: 'Webs',
         href: '#',
         children: webs
-          .filter((web) => web.public)
+          ?.filter((web) => web.public)
           .map((web) => ({
             label: web.title,
             href: `${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`,
