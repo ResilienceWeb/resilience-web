@@ -11,11 +11,12 @@ import {
 import NextLink from 'next/link'
 import { useAppContext } from '@store/hooks'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
-import { useWebs } from '@hooks/webs'
+
+import { api } from '@/utils/api'
 
 export default function Hero() {
   const { isMobile } = useAppContext()
-  const { webs } = useWebs()
+  const { data: webs = [] } = api.web.getAll.useQuery()
 
   return (
     <Container maxW="7xl">
@@ -53,25 +54,27 @@ export default function Hero() {
             Be part of a growing movement of positive change...
           </Text>
           <Stack spacing={{ base: 4, sm: 6 }} direction="column">
-            {webs.filter((web) => web.public).map((web) => (
-              <Link
-                key={web.id}
-                as={NextLink}
-                href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
-              >
-                <Button
-                  rounded="full"
-                  px={6}
-                  bg="rw.700"
-                  colorScheme="rw.700"
-                  size="lg"
-                  data-cabin-event="navigate-city"
-                  _hover={{ bg: 'rw.900' }}
+            {webs
+              .filter((web) => web.public)
+              .map((web) => (
+                <Link
+                  key={web.id}
+                  as={NextLink}
+                  href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
                 >
-                  {web.title}
-                </Button>
-              </Link>
-            ))}
+                  <Button
+                    rounded="full"
+                    px={6}
+                    bg="rw.700"
+                    colorScheme="rw.700"
+                    size="lg"
+                    data-cabin-event="navigate-city"
+                    _hover={{ bg: 'rw.900' }}
+                  >
+                    {web.title}
+                  </Button>
+                </Link>
+              ))}
           </Stack>
         </Stack>
 
