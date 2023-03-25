@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import type { AppType } from 'next/app'
 import Script from 'next/script'
 import { DefaultSeo } from 'next-seo'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
@@ -17,6 +18,8 @@ import '@styles/colors.css'
 import '@styles/styles.global.scss'
 import '@styles/vis-network.min.css'
 import StoreProvider from '@store/StoreProvider'
+import { Session } from 'next-auth'
+import { api } from '@/utils/api'
 
 const theme = extendTheme({
   styles: {
@@ -40,7 +43,10 @@ const theme = extendTheme({
 
 const queryClient = new QueryClient()
 
-function App({ Component, pageProps }) {
+const App: AppType<{
+  session?: Session | null
+  dehydratedState: unknown
+}> = function ({ Component, pageProps }) {
   return (
     <>
       <DefaultSeo
@@ -93,4 +99,4 @@ function App({ Component, pageProps }) {
   )
 }
 
-export default App
+export default api.withTRPC(App)

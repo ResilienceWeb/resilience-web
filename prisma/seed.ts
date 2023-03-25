@@ -105,6 +105,7 @@ async function main() {
         locationId: newLocationCity.id,
       },
     })
+    if (!newCategory) continue
 
     await prisma.listing.create({
       data: {
@@ -123,6 +124,7 @@ async function main() {
           locationId: newLocationUni.id,
         },
       })
+      if (!newCategory) continue
 
       await prisma.listing.create({
         data: {

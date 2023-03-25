@@ -1,54 +1,39 @@
 {
-	"compilerOptions": {
-		"target": "es5",
-		"lib": [
-			"dom",
-			"dom.iterable",
-			"esnext"
-		],
-		"allowJs": true,
-		"skipLibCheck": true,
-		"strict": false,
-		"forceConsistentCasingInFileNames": true,
-		"noEmit": true,
-		"incremental": true,
-		"esModuleInterop": true,
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"jsx": "preserve",
-		"baseUrl": "./",
-		"paths": {
-			"@components/*": [
-				"components/*"
-			],
-			"@hooks/*": [
-				"hooks/*"
-			],
-			"@helpers/*": [
-				"helpers/*"
-			],
-			"@store/*": [
-				"store/*"
-			],
-			"@styles/*": [
-				"styles/*"
-			],
-		},
-		"typeRoots": [
-			"./node_modules/@types",
-			"./types",
-		]
-	},
-	"include": [
-		"next-env.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		"./next.config.js",
-		"./pages/_error.js"
-	],
-	"exclude": [
-		"node_modules"
-	]
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./*"],
+      "@server/*": ["server/*"],
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@helpers/*": ["helpers/*"],
+      "@store/*": ["store/*"],
+      "@styles/*": ["styles/*"]
+    },
+    "typeRoots": ["./node_modules/@types", "./types"]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mjs",
+    "next.config.mjs",
+    "src/pages/_error.js"
+  ],
+  "exclude": ["node_modules"]
 }
+

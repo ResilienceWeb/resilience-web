@@ -27,6 +27,10 @@
     "@sendgrid/mail": "7.7.0",
     "@tanstack/react-query": "4.27.0",
     "@tinymce/tinymce-react": "4.3.0",
+    "@trpc/client": "10.18.0",
+    "@trpc/next": "10.18.0",
+    "@trpc/react-query": "10.18.0",
+    "@trpc/server": "10.18.0",
     "@vercel/analytics": "0.1.11",
     "aws-sdk": "2.1069.0",
     "chroma-js": "2.4.2",
@@ -54,7 +58,8 @@
     "tinymce": "6.3.1",
     "use-debounce": "8.0.4",
     "use-local-storage": "2.3.6",
-    "vis-network-react": "github:DinerIsmail/vis-network-react"
+    "vis-network-react": "github:DinerIsmail/vis-network-react",
+    "zod": "3.21.4"
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "4.27.0",
@@ -83,4 +88,3 @@
     "typescript": "4.9.4"
   }
 }
-
