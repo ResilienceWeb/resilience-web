@@ -26,10 +26,30 @@ interface WebProps {
   }
 }
 
+const relevantFieldIds = [
+  30, // Organisation
+  35, // Aims and objectives
+  104, // Organisation website
+]
+
+const transformData = (answers) => {
+  console.log(answers)
+  const visibleAnswers = answers.filter((answer) => answer.state === 'visible')
+
+  const transformedData = visibleAnswers.map((answer) => {
+    relevantFieldIds.map((fieldId) => {
+      return answer.answerFields.find((field) => field.field_id === fieldId)
+    })
+  })
+
+  return visibleAnswers
+}
+
 const CtrlShiftWeb = ({ surveyAnswers }) => {
   const router = useRouter()
 
-  console.log(surveyAnswers)
+  const answers = transformData(surveyAnswers)
+  // console.log(surveyAnswers)
 
   const { isMobile } = useAppContext()
 
