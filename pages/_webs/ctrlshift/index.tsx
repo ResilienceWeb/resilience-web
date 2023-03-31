@@ -26,30 +26,33 @@ interface WebProps {
   }
 }
 
-const relevantFieldIds = [
-  30, // Organisation
-  35, // Aims and objectives
-  104, // Organisation website
-]
+const relevantFields = {
+  'organisation': 30,
+  'aims-and-objectives': 35,
+  'website': 104
+}
 
-const transformData = (answers) => {
-  console.log(answers)
-  const visibleAnswers = answers.filter((answer) => answer.state === 'visible')
+const getField = (fieldKey, answer) => {
+  return answer.answerFields.find((field) => field.field_id === relevantFields[fieldKey]).value
+}
 
-  const transformedData = visibleAnswers.map((answer) => {
-    relevantFieldIds.map((fieldId) => {
-      return answer.answerFields.find((field) => field.field_id === fieldId)
-    })
+const transformData = (allAnswers) => {
+  const answers = allAnswers.filter((answer) => answer.state === 'visible')
+
+  return answers.map((answer) => {
+    return {
+      title: getField('organisation', answer),
+      description: getField('aims-and-objectives', answer),
+      website: getField('website', answer)
+    }
   })
-
-  return visibleAnswers
 }
 
 const CtrlShiftWeb = ({ surveyAnswers }) => {
   const router = useRouter()
 
   const answers = transformData(surveyAnswers)
-  // console.log(surveyAnswers)
+  console.log(answers)
 
   const { isMobile } = useAppContext()
 
