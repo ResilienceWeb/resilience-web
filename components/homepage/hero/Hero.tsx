@@ -1,93 +1,61 @@
-import {
-  Container,
-  Stack,
-  Flex,
-  Heading,
-  Text,
-  Button,
-  Icon,
-  Link,
-} from '@chakra-ui/react'
-import NextLink from 'next/link'
+import { Container, Stack, Flex, Heading, Text, Icon } from '@chakra-ui/react'
 import { useAppContext } from '@store/hooks'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
-import { useWebs } from '@hooks/webs'
 
 export default function Hero() {
   const { isMobile } = useAppContext()
-  const { webs } = useWebs()
 
   return (
-    <Container maxW="7xl">
-      <Stack
-        align="center"
-        spacing={{ base: 8, md: 4 }}
-        py={{ base: '0', md: '1rem' }}
-        direction={{ base: 'column', md: 'row' }}
-      >
-        <Stack flex={1} spacing={{ base: 5, md: 8 }}>
-          <Heading
-            fontWeight={600}
-            fontSize={{ base: '42px', md: '44px' }}
-            lineHeight={1.1}
-          >
-            <Text as="span" position="relative">
-              Celebrating place-based
+    <>
+      <Container maxW="7xl">
+        <Stack
+          align="center"
+          spacing={{ base: 8, md: 4 }}
+          py={{ base: '0', md: '1rem' }}
+          direction={{ base: 'column', md: 'row' }}
+        >
+          <Stack flex={1} spacing={{ base: 5, md: 8 }}>
+            <Heading
+              fontWeight={600}
+              fontSize={{ base: '42px', md: '44px' }}
+              lineHeight={1.1}
+            >
+              <Text as="span" position="relative">
+                Celebrating place-based
+              </Text>
+              <br />
+              <Text as="span">community action</Text>
+            </Heading>
+            <Text color="blackAlpha.700" fontSize="18" maxW="3xl">
+              A Resilience Web is a holistic visualisation of environmental and
+              social justice groups in a place, curated by people who live
+              there. These webs are intended to help the discovery,
+              collaboration and networking between activists and groups around
+              issues that they care about.
             </Text>
-            <br />
-            <Text as="span">community action</Text>
-          </Heading>
-          <Text color="blackAlpha.700" fontSize="18" maxW="3xl">
-            A Resilience Web is a holistic visualisation of environmental and
-            social justice groups in a place, curated by people who live there.
-            These webs are intended to help the discovery, collaboration and
-            networking between activists and groups around issues that they care
-            about.
-          </Text>
-          <Text
-            color="blackAlpha.700"
-            fontWeight="600"
-            fontSize="20"
-            maxW="3xl"
-          >
-            Be part of a growing movement of positive change...
-          </Text>
-          <Stack spacing={{ base: 4, sm: 6 }} direction="column">
-            {webs.filter((web) => web.public).map((web) => (
-              <Link
-                key={web.id}
-                as={NextLink}
-                href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
-              >
-                <Button
-                  rounded="full"
-                  px={6}
-                  bg="rw.700"
-                  colorScheme="rw.700"
-                  size="lg"
-                  data-cabin-event="navigate-city"
-                  _hover={{ bg: 'rw.900' }}
-                >
-                  {web.title}
-                </Button>
-              </Link>
-            ))}
+            <Text
+              color="blackAlpha.700"
+              fontWeight="600"
+              fontSize="20"
+              maxW="3xl"
+            >
+              Be part of a growing movement of positive change...
+            </Text>
           </Stack>
-        </Stack>
 
-        {!isMobile && (
-          <Flex
-            flex={1}
-            justify="center"
-            align="center"
-            position="relative"
-            w="full"
-          >
-            <Illustration height="20rem" mt={{ base: 0, sm: 8 }} />
-          </Flex>
-        )}
-      </Stack>
-    </Container>
+          {!isMobile && (
+            <Flex
+              flex={1}
+              justify="center"
+              align="flex-start"
+              position="relative"
+              w="full"
+            >
+              <Illustration height="20rem" mt={{ base: 0, sm: 8 }} />
+            </Flex>
+          )}
+        </Stack>
+      </Container>
+    </>
   )
 }
 
