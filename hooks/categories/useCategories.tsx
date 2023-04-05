@@ -3,7 +3,6 @@ import { useAppContext } from '@store/hooks'
 import { Category } from '@prisma/client'
 
 async function fetchCategoriesRequest({ queryKey }) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_key, { webSlug }] = queryKey
   const response = await fetch(`/api/categories?web=${webSlug}`)
   const { data: categories } = await response.json()

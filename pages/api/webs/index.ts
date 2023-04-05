@@ -25,6 +25,7 @@ const handler = async (
         },
       } : null,
     })
+
     res.status(200).json({ webs })
   } catch (e) {
     res.status(500).json({

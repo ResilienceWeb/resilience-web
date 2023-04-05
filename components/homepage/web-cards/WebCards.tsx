@@ -20,7 +20,7 @@ const WebCards = () => {
     <Container maxW="7xl">
       <Stack spacing={{ base: 4, sm: 6 }}>
         {webs
-          .filter((web) => web.public)
+          ?.filter((web) => web.public)
           .map((web) => (
             <Link
               key={web.id}
