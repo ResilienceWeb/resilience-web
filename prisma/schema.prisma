@@ -71,6 +71,7 @@ model Location {
   tags             Tag[]
   permission       Permission[]
   public           Boolean      @default(false)
+  image            String?
 }
 
 model Category {
