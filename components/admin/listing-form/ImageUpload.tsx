@@ -44,9 +44,13 @@ const ImageUpload = ({ field, form, formProps }) => {
   return (
     <FormControl isInvalid={form.errors.image && form.touched.image}>
       <FormLabel htmlFor="image" fontSize="sm">
-        Cover image
+        Image
       </FormLabel>
-      <InputGroup display="flex" alignItems="center" justifyContent="center">
+      <InputGroup
+        display="flex"
+        alignItems="center"
+        justifyContent="flex-start"
+      >
         <VisuallyHidden>
           <input
             type="file"

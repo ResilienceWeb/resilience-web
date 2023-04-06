@@ -36,10 +36,10 @@ const Admin = () => {
     if (!session || isLoadingPermissions || isLoadingListings) return null
     if (session.user.admin) return listings
 
-    if (permissions?.webIds.includes(selectedWebId)) return listings
+    if (permissions?.webIds?.includes(selectedWebId)) return listings
 
     return listings.filter((listing) => {
-      return permissions?.listingIds.includes(listing.id)
+      return permissions?.listingIds?.includes(listing.id)
     })
   }, [
     session,

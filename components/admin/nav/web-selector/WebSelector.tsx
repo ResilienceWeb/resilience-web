@@ -20,11 +20,12 @@ const WebSelector = () => {
   const { permissions } = usePermissions()
 
   const allUniqueWebIds = useMemo(() => {
+    console.log({ permissions })
     if (!permissions) {
       return []
     }
 
-    const allWebIds = permissions.fullPermissionData.listings.map(
+    const allWebIds = permissions.fullPermissionData?.listings.map(
       (listing) => listing.locationId,
     )
     return Array.from(new Set(allWebIds))

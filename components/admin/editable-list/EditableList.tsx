@@ -76,11 +76,9 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
       return 'You are an admin. You can see all the listings on each web, as well as invite people, or edit categories or tags on each web.'
     }
 
-    const selectedWebName = webs.find(
-      (s) => s.id === selectedWebId,
-    )?.title
+    const selectedWebName = webs.find((s) => s.id === selectedWebId)?.title
 
-    if (permissions?.webIds.includes(selectedWebId)) {
+    if (permissions?.webIds?.includes(selectedWebId)) {
       return `You have access to edit any listing or add new listings on the ${selectedWebName} Resilience Web.`
     }
 

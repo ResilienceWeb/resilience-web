@@ -4,8 +4,8 @@ import { useSession } from 'next-auth/react'
 async function fetchPermissionsRequest() {
   const response = await fetch('/api/permissions')
   const data = await response.json()
-  const listingIds = data.permission.listings.map((l) => l.id)
-  const webIds = data.permission.locations.map((l) => l.id)
+  const listingIds = data.permission?.listings.map((l) => l.id)
+  const webIds = data.permission?.locations.map((l) => l.id)
   return { listingIds, webIds, fullPermissionData: data.permission }
 }
 
