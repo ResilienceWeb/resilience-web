@@ -1,14 +1,6 @@
-import {
-  Container,
-  Stack,
-  // Heading,
-  // Text,
-  Button,
-  // Center,
-  // Box,
-  Link,
-} from '@chakra-ui/react'
 import NextLink from 'next/link'
+import Image from 'next/image'
+import { Container, Stack, Grid, Heading, Box, Link } from '@chakra-ui/react'
 
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { useWebs } from '@hooks/webs'
@@ -18,86 +10,75 @@ const WebCards = () => {
 
   return (
     <Container maxW="7xl">
-      <Stack spacing={{ base: 4, sm: 6 }}>
+      <Heading as="h2" fontSize="2rem" my="1rem">
+        Find Resilience Webs near you in the UK
+      </Heading>
+      <Grid
+        templateColumns={{
+          base: '1fr',
+          md: 'repeat(3, 1fr)',
+        }}
+        gap="1rem"
+      >
         {webs
-          ?.filter((web) => web.public)
+          ?.filter((web) => web.public && Boolean(web.image))
           .map((web) => (
-            <Link
-              key={web.id}
-              as={NextLink}
-              href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
-              width="fit-content"
-            >
-              <Button
-                rounded="full"
-                px={6}
-                bg="rw.700"
-                colorScheme="rw.700"
-                size="lg"
-                _hover={{ bg: 'rw.900' }}
-              >
-                {web.title}
-              </Button>
-            </Link>
+            <Card key={web.id} web={web} />
           ))}
-      </Stack>
+      </Grid>
     </Container>
   )
 }
 
 export default WebCards
 
-/** Not used yet, realised we need to have the image fields for the webs first */
-// const Card = () => {
-//   return (
-//     <Center py={6}>
-//       <Box
-//         maxW={'445px'}
-//         w={'full'}
-//         bg="white"
-//         boxShadow={'2xl'}
-//         rounded={'md'}
-//         p={6}
-//         overflow={'hidden'}
-//       >
-//         <Box
-//           h={'210px'}
-//           bg={'gray.100'}
-//           mt={-6}
-//           mx={-6}
-//           mb={6}
-//           pos={'relative'}
-//         >
-//           <Image src={''} layout={'fill'} />
-//         </Box>
-//         <Stack>
-//           <Text
-//             color={'green.500'}
-//             textTransform={'uppercase'}
-//             fontWeight={800}
-//             fontSize={'sm'}
-//             letterSpacing={1.1}
-//           >
-//             Blog
-//           </Text>
-//           <Heading color="gray.700" fontSize={'2xl'} fontFamily={'body'}>
-//             Boost your conversion rate
-//           </Heading>
-//           <Text color={'gray.500'}>
-//             Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-//             nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-//             erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-//             et ea rebum.
-//           </Text>
-//         </Stack>
-//         <Stack mt={6} direction={'row'} spacing={4} align={'center'}>
-//           <Stack direction={'column'} spacing={0} fontSize={'sm'}>
-//             <Text fontWeight={600}>Achim Rolle</Text>
-//             <Text color={'gray.500'}>Feb 08, 2021 · 6min read</Text>
-//           </Stack>
-//         </Stack>
-//       </Box>
-//     </Center>
-//   )
-// }
+const Card = ({ web }) => {
+  return (
+    <Link
+      key={web.id}
+      as={NextLink}
+      href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
+      maxW={'345px'}
+    >
+      <Box
+        w="full"
+        bg="white"
+        boxShadow="md"
+        rounded="md"
+        p={6}
+        overflow="hidden"
+        transition="box-shadow 300ms ease-in-out"
+        _hover={{
+          boxShadow: '2xl',
+        }}
+      >
+        <Box
+          h={'210px'}
+          bg={'gray.100'}
+          mt={-6}
+          mx={-6}
+          mb={6}
+          pos={'relative'}
+        >
+          <Image
+            alt={`Image representing ${web.title} web`}
+            src={web.image}
+            fill={true}
+            style={{ objectFit: 'cover' }}
+          />
+        </Box>
+        <Stack>
+          <Heading color="gray.700" fontSize={'2xl'} fontFamily={'body'}>
+            {web.title}
+          </Heading>
+          {/* <Text color={'gray.500'}>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+          sed diam voluptua.
+        </Text> */}
+        </Stack>
+      </Box>
+    </Link>
+  )
+}
 

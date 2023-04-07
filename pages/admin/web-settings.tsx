@@ -12,6 +12,7 @@ import {
   Heading,
   chakra,
   Button,
+  Text,
   FormControl,
   FormErrorMessage,
   FormHelperText,
@@ -138,6 +139,7 @@ export default function Settings() {
                           field={field}
                           form={form}
                           formProps={props}
+                          helperText={`This should be a picture that best represents ${webData?.title}`}
                         />
                       )}
                     </Field>

@@ -3,6 +3,7 @@ import Image from 'next/legacy/image'
 import {
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   FormLabel,
   InputGroup,
   Button,
@@ -15,7 +16,17 @@ import {
 
 import optimizeImage from '@helpers/optimizeImage'
 
-const ImageUpload = ({ field, form, formProps }) => {
+const ImageUpload = ({
+  field,
+  form,
+  formProps,
+  helperText,
+}: {
+  field: any
+  form: any
+  formProps: any
+  helperText?: string
+}) => {
   const fileInputRef = useRef<HTMLInputElement>()
   const [preview, setPreview] = useState<string | ArrayBuffer>()
 
@@ -46,11 +57,8 @@ const ImageUpload = ({ field, form, formProps }) => {
       <FormLabel htmlFor="image" fontSize="sm">
         Image
       </FormLabel>
-      <InputGroup
-        display="flex"
-        alignItems="center"
-        justifyContent="flex-start"
-      >
+      {helperText && <FormHelperText mb="1.5rem">{helperText}</FormHelperText>}
+      <InputGroup display="flex" alignItems="center" justifyContent="center">
         <VisuallyHidden>
           <input
             type="file"
