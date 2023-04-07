@@ -20,7 +20,6 @@ const WebSelector = () => {
   const { permissions } = usePermissions()
 
   const allUniqueWebIds = useMemo(() => {
-    console.log({ permissions })
     if (!permissions) {
       return []
     }

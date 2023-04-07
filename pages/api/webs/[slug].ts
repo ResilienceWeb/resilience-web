@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Location } from '@prisma/client'
+import formidable from 'formidable'
+import type { File } from 'formidable'
+import { Location, Prisma } from '@prisma/client'
 import prisma from '../../../prisma/client'
+import uploadImage from '@helpers/uploadImage'
+import { stringToBoolean } from '@helpers/utils'
 import type { Result } from '../type.d'
 
 type Data = {
@@ -22,15 +26,41 @@ const handler = async (
         })
         res.status(200).send({ web })
         break
-      case 'PATCH':
-        const updatedWeb: Data['web'] = await prisma.location.update({
-          where: {
-            slug,
-          },
-          data: req.body,
+      case 'POST':
+        const form = formidable({
+          keepExtensions: true,
         })
-        res.status(200)
-        res.json({ web: updatedWeb })
+
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        form.parse(req, async (_err, fields, files) => {
+          const newData: Prisma.LocationUncheckedUpdateInput = {
+            public: stringToBoolean(fields.public as string),
+          }
+
+          let imageUrl = null
+          if (files.image) {
+            const { image: oldImageKey } = await prisma.location.findUnique({
+              where: { slug },
+            })
+            imageUrl = await uploadImage(
+              files.image as File,
+              oldImageKey as string,
+            )
+          }
+          if (imageUrl) {
+            newData.image = imageUrl
+          }
+
+          const updatedWeb: Data['web'] = await prisma.location.update({
+            where: {
+              slug,
+            },
+            data: newData,
+          })
+          res.status(200)
+          res.json({ web: updatedWeb })
+        })
+
         break
     }
   } catch (e) {
@@ -42,6 +72,7 @@ const handler = async (
 
 export const config = {
   api: {
+    bodyParser: false,
     externalResolver: true,
   },
 }

@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react'
 
 import LayoutContainer from '@components/admin/layout-container'
+import ImageUpload from '@components/admin/listing-form/ImageUpload'
 import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
 import { useWeb, useUpdateWeb } from '@hooks/webs'
 import { useAppContext } from '@store/hooks'
@@ -94,6 +95,7 @@ export default function Settings() {
             <Formik
               initialValues={{
                 public: Boolean(webData?.public),
+                image: webData?.image,
               }}
               enableReinitialize
               onSubmit={onSubmit}
@@ -101,7 +103,7 @@ export default function Settings() {
               {(props) => {
                 return (
                   <Form>
-                    <chakra.div mb="1rem">
+                    <chakra.div mb="2rem">
                       <Field name="public">
                         {({ field, form }: FieldProps) => {
                           return (
@@ -129,6 +131,16 @@ export default function Settings() {
                         }}
                       </Field>
                     </chakra.div>
+
+                    <Field name="image">
+                      {({ field, form }: FieldProps) => (
+                        <ImageUpload
+                          field={field}
+                          form={form}
+                          formProps={props}
+                        />
+                      )}
+                    </Field>
 
                     <Button
                       bg="rw.700"

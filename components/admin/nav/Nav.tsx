@@ -46,7 +46,7 @@ const Nav = () => {
   const { permissions } = usePermissions()
   const { selectedWebId } = useAppContext()
   const isAdminOfSelectedWeb = useMemo(() => {
-    return permissions?.webIds.includes(selectedWebId)
+    return permissions?.webIds?.includes(selectedWebId)
   }, [permissions?.webIds, selectedWebId])
 
   const Links = useMemo(() => {
