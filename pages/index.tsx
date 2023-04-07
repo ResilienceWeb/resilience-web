@@ -10,7 +10,7 @@ export const getServerSideProps = async () => {
   const queryClient = new QueryClient()
 
   // prefetch data on the server
-  await queryClient.fetchQuery(['webs-user-facing'], () => fetchWebsRequest(true))
+  await queryClient.fetchQuery(['webs'], () => fetchWebsRequest(true))
 
   return {
     props: {

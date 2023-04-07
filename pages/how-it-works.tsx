@@ -169,7 +169,7 @@ function Features() {
 
 export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
-  await queryClient.fetchQuery(['webs-user-facing'], () => fetchWebsRequest(true))
+  await queryClient.fetchQuery(['webs'], () => fetchWebsRequest(true))
 
   return {
     props: {
