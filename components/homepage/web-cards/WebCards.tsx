@@ -38,28 +38,20 @@ const Card = ({ web }) => {
       key={web.id}
       as={NextLink}
       href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
-      maxW={'345px'}
     >
       <Box
         w="full"
         bg="white"
         boxShadow="md"
         rounded="md"
-        p={6}
+        p={4}
         overflow="hidden"
         transition="box-shadow 300ms ease-in-out"
         _hover={{
           boxShadow: '2xl',
         }}
       >
-        <Box
-          h={'210px'}
-          bg={'gray.100'}
-          mt={-6}
-          mx={-6}
-          mb={6}
-          pos={'relative'}
-        >
+        <Box h="210px" bg="gray.100" mt={-4} mx={-6} mb={4} pos="relative">
           <Image
             alt={`Image representing ${web.title} web`}
             src={web.image}
