@@ -84,7 +84,7 @@ export default function MainNav() {
         isExternal: true,
       },
     ]
-  }, [])
+  }, [webs])
 
   return (
     <>

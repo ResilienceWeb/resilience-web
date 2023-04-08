@@ -7,7 +7,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 
 import ErrorBoundary from '@components/error-boundary'
 import Layout from '@components/layout'
-import { fetchWebsRequest } from 'hooks/webs/useWebs'
+import { fetchWebsRequest } from '@hooks/webs/useWebs'
 
 const About = ({ page }) => {
   return (

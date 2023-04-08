@@ -12,7 +12,6 @@ import {
   Heading,
   chakra,
   Button,
-  Text,
   FormControl,
   FormErrorMessage,
   FormHelperText,
