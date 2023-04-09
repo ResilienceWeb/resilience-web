@@ -91,11 +91,12 @@ model Category {
 
 model Tag {
   id       Int       @id @default(autoincrement())
-  label    String    @unique(map: "tags.label_unique")
+  label    String
   webId    Int?
   web      Location? @relation(fields: [webId], references: [id])
   listings Listing[]
 
+  @@unique([webId, label], name: "tagIdentifier")
   @@map("tags")
 }
 
@@ -117,8 +118,8 @@ model Listing {
   image             String?
   slug              String
   webId             Int
-  category          Category?    @relation(fields: [categoryId], references: [id])
   web               Location?    @relation(fields: [webId], references: [id])
+  category          Category?    @relation(fields: [categoryId], references: [id])
   permissions       Permission[]
   tags              Tag[]
   relations         Listing[]    @relation("related")
