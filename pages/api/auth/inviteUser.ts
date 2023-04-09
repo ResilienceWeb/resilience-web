@@ -72,7 +72,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         listings: {
           connect: listingsToConnect,
         },
-        locations: {
+        webs: {
           connect: webIdToConnect,
         },
       },
@@ -85,7 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         listings: {
           connect: listingsToConnect,
         },
-        locations: {
+        webs: {
           connect: webIdToConnect,
         },
       },

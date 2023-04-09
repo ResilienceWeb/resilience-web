@@ -71,28 +71,30 @@ model Location {
   permission Permission[]
   published  Boolean      @default(false)
   image      String?
+
+  @@map("Location")
 }
 
 model Category {
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @default(now()) @map("updated_at")
-  label      String
-  color      String?   @default("f1f1f1")
-  id         Int       @id @default(autoincrement())
-  locationId Int?
-  location   Location? @relation(fields: [locationId], references: [id])
-  listings   Listing[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  label     String
+  color     String?   @default("f1f1f1")
+  id        Int       @id @default(autoincrement())
+  webId     Int?
+  web       Location? @relation(fields: [webId], references: [id])
+  listings  Listing[]
 
-  @@unique([locationId, label], name: "categoryIdentifier")
+  @@unique([webId, label], name: "categoryIdentifier")
   @@map("categories")
 }
 
 model Tag {
-  id         Int       @id @default(autoincrement())
-  label      String    @unique(map: "tags.label_unique")
-  locationId Int?
-  location   Location? @relation(fields: [locationId], references: [id])
-  listings   Listing[]
+  id       Int       @id @default(autoincrement())
+  label    String    @unique(map: "tags.label_unique")
+  webId    Int?
+  web      Location? @relation(fields: [webId], references: [id])
+  listings Listing[]
 
   @@map("tags")
 }
@@ -114,15 +116,15 @@ model Listing {
   categoryId        Int?
   image             String?
   slug              String
-  locationId        Int
+  webId             Int
   category          Category?    @relation(fields: [categoryId], references: [id])
-  location          Location?    @relation(fields: [locationId], references: [id])
+  web               Location?    @relation(fields: [webId], references: [id])
   permissions       Permission[]
   tags              Tag[]
   relations         Listing[]    @relation("related")
   relationOf        Listing[]    @relation("related")
 
-  @@unique([locationId, slug])
+  @@unique([webId, slug])
   @@map("listings")
 }
 
@@ -133,6 +135,6 @@ model Permission {
   email     String   @unique
   user      User?    @relation(fields: [email], references: [email])
 
-  locations Location[]
-  listings  Listing[]
+  webs     Location[]
+  listings Listing[]
 }

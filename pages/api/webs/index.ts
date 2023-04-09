@@ -12,18 +12,22 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<Result<Data>>,
 ) => {
-  const withListings = req.query.withListings ? stringToBoolean(req.query.withListings as string) : false
+  const withListings = req.query.withListings
+    ? stringToBoolean(req.query.withListings as string)
+    : false
 
   try {
     const webs: Data['webs'] = await prisma.location.findMany({
-      include: withListings ? {
-        listings: {
-          select: {
-            id: true,
-            locationId: true,
-          },
-        },
-      } : null,
+      include: withListings
+        ? {
+            listings: {
+              select: {
+                id: true,
+                webId: true,
+              },
+            },
+          }
+        : null,
     })
 
     res.status(200).json({ webs })

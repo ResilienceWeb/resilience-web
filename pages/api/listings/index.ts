@@ -8,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: {
         ...(web
           ? {
-              location: {
+              web: {
                 slug: {
                   contains: web,
                 },
@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       include: {
         category: true,
-        location: true,
+        web: true,
         tags: true,
         relations: {
           include: {

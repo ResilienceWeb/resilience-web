@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         slug,
         ...(webSlug
           ? {
-              location: {
+              web: {
                 slug: {
                   contains: webSlug,
                 },
@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       include: {
         category: true,
-        location: true,
+        web: true,
         tags: true,
         relations: {
           include: {

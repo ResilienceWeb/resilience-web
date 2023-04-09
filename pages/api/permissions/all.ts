@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       include: {
         listings: true,
-        locations: true,
+        webs: true,
         user: true,
       },
     })
