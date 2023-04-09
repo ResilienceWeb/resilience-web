@@ -21,7 +21,7 @@ const WebCards = () => {
         gap="1rem"
       >
         {webs
-          ?.filter((web) => web.public && Boolean(web.image))
+          ?.filter((web) => web.published && Boolean(web.image))
           .map((web) => (
             <Card key={web.id} web={web} />
           ))}

@@ -98,7 +98,7 @@ export const htmlTemplate = ({
 		${mainText}
 	</tr>
 	  <tr>
-		<td style="padding: 10px 0px 0px 0px; font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
+		<td style="padding: 0px; font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: ${textColor};">
 		  <p>Click the button below to sign in as <strong>${escapedEmail}</strong>. You won't need a password to login, and if you want to access the admin dashboard again later you can go to resilienceweb.org.uk/admin.</p>
 		</td>
 	  </tr>

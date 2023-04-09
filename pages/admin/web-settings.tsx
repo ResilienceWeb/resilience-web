@@ -94,7 +94,7 @@ export default function Settings() {
           >
             <Formik
               initialValues={{
-                public: Boolean(webData?.public),
+                published: Boolean(webData?.published),
                 image: webData?.image,
               }}
               enableReinitialize
@@ -104,23 +104,23 @@ export default function Settings() {
                 return (
                   <Form>
                     <chakra.div mb="2rem">
-                      <Field name="public">
+                      <Field name="published">
                         {({ field, form }: FieldProps) => {
                           return (
                             <FormControl
                               isInvalid={Boolean(
-                                form.errors.public && form.touched.public,
+                                form.errors.published && form.touched.published,
                               )}
                             >
                               <Checkbox
                                 isChecked={field.value}
-                                id="public"
+                                id="published"
                                 onChange={field.onChange}
                               >
-                                Public
+                                Published
                               </Checkbox>
                               <FormErrorMessage>
-                                {form.errors.public?.toString()}
+                                {form.errors.published?.toString()}
                               </FormErrorMessage>
                               <FormHelperText>
                                 Is this web ready to be publicly visible on the

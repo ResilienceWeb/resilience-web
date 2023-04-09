@@ -34,7 +34,7 @@ const handler = async (
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         form.parse(req, async (_err, fields, files) => {
           const newData: Prisma.LocationUncheckedUpdateInput = {
-            public: stringToBoolean(fields.public as string),
+            published: stringToBoolean(fields.published as string),
           }
 
           let imageUrl = null
