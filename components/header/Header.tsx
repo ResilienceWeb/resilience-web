@@ -67,6 +67,9 @@ const Header = ({
               unoptimized
             />
           </Box>
+          <Heading as="h2" fontSize="1.5rem">
+            {selectedWebName}
+          </Heading>
           <chakra.div paddingTop={4} width={'95%'}>
             <VStack spacing={2}>
               <InputGroup

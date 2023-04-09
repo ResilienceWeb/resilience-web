@@ -36,6 +36,10 @@ const theme = extendTheme({
       900: '#09622f',
     },
   },
+  fonts: {
+    body: "'Poppins', sans-serif",
+    heading: "'Poppins', sans-serif",
+  },
 })
 
 const queryClient = new QueryClient()
