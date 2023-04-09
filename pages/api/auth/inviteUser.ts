@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import sgMail from '@sendgrid/mail'
-import { getSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth/next'
 import { Prisma } from '@prisma/client'
+import { authOptions } from '../auth/[...nextauth]'
 import prisma from '../../../prisma/client'
 import { REMOTE_URL } from '@helpers/config'
 import { htmlTemplate, textTemplate } from '@helpers/emailTemplates'
@@ -11,7 +12,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const session = await getSession({ req })
+    const session = await getServerSession(req, res, authOptions)
     if (!session?.user.admin) {
       res.status(403)
       res.json({

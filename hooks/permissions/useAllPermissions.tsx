@@ -8,13 +8,6 @@ async function fetchAllPermissionsRequest() {
   return permissions
 }
 
-async function fetchPermissionsRequest() {
-  const response = await fetch('/api/permissions')
-  const data = await response.json()
-  const { permissions } = data
-  return permissions
-}
-
 export default function usePermissions() {
   const { data: session, status: sessionStatus } = useSession()
 
@@ -22,12 +15,9 @@ export default function usePermissions() {
     data: permissions,
     isLoading,
     isError,
-  } = useQuery(
-    ['all-permissions'],
-    sessionStatus === 'authenticated' && session.user.admin
-      ? fetchAllPermissionsRequest
-      : fetchPermissionsRequest,
-  )
+  } = useQuery(['all-permissions'], fetchAllPermissionsRequest, {
+    enabled: sessionStatus === 'authenticated' && session.user.admin,
+  })
 
   return {
     permissions,

@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
 import type { File } from 'formidable'
-import { getSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '../auth/[...nextauth]'
 import { Prisma } from '@prisma/client'
 import prisma from '../../../prisma/client'
 import uploadImage from '@helpers/uploadImage'
@@ -19,7 +20,7 @@ const handler = async (
   res: NextApiResponse<ResponseData>,
 ) => {
   try {
-    const session = await getSession({ req })
+    const session = await getServerSession(req, res, authOptions)
     if (!session?.user?.admin) {
       res.status(403)
       res.json({

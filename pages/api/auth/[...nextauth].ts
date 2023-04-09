@@ -1,4 +1,5 @@
 import NextAuth from 'next-auth'
+import type { NextAuthOptions } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import nodemailer from 'nodemailer'
@@ -6,7 +7,7 @@ import prisma from '../../../prisma/client'
 import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates'
 import config from '@helpers/config'
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     EmailProvider({
       server: config.emailServer,
@@ -71,4 +72,6 @@ export default NextAuth({
   },
   debug: false,
   secret: process.env.NEXT_AUTH_SECRET,
-})
+}
+
+export default NextAuth(authOptions)
