@@ -131,7 +131,6 @@ const Item = ({
           {dataItem.seekingVolunteers && !simplified && (
             <Flex>
               <Tooltip
-                backgroundColor="whiteAlpha.900"
                 borderRadius="md"
                 label="This group is seeking volunteers or members. Get in touch with them if you'd like to help."
               >

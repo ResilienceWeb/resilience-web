@@ -34,6 +34,8 @@ const Drawer = ({
   isVolunteer,
   searchTerm,
 }) => {
+  const maxInputWidth = useBreakpointValue({ base: 'initial', md: '280px' })
+
   return (
     <div className={styles.drawer}>
       <Flex height="100%" direction="column" justifyContent="space-between">
@@ -89,9 +91,7 @@ const Drawer = ({
                 </InputRightElement>
               )}
             </InputGroup>
-            <InputGroup
-              maxW={useBreakpointValue({ base: 'initial', md: '280px' })}
-            >
+            <InputGroup maxW={maxInputWidth}>
               <Select
                 isMulti
                 isSearchable={false}
@@ -102,20 +102,20 @@ const Drawer = ({
                 styles={customMultiSelectStyles}
               />
             </InputGroup>
-            <InputGroup
-              maxW={useBreakpointValue({ base: 'initial', md: '280px' })}
-            >
-              <Select
-                isMulti
-                isSearchable={false}
-                menuPortalTarget={document.body}
-                onChange={handleTagSelection}
-                options={tags}
-                placeholder="Tag"
-                styles={customMultiSelectStyles}
-                value={selectedTags}
-              />
-            </InputGroup>
+            {tags.length > 0 && (
+              <InputGroup maxW={maxInputWidth}>
+                <Select
+                  isMulti
+                  isSearchable={false}
+                  menuPortalTarget={document.body}
+                  onChange={handleTagSelection}
+                  options={tags}
+                  placeholder="Tag"
+                  styles={customMultiSelectStyles}
+                  value={selectedTags}
+                />
+              </InputGroup>
+            )}
             <VolunteerSwitch
               checked={isVolunteer}
               handleSwitchChange={handleVolunteerSwitchChange}

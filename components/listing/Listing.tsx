@@ -108,7 +108,10 @@ function Listing({ listing }) {
                   </CategoryTag>
                 </HStack>
                 {listing.seekingVolunteers && (
-                  <Tooltip label="This group is seeking volunteers or members. Get in touch with them if you'd like to help.">
+                  <Tooltip
+                    borderRadius="md"
+                    label="This group is seeking volunteers or members. Get in touch with them if you'd like to help."
+                  >
                     <Text color="rw.900">
                       <Icon as={HiUserGroup} /> Seeking volunteers
                     </Text>
