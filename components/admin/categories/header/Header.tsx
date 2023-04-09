@@ -17,7 +17,7 @@ const Header = () => {
       onClose()
       createCategory({
         ...data,
-        locationId: selectedWebId,
+        webId: selectedWebId,
       })
     },
     [createCategory, onClose, selectedWebId],

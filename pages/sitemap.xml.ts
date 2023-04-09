@@ -38,7 +38,7 @@ export async function getServerSideProps({ res }) {
     .filter((l) => l.image !== null)
     .filter((l) => l.description !== '')
     .map((l) => ({
-      loc: `https://${l.location.slug}.resilienceweb.org.uk/${l.slug}`,
+      loc: `https://${l.web.slug}.resilienceweb.org.uk/${l.slug}`,
       lastmod: l.updatedAt,
     }))
 

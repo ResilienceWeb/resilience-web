@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const permission = await prisma.permission.findUnique({
       include: {
         listings: true,
-        locations: true,
+        webs: true,
       },
       where: { email },
     })
@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         break
       case 'PUT':
-        const allWebsToDisconnect = permission.locations.map((l) => ({
+        const allWebsToDisconnect = permission.webs.map((l) => ({
           id: l.id,
         }))
         const allListingsToDisconnect = permission.listings.map((l) => ({
@@ -44,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             email: targetEmail,
           },
           data: {
-            locations: {
+            webs: {
               disconnect: allWebsToDisconnect,
             },
             listings: {
@@ -61,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             email: targetEmail,
           },
           data: {
-            locations: {
+            webs: {
               connect: websToConnect,
             },
             listings: {

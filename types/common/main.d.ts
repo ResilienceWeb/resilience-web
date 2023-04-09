@@ -5,7 +5,7 @@ type Listing = {
   id: number
   title: string
   categoryId?: number
-  locationId?: number
+  webId?: number
   website?: string
   description: string
   email?: string

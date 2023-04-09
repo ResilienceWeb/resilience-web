@@ -18,7 +18,7 @@ const handler = async (
       case 'GET': {
         const categories: Category[] = await prisma.category.findMany({
           where: {
-            location: {
+            web: {
               slug: {
                 contains: web || 'cambridge-city',
               },

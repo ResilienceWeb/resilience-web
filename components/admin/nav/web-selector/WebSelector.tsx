@@ -25,7 +25,7 @@ const WebSelector = () => {
     }
 
     const allWebIds = permissions.fullPermissionData?.listings.map(
-      (listing) => listing.locationId,
+      (listing) => listing.webId,
     )
     return Array.from(new Set(allWebIds))
   }, [permissions])

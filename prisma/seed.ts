@@ -82,7 +82,7 @@ async function main() {
     await prisma.category.create({
       data: {
         ...category,
-        locationId: newLocationCity.id,
+        webId: newLocationCity.id,
       },
     })
   }
@@ -94,7 +94,7 @@ async function main() {
     await prisma.category.create({
       data: {
         ...category,
-        locationId: newLocationUni.id,
+        webId: newLocationUni.id,
       },
     })
   }
@@ -102,14 +102,14 @@ async function main() {
   for (const listing of listingsCity) {
     const newCategory = await prisma.category.findFirst({
       where: {
-        locationId: newLocationCity.id,
+        webId: newLocationCity.id,
       },
     })
 
     await prisma.listing.create({
       data: {
         ...listing,
-        locationId: newLocationCity.id,
+        webId: newLocationCity.id,
         categoryId: newCategory.id,
       },
     })
@@ -120,14 +120,14 @@ async function main() {
     for (const listing of listingsUni) {
       const newCategory = await prisma.category.findFirst({
         where: {
-          locationId: newLocationUni.id,
+          webId: newLocationUni.id,
         },
       })
 
       await prisma.listing.create({
         data: {
           ...listing,
-          locationId: newLocationUni.id,
+          webId: newLocationUni.id,
           categoryId: newCategory.id,
         },
       })

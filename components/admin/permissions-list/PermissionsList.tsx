@@ -84,7 +84,7 @@ const PermissionsList = ({ permissions }) => {
   return (
     <Accordion allowMultiple defaultIndex={[0]}>
       {permissions.map((permission) => {
-        const { listings, user, email, locations: webs } = permission
+        const { listings, user, email, webs } = permission
 
         const getListingSelectedOptions = () => {
           if (!listings) return []

@@ -17,7 +17,7 @@ const Header = () => {
       onClose()
       createTag({
         ...data,
-        locationId: selectedWebId,
+        webId: selectedWebId,
       })
     },
     [createTag, onClose, selectedWebId],
