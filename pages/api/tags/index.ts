@@ -17,6 +17,9 @@ const handler = async (
     switch (req.method) {
       case 'GET': {
         const tags: Tag[] = await prisma.tag.findMany({
+          include: {
+            listings: true,
+          },
           where: {
             web: {
               slug: {

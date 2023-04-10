@@ -139,7 +139,7 @@ const Web = ({ data, selectedWebName }) => {
   const filteredItems = useMemo(() => {
     if (!data) return []
     let results = data?.nodes
-      .filter((item) => !item.isDescriptive)
+      .filter((item) => !item.isDescriptive && !item.inactive)
       .sort(sortStringsFunc)
 
     if (isVolunteer) {
