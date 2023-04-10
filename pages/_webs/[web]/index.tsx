@@ -45,6 +45,8 @@ type INetwork = {
   selectNodes: (ids: string[]) => void
 }
 
+const CENTRAL_NODE_ID = 999
+
 const Web = ({ data, selectedWebName }) => {
   const router = useRouter()
 
@@ -173,8 +175,20 @@ const Web = ({ data, selectedWebName }) => {
   }, [data, isVolunteer, selectedCategories, selectedTags, searchTermValue])
 
   const descriptiveNodes = useMemo(
-    () => (data ? data.nodes.filter((item) => item.isDescriptive) : []),
-    [data],
+    () =>
+      data
+        ? data.nodes
+            .filter((item) => item.isDescriptive)
+            .filter(
+              (item) =>
+                item.id === CENTRAL_NODE_ID ||
+                selectedCategories.length === 0 ||
+                selectedCategories.some(
+                  (category) => category.label === item.label,
+                ),
+            )
+        : [],
+    [data, selectedCategories],
   )
 
   const filteredNetworkData = useMemo(
@@ -412,7 +426,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
 
   // Main node
   transformedData.nodes.push({
-    id: 999,
+    id: CENTRAL_NODE_ID,
     label: webData.title,
     color: '#fcba03',
     isDescriptive: true,
@@ -440,7 +454,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
 
     // From main node to category node
     transformedData.edges.push({
-      from: 999,
+      from: CENTRAL_NODE_ID,
       to: categoryId,
       width: 2,
       selectedWidth: 3,
