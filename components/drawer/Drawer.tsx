@@ -12,6 +12,8 @@ import {
   InputRightElement,
   IconButton,
   Heading,
+  Button,
+  Text,
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
@@ -122,12 +124,23 @@ const Drawer = ({
             />
           </Flex>
         </Box>
-        {/* <Box p="1rem">
-          <Heading as="h2" fontSize="1.5rem">
-            Instructions
+        <Box p="1rem">
+          <Heading as="h2" fontSize="1.25rem">
+            Support this project
           </Heading>
-          <Text>Some instructions here</Text>
-        </Box> */}
+          <Text mb="0.5rem">
+            If you can, please donate to our Open Collective to help us continue
+            building the platform.
+          </Text>
+          <Link
+            href="https://opencollective.com/resilience-web"
+            target="_blank"
+          >
+            <Button bg="rw.700" colorScheme="rw.700" _hover={{ bg: 'rw.900' }}>
+              Donate
+            </Button>
+          </Link>
+        </Box>
       </Flex>
     </div>
   )
