@@ -66,8 +66,7 @@ const Web = ({ data, selectedWebName }) => {
   const [tags, setTags] = useState([])
 
   const [selectedId, setSelectedId] = useState()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [network, setNetwork] = useState<INetwork>()
+  const [_network, setNetwork] = useState<INetwork>()
 
   const { categories: fetchedCategories } = useCategories()
   const { tags: fetchedTags } = useTags()
@@ -380,6 +379,12 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
           from: id,
           to: relation.id,
           dashes: true,
+          physics: false,
+          smooth: {
+            enabled: true,
+            type: 'continuous',
+            roundness: 0,
+          },
         }
         if (
           !transformedData.edges.find(
@@ -439,7 +444,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
       to: categoryId,
       width: 2,
       selectedWidth: 3,
-      length: 700,
+      length: 600,
       smooth: {
         enabled: true,
         type: 'continuous',
