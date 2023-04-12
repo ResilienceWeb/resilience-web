@@ -13,9 +13,9 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const session = await getServerSession(req, res, authOptions)
-    if (!session?.user.admin) {
+    if (!session) {
       res.status(403)
-      res.json({
+      return res.json({
         error: `You don't have enough permissions to access this data.`,
       })
     }
@@ -25,14 +25,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!email) {
       res.status(400)
-      res.json({
+      return res.json({
         error: `Email not provided. Please make sure it's included in the request body.`,
       })
     }
 
     if (!listings && !webId) {
       res.status(400)
-      res.json({
+      return res.json({
         error: `Listing or web not provided. Please make sure at least one included in the request body.`,
       })
     }
@@ -40,11 +40,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const isUserExisting = await prisma.user.findUnique({ where: { email } })
     if (isUserExisting) {
       res.status(409)
-      res.json({
+      return res.json({
         error:
           'User already invited. Please use Permissions page to edit their permissions.',
       })
-      res.end()
     }
 
     const newUserData: Prisma.UserUpsertArgs = {
