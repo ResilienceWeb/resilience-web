@@ -1,7 +1,7 @@
 import { Formik, Form, Field, FormikHelpers, FieldProps } from 'formik'
 import { useEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import Select from 'react-select'
+import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import {
   chakra,
@@ -77,13 +77,20 @@ export default function Invite() {
     }))
   }, [listings])
 
-  const inviteUser = useCallback(
+  const sendInvite = useCallback(
     async (data, actions: FormikHelpers<FormValues>) => {
-      const body: { email: string; web?: string; listings?: any } = {
+      const body: {
+        email: string
+        web?: string
+        listings?: any
+        inviteToWeb: boolean
+      } = {
         email: data.email,
+        inviteToWeb: false,
       }
+      body.web = selectedWebId
       if (data.web === true) {
-        body.web = selectedWebId
+        body.inviteToWeb = true
       } else {
         const listingIdsAdded = data.listings.map((l) => l.value)
         const listingsToAdd = listings?.filter((l) =>
@@ -108,8 +115,6 @@ export default function Invite() {
           duration: 5000,
           isClosable: true,
         })
-        actions.setFieldValue('email', '', false)
-        actions.setFieldValue('listings', [])
       } else if (response.status === 409) {
         toast({
           title: 'User already invited',
@@ -127,16 +132,11 @@ export default function Invite() {
           isClosable: true,
         })
       }
+
+      actions.resetForm()
+      actions.setFieldValue('web', false)
     },
     [listings, selectedWebId, toast],
-  )
-
-  const initialValues = useMemo<FormValues>(
-    () => ({
-      email: '',
-      listings: [],
-    }),
-    [],
   )
 
   if (sessionStatus === 'loading' || isLoadingListings) {
@@ -169,7 +169,14 @@ export default function Invite() {
             padding="1rem"
           >
             <Box maxW="450px">
-              <Formik initialValues={initialValues} onSubmit={inviteUser}>
+              <Formik
+                initialValues={{
+                  email: '',
+                  listings: [],
+                }}
+                onSubmit={sendInvite}
+                enableReinitialize
+              >
                 {(props) => (
                   <Form>
                     <chakra.div mb={3}>
@@ -201,7 +208,7 @@ export default function Invite() {
                             >
                               <FormLabel htmlFor="listings">Listings</FormLabel>
                               <InputGroup size="sm">
-                                <Select
+                                <ReactSelect
                                   isMulti
                                   isSearchable
                                   isDisabled={props.values.web === true}
@@ -228,6 +235,7 @@ export default function Invite() {
                                   options={listingOptions}
                                   placeholder=""
                                   isClearable={false}
+                                  value={field.value}
                                   styles={customMultiSelectStyles}
                                 />
                               </InputGroup>
