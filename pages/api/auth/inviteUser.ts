@@ -1,11 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import sgMail from '@sendgrid/mail'
 import { getServerSession } from 'next-auth/next'
+import { render } from '@react-email/render'
 import { Prisma } from '@prisma/client'
 import { authOptions } from '../auth/[...nextauth]'
 import prisma from '../../../prisma/client'
 import { REMOTE_URL } from '@helpers/config'
-import { htmlTemplate, textTemplate } from '@helpers/emailTemplates'
+import InviteEmail from '@components/emails/InviteEmail'
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
@@ -21,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const email = req.body.email.trim()
-    const { listings, web: webId } = req.body
+    const { listings, web: webId, inviteToWeb } = req.body
 
     if (!email) {
       res.status(400)
@@ -94,38 +95,41 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const emailEncoded = encodeURIComponent(email)
     const callToActionButtonUrl = `${REMOTE_URL}/admin?activate=${emailEncoded}`
 
-    let titles = ''
+    const selectedWeb = await prisma.location.findFirst({
+      where: {
+        id: webId,
+      },
+    })
 
+    let titles = ''
     if (listings) {
-      const titlesArray = listings.map((l) => l.title)
-      titles = titlesArray.join(', ')
-    } else {
-      const web = await prisma.location.findFirst({
-        where: {
-          id: webId,
-        },
+      const formatter = new Intl.ListFormat('en', {
+        style: 'long',
+        type: 'conjunction',
       })
-      titles = web.title
+      const titlesArray = listings.map((l) => l.title)
+      titles = formatter.format(titlesArray)
+    } else {
+      titles = selectedWeb.title
     }
 
     if (permission) {
+      const inviteEmailComponent = InviteEmail({
+        listings: titles,
+        webTitle: `${selectedWeb.title} Resilience Web`,
+        inviteToWeb,
+        email: email,
+        url: callToActionButtonUrl,
+      })
+      const inviteEmailHtml = render(inviteEmailComponent)
+      const inviteEmailText = render(inviteEmailComponent, { plainText: true })
+
       const msg = {
-        to: email,
         from: `Resilience Web <info@resilienceweb.org.uk>`,
+        to: email,
         subject: `Your invite to the Resilience Web`,
-        text: textTemplate({ url: callToActionButtonUrl }),
-        html: htmlTemplate({
-          url: callToActionButtonUrl,
-          email,
-          buttonText: 'Activate account',
-          mainText: `<p>You are invited to be an admin of <b>${titles}</b> on the Resilience Web, a digital mapping of organisations that are working to create a more resilient, more equitable and greener future for this city and its residents.</p>`,
-          secondaryText: `<p>There is lots of great work being done by the multitude of groups working to make a positive difference in the areas of the environment and civil society. However, there wasn't a single place to go that showed all the organisations and how they are connected. These webs, in the first instance, are therefore a tool to help potential volunteers to discover organisations such as yours. Additionally, we want to facilitate collaboration and cross pollination across organisations where desired, and are looking into running events in the future that would enable this.</p>
-					<p>We hope you are excited to be a part of the Resilience Web, and that you will share it with members of your organisation!  If you have any questions about the web, or if you would rather not be included on it, please let me know by replying to this email.</p>
-					<p>Please give this a go, and we would love to hear any feedback you have about the web itself, how it is to use, and how it could be most useful to your organization.</p>
-					<p>If that sounds good, click the button below to activate your account. If it doesn’t, we would appreciate it if you could reply to this email and let us know why.</p>`,
-          footerText: `<p>If you're not sure why you received this invite or if you have any questions, please reply to this email.</p>
-					<p>The Resilience Web Team x</p>`,
-        }),
+        text: inviteEmailText,
+        html: inviteEmailHtml,
       }
 
       void (async () => {
