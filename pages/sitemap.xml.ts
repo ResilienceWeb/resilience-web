@@ -35,6 +35,7 @@ export async function getServerSideProps({ res }) {
   const data = await response.json()
   const { listings } = data
   const pathItems = listings
+    .filter((l) => l.web.published === true)
     .filter((l) => l.image !== null)
     .filter((l) => l.description !== '')
     .map((l) => ({
