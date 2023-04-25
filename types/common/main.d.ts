@@ -20,4 +20,5 @@ type Listing = {
   tags?: Tag[]
   relations?: Listing[]
   relationOf?: Listing[]
+  pending: boolean
 }

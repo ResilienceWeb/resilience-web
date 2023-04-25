@@ -1,6 +1,14 @@
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
-import { Flex, Box, Stack, Button, Spinner } from '@chakra-ui/react'
+import {
+  Flex,
+  Box,
+  Stack,
+  Button,
+  Spinner,
+  Alert,
+  AlertIcon,
+} from '@chakra-ui/react'
 import { HiArrowLeft } from 'react-icons/hi'
 import { useListing, useCreateListing, useUpdateListing } from '@hooks/listings'
 import { useCategories } from '@hooks/categories'
@@ -67,6 +75,14 @@ export default function Listing() {
         <Box mt={4}>
           <Box shadow="base" rounded={[null, 'md']} overflow={{ sm: 'hidden' }}>
             <Stack bg="white" spacing={6}>
+              {listing.pending && (
+                <Alert status="info" colorScheme="purple">
+                  <AlertIcon />
+                  This listing was submitted externally and is currently in
+                  pending state. Check through the information below, and if
+                  everything looks okay click Approve.
+                </Alert>
+              )}
               <ListingForm
                 categories={categories}
                 listing={listing}

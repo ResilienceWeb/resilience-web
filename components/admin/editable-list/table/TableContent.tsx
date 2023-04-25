@@ -1,6 +1,8 @@
 import { memo } from 'react'
 import {
   Button,
+  Badge,
+  Tooltip,
   Table,
   Tbody,
   Td,
@@ -43,11 +45,11 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
             <Td textAlign="right" maxWidth="80px">
               <Stack direction="column" spacing={2}>
                 <Button
-                  colorScheme="blue"
+                  colorScheme={row.pending ? 'purple' : 'blue'}
                   onClick={() => goToEdit(row)}
                   size="sm"
                 >
-                  Edit
+                  {row.pending ? 'Review' : 'Edit'}
                 </Button>
                 <Button
                   colorScheme="red"
@@ -83,12 +85,22 @@ export const columns = [
     },
   },
   {
-    Header: 'Website',
-    accessor: 'website',
-  },
-  {
-    Header: 'Email',
-    accessor: 'email',
+    Header: '',
+    accessor: 'pending',
+    Cell: function PendingCell(isPending) {
+      if (isPending) {
+        return (
+          <Tooltip
+            borderRadius="md"
+            label="This was submitted via the external form and needs to be reviewed. It is currently not published."
+          >
+            <Badge colorScheme="purple" fontSize="1.25rem" padding="0.25rem">
+              Pending
+            </Badge>
+          </Tooltip>
+        )
+      }
+    },
   },
 ]
 
