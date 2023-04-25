@@ -124,6 +124,7 @@ model Listing {
   tags              Tag[]
   relations         Listing[]    @relation("related")
   relationOf        Listing[]    @relation("related")
+  pending           Boolean      @default(false)
 
   @@unique([webId, slug])
   @@map("listings")
