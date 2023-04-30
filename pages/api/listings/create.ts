@@ -21,11 +21,8 @@ const handler = async (
 ) => {
   try {
     const session = await getServerSession(req, res, authOptions)
-    if (!session?.user?.admin) {
-      res.status(403)
-      res.json({
-        error: `You don't have enough permissions to access this data.`,
-      })
+    if (!session?.user) {
+      console.log(req.body)
     }
 
     if (req.method !== 'POST') {
@@ -54,9 +51,10 @@ const handler = async (
         instagram: fields.instagram as string,
         twitter: fields.twitter as string,
         notes: fields.notes as string,
+        pending: stringToBoolean(fields.pending as string),
         seekingVolunteers: stringToBoolean(fields.seekingVolunteers as string),
         inactive: stringToBoolean(fields.inactive as string),
-        slug: generateSlug(fields.title),
+        slug: fields.slug as string,
       }
 
       let imageUrl = null

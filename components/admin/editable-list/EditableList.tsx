@@ -37,7 +37,9 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
       )
     }
 
-    return results.sort((a, b) => a.title.localeCompare(b.title))
+    return results
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .sort((a, b) => b.pending - a.pending)
   }, [items, searchTerm, selectedCategories])
 
   const goToEdit = useCallback(

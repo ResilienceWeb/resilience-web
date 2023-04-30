@@ -21,6 +21,7 @@ export default function NewListing() {
   const handleSubmit = useCallback(
     (data) => {
       data.webId = selectedWebId
+      data.pending = false
       createListing(data)
       goBack()
     },
@@ -58,15 +59,15 @@ export default function NewListing() {
           Back
         </Button>
 
-        <Box mt={4}>
-          <Box shadow="base" rounded={[null, 'md']} overflow={{ sm: 'hidden' }}>
-            <Stack bg="white" spacing={6}>
-              <ListingForm
-                categories={categories}
-                handleSubmit={handleSubmit}
-              />
-            </Stack>
-          </Box>
+        <Box
+          mt={4}
+          shadow="base"
+          rounded={[null, 'md']}
+          overflow={{ sm: 'hidden' }}
+        >
+          <Stack bg="white" spacing={6}>
+            <ListingForm categories={categories} handleSubmit={handleSubmit} />
+          </Stack>
         </Box>
       </Box>
     </LayoutContainer>

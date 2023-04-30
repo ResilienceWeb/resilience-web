@@ -336,34 +336,15 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
     edges: [],
   }
 
-  listings?.map(
-    ({
-      id,
-      title,
-      category,
-      description,
-      image,
-      website,
-      facebook,
-      twitter,
-      instagram,
-      email,
-      seekingVolunteers,
-      inactive,
-      slug,
-      tags,
-      relations,
-    }) => {
-      const accessibleTextColor = selectMoreAccessibleColor(
-        `#${category.color}`,
-        '#3f3f40',
-        '#fff',
-      )
-      transformedData.nodes.push({
+  listings
+    ?.filter((l) => !l.pending)
+    ?.map(
+      ({
         id,
         title,
+        category,
         description,
-        image: image ?? '',
+        image,
         website,
         facebook,
         twitter,
@@ -371,45 +352,66 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
         email,
         seekingVolunteers,
         inactive,
-        category: {
-          color: `#${category.color}`,
-          label: category.label,
-        },
         slug,
         tags,
         relations,
-        // below are for vis-network node styling and data
-        label: title,
-        color: `#${category.color}`,
-        font: {
-          color: accessibleTextColor,
-          size: 28,
-        },
-        opacity: inactive ? 0.4 : 1,
-      })
-
-      relations.map((relation) => {
-        const newEdge = {
-          from: id,
-          to: relation.id,
-          dashes: true,
-          physics: false,
-          smooth: {
-            enabled: true,
-            type: 'continuous',
-            roundness: 0,
+      }) => {
+        const accessibleTextColor = selectMoreAccessibleColor(
+          `#${category.color}`,
+          '#3f3f40',
+          '#fff',
+        )
+        transformedData.nodes.push({
+          id,
+          title,
+          description,
+          image: image ?? '',
+          website,
+          facebook,
+          twitter,
+          instagram,
+          email,
+          seekingVolunteers,
+          inactive,
+          category: {
+            color: `#${category.color}`,
+            label: category.label,
           },
-        }
-        if (
-          !transformedData.edges.find(
-            (e) => e.from === newEdge.to && e.to === newEdge.from,
-          )
-        ) {
-          transformedData.edges.push(newEdge)
-        }
-      })
-    },
-  )
+          slug,
+          tags,
+          relations,
+          // below are for vis-network node styling and data
+          label: title,
+          color: `#${category.color}`,
+          font: {
+            color: accessibleTextColor,
+            size: 28,
+          },
+          opacity: inactive ? 0.4 : 1,
+        })
+
+        relations.map((relation) => {
+          const newEdge = {
+            from: id,
+            to: relation.id,
+            dashes: true,
+            physics: false,
+            smooth: {
+              enabled: true,
+              type: 'continuous',
+              roundness: 0,
+            },
+          }
+          if (
+            !transformedData.edges.find(
+              (e) => e.from === newEdge.to && e.to === newEdge.from,
+            )
+          ) {
+            transformedData.edges.push(newEdge)
+          }
+        })
+      },
+    )
 
   let groupedByCategory = groupBy(
     transformedData.nodes,

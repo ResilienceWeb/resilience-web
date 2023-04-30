@@ -1,14 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { memo, useEffect, useMemo } from 'react'
-import {
-  Formik,
-  Form,
-  Field,
-  useField,
-  FieldProps,
-  useFormikContext,
-} from 'formik'
-import { Editor } from '@tinymce/tinymce-react'
+import { Formik, Form, Field, FieldProps, useFormikContext } from 'formik'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import { Category } from '@prisma/client'
@@ -37,42 +29,7 @@ import { useTags } from '@hooks/tags'
 import { useListings } from '@hooks/listings'
 import { useAppContext } from '@store/hooks'
 
-const EditorField = (props) => {
-  const { label, name, ...otherProps } = props
-  const [field, meta] = useField(name)
-  const type = 'text'
-  const handleEditorChange = (value) => {
-    field.onChange({ target: { type, name, value } })
-  }
-
-  const handleBlur = () => {
-    field.onBlur({ target: { name } })
-  }
-
-  return (
-    <>
-      {label && <label>{label}</label>}
-      <Editor
-        {...otherProps}
-        apiKey={process.env.NEXT_PUBLIC_TINY_MCE_APIKEY}
-        value={field.value}
-        onEditorChange={handleEditorChange}
-        onBlur={handleBlur}
-        init={{
-          height: 500,
-          menubar: 'file edit view insert format tools table tc help',
-          toolbar: true,
-          plugins:
-            'media advlist autolink lists link anchor image code fullscreen table paste code emoticons help',
-          selector: 'textarea',
-        }}
-      />
-      {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
-      ) : null}
-    </>
-  )
-}
+import EditorField from './RichTextEditor'
 
 const SlugField = () => {
   const { selectedWebSlug } = useAppContext()
@@ -215,7 +172,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
         id: listing?.id || null,
         title: listing?.title || '',
         description: listing?.description || '',
-        category: listing?.categoryId || categories[0].id,
+        category: listing?.categoryId || undefined,
         email: listing?.email || '',
         website: listing?.website || '',
         facebook: listing?.facebook || '',
@@ -244,7 +201,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                       )}
                     >
                       <FormLabel htmlFor="title" fontSize="sm">
-                        Title
+                        Title*
                       </FormLabel>
                       <Input
                         {...field}
@@ -265,6 +222,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
               <chakra.div mb={3}>
                 <Field
                   name="description"
+                  validate={fieldRequiredValidator}
                   style={{
                     maxHeight: '200px',
                   }}
@@ -276,19 +234,19 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                       )}
                     >
                       <FormLabel htmlFor="description" fontSize="sm">
-                        Description
+                        Description*
                       </FormLabel>
-                      <EditorField name="description" />
-                      <FormErrorMessage>
-                        {form.errors.description?.toString()}
+                      <FormErrorMessage mb="1rem">
+                        Please add a description
                       </FormErrorMessage>
+                      <EditorField name="description" />
                     </FormControl>
                   )}
                 </Field>
               </chakra.div>
 
               <chakra.div mb={3}>
-                <Field name="category">
+                <Field name="category" validate={fieldRequiredValidator}>
                   {({ field, form }: FieldProps) => (
                     <FormControl
                       isInvalid={Boolean(
@@ -296,7 +254,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                       )}
                     >
                       <FormLabel htmlFor="category" fontSize="sm">
-                        Category
+                        Category*
                       </FormLabel>
                       <Select
                         {...field}
@@ -304,6 +262,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                         shadow="sm"
                         size="sm"
                         rounded="md"
+                        placeholder="Select a category"
                       >
                         {categories.map((c) => (
                           <option key={c.id} value={c.id}>
@@ -312,12 +271,18 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                         ))}
                       </Select>
                       <FormErrorMessage>
-                        {form.errors.category?.toString()}
+                        Please select a category
                       </FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
               </chakra.div>
+
+              <Field name="image">
+                {({ field, form }: FieldProps) => (
+                  <ImageUpload field={field} form={form} formProps={props} />
+                )}
+              </Field>
 
               <chakra.div mb={3}>
                 <Field name="email" type="email" validate={emailValidator}>
@@ -328,7 +293,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                       )}
                     >
                       <FormLabel htmlFor="email" fontSize="sm">
-                        Email
+                        Contact email
                       </FormLabel>
                       <Input
                         {...field}
@@ -345,12 +310,6 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                   )}
                 </Field>
               </chakra.div>
-
-              <Field name="image">
-                {({ field, form }: FieldProps) => (
-                  <ImageUpload field={field} form={form} formProps={props} />
-                )}
-              </Field>
 
               <HStack align="stretch" spacing={2} mt={4}>
                 <chakra.div mb={3} flexGrow={1}>

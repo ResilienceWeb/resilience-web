@@ -53,7 +53,7 @@ const ImageUpload = ({
   }
 
   return (
-    <FormControl isInvalid={form.errors.image && form.touched.image}>
+    <FormControl isInvalid={form.errors.image && form.touched.image} mb="1rem">
       <FormLabel htmlFor="image" fontSize="sm">
         Image
       </FormLabel>
@@ -80,11 +80,10 @@ const ImageUpload = ({
           </div>
         ) : (
           <Flex
+            width="100%"
             mt={1}
             justify="center"
-            px={6}
-            pt={5}
-            pb={6}
+            p={6}
             borderWidth={2}
             borderColor="gray.300"
             borderStyle="dashed"
@@ -121,7 +120,7 @@ const ImageUpload = ({
                     color: 'brand.400',
                   }}
                 >
-                  <span>Upload a file</span>
+                  <span>Upload an image</span>
                   <VisuallyHidden>
                     <input id="file-upload" name="file-upload" type="file" />
                   </VisuallyHidden>
@@ -143,7 +142,7 @@ const ImageUpload = ({
           </Button>
         )}
       </InputGroup>
-      <FormErrorMessage>{form.errors.image}</FormErrorMessage>
+      <FormErrorMessage>Please upload an image</FormErrorMessage>
     </FormControl>
   )
 }
