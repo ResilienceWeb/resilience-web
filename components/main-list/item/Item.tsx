@@ -1,6 +1,5 @@
-import { useCallback, useMemo, useEffect, useState, memo } from 'react'
-import { motion, useAnimation } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
+import { useCallback, useMemo, useRef, useEffect, useState, memo } from 'react'
+import { motion, useAnimation, useInView } from 'framer-motion'
 import Image from 'next/legacy/image'
 import chroma from 'chroma-js'
 import { Box, Flex, Text, Icon, Tooltip, chakra } from '@chakra-ui/react'
@@ -18,7 +17,8 @@ const Item = ({
 }) => {
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
-  const { ref, inView } = useInView()
+  const ref = useRef(null)
+  const isInView = useInView(ref)
   const animation = useAnimation()
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const Item = ({
   }, [])
 
   useEffect(() => {
-    if (inView) {
+    if (isInView) {
       animation
         .start({
           opacity: 1,
@@ -41,7 +41,7 @@ const Item = ({
         })
         .catch((e) => console.error('Animation error', e))
     }
-  }, [animation, inView])
+  }, [animation, isInView])
 
   const onClick = useCallback(() => {
     handleClick(dataItem)
@@ -100,7 +100,7 @@ const Item = ({
             height="170"
             layout="responsive"
             unoptimized
-            priority={inView && isWithinAFewSecondsOfRender}
+            priority={isInView && isWithinAFewSecondsOfRender}
             style={{
               borderTopLeftRadius: '.375rem',
               borderTopRightRadius: '.375rem',
