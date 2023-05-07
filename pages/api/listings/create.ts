@@ -8,8 +8,6 @@ import prisma from '../../../prisma/client'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 
-const generateSlug = (title) => title.toLowerCase().replace(/ /g, '-')
-
 type ResponseData = {
   error?: string
   listing?: Listing // TODO: change to 'data'

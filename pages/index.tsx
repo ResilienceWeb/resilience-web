@@ -6,20 +6,6 @@ import JoinTheCommunity from '@components/homepage/join-the-community'
 import { fetchWebsRequest } from '@hooks/webs/useWebs'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 
-export const getServerSideProps = async () => {
-  const queryClient = new QueryClient()
-
-  // prefetch data on the server
-  await queryClient.fetchQuery(['webs'], () => fetchWebsRequest(true))
-
-  return {
-    props: {
-      // dehydrate query cache
-      dehydratedState: dehydrate(queryClient),
-    },
-  }
-}
-
 export default function Homepage() {
   return (
     <Layout>
@@ -28,4 +14,16 @@ export default function Homepage() {
       <JoinTheCommunity />
     </Layout>
   )
+}
+
+export const getStaticProps = async () => {
+  const queryClient = new QueryClient()
+  await queryClient.fetchQuery(['webs'], () => fetchWebsRequest(true))
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+    revalidate: 60,
+  }
 }

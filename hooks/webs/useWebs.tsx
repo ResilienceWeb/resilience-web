@@ -1,6 +1,6 @@
 import type { Location } from '@prisma/client'
-import { REMOTE_URL } from '@helpers/config'
 import { useQuery } from '@tanstack/react-query'
+import { REMOTE_URL } from '@helpers/config'
 
 export async function fetchWebsRequest(isSSR = false, withListings = false) {
   const route = withListings ? `/api/webs?withListings=true` : '/api/webs'
