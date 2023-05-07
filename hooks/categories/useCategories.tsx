@@ -26,7 +26,9 @@ export default function useCategories(): {
     data: categories,
     isLoading,
     isError,
-  } = useQuery(['categories', { webSlug }], fetchCategoriesRequest, {
+  } = useQuery({
+    queryKey: ['categories', { webSlug }],
+    queryFn: fetchCategoriesRequest,
     refetchOnWindowFocus: false,
   })
 

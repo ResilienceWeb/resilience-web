@@ -21,7 +21,9 @@ export default function useWebs() {
     data: webs,
     isLoading,
     isError,
-  } = useQuery(['webs'], fetchWebsRequest, {
+  } = useQuery({
+    queryKey: ['webs'],
+    queryFn: fetchWebsRequest,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   })

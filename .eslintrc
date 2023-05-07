@@ -12,7 +12,8 @@
     "jsx-a11y",
     "@typescript-eslint",
     "promise",
-    "sonarjs"
+    "sonarjs",
+    "@tanstack/query"
   ],
   "extends": [
     "plugin:import/recommended",
@@ -25,7 +26,8 @@
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@next/next/recommended",
     "plugin:sonarjs/recommended",
-    "prettier"
+    "prettier",
+    "plugin:@tanstack/eslint-plugin-query/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
