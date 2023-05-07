@@ -21,7 +21,6 @@ import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import ModeSwitch from '@components/mode-switch'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import customMultiSelectStyles from '@styles/select-styles'
-import { useSelectedWebName } from '@hooks/webs'
 
 const Header = ({
   categories,
@@ -35,9 +34,8 @@ const Header = ({
   searchTerm,
   tags,
   selectedTags,
+  selectedWebName,
 }) => {
-  const selectedWebName = useSelectedWebName()
-
   if (isMobile) {
     return (
       <>

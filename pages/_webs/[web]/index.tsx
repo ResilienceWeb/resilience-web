@@ -12,6 +12,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 
+import Header from '@components/header'
 import { selectMoreAccessibleColor } from '@helpers/colors'
 import { useAppContext } from '@store/hooks'
 import { REMOTE_URL, PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
@@ -28,9 +29,6 @@ const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
 })
 const Drawer = dynamic(() => import('@components/drawer'), {
-  ssr: false,
-})
-const Header = dynamic(() => import('@components/header'), {
   ssr: false,
 })
 
@@ -145,7 +143,7 @@ const Web = ({ data, selectedWebName }) => {
   const filteredItems = useMemo(() => {
     if (!data) return []
     let results = data?.nodes
-      .filter((item) => !item.isDescriptive && !item.inactive)
+      .filter((item) => !item.isDescriptive)
       .sort(sortStringsFunc)
 
     if (isVolunteer) {
@@ -275,6 +273,7 @@ const Web = ({ data, selectedWebName }) => {
           searchTerm={searchTerm}
           tags={tags}
           selectedTags={selectedTags}
+          selectedWebName={selectedWebName}
         />
         {isWebMode && (
           <NetworkComponent
@@ -341,7 +340,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   }
 
   listings
-    ?.filter((l) => !l.pending)
+    ?.filter((l) => !l.pending && !l.inactive)
     ?.map(
       ({
         id,
@@ -353,9 +352,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
         facebook,
         twitter,
         instagram,
-        email,
         seekingVolunteers,
-        inactive,
         slug,
         tags,
         relations,
@@ -374,16 +371,13 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
           facebook,
           twitter,
           instagram,
-          email,
           seekingVolunteers,
-          inactive,
           category: {
             color: `#${category.color}`,
             label: category.label,
           },
           slug,
           tags,
-          relations,
           // below are for vis-network node styling and data
           label: title,
           color: `#${category.color}`,
@@ -391,7 +385,6 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
             color: accessibleTextColor,
             size: 28,
           },
-          opacity: inactive ? 0.4 : 1,
         })
 
         relations.map((relation) => {
