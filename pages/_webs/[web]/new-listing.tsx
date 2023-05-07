@@ -23,7 +23,6 @@ function Submit() {
 
   const handleSubmit = useCallback(
     (data) => {
-      console.log(data)
       data.webId = selectedWebId
       data.pending = true
       data.inactive = false

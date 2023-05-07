@@ -20,6 +20,8 @@ import MainList from '@components/main-list'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
 import { fetchCategoriesHydrate } from '@hooks/categories/useCategories'
+import { fetchTagsHydrate } from '@hooks/tags/useTags'
+import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import { useTags } from '@hooks/tags'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
@@ -484,9 +486,13 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   }
 
   const queryClient = new QueryClient()
+  await queryClient.prefetchQuery(['webs'], fetchWebsHydrate)
   await queryClient.prefetchQuery(
     ['categories', { webSlug: webData.slug }],
     () => fetchCategoriesHydrate({ webSlug: webData.slug }),
+  )
+  await queryClient.prefetchQuery(['tags', { webSlug: webData.slug }], () =>
+    fetchTagsHydrate({ webSlug: webData.slug }),
   )
 
   return {

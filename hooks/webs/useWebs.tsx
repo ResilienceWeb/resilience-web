@@ -25,7 +25,6 @@ export default function useWebs() {
     queryKey: ['webs'],
     queryFn: fetchWebsRequest,
     refetchOnWindowFocus: false,
-    staleTime: Infinity,
   })
 
   return {

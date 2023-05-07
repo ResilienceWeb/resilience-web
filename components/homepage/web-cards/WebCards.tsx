@@ -21,7 +21,10 @@ const WebCards = () => {
         gap="1rem"
       >
         {webs
-          ?.filter((web) => web.published && Boolean(web.image) && web.slug !== 'ctrlshift')
+          ?.filter(
+            (web) =>
+              web.published && Boolean(web.image) && web.slug !== 'ctrlshift',
+          )
           .map((web) => (
             <Card key={web.id} web={web} />
           ))}

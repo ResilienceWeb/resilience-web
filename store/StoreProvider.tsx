@@ -7,6 +7,7 @@ const DEFAULT_SELECTED_WEB = 'cambridge-city'
 
 const StoreProvider = ({ children }) => {
   const isMobile = useMediaQuerySSR('(max-width: 760px)')
+  const [isAdminMode, setIsAdminMode] = useState(false)
   const [selectedWebSlug, setSelectedWebSlug] = useLocalStorage(
     'selected-web',
     DEFAULT_SELECTED_WEB,
@@ -21,6 +22,11 @@ const StoreProvider = ({ children }) => {
     }
 
     setSubdomain(hostname.split('.')[0])
+  }, [])
+
+  useEffect(() => {
+    const isAdminMode = window.location.href.includes('/admin')
+    setIsAdminMode(isAdminMode)
   }, [])
 
   useEffect(() => {
@@ -48,6 +54,7 @@ const StoreProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+        isAdminMode,
         isMobile,
         selectedWebSlug,
         setSelectedWebSlug,

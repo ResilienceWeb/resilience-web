@@ -20,14 +20,5 @@ export default function useCreateTag() {
 
   return useMutation({
     mutationFn: createTagRequest,
-    onMutate: async (newTag) => {
-      await queryClient.cancelQueries(['tags'])
-      const previousTags = queryClient.getQueryData(['tags'])
-      queryClient.setQueryData(['tags'], newTag)
-      return { previousTags }
-    },
-    onSettled: () => {
-      void queryClient.invalidateQueries(['tags'])
-    },
   })
 }
