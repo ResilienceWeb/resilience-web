@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Head from 'next/head'
 import Script from 'next/script'
 import { DefaultSeo } from 'next-seo'
@@ -42,9 +43,9 @@ const theme = extendTheme({
   },
 })
 
-const queryClient = new QueryClient()
-
 function App({ Component, pageProps }) {
+  const [queryClient] = useState(() => new QueryClient())
+
   return (
     <>
       <DefaultSeo

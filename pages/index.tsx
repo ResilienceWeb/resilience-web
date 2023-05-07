@@ -18,7 +18,7 @@ export default function Homepage() {
 
 export const getStaticProps = async () => {
   const queryClient = new QueryClient()
-  await queryClient.fetchQuery(['webs'], () => fetchWebsRequest(true))
+  await queryClient.prefetchQuery(['webs'], () => fetchWebsRequest(true))
 
   return {
     props: {
