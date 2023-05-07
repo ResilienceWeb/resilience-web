@@ -70,21 +70,20 @@ const Nav = () => {
         href: '/admin/invite',
         icon: <Icon as={HiUsers} fontSize="lg" />,
       })
+
+      links.push({
+        label: 'Web Settings',
+        href: '/admin/web-settings',
+        icon: <Icon as={FiSettings} fontSize="lg" />,
+      })
     }
 
     if (session?.user.admin) {
-      links.push(
-        {
-          label: 'Permissions',
-          href: '/admin/permissions',
-          icon: <Icon as={HiOutlineLockOpen} fontSize="lg" />,
-        },
-        {
-          label: 'Web Settings',
-          href: '/admin/web-settings',
-          icon: <Icon as={FiSettings} fontSize="lg" />,
-        },
-      )
+      links.push({
+        label: 'Permissions',
+        href: '/admin/permissions',
+        icon: <Icon as={HiOutlineLockOpen} fontSize="lg" />,
+      })
     }
 
     return links
