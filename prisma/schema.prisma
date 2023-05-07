@@ -38,6 +38,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   permission    Permission[]
+  Ownership     Ownership?
 
   @@map("users")
 }
@@ -62,15 +63,17 @@ model VerificationToken {
 }
 
 model Location {
-  id         Int          @id @default(autoincrement())
-  title      String       @unique
-  slug       String       @unique
-  categories Category[]
-  listings   Listing[]
-  tags       Tag[]
-  permission Permission[]
-  published  Boolean      @default(false)
-  image      String?
+  id          Int          @id @default(autoincrement())
+  title       String       @unique
+  slug        String       @unique
+  categories  Category[]
+  listings    Listing[]
+  tags        Tag[]
+  permission  Permission[]
+  published   Boolean      @default(false)
+  image       String?
+  Ownership   Ownership?   @relation(fields: [ownershipId], references: [id])
+  ownershipId Int?
 
   @@map("Location")
 }
@@ -139,4 +142,16 @@ model Permission {
 
   webs     Location[]
   listings Listing[]
+}
+
+model Ownership {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  email     String   @unique
+  user      User?    @relation(fields: [email], references: [email])
+
+  webs Location[]
+
+  @@map("ownership")
 }
