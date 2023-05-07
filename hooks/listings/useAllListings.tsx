@@ -12,7 +12,7 @@ export default function useAllListings() {
     data: listings,
     isLoading,
     isError,
-  } = useQuery(['listings'], fetchListingsRequest)
+  } = useQuery({ queryKey: ['listings'], queryFn: fetchListingsRequest })
 
   return {
     listings,

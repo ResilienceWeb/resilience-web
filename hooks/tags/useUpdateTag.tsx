@@ -18,7 +18,8 @@ async function updateTagRequest(tagData) {
 export default function useUpdateTag() {
   const queryClient = useQueryClient()
 
-  return useMutation(updateTagRequest, {
+  return useMutation({
+    mutationFn: updateTagRequest,
     onMutate: async (newTag) => {
       await queryClient.cancelQueries(['tags'])
       const previousTags = queryClient.getQueryData(['tags'])

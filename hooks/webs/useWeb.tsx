@@ -13,7 +13,9 @@ export default function useWeb(slug) {
     data: web,
     isLoading,
     isError,
-  } = useQuery([`web-${slug}`], () => fetchWebRequest(slug), {
+  } = useQuery({
+    queryKey: [`web-${slug}`],
+    queryFn: () => fetchWebRequest(slug),
     refetchOnWindowFocus: false,
     enabled: slug !== undefined && slug !== '',
   })

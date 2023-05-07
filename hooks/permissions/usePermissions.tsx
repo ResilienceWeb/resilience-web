@@ -16,7 +16,9 @@ export default function usePermissions() {
     data: permissions,
     isLoading,
     isError,
-  } = useQuery(['permission'], fetchPermissionsRequest, {
+  } = useQuery({
+    queryKey: ['permission'],
+    queryFn: fetchPermissionsRequest,
     enabled: Boolean(session),
   })
 

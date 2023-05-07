@@ -15,7 +15,9 @@ export default function usePermissions() {
     data: permissions,
     isLoading,
     isError,
-  } = useQuery(['all-permissions'], fetchAllPermissionsRequest, {
+  } = useQuery({
+    queryKey: ['all-permissions'],
+    queryFn: fetchAllPermissionsRequest,
     enabled: sessionStatus === 'authenticated' && session.user.admin,
   })
 

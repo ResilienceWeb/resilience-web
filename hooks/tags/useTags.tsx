@@ -20,7 +20,9 @@ export default function useTags(): {
     data: tags,
     isLoading,
     isError,
-  } = useQuery(['tags', { webSlug }], fetchTagsRequest, {
+  } = useQuery({
+    queryKey: ['tags', { webSlug }],
+    queryFn: fetchTagsRequest,
     refetchOnWindowFocus: false,
   })
 

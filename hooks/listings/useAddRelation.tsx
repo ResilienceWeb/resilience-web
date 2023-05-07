@@ -18,7 +18,8 @@ async function addRelationRequest(relationData) {
 export default function useAddRelation() {
   const queryClient = useQueryClient()
 
-  return useMutation(addRelationRequest, {
+  return useMutation({
+    mutationFn: addRelationRequest,
     onMutate: async (newRelation) => {
       await queryClient.cancelQueries(['relations'])
       const previousRelations = queryClient.getQueryData(['relations'])

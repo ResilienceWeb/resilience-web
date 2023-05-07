@@ -12,7 +12,8 @@ async function deleteListingRequest({ id }) {
 export default function useDeleteListing() {
   const queryClient = useQueryClient()
 
-  return useMutation(deleteListingRequest, {
+  return useMutation({
+    mutationFn: deleteListingRequest,
     onSuccess: (data) => {
       queryClient.setQueryData(['listings', { id: data.id }], data)
     },

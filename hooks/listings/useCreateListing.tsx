@@ -20,7 +20,8 @@ async function createListingRequest(listingData) {
 export default function useCreateListing() {
   const queryClient = useQueryClient()
 
-  return useMutation(createListingRequest, {
+  return useMutation({
+    mutationFn: createListingRequest,
     onMutate: async (newListing) => {
       await queryClient.cancelQueries(['listings'])
       const previousListings = queryClient.getQueryData(['listings'])

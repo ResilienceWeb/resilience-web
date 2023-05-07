@@ -16,7 +16,10 @@ export default function useListings() {
     data: listings,
     isLoading,
     isError,
-  } = useQuery(['listings', { webSlug }], fetchListingsRequest)
+  } = useQuery({
+    queryKey: ['listings', { webSlug }],
+    queryFn: fetchListingsRequest,
+  })
 
   return {
     listings,

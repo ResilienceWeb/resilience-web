@@ -18,7 +18,8 @@ async function updateCategoryRequest(categoryData) {
 export default function useUpdateCategory() {
   const queryClient = useQueryClient()
 
-  return useMutation(updateCategoryRequest, {
+  return useMutation({
+    mutationFn: updateCategoryRequest,
     onMutate: async (newCategory) => {
       await queryClient.cancelQueries(['categories'])
       const previousCategories = queryClient.getQueryData(['categories'])

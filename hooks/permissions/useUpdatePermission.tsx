@@ -18,7 +18,8 @@ async function updatePermissionRequest(permissionData) {
 export default function useUpdatePermission() {
   const queryClient = useQueryClient()
 
-  return useMutation(updatePermissionRequest, {
+  return useMutation({
+    mutationFn: updatePermissionRequest,
     onMutate: async (newPermission) => {
       await queryClient.cancelQueries([
         'permission',

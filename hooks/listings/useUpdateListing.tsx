@@ -19,7 +19,8 @@ async function updateListingRequest(listingData) {
 export default function useUpdateListing() {
   const queryClient = useQueryClient()
 
-  return useMutation(updateListingRequest, {
+  return useMutation({
+    mutationFn: updateListingRequest,
     onSuccess: (data) => {
       queryClient.setQueryData(['listings', { id: data.id }], data)
     },
