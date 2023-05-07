@@ -7,6 +7,7 @@ import { Box, Center, Spinner } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
 import intersection from 'lodash/intersection'
 import useLocalStorage from 'use-local-storage'
+import { dehydrate, QueryClient } from '@tanstack/react-query'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
@@ -18,6 +19,7 @@ import { encodeUriElements, decodeUriElements } from '@helpers/routes'
 import MainList from '@components/main-list'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
+import { fetchCategoriesHydrate } from '@hooks/categories/useCategories'
 import { useTags } from '@hooks/tags'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
@@ -481,10 +483,17 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
     return { notFound: true, revalidate: 30 }
   }
 
+  const queryClient = new QueryClient()
+  await queryClient.prefetchQuery(
+    ['categories', { webSlug: webData.slug }],
+    () => fetchCategoriesHydrate({ webSlug: webData.slug }),
+  )
+
   return {
     props: {
       data: transformedData,
       selectedWebName: webData.title,
+      dehydratedState: dehydrate(queryClient),
     },
     revalidate: 30,
   }

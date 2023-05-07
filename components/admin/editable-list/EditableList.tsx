@@ -14,7 +14,7 @@ import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 const EditableList = ({ deleteListing, isAdmin, items }) => {
   const router = useRouter()
   const { permissions } = usePermissions()
-  const { webs } = useWebs({ withListings: true })
+  const { webs } = useWebs()
   const { selectedWebId, selectedWebSlug } = useAppContext()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState([])

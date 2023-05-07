@@ -3,7 +3,7 @@ import Hero from '@components/homepage/hero'
 import WebCards from '@components/homepage/web-cards'
 import JoinTheCommunity from '@components/homepage/join-the-community'
 
-import { fetchWebsRequest } from '@hooks/webs/useWebs'
+import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 
 export default function Homepage() {
@@ -18,7 +18,7 @@ export default function Homepage() {
 
 export const getStaticProps = async () => {
   const queryClient = new QueryClient()
-  await queryClient.prefetchQuery(['webs'], () => fetchWebsRequest(true))
+  await queryClient.prefetchQuery(['webs'], fetchWebsHydrate)
 
   return {
     props: {

@@ -7,7 +7,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 
 import ErrorBoundary from '@components/error-boundary'
 import Layout from '@components/layout'
-import { fetchWebsRequest } from '@hooks/webs/useWebs'
+import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 
 const About = ({ page }) => {
   return (
@@ -48,7 +48,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL)
 
   const queryClient = new QueryClient()
-  await queryClient.fetchQuery(['webs'], () => fetchWebsRequest(true))
+  await queryClient.fetchQuery(['webs'], fetchWebsHydrate)
 
   const { page } = await graphcms.request(`
 	{

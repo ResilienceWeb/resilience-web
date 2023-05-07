@@ -41,7 +41,7 @@ const SeparatedElement = chakra('span', {
 
 const PermissionsList = ({ permissions }) => {
   const { listings } = useAllListings()
-  const { webs } = useWebs({ withListings: true })
+  const { webs } = useWebs()
   const { mutate: updatePermission, isLoading: isUpdatingPermission } =
     useUpdatePermission()
 

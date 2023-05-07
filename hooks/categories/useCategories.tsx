@@ -1,6 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
-import { useAppContext } from '@store/hooks'
 import { Category } from '@prisma/client'
+import { useAppContext } from '@store/hooks'
+import { REMOTE_URL } from '@helpers/config'
+
+export async function fetchCategoriesHydrate({ webSlug }) {
+  const response = await fetch(`${REMOTE_URL}/api/categories?web=${webSlug}`)
+  const { data: categories } = await response.json()
+  return categories
+}
 
 async function fetchCategoriesRequest({ queryKey }) {
   const [_key, { webSlug }] = queryKey

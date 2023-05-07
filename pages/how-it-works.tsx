@@ -16,8 +16,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 import crwScreenshot1 from '../public/crw-screenshot-1.png'
 import crwScreenshot2 from '../public/crw-screenshot-2.png'
 import crwScreenshot3 from '../public/crw-screenshot-3.png'
-
-import { fetchWebsRequest } from '@hooks/webs/useWebs'
+import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import Layout from '@components/layout'
 
 const HowItWorks = () => {
@@ -169,7 +168,7 @@ function Features() {
 
 export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
-  await queryClient.fetchQuery(['webs'], () => fetchWebsRequest(true))
+  await queryClient.fetchQuery(['webs'], fetchWebsHydrate)
 
   return {
     props: {
