@@ -34,8 +34,8 @@ export default function Hero() {
             </Text>
             <Text
               color="blackAlpha.700"
-              fontWeight="600"
-              fontSize="20"
+              fontWeight={600}
+              fontSize={20}
               maxW="3xl"
             >
               Be part of a growing movement of positive change...

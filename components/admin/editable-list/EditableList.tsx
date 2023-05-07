@@ -113,7 +113,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
             <Link
               href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
               target="_blank"
-              fontWeight="bold"
+              fontWeight={600}
               color="rw.900"
             >
               {`${selectedWebSlug}.${REMOTE_HOSTNAME}`}

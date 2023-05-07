@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { memo, useCallback, useEffect, useMemo } from 'react'
 import VisNetworkReactComponent from 'vis-network-react'
 import { useDisclosure } from '@chakra-ui/react'
@@ -97,17 +98,25 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
   const getNetwork = useCallback((network) => setNetwork(network), [setNetwork])
 
   return (
-    <div className={styles.graph}>
-      <VisNetworkReactComponent
-        events={events}
-        getNetwork={getNetwork}
-        data={data}
-        options={options}
-      />
-      {Boolean(selectedId) && !selectedItem?.isDescriptive && (
-        <Dialog isOpen={isOpen} item={selectedItem} onClose={onCloseDialog} />
-      )}
-    </div>
+    <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+        />
+      </Head>
+      <div className={styles.graph}>
+        <VisNetworkReactComponent
+          events={events}
+          getNetwork={getNetwork}
+          data={data}
+          options={options}
+        />
+        {Boolean(selectedId) && !selectedItem?.isDescriptive && (
+          <Dialog isOpen={isOpen} item={selectedItem} onClose={onCloseDialog} />
+        )}
+      </div>
+    </>
   )
 }
 

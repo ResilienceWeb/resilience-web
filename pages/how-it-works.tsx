@@ -59,7 +59,7 @@ function Features() {
           <chakra.h2
             mb={4}
             fontSize={{ base: '2xl', md: '4xl' }}
-            fontWeight="extrabold"
+            fontWeight={600}
             letterSpacing="tight"
             textAlign={{ base: 'center', md: 'left' }}
             color={useColorModeValue('gray.900', 'gray.400')}
@@ -92,7 +92,7 @@ function Features() {
           <chakra.h2
             mb={4}
             fontSize={{ base: '2xl', md: '4xl' }}
-            fontWeight="extrabold"
+            fontWeight={600}
             letterSpacing="tight"
             textAlign={{ base: 'center', md: 'left' }}
             color={useColorModeValue('gray.900', 'gray.400')}
@@ -126,7 +126,7 @@ function Features() {
           <chakra.h2
             mb={4}
             fontSize={{ base: '2xl', md: '4xl' }}
-            fontWeight="extrabold"
+            fontWeight={600}
             textAlign={{ base: 'center', md: 'left' }}
             color="gray.900"
             lineHeight={{ md: 'shorter' }}

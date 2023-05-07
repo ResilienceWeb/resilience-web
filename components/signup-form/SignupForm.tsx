@@ -60,7 +60,7 @@ const SignupForm = () => {
                     You forgot to enter your email :)
                   </FormErrorMessage>
                   {isSuccess && (
-                    <FormHelperText fontWeight="700" textColor="rw.700">
+                    <FormHelperText fontWeight={600} textColor="rw.700">
                       You have subscribed successfully 🎉
                     </FormHelperText>
                   )}

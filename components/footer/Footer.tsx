@@ -55,7 +55,7 @@ const SocialButton = ({
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
   return (
-    <Text fontWeight={'500'} fontSize={'lg'} mb={2}>
+    <Text fontWeight={600} fontSize={'lg'} mb={2}>
       {children}
     </Text>
   )
@@ -87,13 +87,13 @@ export default function Footer() {
               />
             </Box>
             <Link
-              fontWeight="semibold"
+              fontWeight={600}
               href="https://dinerismail.dev"
               target="_blank"
               isExternal
               _hover={{ color: 'black' }}
             >
-              Built with ❤️ <span style={{ marginLeft: '5px' }}>by Diner</span>
+              Built with ❤️ <span style={{ marginLeft: '3px' }}>by Diner</span>
             </Link>
             <Stack direction={'row'} spacing={6}>
               <SocialButton

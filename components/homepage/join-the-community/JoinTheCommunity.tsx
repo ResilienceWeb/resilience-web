@@ -26,7 +26,7 @@ const JoinTheCommunity = () => {
           alignItems="flex-start"
           justifyContent="flex-start"
         >
-          <Text fontSize="x-large" color="blackAlpha.700" fontWeight="500">
+          <Text fontSize="x-large" color="blackAlpha.700" fontWeight="600">
             Want to get involved?
           </Text>
           <Heading as="h2" fontSize="xx-large">

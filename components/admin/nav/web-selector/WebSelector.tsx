@@ -67,7 +67,7 @@ const WebSelector = () => {
 
   if (webOptions.length === 1) {
     return (
-      <Text fontWeight="bold" fontSize="lg" color="gray.700">
+      <Text fontWeight={600} fontSize="lg" color="gray.700">
         {webOptions[0].label}
       </Text>
     )

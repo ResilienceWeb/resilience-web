@@ -12,11 +12,10 @@ import {
 import { SessionProvider } from 'next-auth/react'
 import { Analytics } from '@vercel/analytics/react'
 import '@fontsource/poppins/400.css'
-import '@fontsource/poppins/500.css'
 import '@fontsource/poppins/600.css'
 import '@styles/colors.css'
 import '@styles/styles.global.scss'
-import '@styles/vis-network.min.css'
+import '@styles/vis-network-simplified.css'
 import StoreProvider from '@store/StoreProvider'
 
 const theme = extendTheme({
@@ -67,7 +66,7 @@ function App({ Component, pageProps }) {
         <meta property="og:locale" content="en_GB" />
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover"
         />
         <meta name="og:image" content="static/preview-image.png" />
         <meta
