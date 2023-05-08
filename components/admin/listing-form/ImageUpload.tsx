@@ -54,7 +54,7 @@ const ImageUpload = ({
 
   return (
     <FormControl isInvalid={form.errors.image && form.touched.image} mb="1rem">
-      <FormLabel htmlFor="image" fontSize="sm">
+      <FormLabel htmlFor="image" fontSize="sm" fontWeight="600">
         Image
       </FormLabel>
       {helperText && <FormHelperText mb="1.5rem">{helperText}</FormHelperText>}
