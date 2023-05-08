@@ -20,7 +20,10 @@ import {
 
 import LayoutContainer from '@components/admin/layout-container'
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
-import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
+import {
+  useHasPermissionForCurrentWeb,
+  usePermissions,
+} from '@hooks/permissions'
 import { useWeb, useUpdateWeb } from '@hooks/webs'
 import { useAppContext } from '@store/hooks'
 
@@ -28,6 +31,7 @@ export default function Settings() {
   const router = useRouter()
   const { data: session, status: sessionStatus } = useSession()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
+  const { isLoading: isLoadingPermissions } = usePermissions()
   const { selectedWebSlug } = useAppContext()
   const { web: webData } = useWeb(selectedWebSlug)
   const { updateWeb, isLoading, isSuccess } = useUpdateWeb()
@@ -64,7 +68,7 @@ export default function Settings() {
     [updateWeb, webData?.slug],
   )
 
-  if (sessionStatus === 'loading') {
+  if (sessionStatus === 'loading' || isLoadingPermissions) {
     return (
       <LayoutContainer>
         <Center height="100%">
@@ -76,7 +80,7 @@ export default function Settings() {
 
   if (!session) return null
 
-  if (!hasPermissionForCurrentWeb) {
+  if (hasPermissionForCurrentWeb === false) {
     void router.push('/admin')
   }
 

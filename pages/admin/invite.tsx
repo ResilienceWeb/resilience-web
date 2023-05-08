@@ -26,7 +26,10 @@ import LayoutContainer from '@components/admin/layout-container'
 import { useListings } from '@hooks/listings'
 import { emailRequiredValidator } from '@helpers/formValidation'
 import { REMOTE_URL } from '@helpers/config'
-import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
+import {
+  useHasPermissionForCurrentWeb,
+  usePermissions,
+} from '@hooks/permissions'
 import { useSelectedWebName } from '@hooks/webs'
 import { useAppContext } from '@store/hooks'
 
@@ -54,6 +57,7 @@ export default function Invite() {
   const { data: session, status: sessionStatus } = useSession()
   const { listings, isLoading: isLoadingListings } = useListings()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
+  const { isLoading: isLoadingPermissions } = usePermissions()
   const selectedWebName = useSelectedWebName()
   const { selectedWebId } = useAppContext()
   const toast = useToast()
@@ -139,7 +143,11 @@ export default function Invite() {
     [listings, selectedWebId, toast],
   )
 
-  if (sessionStatus === 'loading' || isLoadingListings) {
+  if (
+    sessionStatus === 'loading' ||
+    isLoadingListings ||
+    isLoadingPermissions
+  ) {
     return (
       <LayoutContainer>
         <Center height="100%">
