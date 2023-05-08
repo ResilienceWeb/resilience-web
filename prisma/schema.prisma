@@ -72,7 +72,7 @@ model Location {
   permission  Permission[]
   published   Boolean      @default(false)
   image       String?
-  Ownership   Ownership?   @relation(fields: [ownershipId], references: [id])
+  Ownership   Ownership[]
   ownershipId Int?
 
   @@map("Location")
