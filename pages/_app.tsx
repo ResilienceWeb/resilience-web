@@ -42,7 +42,7 @@ const theme = extendTheme({
   },
 })
 
-function App({ Component, pageProps }) {
+function App({ Component, pageProps: { session, ...pageProps } }) {
   const [queryClient] = useState(() => new QueryClient())
 
   return (
@@ -80,7 +80,7 @@ function App({ Component, pageProps }) {
         strategy="afterInteractive"
         src="https://cabin.resilienceweb.org.uk/hello.js"
       />
-      <SessionProvider refetchInterval={5 * 60} session={pageProps.session}>
+      <SessionProvider refetchInterval={5 * 60} session={session}>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
             <StoreProvider>

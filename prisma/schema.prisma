@@ -38,7 +38,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   permission    Permission[]
-  Ownership     Ownership?
+  ownerships    Ownership[]
 
   @@map("users")
 }
@@ -72,7 +72,7 @@ model Location {
   permission  Permission[]
   published   Boolean      @default(false)
   image       String?
-  Ownership   Ownership[]
+  ownerships  Ownership[]
   ownershipId Int?
 
   @@map("Location")
