@@ -57,7 +57,7 @@ const SlugField = () => {
           <FormControl
             isInvalid={Boolean(form.errors.slug && form.touched.slug)}
           >
-            <FormLabel htmlFor="slug" fontSize="sm">
+            <FormLabel htmlFor="slug" fontSize="sm" fontWeight="600">
               Url
             </FormLabel>
             <InputGroup size="sm">
@@ -157,7 +157,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                         form.errors.title && form.touched.title,
                       )}
                     >
-                      <FormLabel htmlFor="title" fontSize="sm">
+                      <FormLabel htmlFor="title" fontSize="sm" fontWeight="600">
                         Title*
                       </FormLabel>
                       <Input
@@ -190,7 +190,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                         form.errors.description && form.touched.description,
                       )}
                     >
-                      <FormLabel htmlFor="description" fontSize="sm">
+                      <FormLabel htmlFor="description" fontSize="sm" fontWeight="600">
                         Description*
                       </FormLabel>
                       <FormErrorMessage mb="1rem">
@@ -210,7 +210,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                         form.errors.category && form.touched.category,
                       )}
                     >
-                      <FormLabel htmlFor="category" fontSize="sm">
+                      <FormLabel htmlFor="category" fontSize="sm" fontWeight="600">
                         Category*
                       </FormLabel>
                       <Select
@@ -235,9 +235,9 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                 </Field>
               </chakra.div>
 
-              <Field name="image" validate={fieldRequiredValidator}>
+              <Field name="image">
                 {({ field, form }: FieldProps) => (
-                  <ImageUpload field={field} form={form} formProps={props} />
+                  <ImageUpload field={field} form={form} formProps={props} isRequired />
                 )}
               </Field>
 
@@ -249,7 +249,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                         form.errors.email && form.touched.email,
                       )}
                     >
-                      <FormLabel htmlFor="email" fontSize="sm">
+                      <FormLabel htmlFor="email" fontSize="sm" fontWeight="600">
                         Contact email
                       </FormLabel>
                       <Input
@@ -277,7 +277,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                           form.errors.website && form.touched.website,
                         )}
                       >
-                        <FormLabel htmlFor="title" fontSize="sm">
+                        <FormLabel htmlFor="title" fontSize="sm" fontWeight="600">
                           Website
                         </FormLabel>
                         <Input
@@ -304,7 +304,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                           form.errors.facebook && form.touched.facebook,
                         )}
                       >
-                        <FormLabel htmlFor="facebook" fontSize="sm">
+                        <FormLabel htmlFor="facebook" fontSize="sm" fontWeight="600">
                           Facebook
                         </FormLabel>
                         <Input
@@ -333,7 +333,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                           form.errors.twitter && form.touched.twitter,
                         )}
                       >
-                        <FormLabel htmlFor="twitter" fontSize="sm">
+                        <FormLabel htmlFor="twitter" fontSize="sm" fontWeight="600">
                           Twitter
                         </FormLabel>
                         <Input
@@ -360,7 +360,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                           form.errors.instagram && form.touched.instagram,
                         )}
                       >
-                        <FormLabel htmlFor="instagram" fontSize="sm">
+                        <FormLabel htmlFor="instagram" fontSize="sm" fontWeight="600">
                           Instagram
                         </FormLabel>
                         <Input
@@ -394,7 +394,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                             form.errors.tags && form.touched.tags,
                           )}
                         >
-                          <FormLabel htmlFor="tags" fontSize="sm">
+                          <FormLabel htmlFor="tags" fontSize="sm" fontWeight="600">
                             Tags
                           </FormLabel>
                           <InputGroup size="sm">

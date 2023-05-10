@@ -21,11 +21,13 @@ const ImageUpload = ({
   form,
   formProps,
   helperText,
+  isRequired = false
 }: {
   field: any
   form: any
   formProps: any
   helperText?: string
+  isRequired?: boolean
 }) => {
   const fileInputRef = useRef<HTMLInputElement>()
   const [preview, setPreview] = useState<string | ArrayBuffer>()
@@ -55,7 +57,7 @@ const ImageUpload = ({
   return (
     <FormControl isInvalid={form.errors.image && form.touched.image} mb="1rem">
       <FormLabel htmlFor="image" fontSize="sm" fontWeight="600">
-        Image
+        {`Image${isRequired ? '*' : ''}`}
       </FormLabel>
       {helperText && <FormHelperText mb="1.5rem">{helperText}</FormHelperText>}
       <InputGroup display="flex" alignItems="center" justifyContent="center">
