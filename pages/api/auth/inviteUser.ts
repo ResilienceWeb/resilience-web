@@ -116,7 +116,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (permission) {
       const inviteEmailComponent = InviteEmail({
         listings: titles,
-        webTitle: `${selectedWeb.title} Resilience Web`,
+        webTitle: `${selectedWeb.title}`,
         inviteToWeb,
         email: email,
         url: callToActionButtonUrl,
