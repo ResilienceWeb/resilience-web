@@ -17,6 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const user = await prisma.user.findUnique({
       where: { email },
+      include: { ownerships: true },
     })
     res.status(200)
     res.json({ user })

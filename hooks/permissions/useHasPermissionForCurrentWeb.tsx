@@ -16,7 +16,7 @@ export default function useHasPermissionForCurrentWeb() {
   )
 
   return (
-    hasPermission || (sessionStatus === 'authenticated' && session.user.admin)
+    hasPermission || (sessionStatus === 'authenticated' && session?.user.admin)
   )
 }
 

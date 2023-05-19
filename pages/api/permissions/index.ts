@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!session?.user) {
       res.status(403)
       res.json({
-        error: `You don't have enough permissions to access this data.`,
+        error: `You don't have enough permissions to perform this action.`,
       })
     }
 
