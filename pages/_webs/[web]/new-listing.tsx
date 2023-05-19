@@ -1,7 +1,15 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
-import { Box, Stack, Heading, Alert, AlertIcon, Text } from '@chakra-ui/react'
+import {
+  Box,
+  Stack,
+  Heading,
+  Alert,
+  AlertIcon,
+  Text,
+  Button,
+} from '@chakra-ui/react'
 
 import { useCategories } from '@hooks/categories'
 import { useCreateListing } from '@hooks/listings'
@@ -16,6 +24,7 @@ function Submit() {
   const { categories } = useCategories()
   const selectedWebName = useSelectedWebName()
   const { mutate: createListing } = useCreateListing()
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const goBack = useCallback(() => {
     router.back()
@@ -28,9 +37,14 @@ function Submit() {
       data.inactive = false
       data.relations = []
       createListing(data)
-      goBack()
+      setTimeout(() => {
+        setIsSubmitted(true)
+        if (window) {
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+      }, 1000)
     },
-    [createListing, goBack, selectedWebId],
+    [createListing, selectedWebId],
   )
 
   if (router.isFallback || !categories) {
@@ -54,30 +68,53 @@ function Submit() {
           <Heading as="h1" my="1rem">
             Submit new listing
           </Heading>
-          <Text>
-            You are proposing a new listing for the{' '}
-            <strong>{selectedWebName}</strong> web.
-          </Text>
-          <Box
-            my="2rem"
-            shadow="base"
-            rounded={[null, 'md']}
-            overflow={{ sm: 'hidden' }}
-          >
-            <Alert status="info" colorScheme="blue">
-              <AlertIcon />
-              Before you submit this form, please ensure that a listing for the
-              same entity doesn't already exist, and note that the submission
-              will only be approved if it is for a group that has a positive
-              contribution to the local community.
-            </Alert>
-            <Stack bg="white" spacing={6}>
-              <ListingFormSimplified
-                categories={categories}
-                handleSubmit={handleSubmit}
-              />
-            </Stack>
-          </Box>
+          {isSubmitted ? (
+            <>
+              <Text>
+                You have submitted your new proposed listing succesfully 🎉{' '}
+                <br /> Thank you for your contribution. It will next be checked
+                and hopefully approved by the admins of the{' '}
+                <strong>{selectedWebName}</strong> web.
+              </Text>
+              <Button
+                onClick={goBack}
+                mt="2rem"
+                bg="rw.700"
+                colorScheme="rw.700"
+                size="md"
+                _hover={{ bg: 'rw.900' }}
+              >
+                Go back to main {selectedWebName} page
+              </Button>
+            </>
+          ) : (
+            <>
+              <Text>
+                You are proposing a new listing for the{' '}
+                <strong>{selectedWebName}</strong> web.
+              </Text>
+              <Box
+                my="2rem"
+                shadow="base"
+                rounded={[null, 'md']}
+                overflow={{ sm: 'hidden' }}
+              >
+                <Alert status="info" colorScheme="blue">
+                  <AlertIcon />
+                  Before you submit this form, please ensure that a listing for
+                  the same entity doesn't already exist, and note that the
+                  submission will only be approved if it is for a group that has
+                  a positive contribution to the local community.
+                </Alert>
+                <Stack bg="white" spacing={6}>
+                  <ListingFormSimplified
+                    categories={categories}
+                    handleSubmit={handleSubmit}
+                  />
+                </Stack>
+              </Box>
+            </>
+          )}
         </Box>
       </Layout>
     </>
