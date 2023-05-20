@@ -29,8 +29,7 @@ import { BiCategory } from 'react-icons/bi'
 
 import WebSelector from './web-selector'
 import LogoImage from '../../../public/logo.png'
-import { usePermissions } from '@hooks/permissions'
-import { useAppContext } from '@store/hooks'
+import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
 
 const NavLink = ({ children, href }) => (
   <Link as={NextLink} px={2} py={1} rounded={'md'} href={href}>
@@ -42,12 +41,7 @@ const Nav = () => {
   const { data: session } = useSession()
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const { permissions } = usePermissions()
-  const { selectedWebId } = useAppContext()
-  const isAdminOfSelectedWeb = useMemo(() => {
-    return permissions?.webIds?.includes(selectedWebId)
-  }, [permissions?.webIds, selectedWebId])
+  const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
 
   const Links = useMemo(() => {
     const links = [
@@ -58,7 +52,7 @@ const Nav = () => {
       },
     ]
 
-    if (session?.user.admin || isAdminOfSelectedWeb) {
+    if (hasPermissionForCurrentWeb) {
       links.push({
         label: 'Categories & Tags',
         href: '/admin/categories',
@@ -87,7 +81,7 @@ const Nav = () => {
     }
 
     return links
-  }, [isAdminOfSelectedWeb, session?.user.admin])
+  }, [hasPermissionForCurrentWeb, session?.user.admin])
 
   const handleSignOut = useCallback(() => void signOut(), [])
 
@@ -121,7 +115,7 @@ const Nav = () => {
               </button>
             </Link>
           </Box>
-          <HStack as={'nav'} spacing={8} display={{ base: 'none', md: 'flex' }}>
+          <HStack as="nav" spacing={8} display={{ base: 'none', md: 'flex' }}>
             {Links.map((link) => (
               <NavLink key={link.label} href={link.href}>
                 <Button

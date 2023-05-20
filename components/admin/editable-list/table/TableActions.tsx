@@ -8,7 +8,6 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import Select from 'react-select'
-import { useSession } from 'next-auth/react'
 import { HiOutlineSearch, HiPlus } from 'react-icons/hi'
 import { useCategories } from '@hooks/categories'
 import customMultiSelectStyles from '@styles/select-styles'
@@ -20,7 +19,6 @@ const TableActions = ({
   handleSelectedCategoriesChange,
   goToCreateListing,
 }) => {
-  const { data: session } = useSession()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
 
   const { categories: fetchedCategories } = useCategories()
@@ -52,7 +50,7 @@ const TableActions = ({
         md: 'auto',
       }}
     >
-      {(session?.user?.admin || hasPermissionForCurrentWeb) && (
+      {hasPermissionForCurrentWeb && (
         <>
           <HStack spacing="1rem">
             <InputGroup minW="250px">

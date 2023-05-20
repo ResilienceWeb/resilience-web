@@ -1,14 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
-import { getToken } from 'next-auth/jwt'
 import { authOptions } from '../auth/[...nextauth]'
 import prisma from '../../../prisma/client'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const token = await getToken({ req })
-    console.log({ token })
-
     const session = await getServerSession(req, res, authOptions)
     if (!session?.user) {
       // TODO: also check if is owner of current web

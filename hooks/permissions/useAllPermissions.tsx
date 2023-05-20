@@ -8,7 +8,7 @@ async function fetchAllPermissionsRequest() {
   return permissions
 }
 
-export default function usePermissions() {
+export default function useAllPermissions() {
   const { data: session, status: sessionStatus } = useSession()
 
   const {
