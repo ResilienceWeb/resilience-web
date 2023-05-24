@@ -125,6 +125,12 @@ const Drawer = ({
           </Flex>
         </Box>
         <Box p="1rem">
+          <Link
+            href={`${window.location.href}new-listing`}
+            target="_blank"
+          >
+            <Button my="2rem">Propose new listing</Button>
+          </Link>
           <Heading as="h2" fontSize="1.25rem">
             Support this project
           </Heading>
