@@ -30,6 +30,7 @@ import { BiCategory } from 'react-icons/bi'
 import WebSelector from './web-selector'
 import LogoImage from '../../../public/logo.png'
 import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
+import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 
 const NavLink = ({ children, href }) => (
   <Link as={NextLink} px={2} py={1} rounded={'md'} href={href}>
@@ -42,6 +43,7 @@ const Nav = () => {
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
+  const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
 
   const Links = useMemo(() => {
     const links = [
@@ -60,11 +62,13 @@ const Nav = () => {
       })
 
       links.push({
-        label: 'Invite',
-        href: '/admin/invite',
+        label: 'Team',
+        href: '/admin/team',
         icon: <Icon as={HiUsers} fontSize="lg" />,
       })
+    }
 
+    if (isOwnerOfCurrentWeb) {
       links.push({
         label: 'Web Settings',
         href: '/admin/web-settings',
@@ -81,7 +85,7 @@ const Nav = () => {
     }
 
     return links
-  }, [hasPermissionForCurrentWeb, session?.user.admin])
+  }, [hasPermissionForCurrentWeb, isOwnerOfCurrentWeb, session?.user.admin])
 
   const handleSignOut = useCallback(() => void signOut(), [])
 

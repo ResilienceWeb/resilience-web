@@ -2,16 +2,19 @@ import { signIn, useSession } from 'next-auth/react'
 import { memo, useEffect, useMemo } from 'react'
 import { Center, Spinner } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 import LayoutContainer from '@components/admin/layout-container'
 import EditableList from '@components/admin/editable-list'
 import { useListings, useDeleteListing } from '@hooks/listings'
 import { usePermissions } from '@hooks/permissions'
+import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 import { useAppContext } from '@store/hooks'
 
 const Admin = () => {
   const { data: session, status: sessionStatus } = useSession()
   const { selectedWebId } = useAppContext()
+  const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
 
   const {
     listings,
@@ -34,7 +37,7 @@ const Admin = () => {
 
   const allowedListings = useMemo(() => {
     if (!session || isLoadingPermissions || isLoadingListings) return null
-    if (session.user.admin) return listings
+    if (isOwnerOfCurrentWeb) return listings
 
     if (permissions?.webIds?.includes(selectedWebId)) return listings
 
@@ -45,6 +48,7 @@ const Admin = () => {
     session,
     isLoadingPermissions,
     isLoadingListings,
+    isOwnerOfCurrentWeb,
     listings,
     permissions?.webIds,
     permissions?.listingIds,
@@ -77,13 +81,21 @@ const Admin = () => {
   if (!session) return null
 
   return (
-    <LayoutContainer>
-      <EditableList
-        deleteListing={deleteListing}
-        isAdmin={session.user.admin}
-        items={allowedListings}
+    <>
+      <NextSeo
+        title="Admin | Resilience Web"
+        openGraph={{
+          title: 'Admin | Resilience Web',
+        }}
       />
-    </LayoutContainer>
+      <LayoutContainer>
+        <EditableList
+          deleteListing={deleteListing}
+          isAdmin={session.user.admin}
+          items={allowedListings}
+        />
+      </LayoutContainer>
+    </>
   )
 }
 

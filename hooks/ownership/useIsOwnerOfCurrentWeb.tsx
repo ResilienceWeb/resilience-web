@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
 import { useAppContext } from '@store/hooks'
-import useOwnerships from './useOwnerships'
+import useMyOwnerships from './useMyOwnerships'
 
 export default function useIsOwnerOfCurrentWeb() {
   const { selectedWebId } = useAppContext()
-  const { ownerships } = useOwnerships()
+  const { ownerships } = useMyOwnerships()
 
   // eslint-disable-next-line sonarjs/prefer-immediate-return
   const isOwner = useMemo(() => {

@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react'
 import { useAppContext } from '@store/hooks'
 import { useWebs } from '@hooks/webs'
 import { usePermissions } from '@hooks/permissions'
+import { useMyOwnerships } from '@hooks/ownership'
 
 type WebOption = {
   value: string
@@ -18,17 +19,19 @@ const WebSelector = () => {
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
   const { webs } = useWebs()
   const { permissions } = usePermissions()
+  const { ownerships } = useMyOwnerships()
 
   const allUniqueWebIds = useMemo(() => {
-    if (!permissions) {
+    if (!permissions && !ownerships) {
       return []
     }
 
-    const allWebIds = permissions.fullPermissionData?.listings.map(
-      (listing) => listing.webId,
+    const allWebIds = permissions?.fullPermissionData?.listings.map(
+      (l) => l.webId,
     )
-    return Array.from(new Set(allWebIds))
-  }, [permissions])
+    const ownedWebsIds = ownerships?.map((o) => o.id)
+    return Array.from(new Set([...allWebIds, ...ownedWebsIds]))
+  }, [ownerships, permissions])
 
   const webOptions: Options<WebOption> = useMemo(() => {
     if (!webs || !permissions) return []
