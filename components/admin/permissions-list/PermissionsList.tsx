@@ -2,6 +2,7 @@
 import { memo, useCallback, useMemo } from 'react'
 import { Formik, Form, Field, FieldProps } from 'formik'
 import isEqual from 'lodash/isEqual'
+import { useSession } from 'next-auth/react'
 import {
   Text,
   Box,
@@ -16,6 +17,8 @@ import {
   FormLabel,
   Button,
   chakra,
+  Badge,
+  Stack,
 } from '@chakra-ui/react'
 import Select from 'react-select'
 import { useAllListings } from '@hooks/listings'
@@ -42,6 +45,7 @@ const SeparatedElement = chakra('span', {
 const PermissionsList = ({ permissions }) => {
   const { listings } = useAllListings()
   const { webs } = useWebs()
+  const { data: session } = useSession()
   const { mutate: updatePermission, isLoading: isUpdatingPermission } =
     useUpdatePermission()
 
@@ -102,6 +106,24 @@ const PermissionsList = ({ permissions }) => {
             value: s.id,
             label: s.title,
           }))
+        }
+
+        if (user.id === session?.user?.id) {
+          return (
+            <Box key="current-user" bgColor="whiteAlpha.800" p="1rem">
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Text>
+                  {session?.user.email}
+                  <b>&nbsp;(You)</b>
+                </Text>
+                <Badge>Owner</Badge>
+              </Stack>
+            </Box>
+          )
         }
 
         return (

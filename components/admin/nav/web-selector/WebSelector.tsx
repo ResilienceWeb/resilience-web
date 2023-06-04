@@ -28,7 +28,8 @@ const WebSelector = () => {
 
     const allWebIds =
       permissions?.fullPermissionData?.listings.map((l) => l.webId) ?? []
-    const ownedWebsIds = ownerships?.map((o) => o.id)
+    const ownedWebsIds = ownerships?.map((o) => o.id) ?? []
+
     return Array.from(new Set([...allWebIds, ...ownedWebsIds]))
   }, [ownerships, permissions])
 

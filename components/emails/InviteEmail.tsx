@@ -50,7 +50,11 @@ const InviteEmail = ({
           />
           <Text style={paragraph}>Hello,</Text>
           <Text style={paragraph}>
-            You are invited to be an admin of <strong>{listings}</strong>
+            You are invited to be an admin of{' '}
+            <strong>
+              {listings}
+              {inviteToWeb === true ? ' Resilience Web' : ''}
+            </strong>
             {inviteToWeb === false ? ` on the ${webTitle} Resilience Web` : ''},
             a digital mapping of organisations that are working to create a more
             resilient, more equitable and greener future for this city and its

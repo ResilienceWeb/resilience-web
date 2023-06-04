@@ -80,12 +80,6 @@ export default function Invite() {
     return ownerships.map((ownership) => ({ ...ownership, owner: true }))
   }, [ownerships])
 
-  const permissionsWithoutCurrentUser = useMemo(() => {
-    return permissionsForCurrentWeb?.filter(
-      (p) => p.user.id !== session.user.id,
-    )
-  }, [permissionsForCurrentWeb, session?.user?.id])
-
   useEffect(() => {
     async function signInIfNeeded() {
       if (!session && !(sessionStatus === 'loading')) {
@@ -351,13 +345,11 @@ export default function Invite() {
                   listings on the <b>{selectedWebName}</b> web.
                 </Text>
                 {isOwnerOfCurrentWeb ? (
-                  <PermissionsList
-                    permissions={permissionsWithoutCurrentUser}
-                  />
+                  <PermissionsList permissions={permissionsForCurrentWeb} />
                 ) : (
                   <PermissionsTable
                     permissions={[
-                      ...permissionsWithoutCurrentUser,
+                      ...permissionsForCurrentWeb,
                       ...decoratedOwnerships,
                     ]}
                   />
