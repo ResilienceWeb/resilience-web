@@ -76,10 +76,6 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       </Head>
-      <Script
-        strategy="afterInteractive"
-        src="https://cabin.resilienceweb.org.uk/hello.js"
-      />
       <SessionProvider refetchInterval={5 * 60} session={session}>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
