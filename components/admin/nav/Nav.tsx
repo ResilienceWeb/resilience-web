@@ -54,7 +54,7 @@ const Nav = () => {
       },
     ]
 
-    if (hasPermissionForCurrentWeb) {
+    if (hasPermissionForCurrentWeb || isOwnerOfCurrentWeb) {
       links.push({
         label: 'Categories & Tags',
         href: '/admin/categories',

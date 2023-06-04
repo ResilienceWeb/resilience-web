@@ -35,6 +35,14 @@ const PermissionsTable = ({ permissions }) => {
               const cell = permission[column.accessor]
 
               if (column.accessor === 'webs') {
+                if (permission.owner === true) {
+                  return (
+                    <Td key={index}>
+                      <Badge>Owner</Badge>
+                    </Td>
+                  )
+                }
+
                 if (permission.webs.some((w) => w.title === selectedWebName)) {
                   return (
                     <Td key={index}>

@@ -35,7 +35,7 @@ import {
   usePermissions,
   usePermissionsForCurrentWeb,
 } from '@hooks/permissions'
-import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
+import { useIsOwnerOfCurrentWeb, useOwnerships } from '@hooks/ownership'
 import { useSelectedWebName } from '@hooks/webs'
 import { useAppContext } from '@store/hooks'
 
@@ -68,12 +68,23 @@ export default function Invite() {
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
   const { isLoading: isLoadingPermissions } = usePermissions()
   const { data: permissionsForCurrentWeb } = usePermissionsForCurrentWeb()
+  const { ownerships } = useOwnerships()
   const selectedWebName = useSelectedWebName()
   const { selectedWebId } = useAppContext()
 
+  const decoratedOwnerships = useMemo(() => {
+    if (!ownerships) {
+      return []
+    }
+
+    return ownerships.map((ownership) => ({ ...ownership, owner: true }))
+  }, [ownerships])
+
   const permissionsWithoutCurrentUser = useMemo(() => {
-    return permissionsForCurrentWeb.filter((p) => p.user.id !== session.user.id)
-  }, [permissionsForCurrentWeb, session.user.id])
+    return permissionsForCurrentWeb?.filter(
+      (p) => p.user.id !== session.user.id,
+    )
+  }, [permissionsForCurrentWeb, session?.user?.id])
 
   useEffect(() => {
     async function signInIfNeeded() {
@@ -171,7 +182,7 @@ export default function Invite() {
 
   if (!session) return null
 
-  if (!hasPermissionForCurrentWeb) {
+  if (!hasPermissionForCurrentWeb && !isOwnerOfCurrentWeb) {
     void router.push('/admin')
   }
 
@@ -186,7 +197,7 @@ export default function Invite() {
       <LayoutContainer>
         <Box px={{ base: '4', md: '10' }} py={4} maxWidth="3xl" mx="auto">
           <Stack spacing="4" divider={<StackDivider />}>
-            <Heading>Invite user</Heading>
+            <Heading>Invite new member</Heading>
             <Box
               shadow="base"
               rounded={[null, 'md']}
@@ -345,7 +356,10 @@ export default function Invite() {
                   />
                 ) : (
                   <PermissionsTable
-                    permissions={permissionsWithoutCurrentUser}
+                    permissions={[
+                      ...permissionsWithoutCurrentUser,
+                      ...decoratedOwnerships,
+                    ]}
                   />
                 )}
               </Box>
