@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' next dev -p ${PORT:-3000}",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p ${PORT:-8080}",
     "db": "prisma studio --port 7777",

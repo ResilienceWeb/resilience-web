@@ -20,6 +20,7 @@ const handler = async (
   try {
     const session = await getServerSession(req, res, authOptions)
     if (!session?.user) {
+      // TODO: Improve security
       console.log(req.body)
     }
 

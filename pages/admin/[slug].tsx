@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 import { useCallback } from 'react'
 import {
   Flex,
@@ -50,48 +51,60 @@ export default function Listing() {
   }
 
   return (
-    <LayoutContainer>
-      <Box
-        px={{
-          base: '4',
-          md: '10',
+    <>
+      <NextSeo
+        title="Admin | Resilience Web"
+        openGraph={{
+          title: 'Admin | Resilience Web',
         }}
-        py={4}
-        maxWidth="3xl"
-        mx="auto"
-      >
-        <Button
-          leftIcon={<HiArrowLeft />}
-          name="Back"
-          mb={2}
-          ml={2}
-          onClick={goBack}
-          variant="link"
-          color="gray.700"
+      />
+      <LayoutContainer>
+        <Box
+          px={{
+            base: '4',
+            md: '10',
+          }}
+          py={4}
+          maxWidth="3xl"
+          mx="auto"
         >
-          Back
-        </Button>
+          <Button
+            leftIcon={<HiArrowLeft />}
+            name="Back"
+            mb={2}
+            ml={2}
+            onClick={goBack}
+            variant="link"
+            color="gray.700"
+          >
+            Back
+          </Button>
 
-        <Box mt={4}>
-          <Box shadow="base" rounded={[null, 'md']} overflow={{ sm: 'hidden' }}>
-            {listing.pending && (
-              <Alert status="info" colorScheme="purple">
-                <AlertIcon />
-                This listing was submitted externally and is currently in
-                pending state. Check through the information below, and if
-                everything looks okay click Approve.
-              </Alert>
-            )}
-            <Stack bg="white" spacing={6}>
-              <ListingForm
-                categories={categories}
-                listing={listing}
-                handleSubmit={handleSubmit}
-              />
-            </Stack>
+          <Box mt={4}>
+            <Box
+              shadow="base"
+              rounded={[null, 'md']}
+              overflow={{ sm: 'hidden' }}
+            >
+              {listing.pending && (
+                <Alert status="info" colorScheme="purple">
+                  <AlertIcon />
+                  This listing was submitted externally and is currently in
+                  pending state. Check through the information below, and if
+                  everything looks okay click Approve.
+                </Alert>
+              )}
+              <Stack bg="white" spacing={6}>
+                <ListingForm
+                  categories={categories}
+                  listing={listing}
+                  handleSubmit={handleSubmit}
+                />
+              </Stack>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </LayoutContainer>
+      </LayoutContainer>
+    </>
   )
 }
