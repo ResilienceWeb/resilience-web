@@ -175,6 +175,7 @@
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-unsafe-argument": 0,
     "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/no-floating-promises": 0,
     "promise/catch-or-return": [
       1,
       {
