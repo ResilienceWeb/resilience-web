@@ -38,15 +38,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    // const isUserExisting = await prisma.user.findUnique({ where: { email } })
-    // if (isUserExisting) {
-    //   res.status(409)
-    //   return res.json({
-    //     error:
-    //       'User already invited. Please use Permissions page to edit their permissions.',
-    //   })
-    // }
-
     const newUserData: Prisma.UserUpsertArgs = {
       where: { email },
       create: { email },

@@ -136,17 +136,7 @@ export default function Invite() {
           duration: 5000,
           isClosable: true,
         })
-      }
-      // else if (response.status === 409) {
-      //   toast({
-      //     title: 'User already invited',
-      //     description: `This user already received an invite. Please use Permissions page to edit their permissions.`,
-      //     status: 'error',
-      //     duration: 5000,
-      //     isClosable: true,
-      //   })
-      // }
-      else {
+      } else {
         toast({
           title: 'Error',
           description: `There was an error. Please try again or contact the developers.`,
