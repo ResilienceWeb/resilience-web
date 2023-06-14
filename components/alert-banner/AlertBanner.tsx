@@ -2,7 +2,7 @@ import { memo } from 'react'
 import { Alert, AlertIcon, AlertDescription, Box, Link } from '@chakra-ui/react'
 
 interface IAlertProps {
-  type: 'info' | 'warning'
+  type: 'info' | 'warning' | 'success'
   content: string
   url: string
 }
