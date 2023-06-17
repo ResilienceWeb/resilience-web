@@ -24,6 +24,7 @@ import {
   useHasPermissionForCurrentWeb,
   usePermissions,
 } from '@hooks/permissions'
+import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 
 const LoadingSpinner = () => (
   <LayoutContainer>
@@ -40,6 +41,7 @@ export default function Categories() {
   const { tags, isLoading: isLoadingTags } = useTags()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
   const { isLoading: isLoadingPermissions } = usePermissions()
+  const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
 
   const orderedCategories = useMemo(() => {
     return categories?.sort((a, b) => a.label.localeCompare(b.label))
@@ -53,7 +55,7 @@ export default function Categories() {
     return <LoadingSpinner />
   }
 
-  if (!hasPermissionForCurrentWeb) {
+  if (!hasPermissionForCurrentWeb && !isOwnerOfCurrentWeb) {
     void router.push('/admin')
   }
 
