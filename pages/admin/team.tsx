@@ -82,8 +82,8 @@ export default function Invite() {
 
   const permissionsForCurrentWebWithoutOwners = useMemo(() => {
     const filteredPermissions = []
-    const ownershipsEmails = ownerships.map((o) => o.user.email)
-    permissionsForCurrentWeb.map((permission) => {
+    const ownershipsEmails = ownerships?.map((o) => o.user.email)
+    permissionsForCurrentWeb?.map((permission) => {
       if (!ownershipsEmails.includes(permission.user.email)) {
         filteredPermissions.push(permission)
       }
@@ -91,8 +91,6 @@ export default function Invite() {
 
     return filteredPermissions
   }, [ownerships, permissionsForCurrentWeb])
-
-  console.log({ decoratedOwnerships, permissionsForCurrentWeb })
 
   useEffect(() => {
     async function signInIfNeeded() {
