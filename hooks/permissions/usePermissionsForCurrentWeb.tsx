@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 import { useAppContext } from '@store/hooks'
 
 async function fetchPermissionsForCurrentWebRequest({ queryKey }) {
@@ -13,7 +12,6 @@ async function fetchPermissionsForCurrentWebRequest({ queryKey }) {
 
 export default function usePermissionsForCurrentWeb() {
   const { status: sessionStatus } = useSession()
-  const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
   const { selectedWebSlug: webSlug } = useAppContext()
 
   const {
@@ -23,7 +21,7 @@ export default function usePermissionsForCurrentWeb() {
   } = useQuery({
     queryKey: ['current-web-permissions', { webSlug }],
     queryFn: fetchPermissionsForCurrentWebRequest,
-    enabled: sessionStatus === 'authenticated' && isOwnerOfCurrentWeb,
+    enabled: sessionStatus === 'authenticated',
   })
 
   return {

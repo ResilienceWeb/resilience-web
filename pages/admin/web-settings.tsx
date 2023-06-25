@@ -184,7 +184,7 @@ export default function Settings() {
                 <Heading>Owners</Heading>
                 <Text>
                   List of people who have full access to the{' '}
-                  <b>{webData?.title}</b> web.
+                  <b>{webData?.title}</b> web
                 </Text>
                 <Box
                   shadow="base"

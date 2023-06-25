@@ -80,6 +80,20 @@ export default function Invite() {
     return ownerships.map((ownership) => ({ ...ownership, owner: true }))
   }, [ownerships])
 
+  const permissionsForCurrentWebWithoutOwners = useMemo(() => {
+    const filteredPermissions = []
+    const ownershipsEmails = ownerships.map((o) => o.user.email)
+    permissionsForCurrentWeb.map((permission) => {
+      if (!ownershipsEmails.includes(permission.user.email)) {
+        filteredPermissions.push(permission)
+      }
+    })
+
+    return filteredPermissions
+  }, [ownerships, permissionsForCurrentWeb])
+
+  console.log({ decoratedOwnerships, permissionsForCurrentWeb })
+
   useEffect(() => {
     async function signInIfNeeded() {
       if (!session && !(sessionStatus === 'loading')) {
@@ -341,8 +355,8 @@ export default function Invite() {
                 ) : (
                   <PermissionsTable
                     permissions={[
-                      ...permissionsForCurrentWeb,
                       ...decoratedOwnerships,
+                      ...permissionsForCurrentWebWithoutOwners,
                     ]}
                   />
                 )}
