@@ -33,7 +33,7 @@ const Layout = ({
         >
           {isHomepage && (
             <AlertBanner
-              content="Join us to imagine a thriving, sustainable future for Cambridge, rooted in community resilience! What works well now – and where are the gaps?"
+              content="Join us on July 1st to imagine a thriving, sustainable future for Cambridge, rooted in community resilience! What works well now – and where are the gaps?"
               type="info"
               url="https://www.eventbrite.co.uk/e/resilient-cambridge-together-we-can-tickets-641262863487"
             />
