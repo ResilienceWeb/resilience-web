@@ -12,6 +12,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  FormHelperText,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -179,7 +180,6 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
         twitter: listing?.twitter || '',
         instagram: listing?.instagram || '',
         seekingVolunteers: listing?.seekingVolunteers || false,
-        inactive: listing?.inactive || false,
         image: listing?.image,
         slug: listing?.slug || '',
         tags: initialTagsValues || [],
@@ -191,8 +191,8 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
       {(props) => {
         return (
           <Form encType="multipart/form-data">
-            <chakra.div p={{ sm: 6 }} px={4} py={5}>
-              <chakra.div mb={3}>
+            <chakra.div p={{ sm: 6 }} px={4} py="1rem">
+              <chakra.div mb="0.5rem">
                 <Field name="title" validate={fieldRequiredValidator}>
                   {({ field, form }: FieldProps) => (
                     <FormControl
@@ -219,37 +219,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                 </Field>
               </chakra.div>
 
-              <chakra.div mb={3}>
-                <Field
-                  name="description"
-                  validate={fieldRequiredValidator}
-                  style={{
-                    maxHeight: '200px',
-                  }}
-                >
-                  {({ form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.description && form.touched.description,
-                      )}
-                    >
-                      <FormLabel
-                        htmlFor="description"
-                        fontSize="sm"
-                        fontWeight="600"
-                      >
-                        Description*
-                      </FormLabel>
-                      <FormErrorMessage mb="1rem">
-                        Please add a description
-                      </FormErrorMessage>
-                      <EditorField name="description" />
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
-
-              <chakra.div mb={3}>
+              <chakra.div mb="0.5rem">
                 <Field name="category" validate={fieldRequiredValidator}>
                   {({ field, form }: FieldProps) => (
                     <FormControl
@@ -278,8 +248,41 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           </option>
                         ))}
                       </Select>
+                      <FormHelperText>
+                        Categories can be easily changed later
+                      </FormHelperText>
                       <FormErrorMessage>
                         Please select a category
+                      </FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+              </chakra.div>
+
+              <chakra.div mb="0.5rem">
+                <Field
+                  name="description"
+                  validate={fieldRequiredValidator}
+                  style={{
+                    maxHeight: '200px',
+                  }}
+                >
+                  {({ form }: FieldProps) => (
+                    <FormControl
+                      isInvalid={Boolean(
+                        form.errors.description && form.touched.description,
+                      )}
+                    >
+                      <FormLabel
+                        htmlFor="description"
+                        fontSize="sm"
+                        fontWeight="600"
+                      >
+                        Description*
+                      </FormLabel>
+                      <EditorField name="description" />
+                      <FormErrorMessage mb="1rem">
+                        Please add a description
                       </FormErrorMessage>
                     </FormControl>
                   )}
@@ -292,7 +295,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                 )}
               </Field>
 
-              <chakra.div mb={3}>
+              <chakra.div mb="0.5rem">
                 <Field name="email" type="email" validate={emailValidator}>
                   {({ field, form }: FieldProps) => (
                     <FormControl
@@ -301,7 +304,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                       )}
                     >
                       <FormLabel htmlFor="email" fontSize="sm" fontWeight="600">
-                        Contact email
+                        Contact email for organisation
                       </FormLabel>
                       <Input
                         {...field}
@@ -562,7 +565,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                 </Text>
               </chakra.div>
 
-              <chakra.div mb={3}>
+              <chakra.div>
                 <Field name="seekingVolunteers">
                   {({ field, form }: FieldProps) => (
                     <FormControl
@@ -589,39 +592,17 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                   )}
                 </Field>
               </chakra.div>
-
-              <chakra.div mb={3}>
-                <Field name="inactive">
-                  {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.inactive && form.touched.inactive,
-                      )}
-                    >
-                      <Checkbox
-                        isChecked={field.value}
-                        id="inactive"
-                        onChange={field.onChange}
-                      >
-                        Inactive
-                      </Checkbox>
-                      <Text color="gray.500" fontSize="sm">
-                        Has the group been inactive for a while?
-                      </Text>
-                      <FormErrorMessage>
-                        {form.errors.inactive?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
             </chakra.div>
 
-            <Box px={{ base: 4, sm: 6 }} py={3} bg="gray.50" textAlign="right">
+            <Box
+              px={{ base: 4, sm: 6 }}
+              py="0.75rem"
+              bg="gray.50"
+              textAlign="right"
+            >
               <Button
                 bg={listing?.pending ? 'purple.600' : 'rw.700'}
                 colorScheme={listing?.pending ? 'purple' : 'rw.700'}
-                isDisabled={!props.isValid}
                 isLoading={props.isSubmitting}
                 size="md"
                 type="submit"

@@ -177,32 +177,6 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
               </chakra.div>
 
               <chakra.div mb={3}>
-                <Field
-                  name="description"
-                  validate={fieldRequiredValidator}
-                  style={{
-                    maxHeight: '200px',
-                  }}
-                >
-                  {({ form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.description && form.touched.description,
-                      )}
-                    >
-                      <FormLabel htmlFor="description" fontSize="sm" fontWeight="600">
-                        Description*
-                      </FormLabel>
-                      <FormErrorMessage mb="1rem">
-                        Please add a description
-                      </FormErrorMessage>
-                      <EditorField name="description" />
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
-
-              <chakra.div mb={3}>
                 <Field name="category" validate={fieldRequiredValidator}>
                   {({ field, form }: FieldProps) => (
                     <FormControl
@@ -210,7 +184,11 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                         form.errors.category && form.touched.category,
                       )}
                     >
-                      <FormLabel htmlFor="category" fontSize="sm" fontWeight="600">
+                      <FormLabel
+                        htmlFor="category"
+                        fontSize="sm"
+                        fontWeight="600"
+                      >
                         Category*
                       </FormLabel>
                       <Select
@@ -235,9 +213,44 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                 </Field>
               </chakra.div>
 
+              <chakra.div mb={3}>
+                <Field
+                  name="description"
+                  validate={fieldRequiredValidator}
+                  style={{
+                    maxHeight: '200px',
+                  }}
+                >
+                  {({ form }: FieldProps) => (
+                    <FormControl
+                      isInvalid={Boolean(
+                        form.errors.description && form.touched.description,
+                      )}
+                    >
+                      <FormLabel
+                        htmlFor="description"
+                        fontSize="sm"
+                        fontWeight="600"
+                      >
+                        Description*
+                      </FormLabel>
+                      <EditorField name="description" />
+                      <FormErrorMessage mb="1rem">
+                        Please add a description
+                      </FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+              </chakra.div>
+
               <Field name="image">
                 {({ field, form }: FieldProps) => (
-                  <ImageUpload field={field} form={form} formProps={props} isRequired />
+                  <ImageUpload
+                    field={field}
+                    form={form}
+                    formProps={props}
+                    isRequired={false}
+                  />
                 )}
               </Field>
 
@@ -250,7 +263,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                       )}
                     >
                       <FormLabel htmlFor="email" fontSize="sm" fontWeight="600">
-                        Contact email
+                        Contact email for organisation
                       </FormLabel>
                       <Input
                         {...field}
@@ -277,7 +290,11 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                           form.errors.website && form.touched.website,
                         )}
                       >
-                        <FormLabel htmlFor="title" fontSize="sm" fontWeight="600">
+                        <FormLabel
+                          htmlFor="title"
+                          fontSize="sm"
+                          fontWeight="600"
+                        >
                           Website
                         </FormLabel>
                         <Input
@@ -304,7 +321,11 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                           form.errors.facebook && form.touched.facebook,
                         )}
                       >
-                        <FormLabel htmlFor="facebook" fontSize="sm" fontWeight="600">
+                        <FormLabel
+                          htmlFor="facebook"
+                          fontSize="sm"
+                          fontWeight="600"
+                        >
                           Facebook
                         </FormLabel>
                         <Input
@@ -333,7 +354,11 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                           form.errors.twitter && form.touched.twitter,
                         )}
                       >
-                        <FormLabel htmlFor="twitter" fontSize="sm" fontWeight="600">
+                        <FormLabel
+                          htmlFor="twitter"
+                          fontSize="sm"
+                          fontWeight="600"
+                        >
                           Twitter
                         </FormLabel>
                         <Input
@@ -360,7 +385,11 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                           form.errors.instagram && form.touched.instagram,
                         )}
                       >
-                        <FormLabel htmlFor="instagram" fontSize="sm" fontWeight="600">
+                        <FormLabel
+                          htmlFor="instagram"
+                          fontSize="sm"
+                          fontWeight="600"
+                        >
                           Instagram
                         </FormLabel>
                         <Input
@@ -394,7 +423,11 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                             form.errors.tags && form.touched.tags,
                           )}
                         >
-                          <FormLabel htmlFor="tags" fontSize="sm" fontWeight="600">
+                          <FormLabel
+                            htmlFor="tags"
+                            fontSize="sm"
+                            fontWeight="600"
+                          >
                             Tags
                           </FormLabel>
                           <InputGroup size="sm">
@@ -436,7 +469,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                 </chakra.div>
               )}
 
-              <chakra.div mb={3}>
+              <chakra.div>
                 <Field name="seekingVolunteers">
                   {({ field, form }: FieldProps) => (
                     <FormControl

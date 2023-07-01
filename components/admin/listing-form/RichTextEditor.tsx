@@ -23,7 +23,7 @@ const RichTextEditor = (props) => {
         onEditorChange={handleEditorChange}
         onBlur={handleBlur}
         init={{
-          height: 500,
+          height: 300,
           menubar: 'file edit view insert format tools table tc help',
           toolbar: true,
           plugins:
