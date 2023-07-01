@@ -21,9 +21,10 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import Select from 'react-select'
-import { useAllListings } from '@hooks/listings'
+import { useListings } from '@hooks/listings'
 import { useWebs } from '@hooks/webs'
 import { useUpdatePermission } from '@hooks/permissions'
+import { useAppContext } from '@store/hooks'
 
 const customMultiSelectStyles = {
   container: (provided) => ({
@@ -43,9 +44,10 @@ const SeparatedElement = chakra('span', {
 })
 
 const PermissionsList = ({ permissions }) => {
-  const { listings } = useAllListings()
+  const { listings } = useListings()
   const { webs } = useWebs()
   const { data: session } = useSession()
+  const { selectedWebId } = useAppContext()
   const { mutate: updatePermission, isLoading: isUpdatingPermission } =
     useUpdatePermission()
 
@@ -78,13 +80,6 @@ const PermissionsList = ({ permissions }) => {
     }))
   }, [listings])
 
-  const webOptions = useMemo(() => {
-    return webs.map((l) => ({
-      value: l.id,
-      label: l.title,
-    }))
-  }, [webs])
-
   return (
     <Accordion allowMultiple defaultIndex={[0]}>
       {permissions.map((permission) => {
@@ -99,18 +94,14 @@ const PermissionsList = ({ permissions }) => {
           }))
         }
 
-        const getWebsSelectedOptions = () => {
-          if (!webs) return []
-
-          return webs.map((s) => ({
-            value: s.id,
-            label: s.title,
-          }))
-        }
-
         if (user.id === session?.user?.id) {
           return (
-            <Box key="current-user" bgColor="whiteAlpha.800" p="1rem">
+            <Box
+              key="current-user"
+              bgColor="whiteAlpha.800"
+              borderBottom="1px solid rgb(226, 232, 240)"
+              p="1rem"
+            >
               <Stack
                 direction="row"
                 alignItems="center"
@@ -126,22 +117,32 @@ const PermissionsList = ({ permissions }) => {
           )
         }
 
+        if (webs.some((w) => w.id === selectedWebId)) {
+          return (
+            <Box
+              key={user.id}
+              bgColor="whiteAlpha.800"
+              borderBottom="1px solid rgb(226, 232, 240)"
+              p="1rem"
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Text>{user.email}</Text>
+                <Badge>Owner</Badge>
+              </Stack>
+            </Box>
+          )
+        }
+
         return (
           <AccordionItem key={permission.id} bgColor="whiteAlpha.800">
             <h2>
               <AccordionButton _hover={{ bgColor: 'gray.50' }}>
                 <Box flex="1" textAlign="left">
                   <SeparatedElement>{email}</SeparatedElement>
-                  <SeparatedElement>
-                    <strong>{webs.length}</strong>{' '}
-                    {webs.length === 0 || webs.length > 1 ? 'webs' : 'web'}
-                  </SeparatedElement>
-                  <SeparatedElement>
-                    <strong>{listings.length}</strong>{' '}
-                    {listings.length === 0 || listings.length > 1
-                      ? 'listings'
-                      : 'listing'}
-                  </SeparatedElement>
                   {!user.emailVerified && (
                     <SeparatedElement>
                       <Text display="inline" textColor="orange.500">
@@ -159,7 +160,6 @@ const PermissionsList = ({ permissions }) => {
                 initialValues={{
                   email: permission.email,
                   listings: getListingSelectedOptions(),
-                  webs: getWebsSelectedOptions(),
                 }}
                 onSubmit={(values, actions) => {
                   actions.setSubmitting(false)
@@ -169,56 +169,6 @@ const PermissionsList = ({ permissions }) => {
                 {(props) => {
                   return (
                     <Form>
-                      <Field name="webs">
-                        {({ field, form }: FieldProps) => {
-                          return (
-                            <FormControl
-                              isInvalid={Boolean(
-                                form.errors.webs && form.touched.webs,
-                              )}
-                            >
-                              <FormLabel htmlFor="webs">
-                                Webs this user has full access to
-                              </FormLabel>
-                              <InputGroup size="sm" bgColor="whiteAlpha.800">
-                                <Select
-                                  isMulti
-                                  isSearchable
-                                  menuPortalTarget={document.body}
-                                  onChange={(_option, changeData) => {
-                                    let newValue
-                                    if (changeData.action === 'select-option') {
-                                      newValue = [
-                                        ...field.value,
-                                        changeData.option,
-                                      ]
-                                    } else if (
-                                      changeData.action === 'remove-value' ||
-                                      changeData.action === 'pop-value'
-                                    ) {
-                                      newValue = field.value.filter(
-                                        (v) =>
-                                          v.value !==
-                                          changeData.removedValue.value,
-                                      )
-                                    }
-                                    form.setFieldValue(field.name, newValue)
-                                  }}
-                                  options={webOptions}
-                                  placeholder=""
-                                  isClearable={false}
-                                  styles={customMultiSelectStyles}
-                                  value={field.value}
-                                />
-                              </InputGroup>
-                              <FormErrorMessage>
-                                {form.errors.webs?.toString()}
-                              </FormErrorMessage>
-                            </FormControl>
-                          )
-                        }}
-                      </Field>
-
                       <Field name="listings">
                         {({ field, form }: FieldProps) => {
                           return (
@@ -281,14 +231,10 @@ const PermissionsList = ({ permissions }) => {
                           colorScheme="rw.700"
                           isDisabled={
                             !props.isValid ||
-                            (isEqual(
+                            isEqual(
                               props.initialValues.listings,
                               props.values.listings,
-                            ) &&
-                              isEqual(
-                                props.initialValues.webs,
-                                props.values.webs,
-                              ))
+                            )
                           }
                           isLoading={isUpdatingPermission}
                           size="md"
