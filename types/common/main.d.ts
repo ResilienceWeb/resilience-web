@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client'
+
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="./next-auth.d.ts" />
 
@@ -21,4 +23,10 @@ type Listing = {
   relations?: Listing[]
   relationOf?: Listing[]
   pending: boolean
+}
+
+declare global {
+  type CategoryWithListings = Prisma.CategoryGetPayload<{
+    include: { listings: true }
+  }>
 }
