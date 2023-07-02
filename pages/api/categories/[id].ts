@@ -16,10 +16,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // eslint-disable-next-line sonarjs/no-small-switch
     switch (req.method) {
       case 'DELETE': {
+        console.log()
         const { id: categoryId } = req.query
         const category = await prisma.category.delete({
           where: {
-            id: categoryId,
+            id: Number(categoryId),
           },
         })
 

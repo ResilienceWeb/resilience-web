@@ -8,10 +8,10 @@ import {
   Input,
   FormErrorMessage,
   FormHelperText,
+  Tooltip,
 } from '@chakra-ui/react'
 import { Formik, Form, Field } from 'formik'
 import { HexColorPicker } from 'react-colorful'
-import { Category } from '@prisma/client'
 
 import { fieldRequiredValidator } from '@helpers/formValidation'
 
@@ -22,9 +22,11 @@ const randomHexColorCode = () => {
 
 const CategoryForm = ({
   category,
+  onDelete,
   onSubmit,
 }: {
-  category?: Category
+  category?: CategoryWithListings
+  onDelete?: (data: any) => void
   onSubmit: (data: any) => void
 }) => {
   return (
@@ -71,7 +73,30 @@ const CategoryForm = ({
               )}
             </Field>
           </chakra.div>
-          <ModalFooter pr="0">
+          <ModalFooter
+            pr="0"
+            pl="0"
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="flex-end"
+          >
+            {category && (
+              <Tooltip
+                isDisabled={category?.listings.length === 0}
+                borderRadius="md"
+                label="To delete this category, first ensure there are no listings associated with it"
+              >
+                <Button
+                  colorScheme="red"
+                  isDisabled={category?.listings.length > 0}
+                  opacity="0.85"
+                  onClick={onDelete}
+                >
+                  Remove
+                </Button>
+              </Tooltip>
+            )}
+
             <Button
               bg="rw.700"
               colorScheme="rw.700"
@@ -85,6 +110,13 @@ const CategoryForm = ({
             >
               {category ? 'Update' : 'Create'}
             </Button>
+
+            {/* {category?.listings.length > 0 && (
+              <Text>
+                To delete this category, first ensure there are no listings
+                associated with it
+              </Text>
+            )} */}
           </ModalFooter>
         </Form>
       )}

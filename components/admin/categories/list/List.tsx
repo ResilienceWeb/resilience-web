@@ -12,7 +12,7 @@ import {
 import { memo, useCallback, useState } from 'react'
 
 import CategoryTag from '@components/category-tag'
-import { useUpdateCategory } from '@hooks/categories'
+import { useUpdateCategory, useDeleteCategory } from '@hooks/categories'
 import { UpdateCategoryDialog } from '../header/category-dialog'
 
 const columns = [
@@ -29,6 +29,7 @@ const columns = [
 const List = ({ categories }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { mutate: updateCategory } = useUpdateCategory()
+  const { mutate: deleteCategory } = useDeleteCategory()
 
   const [selectedCategoryId, setSelectedCategoryId] = useState(null)
   const selectedCategory = categories.find(
@@ -50,6 +51,11 @@ const List = ({ categories }) => {
     },
     [onClose, updateCategory, selectedCategoryId],
   )
+
+  const handleDelete = useCallback(() => {
+    onClose()
+    deleteCategory({ id: selectedCategoryId })
+  }, [deleteCategory, onClose, selectedCategoryId])
 
   if (!categories) {
     return null
@@ -107,6 +113,7 @@ const List = ({ categories }) => {
         category={selectedCategory}
         isOpen={isOpen}
         onClose={onClose}
+        onDelete={handleDelete}
         onSubmit={handleSubmit}
       />
     </>

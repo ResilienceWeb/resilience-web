@@ -7,17 +7,17 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react'
-import { Category } from '@prisma/client'
 
 import { useAppContext } from '@store/hooks'
 
 import CategoryForm from './category-form'
 
 type props = {
-  category: Category
+  category: CategoryWithListings
   onSubmit: (id: any) => void
   isOpen: boolean
   onClose: () => void
+  onDelete: (id: any) => void
 }
 
 const UpdateCategoryDialog: React.FC<props> = ({
@@ -25,6 +25,7 @@ const UpdateCategoryDialog: React.FC<props> = ({
   onSubmit,
   isOpen,
   onClose,
+  onDelete,
 }) => {
   const { isMobile } = useAppContext()
 
@@ -35,7 +36,11 @@ const UpdateCategoryDialog: React.FC<props> = ({
         <ModalHeader>Update category</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <CategoryForm category={category} onSubmit={onSubmit} />
+          <CategoryForm
+            category={category}
+            onDelete={onDelete}
+            onSubmit={onSubmit}
+          />
         </ModalBody>
       </ModalContent>
     </Modal>
