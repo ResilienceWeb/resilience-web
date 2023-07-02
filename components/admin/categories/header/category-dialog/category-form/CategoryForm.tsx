@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import {
   ModalFooter,
   Button,
@@ -14,6 +15,11 @@ import { Category } from '@prisma/client'
 
 import { fieldRequiredValidator } from '@helpers/formValidation'
 
+const randomHexColorCode = () => {
+  const n = (Math.random() * 0xfffff * 1000000).toString(16)
+  return n.slice(0, 6)
+}
+
 const CategoryForm = ({
   category,
   onSubmit,
@@ -25,7 +31,7 @@ const CategoryForm = ({
     <Formik
       initialValues={{
         label: category?.label ?? '',
-        color: category?.color ?? 'ffffff',
+        color: category?.color ?? randomHexColorCode(),
       }}
       onSubmit={(values, actions) => {
         actions.setSubmitting(false)
@@ -86,4 +92,4 @@ const CategoryForm = ({
   )
 }
 
-export default CategoryForm
+export default memo(CategoryForm)
