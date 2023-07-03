@@ -1,10 +1,10 @@
-import React, { memo, useMemo } from 'react'
+import React, { memo } from 'react'
 import { useRouter } from 'next/router'
 import classnames from 'classnames'
 import { Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react'
 import Nav from '@components/nav'
 import Footer from '@components/footer'
-import AlertBanner from '@components/alert-banner'
+// import AlertBanner from '@components/alert-banner'
 import styles from './Layout.module.scss'
 
 const Layout = ({
@@ -16,7 +16,7 @@ const Layout = ({
 }) => {
   const router = useRouter()
 
-  const isHomepage = useMemo(() => router.pathname === '/', [router.pathname])
+  // const isHomepage = useMemo(() => router.pathname === '/', [router.pathname])
 
   return (
     <>
@@ -31,13 +31,13 @@ const Layout = ({
           alignItems="center"
           flexDirection="column"
         >
-          {isHomepage && (
+          {/* {isHomepage && (
             <AlertBanner
               content="Join us on July 1st to imagine a thriving, sustainable future for Cambridge, rooted in community resilience! What works well now – and where are the gaps?"
               type="info"
               url="https://www.eventbrite.co.uk/e/resilient-cambridge-together-we-can-tickets-641262863487"
             />
-          )}
+          )} */}
           {children}
         </Flex>
       </SlideFade>
