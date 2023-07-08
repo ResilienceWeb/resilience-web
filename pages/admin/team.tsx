@@ -84,7 +84,7 @@ export default function Invite() {
     const filteredPermissions = []
     const ownershipsEmails = ownerships?.map((o) => o.user.email)
     permissionsForCurrentWeb?.map((permission) => {
-      if (!ownershipsEmails.includes(permission.user.email)) {
+      if (!ownershipsEmails?.includes(permission.user.email)) {
         filteredPermissions.push(permission)
       }
     })
