@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 import classnames from 'classnames'
 import { Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react'
 import Nav from '@components/nav'
@@ -14,7 +14,7 @@ const Layout = ({
   applyPostStyling?: boolean
   children: React.ReactNode
 }) => {
-  const router = useRouter()
+  // const router = useRouter()
 
   // const isHomepage = useMemo(() => router.pathname === '/', [router.pathname])
 
