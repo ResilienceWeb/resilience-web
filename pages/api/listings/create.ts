@@ -52,7 +52,6 @@ const handler = async (
         notes: fields.notes as string,
         pending: stringToBoolean(fields.pending as string),
         seekingVolunteers: stringToBoolean(fields.seekingVolunteers as string),
-        inactive: stringToBoolean(fields.inactive as string),
         slug: fields.slug as string,
       }
 
