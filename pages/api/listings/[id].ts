@@ -75,7 +75,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             seekingVolunteers: stringToBoolean(
               fields.seekingVolunteers as string,
             ),
-            inactive: stringToBoolean(fields.inactive as string),
             pending: false,
             slug: fields.slug as string,
             tags: {
