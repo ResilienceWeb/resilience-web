@@ -52,55 +52,54 @@ const TableActions = ({
         md: 'auto',
       }}
     >
-      {hasPermissionForCurrentWeb ||
-        (isOwnerOfCurrentWeb && (
-          <>
-            <HStack spacing="1rem">
-              <InputGroup minW="250px">
-                <Select
-                  isMulti
-                  isSearchable={false}
-                  onChange={handleSelectedCategoriesChange}
-                  options={categories}
-                  placeholder="Filter by category"
-                  styles={customMultiSelectStyles}
-                />
-              </InputGroup>
-              <InputGroup>
-                <InputLeftElement
-                  pointerEvents="none"
-                  color="gray.400"
-                  fontSize="xl"
-                >
-                  <HiOutlineSearch />
-                </InputLeftElement>
-                <Input
-                  placeholder="Search"
-                  onChange={handleSearchTermChange}
-                  style={{
-                    backgroundColor: '#ffffff',
-                  }}
-                  rounded="base"
-                  value={searchTerm}
-                  maxHeight="38px"
-                />
-              </InputGroup>
-            </HStack>
-            <Button
-              bg="rw.700"
-              colorScheme="rw.700"
-              iconSpacing="1"
-              leftIcon={<HiPlus fontSize="1.25em" />}
-              onClick={goToCreateListing}
-              variant="solid"
-              size="md"
-              maxHeight="36px"
-              _hover={{ bg: 'rw.900' }}
-            >
-              New listing
-            </Button>
-          </>
-        ))}
+      {(hasPermissionForCurrentWeb || isOwnerOfCurrentWeb) && (
+        <>
+          <HStack spacing="1rem">
+            <InputGroup minW="250px">
+              <Select
+                isMulti
+                isSearchable={false}
+                onChange={handleSelectedCategoriesChange}
+                options={categories}
+                placeholder="Filter by category"
+                styles={customMultiSelectStyles}
+              />
+            </InputGroup>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                color="gray.400"
+                fontSize="xl"
+              >
+                <HiOutlineSearch />
+              </InputLeftElement>
+              <Input
+                placeholder="Search"
+                onChange={handleSearchTermChange}
+                style={{
+                  backgroundColor: '#ffffff',
+                }}
+                rounded="base"
+                value={searchTerm}
+                maxHeight="38px"
+              />
+            </InputGroup>
+          </HStack>
+          <Button
+            bg="rw.700"
+            colorScheme="rw.700"
+            iconSpacing="1"
+            leftIcon={<HiPlus fontSize="1.25em" />}
+            onClick={goToCreateListing}
+            variant="solid"
+            size="md"
+            maxHeight="36px"
+            _hover={{ bg: 'rw.900' }}
+          >
+            New listing
+          </Button>
+        </>
+      )}
     </Stack>
   )
 }
