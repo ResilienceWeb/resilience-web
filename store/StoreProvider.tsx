@@ -29,13 +29,19 @@ const StoreProvider = ({ children }) => {
     setIsAdminMode(isAdminMode)
   }, [])
 
-  useEffect(() => {
-    async function fetchWebs() {
-      const response = await fetch('/api/webs')
+  async function fetchWebs() {
+    const response = await fetch('/api/webs')
+
+    if (response.status === 200) {
       const data = await response.json()
       const { webs } = data
       setWebs(webs)
+    } else {
+      console.error('Failed to fetch webs in StoreProvider')
     }
+  }
+
+  useEffect(() => {
     void fetchWebs()
   }, [])
 
