@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useCallback, useState, useMemo, memo } from 'react'
-import { Heading, Text, Box, Stack, Link } from '@chakra-ui/react'
+import { Heading, Text, Box, Stack, Center, Link } from '@chakra-ui/react'
 
 import DeleteConfirmationDialog from './delete-confirmation-dialog'
 import { removeNonAlphaNumeric } from '@helpers/utils'
@@ -24,10 +24,11 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
   const filteredItems = useMemo(() => {
     if (!items) return []
 
-    let results = items.filter((item) =>
-      removeNonAlphaNumeric(item.title)
-        ?.toLowerCase()
-        .includes(searchTerm.toLowerCase()),
+    let results = items.filter(
+      (item) =>
+        removeNonAlphaNumeric(item.title)
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase()),
     )
 
     if (selectedCategories.length > 0) {
@@ -127,11 +128,23 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
           handleSelectedCategoriesChange={handleSelectedCategoriesChange}
         />
       </Stack>
-      <Table
-        goToEdit={goToEdit}
-        removeItem={openRemoveDialog}
-        items={filteredItems}
-      />
+      {filteredItems.length > 0 ? (
+        <Table
+          goToEdit={goToEdit}
+          removeItem={openRemoveDialog}
+          items={filteredItems}
+        />
+      ) : (
+        <Center my="3rem">
+          <Text fontWeight="700">
+            No listings yet. Why not{' '}
+            <Link href="/admin/new-listing" color="rw.900">
+              start adding
+            </Link>
+            .
+          </Text>
+        </Center>
+      )}
       <DeleteConfirmationDialog
         isOpen={isDeleteConfirmationOpenWithId}
         onClose={closeRemoveDialog}
