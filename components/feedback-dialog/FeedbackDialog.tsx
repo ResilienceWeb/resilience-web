@@ -138,7 +138,6 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
                       colorScheme="rw.700"
                       mt={4}
                       variant="solid"
-                      isDisabled={!props.isValid}
                       isLoading={props.isSubmitting}
                       type="submit"
                       _hover={{ bg: 'rw.900' }}
