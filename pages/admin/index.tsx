@@ -37,7 +37,7 @@ const Admin = () => {
 
   const allowedListings = useMemo(() => {
     if (!session || isLoadingPermissions || isLoadingListings) return null
-    if (isOwnerOfCurrentWeb) return listings
+    if (isOwnerOfCurrentWeb || session.user.admin) return listings
 
     if (permissions?.webIds?.includes(selectedWebId)) return listings
 
