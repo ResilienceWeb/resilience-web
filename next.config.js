@@ -20,7 +20,7 @@ const nextConfig = {
   },
   swcMinify: true,
   experimental: {
-    scrollRestoration: true,
+    scrollRestoration: process.env.NODE_ENV === 'development' ? false : true,
   },
 }
 

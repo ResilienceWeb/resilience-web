@@ -10,7 +10,8 @@
     "db:up": "docker-compose --project-name=resilience-web up -d",
     "db:down": "docker-compose --project-name=resilience-web down",
     "postinstall": "prisma generate",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:e2e": "playwright test"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -60,6 +61,7 @@
     "vis-network-react": "github:DinerIsmail/vis-network-react"
   },
   "devDependencies": {
+    "@playwright/test": "1.38.0",
     "@tanstack/eslint-plugin-query": "4.34.1",
     "@tanstack/react-query-devtools": "4.35.3",
     "@types/formidable": "2.0.6",
