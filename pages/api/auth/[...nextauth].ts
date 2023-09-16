@@ -12,6 +12,7 @@ export const authOptions: NextAuthOptions = {
     EmailProvider({
       server: config.emailServer,
       from: `Resilience Web <${process.env.EMAIL_FROM}>`,
+      maxAge: 604800, // 7 days
       async sendVerificationRequest({ identifier: email, url, provider }) {
         return new Promise((resolve, reject) => {
           const { server, from } = provider
