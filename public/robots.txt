@@ -1,6 +1,9 @@
 Sitemap: https://resilienceweb.org.uk/sitemap.xml
 
 User-agent: *
-Allow: /*
-Disallow: /api/*
-Disallow: /admin/*
+Disallow: /api/
+Disallow: /admin/
+Disallow: /auth/
+
+User-agent: GPTBot
+Disallow: /
