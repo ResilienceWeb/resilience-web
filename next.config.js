@@ -36,7 +36,7 @@ module.exports = withSentryConfig(
     org: 'resilience-web',
     project: 'resilience-web',
     // Suppresses source map uploading logs during build
-    silent: true,
+    silent: false,
   },
   {
     // Upload a larger set of source maps for prettier stack traces (increases build time)
