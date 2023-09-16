@@ -16,6 +16,8 @@ const handler = async (
     ? stringToBoolean(req.query.withListings as string)
     : false
 
+  console.log('DINER', 'fetching webs from database')
+
   try {
     const webs: Data['webs'] = await prisma.location.findMany({
       include: withListings
