@@ -14,6 +14,7 @@ import {
   Heading,
   Button,
   Text,
+  chakra,
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
@@ -21,7 +22,6 @@ import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
 import VolunteerSwitch from '@components/volunteer-switch'
 import customMultiSelectStyles from '@styles/select-styles'
 import { REMOTE_URL } from '@helpers/config'
-import styles from './Drawer.module.scss'
 import LogoImage from '../../public/logo.png'
 
 const Drawer = ({
@@ -39,7 +39,15 @@ const Drawer = ({
   const maxInputWidth = useBreakpointValue({ base: 'initial', md: '280px' })
 
   return (
-    <div className={styles.drawer}>
+    <chakra.div
+      position="fixed"
+      width="300px"
+      height="100vh"
+      overflowY="scroll"
+      borderRight="1px solid rgb(226, 232, 240)"
+      backgroundColor="white"
+      zIndex="3"
+    >
       <Flex height="100%" direction="column" justifyContent="space-between">
         <Box>
           <Link as={NextLink} href={REMOTE_URL}>
@@ -125,10 +133,7 @@ const Drawer = ({
           </Flex>
         </Box>
         <Box p="1rem">
-          <Link
-            href={`${window.location.href}new-listing`}
-            target="_blank"
-          >
+          <Link href={`${window.location.href}new-listing`} target="_blank">
             <Button my="2rem">Propose new listing</Button>
           </Link>
           <Heading as="h2" fontSize="1.25rem">
@@ -148,7 +153,7 @@ const Drawer = ({
           </Link>
         </Box>
       </Flex>
-    </div>
+    </chakra.div>
   )
 }
 
