@@ -72,9 +72,8 @@ const handler = async (
     })
   } catch (e) {
     res.status(500)
-    res.json({
-      error: `Unable to save listing to database - ${e}`,
-    })
+    res.json({ error: `Unable to save listing to database - ${e}` })
+    console.error(`[RW] Unable to save listing to database - ${e}`)
   }
 }
 

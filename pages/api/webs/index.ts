@@ -16,8 +16,6 @@ const handler = async (
     ? stringToBoolean(req.query.withListings as string)
     : false
 
-  console.log('DINER', 'fetching webs from database')
-
   try {
     const webs: Data['webs'] = await prisma.location.findMany({
       include: withListings
@@ -34,9 +32,8 @@ const handler = async (
 
     res.status(200).json({ webs })
   } catch (e) {
-    res.status(500).json({
-      error: `Unable to fetch webs from database - ${e}`,
-    })
+    res.status(500).json({ error: `Unable to fetch webs - ${e}` })
+    console.error(`[RW] Unable to fetch webs - ${e}`)
   }
 }
 

@@ -16,7 +16,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // eslint-disable-next-line sonarjs/no-small-switch
     switch (req.method) {
       case 'DELETE': {
-        console.log()
         const { id: categoryId } = req.query
         const category = await prisma.category.delete({
           where: {
@@ -40,6 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({
       error: `Unable to update/delete category - ${e}`,
     })
+    console.error(`[RW] Unable to update/delete category - ${e}`)
   }
 }
 

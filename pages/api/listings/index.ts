@@ -36,9 +36,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({ listings })
   } catch (e) {
     res.status(500)
-    res.json({
-      error: `Unable to fetch listings from database - ${e}`,
-    })
+    res.json({ error: `Unable to fetch listings - ${e}` })
+    console.error(`[RW] Unable to fetch listings - ${e}`)
   }
 }
 

@@ -41,9 +41,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({ listing })
   } catch (e) {
     res.status(500)
-    res.json({
-      error: `Unable to fetch listing by slug - ${e}`,
-    })
+    res.json({ error: `Unable to fetch listing by slug - ${e}` })
+    console.error(`[RW] Unable to fetch listing by slug - ${e}`)
   }
 }
 

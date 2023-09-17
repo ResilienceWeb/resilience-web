@@ -54,49 +54,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       case 'GET':
         res.json({ ownerships })
         res.status(200)
-
         break
-      // case 'PUT':
-      //   const allOwnershipsToDisconnect = ownership.webs.map((l) => ({
-      //     id: l.id,
-      //   }))
-
-      //   const updatedDataDisconnect: Prisma.OwnershipUpdateArgs = {
-      //     where: {
-      //       email: targetEmail,
-      //     },
-      //     data: {
-      //       webs: {
-      //         disconnect: allOwnershipsToDisconnect,
-      //       },
-      //     },
-      //   }
-      //   await prisma.ownership.update(updatedDataDisconnect)
-
-      //   const websToConnect = webs.map((s) => ({ id: s.id }))
-      //   const updatedDataConnect: Prisma.OwnershipUpdateArgs = {
-      //     where: {
-      //       email: targetEmail,
-      //     },
-      //     data: {
-      //       webs: {
-      //         connect: websToConnect,
-      //       },
-      //     },
-      //   }
-      //   const updatedOwnership = await prisma.ownership.update(
-      //     updatedDataConnect,
-      //   )
-
-      //   res.status(200)
-      //   res.json({ ownership: updatedOwnership })
-      //   break
     }
   } catch (e) {
     res.status(500)
-    res.json({
-      error: `Unable to fetch ownerships from database - ${e}`,
-    })
+    res.json({ error: `Unable to fetch ownerships - ${e}` })
+    console.error(`[RW] Unable to fetch ownerships - ${e}`)
   }
 }
 
@@ -107,4 +70,9 @@ export const config = {
 }
 
 export default handler
+
+
+
+
+
 

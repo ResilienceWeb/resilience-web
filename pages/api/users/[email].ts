@@ -23,9 +23,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({ user })
   } catch (e) {
     res.status(500)
-    res.json({
-      error: `Unable to get user from database - ${e}`,
-    })
+    res.json({ error: `Unable to fetch user - ${e}` })
+    console.error(`[RW] Unable to fetch user - ${e}`)
   }
 }
 

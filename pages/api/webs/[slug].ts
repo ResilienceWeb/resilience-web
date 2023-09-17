@@ -64,9 +64,8 @@ const handler = async (
         break
     }
   } catch (e) {
-    res.status(500).send({
-      error: `Unable to fetch web from database - ${e}`,
-    })
+    res.status(500).send({ error: `Unable to fetch web - ${e}` })
+    console.error(`[RW] Unable to fetch web - ${e}`)
   }
 }
 

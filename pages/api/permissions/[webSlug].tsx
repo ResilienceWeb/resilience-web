@@ -51,9 +51,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({ permissions })
   } catch (e) {
     res.status(500)
-    res.json({
-      error: `Unable to fetch permissions from database - ${e}`,
-    })
+    res.json({ error: `Unable to fetch permissions - ${e}` })
+    console.error(`[RW] Unable to fetch permissions - ${e}`)
   }
 }
 
@@ -64,4 +63,5 @@ export const config = {
 }
 
 export default handler
+
 

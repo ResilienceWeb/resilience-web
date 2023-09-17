@@ -16,8 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       (error) => {
         if (error) {
-          // eslint-disable-next-line no-console
-          console.error('Error sending feedback email', email, error)
+          console.error('[RW] Error sending feedback email', email, error)
         }
       },
     )

@@ -138,9 +138,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } catch (e) {
     res.status(500)
-    res.json({
-      error: `Unable to update/delete listing - ${e}`,
-    })
+    res.json({ error: `Unable to update/delete listing - ${e}` })
+    console.error(`[RW] Unable to update/delete listing - ${e}`)
   }
 }
 

@@ -32,8 +32,11 @@ export const authOptions: NextAuthOptions = {
             },
             (error) => {
               if (error) {
-                // eslint-disable-next-line no-console
-                console.error('SEND_VERIFICATION_EMAIL_ERROR', email, error)
+                console.error(
+                  '[RW] SEND_VERIFICATION_EMAIL_ERROR',
+                  email,
+                  error,
+                )
                 return reject(
                   new Error(`SEND_VERIFICATION_EMAIL_ERROR ${error}`),
                 )

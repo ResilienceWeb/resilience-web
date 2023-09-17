@@ -74,8 +74,7 @@ const Admin = () => {
   }
 
   if (isListingsError) {
-    // eslint-disable-next-line no-console
-    console.error('Error fetching listings')
+    console.error('[RW-Client] Error fetching listings')
   }
 
   if (!session) return null

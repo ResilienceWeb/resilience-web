@@ -30,8 +30,9 @@ const handler = async (
     }
   } catch (e) {
     res.status(500).send({
-      error: `Unable to fetch ownerships from database - ${e}`,
+      error: `Unable to fetch ownerships - ${e}`,
     })
+    console.error(`[RW] Unable to fetch ownerships - ${e}`)
   }
 }
 
@@ -42,4 +43,7 @@ export const config = {
 }
 
 export default handler
+
+
+
 

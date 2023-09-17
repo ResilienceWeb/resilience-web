@@ -39,10 +39,13 @@ export default async (req, res) => {
 
     return res.status(201).json({ error: null })
   } catch (error) {
+    console.error(`[RW] Failed to sign up user to newsletter - ${error}`)
     return res.status(400).json({
       error:
         'Oops, something went wrong. Please send an email to cambridgeresilienceweb@gmail.com and we can add you to the list.',
     })
   }
 }
+
+
 

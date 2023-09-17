@@ -150,6 +150,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.json({
       error: `Unable to invite user - ${e}`,
     })
+    console.error(`[RW] Unable to invite user - ${e}`)
   }
 }
 
