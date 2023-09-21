@@ -26,7 +26,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: 'api/feedback',
+        source: '/api/feedback',
         headers: [
           { key: 'Access-Control-Allow-Origin', value: '*' },
         ]
