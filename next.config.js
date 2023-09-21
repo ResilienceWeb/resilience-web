@@ -22,6 +22,17 @@ const nextConfig = {
   experimental: {
     scrollRestoration: true,
   },
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async headers() {
+    return [
+      {
+        source: 'api/feedback',
+        headers: [
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+        ]
+      }
+    ]
+  }
 }
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
