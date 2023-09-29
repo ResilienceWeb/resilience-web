@@ -56,7 +56,7 @@ function Listing({ listing }) {
 
   return (
     <>
-      <Box maxWidth={isMobile ? '100%' : '700px'}>
+      <Box maxWidth={isMobile ? '100%' : '700px'} mt="1rem">
         <Button
           leftIcon={<HiArrowLeft />}
           name="Back"

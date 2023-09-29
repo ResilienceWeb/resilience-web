@@ -19,7 +19,9 @@ const CategoryTag = ({ children, colorHex, alpha = 1, ...props }) => {
       flexShrink="0"
       {...props}
     >
-      <Text color={accessibleTextColor}>{children}</Text>
+      <Text color={accessibleTextColor} fontWeight="600" fontSize="0.75rem">
+        {children}
+      </Text>
     </Tag>
   )
 }
