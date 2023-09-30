@@ -59,7 +59,7 @@ const Card = ({ web }) => {
             alt={`Image representing ${web.title} web`}
             src={web.image}
             fill={true}
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'cover', objectPosition: 'bottom' }}
           />
         </Box>
         <Stack>
@@ -76,4 +76,9 @@ const Card = ({ web }) => {
     </Link>
   )
 }
+
+
+
+
+
 

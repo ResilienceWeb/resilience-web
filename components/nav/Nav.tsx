@@ -212,14 +212,14 @@ const DesktopNav = ({ currentPathname, navItems }) => {
             {navItem.children && (
               <PopoverContent
                 border={0}
-                boxShadow={'xl'}
+                boxShadow="2xl"
                 bg="white"
                 p={2}
-                rounded={'xl'}
+                rounded="xl"
               >
                 <Stack>
                   {navItem.children.map((child) => (
-                    <DesktopSubNav key={child.label} {...child} />
+                    <DesktopSubNavItem key={child.label} {...child} />
                   ))}
                 </Stack>
               </PopoverContent>
@@ -231,7 +231,7 @@ const DesktopNav = ({ currentPathname, navItems }) => {
   )
 }
 
-const DesktopSubNav = ({ label, href }) => {
+const DesktopSubNavItem = ({ label, href }) => {
   return (
     <Link
       href={href}
