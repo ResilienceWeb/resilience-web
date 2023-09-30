@@ -5,6 +5,9 @@ import { Container, Stack, Grid, Heading, Box, Link } from '@chakra-ui/react'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { useWebs } from '@hooks/webs'
 
+// Hardcoded array to determine which webs are displayed first
+const orderOnHomepage = ['Cambridge', 'York', 'Durham']
+
 const WebCards = () => {
   const { webs } = useWebs()
 
@@ -25,9 +28,14 @@ const WebCards = () => {
             (web) =>
               web.published && Boolean(web.image) && web.slug !== 'ctrlshift',
           )
-          .map((web) => (
-            <Card key={web.id} web={web} />
-          ))}
+          .sort((a, b) => {
+            if (orderOnHomepage.includes(a.title) > orderOnHomepage.includes(b.title)) {
+              return -1
+            } else {
+              return 1
+            }
+          })
+          .map((web) => <Card key={web.id} web={web} />)}
       </Grid>
     </Container>
   )
@@ -76,6 +84,13 @@ const Card = ({ web }) => {
     </Link>
   )
 }
+
+
+
+
+
+
+
 
 
 
