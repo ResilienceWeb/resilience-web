@@ -260,7 +260,11 @@ const Web = ({ data, selectedWebName }) => {
           searchTerm={searchTerm}
         />
       )}
-      <Box height="100vh" ml={isMobile ? '0' : '18.75rem'} position="relative">
+      <Box
+        height="100vh"
+        ml={{ base: '0', md: '18.75rem' }}
+        position="relative"
+      >
         <Header
           categories={categories}
           handleCategorySelection={handleCategorySelection}

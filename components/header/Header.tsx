@@ -15,6 +15,7 @@ import {
   HStack,
   Link,
   Heading,
+  Text,
   chakra,
 } from '@chakra-ui/react'
 import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
@@ -65,8 +66,24 @@ const Header = ({
               unoptimized
             />
           </Box>
-          <Heading as="h2" fontSize="1.5rem">
-            {selectedWebName}
+          <Heading as="h2" fontSize="2.25rem" position="relative">
+            <Text
+              as="span"
+              position="relative"
+              zIndex={1}
+              _after={{
+                content: "''",
+                width: 'full',
+                height: '23%',
+                position: 'absolute',
+                bottom: 1,
+                left: 0,
+                bg: 'rw.700',
+                zIndex: -1,
+              }}
+            >
+              {selectedWebName}
+            </Text>
           </Heading>
           <chakra.div paddingTop={4} width={'95%'}>
             <VStack spacing={2}>

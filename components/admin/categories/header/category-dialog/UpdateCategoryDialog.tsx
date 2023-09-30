@@ -8,8 +8,6 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react'
 
-import { useAppContext } from '@store/hooks'
-
 import CategoryForm from './category-form'
 
 type props = {
@@ -27,10 +25,13 @@ const UpdateCategoryDialog: React.FC<props> = ({
   onClose,
   onDelete,
 }) => {
-  const { isMobile } = useAppContext()
-
   return (
-    <Modal isCentered={!isMobile} isOpen={isOpen} onClose={onClose} size="sm">
+    <Modal
+      isCentered
+      isOpen={isOpen}
+      onClose={onClose}
+      size={{ base: 'full', md: 'md' }}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Update category</ModalHeader>

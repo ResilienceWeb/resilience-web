@@ -8,8 +8,6 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react'
 
-import { useAppContext } from '@store/hooks'
-
 import TagForm from './tag-form'
 
 type props = {
@@ -19,10 +17,13 @@ type props = {
 }
 
 const NewTagDialog: React.FC<props> = ({ onSubmit, isOpen, onClose }) => {
-  const { isMobile } = useAppContext()
-
   return (
-    <Modal isCentered={!isMobile} isOpen={isOpen} onClose={onClose} size="sm">
+    <Modal
+      isCentered
+      isOpen={isOpen}
+      onClose={onClose}
+      size={{ base: 'full', md: 'md' }}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Create new tag</ModalHeader>

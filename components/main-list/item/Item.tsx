@@ -47,7 +47,7 @@ const Item = ({
     handleClick(dataItem)
   }, [dataItem, handleClick])
 
-  const tagBackgroundColor = useMemo(
+  const categoryBackgroundColor = useMemo(
     () => chroma(dataItem.category.color).alpha(0.5).css(),
     [dataItem.category.color],
   )
@@ -72,7 +72,6 @@ const Item = ({
         transition="transform 300ms ease-in-out, box-shadow 300ms ease-in-out"
         onClick={onClick}
         boxShadow="md"
-        opacity={dataItem.inactive ? 0.7 : 1}
         position="relative"
         _hover={{ boxShadow: 'xl' }}
         ref={ref}
@@ -110,7 +109,7 @@ const Item = ({
           categoryIndex !== null &&
           categoryIndex !== undefined && (
             <ImagePlaceholder
-              backgroundColor={tagBackgroundColor}
+              backgroundColor={categoryBackgroundColor}
               categoryIndex={categoryIndex}
             />
           )

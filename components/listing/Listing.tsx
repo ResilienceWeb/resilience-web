@@ -56,7 +56,7 @@ function Listing({ listing }) {
 
   return (
     <>
-      <Box maxWidth={isMobile ? '100%' : '700px'} mt="1rem">
+      <Box maxWidth={{ base: '100%', md: '700px' }} mt="1rem">
         <Button
           leftIcon={<HiArrowLeft />}
           name="Back"
@@ -81,11 +81,11 @@ function Listing({ listing }) {
             }}
           />
         )}
-        <Box px={isMobile ? 4 : 2}>
+        <Box px={{ base: 4, md: 2 }}>
           <Flex
-            flexDirection={isMobile ? 'column' : 'row'}
+            flexDirection={{ base: 'column', md: 'row' }}
             width="100%"
-            mb={isMobile ? 6 : 10}
+            mb={{ base: 6, md: 10 }}
             py={4}
           >
             <Box

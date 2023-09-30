@@ -19,7 +19,6 @@ import {
   useToast,
 } from '@chakra-ui/react'
 
-import { useAppContext } from '@store/hooks'
 import {
   emailRequiredValidator,
   fieldRequiredValidator,
@@ -27,7 +26,6 @@ import {
 import { REMOTE_URL } from '@helpers/config'
 
 const FeedbackDialog = ({ isOpen, onClose }) => {
-  const { isMobile } = useAppContext()
   const toast = useToast()
 
   const onFormSubmit = useCallback(
@@ -69,10 +67,10 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
 
   return (
     <Modal
-      isCentered={!isMobile}
+      isCentered
       isOpen={isOpen}
       onClose={onClose}
-      size={isMobile ? 'full' : 'xl'}
+      size={{ base: 'full', md: 'xl' }}
     >
       <ModalOverlay />
       <ModalContent>

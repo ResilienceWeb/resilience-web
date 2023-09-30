@@ -20,7 +20,7 @@ import ListingFormSimplified from '@components/admin/listing-form/ListingFormSim
 
 function Submit() {
   const router = useRouter()
-  const { isMobile, selectedWebId } = useAppContext()
+  const { selectedWebId } = useAppContext()
   const { categories } = useCategories()
   const selectedWebName = useSelectedWebName()
   const { mutate: createListing } = useCreateListing()
@@ -64,7 +64,7 @@ function Submit() {
         }}
       />
       <Layout>
-        <Box maxWidth={isMobile ? '100%' : '700px'}>
+        <Box maxWidth={{ base: '100%', md: '700px' }}>
           <Heading as="h1" my="1rem">
             Submit new listing
           </Heading>
@@ -122,4 +122,6 @@ function Submit() {
 }
 
 export default memo(Submit)
+
+
 

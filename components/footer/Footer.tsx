@@ -17,7 +17,6 @@ import Image from 'next/legacy/image'
 
 import { REMOTE_URL } from '@helpers/config'
 import SignupForm from '@components/signup-form'
-import { useAppContext } from '@store/hooks'
 import LogoImage from '../../public/logo.png'
 
 const SocialButton = ({
@@ -62,8 +61,6 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 }
 
 export default function Footer() {
-  const { isMobile } = useAppContext()
-
   return (
     <Box
       bg={useColorModeValue('white', 'gray.800')}
@@ -131,19 +128,17 @@ export default function Footer() {
               <ListHeader>Stay up to date</ListHeader>
               <SignupForm />
             </Box>
-            {!isMobile && (
-              <Flex alignItems="center">
-                <Text mr={1} fontSize="sm">
-                  Powered by
-                </Text>
-                <Image
-                  alt="Powered by Vercel"
-                  src="/vercel.svg"
-                  width="56"
-                  height="13"
-                />
-              </Flex>
-            )}
+            <Flex alignItems="center" display={{ base: 'none', md: 'flex' }}>
+              <Text mr={1} fontSize="sm">
+                Powered by
+              </Text>
+              <Image
+                alt="Powered by Vercel"
+                src="/vercel.svg"
+                width="56"
+                height="13"
+              />
+            </Flex>
           </Stack>
         </SimpleGrid>
       </Container>

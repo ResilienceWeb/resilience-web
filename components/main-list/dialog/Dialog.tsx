@@ -129,24 +129,16 @@ const Dialog = ({
           </Tooltip>
         </Flex>
       )}
-      {item.inactive && (
-        <Flex justifyContent={'right'}>
-          <Tooltip label="This group is currently inactive.">
-            <Text color="grey">
-              Currently inactive <Icon as={GiNightSleep} />
-            </Text>
-          </Tooltip>
-        </Flex>
-      )}
     </>
   )
 
   return (
     <Modal
-      isCentered={!isMobile}
+      isCentered
       isOpen={isOpen}
       onClose={onClose}
-      size={isMobile ? 'full' : '2xl'}
+      size={{ base: 'full', md: '2xl' }}
+      scrollBehavior="inside"
     >
       <ModalOverlay />
       <ModalContent opacity="1">
