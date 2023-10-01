@@ -29,7 +29,7 @@
     "@react-email/render": "0.0.7",
     "@sendgrid/mail": "7.7.0",
     "@sentry/nextjs": "7.69.0",
-    "@tanstack/react-query": "4.35.3",
+    "@tanstack/react-query": "4.35.7",
     "@tinymce/tinymce-react": "4.3.0",
     "@vercel/analytics": "1.0.2",
     "aws-sdk": "2.1432.0",
@@ -62,9 +62,9 @@
     "vis-network-react": "github:DinerIsmail/vis-network-react"
   },
   "devDependencies": {
-    "@playwright/test": "1.38.0",
-    "@tanstack/eslint-plugin-query": "4.34.1",
-    "@tanstack/react-query-devtools": "4.35.3",
+    "@playwright/test": "1.38.1",
+    "@tanstack/eslint-plugin-query": "4.36.0",
+    "@tanstack/react-query-devtools": "4.35.7",
     "@types/formidable": "2.0.6",
     "@types/node": "18.16.0",
     "@types/react": "18.2.21",
