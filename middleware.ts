@@ -1,6 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { NextResponse } from 'next/server'
-
 import type { NextRequest } from 'next/server'
 
 export default function middleware(req: NextRequest) {
@@ -68,6 +67,7 @@ export default function middleware(req: NextRequest) {
 export const config = {
   matcher: ['/((?!api|admin|_next/static|_next/image|favicon.ico).*)'],
 }
+
 
 
 
