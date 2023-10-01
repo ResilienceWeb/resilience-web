@@ -18,7 +18,6 @@ export default function middleware(req: NextRequest) {
     })
   }
 
-
   let currentHost
   if (process.env.VERCEL_ENV === 'preview') {
     currentHost = hostname.replace(`.${process.env.VERCEL_URL}`, '')
@@ -49,16 +48,11 @@ export default function middleware(req: NextRequest) {
 
   if (!pathname.includes('.')) {
     if (
-      process.env.VERCEL_ENV === 'preview' &&
-      hostname === process.env.VERCEL_URL
-    ) {
-      return NextResponse.rewrite(url)
-    }
-
-    if (
       hostname === 'localhost:3000' ||
       hostname === 'cambridgeresilienceweb.org.uk' ||
-      hostname === 'resilienceweb.org.uk'
+      hostname === 'resilienceweb.org.uk' ||
+      (process.env.VERCEL_ENV === 'preview' &&
+        hostname === process.env.VERCEL_URL)
     ) {
       return NextResponse.rewrite(url)
     }
@@ -78,3 +72,6 @@ export default function middleware(req: NextRequest) {
 export const config = {
   matcher: ['/((?!api|admin|_next/static|_next/image|favicon.ico).*)'],
 }
+
+
+
