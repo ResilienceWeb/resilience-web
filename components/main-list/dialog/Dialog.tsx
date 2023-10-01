@@ -24,7 +24,6 @@ import {
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
 import { HiUserGroup, HiShare } from 'react-icons/hi'
-import { GiNightSleep } from 'react-icons/gi'
 import { sanitizeLink } from '@helpers/utils'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import DescriptionRichText from '@components/main-list/description-rich-text'

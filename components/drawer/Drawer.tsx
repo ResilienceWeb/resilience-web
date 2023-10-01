@@ -1,3 +1,4 @@
+import va from '@vercel/analytics'
 import NextLink from 'next/link'
 import { memo } from 'react'
 import Select from 'react-select'
@@ -22,6 +23,7 @@ import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
 import VolunteerSwitch from '@components/volunteer-switch'
 import customMultiSelectStyles from '@styles/select-styles'
 import { REMOTE_URL } from '@helpers/config'
+import { useSelectedWebName } from '@hooks/webs'
 import LogoImage from '../../public/logo.png'
 
 const Drawer = ({
@@ -37,6 +39,7 @@ const Drawer = ({
   searchTerm,
 }) => {
   const maxInputWidth = useBreakpointValue({ base: 'initial', md: '280px' })
+  const selectedWebName = useSelectedWebName()
 
   return (
     <chakra.div
@@ -155,7 +158,12 @@ const Drawer = ({
             href="https://opencollective.com/resilience-web"
             target="_blank"
           >
-            <Button bg="rw.700" colorScheme="rw.700" _hover={{ bg: 'rw.900' }}>
+            <Button
+              bg="rw.700"
+              colorScheme="rw.700"
+              _hover={{ bg: 'rw.900' }}
+              onClick={() => va.track('donate-click', { web: selectedWebName })}
+            >
               Donate
             </Button>
           </Link>
