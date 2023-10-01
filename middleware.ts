@@ -26,6 +26,8 @@ export default function middleware(req: NextRequest) {
           .replace(`.resilienceweb.org.uk`, '')
       : hostname.replace(`.localhost:3000`, '')
 
+  console.log('DINER', { hostname, currentHost, pathname, url })
+
   if (pathname.startsWith(`/_webs`)) {
     return new Response(null, {
       status: 404,
@@ -59,4 +61,5 @@ export default function middleware(req: NextRequest) {
     return NextResponse.rewrite(url)
   }
 }
+
 
