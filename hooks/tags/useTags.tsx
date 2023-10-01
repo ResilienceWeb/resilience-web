@@ -4,7 +4,12 @@ import { Tag } from '@prisma/client'
 import { REMOTE_URL } from '@helpers/config'
 
 export async function fetchTagsHydrate({ webSlug }) {
-  const response = await fetch(`${REMOTE_URL}/api/tags?web=${webSlug}`)
+  const BASE_URL =
+    process.env.VERCEL_ENV === 'preview'
+      ? 'https://resilienceweb.org.uk'
+      : REMOTE_URL
+
+  const response = await fetch(`${BASE_URL}/api/tags?web=${webSlug}`)
   const { data: tags } = await response.json()
   return tags
 }
