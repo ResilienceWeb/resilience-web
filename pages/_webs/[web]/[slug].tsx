@@ -46,8 +46,16 @@ function Listing({ listing }: { listing: ListingType | any }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const response = await fetch(`${REMOTE_URL}/api/listings`)
-  const data = await response.json()
+  const data = await fetch(`${REMOTE_URL}/api/listings`)
+    .then((res) => res.json())
+    .catch((e) =>
+      console.error(
+        'Failed to fetch data from',
+        `${REMOTE_URL}/api/listings`,
+        e,
+      ),
+    )
+
   const { listings } = data
   const paths = listings.map((l) => ({
     params: {
