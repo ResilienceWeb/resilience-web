@@ -322,39 +322,22 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   if (!params) throw new Error('No path parameters found')
   const { web } = params
 
-  console.log('DINER', `${REMOTE_URL}/api/webs`)
-  const { webs } = await fetch(`${REMOTE_URL}/api/webs`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error('Failed to fetch data from', `${REMOTE_URL}/api/webs`, e),
-    )
+  const { webs } = await fetch(`https://resilienceweb.org.uk/api/webs`).then(
+    (res) => res.json(),
+  )
 
   const paths = webs.map((l) => `${l.slug}`)
   if (!paths.includes(web)) {
     return { notFound: true, revalidate: 30 }
   }
 
-  console.log('DINER2', `${REMOTE_URL}/api/listings?web=${web}`)
-  const { listings } = await fetch(`${REMOTE_URL}/api/listings?web=${web}`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error(
-        'Failed to fetch data from',
-        `${REMOTE_URL}/api/listings?web=${web}`,
-        e,
-      ),
-    )
+  const { listings } = await fetch(
+    `https://resilienceweb.org.uk/api/listings?web=${web}`,
+  ).then((res) => res.json())
 
-  console.log('DINER3', `${REMOTE_URL}/api/webs/${web}`)
-  const { web: webData } = await fetch(`${REMOTE_URL}/api/webs/${web}`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error(
-        'Failed to fetch data from',
-        `${REMOTE_URL}/api/webs/${web}`,
-        e,
-      ),
-    )
+  const { web: webData } = await fetch(
+    `https://resilienceweb.org.uk/api/webs/${web}`,
+  ).then((res) => res.json())
 
   const transformedData = {
     nodes: [],

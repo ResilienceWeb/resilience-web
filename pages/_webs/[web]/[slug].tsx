@@ -46,15 +46,9 @@ function Listing({ listing }: { listing: ListingType | any }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const data = await fetch(`${REMOTE_URL}/api/listings`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error(
-        'Failed to fetch data from',
-        `${REMOTE_URL}/api/listings`,
-        e,
-      ),
-    )
+  const data = await fetch('https://resilienceweb.org.uk/api/listings').then(
+    (res) => res.json(),
+  )
 
   const { listings } = data
   const paths = listings.map((l) => ({
@@ -71,15 +65,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const data = await fetch(`${REMOTE_URL}/api/listing/${params.slug}`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error(
-        'Failed to fetch data from',
-        `${REMOTE_URL}/api/listing/${params.slug}`,
-        e,
-      ),
-    )
+  const data = await fetch(
+    `https://resilienceweb.org.uk/api/listing/${params.slug}`,
+  ).then((res) => res.json())
 
   // TODO: map data to only return what is needed
   const { listing } = data
