@@ -46,8 +46,7 @@ export default function middleware(req: NextRequest) {
     if (
       hostname === 'localhost:3000' ||
       hostname === 'cambridgeresilienceweb.org.uk' ||
-      hostname === 'resilienceweb.org.uk' ||
-      hostname === 'vercel.app'
+      hostname === 'resilienceweb.org.uk'
     ) {
       return NextResponse.rewrite(url)
     }
