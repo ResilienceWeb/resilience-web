@@ -1,6 +1,6 @@
 export const REMOTE_URL =
   process.env.VERCEL_ENV === 'preview'
-    ? process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
     : process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
     : 'https://resilienceweb.org.uk'
