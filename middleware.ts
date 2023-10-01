@@ -49,6 +49,13 @@ export default function middleware(req: NextRequest) {
 
   if (!pathname.includes('.')) {
     if (
+      process.env.VERCEL_ENV === 'preview' &&
+      hostname === process.env.VERCEL_URL
+    ) {
+      return NextResponse.rewrite(url)
+    }
+
+    if (
       hostname === 'localhost:3000' ||
       hostname === 'cambridgeresilienceweb.org.uk' ||
       hostname === 'resilienceweb.org.uk'
