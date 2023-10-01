@@ -39,7 +39,7 @@
     "formik": "2.4.4",
     "framer-motion": "10.16.4",
     "graphql": "16.8.1",
-    "graphql-request": "4.3.0",
+    "graphql-request": "6.1.0",
     "isomorphic-unfetch": "4.0.2",
     "lodash-es": "4.17.21",
     "next": "13.5.3",
