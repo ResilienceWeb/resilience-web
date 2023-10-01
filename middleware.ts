@@ -46,7 +46,7 @@ export default function middleware(req: NextRequest) {
     })
   }
 
-  if (!pathname.includes('.')) {
+  if (!pathname.includes('.') && !pathname.startsWith('/api')) {
     if (
       hostname === 'localhost:3000' ||
       hostname === 'cambridgeresilienceweb.org.uk' ||
@@ -62,16 +62,17 @@ export default function middleware(req: NextRequest) {
   }
 }
 
-/*
- * Match all request paths except for the ones starting with:
- * - api (API routes)
- * - _next/static (static files)
- * - _next/image (image optimization files)
- * - favicon.ico (favicon file)
- */
-export const config = {
-  matcher: ['/((?!api|admin|_next/static|_next/image|favicon.ico).*)'],
-}
+// /*
+//  * Match all request paths except for the ones starting with:
+//  * - api (API routes)
+//  * - _next/static (static files)
+//  * - _next/image (image optimization files)
+//  * - favicon.ico (favicon file)
+//  */
+// export const config = {
+//   matcher: ['/((?!api|admin|_next/static|_next/image|favicon.ico).*)'],
+// }
+
 
 
 
