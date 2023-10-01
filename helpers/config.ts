@@ -1,10 +1,14 @@
 export const REMOTE_URL =
-  process.env.NODE_ENV === 'development'
+  process.env.VERCEL_ENV === 'preview'
+    ? process.env.VERCEL_URL
+    : process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
     : 'https://resilienceweb.org.uk'
 
 export const REMOTE_HOSTNAME =
-  process.env.NODE_ENV === 'development'
+  process.env.VERCEL_ENV === 'preview'
+    ? process.env.VERCEL_URL
+    : process.env.NODE_ENV === 'development'
     ? 'localhost:3000'
     : 'resilienceweb.org.uk'
 
