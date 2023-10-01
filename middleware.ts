@@ -24,6 +24,7 @@ export default function middleware(req: NextRequest) {
       ? hostname
           .replace(`.cambridgeresilienceweb.org.uk`, '')
           .replace(`.resilienceweb.org.uk`, '')
+          .replace('.vercel.app', '')
       : hostname.replace(`.localhost:3000`, '')
 
   console.log('DINER', {
@@ -46,7 +47,8 @@ export default function middleware(req: NextRequest) {
     if (
       hostname === 'localhost:3000' ||
       hostname === 'cambridgeresilienceweb.org.uk' ||
-      hostname === 'resilienceweb.org.uk'
+      hostname === 'resilienceweb.org.uk' ||
+      hostname === 'vercel.app'
     ) {
       return NextResponse.rewrite(url)
     }
