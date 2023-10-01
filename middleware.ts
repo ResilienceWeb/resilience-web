@@ -26,7 +26,15 @@ export default function middleware(req: NextRequest) {
           .replace(`.resilienceweb.org.uk`, '')
       : hostname.replace(`.localhost:3000`, '')
 
-  console.log('DINER', { hostname, currentHost, pathname, url })
+  console.log('DINER', {
+    hostname,
+    currentHost,
+    pathname,
+  })
+  console.log('DINER2', {
+    VERCEL_URL: process.env.VERCEL_URL,
+    VERCEL_ENV: process.env.VERCEL_ENV,
+  })
 
   if (pathname.startsWith(`/_webs`)) {
     return new Response(null, {
@@ -34,32 +42,21 @@ export default function middleware(req: NextRequest) {
     })
   }
 
-  if (!pathname.includes('.') && !pathname.startsWith('/api')) {
-    if (currentHost == 'app') {
-      if (
-        pathname === '/login' &&
-        (req.cookies['next-auth.session-token'] ||
-          req.cookies['__Secure-next-auth.session-token'])
-      ) {
-        url.pathname = '/'
-        return NextResponse.redirect(url)
-      }
-
-      url.pathname = `/app${pathname}`
-      return NextResponse.rewrite(url)
-    }
-
-    if (
-      hostname === 'localhost:3000' ||
-      hostname === 'cambridgeresilienceweb.org.uk' ||
-      hostname === 'resilienceweb.org.uk'
-    ) {
-      return NextResponse.rewrite(url)
-    }
-
+  if (!pathname.includes('.')) {
     url.pathname = `/_webs/${currentHost}${pathname}`
     return NextResponse.rewrite(url)
   }
+}
+
+/*
+ * Match all request paths except for the ones starting with:
+ * - api (API routes)
+ * - _next/static (static files)
+ * - _next/image (image optimization files)
+ * - favicon.ico (favicon file)
+ */
+export const config = {
+  matcher: ['/((?!api|admin|_next/static|_next/image|favicon.ico).*)'],
 }
 
 
