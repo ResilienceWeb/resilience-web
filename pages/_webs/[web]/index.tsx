@@ -321,6 +321,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   if (!params) throw new Error('No path parameters found')
   const { web } = params
 
+  console.log('DINER', `${REMOTE_URL}/api/webs`)
   const { webs } = await fetch(`${REMOTE_URL}/api/webs`).then((res) =>
     res.json(),
   )
@@ -330,10 +331,12 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
     return { notFound: true, revalidate: 30 }
   }
 
+  console.log('DINER2', `${REMOTE_URL}/api/listings?web=${web}`)
   const { listings } = await fetch(
     `${REMOTE_URL}/api/listings?web=${web}`,
   ).then((res) => res.json())
 
+  console.log('DINER3', `${REMOTE_URL}/api/webs/${web}`)
   const { web: webData } = await fetch(`${REMOTE_URL}/api/webs/${web}`).then(
     (res) => res.json(),
   )
