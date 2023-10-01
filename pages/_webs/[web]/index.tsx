@@ -298,7 +298,7 @@ const Web = ({ data, selectedWebName }) => {
 }
 
 export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
-  const response = await fetch(`${REMOTE_URL}/api/webs`)
+  const response = await fetch(`https://resilienceweb.org.uk/api/webs`)
   const data = await response.json()
   const { webs } = data
   const paths = webs.map((l) => `/${l.slug}`)
