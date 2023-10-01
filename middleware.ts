@@ -18,13 +18,18 @@ export default function middleware(req: NextRequest) {
     })
   }
 
-  const currentHost =
-    process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
-      ? hostname
-          .replace(`.cambridgeresilienceweb.org.uk`, '')
-          .replace(`.resilienceweb.org.uk`, '')
-          .replace('.vercel.app', '')
-      : hostname.replace(`.localhost:3000`, '')
+
+  let currentHost
+  if (process.env.VERCEL_ENV === 'preview') {
+    currentHost = hostname.replace(`.${process.env.VERCEL_URL}`, '')
+  } else {
+    currentHost =
+      process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
+        ? hostname
+            .replace('.cambridgeresilienceweb.org.uk', '')
+            .replace('.resilienceweb.org.uk', '')
+        : hostname.replace(`.localhost:3000`, '')
+  }
 
   console.log('DINER', {
     hostname,
