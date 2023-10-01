@@ -46,9 +46,15 @@ function Listing({ listing }: { listing: ListingType | any }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const data = await fetch('https://resilienceweb.org.uk/api/listings').then(
-    (res) => res.json(),
-  )
+  const data = await fetch('https://resilienceweb.org.uk/api/listings')
+    .then((res) => res.json())
+    .catch((e) =>
+      console.error(
+        'Failed to fetch data from',
+        `https://resilienceweb.org.uk/api/listings`,
+        e,
+      ),
+    )
 
   const { listings } = data
   const paths = listings.map((l) => ({
@@ -67,7 +73,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const data = await fetch(
     `https://resilienceweb.org.uk/api/listing/${params.slug}`,
-  ).then((res) => res.json())
+  )
+    .then((res) => res.json())
+    .catch((e) =>
+      console.error(
+        'Failed to fetch data from',
+        `https://resilienceweb.org.uk/api/listing/${params.slug}`,
+        e,
+      ),
+    )
 
   // TODO: map data to only return what is needed
   const { listing } = data
