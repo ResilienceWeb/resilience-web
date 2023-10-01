@@ -298,7 +298,12 @@ const Web = ({ data, selectedWebName }) => {
 }
 
 export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
-  const response = await fetch(`https://resilienceweb.org.uk/api/webs`)
+  const BASE_URL =
+    process.env.VERCEL_ENV === 'preview'
+      ? 'https://resilienceweb.org.uk'
+      : REMOTE_URL
+
+  const response = await fetch(`${BASE_URL}/api/webs`)
   const data = await response.json()
   const { webs } = data
   const paths = webs.map((l) => `/${l.slug}`)
@@ -322,14 +327,15 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   if (!params) throw new Error('No path parameters found')
   const { web } = params
 
-  const { webs } = await fetch(`https://resilienceweb.org.uk/api/webs`)
+  const BASE_URL =
+    process.env.VERCEL_ENV === 'preview'
+      ? 'https://resilienceweb.org.uk'
+      : REMOTE_URL
+
+  const { webs } = await fetch(`${BASE_URL}/api/webs`)
     .then((res) => res.json())
     .catch((e) =>
-      console.error(
-        'Failed to fetch data from',
-        `https://resilienceweb.org.uk/api/webs`,
-        e,
-      ),
+      console.error('Failed to fetch data from', `${BASE_URL}/api/webs`, e),
     )
 
   const paths = webs.map((l) => `${l.slug}`)
@@ -337,28 +343,23 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
     return { notFound: true, revalidate: 30 }
   }
 
-  console.log('DINER2', `${REMOTE_URL}/api/listings?web=${web}`)
-  const { listings } = await fetch(
-    `https://resilienceweb.org.uk/api/listings?web=${web}`,
-  )
+  const { listings } = await fetch(`${BASE_URL}/api/listings?web=${web}`)
     .then((res) => res.json())
     .catch((e) =>
       console.error(
         'Failed to fetch data from',
-        `https://resilienceweb.org.uk/api/listings?web=${web}`,
+        `${BASE_URL}/api/listings?web=${web}`,
         e,
       ),
     )
 
   console.log('DINER3', `${REMOTE_URL}/api/webs/${web}`)
-  const { web: webData } = await fetch(
-    `https://resilienceweb.org.uk/api/webs/${web}`,
-  )
+  const { web: webData } = await fetch(`${BASE_URL}/api/webs/${web}`)
     .then((res) => res.json())
     .catch((e) =>
       console.error(
         'Failed to fetch data from',
-        `https://resilienceweb.org.uk/api/webs/${web}`,
+        `${BASE_URL}/api/webs/${web}`,
         e,
       ),
     )

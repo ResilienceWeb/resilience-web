@@ -46,14 +46,15 @@ function Listing({ listing }: { listing: ListingType | any }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const data = await fetch('https://resilienceweb.org.uk/api/listings')
+  const BASE_URL =
+    process.env.VERCEL_ENV === 'preview'
+      ? 'https://resilienceweb.org.uk'
+      : REMOTE_URL
+
+  const data = await fetch(`${BASE_URL}/api/listings`)
     .then((res) => res.json())
     .catch((e) =>
-      console.error(
-        'Failed to fetch data from',
-        `https://resilienceweb.org.uk/api/listings`,
-        e,
-      ),
+      console.error('Failed to fetch data from', `${BASE_URL}/api/listings`, e),
     )
 
   const { listings } = data
@@ -71,14 +72,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const data = await fetch(
-    `https://resilienceweb.org.uk/api/listing/${params.slug}`,
-  )
+  const BASE_URL =
+    process.env.VERCEL_ENV === 'preview'
+      ? 'https://resilienceweb.org.uk'
+      : REMOTE_URL
+
+  const data = await fetch(`${BASE_URL}/api/listing/${params.slug}`)
     .then((res) => res.json())
     .catch((e) =>
       console.error(
         'Failed to fetch data from',
-        `https://resilienceweb.org.uk/api/listing/${params.slug}`,
+        `${BASE_URL}/api/listing/${params.slug}`,
         e,
       ),
     )
