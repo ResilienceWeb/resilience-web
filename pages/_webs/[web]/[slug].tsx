@@ -63,8 +63,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const response = await fetch(`${REMOTE_URL}/api/listing/${params.slug}`)
-  const data = await response.json()
+  const data = await fetch(`${REMOTE_URL}/api/listing/${params.slug}`)
+    .then((res) => res.json())
+    .catch((e) =>
+      console.error(
+        'Failed to fetch data from',
+        `${REMOTE_URL}/api/listing/${params.slug}`,
+        e,
+      ),
+    )
+
   // TODO: map data to only return what is needed
   const { listing } = data
 
