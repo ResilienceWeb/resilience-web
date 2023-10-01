@@ -43,6 +43,14 @@ export default function middleware(req: NextRequest) {
   }
 
   if (!pathname.includes('.')) {
+    if (
+      hostname === 'localhost:3000' ||
+      hostname === 'cambridgeresilienceweb.org.uk' ||
+      hostname === 'resilienceweb.org.uk'
+    ) {
+      return NextResponse.rewrite(url)
+    }
+
     url.pathname = `/_webs/${currentHost}${pathname}`
     return NextResponse.rewrite(url)
   }
@@ -58,5 +66,6 @@ export default function middleware(req: NextRequest) {
 export const config = {
   matcher: ['/((?!api|admin|_next/static|_next/image|favicon.ico).*)'],
 }
+
 
 
