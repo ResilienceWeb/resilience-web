@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
@@ -322,9 +323,11 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   const { web } = params
 
   console.log('DINER', `${REMOTE_URL}/api/webs`)
-  const { webs } = await fetch(`${REMOTE_URL}/api/webs`).then((res) =>
-    res.json(),
-  )
+  const { webs } = await fetch(`${REMOTE_URL}/api/webs`)
+    .then((res) => res.json())
+    .catch((e) =>
+      console.error('Failed to fetch data from', `${REMOTE_URL}/api/webs`, e),
+    )
 
   const paths = webs.map((l) => `${l.slug}`)
   if (!paths.includes(web)) {
@@ -332,14 +335,26 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   }
 
   console.log('DINER2', `${REMOTE_URL}/api/listings?web=${web}`)
-  const { listings } = await fetch(
-    `${REMOTE_URL}/api/listings?web=${web}`,
-  ).then((res) => res.json())
+  const { listings } = await fetch(`${REMOTE_URL}/api/listings?web=${web}`)
+    .then((res) => res.json())
+    .catch((e) =>
+      console.error(
+        'Failed to fetch data from',
+        `${REMOTE_URL}/api/listings?web=${web}`,
+        e,
+      ),
+    )
 
   console.log('DINER3', `${REMOTE_URL}/api/webs/${web}`)
-  const { web: webData } = await fetch(`${REMOTE_URL}/api/webs/${web}`).then(
-    (res) => res.json(),
-  )
+  const { web: webData } = await fetch(`${REMOTE_URL}/api/webs/${web}`)
+    .then((res) => res.json())
+    .catch((e) =>
+      console.error(
+        'Failed to fetch data from',
+        `${REMOTE_URL}/api/webs/${web}`,
+        e,
+      ),
+    )
 
   const transformedData = {
     nodes: [],
