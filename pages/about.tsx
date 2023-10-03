@@ -50,7 +50,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
   await queryClient.fetchQuery(['webs'], fetchWebsHydrate)
 
-  const { page } = await graphcms.request(`
+  const { page } = await graphcms.request<{ page: any }>(`
 	{
 		page(where: {slug: "about"}) {
 			content {

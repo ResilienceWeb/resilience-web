@@ -3,7 +3,12 @@ import { useQuery } from '@tanstack/react-query'
 import { REMOTE_URL } from '@helpers/config'
 
 export async function fetchWebsHydrate() {
-  const response = await fetch(`${REMOTE_URL}/api/webs?withListings=true`)
+  const BASE_URL =
+    process.env.VERCEL_ENV === 'preview'
+      ? 'https://resilienceweb.org.uk'
+      : REMOTE_URL
+
+  const response = await fetch(`${BASE_URL}/api/webs?withListings=true`)
   const data: { webs: Location[] } = await response.json()
   const { webs } = data
   return webs || []

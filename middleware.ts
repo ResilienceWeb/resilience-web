@@ -1,6 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { NextResponse } from 'next/server'
-
 import type { NextRequest } from 'next/server'
 
 export default function middleware(req: NextRequest) {
@@ -19,12 +18,17 @@ export default function middleware(req: NextRequest) {
     })
   }
 
-  const currentHost =
-    process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
-      ? hostname
-          .replace(`.cambridgeresilienceweb.org.uk`, '')
-          .replace(`.resilienceweb.org.uk`, '')
-      : hostname.replace(`.localhost:3000`, '')
+  let currentHost
+  if (process.env.VERCEL_ENV === 'preview') {
+    currentHost = hostname.replace(`.${process.env.VERCEL_URL}`, '')
+  } else {
+    currentHost =
+      process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
+        ? hostname
+            .replace('.cambridgeresilienceweb.org.uk', '')
+            .replace('.resilienceweb.org.uk', '')
+        : hostname.replace(`.localhost:3000`, '')
+  }
 
   console.log('DINER', {
     hostname,
@@ -42,11 +46,13 @@ export default function middleware(req: NextRequest) {
     })
   }
 
-  if (!pathname.includes('.')) {
+  if (!pathname.includes('.') && !pathname.startsWith('/api')) {
     if (
       hostname === 'localhost:3000' ||
       hostname === 'cambridgeresilienceweb.org.uk' ||
-      hostname === 'resilienceweb.org.uk'
+      hostname === 'resilienceweb.org.uk' ||
+      (process.env.VERCEL_ENV === 'preview' &&
+        hostname === process.env.VERCEL_URL)
     ) {
       return NextResponse.rewrite(url)
     }
@@ -56,16 +62,17 @@ export default function middleware(req: NextRequest) {
   }
 }
 
-/*
- * Match all request paths except for the ones starting with:
- * - api (API routes)
- * - _next/static (static files)
- * - _next/image (image optimization files)
- * - favicon.ico (favicon file)
- */
-export const config = {
-  matcher: ['/((?!api|admin|_next/static|_next/image|favicon.ico).*)'],
-}
+// /*
+//  * Match all request paths except for the ones starting with:
+//  * - api (API routes)
+//  * - _next/static (static files)
+//  * - _next/image (image optimization files)
+//  * - favicon.ico (favicon file)
+//  */
+// export const config = {
+//   matcher: ['/((?!api|admin|_next/static|_next/image|favicon.ico).*)'],
+// }
+
 
 
 

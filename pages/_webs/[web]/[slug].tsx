@@ -46,8 +46,17 @@ function Listing({ listing }: { listing: ListingType | any }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const response = await fetch(`${REMOTE_URL}/api/listings`)
-  const data = await response.json()
+  const BASE_URL =
+    process.env.VERCEL_ENV === 'preview'
+      ? 'https://resilienceweb.org.uk'
+      : REMOTE_URL
+
+  const data = await fetch(`${BASE_URL}/api/listings`)
+    .then((res) => res.json())
+    .catch((e) =>
+      console.error('Failed to fetch data from', `${BASE_URL}/api/listings`, e),
+    )
+
   const { listings } = data
   const paths = listings.map((l) => ({
     params: {
@@ -63,8 +72,21 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const response = await fetch(`${REMOTE_URL}/api/listing/${params.slug}`)
-  const data = await response.json()
+  const BASE_URL =
+    process.env.VERCEL_ENV === 'preview'
+      ? 'https://resilienceweb.org.uk'
+      : REMOTE_URL
+
+  const data = await fetch(`${BASE_URL}/api/listing/${params.slug}`)
+    .then((res) => res.json())
+    .catch((e) =>
+      console.error(
+        'Failed to fetch data from',
+        `${BASE_URL}/api/listing/${params.slug}`,
+        e,
+      ),
+    )
+
   // TODO: map data to only return what is needed
   const { listing } = data
 

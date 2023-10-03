@@ -4,7 +4,12 @@ import { useAppContext } from '@store/hooks'
 import { REMOTE_URL } from '@helpers/config'
 
 export async function fetchCategoriesHydrate({ webSlug }) {
-  const response = await fetch(`${REMOTE_URL}/api/categories?web=${webSlug}`)
+  const BASE_URL =
+    process.env.VERCEL_ENV === 'preview'
+      ? 'https://resilienceweb.org.uk'
+      : REMOTE_URL
+
+  const response = await fetch(`${BASE_URL}/api/categories?web=${webSlug}`)
   const { data: categories } = await response.json()
   return categories
 }
