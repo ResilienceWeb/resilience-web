@@ -66,8 +66,8 @@ const CategoryForm = ({
                   />
                   <FormErrorMessage>{form.errors.color}</FormErrorMessage>
                   <FormHelperText>
-                    Note: the colour will be more faded than it looks here for
-                    higher contrast
+                    Please avoid using white as the text on it will not be
+                    readable in certain parts of the website.
                   </FormHelperText>
                 </FormControl>
               )}
