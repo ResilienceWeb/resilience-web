@@ -77,6 +77,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       ? 'https://resilienceweb.org.uk'
       : REMOTE_URL
 
+  // TODO: make this more secure
   const data = await fetch(`${BASE_URL}/api/listing/${params.slug}`)
     .then((res) => res.json())
     .catch((e) =>
