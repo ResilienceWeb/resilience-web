@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useCallback, useState, useMemo, memo } from 'react'
-import { Heading, Text, Box, Stack, Center, Link } from '@chakra-ui/react'
+import { Heading, Text, Box, Center, Link } from '@chakra-ui/react'
 
 import DeleteConfirmationDialog from './delete-confirmation-dialog'
 import { removeNonAlphaNumeric } from '@helpers/utils'
@@ -92,42 +92,29 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
 
   return (
     <>
-      <Stack
-        spacing="5"
-        direction={{
-          base: 'column',
-          md: 'row',
-        }}
-        justify="space-between"
-        align={{
-          base: 'flex-start',
-          md: 'center',
-        }}
-      >
-        <Box px={4}>
-          <Heading>Listings</Heading>
-          <Text color={'gray.600'} fontSize="sm" maxW="500px">
-            {explanatoryText}
-          </Text>
-          <Text color={'gray.600'} fontSize="sm" maxW="500px" mt="1rem">
-            This web is publicly accessible at{' '}
-            <Link
-              href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
-              target="_blank"
-              fontWeight={600}
-              color="rw.900"
-            >
-              {`${selectedWebSlug}.${REMOTE_HOSTNAME}`}
-            </Link>
-          </Text>
-        </Box>
-        <TableActions
-          searchTerm={searchTerm}
-          handleSearchTermChange={handleSearchTermChange}
-          goToCreateListing={goToCreateListing}
-          handleSelectedCategoriesChange={handleSelectedCategoriesChange}
-        />
-      </Stack>
+      <Box mb="1rem">
+        <Heading>Listings</Heading>
+        <Text color={'gray.600'} fontSize="sm" maxW="500px">
+          {explanatoryText}
+        </Text>
+        <Text color={'gray.600'} fontSize="sm" maxW="500px" mt="1rem">
+          This web is publicly accessible at{' '}
+          <Link
+            href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
+            target="_blank"
+            fontWeight={600}
+            color="rw.900"
+          >
+            {`${selectedWebSlug}.${REMOTE_HOSTNAME}`}
+          </Link>
+        </Text>
+      </Box>
+      <TableActions
+        searchTerm={searchTerm}
+        handleSearchTermChange={handleSearchTermChange}
+        goToCreateListing={goToCreateListing}
+        handleSelectedCategoriesChange={handleSelectedCategoriesChange}
+      />
       {filteredItems.length > 0 ? (
         <Table
           goToEdit={goToEdit}

@@ -1,7 +1,6 @@
 import { memo, useEffect, useState } from 'react'
 import {
   Button,
-  HStack,
   Input,
   InputGroup,
   InputLeftElement,
@@ -45,16 +44,16 @@ const TableActions = ({
         md: 'row',
       }}
       spacing="4"
-      justify="flex-end"
+      justify="flex-start"
       flex="1"
-      w={{
-        base: 'full',
-        md: 'auto',
-      }}
     >
       {(hasPermissionForCurrentWeb || isOwnerOfCurrentWeb) && (
         <>
-          <HStack spacing="1rem">
+          <Stack
+            direction={{ base: 'column', md: 'row' }}
+            spacing="1rem"
+            flex="1"
+          >
             <InputGroup minW="250px">
               <Select
                 isMulti
@@ -84,15 +83,14 @@ const TableActions = ({
                 maxHeight="38px"
               />
             </InputGroup>
-          </HStack>
+          </Stack>
           <Button
             bg="rw.700"
             colorScheme="rw.700"
-            iconSpacing="1"
             leftIcon={<HiPlus fontSize="1.25em" />}
             onClick={goToCreateListing}
             variant="solid"
-            size="md"
+            size="lg"
             maxHeight="36px"
             _hover={{ bg: 'rw.900' }}
           >

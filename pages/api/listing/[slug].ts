@@ -11,6 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const { slug, web: webSlug } = req.query
+
     const listing = await prisma.listing.findFirst({
       where: {
         slug,
@@ -33,7 +34,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             category: true,
           },
         },
-        relationOf: true,
       },
     })
 

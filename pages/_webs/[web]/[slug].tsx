@@ -78,7 +78,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       : REMOTE_URL
 
   // TODO: make this more secure
-  const data = await fetch(`${BASE_URL}/api/listing/${params.slug}`)
+  const data = await fetch(
+    `${BASE_URL}/api/listing/${params.slug}?web=${params.web}`,
+  )
     .then((res) => res.json())
     .catch((e) =>
       console.error(
@@ -88,14 +90,24 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       ),
     )
 
-  // TODO: map data to only return what is needed
   const { listing } = data
 
   return {
     props: {
-      listing,
+      listing: {
+        title: listing.title,
+        image: listing.image,
+        category: listing.category,
+        website: listing.website,
+        facebook: listing.facebook,
+        twitter: listing.twitter,
+        instagram: listing.instagram,
+        description: listing.description,
+        tags: listing.tags,
+        relations: listing.relations,
+      },
     },
-    revalidate: 5,
+    revalidate: 60,
   }
 }
 

@@ -219,17 +219,17 @@ function Listing({ listing }) {
                 gap="1rem"
                 mb="2rem"
               >
-                {listing.relations.map((listing) => {
+                {listing.relations.map((relatedListing) => {
                   return (
                     <Item
                       categoriesIndexes={categoriesIndexes}
-                      dataItem={listing}
+                      dataItem={relatedListing}
                       handleClick={() => {
-                        const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${listing.slug}`
+                        const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${relatedListing.slug}`
                         // eslint-disable-next-line @typescript-eslint/no-floating-promises
                         router.push(individualListingLink)
                       }}
-                      key={listing.id}
+                      key={relatedListing.id}
                       simplified
                     />
                   )

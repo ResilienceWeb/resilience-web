@@ -45,7 +45,7 @@ const Nav = () => {
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
 
-  const Links = useMemo(() => {
+  const navLinks = useMemo(() => {
     const links = [
       {
         label: 'Listings',
@@ -102,11 +102,11 @@ const Nav = () => {
           size={'md'}
           icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
           aria-label={'Open Menu'}
-          display={{ md: !isOpen ? 'none' : 'inherit' }}
+          display={{ lg: !isOpen ? 'none' : 'inherit' }}
           onClick={isOpen ? onClose : onOpen}
         />
         <HStack spacing={8} alignItems={'center'}>
-          <Box>
+          <Box display={{ base: 'none', xl: 'inherit' }}>
             <Link as={NextLink} href="/">
               <button>
                 <Image
@@ -119,8 +119,8 @@ const Nav = () => {
               </button>
             </Link>
           </Box>
-          <HStack as="nav" spacing={8} display={{ base: 'none', md: 'flex' }}>
-            {Links.map((link) => (
+          <HStack as="nav" spacing={8} display={{ base: 'none', lg: 'flex' }}>
+            {navLinks.map((link) => (
               <NavLink key={link.label} href={link.href}>
                 <Button
                   aria-current={
@@ -147,16 +147,16 @@ const Nav = () => {
             ))}
           </HStack>
         </HStack>
-        <Flex alignItems={'center'}>
+        <Flex alignItems="center">
           <Box mr="1rem">
             <WebSelector />
           </Box>
           <Menu>
             <MenuButton
               as={Button}
-              rounded={'full'}
-              variant={'link'}
-              cursor={'pointer'}
+              rounded="full"
+              variant="link"
+              cursor="pointer"
             >
               <BsPersonCircle size="32" />
             </MenuButton>
@@ -182,7 +182,7 @@ const Nav = () => {
       {isOpen ? (
         <Box pb={4}>
           <Stack as={'nav'} spacing={4}>
-            {Links.map((link) => (
+            {navLinks.map((link) => (
               <NavLink key={link.label} href={link.href}>
                 {link.label}
               </NavLink>
