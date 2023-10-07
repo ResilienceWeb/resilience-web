@@ -27,7 +27,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       include: {
         category: true,
-        web: true,
         tags: true,
         relations: {
           include: {
