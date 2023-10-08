@@ -17,12 +17,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           : {}),
       },
       include: {
-        category: true,
+        category: {
+          select: {
+            id: true,
+            color: true,
+            label: true,
+          },
+        },
         web: true,
-        tags: true,
+        tags: {
+          select: {
+            label: true,
+          },
+        },
         relations: {
           include: {
-            category: true,
+            category: {
+              select: {
+                id: true,
+                color: true,
+                label: true,
+              },
+            },
           },
         },
       },

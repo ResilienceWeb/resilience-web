@@ -353,7 +353,6 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
       ),
     )
 
-  console.log('DINER3', `${REMOTE_URL}/api/webs/${web}`)
   const { web: webData } = await fetch(`${BASE_URL}/api/webs/${web}`)
     .then((res) => res.json())
     .catch((e) =>
