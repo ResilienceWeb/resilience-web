@@ -1,6 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../prisma/client'
 
+function exclude(user, keys) {
+  return Object.fromEntries(
+    Object.entries(user).filter(([key]) => !keys.includes(key)),
+  )
+}
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method !== 'GET') {
@@ -26,18 +32,41 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           : {}),
       },
       include: {
-        category: true,
-        tags: true,
+        category: {
+          select: {
+            id: true,
+            color: true,
+            label: true,
+          },
+        },
+        tags: {
+          select: {
+            label: true,
+          },
+        },
         relations: {
           include: {
-            category: true,
+            category: {
+              select: {
+                id: true,
+                color: true,
+                label: true,
+              },
+            },
           },
         },
       },
     })
 
+    const listingWithoutRedundantFields = exclude(listing, [
+      'createdAt',
+      'updatedAt',
+      'notes',
+      'inactive',
+    ])
+
     res.status(200)
-    res.json({ listing })
+    res.json({ listing: listingWithoutRedundantFields })
   } catch (e) {
     res.status(500)
     res.json({ error: `Unable to fetch listing by slug - ${e}` })

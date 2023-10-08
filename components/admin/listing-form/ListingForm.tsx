@@ -60,7 +60,7 @@ const SlugField = () => {
             isInvalid={Boolean(form.errors.slug && form.touched.slug)}
           >
             <FormLabel htmlFor="slug" fontSize="sm" fontWeight="600">
-              Url
+              Link to listing page
             </FormLabel>
             <InputGroup size="sm">
               <InputLeftAddon
