@@ -30,16 +30,6 @@ export default function middleware(req: NextRequest) {
         : hostname.replace(`.localhost:3000`, '')
   }
 
-  console.log('DINER', {
-    hostname,
-    currentHost,
-    pathname,
-  })
-  console.log('DINER2', {
-    VERCEL_URL: process.env.VERCEL_URL,
-    VERCEL_ENV: process.env.VERCEL_ENV,
-  })
-
   if (pathname.startsWith(`/_webs`)) {
     return new Response(null, {
       status: 404,
@@ -62,13 +52,14 @@ export default function middleware(req: NextRequest) {
   }
 }
 
-// /*
-//  * Match all request paths except for the ones starting with:
-//  * - api (API routes)
-//  * - _next/static (static files)
-//  * - _next/image (image optimization files)
-//  * - favicon.ico (favicon file)
-//  */
-// export const config = {
-//   matcher: ['/((?!api|admin|_next/static|_next/image|favicon.ico).*)'],
-// }
+/*
+ * Match all request paths except for the ones starting with:
+ * - api (API routes)
+ * - _next/static (static files)
+ * - _next/image (image optimization files)
+ * - favicon.ico (favicon file)
+ */
+export const config = {
+  matcher: ['/((?!api|admin|_next/static|_next/image|favicon.ico).*)'],
+}
+
