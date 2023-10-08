@@ -92,6 +92,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const { listing } = data
 
+  if (!listing) {
+    return {
+      notFound: true,
+      revalidate: 30,
+    }
+  }
+
   return {
     props: {
       listing: {
