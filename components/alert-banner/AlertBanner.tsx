@@ -13,7 +13,7 @@ const AlertBanner: React.FC<IAlertProps> = ({ type, content, url }) => {
       <Alert status={type} variant="solid" justifyContent="center">
         <Box display="flex" flex="1" maxW="7xl" paddingInlineStart="1rem">
           <AlertIcon />
-          <AlertDescription>{content}</AlertDescription>
+          <AlertDescription fontSize="15px">{content}</AlertDescription>
         </Box>
       </Alert>
     </Link>
