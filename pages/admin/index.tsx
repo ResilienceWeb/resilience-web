@@ -41,7 +41,7 @@ const Admin = () => {
 
     if (permissions?.webIds?.includes(selectedWebId)) return listings
 
-    return listings.filter((listing) => {
+    return listings?.filter((listing) => {
       return permissions?.listingIds?.includes(listing.id)
     })
   }, [

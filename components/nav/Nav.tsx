@@ -64,7 +64,12 @@ export default function MainNav() {
         label: 'Webs',
         href: '#',
         children: webs
-          ?.filter((web) => web.published && web.slug !== 'ctrlshift')
+          ?.filter(
+            (web) =>
+              web.published &&
+              web.slug !== 'ctrlshift' &&
+              web.slug !== 'transition',
+          )
           .map((web) => ({
             label: web.title,
             href: `${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`,

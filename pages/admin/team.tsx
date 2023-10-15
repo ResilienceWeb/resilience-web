@@ -25,7 +25,7 @@ import {
 } from '@chakra-ui/react'
 import { signIn, useSession } from 'next-auth/react'
 import LayoutContainer from '@components/admin/layout-container'
-import PermissionsList from '@components/admin/permissions-list'
+// import PermissionsList from '@components/admin/permissions-list'
 import PermissionsTable from '@components/admin/permissions-table'
 import { useListings } from '@hooks/listings'
 import { emailRequiredValidator } from '@helpers/formValidation'
@@ -77,7 +77,9 @@ export default function Invite() {
       return []
     }
 
-    return ownerships.map((ownership) => ({ ...ownership, owner: true }))
+    return ownerships
+      .filter((ownership) => !ownership.user.admin)
+      .map((ownership) => ({ ...ownership, owner: true }))
   }, [ownerships])
 
   const permissionsForCurrentWebWithoutOwners = useMemo(() => {
@@ -305,7 +307,7 @@ export default function Invite() {
                                     id="web"
                                     onChange={field.onChange}
                                   >
-                                    Give full access to the{' '}
+                                    Give Editor access to the{' '}
                                     <strong>{selectedWebName}</strong> web
                                   </Checkbox>
                                   <FormErrorMessage>
@@ -348,16 +350,16 @@ export default function Invite() {
                   List of people who have permissions to edit some or all the
                   listings on the <b>{selectedWebName}</b> web.
                 </Text>
-                {isOwnerOfCurrentWeb ? (
+                {/* {isOwnerOfCurrentWeb ? (
                   <PermissionsList permissions={permissionsForCurrentWeb} />
-                ) : (
-                  <PermissionsTable
-                    permissions={[
-                      ...decoratedOwnerships,
-                      ...permissionsForCurrentWebWithoutOwners,
-                    ]}
-                  />
-                )}
+                ) : ( */}
+                <PermissionsTable
+                  permissions={[
+                    ...decoratedOwnerships,
+                    ...permissionsForCurrentWebWithoutOwners,
+                  ]}
+                />
+                {/* )} */}
               </Box>
             )}
           </Stack>

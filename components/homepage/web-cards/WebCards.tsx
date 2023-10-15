@@ -26,10 +26,16 @@ const WebCards = () => {
         {webs
           ?.filter(
             (web) =>
-              web.published && Boolean(web.image) && web.slug !== 'ctrlshift',
+              web.published &&
+              Boolean(web.image) &&
+              web.slug !== 'ctrlshift' &&
+              web.slug !== 'transition',
           )
           .sort((a, b) => {
-            if (orderOnHomepage.includes(a.title) > orderOnHomepage.includes(b.title)) {
+            if (
+              orderOnHomepage.includes(a.title) >
+              orderOnHomepage.includes(b.title)
+            ) {
               return -1
             } else {
               return 1
@@ -84,6 +90,7 @@ const Card = ({ web }) => {
     </Link>
   )
 }
+
 
 
 
