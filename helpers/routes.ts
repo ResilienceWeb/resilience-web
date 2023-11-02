@@ -7,4 +7,3 @@ export const decodeUriElements = (uriEncodedString: string): string[] => {
   const uriDecodedString = decodeURIComponent(uriEncodedString)
   return uriDecodedString.split(',')
 }
-

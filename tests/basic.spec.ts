@@ -11,4 +11,3 @@ test('Homepage is displayed as expected', async ({ page }) => {
     }),
   ).toBeVisible()
 })
-

@@ -16,4 +16,3 @@ export const selectMoreAccessibleColor = (
 
   return contrast1 > contrast2 ? color1Hex : color2Hex
 }
-

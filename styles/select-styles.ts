@@ -44,4 +44,3 @@ const customMultiSelectStyles = {
 }
 
 export default customMultiSelectStyles
-
