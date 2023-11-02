@@ -1,1 +1,8 @@
+node_modules
+bin
+obj
+*.*
+!*.css
+!*.scss
+
 vis-network-simplified.css
