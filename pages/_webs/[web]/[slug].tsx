@@ -8,7 +8,7 @@ import { REMOTE_URL } from '@helpers/config'
 import Layout from '@components/layout'
 import ListingDisplay from '@components/listing'
 
-function Listing({ listing }: { listing: ListingType | any }) {
+function Listing({ listing }: { listing: ListingType }) {
   const router = useRouter()
   if (router.isFallback || !listing) {
     return (
