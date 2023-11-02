@@ -22,7 +22,9 @@ export default function useDeleteCategory() {
       queryClient.setQueryData(['categories', { webSlug, id: data.id }], data)
     },
     onSettled: () => {
-      void queryClient.invalidateQueries(['categories', { webSlug }])
+      void queryClient.invalidateQueries({
+        queryKey: ['categories', { webSlug }],
+      })
     },
   })
 }

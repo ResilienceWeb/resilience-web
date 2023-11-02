@@ -37,10 +37,10 @@ const LoadingSpinner = () => (
 export default function Categories() {
   const router = useRouter()
   const { status: sessionStatus } = useSession()
-  const { categories, isLoading: isLoadingCategories } = useCategories()
-  const { tags, isLoading: isLoadingTags } = useTags()
+  const { categories, isPending: isCategoriesPending } = useCategories()
+  const { tags, isPending: isTagsPending } = useTags()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
-  const { isLoading: isLoadingPermissions } = usePermissions()
+  const { isPending: isPermissionsPending } = usePermissions()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
 
   const orderedCategories = useMemo(() => {
@@ -49,8 +49,8 @@ export default function Categories() {
 
   if (
     sessionStatus === 'loading' ||
-    isLoadingCategories ||
-    isLoadingPermissions
+    isCategoriesPending ||
+    isPermissionsPending
   ) {
     return <LoadingSpinner />
   }
@@ -93,7 +93,7 @@ export default function Categories() {
               <TabPanel>
                 <Box mt={6}>
                   <TagsHeader />
-                  {isLoadingTags ? (
+                  {isTagsPending ? (
                     <LoadingSpinner />
                   ) : (
                     <TagsList tags={tags} />

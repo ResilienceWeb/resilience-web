@@ -18,10 +18,10 @@ const Admin = () => {
 
   const {
     listings,
-    isLoading: isLoadingListings,
+    isPending: isListingsPending,
     isError: isListingsError,
   } = useListings()
-  const { permissions, isLoading: isLoadingPermissions } = usePermissions()
+  const { permissions, isPending: isPermissionsPending } = usePermissions()
   const { mutate: deleteListing } = useDeleteListing()
 
   const { query } = useRouter()
@@ -36,7 +36,7 @@ const Admin = () => {
   }, [session, sessionStatus, query.activate])
 
   const allowedListings = useMemo(() => {
-    if (!session || isLoadingPermissions || isLoadingListings) return null
+    if (!session || isPermissionsPending || isListingsPending) return null
     if (isOwnerOfCurrentWeb || session.user.admin) return listings
 
     if (permissions?.webIds?.includes(selectedWebId)) return listings
@@ -46,8 +46,8 @@ const Admin = () => {
     })
   }, [
     session,
-    isLoadingPermissions,
-    isLoadingListings,
+    isPermissionsPending,
+    isListingsPending,
     isOwnerOfCurrentWeb,
     listings,
     permissions?.webIds,
@@ -63,7 +63,7 @@ const Admin = () => {
     )
   }
 
-  if (isLoadingListings || isLoadingPermissions) {
+  if (isListingsPending || isPermissionsPending) {
     return (
       <LayoutContainer>
         <Center height="100%">

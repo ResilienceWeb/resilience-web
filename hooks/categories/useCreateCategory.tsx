@@ -28,13 +28,17 @@ export default function useCreateCategory() {
   return useMutation({
     mutationFn: createCategoryRequest,
     onMutate: async (newCategory) => {
-      await queryClient.cancelQueries(['categories'])
+      await queryClient.cancelQueries({
+        queryKey: ['categories'],
+      })
       const previousCategories = queryClient.getQueryData(['categories'])
       queryClient.setQueryData(['categories'], newCategory)
       return { previousCategories }
     },
     onSettled: () => {
-      void queryClient.invalidateQueries(['categories'])
+      void queryClient.invalidateQueries({
+        queryKey: ['categories'],
+      })
     },
   })
 }

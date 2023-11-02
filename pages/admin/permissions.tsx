@@ -13,9 +13,9 @@ import { useAllPermissions } from '@hooks/permissions'
 
 export default function Permissions() {
   const { data: session, status: sessionStatus } = useSession()
-  const { permissions, isLoading: isLoadingPermissions } = useAllPermissions()
+  const { permissions, isPending: isPermissionsPending } = useAllPermissions()
 
-  if (sessionStatus === 'loading' || isLoadingPermissions) {
+  if (sessionStatus === 'loading' || isPermissionsPending) {
     return (
       <LayoutContainer>
         <Center height="100%">

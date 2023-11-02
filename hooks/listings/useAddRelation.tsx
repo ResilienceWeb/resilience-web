@@ -21,7 +21,9 @@ export default function useAddRelation() {
   return useMutation({
     mutationFn: addRelationRequest,
     onMutate: async (newRelation) => {
-      await queryClient.cancelQueries(['relations'])
+      await queryClient.cancelQueries({
+        queryKey: ['relations'],
+      })
       const previousRelations = queryClient.getQueryData(['relations'])
       queryClient.setQueryData(['relations', newRelation.id], newRelation)
       return { previousRelations, newRelation }
@@ -30,7 +32,9 @@ export default function useAddRelation() {
       queryClient.setQueryData(['relations'], context.previousRelations)
     },
     onSettled: () => {
-      void queryClient.invalidateQueries(['relations'])
+      void queryClient.invalidateQueries({
+        queryKey: ['relations'],
+      })
     },
   })
 }

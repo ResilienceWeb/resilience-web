@@ -19,22 +19,26 @@ async function updateWebRequest(webData) {
 export default function useUpdateWeb() {
   const queryClient = useQueryClient()
 
-  const { data, isLoading, isSuccess, mutate } = useMutation({
+  const { data, isPending, isSuccess, mutate } = useMutation({
     mutationFn: updateWebRequest,
     onMutate: async (newWeb) => {
-      await queryClient.cancelQueries(['webs', { webSlug: newWeb.slug }])
+      await queryClient.cancelQueries({
+        queryKey: ['webs', { webSlug: newWeb.slug }],
+      })
       queryClient.setQueryData(['webs', { webSlug: newWeb.slug }], newWeb)
       return { newWeb }
     },
     onSettled: () => {
-      void queryClient.invalidateQueries(['webs'])
+      void queryClient.invalidateQueries({
+        queryKey: ['webs'],
+      })
     },
   })
 
   return {
     updateWeb: mutate,
     data,
-    isLoading,
+    isPending,
     isSuccess,
   }
 }

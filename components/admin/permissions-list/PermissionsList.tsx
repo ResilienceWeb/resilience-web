@@ -48,7 +48,7 @@ const PermissionsList = ({ permissions }) => {
   const { webs } = useWebs()
   const { data: session } = useSession()
   const { selectedWebId } = useAppContext()
-  const { mutate: updatePermission, isLoading: isUpdatingPermission } =
+  const { mutate: updatePermission, isPending: isUpdatingPermission } =
     useUpdatePermission()
 
   const onSubmit = useCallback(

@@ -16,7 +16,7 @@ export default function usePermissionsForCurrentWeb() {
 
   const {
     data: permissions,
-    isLoading,
+    isPending,
     isError,
   } = useQuery({
     queryKey: ['current-web-permissions', { webSlug }],
@@ -26,7 +26,7 @@ export default function usePermissionsForCurrentWeb() {
 
   return {
     data: permissions,
-    isLoading,
+    isPending,
     isError,
   }
 }

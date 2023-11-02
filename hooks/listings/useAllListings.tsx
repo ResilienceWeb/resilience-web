@@ -10,13 +10,13 @@ async function fetchListingsRequest() {
 export default function useAllListings() {
   const {
     data: listings,
-    isLoading,
+    isPending,
     isError,
   } = useQuery({ queryKey: ['listings'], queryFn: fetchListingsRequest })
 
   return {
     listings,
-    isLoading,
+    isPending,
     isError,
   }
 }

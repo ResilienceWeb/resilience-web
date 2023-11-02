@@ -508,14 +508,18 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   }
 
   const queryClient = new QueryClient()
-  await queryClient.prefetchQuery(['webs'], fetchWebsHydrate)
-  await queryClient.prefetchQuery(
-    ['categories', { webSlug: webData.slug }],
-    () => fetchCategoriesHydrate({ webSlug: webData.slug }),
-  )
-  await queryClient.prefetchQuery(['tags', { webSlug: webData.slug }], () =>
-    fetchTagsHydrate({ webSlug: webData.slug }),
-  )
+  await queryClient.prefetchQuery({
+    queryKey: ['webs'],
+    queryFn: fetchWebsHydrate,
+  })
+  await queryClient.prefetchQuery({
+    queryKey: ['categories', { webSlug: webData.slug }],
+    queryFn: () => fetchCategoriesHydrate({ webSlug: webData.slug }),
+  })
+  await queryClient.prefetchQuery({
+    queryKey: ['tags', { webSlug: webData.slug }],
+    queryFn: () => fetchTagsHydrate({ webSlug: webData.slug }),
+  })
 
   return {
     props: {

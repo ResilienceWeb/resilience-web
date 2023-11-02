@@ -14,7 +14,7 @@ export default function useListing(listingSlug) {
   const { selectedWebSlug: webSlug } = useAppContext()
   const {
     data: listing,
-    isLoading,
+    isPending,
     isError,
   } = useQuery({
     queryKey: ['listing', { webSlug, listingSlug }],
@@ -28,7 +28,7 @@ export default function useListing(listingSlug) {
 
   return {
     listing,
-    isLoading,
+    isPending,
     isError,
   }
 }

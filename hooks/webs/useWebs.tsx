@@ -24,7 +24,7 @@ async function fetchWebsRequest() {
 export default function useWebs() {
   const {
     data: webs,
-    isLoading,
+    isPending,
     isError,
   } = useQuery({
     queryKey: ['webs'],
@@ -34,7 +34,7 @@ export default function useWebs() {
 
   return {
     webs,
-    isLoading,
+    isPending,
     isError,
   }
 }

@@ -40,9 +40,9 @@ export default function Listing() {
     [createListing, updateListing, goBack],
   )
 
-  const { listing, isLoading } = useListing(slug)
+  const { listing, isPending } = useListing(slug)
 
-  if (!categories || !listing || isLoading) {
+  if (!categories || !listing || isPending) {
     return (
       <Flex height="100vh" justifyContent="center" alignItems="center">
         <Spinner size="xl" />

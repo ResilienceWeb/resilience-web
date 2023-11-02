@@ -21,17 +21,13 @@ async function fetchCategoriesRequest({ queryKey }) {
   return categories
 }
 
-export default function useCategories(): {
-  categories: Category[]
-  isLoading: boolean
-  isError: boolean
-} {
+export default function useCategories() {
   const { selectedWebSlug: webSlug } = useAppContext()
   const {
     data: categories,
-    isLoading,
+    isPending,
     isError,
-  } = useQuery({
+  } = useQuery<Category[]>({
     queryKey: ['categories', { webSlug }],
     queryFn: fetchCategoriesRequest,
     refetchOnWindowFocus: false,
@@ -39,7 +35,7 @@ export default function useCategories(): {
 
   return {
     categories,
-    isLoading,
+    isPending,
     isError,
   }
 }

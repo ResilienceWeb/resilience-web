@@ -21,10 +21,9 @@ export default function useUpdatePermission() {
   return useMutation({
     mutationFn: updatePermissionRequest,
     onMutate: async (newPermission) => {
-      await queryClient.cancelQueries([
-        'permission',
-        { email: newPermission.email },
-      ])
+      await queryClient.cancelQueries({
+        queryKey: ['permission', { email: newPermission.email }],
+      })
       const previousPermissions = queryClient.getQueryData([
         'permission',
         { email: newPermission.email },
@@ -42,7 +41,9 @@ export default function useUpdatePermission() {
       )
     },
     onSettled: () => {
-      void queryClient.invalidateQueries(['permission'])
+      void queryClient.invalidateQueries({
+        queryKey: ['permission'],
+      })
     },
   })
 }
