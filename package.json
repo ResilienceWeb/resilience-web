@@ -14,8 +14,8 @@
     "lint:fix": "eslint . --fix",
     "stylelint:dry": "stylelint .",
     "stylelint:fix": "stylelint . --fix",
-    "format:dry": "prettier **/*.{ts,tsx,js} --check",
-    "format:fix": "prettier **/*.{ts,tsx,js} --write",
+    "format:dry": "prettier . --check",
+    "format:fix": "prettier . --write",
     "types:dry": "tsc --noEmit",
     "test:e2e": "playwright test"
   },

@@ -3,4 +3,3 @@ interface Error {
 }
 
 export type Result<Data = unknown> = Data | Error
-

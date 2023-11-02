@@ -19,4 +19,3 @@ export default function useHasPermissionForCurrentWeb() {
     hasPermission || (sessionStatus === 'authenticated' && session?.user.admin)
   )
 }
-

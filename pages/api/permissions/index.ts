@@ -69,9 +69,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             },
           },
         }
-        const updatedPermission = await prisma.permission.update(
-          updatedDataConnect,
-        )
+        const updatedPermission =
+          await prisma.permission.update(updatedDataConnect)
 
         res.status(200)
         res.json({ permission: updatedPermission })

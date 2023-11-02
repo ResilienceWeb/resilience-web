@@ -519,4 +519,3 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
 }
 
 export default memo(ListingFormSimplified)
-

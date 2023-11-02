@@ -74,4 +74,3 @@ const PermissionsTable = ({ permissions }) => {
 }
 
 export default memo(PermissionsTable)
-
