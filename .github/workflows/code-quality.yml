@@ -18,7 +18,7 @@ jobs:
       - name: Run Stylelint
         run: npm run stylelint:dry
       - name: Run Eslint
-        run: npm run lint:dry
+        run: npm run eslint:dry
       - name: Run Prettier
         run: npm run format:dry
       - name: Run Typescript
