@@ -1,0 +1,25 @@
+name: Code Quality Tests
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Stylelint
+        run: npm run stylelint:dry
+      - name: Run Eslint
+        run: npm run eslint:dry
+      - name: Run Prettier
+        run: npm run format:dry
+      - name: Run Typescript
+        run: npm run types:dry

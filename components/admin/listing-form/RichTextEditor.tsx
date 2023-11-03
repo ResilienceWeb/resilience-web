@@ -38,4 +38,3 @@ const RichTextEditor = (props) => {
 }
 
 export default RichTextEditor
-

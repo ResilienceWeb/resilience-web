@@ -181,6 +181,7 @@
       {
         "allowFinally": true
       }
-    ]
+    ],
+    "@typescript-eslint/no-base-to-string": 0
   }
 }

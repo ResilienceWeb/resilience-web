@@ -143,4 +143,3 @@ main()
   .finally(() => {
     void prisma.$disconnect()
   })
-

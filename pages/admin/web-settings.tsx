@@ -215,4 +215,3 @@ export default function Settings() {
     </>
   )
 }
-

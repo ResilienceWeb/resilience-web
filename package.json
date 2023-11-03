@@ -10,7 +10,15 @@
     "db:up": "docker-compose --project-name=resilience-web up -d",
     "db:down": "docker-compose --project-name=resilience-web down",
     "postinstall": "prisma generate",
-    "lint": "eslint .",
+    "stylelint:dry": "stylelint .",
+    "stylelint:fix": "stylelint . --fix",
+    "eslint:dry": "eslint .",
+    "eslint:fix": "eslint . --fix",
+    "format:dry": "prettier . --check",
+    "format:fix": "prettier . --write",
+    "types:dry": "tsc --noEmit",
+    "quality:dry": "npm run stylelint:dry && npm run eslint:dry && npm run format:dry && npm run types:dry",
+    "quality:fix": "npm run stylelint:fix && npm run eslint:fix && npm run format:fix",
     "test:e2e": "playwright test"
   },
   "prisma": {
@@ -68,8 +76,8 @@
     "@types/formidable": "2.0.6",
     "@types/node": "18.16.0",
     "@types/react": "18.2.21",
-    "@typescript-eslint/eslint-plugin": "5.61.0",
-    "@typescript-eslint/parser": "5.61.0",
+    "@typescript-eslint/eslint-plugin": "6.9.1",
+    "@typescript-eslint/parser": "6.9.1",
     "eslint": "8.50.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-next": "13.5.6",
@@ -85,8 +93,10 @@
     "eslint-plugin-sonarjs": "0.21.0",
     "prettier": "3.0.3",
     "prisma": "5.5.0",
-    "stylelint-config-recommended": "12.0.0",
+    "stylelint": "15.11.0",
+    "stylelint-config-recommended": "13.0.0",
+    "stylelint-config-standard-scss": "11.1.0",
     "ts-node": "10.9.1",
-    "typescript": "4.9.4"
+    "typescript": "5.2.2"
   }
 }

@@ -21,7 +21,7 @@ const ImageUpload = ({
   form,
   formProps,
   helperText,
-  isRequired = false
+  isRequired = false,
 }: {
   field: any
   form: any

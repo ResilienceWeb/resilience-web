@@ -11,4 +11,3 @@ export default function useSelectedWebName() {
     return webs.find((s) => s.id === selectedWebId)?.title
   }
 }
-

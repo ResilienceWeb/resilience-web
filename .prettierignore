@@ -1,0 +1,8 @@
+node_modules
+bin
+obj
+*.*
+!*.ts
+!*.tsx
+!*.js
+!*.jsx

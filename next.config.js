@@ -1,4 +1,4 @@
-const { withSentryConfig } = require('@sentry/nextjs');
+const { withSentryConfig } = require('@sentry/nextjs')
 
 /**
  * @type {import('next').NextConfig}
@@ -28,14 +28,21 @@ const nextConfig = {
       {
         source: '/api/feedback',
         headers: [
-          { 'key': 'Access-Control-Allow-Credentials', 'value': 'true' },
-          { 'key': 'Access-Control-Allow-Origin', 'value': '*' },
-          { 'key': 'Access-Control-Allow-Methods', 'value': 'GET,DELETE,PATCH,POST,PUT' },
-          { 'key': 'Access-Control-Allow-Headers', 'value': 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, baggage, sentry-trace' }
-        ]
-      }
+          { key: 'Access-Control-Allow-Credentials', value: 'true' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET,DELETE,PATCH,POST,PUT',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value:
+              'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, baggage, sentry-trace',
+          },
+        ],
+      },
     ]
-  }
+  },
 }
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -63,5 +70,5 @@ module.exports = withSentryConfig(
     hideSourceMaps: true,
     // Automatically tree-shake Sentry logger statements to reduce bundle size
     disableLogger: true,
-  }
+  },
 )
