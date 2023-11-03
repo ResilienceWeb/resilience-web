@@ -67,7 +67,7 @@ const InviteEmail = ({
             dashboard again later you can go to resilienceweb.org.uk/admin.
           </Text>
           <Section style={btnContainer}>
-            <Button pX={12} pY={12} style={button} href={url}>
+            <Button style={button} href={url}>
               Activate account
             </Button>
           </Section>
@@ -93,7 +93,7 @@ const InviteEmail = ({
             account.
           </Text>
           <Section style={btnContainer}>
-            <Button pX={12} pY={12} style={button} href={url}>
+            <Button style={button} href={url}>
               Activate account
             </Button>
           </Section>
@@ -148,6 +148,7 @@ const button = {
   textDecoration: 'none',
   textAlign: 'center' as const,
   display: 'block',
+  padding: '12px',
 }
 
 const hr = {
