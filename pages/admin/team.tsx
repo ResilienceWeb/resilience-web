@@ -63,10 +63,10 @@ export default function Invite() {
   const toast = useToast()
   const router = useRouter()
   const { data: session, status: sessionStatus } = useSession()
-  const { listings, isLoading: isLoadingListings } = useListings()
+  const { listings, isPending: isListingsPending } = useListings()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
-  const { isLoading: isLoadingPermissions } = usePermissions()
+  const { isPending: isPermissionsPending } = usePermissions()
   const { data: permissionsForCurrentWeb } = usePermissionsForCurrentWeb()
   const { ownerships } = useOwnerships()
   const selectedWebName = useSelectedWebName()
@@ -168,8 +168,8 @@ export default function Invite() {
 
   if (
     sessionStatus === 'loading' ||
-    isLoadingListings ||
-    isLoadingPermissions
+    isListingsPending ||
+    isPermissionsPending
   ) {
     return (
       <LayoutContainer>

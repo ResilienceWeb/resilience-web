@@ -48,7 +48,10 @@ export const getStaticProps: GetStaticProps = async () => {
   const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL)
 
   const queryClient = new QueryClient()
-  await queryClient.fetchQuery(['webs'], fetchWebsHydrate)
+  await queryClient.fetchQuery({
+    queryKey: ['webs'],
+    queryFn: fetchWebsHydrate,
+  })
 
   const { page } = await graphcms.request<{ page: any }>(`
 	{

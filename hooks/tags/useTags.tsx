@@ -22,17 +22,13 @@ async function fetchTagsRequest({ queryKey }) {
   return all ? tags : tags.filter((tag) => tag.listings.length > 0)
 }
 
-export default function useTags(): {
-  tags: Tag[]
-  isLoading: boolean
-  isError: boolean
-} {
+export default function useTags() {
   const { selectedWebSlug: webSlug, isAdminMode } = useAppContext()
   const {
     data: tags,
-    isLoading,
+    isPending,
     isError,
-  } = useQuery({
+  } = useQuery<Tag[]>({
     queryKey: ['tags', { webSlug, all: isAdminMode }],
     queryFn: fetchTagsRequest,
     refetchOnWindowFocus: false,
@@ -40,7 +36,7 @@ export default function useTags(): {
 
   return {
     tags,
-    isLoading,
+    isPending,
     isError,
   }
 }

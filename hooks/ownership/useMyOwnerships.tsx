@@ -12,7 +12,7 @@ export default function useMyOwnerships() {
 
   const {
     data: ownerships,
-    isLoading,
+    isPending,
     isError,
   } = useQuery({
     queryKey: ['my-ownerships'],
@@ -23,7 +23,7 @@ export default function useMyOwnerships() {
 
   return {
     ownerships,
-    isLoading,
+    isPending,
     isError,
   }
 }

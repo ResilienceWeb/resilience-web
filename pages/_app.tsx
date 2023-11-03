@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { DefaultSeo } from 'next-seo'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import {
-  Hydrate,
+  HydrationBoundary,
   QueryClientProvider,
   QueryClient,
 } from '@tanstack/react-query'
@@ -77,13 +77,13 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
       </Head>
       <SessionProvider refetchInterval={5 * 60} session={session}>
         <QueryClientProvider client={queryClient}>
-          <Hydrate state={pageProps.dehydratedState}>
+          <HydrationBoundary state={pageProps.dehydratedState}>
             <StoreProvider>
               <ChakraProvider theme={theme}>
                 <Component {...pageProps} />
               </ChakraProvider>
             </StoreProvider>
-          </Hydrate>
+          </HydrationBoundary>
           {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </QueryClientProvider>
       </SessionProvider>

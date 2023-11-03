@@ -31,10 +31,10 @@ export default function Settings() {
   const router = useRouter()
   const { data: session, status: sessionStatus } = useSession()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
-  const { isLoading: isLoadingPermissions } = usePermissions()
+  const { isPending: isPendingPermissions } = usePermissions()
   const { selectedWebSlug } = useAppContext()
   const { web: webData } = useWeb(selectedWebSlug)
-  const { updateWeb, isLoading, isSuccess } = useUpdateWeb()
+  const { updateWeb, isPending, isSuccess } = useUpdateWeb()
 
   const { ownerships } = useOwnerships()
 
@@ -70,7 +70,7 @@ export default function Settings() {
     [updateWeb, webData?.slug],
   )
 
-  if (sessionStatus === 'loading' || isLoadingPermissions) {
+  if (sessionStatus === 'loading' || isPendingPermissions) {
     return (
       <LayoutContainer>
         <Center height="100%">
@@ -166,7 +166,7 @@ export default function Settings() {
                           mt={4}
                           variant="solid"
                           isDisabled={!props.isValid || !props.dirty}
-                          isLoading={isLoading}
+                          isLoading={isPending}
                           type="submit"
                           _hover={{ bg: 'rw.900' }}
                         >

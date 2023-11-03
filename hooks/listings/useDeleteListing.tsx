@@ -18,7 +18,9 @@ export default function useDeleteListing() {
       queryClient.setQueryData(['listings', { id: data.id }], data)
     },
     onSettled: () => {
-      void queryClient.invalidateQueries(['listings'])
+      void queryClient.invalidateQueries({
+        queryKey: ['listings'],
+      })
     },
   })
 }

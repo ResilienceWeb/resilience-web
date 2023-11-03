@@ -21,7 +21,9 @@ export default function useUpdateTag() {
   return useMutation({
     mutationFn: updateTagRequest,
     onMutate: async (newTag) => {
-      await queryClient.cancelQueries(['tags'])
+      await queryClient.cancelQueries({
+        queryKey: ['tags'],
+      })
       const previousTags = queryClient.getQueryData(['tags'])
       queryClient.setQueryData(['tags'], newTag)
       return { previousTags, newTag }
@@ -33,7 +35,9 @@ export default function useUpdateTag() {
       )
     },
     onSettled: () => {
-      void queryClient.invalidateQueries(['tags'])
+      void queryClient.invalidateQueries({
+        queryKey: ['tags'],
+      })
     },
   })
 }

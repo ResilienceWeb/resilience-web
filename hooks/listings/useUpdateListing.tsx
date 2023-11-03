@@ -25,7 +25,9 @@ export default function useUpdateListing() {
       queryClient.setQueryData(['listings', { id: data.id }], data)
     },
     onMutate: async (newListing) => {
-      await queryClient.cancelQueries(['listings', newListing.id])
+      await queryClient.cancelQueries({
+        queryKey: ['listings', newListing.id],
+      })
       const previousListing = queryClient.getQueryData([
         'listings',
         newListing.id,
@@ -40,7 +42,9 @@ export default function useUpdateListing() {
       )
     },
     onSettled: () => {
-      void queryClient.invalidateQueries(['listings'])
+      void queryClient.invalidateQueries({
+        queryKey: ['listings'],
+      })
     },
   })
 }

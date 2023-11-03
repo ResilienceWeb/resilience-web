@@ -168,7 +168,10 @@ function Features() {
 
 export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
-  await queryClient.fetchQuery(['webs'], fetchWebsHydrate)
+  await queryClient.fetchQuery({
+    queryKey: ['webs'],
+    queryFn: fetchWebsHydrate,
+  })
 
   return {
     props: {

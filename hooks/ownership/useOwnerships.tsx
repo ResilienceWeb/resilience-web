@@ -15,7 +15,7 @@ export default function useOwnerships() {
 
   const {
     data: ownerships,
-    isLoading,
+    isPending,
     isError,
   } = useQuery({
     queryKey: ['ownerships', { webSlug }],
@@ -26,7 +26,7 @@ export default function useOwnerships() {
 
   return {
     ownerships,
-    isLoading,
+    isPending,
     isError,
   }
 }

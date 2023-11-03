@@ -12,7 +12,7 @@ async function fetchWebRequest({ queryKey }) {
 export default function useWeb(webSlug) {
   const {
     data: web,
-    isLoading,
+    isPending,
     isError,
   } = useQuery({
     queryKey: ['webs', { webSlug }],
@@ -23,7 +23,7 @@ export default function useWeb(webSlug) {
 
   return {
     web,
-    isLoading,
+    isPending,
     isError,
   }
 }
