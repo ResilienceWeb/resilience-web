@@ -13,6 +13,7 @@ const nextConfig = {
     domains: [
       'resilienceweb.ams3.digitaloceanspaces.com',
       'media.graphcms.com',
+      'media.graphassets.com',
       'via.placeholder.com',
       'opencollective.com',
     ],
