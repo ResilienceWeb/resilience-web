@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
