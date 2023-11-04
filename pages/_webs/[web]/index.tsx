@@ -50,7 +50,7 @@ type INetwork = {
 
 const CENTRAL_NODE_ID = 999
 
-const Web = ({ data, selectedWebName }) => {
+const Web = ({ data, webName, webImage }) => {
   const router = useRouter()
 
   const { isMobile } = useAppContext()
@@ -244,8 +244,11 @@ const Web = ({ data, selectedWebName }) => {
   return (
     <>
       <NextSeo
-        title={`${selectedWebName} | Resilience Web`}
-        openGraph={{ title: `${selectedWebName} | Resilience Web` }}
+        title={`${webName} | Resilience Web`}
+        openGraph={{
+          title: `${webName} | Resilience Web`,
+          images: [{ url: webImage }],
+        }}
       />
       {!isMobile && (
         <Drawer
@@ -278,7 +281,7 @@ const Web = ({ data, selectedWebName }) => {
           searchTerm={searchTerm}
           tags={tags}
           selectedTags={selectedTags}
-          selectedWebName={selectedWebName}
+          selectedWebName={webName}
         />
         {isWebMode && (
           <NetworkComponent
@@ -524,7 +527,8 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   return {
     props: {
       data: transformedData,
-      selectedWebName: webData.title,
+      webName: webData.title,
+      webImage: webData.image,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 30,
