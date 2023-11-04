@@ -1,4 +1,4 @@
-import type { Location } from '@prisma/client'
+import type { Web } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { REMOTE_URL } from '@helpers/config'
 
@@ -9,14 +9,14 @@ export async function fetchWebsHydrate() {
       : REMOTE_URL
 
   const response = await fetch(`${BASE_URL}/api/webs?withListings=true`)
-  const data: { webs: Location[] } = await response.json()
+  const data: { webs: Web[] } = await response.json()
   const { webs } = data
   return webs || []
 }
 
 async function fetchWebsRequest() {
   const response = await fetch(`/api/webs?withListings=true`)
-  const data: { webs: Location[] } = await response.json()
+  const data: { webs: Web[] } = await response.json()
   const { webs } = data
   return webs || []
 }

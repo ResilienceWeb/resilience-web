@@ -23,6 +23,8 @@ const WebSelector = () => {
   const { permissions } = usePermissions()
   const { ownerships } = useMyOwnerships()
 
+  console.log({ webs, ownerships })
+
   const allUniqueWebIds = useMemo(() => {
     if (!permissions && !ownerships) {
       return []

@@ -1,14 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
 import type { File } from 'formidable'
-import { Location, Prisma } from '@prisma/client'
+import { Web, Prisma } from '@prisma/client'
 import prisma from '../../../prisma/client'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import type { Result } from '../type.d'
 
 type Data = {
-  web: null | Location
+  web: Web
 }
 
 const handler = async (
@@ -19,7 +19,7 @@ const handler = async (
     const { slug } = req.query
     switch (req.method) {
       case 'GET':
-        const web: Data['web'] = await prisma.location.findFirst({
+        const web: Data['web'] = await prisma.web.findFirst({
           where: {
             slug,
           },
@@ -33,13 +33,13 @@ const handler = async (
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         form.parse(req, async (_err, fields, files) => {
-          const newData: Prisma.LocationUncheckedUpdateInput = {
+          const newData: Prisma.WebUncheckedUpdateInput = {
             published: stringToBoolean(fields.published as string),
           }
 
           let imageUrl = null
           if (files.image) {
-            const { image: oldImageKey } = await prisma.location.findUnique({
+            const { image: oldImageKey } = await prisma.web.findUnique({
               where: { slug },
             })
             imageUrl = await uploadImage(
@@ -51,7 +51,7 @@ const handler = async (
             newData.image = imageUrl
           }
 
-          const updatedWeb: Data['web'] = await prisma.location.update({
+          const updatedWeb: Data['web'] = await prisma.web.update({
             where: {
               slug,
             },

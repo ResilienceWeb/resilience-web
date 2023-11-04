@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Location } from '@prisma/client'
+import { Web } from '@prisma/client'
 
 async function updateWebRequest(webData) {
   const formData = new FormData()
@@ -11,7 +11,7 @@ async function updateWebRequest(webData) {
     body: formData,
   })
 
-  const data: { web: null | Location } = await response.json()
+  const data: { web: Web } = await response.json()
   const { web } = data
   return web
 }

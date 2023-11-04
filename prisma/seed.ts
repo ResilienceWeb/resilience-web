@@ -61,7 +61,7 @@ const listingsDurham = [
 ]
 
 async function main() {
-  const newWebCambridge = await prisma.location.create({
+  const newWebCambridge = await prisma.web.create({
     data: {
       title: 'Cambridge',
       slug: 'cambridge',
@@ -80,7 +80,7 @@ async function main() {
     })
   }
 
-  const newWebDurham = await prisma.location.create({
+  const newWebDurham = await prisma.web.create({
     data: {
       title: 'Durham',
       slug: 'durham',
