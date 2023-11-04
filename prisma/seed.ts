@@ -2,16 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const locationCity = {
-  title: 'Cambridge City',
-  slug: 'cambridge-city',
-}
-const locationUni = {
-  title: 'University of Cambridge',
-  slug: 'cambridge-university',
-}
-
-const categoriesCity = [
+const categoriesCambridge = [
   {
     label: 'Environment',
     color: '7ed957',
@@ -27,10 +18,6 @@ const categoriesCity = [
   {
     label: 'Transportation',
     color: '737373',
-  },
-  {
-    label: 'Connectivity',
-    color: '5ce1e6',
   },
   {
     label: 'Community',
@@ -57,7 +44,7 @@ const categoriesUni = [
   },
 ]
 
-const listingsCity = [
+const listingsCambridge = [
   {
     title: 'Cambridge Community Kitchen',
     slug: 'cambridge-community-kitchen',
@@ -66,7 +53,7 @@ const listingsCity = [
   },
 ]
 
-const listingsUni = [
+const listingsDurham = [
   {
     title: 'Conservation Research Institute',
     slug: 'conservation-research-institute',
@@ -74,42 +61,55 @@ const listingsUni = [
 ]
 
 async function main() {
-  const newLocationCity = await prisma.location.create({
-    data: locationCity,
+  const newWebCambridge = await prisma.location.create({
+    data: {
+      title: 'Cambridge',
+      slug: 'cambridge',
+      published: true,
+      image:
+        'https://resilienceweb.ams3.digitaloceanspaces.com/d395de3529d0bb86b05ee6501.jpg',
+    },
   })
 
-  for (const category of categoriesCity) {
+  for (const category of categoriesCambridge) {
     await prisma.category.create({
       data: {
         ...category,
-        webId: newLocationCity.id,
+        webId: newWebCambridge.id,
       },
     })
   }
 
-  const newLocationUni = await prisma.location.create({
-    data: locationUni,
+  const newWebDurham = await prisma.location.create({
+    data: {
+      title: 'Durham',
+      slug: 'durham',
+      published: true,
+      image:
+        'https://resilienceweb.ams3.digitaloceanspaces.com/f0b36873107d6cef9da5f2400.webp',
+    },
   })
+
   for (const category of categoriesUni) {
     await prisma.category.create({
       data: {
         ...category,
-        webId: newLocationUni.id,
+        webId: newWebDurham.id,
       },
     })
   }
 
-  for (const listing of listingsCity) {
+  for (const listing of listingsCambridge) {
     const newCategory = await prisma.category.findFirst({
       where: {
-        webId: newLocationCity.id,
+        webId: newWebCambridge.id,
       },
     })
 
     await prisma.listing.create({
       data: {
         ...listing,
-        webId: newLocationCity.id,
+        webId: newWebCambridge.id,
         categoryId: newCategory.id,
       },
     })
@@ -117,22 +117,37 @@ async function main() {
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   setTimeout(async () => {
-    for (const listing of listingsUni) {
+    for (const listing of listingsDurham) {
       const newCategory = await prisma.category.findFirst({
         where: {
-          webId: newLocationUni.id,
+          webId: newWebDurham.id,
         },
       })
 
       await prisma.listing.create({
         data: {
           ...listing,
-          webId: newLocationUni.id,
+          webId: newWebDurham.id,
           categoryId: newCategory.id,
         },
       })
     }
   }, 1000)
+
+  const userCambridgeOwner = await prisma.user.create({
+    data: {
+      email: 'ismail.diner+cambridge-owner@gmail.com',
+    },
+  })
+
+  await prisma.ownership.create({
+    data: {
+      email: userCambridgeOwner.email,
+      webs: {
+        connect: [{ id: newWebCambridge.id }],
+      },
+    },
+  })
 }
 
 main()
