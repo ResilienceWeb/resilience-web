@@ -62,18 +62,17 @@ model VerificationToken {
   @@map("verification_requests")
 }
 
-model Location {
-  id          Int          @id @default(autoincrement())
-  title       String       @unique
-  slug        String       @unique
-  categories  Category[]
-  listings    Listing[]
-  tags        Tag[]
-  permission  Permission[]
-  published   Boolean      @default(false)
-  image       String?
-  ownerships  Ownership[]
-  ownershipId Int?
+model Web {
+  id         Int          @id @default(autoincrement())
+  title      String       @unique
+  slug       String       @unique
+  categories Category[]
+  listings   Listing[]
+  tags       Tag[]
+  permission Permission[]
+  published  Boolean      @default(false)
+  image      String?
+  ownerships Ownership[]
 
   @@map("Location")
 }
@@ -85,7 +84,7 @@ model Category {
   color     String?   @default("f1f1f1")
   id        Int       @id @default(autoincrement())
   webId     Int?
-  web       Location? @relation(fields: [webId], references: [id])
+  web       Web?      @relation(fields: [webId], references: [id])
   listings  Listing[]
 
   @@unique([webId, label], name: "categoryIdentifier")
@@ -96,7 +95,7 @@ model Tag {
   id       Int       @id @default(autoincrement())
   label    String
   webId    Int?
-  web      Location? @relation(fields: [webId], references: [id])
+  web      Web?      @relation(fields: [webId], references: [id])
   listings Listing[]
 
   @@unique([webId, label], name: "tagIdentifier")
@@ -121,7 +120,7 @@ model Listing {
   image             String?
   slug              String
   webId             Int
-  web               Location?    @relation(fields: [webId], references: [id])
+  web               Web?         @relation(fields: [webId], references: [id])
   category          Category?    @relation(fields: [categoryId], references: [id])
   permissions       Permission[]
   tags              Tag[]
@@ -140,7 +139,7 @@ model Permission {
   email     String   @unique
   user      User?    @relation(fields: [email], references: [email])
 
-  webs     Location[]
+  webs     Web[]
   listings Listing[]
 }
 
@@ -151,7 +150,7 @@ model Ownership {
   email     String   @unique
   user      User?    @relation(fields: [email], references: [email])
 
-  webs Location[]
+  webs Web[]
 
   @@map("ownership")
 }

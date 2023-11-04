@@ -1,11 +1,11 @@
-import type { Location } from '@prisma/client'
+import type { Web } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../prisma/client'
 import type { Result } from '../type.d'
 import { stringToBoolean } from '@helpers/utils'
 
 interface Data {
-  webs: null | Location[]
+  webs: null | Web[]
 }
 
 const handler = async (
@@ -17,7 +17,7 @@ const handler = async (
     : false
 
   try {
-    const webs: Data['webs'] = await prisma.location.findMany({
+    const webs: Data['webs'] = await prisma.web.findMany({
       include: withListings
         ? {
             listings: {
