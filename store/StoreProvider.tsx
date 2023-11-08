@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react'
 import useLocalStorage from 'use-local-storage'
 import { useMediaQuerySSR } from '@hooks/application'
 import { AppContext } from '@store/AppContext'
+import { useWebs } from '@hooks/webs'
 
 const DEFAULT_SELECTED_WEB = 'cambridge-city'
 
@@ -12,8 +13,9 @@ const StoreProvider = ({ children }) => {
     'selected-web',
     DEFAULT_SELECTED_WEB,
   )
-  const [webs, setWebs] = useState([])
   const [subdomain, setSubdomain] = useState<string>()
+
+  const { webs } = useWebs()
 
   useEffect(() => {
     const hostname = window.location.hostname
@@ -29,22 +31,6 @@ const StoreProvider = ({ children }) => {
     setIsAdminMode(isAdminMode)
   }, [])
 
-  async function fetchWebs() {
-    const response = await fetch('/api/webs')
-
-    if (response.status === 200) {
-      const data = await response.json()
-      const { webs } = data
-      setWebs(webs)
-    } else {
-      console.error('Failed to fetch webs in StoreProvider')
-    }
-  }
-
-  useEffect(() => {
-    void fetchWebs()
-  }, [])
-
   useEffect(() => {
     if (subdomain && subdomain !== 'resilienceweb') {
       setSelectedWebSlug(subdomain)
@@ -57,20 +43,26 @@ const StoreProvider = ({ children }) => {
     }
   }, [selectedWebSlug, webs])
 
-  return (
-    <AppContext.Provider
-      value={{
-        isAdminMode,
-        isMobile,
-        selectedWebSlug,
-        setSelectedWebSlug,
-        selectedWebId,
-        webs,
-      }}
-    >
-      {children}
-    </AppContext.Provider>
+  const value = useMemo(
+    () => ({
+      isAdminMode,
+      isMobile,
+      selectedWebSlug,
+      setSelectedWebSlug,
+      selectedWebId,
+      webs,
+    }),
+    [
+      isAdminMode,
+      isMobile,
+      selectedWebId,
+      selectedWebSlug,
+      setSelectedWebSlug,
+      webs,
+    ],
   )
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
 
 export default StoreProvider
