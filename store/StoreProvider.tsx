@@ -50,16 +50,8 @@ const StoreProvider = ({ children }) => {
       selectedWebSlug,
       setSelectedWebSlug,
       selectedWebId,
-      webs,
     }),
-    [
-      isAdminMode,
-      isMobile,
-      selectedWebId,
-      selectedWebSlug,
-      setSelectedWebSlug,
-      webs,
-    ],
+    [isAdminMode, isMobile, selectedWebId, selectedWebSlug, setSelectedWebSlug],
   )
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
