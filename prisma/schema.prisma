@@ -133,14 +133,13 @@ model Listing {
 }
 
 model Permission {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
-  email     String   @unique
-  user      User?    @relation(fields: [email], references: [email])
-
-  webs     Web[]
-  listings Listing[]
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  email     String    @unique
+  user      User?     @relation(fields: [email], references: [email])
+  webs      Web[]
+  listings  Listing[]
 }
 
 model Ownership {
@@ -149,8 +148,7 @@ model Ownership {
   updatedAt DateTime @default(now()) @map("updated_at")
   email     String   @unique
   user      User?    @relation(fields: [email], references: [email])
-
-  webs Web[]
+  webs      Web[]
 
   @@map("ownership")
 }

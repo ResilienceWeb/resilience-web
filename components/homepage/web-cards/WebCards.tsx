@@ -9,7 +9,7 @@ import { useWebs } from '@hooks/webs'
 const orderOnHomepage = ['Cambridge', 'York', 'Durham']
 
 const WebCards = () => {
-  const { webs } = useWebs()
+  const { webs } = useWebs({ published: true })
 
   return (
     <Container maxW="7xl">

@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const email = req.body.email.trim()
-    const { listings, web: webId, inviteToWeb } = req.body
+    const { web: webId } = req.body
 
     if (!email) {
       res.status(400)
@@ -31,10 +31,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    if (!listings && !webId) {
+    if (!webId) {
       res.status(400)
       return res.json({
-        error: `Listing or web not provided. Please make sure at least one included in the request body.`,
+        error: `Web not provided. Please make sure it's included in the request body.`,
       })
     }
 
@@ -44,10 +44,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       update: { email },
     }
     const user = await prisma.user.upsert(newUserData)
-
-    const listingsToConnect = listings
-      ? listings.map((listing) => ({ id: listing.id }))
-      : []
     const webIdToConnect = webId ? { id: webId } : []
 
     const newData: Prisma.PermissionUpsertArgs = {
@@ -60,9 +56,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             id: user.id,
           },
         },
-        listings: {
-          connect: listingsToConnect,
-        },
         webs: {
           connect: webIdToConnect,
         },
@@ -72,9 +65,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           connect: {
             id: user.id,
           },
-        },
-        listings: {
-          connect: listingsToConnect,
         },
         webs: {
           connect: webIdToConnect,
@@ -92,23 +82,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     })
 
-    let titles = ''
-    if (listings) {
-      const formatter = new Intl.ListFormat('en', {
-        style: 'long',
-        type: 'conjunction',
-      })
-      const titlesArray = listings.map((l) => l.title)
-      titles = formatter.format(titlesArray)
-    } else {
-      titles = selectedWeb.title
-    }
-
     if (permission) {
       const inviteEmailComponent = InviteEmail({
-        listings: titles,
         webTitle: `${selectedWeb.title}`,
-        inviteToWeb,
         email: email,
         url: callToActionButtonUrl,
       })
@@ -118,7 +94,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const msg = {
         from: `Resilience Web <info@resilienceweb.org.uk>`,
         to: email,
-        subject: `Your invite to the Resilience Web`,
+        subject: `Your invite to the ${selectedWeb.title} Resilience Web`,
         text: inviteEmailText,
         html: inviteEmailHtml,
       }

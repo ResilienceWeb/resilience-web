@@ -513,7 +513,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({
     queryKey: ['webs'],
-    queryFn: fetchWebsHydrate,
+    queryFn: () => fetchWebsHydrate({ published: true }),
   })
   await queryClient.prefetchQuery({
     queryKey: ['categories', { webSlug: webData.slug }],

@@ -12,20 +12,12 @@ import {
 } from '@react-email/components'
 
 interface InviteEmailProps {
-  listings: string
   webTitle: string
-  inviteToWeb: boolean
   email: string
   url: string
 }
 
-const InviteEmail = ({
-  listings,
-  webTitle,
-  inviteToWeb,
-  email,
-  url,
-}: InviteEmailProps) => {
+const InviteEmail = ({ webTitle, email, url }: InviteEmailProps) => {
   // Insert invisible space into domains and email address to prevent both the
   // email address and the domain from being turned into a hyperlink by email
   // clients like Outlook and Apple mail, as this is confusing because it seems
@@ -48,17 +40,12 @@ const InviteEmail = ({
             alt="Resilience Web logo"
             style={logo}
           />
-          <Text style={paragraph}>Hello,</Text>
+          <Text style={paragraph}>Hello 👋</Text>
           <Text style={paragraph}>
-            You are invited to be an admin of{' '}
-            <strong>
-              {listings}
-              {inviteToWeb === true ? ' Resilience Web' : ''}
-            </strong>
-            {inviteToWeb === false ? ` on the ${webTitle} Resilience Web` : ''},
-            a digital mapping of organisations that are working to create a more
-            resilient, more equitable and greener future for this city and its
-            residents.
+            You are invited to be an editor on{' '}
+            <strong>{webTitle} Resilience Web</strong>, a digital mapping of
+            organisations that are working to create a more resilient, more
+            equitable and greener future for this city and its residents.
           </Text>
           <Text style={paragraph}>
             Click the button below to sign in as{' '}

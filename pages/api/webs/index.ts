@@ -16,8 +16,17 @@ const handler = async (
     ? stringToBoolean(req.query.withListings as string)
     : false
 
+  const onlyPublished = req.query.published
+
   try {
     const webs: Data['webs'] = await prisma.web.findMany({
+      where: {
+        ...(onlyPublished
+          ? {
+              published: true,
+            }
+          : {}),
+      },
       include: withListings
         ? {
             listings: {

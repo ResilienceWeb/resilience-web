@@ -20,7 +20,7 @@ export const getStaticProps = async () => {
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({
     queryKey: ['webs'],
-    queryFn: fetchWebsHydrate,
+    queryFn: () => fetchWebsHydrate({ published: true }),
   })
 
   return {

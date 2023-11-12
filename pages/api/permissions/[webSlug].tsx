@@ -17,31 +17,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const permissions = await prisma.permission.findMany({
       where: {
-        OR: [
-          {
-            webs: {
-              some: {
-                slug: {
-                  equals: webSlug,
-                },
-              },
+        webs: {
+          some: {
+            slug: {
+              equals: webSlug,
             },
           },
-          {
-            listings: {
-              some: {
-                web: {
-                  slug: {
-                    equals: webSlug,
-                  },
-                },
-              },
-            },
-          },
-        ],
+        },
       },
       include: {
-        listings: true,
         webs: true,
         user: true,
       },

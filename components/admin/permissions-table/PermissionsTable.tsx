@@ -1,7 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { memo } from 'react'
 import { Badge, Stack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
-import { useSelectedWebName } from '@hooks/webs'
 
 const columns = [
   {
@@ -15,8 +14,6 @@ const columns = [
 ]
 
 const PermissionsTable = ({ permissions }) => {
-  const selectedWebName = useSelectedWebName()
-
   return (
     <Table borderWidth="1px" fontSize="sm" background="#ffffff" mb="2rem">
       <Thead bg="gray.50">
@@ -43,25 +40,16 @@ const PermissionsTable = ({ permissions }) => {
                   )
                 }
 
-                if (permission.webs.some((w) => w.title === selectedWebName)) {
-                  return (
-                    <Td key={index}>
-                      <Stack direction="row">
-                        <Badge>Editor</Badge>
-                        {!permission.user.emailVerified && (
-                          <Badge colorScheme="yellow">Invite pending</Badge>
-                        )}
-                      </Stack>
-                    </Td>
-                  )
-                } else {
-                  const formatter = new Intl.ListFormat('en', {
-                    style: 'long',
-                    type: 'conjunction',
-                  })
-                  const listings = permission.listings.map((l) => l.title)
-                  return <Td key={index}>{formatter.format(listings)}</Td>
-                }
+                return (
+                  <Td key={index}>
+                    <Stack direction="row">
+                      <Badge>Editor</Badge>
+                      {!permission.user.emailVerified && (
+                        <Badge colorScheme="yellow">Invite pending</Badge>
+                      )}
+                    </Stack>
+                  </Td>
+                )
               }
 
               return <Td key={index}>{cell}</Td>
