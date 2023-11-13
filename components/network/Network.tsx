@@ -57,9 +57,6 @@ const options = {
       bindToWindow: true,
     },
   },
-  layout: {
-    improvedLayout: true,
-  },
   height: '100%',
 }
 
