@@ -79,6 +79,10 @@ export default function MainNav() {
         label: 'About',
         href: '/about',
       },
+      // {
+      //   label: 'Blog',
+      //   href: '/blog',
+      // },
       {
         label: 'How it works',
         href: '/how-it-works',
@@ -175,7 +179,7 @@ export default function MainNav() {
             </Tooltip>
             {session && (
               <Link as={NextLink} href="/admin">
-                <Button colorScheme="blue" variant="solid" size="md" mr={-4}>
+                <Button colorScheme="blue" variant="solid" size="md" mr={-2}>
                   Dashboard
                 </Button>
               </Link>
