@@ -14,12 +14,16 @@ import {
 import Layout from '@components/layout'
 
 const Blog = ({ posts }) => {
-  console.log({ posts })
-
   return (
     <Layout>
       <Flex justifyContent="center">
-        <Box maxWidth={useBreakpointValue({ base: '90%', md: '850px' })} mb={8}>
+        <Box
+          maxWidth={useBreakpointValue({ base: '90%', md: '850px' })}
+          my="2rem"
+        >
+          <Heading as="h1" mb={8}>
+            Blog
+          </Heading>
           <Grid
             templateColumns={useBreakpointValue({
               base: 'repeat(1, 1fr)',
@@ -28,6 +32,12 @@ const Blog = ({ posts }) => {
             gap={useBreakpointValue({ base: 8, md: 16 })}
           >
             {posts.map((post) => {
+              const postDateFormatted = Intl.DateTimeFormat('en-gb', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+              }).format(new Date(post.date))
+
               return (
                 <Link as={NextLink} href={`blog/${post.slug}`} key={post.slug}>
                   <Box
@@ -76,7 +86,7 @@ const Blog = ({ posts }) => {
                     >
                       <Stack direction={'column'} spacing={0} fontSize={'sm'}>
                         <Text as="time" color={'gray.500'}>
-                          MMM DD, YYYY
+                          {postDateFormatted}
                         </Text>
                       </Stack>
                     </Stack>
@@ -96,18 +106,18 @@ export async function getStaticProps() {
 
   const { pages } = await graphcms.request<{ pages: [] }>(
     `
-	{
-		pages(where: { displayInBlogSection: true }, orderBy: date_DESC) {
-			slug
-			title
-			date
-			excerpt
+  {
+    pages(where: { displayInBlogSection: true }, orderBy: date_DESC) {
+      slug
+      title
+      date
+      excerpt
       displayInBlogSection
-			coverImage {
-				url
-			}
-		}
-	}`,
+      coverImage {
+        url
+      }
+    }
+  }`,
   )
 
   return {
