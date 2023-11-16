@@ -8,8 +8,8 @@ import { stringToBoolean } from '@helpers/utils'
 
 interface Data {
   error?: string
-  data: null | Web[] | Web
-  webs: Web[] // temporary to not break build
+  webs: null | Web[]
+  data: null | Web | Web[]
 }
 
 const handler = async (
@@ -25,7 +25,7 @@ const handler = async (
       const onlyPublished = req.query.published
 
       try {
-        const webs = await prisma.web.findMany({
+        const webs: Data['webs'] = await prisma.web.findMany({
           where: {
             ...(onlyPublished
               ? {
@@ -46,11 +46,11 @@ const handler = async (
         })
 
         res.status(200).json({ data: webs, webs })
-        break
       } catch (e) {
         res.status(500).json({ error: `Unable to fetch webs - ${e}` })
         console.error(`[RW] Unable to fetch webs - ${e}`)
       }
+      break
     }
     case 'POST': {
       const session = await getServerSession(req, res, authOptions)
@@ -61,10 +61,12 @@ const handler = async (
         })
       }
 
+      const { title, slug } = req.body
+
       const web = await prisma.web.create({
         data: {
-          title: 'Cambridge',
-          slug: 'cambridge',
+          title,
+          slug,
           published: false,
         },
       })

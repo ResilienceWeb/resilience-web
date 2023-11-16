@@ -21,8 +21,8 @@ async function fetchWebsRequest({ queryKey }) {
   const response = await fetch(
     `/api/webs?withListings=true&published=${published}`,
   )
-  const data: { webs: Web[] } = await response.json()
-  const { webs } = data
+  const responseJson: { data: Web[] } = await response.json()
+  const { data: webs } = responseJson
   return webs || []
 }
 

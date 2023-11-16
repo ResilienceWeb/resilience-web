@@ -307,8 +307,8 @@ export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
       : REMOTE_URL
 
   const response = await fetch(`${BASE_URL}/api/webs`)
-  const data = await response.json()
-  const { webs } = data
+  const responseJson = await response.json()
+  const { data: webs } = responseJson
   const paths = webs.map((l) => `/${l.slug}`)
 
   return {
@@ -335,7 +335,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
       ? 'https://resilienceweb.org.uk'
       : REMOTE_URL
 
-  const { webs } = await fetch(`${BASE_URL}/api/webs`)
+  const { data: webs } = await fetch(`${BASE_URL}/api/webs`)
     .then((res) => res.json())
     .catch((e) =>
       console.error('Failed to fetch data from', `${BASE_URL}/api/webs`, e),
