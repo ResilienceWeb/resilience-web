@@ -129,7 +129,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         break
       }
       default: {
-        res.status(500)
+        res.status(400)
         res.json({
           error: `Method ${req.method} not supported at this endpoint`,
         })
