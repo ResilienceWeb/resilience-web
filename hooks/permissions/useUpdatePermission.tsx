@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function updatePermissionRequest(permissionData) {
@@ -20,10 +19,7 @@ export default function useUpdatePermission() {
 
   return useMutation({
     mutationFn: updatePermissionRequest,
-    onMutate: async (newPermission) => {
-      await queryClient.cancelQueries({
-        queryKey: ['permission', { email: newPermission.email }],
-      })
+    onMutate: (newPermission) => {
       const previousPermissions = queryClient.getQueryData([
         'permission',
         { email: newPermission.email },

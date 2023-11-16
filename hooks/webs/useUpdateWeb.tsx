@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Web } from '@prisma/client'
 
@@ -21,10 +20,7 @@ export default function useUpdateWeb() {
 
   const { data, isPending, isSuccess, mutate } = useMutation({
     mutationFn: updateWebRequest,
-    onMutate: async (newWeb) => {
-      await queryClient.cancelQueries({
-        queryKey: ['webs', { webSlug: newWeb.slug }],
-      })
+    onMutate: (newWeb) => {
       queryClient.setQueryData(['webs', { webSlug: newWeb.slug }], newWeb)
       return { newWeb }
     },

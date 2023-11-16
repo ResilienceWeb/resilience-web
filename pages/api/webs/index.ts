@@ -1,5 +1,7 @@
 import type { Web } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '../auth/[...nextauth]'
 import prisma from '../../../prisma/client'
 import type { Result } from '../type.d'
 import { stringToBoolean } from '@helpers/utils'
@@ -51,6 +53,14 @@ const handler = async (
       }
     }
     case 'POST': {
+      const session = await getServerSession(req, res, authOptions)
+      if (!session?.user) {
+        res.status(403)
+        res.json({
+          error: 'You are not allowed to perform this action',
+        })
+      }
+
       const web = await prisma.web.create({
         data: {
           title: 'Cambridge',
@@ -65,7 +75,7 @@ const handler = async (
       break
     }
     default: {
-      res.status(500)
+      res.status(400)
       res.json({
         error: `Method ${req.method} not supported at this endpoint`,
       })

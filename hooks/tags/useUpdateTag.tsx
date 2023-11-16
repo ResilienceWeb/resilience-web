@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function updateTagRequest(tagData) {
@@ -20,10 +19,7 @@ export default function useUpdateTag() {
 
   return useMutation({
     mutationFn: updateTagRequest,
-    onMutate: async (newTag) => {
-      await queryClient.cancelQueries({
-        queryKey: ['tags'],
-      })
+    onMutate: (newTag) => {
       const previousTags = queryClient.getQueryData(['tags'])
       queryClient.setQueryData(['tags'], newTag)
       return { previousTags, newTag }

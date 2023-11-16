@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function addRelationRequest(relationData) {
@@ -20,10 +19,7 @@ export default function useAddRelation() {
 
   return useMutation({
     mutationFn: addRelationRequest,
-    onMutate: async (newRelation) => {
-      await queryClient.cancelQueries({
-        queryKey: ['relations'],
-      })
+    onMutate: (newRelation) => {
       const previousRelations = queryClient.getQueryData(['relations'])
       queryClient.setQueryData(['relations', newRelation.id], newRelation)
       return { previousRelations, newRelation }

@@ -1,10 +1,8 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function createCategoryRequest(categoryData) {
   const { label, ...otherProperties } = categoryData
   const categoryDataWithCapitalisedLabel = {
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     label: label.charAt(0).toUpperCase() + label.slice(1),
     ...otherProperties,
   }
@@ -27,10 +25,7 @@ export default function useCreateCategory() {
 
   return useMutation({
     mutationFn: createCategoryRequest,
-    onMutate: async (newCategory) => {
-      await queryClient.cancelQueries({
-        queryKey: ['categories'],
-      })
+    onMutate: (newCategory) => {
       const previousCategories = queryClient.getQueryData(['categories'])
       queryClient.setQueryData(['categories'], newCategory)
       return { previousCategories }
