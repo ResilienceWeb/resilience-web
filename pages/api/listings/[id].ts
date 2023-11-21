@@ -1,7 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
-import type { File } from 'formidable'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
 import { Prisma } from '@prisma/client'
@@ -30,32 +29,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         form.parse(req, async (_err, fields, files) => {
-          const tagsArray =
-            (fields.tags as string) !== ''
-              ? (fields.tags as string).split(',')
-              : []
+          const tagsArray = fields.tags[0] !== '' ? fields.tags : []
+
           const tagsToConnect = tagsArray.map((tagId) => ({
             id: Number(tagId),
           }))
           const removedTagsArray =
-            (fields.removedTags as string) !== ''
-              ? (fields.removedTags as string).split(',')
-              : []
+            fields.removedTags[0] !== '' ? fields.removedTags : []
           const tagsToDisconnect = removedTagsArray.map((tagId) => ({
             id: Number(tagId),
           }))
 
           const relationsArray =
-            (fields.relations as string) !== ''
-              ? (fields.relations as string).split(',')
-              : []
+            fields.relations[0] !== '' ? fields.relations : []
           const relationsToConnect = relationsArray.map((relationId) => ({
             id: Number(relationId),
           }))
           const removedRelationsArray =
-            (fields.removedRelations as string) !== ''
-              ? (fields.removedRelations as string).split(',')
-              : []
+            fields.removedRelations[0] !== '' ? fields.removedRelations : []
           const relationsToDisconnect = removedRelationsArray.map(
             (relationId) => ({
               id: Number(relationId),
@@ -63,20 +54,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           )
 
           const newData: Prisma.ListingUncheckedUpdateInput = {
-            title: fields.title as string,
-            categoryId: parseInt(fields.category as string),
-            website: fields.website as string,
-            description: fields.description as string,
-            email: fields.email as string,
-            facebook: fields.facebook as string,
-            instagram: fields.instagram as string,
-            twitter: fields.twitter as string,
-            notes: fields.notes as string,
-            seekingVolunteers: stringToBoolean(
-              fields.seekingVolunteers as string,
-            ),
+            title: fields.title[0],
+            categoryId: parseInt(fields.category[0]),
+            website: fields.website[0],
+            description: fields.description[0],
+            email: fields.email[0],
+            facebook: fields.facebook[0],
+            instagram: fields.instagram[0],
+            twitter: fields.twitter[0],
+            seekingVolunteers: stringToBoolean(fields.seekingVolunteers[0]),
             pending: false,
-            slug: fields.slug as string,
+            slug: fields.slug[0],
             tags: {
               connect: tagsToConnect,
               disconnect: tagsToDisconnect,
@@ -99,10 +87,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 image: true,
               },
             })
-            imageUrl = await uploadImage(
-              files.image as File,
-              oldImageKey as string,
-            )
+            imageUrl = await uploadImage(files.image[0], oldImageKey as string)
           }
           if (imageUrl) {
             newData.image = imageUrl

@@ -30,7 +30,7 @@ import {
   usePermissionsForCurrentWeb,
 } from '@hooks/permissions'
 import { useIsOwnerOfCurrentWeb, useOwnerships } from '@hooks/ownership'
-import { useCreateWeb, useSelectedWebName } from '@hooks/webs'
+import { useSelectedWebName } from '@hooks/webs'
 import { useAppContext } from '@store/hooks'
 
 interface FormValues {
@@ -49,7 +49,6 @@ export default function Invite() {
   const { ownerships } = useOwnerships()
   const selectedWebName = useSelectedWebName()
   const { selectedWebId } = useAppContext()
-  const { mutate: createWeb } = useCreateWeb()
 
   const decoratedOwnerships = useMemo(() => {
     if (!ownerships) {
@@ -197,17 +196,6 @@ export default function Invite() {
                               )}
                             </Field>
                           </chakra.div>
-
-                          <Button
-                            onClick={() =>
-                              createWeb({
-                                title: 'Test Web 1',
-                                slug: 'test-web-1',
-                              })
-                            }
-                          >
-                            test web creation
-                          </Button>
 
                           <Button
                             bg="rw.700"

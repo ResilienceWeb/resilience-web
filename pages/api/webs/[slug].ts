@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
-import type { File } from 'formidable'
 import { Web, Prisma } from '@prisma/client'
 import prisma from '../../../prisma/client'
 import uploadImage from '@helpers/uploadImage'
@@ -34,7 +33,7 @@ const handler = async (
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         form.parse(req, async (_err, fields, files) => {
           const newData: Prisma.WebUncheckedUpdateInput = {
-            published: stringToBoolean(fields.published as string),
+            published: stringToBoolean(fields.published[0]),
           }
 
           let imageUrl = null
@@ -42,10 +41,7 @@ const handler = async (
             const { image: oldImageKey } = await prisma.web.findUnique({
               where: { slug },
             })
-            imageUrl = await uploadImage(
-              files.image as File,
-              oldImageKey as string,
-            )
+            imageUrl = await uploadImage(files.image[0], oldImageKey as string)
           }
           if (imageUrl) {
             newData.image = imageUrl

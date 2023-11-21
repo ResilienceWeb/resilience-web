@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
-import type { File } from 'formidable'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
 import { Prisma } from '@prisma/client'
@@ -40,24 +39,23 @@ const handler = async (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     void form.parse(req, async (_err, fields, files) => {
       const newData: Prisma.ListingUncheckedCreateInput = {
-        title: fields.title as string,
-        categoryId: parseInt(fields.category as string),
-        webId: parseInt(fields.webId as string),
-        website: fields.website as string,
-        description: fields.description as string,
-        email: fields.email as string,
-        facebook: fields.facebook as string,
-        instagram: fields.instagram as string,
-        twitter: fields.twitter as string,
-        notes: fields.notes as string,
-        pending: stringToBoolean(fields.pending as string),
-        seekingVolunteers: stringToBoolean(fields.seekingVolunteers as string),
-        slug: fields.slug as string,
+        title: fields.title[0],
+        categoryId: parseInt(fields.category[0]),
+        webId: parseInt(fields.webId[0]),
+        website: fields.website[0],
+        description: fields.description[0],
+        email: fields.email[0],
+        facebook: fields.facebook[0],
+        instagram: fields.instagram[0],
+        twitter: fields.twitter[0],
+        pending: stringToBoolean(fields.pending[0]),
+        seekingVolunteers: stringToBoolean(fields.seekingVolunteers[0]),
+        slug: fields.slug[0],
       }
 
       let imageUrl = null
       if (files.image) {
-        imageUrl = await uploadImage(files.image as File)
+        imageUrl = await uploadImage(files.image[0])
       }
       if (imageUrl) {
         newData.image = imageUrl
