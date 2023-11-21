@@ -10,12 +10,27 @@ const nextConfig = {
     return config
   },
   images: {
-    domains: [
-      'resilienceweb.ams3.digitaloceanspaces.com',
-      'media.graphcms.com',
-      'media.graphassets.com',
-      'via.placeholder.com',
-      'opencollective.com',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'resilienceweb.ams3.digitaloceanspaces.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.graphcms.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.graphassets.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'opencollective.com',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
   },
