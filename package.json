@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:analyze": "ANALYZE=true npm run build",
     "start": "next start -H 0.0.0.0 -p ${PORT:-8080}",
     "db": "prisma studio --port 7777",
     "db:up": "docker-compose --project-name=resilience-web up -d",
@@ -59,8 +60,9 @@
     "react-dom": "18.2.0",
     "react-email": "1.9.5",
     "react-icons": "4.12.0",
-    "react-markdown": "8.0.7",
     "react-select": "5.8.0",
+    "remark": "15.0.1",
+    "remark-html": "16.0.1",
     "sass": "1.69.5",
     "sharp": "0.32.6",
     "tinymce": "6.7.3",

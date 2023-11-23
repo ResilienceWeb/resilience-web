@@ -1,15 +1,16 @@
 import { GetStaticProps } from 'next'
 import { NextSeo } from 'next-seo'
 import { GraphQLClient } from 'graphql-request'
-import ReactMarkdown from 'react-markdown'
 import { Box, Heading, useBreakpointValue, Flex } from '@chakra-ui/react'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
+import { remark } from 'remark'
+import html from 'remark-html'
 
 import ErrorBoundary from '@components/error-boundary'
 import Layout from '@components/layout'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 
-const About = ({ page }) => {
+const About = ({ page, contentHtml }) => {
   return (
     <>
       <NextSeo
@@ -35,7 +36,7 @@ const About = ({ page }) => {
               {page.title}
             </Heading>
             <ErrorBoundary>
-              <ReactMarkdown>{page.content.markdown}</ReactMarkdown>
+              <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
             </ErrorBoundary>
           </Box>
         </Flex>
@@ -64,9 +65,15 @@ export const getStaticProps: GetStaticProps = async () => {
 	}
 	`)
 
+  const processedContent = await remark()
+    .use(html)
+    .process(page.content.markdown)
+  const contentHtml = processedContent.toString()
+
   return {
     props: {
       page,
+      contentHtml,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 60,
