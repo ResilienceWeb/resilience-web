@@ -1,13 +1,14 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { NextSeo } from 'next-seo'
 import { GraphQLClient } from 'graphql-request'
-import ReactMarkdown from 'react-markdown'
 import { Box, Heading, useBreakpointValue, Flex } from '@chakra-ui/react'
+import { remark } from 'remark'
+import html from 'remark-html'
 
 import Layout from '@components/layout'
 import ErrorBoundary from '@components/error-boundary'
 
-export default function BlogPost({ post }) {
+export default function BlogPost({ post, contentHtml }) {
   return (
     <>
       <NextSeo
@@ -32,7 +33,7 @@ export default function BlogPost({ post }) {
               {post.title}
             </Heading>
             <ErrorBoundary>
-              <ReactMarkdown>{post.content.markdown}</ReactMarkdown>
+              <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
             </ErrorBoundary>
           </Box>
         </Flex>
@@ -63,7 +64,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL)
 
   try {
-    const { page } = await graphcms.request<{ page: object }>(
+    const { page } = await graphcms.request<{ page: any }>(
       `
       query BlogPostQuery($slug: String!){
         page(where: {slug: $slug}) {
@@ -85,9 +86,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       },
     )
 
+    const processedContent = await remark()
+      .use(html)
+      .process(page.content.markdown)
+    const contentHtml = processedContent.toString()
+
     return {
       props: {
         post: page,
+        contentHtml,
       },
       revalidate: 5,
     }
