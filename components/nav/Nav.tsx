@@ -3,7 +3,6 @@ import Image from 'next/legacy/image'
 import NextLink from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import classnames from 'classnames'
 import {
   Box,
   Flex,
@@ -208,10 +207,9 @@ const DesktopNav = ({ currentPathname, navItems }) => {
             <PopoverTrigger>
               <NextLink href={navItem.href} passHref>
                 <button
-                  className={classnames(
-                    styles.navLink,
-                    currentPathname === navItem.href && styles.active,
-                  )}
+                  className={`${styles.navLink} ${
+                    currentPathname === navItem.href ? styles.active : ''
+                  }`}
                 >
                   {navItem.label}
                 </button>
