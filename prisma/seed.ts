@@ -50,6 +50,7 @@ const listingsCambridge = [
     slug: 'cambridge-community-kitchen',
     description:
       'We are a food solidarity collective tackling food poverty in Cambridge by offering free, hot, plant-based meals to those who need them every Tuesday, Thursday and Sunday.',
+    website: 'https://cckitchen.uk',
   },
 ]
 
@@ -57,6 +58,9 @@ const listingsDurham = [
   {
     title: 'Conservation Research Institute',
     slug: 'conservation-research-institute',
+    description: `<p>The institute fosters productive interdisciplinary dialogue, bringing together colleagues from various intellectual backgrounds and traditions. It conducts ambitious research that bridges natural sciences, technology, arts, humanities, and social sciences. Additionally, it plays a crucial role in the MPhil in Conservation Leadership program, a masters course at the University of Cambridge, and contributes to the broader University-wide sustainability education agenda.
+      The University of Cambridge Conservation Research Institute are founding members of the Cambridge Conservation Initiative (CCI), a unique collaboration with ten leading biodiversity conservation organisations. Established in October 2013, (See article HERE) the Institute has expanded its role, supporting the University's presence, along with other CCI organisations in the David Attenborough Building, which was designed to enhance collaboration and the sharing of perspectives across organisational and disciplinary boundaries. As an Interdisciplinary Research Centre (IRC) since October 2016, it promotes collaboration and breaks down disciplinary silos by integrating conservation-related research from all six core University Schools.
+      In the 21st century, understanding and managing human impacts on organisms and ecosystems amid population growth, socio-economic development, and climate change is a major challenge. Biodiversity faces threats from over-consumption, over-exploitation, and unsustainable use of natural resources. Addressing these challenges requires a better understanding of nature's value and practical steps for equitable and effective planet stewardship. All of which is our mission to address and help to foster positive change.`,
   },
 ]
 

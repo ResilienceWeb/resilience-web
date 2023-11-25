@@ -25,7 +25,6 @@ import CategoryTag from '@components/category-tag'
 import { useCategories } from '@hooks/categories'
 import Item from '@components/main-list/item'
 import { encodeUriElements } from '@helpers/routes'
-import { sanitizeLink } from '@helpers/utils'
 
 function Listing({ listing }) {
   const router = useRouter()
