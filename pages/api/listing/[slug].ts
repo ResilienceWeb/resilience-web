@@ -41,6 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         tags: {
           select: {
+            id: true,
             label: true,
           },
         },

@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useState, useMemo } from 'react'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import {
   Box,
   Heading,
@@ -19,7 +19,6 @@ import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 
-import { useAppContext } from '@store/hooks'
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
@@ -30,7 +29,6 @@ import { encodeUriElements } from '@helpers/routes'
 function Listing({ listing }) {
   const router = useRouter()
   const [subdomain, setSubdomain] = useState<string>()
-  const { isMobile } = useAppContext()
 
   useEffect(() => {
     const hostname = window.location.hostname
@@ -69,17 +67,22 @@ function Listing({ listing }) {
           Back to main list
         </Button>
         {listing.image && (
-          <Image
-            src={listing.image}
-            alt={`Image for ${listing.title}`}
-            objectFit="cover"
-            height="400"
-            width="700"
-            unoptimized
-            style={{
-              borderRadius: isMobile ? 'none' : '8px',
-            }}
-          />
+          <Box
+            borderRadius={{ base: 'none', md: '8px' }}
+            overflow="hidden"
+            position="relative"
+            width={{ base: '100vw', md: '700px' }}
+            height={{ base: '250px', md: '400px' }}
+          >
+            <Image
+              src={listing.image}
+              alt={`Image for ${listing.title}`}
+              sizes="(max-width: 768px) 100vw, 700px"
+              fill
+              priority
+              style={{ objectFit: 'cover' }}
+            />
+          </Box>
         )}
         <Box px={{ base: 4, md: 2 }}>
           <Flex
@@ -192,12 +195,12 @@ function Listing({ listing }) {
                   }}
                 >
                   <Tag
-                    backgroundColor="gray.300"
+                    backgroundColor="gray.200"
                     userSelect="none"
                     mr={1}
                     cursor="pointer"
                     transition="background-color 0.2s ease"
-                    _hover={{ bgColor: 'gray.400' }}
+                    _hover={{ bgColor: 'gray.300' }}
                   >
                     #{tag.label}
                   </Tag>

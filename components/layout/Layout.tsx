@@ -29,7 +29,6 @@ const Layout = ({
           })}
           alignItems="center"
           flexDirection="column"
-          backgroundColor="gray.50"
         >
           {isHomepage && (
             <AlertBanner

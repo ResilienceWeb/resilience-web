@@ -1,22 +1,45 @@
 html,
 body {
-	padding: 0;
-	margin: 0;
-	background: #F7FAFC !important;
+  background: #fcfcfc;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+	font-family: Poppins, sans-serif;
+  font-display: swap;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+#root, #__next {
+  isolation: isolate;
 }
 
 a {
-	color: inherit;
-	text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 
   &:hover {
     text-decoration: none !important;
   }
-}
-
-
-* {
-	box-sizing: border-box;
-	font-family: Poppins, sans-serif;
-	font-display: swap;
 }
