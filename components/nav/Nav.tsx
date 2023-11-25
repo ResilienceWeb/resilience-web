@@ -61,7 +61,7 @@ export default function MainNav() {
     return [
       {
         label: 'Webs',
-        href: '#',
+        href: '/#web-cards',
         children: webs
           ?.filter(
             (web) =>

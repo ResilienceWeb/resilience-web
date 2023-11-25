@@ -12,7 +12,7 @@ const WebCards = () => {
   const { webs } = useWebs({ published: true })
 
   return (
-    <Container maxW="7xl">
+    <Container maxW="7xl" id="web-cards">
       <Heading as="h2" fontSize="2rem" my="1rem">
         Find Resilience Webs near you in the UK
       </Heading>
