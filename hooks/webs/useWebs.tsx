@@ -9,7 +9,7 @@ export async function fetchWebsHydrate({ published = false } = {}) {
       : REMOTE_URL
 
   const response = await fetch(
-    `${BASE_URL}/api/webs?withListings=true&published=${published}`,
+    `${BASE_URL}/api/webs?withListings=true&onlyPublished=${published}`,
   )
   const data: { webs: Web[] } = await response.json()
   const { webs } = data

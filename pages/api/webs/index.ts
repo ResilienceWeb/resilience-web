@@ -23,6 +23,8 @@ const handler = async (
         : false
 
       const onlyPublished = req.query.published
+        ? stringToBoolean(req.query.published as string)
+        : false
 
       try {
         const webs: Data['webs'] = await prisma.web.findMany({
