@@ -92,7 +92,7 @@ const Item = ({
 
         {dataItem.image ? (
           <Box
-            width="300px"
+            width="100%"
             height="170px"
             overflow="hidden"
             position="relative"
