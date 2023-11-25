@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useEffect, useState, memo } from 'react'
 import { motion, useAnimation, useInView } from 'framer-motion'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import chroma from 'chroma-js'
 import { Box, Flex, Text, Icon, Tooltip, chakra } from '@chakra-ui/react'
 import { HiUserGroup } from 'react-icons/hi'
@@ -91,20 +91,25 @@ const Item = ({
         </CategoryTag>
 
         {dataItem.image ? (
-          <Image
-            alt={`${dataItem.title} cover image`}
-            src={dataItem.image}
-            objectFit="cover"
-            width="300"
-            height="170"
-            layout="responsive"
-            unoptimized
-            priority={isInView && isWithinAFewSecondsOfRender}
-            style={{
-              borderTopLeftRadius: '.375rem',
-              borderTopRightRadius: '.375rem',
-            }}
-          />
+          <Box
+            width="300px"
+            height="170px"
+            overflow="hidden"
+            position="relative"
+          >
+            <Image
+              alt={`${dataItem.title} cover image`}
+              src={dataItem.image}
+              sizes="(max-width: 768px) 90vw, 300px"
+              fill
+              priority={isInView && isWithinAFewSecondsOfRender}
+              style={{
+                borderTopLeftRadius: '.375rem',
+                borderTopRightRadius: '.375rem',
+                objectFit: 'cover',
+              }}
+            />
+          </Box>
         ) : (
           categoryIndex !== null &&
           categoryIndex !== undefined && (
