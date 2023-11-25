@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
-import { HiUserGroup, HiShare } from 'react-icons/hi'
+import { HiUserGroup, HiOutlineLink } from 'react-icons/hi'
 import { sanitizeLink } from '@helpers/utils'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import DescriptionRichText from '@components/main-list/description-rich-text'
@@ -156,19 +156,26 @@ const Dialog = ({
           />
         )}
 
-        <ModalHeader pb={0}>{item.label}</ModalHeader>
+        <ModalHeader display="flex" alignItems="center" pb={0}>
+          {item.label}{' '}
+          <Icon
+            as={HiOutlineLink}
+            cursor="pointer"
+            fontSize="xl"
+            onClick={handleShareButtonClick}
+            ml={1}
+            transition="0.2s"
+            _hover={{
+              color: 'rw.900',
+            }}
+          />
+        </ModalHeader>
         <ModalCloseButton size="lg" backgroundColor="rgba(160,174,192,0.4)" />
         <ModalBody>
           <Flex justifyContent="space-between">
             <CategoryTag mb={4} colorHex={item.category.color}>
               {item.category.label}
             </CategoryTag>
-            <Icon
-              as={HiShare}
-              cursor="pointer"
-              fontSize="3xl"
-              onClick={handleShareButtonClick}
-            />
           </Flex>
           <br />
 
@@ -193,17 +200,6 @@ const Dialog = ({
           <Box mt={4} mb={8}>
             <DescriptionRichText html={item.description} />
           </Box>
-          <Link as={NextLink} href={individualListingLink}>
-            <Button
-              bg="rw.700"
-              colorScheme="rw.700"
-              mt={2}
-              variant="solid"
-              _hover={{ bg: 'rw.900' }}
-            >
-              See more
-            </Button>
-          </Link>
 
           <Box mt={4} display="flex" justifyContent="flex-end">
             {item.tags.map((tag) => (
@@ -220,8 +216,20 @@ const Dialog = ({
         </ModalBody>
 
         {!isMobile && (
-          <ModalFooter justifyContent="space-between" py={2}>
+          <ModalFooter justifyContent="space-between" py={4}>
             {socialLinks}
+
+            <Link as={NextLink} href={individualListingLink}>
+              <Button
+                bg="rw.700"
+                colorScheme="rw.700"
+                mt={2}
+                variant="solid"
+                _hover={{ bg: 'rw.900' }}
+              >
+                Go to listing
+              </Button>
+            </Link>
           </ModalFooter>
         )}
       </ModalContent>

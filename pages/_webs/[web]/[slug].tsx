@@ -112,6 +112,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         description: listing.description,
         tags: listing.tags,
         relations: listing.relations,
+        seekingVolunteers: listing.seekingVolunteers,
       },
     },
     revalidate: 60,

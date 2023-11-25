@@ -16,7 +16,7 @@ import {
   Grid,
 } from '@chakra-ui/react'
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
-import { ExternalLinkIcon } from '@chakra-ui/icons'
+import { SlGlobe } from 'react-icons/sl'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 
 import DescriptionRichText from '@components/main-list/description-rich-text'
@@ -25,6 +25,7 @@ import CategoryTag from '@components/category-tag'
 import { useCategories } from '@hooks/categories'
 import Item from '@components/main-list/item'
 import { encodeUriElements } from '@helpers/routes'
+import { sanitizeLink } from '@helpers/utils'
 
 function Listing({ listing }) {
   const router = useRouter()
@@ -97,11 +98,11 @@ function Listing({ listing }) {
               justifyContent="space-between"
               width="100%"
             >
-              <Box>
-                <HStack justifyContent="space-between">
-                  <Heading as="h1" data-testid="Title" pb={2}>
-                    {listing.title}
-                  </Heading>
+              <Heading as="h1" data-testid="Title">
+                {listing.title}
+              </Heading>
+              <HStack justifyContent="space-between" mt={8} width="100%">
+                <Box>
                   <CategoryTag
                     mb={2}
                     colorHex={listing.category.color}
@@ -109,33 +110,31 @@ function Listing({ listing }) {
                   >
                     {listing.category.label}
                   </CategoryTag>
-                </HStack>
-                {listing.seekingVolunteers && (
-                  <Tooltip
-                    borderRadius="md"
-                    label="This group is seeking volunteers or members. Get in touch with them if you'd like to help."
-                  >
-                    <Text color="rw.900">
-                      <Icon as={HiUserGroup} /> Seeking volunteers
-                    </Text>
-                  </Tooltip>
-                )}
-              </Box>
-              <HStack justifyContent="space-between" mt={8} width="100%">
-                {listing.website && (
-                  <Link href={listing.website} rel="noreferrer" target="_blank">
-                    <Button
-                      size="md"
-                      bg="rw.700"
-                      colorScheme="rw.700"
-                      rightIcon={<ExternalLinkIcon />}
-                      _hover={{ bg: 'rw.900' }}
+                  {listing.seekingVolunteers && (
+                    <Tooltip
+                      borderRadius="md"
+                      label="This group is seeking volunteers or members. Get in touch with them if you'd like to help."
                     >
-                      Visit website
-                    </Button>
-                  </Link>
-                )}
+                      <Text color="rw.900">
+                        <Icon as={HiUserGroup} /> Seeking volunteers
+                      </Text>
+                    </Tooltip>
+                  )}
+                </Box>
                 <HStack spacing={4}>
+                  {listing.website && (
+                    <Link href={listing.website} target="_blank">
+                      <Icon
+                        as={SlGlobe}
+                        color="gray.600"
+                        cursor="pointer"
+                        w={8}
+                        h={8}
+                        transition="color 150ms"
+                        _hover={{ color: 'gray.500' }}
+                      />
+                    </Link>
+                  )}
                   {listing.facebook && (
                     <Link href={listing.facebook} target="_blank">
                       <Icon
