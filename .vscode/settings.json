@@ -1,6 +1,8 @@
 {
+	"scss.validate": false,
 	"css.validate": false, // Disable css built-in lint
 	"stylelint.enable": true, // Enable stylelint
+	"stylelint.validate": ["css", "scss"],
 	"[typescript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -10,7 +12,8 @@
 	"editor.formatOnSave": true,
 	"eslint.enable": true,
 	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
+		"source.fixAll.eslint": true,
+		"source.fixAll.stylelint": true
 	},
 	"files.insertFinalNewline": true,
 	"files.trimFinalNewlines": true
