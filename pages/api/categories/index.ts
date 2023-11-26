@@ -20,7 +20,7 @@ const handler = async (
           where: {
             web: {
               slug: {
-                contains: web || 'cambridge-city',
+                contains: web,
               },
             },
           },

@@ -4,6 +4,7 @@ import { Formik, Form, Field, FieldProps, useFormikContext } from 'formik'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import { Category } from '@prisma/client'
+import NextLink from 'next/link'
 import {
   chakra,
   Box,
@@ -249,7 +250,18 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                         ))}
                       </Select>
                       <FormHelperText>
-                        Categories can be easily changed later
+                        {categories.length === 0 ? (
+                          <Text>
+                            Looks like you haven't created categories yet. You
+                            can add some{' '}
+                            <NextLink href="/admin/categories">
+                              on this page
+                            </NextLink>
+                            .
+                          </Text>
+                        ) : (
+                          'Categories can be easily changed later'
+                        )}
                       </FormHelperText>
                       <FormErrorMessage>
                         Please select a category

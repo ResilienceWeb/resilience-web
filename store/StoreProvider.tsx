@@ -4,14 +4,12 @@ import { useMediaQuerySSR } from '@hooks/application'
 import { AppContext } from '@store/AppContext'
 import { useWebs } from '@hooks/webs'
 
-const DEFAULT_SELECTED_WEB = 'cambridge-city'
-
 const StoreProvider = ({ children }) => {
   const isMobile = useMediaQuerySSR('(max-width: 760px)')
   const [isAdminMode, setIsAdminMode] = useState(false)
   const [selectedWebSlug, setSelectedWebSlug] = useLocalStorage(
     'selected-web',
-    DEFAULT_SELECTED_WEB,
+    null,
   )
   const [subdomain, setSubdomain] = useState<string>()
 
