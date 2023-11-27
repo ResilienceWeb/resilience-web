@@ -3,7 +3,6 @@ import NextLink from 'next/link'
 import { memo } from 'react'
 import Select from 'react-select'
 import Image from 'next/legacy/image'
-import { motion } from 'framer-motion'
 import {
   Box,
   Flex,
@@ -20,15 +19,14 @@ import {
   Divider,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
+import { HiHeart, HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
 
 import VolunteerSwitch from '@components/volunteer-switch'
 import customMultiSelectStyles from '@styles/select-styles'
 import { REMOTE_URL } from '@helpers/config'
 import { useSelectedWebName } from '@hooks/webs'
 import LogoImage from '../../public/logo.png'
-
-const MotionButton = motion(Button)
+import styles from './Drawer.module.scss'
 
 const Drawer = ({
   categories,
@@ -151,23 +149,23 @@ const Drawer = ({
           <Heading as="h2" fontSize="1.25rem">
             Support this project
           </Heading>
-          <Text mb="0.5rem">
-            If you can, please donate to our Open Collective to help us continue
-            building the platform.
+          <Text mb="0.75rem">
+            If you can, please support us via Open Collective to help us
+            continue building this platform.
           </Text>
           <Link
             href="https://opencollective.com/resilience-web"
             target="_blank"
           >
-            <MotionButton
-              bg="rw.700"
+            <Button
+              className={styles.donateButton}
               colorScheme="rw.700"
               size="lg"
               onClick={() => va.track('donate-click', { web: selectedWebName })}
-              _hover={{ bg: 'rw.900' }}
+              rightIcon={<HiHeart />}
             >
               Donate
-            </MotionButton>
+            </Button>
           </Link>
         </Box>
       </Flex>
