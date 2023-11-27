@@ -117,28 +117,25 @@ const Web = ({ data, webName, webImage }) => {
     setSelectedCategories(value)
   }, [])
 
-  const [subdomain, setSubdomain] = useState<string>()
-  useEffect(() => {
-    const hostname = window.location.hostname
-    if (!hostname.includes('.')) {
-      return null
-    }
+  // const [subdomain, setSubdomain] = useState<string>()
+  // useEffect(() => {
+  //   const hostname = window.location.hostname
+  //   if (!hostname.includes('.')) {
+  //     return null
+  //   }
 
-    setSubdomain(hostname.split('.')[0])
+  //   setSubdomain(hostname.split('.')[0])
+  // }, [])
+
+  const handleTagSelection = useCallback((value) => {
+    // const tagsLabels = value.map((t) => t.value)
+    // const uriEncodedTags = encodeUriElements(tagsLabels)
+    // void router.replace({
+    //   pathname: `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`,
+    //   query: { tags: uriEncodedTags },
+    // })
+    setSelectedTags(value)
   }, [])
-
-  const handleTagSelection = useCallback(
-    (value) => {
-      const tagsLabels = value.map((t) => t.value)
-      const uriEncodedTags = encodeUriElements(tagsLabels)
-      void router.replace({
-        pathname: `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`,
-        query: { tags: uriEncodedTags },
-      })
-      setSelectedTags(value)
-    },
-    [router, subdomain],
-  )
 
   const filteredItems = useMemo(() => {
     if (!data) return []
