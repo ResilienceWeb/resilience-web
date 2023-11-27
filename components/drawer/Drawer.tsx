@@ -1,4 +1,4 @@
-import va from '@vercel/analytics'
+import { track } from '@vercel/analytics'
 import NextLink from 'next/link'
 import { memo } from 'react'
 import Select from 'react-select'
@@ -161,7 +161,7 @@ const Drawer = ({
               className={styles.donateButton}
               colorScheme="rw.700"
               size="lg"
-              onClick={() => va.track('donate-click', { web: selectedWebName })}
+              onClick={() => track('donate-click', { web: selectedWebName })}
               rightIcon={<HiHeart />}
             >
               Donate

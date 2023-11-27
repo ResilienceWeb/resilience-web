@@ -3,7 +3,7 @@ import Image from 'next/legacy/image'
 import NextLink from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import va from '@vercel/analytics'
+import { track } from '@vercel/analytics'
 import {
   Box,
   Flex,
@@ -59,7 +59,7 @@ export default function MainNav() {
   } = useDisclosure()
 
   const handleOpenFeedbackDialog = useCallback(() => {
-    ;() => va.track('get-in-touch-click')
+    track('feedback-open')
     onOpenFeedbackDialog()
   }, [onOpenFeedbackDialog])
 
