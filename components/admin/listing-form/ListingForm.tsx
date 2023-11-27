@@ -590,6 +590,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                         isChecked={field.value}
                         id="seekingVolunteers"
                         onChange={field.onChange}
+                        colorScheme="green"
                       >
                         Seeking volunteers
                       </Checkbox>

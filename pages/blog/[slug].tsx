@@ -1,7 +1,8 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
+import Image from 'next/image'
 import { NextSeo } from 'next-seo'
 import { GraphQLClient } from 'graphql-request'
-import { Box, Heading, useBreakpointValue, Flex } from '@chakra-ui/react'
+import { Box, Heading, useBreakpointValue } from '@chakra-ui/react'
 import { remark } from 'remark'
 import html from 'remark-html'
 
@@ -21,22 +22,46 @@ export default function BlogPost({ post, contentHtml }) {
         }}
       />
       <Layout applyPostStyling>
-        <Flex justifyContent="center">
-          <Box
-            maxWidth={useBreakpointValue({
-              base: '90%',
-              md: '650px',
-            })}
-            mb={8}
-          >
-            <Heading as="h1" mb={8}>
-              {post.title}
-            </Heading>
-            <ErrorBoundary>
-              <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-            </ErrorBoundary>
-          </Box>
-        </Flex>
+        <Heading
+          as="h1"
+          textAlign="center"
+          /* @ts-ignore */
+          textwrap="pretty"
+          mt={{ base: '1rem', md: '1.5rem' }}
+          mb={{ base: '1.5rem', md: '2.5rem' }}
+        >
+          {post.title}
+        </Heading>
+        <Box
+          overflow="hidden"
+          position="relative"
+          mb="2rem"
+          width={{ base: '100vw', md: '850px' }}
+          height={{ base: '250px', md: '400px' }}
+          borderRadius={{ base: 'none', md: '12px' }}
+        >
+          <Image
+            alt={`Cover image for post: ${post.title}`}
+            src={post.coverImage?.url}
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 672px"
+            style={{
+              objectFit: 'cover',
+            }}
+          />
+        </Box>
+        <Box
+          maxWidth={useBreakpointValue({
+            base: '90%',
+            md: '650px',
+          })}
+          mb={8}
+        >
+          <ErrorBoundary>
+            <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+          </ErrorBoundary>
+        </Box>
       </Layout>
     </>
   )

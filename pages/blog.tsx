@@ -10,6 +10,7 @@ import {
   useBreakpointValue,
   Link,
   Flex,
+  Divider,
 } from '@chakra-ui/react'
 import Layout from '@components/layout'
 
@@ -21,9 +22,13 @@ const Blog = ({ posts }) => {
           maxWidth={useBreakpointValue({ base: '90%', md: '850px' })}
           my="2rem"
         >
-          <Heading as="h1" mb={8}>
-            Blog
+          <Heading as="h1" mb="0.75rem">
+            News
           </Heading>
+          <Text mb="0.75rem" fontSize="1.125rem" color="gray.600">
+            News & updates from the Resilience Web team
+          </Text>
+          <Divider mb="2.5rem" />
           <Grid
             templateColumns={useBreakpointValue({
               base: 'repeat(1, 1fr)',
@@ -74,9 +79,7 @@ const Blog = ({ posts }) => {
                       >
                         {post.title}
                       </Heading>
-                      <Text color={'gray.500'} minHeight="72px">
-                        {post.excerpt}
-                      </Text>
+                      {/* <Text color={'gray.500'}>{post.excerpt}</Text> */}
                     </Stack>
                     <Stack
                       mt={6}

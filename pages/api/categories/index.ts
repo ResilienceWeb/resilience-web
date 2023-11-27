@@ -24,9 +24,6 @@ const handler = async (
               },
             },
           },
-          include: {
-            listings: true,
-          },
           orderBy: [
             {
               id: 'asc',

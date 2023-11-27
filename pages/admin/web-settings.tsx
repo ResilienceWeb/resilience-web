@@ -133,6 +133,7 @@ export default function Settings() {
                                     isChecked={field.value}
                                     id="published"
                                     onChange={field.onChange}
+                                    colorScheme="green"
                                   >
                                     Published
                                   </Checkbox>

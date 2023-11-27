@@ -3,6 +3,7 @@ import NextLink from 'next/link'
 import { memo } from 'react'
 import Select from 'react-select'
 import Image from 'next/legacy/image'
+import { motion } from 'framer-motion'
 import {
   Box,
   Flex,
@@ -16,6 +17,7 @@ import {
   Button,
   Text,
   chakra,
+  Divider,
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
@@ -25,6 +27,8 @@ import customMultiSelectStyles from '@styles/select-styles'
 import { REMOTE_URL } from '@helpers/config'
 import { useSelectedWebName } from '@hooks/webs'
 import LogoImage from '../../public/logo.png'
+
+const MotionButton = motion(Button)
 
 const Drawer = ({
   categories,
@@ -47,9 +51,9 @@ const Drawer = ({
       width="300px"
       height="100vh"
       overflowY="scroll"
-      borderRight="1px solid rgb(226, 232, 240)"
       backgroundColor="white"
       zIndex="3"
+      boxShadow="xl"
     >
       <Flex height="100%" direction="column" justifyContent="space-between">
         <Box>
@@ -64,15 +68,23 @@ const Drawer = ({
               />
             </Flex>
           </Link>
-          <Heading
-            as="h2"
-            color="gray.700"
-            fontSize="1.75rem"
-            px="10px"
-            mt="2rem"
-          >
-            Filters
-          </Heading>
+          <Divider />
+          <Box p="1rem">
+            <Link href={`${window.location.href}new-listing`} target="_blank">
+              <Button
+                bg="rw.700"
+                colorScheme="rw.700"
+                size="lg"
+                _hover={{ bg: 'rw.900' }}
+              >
+                Propose new listing
+              </Button>
+            </Link>
+            <Text fontSize="1rem" color="gray.600" mt="0.25rem">
+              Know something that isn't yet listed? Let us know!
+            </Text>
+          </Box>
+          <Divider />
           <Flex direction="column" alignItems="center" gap="1.25rem" mt="1rem">
             <InputGroup
               maxW={useBreakpointValue({ base: 'initial', md: '280px' })}
@@ -96,7 +108,7 @@ const Drawer = ({
                   <IconButton
                     aria-label="Clear search input"
                     icon={<HiOutlineX />}
-                    onClick={() => handleClearSearchTermValue()}
+                    onClick={handleClearSearchTermValue}
                     size="md"
                     colorScheme="rw.900"
                     variant="ghost"
@@ -136,17 +148,6 @@ const Drawer = ({
           </Flex>
         </Box>
         <Box p="1rem">
-          <Link href={`${window.location.href}new-listing`} target="_blank">
-            <Button
-              bg="rw.700"
-              colorScheme="rw.700"
-              my="2rem"
-              size="lg"
-              _hover={{ bg: 'rw.900' }}
-            >
-              Propose new listing
-            </Button>
-          </Link>
           <Heading as="h2" fontSize="1.25rem">
             Support this project
           </Heading>
@@ -158,14 +159,15 @@ const Drawer = ({
             href="https://opencollective.com/resilience-web"
             target="_blank"
           >
-            <Button
+            <MotionButton
               bg="rw.700"
               colorScheme="rw.700"
-              _hover={{ bg: 'rw.900' }}
+              size="lg"
               onClick={() => va.track('donate-click', { web: selectedWebName })}
+              _hover={{ bg: 'rw.900' }}
             >
               Donate
-            </Button>
+            </MotionButton>
           </Link>
         </Box>
       </Flex>

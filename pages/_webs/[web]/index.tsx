@@ -118,7 +118,6 @@ const Web = ({ data, webName, webImage }) => {
   }, [])
 
   const [subdomain, setSubdomain] = useState<string>()
-
   useEffect(() => {
     const hostname = window.location.hostname
     if (!hostname.includes('.')) {
@@ -201,15 +200,6 @@ const Web = ({ data, webName, webImage }) => {
     }),
     [data?.edges, filteredItems, descriptiveNodes],
   )
-
-  // const selectNode = useCallback(
-  //     (id) => {
-  //         if (!network) return
-  //         network.selectNodes([id])
-  //         setSelectedId(id)
-  //     },
-  //     [network],
-  // )
 
   const handleSwitchChange = useCallback(
     (event) => {

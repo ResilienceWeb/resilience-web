@@ -149,18 +149,9 @@ const Header = ({
 
   return (
     <Box transition=".3s ease">
-      <Flex
-        as="header"
-        align="center"
-        w="full"
-        px="4"
-        bg="white"
-        borderBottomWidth="1px"
-        borderColor="inherit"
-        h="14"
-      >
+      <Flex as="header" align="center" w="full" px="4" bg="white" h="14">
         <HStack spacing={2} width="100%">
-          <Heading as="h2" color="gray.700" fontSize="1.75rem" px="10px">
+          <Heading as="h2" fontSize="1.75rem" px="10px">
             {selectedWebName}
           </Heading>
         </HStack>
