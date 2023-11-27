@@ -78,7 +78,7 @@ const Drawer = ({
                 Propose new listing
               </Button>
             </Link>
-            <Text fontSize="1rem" color="gray.600" mt="0.25rem">
+            <Text fontSize="0.875rem" color="gray.600" mt="0.25rem">
               Know something that isn't yet listed? Let us know!
             </Text>
           </Box>

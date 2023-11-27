@@ -26,21 +26,21 @@ const JoinTheCommunity = () => {
           alignItems="flex-start"
           justifyContent="flex-start"
         >
-          <Text fontSize="x-large" color="blackAlpha.700" fontWeight="600">
+          <Text fontSize="2xl" color="blackAlpha.700" fontWeight="600">
             Want to get involved?
           </Text>
-          <Heading as="h2" fontSize="xx-large">
+          <Heading as="h2" fontSize="2xl">
             Keep up to date with new features, and help us with feedback and
             ideas:
           </Heading>
-          <Heading as="h3" fontSize="x-large" mt="6">
+          <Heading as="h3" fontSize="2xl" mt="6">
             1. Subscribe to our mailing list
           </Heading>
           <Box mt={2}>
             <SignupForm />
           </Box>
 
-          <Heading as="h3" fontSize="x-large" mt="6">
+          <Heading as="h3" fontSize="2xl" mt="6">
             2. Join our Discord community
           </Heading>
           <Link href="https://discord.gg/SHj2wmRDwR" isExternal>

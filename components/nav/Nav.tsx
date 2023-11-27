@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import va from '@vercel/analytics'
 import {
   Box,
   Flex,
@@ -56,6 +57,11 @@ export default function MainNav() {
     onOpen: onOpenFeedbackDialog,
     onClose: onCloseFeedbackDialog,
   } = useDisclosure()
+
+  const handleOpenFeedbackDialog = useCallback(() => {
+    ;() => va.track('get-in-touch-click')
+    onOpenFeedbackDialog()
+  }, [onOpenFeedbackDialog])
 
   const navItems = useMemo(() => {
     return [
@@ -155,19 +161,19 @@ export default function MainNav() {
             </Flex>
           </Flex>
           <HStack>
-            <Tooltip label="Any suggestions, ideas or bug reports are welcome.">
+            <Tooltip label="Any suggestions or bug reports are welcome!">
               {isMobile ? (
                 <IconButton
                   aria-label="Send feedback"
                   icon={<ChatIcon />}
-                  onClick={onOpenFeedbackDialog}
+                  onClick={handleOpenFeedbackDialog}
                   size="md"
                   colorScheme="rw.900"
                   variant="outline"
                 />
               ) : (
                 <Button
-                  onClick={onOpenFeedbackDialog}
+                  onClick={handleOpenFeedbackDialog}
                   size="md"
                   colorScheme="rw.900"
                   variant="outline"
