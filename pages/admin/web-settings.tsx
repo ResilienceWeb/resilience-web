@@ -80,7 +80,9 @@ export default function Settings() {
     )
   }
 
-  if (!session) return null
+  if (!session) {
+    return null
+  }
 
   if (isOwnerOfCurrentWeb === false) {
     void router.push('/admin')

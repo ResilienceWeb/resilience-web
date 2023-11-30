@@ -79,6 +79,10 @@ const WebSelector = () => {
     )
   }
 
+  if (webOptions.length === 0) {
+    return null
+  }
+
   return (
     <Select
       options={webOptions}

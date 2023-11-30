@@ -38,7 +38,7 @@ interface FormValues {
   listings: string[]
 }
 
-export default function Invite() {
+export default function Team() {
   const toast = useToast()
   const router = useRouter()
   const { data: session, status: sessionStatus } = useSession()

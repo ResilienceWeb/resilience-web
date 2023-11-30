@@ -31,6 +31,7 @@ import WebSelector from './web-selector'
 import LogoImage from '../../../public/logo.png'
 import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
 import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
+import { useAppContext } from '@store/hooks'
 
 const NavLink = ({ children, href }) => (
   <Link as={NextLink} px={2} py={1} rounded={'md'} href={href}>
@@ -44,15 +45,17 @@ const Nav = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
+  const { selectedWebId } = useAppContext()
 
   const navLinks = useMemo(() => {
-    const links = [
-      {
+    const links = []
+    if (selectedWebId) {
+      links.push({
         label: 'Listings',
         href: '/admin',
         icon: <Icon as={HiViewList} fontSize="lg" />,
-      },
-    ]
+      })
+    }
 
     if (hasPermissionForCurrentWeb || isOwnerOfCurrentWeb) {
       links.push({
