@@ -73,6 +73,16 @@ const handler = async (
         },
       })
 
+      // TODO: change to upsert?
+      await prisma.ownership.create({
+        data: {
+          email: session.user.email,
+          webs: {
+            connect: [{ id: web.id }],
+          },
+        },
+      })
+
       res.status(201)
       res.json({ data: web, webs: null })
 

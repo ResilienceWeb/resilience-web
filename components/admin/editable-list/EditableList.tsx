@@ -85,7 +85,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
       return `You have access to edit any listing or add new listings on the ${selectedWebName} Resilience Web.`
     }
 
-    return 'You have access to edit the listings below. If you think you should be able to edit a listing not included below, please get in touch at cambridgeresilienceweb@gmail.com.'
+    return null
   }, [isAdmin, permissions?.webIds, selectedWebId, webs])
 
   if (!filteredItems) return null

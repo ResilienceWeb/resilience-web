@@ -30,6 +30,7 @@ export default function useWebs({ published = false } = {}) {
   const {
     data: webs,
     isPending,
+    isFetching,
     isError,
   } = useQuery({
     queryKey: ['webs', { published }],
@@ -40,6 +41,7 @@ export default function useWebs({ published = false } = {}) {
   return {
     webs,
     isPending,
+    isFetching,
     isError,
   }
 }
