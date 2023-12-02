@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { DefaultSeo } from 'next-seo'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import {
@@ -10,12 +11,25 @@ import {
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { SessionProvider } from 'next-auth/react'
 import { Analytics } from '@vercel/analytics/react'
+import posthog from 'posthog-js'
+import { PostHogProvider } from 'posthog-js/react'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/600.css'
 import '@styles/colors.css'
 import '@styles/styles.global.scss'
 import '@styles/vis-network-simplified.css'
 import StoreProvider from '@store/StoreProvider'
+
+// Check that PostHog is client-side (used to handle Next.js SSR)
+if (typeof window !== 'undefined') {
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com',
+    // Enable debug mode in development
+    loaded: (posthog) => {
+      if (process.env.NODE_ENV === 'development') posthog.debug()
+    },
+  })
+}
 
 const theme = extendTheme({
   styles: {
@@ -42,7 +56,18 @@ const theme = extendTheme({
 })
 
 function App({ Component, pageProps: { session, ...pageProps } }) {
+  const router = useRouter()
   const [queryClient] = useState(() => new QueryClient())
+
+  useEffect(() => {
+    // Track page views
+    const handleRouteChange = () => posthog?.capture('$pageview')
+    router.events.on('routeChangeComplete', handleRouteChange)
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
   return (
     <>
@@ -75,18 +100,20 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       </Head>
-      <SessionProvider refetchInterval={5 * 60} session={session}>
-        <QueryClientProvider client={queryClient}>
-          <HydrationBoundary state={pageProps.dehydratedState}>
-            <StoreProvider>
-              <ChakraProvider theme={theme}>
-                <Component {...pageProps} />
-              </ChakraProvider>
-            </StoreProvider>
-          </HydrationBoundary>
-          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-        </QueryClientProvider>
-      </SessionProvider>
+      <PostHogProvider client={posthog}>
+        <SessionProvider refetchInterval={5 * 60} session={session}>
+          <QueryClientProvider client={queryClient}>
+            <HydrationBoundary state={pageProps.dehydratedState}>
+              <StoreProvider>
+                <ChakraProvider theme={theme}>
+                  <Component {...pageProps} />
+                </ChakraProvider>
+              </StoreProvider>
+            </HydrationBoundary>
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+          </QueryClientProvider>
+        </SessionProvider>
+      </PostHogProvider>
       <Analytics />
     </>
   )
