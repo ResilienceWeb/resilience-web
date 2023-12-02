@@ -149,10 +149,10 @@ export default function Team() {
       />
       <LayoutContainer>
         <Box px={{ base: '4', md: '10' }} py={4} maxWidth="3xl" mx="auto">
-          <Stack spacing="4" divider={<StackDivider />}>
+          <Stack spacing="2rem" divider={<StackDivider />}>
             {isOwnerOfCurrentWeb && (
-              <>
-                <Heading>Invite team member</Heading>
+              <Box>
+                <Heading mb="0.5rem">Invite team member</Heading>
                 <Box
                   shadow="base"
                   rounded={[null, 'md']}
@@ -214,9 +214,10 @@ export default function Team() {
                     </Formik>
                   </Box>
                 </Box>
-              </>
+              </Box>
             )}
-            {permissionsForCurrentWeb?.length > 0 && (
+            {[...permissionsForCurrentWeb, ...decoratedOwnerships]?.length >
+              0 && (
               <Box>
                 <Heading>Team</Heading>
                 <Text mb="1rem">

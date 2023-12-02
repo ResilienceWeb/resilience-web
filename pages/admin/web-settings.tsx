@@ -9,7 +9,6 @@ import {
   Spinner,
   Checkbox,
   Stack,
-  StackDivider,
   Heading,
   chakra,
   Button,
@@ -24,7 +23,7 @@ import LayoutContainer from '@components/admin/layout-container'
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
 import { usePermissions } from '@hooks/permissions'
 import { useWeb, useUpdateWeb } from '@hooks/webs'
-import { useOwnerships, useIsOwnerOfCurrentWeb } from '@hooks/ownership'
+import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 import { useAppContext } from '@store/hooks'
 
 export default function Settings() {
@@ -35,8 +34,6 @@ export default function Settings() {
   const { selectedWebSlug } = useAppContext()
   const { web: webData } = useWeb(selectedWebSlug)
   const { updateWeb, isPending, isSuccess } = useUpdateWeb()
-
-  const { ownerships } = useOwnerships()
 
   const toast = useToast()
   useEffect(() => {
@@ -97,7 +94,13 @@ export default function Settings() {
         }}
       />
       <LayoutContainer>
-        <Box px={{ base: '4', md: '10' }} py={4} maxWidth="4xl" mx="auto">
+        <Box
+          px={{ base: '4', md: '10' }}
+          py={4}
+          mb="2rem"
+          maxWidth="4xl"
+          mx="auto"
+        >
           <Stack spacing="1.5rem">
             <Box>
               <Heading>Web settings</Heading>
@@ -181,37 +184,6 @@ export default function Settings() {
                 </Formik>
               </Box>
             </Box>
-
-            {ownerships?.length > 0 && (
-              <Box>
-                <Heading>Owners</Heading>
-                <Text>
-                  List of people who have full access to the{' '}
-                  <b>{webData?.title}</b> web
-                </Text>
-                <Box
-                  shadow="base"
-                  rounded={[null, 'md']}
-                  overflow={{ sm: 'hidden' }}
-                  bg="white"
-                  padding="1rem"
-                  mt="1rem"
-                >
-                  <Stack spacing="1rem" divider={<StackDivider />}>
-                    {ownerships?.map((ownership) => (
-                      <Text key={ownership.id}>
-                        {ownership.user.email}
-                        {session?.user?.id === ownership.user.id ? (
-                          <b> &nbsp;(You)</b>
-                        ) : (
-                          ''
-                        )}
-                      </Text>
-                    ))}
-                  </Stack>
-                </Box>
-              </Box>
-            )}
           </Stack>
         </Box>
       </LayoutContainer>
