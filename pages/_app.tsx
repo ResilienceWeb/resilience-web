@@ -10,7 +10,6 @@ import {
 } from '@tanstack/react-query'
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { SessionProvider } from 'next-auth/react'
-import { Analytics } from '@vercel/analytics/react'
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
 import '@fontsource/poppins/400.css'
@@ -114,7 +113,6 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
           </QueryClientProvider>
         </SessionProvider>
       </PostHogProvider>
-      <Analytics />
     </>
   )
 }

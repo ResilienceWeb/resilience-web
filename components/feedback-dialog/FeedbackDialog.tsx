@@ -18,7 +18,6 @@ import {
   chakra,
   useToast,
 } from '@chakra-ui/react'
-import { track } from '@vercel/analytics/react'
 
 import {
   emailRequiredValidator,
@@ -42,8 +41,6 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
         }),
       })
       const result = await response.json()
-
-      track('feedback-submit')
 
       if (!result.error) {
         toast({
