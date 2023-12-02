@@ -216,8 +216,8 @@ export default function Team() {
                 </Box>
               </Box>
             )}
-            {[...permissionsForCurrentWeb, ...decoratedOwnerships]?.length >
-              0 && (
+            {(permissionsForCurrentWeb?.length > 0 ||
+              decoratedOwnerships?.length > 0) && (
               <Box>
                 <Heading>Team</Heading>
                 <Text mb="1rem">
