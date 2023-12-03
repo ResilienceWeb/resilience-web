@@ -9,7 +9,7 @@ import html from 'remark-html'
 import Layout from '@components/layout'
 import ErrorBoundary from '@components/error-boundary'
 
-export default function BlogPost({ post, contentHtml }) {
+export default function NewsPost({ post, contentHtml }) {
   return (
     <>
       <NextSeo
@@ -32,25 +32,27 @@ export default function BlogPost({ post, contentHtml }) {
         >
           {post.title}
         </Heading>
-        <Box
-          overflow="hidden"
-          position="relative"
-          mb="2rem"
-          width={{ base: '100vw', md: '850px' }}
-          height={{ base: '250px', md: '400px' }}
-          borderRadius={{ base: 'none', md: '12px' }}
-        >
-          <Image
-            alt={`Cover image for post: ${post.title}`}
-            src={post.coverImage?.url}
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 672px"
-            style={{
-              objectFit: 'cover',
-            }}
-          />
-        </Box>
+        {post.coverImage?.url && (
+          <Box
+            overflow="hidden"
+            position="relative"
+            mb="2rem"
+            width={{ base: '100vw', md: '850px' }}
+            height={{ base: '250px', md: '400px' }}
+            borderRadius={{ base: 'none', md: '12px' }}
+          >
+            <Image
+              alt={`Cover image for post: ${post.title}`}
+              src={post.coverImage?.url}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 672px"
+              style={{
+                objectFit: 'cover',
+              }}
+            />
+          </Box>
+        )}
         <Box
           maxWidth={useBreakpointValue({
             base: '90%',
@@ -77,7 +79,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       }
     }`)
 
-  const paths = pages.map(({ slug }) => `/blog/${slug}`)
+  const paths = pages.map(({ slug }) => `/news/${slug}`)
 
   return {
     paths,
@@ -91,7 +93,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const { page } = await graphcms.request<{ page: any }>(
       `
-      query BlogPostQuery($slug: String!){
+      query NewsPostQuery($slug: String!){
         page(where: {slug: $slug}) {
           slug
           title

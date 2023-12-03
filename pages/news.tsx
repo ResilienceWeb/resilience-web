@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import Layout from '@components/layout'
 
-const Blog = ({ posts }) => {
+const News = ({ posts }) => {
   return (
     <Layout>
       <Flex justifyContent="center">
@@ -44,7 +44,7 @@ const Blog = ({ posts }) => {
               }).format(new Date(post.date))
 
               return (
-                <Link as={NextLink} href={`blog/${post.slug}`} key={post.slug}>
+                <Link as={NextLink} href={`news/${post.slug}`} key={post.slug}>
                   <Box
                     cursor="pointer"
                     maxW={'445px'}
@@ -131,4 +131,4 @@ export async function getStaticProps() {
   }
 }
 
-export default Blog
+export default News

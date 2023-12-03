@@ -83,8 +83,8 @@ export default function MainNav() {
         href: '/about',
       },
       // {
-      //   label: 'Blog',
-      //   href: '/blog',
+      //   label: 'News',
+      //   href: '/news',
       // },
       {
         label: 'How it works',
