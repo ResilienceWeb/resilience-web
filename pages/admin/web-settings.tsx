@@ -16,6 +16,7 @@ import {
   FormErrorMessage,
   FormHelperText,
   Text,
+  Link,
   useToast,
 } from '@chakra-ui/react'
 
@@ -104,7 +105,9 @@ export default function Settings() {
           <Stack spacing="1.5rem">
             <Box>
               <Heading>Web settings</Heading>
-              <Text>This page is only accessible to web owners.</Text>
+              <Text color="gray.600">
+                This page is only accessible to web owners.
+              </Text>
               <Box
                 shadow="base"
                 rounded={[null, 'md']}
@@ -139,6 +142,7 @@ export default function Settings() {
                                     id="published"
                                     onChange={field.onChange}
                                     colorScheme="green"
+                                    disabled
                                   >
                                     Published
                                   </Checkbox>
@@ -146,8 +150,23 @@ export default function Settings() {
                                     {form.errors.published?.toString()}
                                   </FormErrorMessage>
                                   <FormHelperText>
-                                    Is this web ready to be publicly visible on
-                                    the Resilience Web homepage?
+                                    We don't allow self-publishing webs yet.
+                                    When your web is ready to share with the
+                                    world, please get in touch at{' '}
+                                    <Link
+                                      href="mailto:info@resilienceweb.org.uk"
+                                      fontWeight="600"
+                                      _hover={{
+                                        color: 'gray.700',
+                                      }}
+                                    >
+                                      info@resilienceweb.org.uk
+                                    </Link>{' '}
+                                    and we'll review and publish it for you.
+                                    Please make sure your web has at least 10
+                                    listings with complete information and
+                                    images, and that your web has an cover image
+                                    uploaded below.
                                   </FormHelperText>
                                 </FormControl>
                               )
