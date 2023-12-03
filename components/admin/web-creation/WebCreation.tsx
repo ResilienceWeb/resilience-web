@@ -86,7 +86,7 @@ const WebCreation = () => {
   useEffect(() => {
     if (isSuccess) {
       setSelectedWebSlug(undefined)
-      router.push('/admin')
+      router.push('/admin?firstTime')
     }
   }, [isSuccess, router, setSelectedWebSlug])
 

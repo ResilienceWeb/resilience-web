@@ -54,7 +54,7 @@ export default function Settings() {
         await signIn()
       }
     }
-    void signInIfNeeded()
+    signInIfNeeded()
   }, [session, sessionStatus])
 
   const onSubmit = useCallback(
@@ -82,7 +82,7 @@ export default function Settings() {
   }
 
   if (isOwnerOfCurrentWeb === false) {
-    void router.push('/admin')
+    router.push('/admin')
   }
 
   return (

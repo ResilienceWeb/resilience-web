@@ -56,7 +56,7 @@ export default function Categories() {
   }
 
   if (!hasPermissionForCurrentWeb && !isOwnerOfCurrentWeb) {
-    void router.push('/admin')
+    router.push('/admin')
   }
 
   return (

@@ -30,7 +30,7 @@ const Admin = () => {
   useEffect(() => {
     if (!session && sessionStatus !== 'loading') {
       if (router.query.activate) {
-        void signIn('email', { email: router.query.activate })
+        signIn('email', { email: router.query.activate })
       } else {
         signIn().catch((e) => console.error(e))
       }

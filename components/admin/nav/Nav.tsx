@@ -88,9 +88,16 @@ const Nav = () => {
     }
 
     return links
-  }, [hasPermissionForCurrentWeb, isOwnerOfCurrentWeb, session?.user.admin])
+  }, [
+    hasPermissionForCurrentWeb,
+    isOwnerOfCurrentWeb,
+    selectedWebId,
+    session?.user.admin,
+  ])
 
-  const handleSignOut = useCallback(() => void signOut(), [])
+  const handleSignOut = useCallback(() => {
+    signOut()
+  }, [])
 
   return (
     <Box

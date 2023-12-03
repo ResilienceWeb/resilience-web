@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useCallback, useState, useMemo, memo } from 'react'
+import { useEffect, useCallback, useState, useMemo, memo } from 'react'
 import { Heading, Text, Box, Center, Link } from '@chakra-ui/react'
 
 import DeleteConfirmationDialog from './delete-confirmation-dialog'
@@ -44,14 +44,14 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
   }, [items, searchTerm, selectedCategories])
 
   const goToEdit = useCallback(
-    async (dataItem) => {
-      await router.push(`/admin/${dataItem.slug}`)
+    (dataItem) => {
+      router.push(`/admin/${dataItem.slug}`)
     },
     [router],
   )
 
-  const goToCreateListing = useCallback(async () => {
-    await router.push('/admin/new-listing')
+  const goToCreateListing = useCallback(() => {
+    router.push('/admin/new-listing')
   }, [router])
 
   const openRemoveDialog = useCallback((id) => {

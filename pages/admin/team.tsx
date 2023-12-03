@@ -78,7 +78,7 @@ export default function Team() {
         await signIn()
       }
     }
-    void signInIfNeeded()
+    signInIfNeeded()
   }, [session, sessionStatus])
 
   const sendInvite = useCallback(
@@ -136,7 +136,7 @@ export default function Team() {
   if (!session) return null
 
   if (!hasPermissionForCurrentWeb && !isOwnerOfCurrentWeb) {
-    void router.push('/admin')
+    router.push('/admin')
   }
 
   return (
