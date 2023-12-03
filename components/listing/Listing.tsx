@@ -40,9 +40,13 @@ function Listing({ listing }) {
   }, [])
 
   const goBack = useCallback(() => {
-    void router.back()
-    // void router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
-  }, [router])
+    const referrer = document.referrer
+    if (referrer.includes('google')) {
+      void router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
+    } else {
+      void router.back()
+    }
+  }, [router, subdomain])
 
   const { categories } = useCategories()
   const categoriesIndexes = useMemo(() => {
