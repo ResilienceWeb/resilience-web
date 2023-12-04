@@ -78,7 +78,7 @@ export default function Team() {
         await signIn()
       }
     }
-    void signInIfNeeded()
+    signInIfNeeded()
   }, [session, sessionStatus])
 
   const sendInvite = useCallback(
@@ -136,7 +136,7 @@ export default function Team() {
   if (!session) return null
 
   if (!hasPermissionForCurrentWeb && !isOwnerOfCurrentWeb) {
-    void router.push('/admin')
+    router.push('/admin')
   }
 
   return (
@@ -221,8 +221,8 @@ export default function Team() {
               <Box>
                 <Heading>Team</Heading>
                 <Text mb="1rem">
-                  List of people who have permissions to edit some or all the
-                  listings on the <b>{selectedWebName}</b> web.
+                  List of people who have permissions to add and edit listings
+                  on the <b>{selectedWebName}</b> web.
                 </Text>
                 <PermissionsTable
                   permissions={[

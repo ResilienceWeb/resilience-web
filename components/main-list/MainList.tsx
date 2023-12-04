@@ -34,7 +34,7 @@ const MainList = ({ filteredItems, isMobile }) => {
       setSelectedDataItem(item)
       if (isMobile) {
         const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${item.slug}`
-        void router.push(individualListingLink)
+        router.push(individualListingLink)
       } else {
         onOpenDialog()
       }

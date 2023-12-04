@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from 'react'
-import useLocalStorage from 'use-local-storage'
 import { useMediaQuerySSR } from '@hooks/application'
 import { AppContext } from '@store/AppContext'
 import { useWebs } from '@hooks/webs'
@@ -7,10 +6,7 @@ import { useWebs } from '@hooks/webs'
 const StoreProvider = ({ children }) => {
   const isMobile = useMediaQuerySSR('(max-width: 760px)')
   const [isAdminMode, setIsAdminMode] = useState(false)
-  const [selectedWebSlug, setSelectedWebSlug] = useLocalStorage(
-    'selected-web',
-    null,
-  )
+  const [selectedWebSlug, setSelectedWebSlug] = useState<string>()
   const [subdomain, setSubdomain] = useState<string>()
 
   const { webs } = useWebs()

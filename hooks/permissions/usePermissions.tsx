@@ -15,6 +15,7 @@ export default function usePermissions() {
   const {
     data: permissions,
     isPending,
+    isFetching,
     isError,
   } = useQuery({
     queryKey: ['permission'],
@@ -25,6 +26,7 @@ export default function usePermissions() {
   return {
     permissions,
     isPending,
+    isFetching,
     isError,
   }
 }

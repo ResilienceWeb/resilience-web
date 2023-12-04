@@ -1,5 +1,4 @@
 import { memo, useMemo, useCallback, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import Select from 'react-select'
 import { Text } from '@chakra-ui/react'
 import type { Options } from 'react-select'
@@ -16,12 +15,23 @@ type WebOption = {
 }
 
 const WebSelector = () => {
-  const router = useRouter()
   const { data: session } = useSession()
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
-  const { webs } = useWebs()
-  const { permissions } = usePermissions()
-  const { ownerships } = useMyOwnerships()
+  const {
+    isPending: isLoadingWebs,
+    isFetching: isFetchingWebs,
+    webs,
+  } = useWebs()
+  const {
+    isPending: isLoadingPermissions,
+    isFetching: isFetchingPermissions,
+    permissions,
+  } = usePermissions()
+  const {
+    isPending: isLoadingOwnerships,
+    isFetching: isFetchingOwnerships,
+    ownerships,
+  } = useMyOwnerships()
 
   const allUniqueWebIds = useMemo(() => {
     if (!permissions && !ownerships) {
@@ -59,17 +69,43 @@ const WebSelector = () => {
 
   const handleWebChange = useCallback(
     (webOption) => {
-      router.push('/admin')
+      console.log('setting to', webOption.value)
       setSelectedWebSlug(webOption.value)
     },
-    [setSelectedWebSlug, router],
+    [setSelectedWebSlug],
   )
 
   useEffect(() => {
-    if (webOptions.length === 1) {
-      setSelectedWebSlug(webOptions[0].value)
+    if (selectedWebSlug) {
+      return
     }
-  }, [webOptions, setSelectedWebSlug])
+
+    if (webOptions.length > 0) {
+      setSelectedWebSlug(webOptions[0].value)
+    } else if (
+      isLoadingWebs === false &&
+      isFetchingWebs === false &&
+      isLoadingPermissions === false &&
+      isFetchingPermissions === false &&
+      isLoadingOwnerships === false &&
+      isFetchingOwnerships === false &&
+      webOptions.length === 0
+    ) {
+      setSelectedWebSlug(null)
+    } else {
+      setSelectedWebSlug(undefined)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    webOptions,
+    setSelectedWebSlug,
+    isLoadingWebs,
+    isLoadingPermissions,
+    isLoadingOwnerships,
+    isFetchingWebs,
+    isFetchingPermissions,
+    isFetchingOwnerships,
+  ])
 
   if (webOptions.length === 1) {
     return (

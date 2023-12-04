@@ -18,7 +18,7 @@ async function createWebRequest(webData): Promise<Web> {
 export default function useCreateWeb() {
   const queryClient = useQueryClient()
 
-  return useMutation({
+  const { data, isPending, isSuccess, mutate } = useMutation({
     mutationFn: createWebRequest,
     onMutate: (newWeb) => {
       const previousWebs = queryClient.getQueryData(['webs'])
@@ -26,4 +26,11 @@ export default function useCreateWeb() {
       return { previousWebs, newWeb }
     },
   })
+
+  return {
+    createWeb: mutate,
+    data,
+    isPending,
+    isSuccess,
+  }
 }

@@ -23,7 +23,6 @@ import { HiHeart, HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
 import VolunteerSwitch from '@components/volunteer-switch'
 import customMultiSelectStyles from '@styles/select-styles'
 import { REMOTE_URL } from '@helpers/config'
-import { useSelectedWebName } from '@hooks/webs'
 import LogoImage from '../../public/logo.png'
 import styles from './Drawer.module.scss'
 
@@ -40,7 +39,6 @@ const Drawer = ({
   searchTerm,
 }) => {
   const maxInputWidth = useBreakpointValue({ base: 'initial', md: '280px' })
-  const selectedWebName = useSelectedWebName()
 
   return (
     <chakra.div

@@ -10,11 +10,14 @@ import { useListings, useDeleteListing } from '@hooks/listings'
 import { usePermissions } from '@hooks/permissions'
 import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 import { useAppContext } from '@store/hooks'
+import { useWebs } from '@hooks/webs'
 
 const Admin = () => {
   const { data: session, status: sessionStatus } = useSession()
-  const { selectedWebId } = useAppContext()
+  const router = useRouter()
+  const { selectedWebId, selectedWebSlug } = useAppContext()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
+  const { isPending: isLoadingWebs } = useWebs()
 
   const {
     listings,
@@ -24,16 +27,15 @@ const Admin = () => {
   const { permissions, isPending: isPermissionsPending } = usePermissions()
   const { mutate: deleteListing } = useDeleteListing()
 
-  const { query } = useRouter()
   useEffect(() => {
     if (!session && sessionStatus !== 'loading') {
-      if (query.activate) {
-        void signIn('email', { email: query.activate })
+      if (router.query.activate) {
+        signIn('email', { email: router.query.activate })
       } else {
         signIn().catch((e) => console.error(e))
       }
     }
-  }, [session, sessionStatus, query.activate])
+  }, [session, sessionStatus, router.query.activate])
 
   const allowedListings = useMemo(() => {
     if (!session || isPermissionsPending || isListingsPending) return null
@@ -63,6 +65,16 @@ const Admin = () => {
     )
   }
 
+  if (isListingsError) {
+    console.error('[RW-Client] Error fetching listings')
+  }
+
+  if (!session) return null
+
+  if (!isLoadingWebs && selectedWebSlug === null) {
+    router.push('/admin/welcome')
+  }
+
   if (isListingsPending || isPermissionsPending) {
     return (
       <LayoutContainer>
@@ -72,12 +84,6 @@ const Admin = () => {
       </LayoutContainer>
     )
   }
-
-  if (isListingsError) {
-    console.error('[RW-Client] Error fetching listings')
-  }
-
-  if (!session) return null
 
   return (
     <>
