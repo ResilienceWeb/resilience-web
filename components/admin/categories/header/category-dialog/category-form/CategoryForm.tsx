@@ -82,13 +82,13 @@ const CategoryForm = ({
           >
             {category && (
               <Tooltip
-                isDisabled={category?.listings.length === 0}
+                isDisabled={category?.listings?.length === 0}
                 borderRadius="md"
                 label="To delete this category, first ensure there are no listings associated with it"
               >
                 <Button
                   colorScheme="red"
-                  isDisabled={category?.listings.length > 0}
+                  isDisabled={category?.listings?.length > 0}
                   opacity="0.85"
                   onClick={onDelete}
                 >

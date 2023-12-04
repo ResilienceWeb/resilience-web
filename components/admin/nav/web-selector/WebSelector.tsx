@@ -1,5 +1,4 @@
 import { memo, useMemo, useCallback, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import Select from 'react-select'
 import { Text } from '@chakra-ui/react'
 import type { Options } from 'react-select'
@@ -16,7 +15,6 @@ type WebOption = {
 }
 
 const WebSelector = () => {
-  const router = useRouter()
   const { data: session } = useSession()
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
   const {
@@ -71,14 +69,18 @@ const WebSelector = () => {
 
   const handleWebChange = useCallback(
     (webOption) => {
-      router.push('/admin')
+      console.log('setting to', webOption.value)
       setSelectedWebSlug(webOption.value)
     },
-    [setSelectedWebSlug, router],
+    [setSelectedWebSlug],
   )
 
   useEffect(() => {
-    if (webOptions.length === 1) {
+    if (selectedWebSlug) {
+      return
+    }
+
+    if (webOptions.length > 0) {
       setSelectedWebSlug(webOptions[0].value)
     } else if (
       isLoadingWebs === false &&
@@ -93,6 +95,7 @@ const WebSelector = () => {
     } else {
       setSelectedWebSlug(undefined)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     webOptions,
     setSelectedWebSlug,

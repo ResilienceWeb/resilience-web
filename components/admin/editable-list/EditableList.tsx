@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useCallback, useState, useMemo, memo } from 'react'
+import { useCallback, useState, useMemo, memo } from 'react'
 import { Heading, Text, Box, Center, Link } from '@chakra-ui/react'
 
 import DeleteConfirmationDialog from './delete-confirmation-dialog'

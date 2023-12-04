@@ -12,6 +12,21 @@ interface Data {
   data: null | Web | Web[]
 }
 
+const defaultCategories = [
+  {
+    label: 'Environment',
+    color: '7ed957',
+  },
+  {
+    label: 'Community',
+    color: 'ff66c4',
+  },
+  {
+    label: 'Social justice',
+    color: 'ff5757',
+  },
+]
+
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<Result<Data>>,
@@ -73,9 +88,26 @@ const handler = async (
         },
       })
 
-      // TODO: change to upsert?
-      await prisma.ownership.create({
-        data: {
+      for (const category of defaultCategories) {
+        await prisma.category.create({
+          data: {
+            ...category,
+            webId: web.id,
+          },
+        })
+      }
+
+      await prisma.ownership.upsert({
+        where: {
+          email: session.user.email,
+        },
+        create: {
+          email: session.user.email,
+          webs: {
+            connect: [{ id: web.id }],
+          },
+        },
+        update: {
           email: session.user.email,
           webs: {
             connect: [{ id: web.id }],
