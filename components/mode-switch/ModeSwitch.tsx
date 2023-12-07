@@ -21,7 +21,7 @@ const ModeSwitch = ({ handleSwitchChange, checked }) => {
           height="28px"
         />
         <FormLabel fontSize="sm" ml={2} mb={0} mr={0}>
-          Map view
+          Web view
         </FormLabel>
       </Flex>
     </chakra.div>

@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from 'react'
 import { NextSeo } from 'next-seo'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import {
   Box,
@@ -17,18 +18,15 @@ import { useAppContext } from '@store/hooks'
 import { useSelectedWebName } from '@hooks/webs'
 import Layout from '@components/layout'
 import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 function Submit() {
   const router = useRouter()
-  const { selectedWebId } = useAppContext()
+  const { selectedWebId, selectedWebSlug } = useAppContext()
   const { categories } = useCategories()
   const selectedWebName = useSelectedWebName()
   const { mutate: createListing } = useCreateListing()
   const [isSubmitted, setIsSubmitted] = useState(false)
-
-  const goBack = useCallback(() => {
-    router.back()
-  }, [router])
 
   const handleSubmit = useCallback(
     (data) => {
@@ -65,30 +63,36 @@ function Submit() {
       />
       <Layout>
         <Box maxWidth={{ base: '100%', md: '700px' }}>
-          <Heading as="h1" my="1rem">
-            Submit new listing
-          </Heading>
           {isSubmitted ? (
             <>
+              <Heading as="h1" my="1rem">
+                Thank you!
+              </Heading>
               <Text>
                 You have submitted your new proposed listing succesfully 🎉{' '}
                 <br /> Thank you for your contribution. It will next be checked
                 and hopefully approved by the admins of the{' '}
                 <strong>{selectedWebName}</strong> web.
               </Text>
-              <Button
-                onClick={goBack}
-                mt="2rem"
-                bg="rw.700"
-                colorScheme="rw.700"
-                size="md"
-                _hover={{ bg: 'rw.900' }}
+              <Link
+                href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
               >
-                Go back to main {selectedWebName} page
-              </Button>
+                <Button
+                  mt="2rem"
+                  bg="rw.700"
+                  colorScheme="rw.700"
+                  size="md"
+                  _hover={{ bg: 'rw.900' }}
+                >
+                  Go back to {selectedWebName} Resilience Web
+                </Button>
+              </Link>
             </>
           ) : (
             <>
+              <Heading as="h1" my="1rem">
+                Propose new listing
+              </Heading>
               <Text>
                 You are proposing a new listing for the{' '}
                 <strong>{selectedWebName}</strong> web.
