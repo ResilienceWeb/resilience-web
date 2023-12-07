@@ -31,7 +31,7 @@ import {
 
 import { useAppContext } from '@store/hooks'
 import { useWebs } from '@hooks/webs'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import FeedbackDialog from '../feedback-dialog'
 import LogoImage from '../../public/logo.png'
 import styles from './Nav.module.scss'
@@ -80,7 +80,7 @@ export default function MainNav() {
       },
       {
         label: 'About',
-        href: '/about',
+        href: `${REMOTE_URL}/about`,
       },
       // {
       //   label: 'News',
@@ -88,7 +88,7 @@ export default function MainNav() {
       // },
       {
         label: 'How it works',
-        href: '/how-it-works',
+        href: `${REMOTE_URL}/how-it-works`,
       },
       {
         label: 'Donate',
