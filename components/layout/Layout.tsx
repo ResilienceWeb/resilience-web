@@ -1,9 +1,9 @@
-import React, { memo, useMemo } from 'react'
-import { useRouter } from 'next/router'
+import React, { memo } from 'react'
+// import { useRouter } from 'next/router'
 import { Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react'
 import Nav from '@components/nav'
 import Footer from '@components/footer'
-import AlertBanner from '@components/alert-banner'
+// import AlertBanner from '@components/alert-banner'
 import styles from './Layout.module.scss'
 
 const Layout = ({
@@ -13,9 +13,9 @@ const Layout = ({
   applyPostStyling?: boolean
   children: React.ReactNode
 }) => {
-  const router = useRouter()
+  // const router = useRouter()
 
-  const isHomepage = useMemo(() => router.pathname === '/', [router.pathname])
+  // const isHomepage = useMemo(() => router.pathname === '/', [router.pathname])
 
   return (
     <>
@@ -30,13 +30,13 @@ const Layout = ({
           alignItems="center"
           flexDirection="column"
         >
-          {isHomepage && (
+          {/* {isHomepage && (
             <AlertBanner
               content="Join us on a seminar series to imagine a thriving, sustainable future for Cambridge, rooted in community resilience! What works well now – and where are the gaps?"
               type="info"
               url="https://www.transitioncambridge.org/wiki/TTResilienceWeb/TogetherWeCan"
             />
-          )}
+          )} */}
           {children}
         </Flex>
       </SlideFade>

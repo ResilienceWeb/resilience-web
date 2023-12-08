@@ -89,7 +89,7 @@ const MainList = ({ filteredItems, isMobile }) => {
           )}
         </chakra.div>
       </Flex>
-      <Footer />
+      <Footer hideBorder />
       {selectedDataItem && (
         <Dialog
           isOpen={isDialogOpen}

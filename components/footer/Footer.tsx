@@ -60,15 +60,16 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
   )
 }
 
-export default function Footer() {
+export default function Footer({ hideBorder = false }) {
+  console.log({ hideBorder })
   return (
     <Box
-      bg={useColorModeValue('white', 'gray.800')}
-      color={useColorModeValue('gray.600', 'white')}
-      borderTopColor="gray.200"
-      borderTopWidth="1px"
+      bg="white"
+      color="gray.600"
+      borderTopColor={hideBorder ? null : 'gray.200'}
+      borderTopWidth={hideBorder ? null : '1px'}
     >
-      <Container as={Stack} maxW={'7xl'} py={10}>
+      <Container as={Stack} maxW="7xl" py={10}>
         <SimpleGrid
           templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 2fr' }}
           spacing={8}
@@ -92,15 +93,15 @@ export default function Footer() {
             >
               Built with ❤️ <span style={{ marginLeft: '3px' }}>by Diner</span>
             </Link>
-            <Stack direction={'row'} spacing={6}>
+            <Stack direction="row" spacing={6}>
               <SocialButton
-                label={'Twitter'}
+                label="Twitter"
                 href="https://twitter.com/ResilienceWeb"
               >
                 <FaTwitter />
               </SocialButton>
               <SocialButton
-                label={'Github'}
+                label="Github"
                 href="https://github.com/ResilienceWeb/resilience-web"
               >
                 <FaGithub />
