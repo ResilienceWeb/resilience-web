@@ -2,7 +2,7 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 import Image from 'next/image'
 import { NextSeo } from 'next-seo'
 import { GraphQLClient } from 'graphql-request'
-import { Box, Heading, useBreakpointValue } from '@chakra-ui/react'
+import { Box, Heading } from '@chakra-ui/react'
 import { remark } from 'remark'
 import html from 'remark-html'
 
@@ -10,6 +10,13 @@ import Layout from '@components/layout'
 import ErrorBoundary from '@components/error-boundary'
 
 export default function NewsPost({ post, contentHtml }) {
+  if (!post || !contentHtml) {
+    return {
+      notFound: true,
+      revalidate: 10,
+    }
+  }
+
   return (
     <>
       <NextSeo
@@ -54,10 +61,10 @@ export default function NewsPost({ post, contentHtml }) {
           </Box>
         )}
         <Box
-          maxWidth={useBreakpointValue({
+          maxWidth={{
             base: '90%',
             md: '650px',
-          })}
+          }}
           mb={8}
         >
           <ErrorBoundary>
@@ -75,7 +82,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const { pages } = await graphcms.request<{ pages: [] }>(`{
     pages {
       slug
-      title
       }
     }`)
 
