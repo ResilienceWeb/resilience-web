@@ -1,6 +1,6 @@
 import { getCsrfToken } from 'next-auth/react'
 import type { GetServerSideProps } from 'next'
-import { Button, Input, Flex, Box } from '@chakra-ui/react'
+import { Button, Input, Flex, Box, Text } from '@chakra-ui/react'
 import Image from 'next/legacy/image'
 import LogoImage from '../../public/logo.png'
 import styles from './auth.module.scss'
@@ -43,6 +43,9 @@ export default function SignIn({ csrfToken }) {
             >
               Sign in
             </Button>
+            <Text fontSize="0.875rem" color="gray.600">
+              This will create a new account for you if you don't have one yet.
+            </Text>
           </form>
         </Box>
       </Flex>
