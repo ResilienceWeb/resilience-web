@@ -10,14 +10,24 @@ import {
   Section,
   Text,
 } from '@react-email/components'
+import {
+  main,
+  container,
+  logo,
+  paragraph,
+  btnContainer,
+  button,
+  hr,
+  footer,
+} from './styles'
 
-interface InviteEmailProps {
+type props = {
   webTitle: string
   email: string
   url: string
 }
 
-const InviteEmail = ({ webTitle, email, url }: InviteEmailProps) => {
+const InviteEmail = ({ webTitle, email, url }: props) => {
   // Insert invisible space into domains and email address to prevent both the
   // email address and the domain from being turned into a hyperlink by email
   // clients like Outlook and Apple mail, as this is confusing because it seems
@@ -102,48 +112,3 @@ const InviteEmail = ({ webTitle, email, url }: InviteEmailProps) => {
 }
 
 export default InviteEmail
-
-const main = {
-  backgroundColor: '#ffffff',
-  fontFamily:
-    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-}
-
-const container = {
-  margin: '0 auto',
-  padding: '20px 0 48px',
-}
-
-const logo = {
-  margin: '0 auto',
-}
-
-const paragraph = {
-  fontSize: '16px',
-  lineHeight: '26px',
-}
-
-const btnContainer = {
-  textAlign: 'center' as const,
-}
-
-const button = {
-  backgroundColor: '#09622f',
-  borderRadius: '3px',
-  color: '#fff',
-  fontSize: '16px',
-  textDecoration: 'none',
-  textAlign: 'center' as const,
-  display: 'block',
-  padding: '12px',
-}
-
-const hr = {
-  borderColor: '#cccccc',
-  margin: '20px 0',
-}
-
-const footer = {
-  color: '#8898aa',
-  fontSize: '12px',
-}

@@ -53,7 +53,7 @@ export default function NewsPost({ post, contentHtml }) {
               src={post.coverImage?.url}
               fill
               priority
-              sizes="(max-width: 768px) 100vw, 672px"
+              sizes="(max-width: 768px) 100vw, 850px"
               style={{
                 objectFit: 'cover',
               }}

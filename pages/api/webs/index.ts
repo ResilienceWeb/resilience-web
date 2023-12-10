@@ -1,10 +1,17 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import type { Web } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
+import { render } from '@react-email/render'
+import sgMail from '@sendgrid/mail'
 import { authOptions } from '../auth/[...nextauth]'
 import prisma from '../../../prisma/client'
 import type { Result } from '../type.d'
 import { stringToBoolean } from '@helpers/utils'
+import WebCreatedEmail from '@components/emails/WebCreatedEmail'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 interface Data {
   error?: string
@@ -114,6 +121,33 @@ const handler = async (
           },
         },
       })
+
+      const webCreatedEmailComponent = WebCreatedEmail({
+        webTitle: `${web.title}`,
+        url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin`,
+      })
+      const webCreatedEmailHtml = render(webCreatedEmailComponent)
+      const webCreatedEmailText = render(webCreatedEmailComponent, {
+        plainText: true,
+      })
+
+      try {
+        const msg = {
+          from: `Resilience Web <info@resilienceweb.org.uk>`,
+          to: session?.user.email,
+          subject: `Thank you for creating ${web.title} Resilience Web 🎉`,
+          text: webCreatedEmailText,
+          html: webCreatedEmailHtml,
+        }
+
+        await sgMail.send(msg)
+      } catch (error) {
+        console.error(error)
+
+        if (error.response) {
+          console.error(error.response.body)
+        }
+      }
 
       res.status(201)
       res.json({ data: web, webs: null })
