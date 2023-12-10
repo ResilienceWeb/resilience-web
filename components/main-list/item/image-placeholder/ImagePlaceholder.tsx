@@ -63,8 +63,8 @@ const ImagePlaceholder = ({ backgroundColor, categoryIndex }) => {
         borderTopLeftRadius: '.375rem',
         backgroundColor: backgroundColor,
         backgroundImage: pattern,
-        height: '100%',
-        aspectRatio: '1.76',
+        height: '170px',
+        width: '100%',
       }}
     />
   )
