@@ -2,16 +2,14 @@
 import type { Web } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
-import { render } from '@react-email/render'
-import sgMail from '@sendgrid/mail'
 import { authOptions } from '../auth/[...nextauth]'
 import prisma from '../../../prisma/client'
 import type { Result } from '../type.d'
 import { stringToBoolean } from '@helpers/utils'
 import WebCreatedEmail from '@components/emails/WebCreatedEmail'
+import WebCreatedAdminEmail from '@components/emails/WebCreatedAdminEmail'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+import { sendEmail } from '@helpers/email'
 
 interface Data {
   error?: string
@@ -126,21 +124,26 @@ const handler = async (
         webTitle: `${web.title}`,
         url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin`,
       })
-      const webCreatedEmailHtml = render(webCreatedEmailComponent)
-      const webCreatedEmailText = render(webCreatedEmailComponent, {
-        plainText: true,
+
+      const webCreatedAdminEmailComponent = WebCreatedAdminEmail({
+        webTitle: `${web.title}`,
+        email: `${session?.user.email}`,
       })
 
       try {
-        const msg = {
-          from: `Resilience Web <info@resilienceweb.org.uk>`,
+        await sendEmail({
           to: session?.user.email,
           subject: `Thank you for creating ${web.title} Resilience Web 🎉`,
-          text: webCreatedEmailText,
-          html: webCreatedEmailHtml,
-        }
+          email: webCreatedEmailComponent,
+        })
 
-        await sgMail.send(msg)
+        await sendEmail({
+          to: REMOTE_HOSTNAME.includes('localhost')
+            ? 'ismail.diner+rw@gmail.com'
+            : 'info@resilienceweb.org.uk',
+          subject: `Someone just created a new resilience web 🎉`,
+          email: webCreatedAdminEmailComponent,
+        })
       } catch (error) {
         console.error(error)
 
