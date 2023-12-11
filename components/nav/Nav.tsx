@@ -82,10 +82,10 @@ export default function MainNav() {
         label: 'About',
         href: `${REMOTE_URL}/about`,
       },
-      // {
-      //   label: 'News',
-      //   href: '/news',
-      // },
+      {
+        label: 'News',
+        href: '/news',
+      },
       {
         label: 'How it works',
         href: `${REMOTE_URL}/how-it-works`,
