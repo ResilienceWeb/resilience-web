@@ -1,4 +1,4 @@
-import client from '@mailchimp/mailchimp_marketing'
+import mailchimp from '@mailchimp/mailchimp_marketing'
 
 export default async (req, res) => {
   const { email } = req.body
@@ -9,21 +9,16 @@ export default async (req, res) => {
     })
   }
 
-  client.setConfig({
+  mailchimp.setConfig({
     apiKey: process.env.MAILCHIMP_API_KEY,
     server: 'us13',
   })
 
   try {
-    const response = await client.lists.addListMember(
-      process.env.MAILCHIMP_LIST_ID,
-      {
-        email_address: email,
-        status: 'subscribed',
-      },
-    )
-
-    console.log(response)
+    await mailchimp.lists.addListMember(process.env.MAILCHIMP_LIST_ID, {
+      email_address: email,
+      status: 'subscribed',
+    })
 
     return res.status(201).json({ error: null })
   } catch (error) {
