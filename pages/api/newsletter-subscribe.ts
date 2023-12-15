@@ -17,7 +17,7 @@ export default async (req, res) => {
   try {
     await mailchimp.lists.addListMember(process.env.MAILCHIMP_LIST_ID, {
       email_address: email,
-      status: 'subscribed',
+      status: 'pending',
     })
 
     return res.status(201).json({ error: null })
