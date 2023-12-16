@@ -14,10 +14,7 @@ export default function useDeleteListing() {
 
   return useMutation({
     mutationFn: deleteListingRequest,
-    onSuccess: (data) => {
-      queryClient.setQueryData(['listings', { id: data.id }], data)
-    },
-    onSettled: () => {
+    onSuccess: () => {
       void queryClient.invalidateQueries({
         queryKey: ['listings'],
       })
