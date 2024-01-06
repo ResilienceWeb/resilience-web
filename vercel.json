@@ -1,13 +1,4 @@
 {
-  "routes": [
-    {
-      "src": "/city",
-      "status": 301,
-      "headers": {
-        "Location": "/"
-      }
-    }
-  ],
   "rewrites": [
     {
       "source": "/ingest/:path*",
