@@ -1,39 +1,44 @@
-import type { Web } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { REMOTE_URL } from '@helpers/config'
 
-export async function fetchWebsHydrate({ published = false } = {}) {
+export async function fetchWebsHydrate({
+  published = false,
+  withAdminInfo = false,
+} = {}) {
   const BASE_URL =
     process.env.VERCEL_ENV === 'preview'
       ? 'https://resilienceweb.org.uk'
       : REMOTE_URL
 
   const response = await fetch(
-    `${BASE_URL}/api/webs?withListings=true&onlyPublished=${published}`,
+    `${BASE_URL}/api/webs?withListings=true&withAdminInfo=${withAdminInfo}&published=${published}`,
   )
-  const data: { webs: Web[] } = await response.json()
-  const { webs } = data
-  return webs || []
-}
-
-async function fetchWebsRequest({ queryKey }) {
-  const [_key, { published }] = queryKey
-  const response = await fetch(
-    `/api/webs?withListings=true&published=${published}`,
-  )
-  const responseJson: { data: Web[] } = await response.json()
+  const responseJson = await response.json()
   const { data: webs } = responseJson
   return webs || []
 }
 
-export default function useWebs({ published = false } = {}) {
+async function fetchWebsRequest({ queryKey }) {
+  const [_key, { published, withAdminInfo }] = queryKey
+  const response = await fetch(
+    `/api/webs?withListings=true&withAdminInfo=${withAdminInfo}&published=${published}`,
+  )
+  const responseJson = await response.json()
+  const { data: webs } = responseJson
+  return webs || []
+}
+
+export default function useWebs({
+  published = false,
+  withAdminInfo = false,
+} = {}) {
   const {
     data: webs,
     isPending,
     isFetching,
     isError,
   } = useQuery({
-    queryKey: ['webs', { published }],
+    queryKey: ['webs', { published, withAdminInfo }],
     queryFn: fetchWebsRequest,
     refetchOnWindowFocus: false,
   })

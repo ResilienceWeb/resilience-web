@@ -22,10 +22,11 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
-import { HiViewList, HiUsers, HiOutlineLockOpen } from 'react-icons/hi'
+import { HiViewList, HiUsers } from 'react-icons/hi'
 import { FiSettings } from 'react-icons/fi'
 import { BsPersonCircle } from 'react-icons/bs'
 import { BiCategory } from 'react-icons/bi'
+import { GrOverview } from 'react-icons/gr'
 
 import WebSelector from './web-selector'
 import LogoImage from '../../../public/logo.png'
@@ -81,9 +82,9 @@ const Nav = () => {
 
     if (session?.user.admin) {
       links.push({
-        label: 'Permissions',
-        href: '/admin/permissions',
-        icon: <Icon as={HiOutlineLockOpen} fontSize="lg" />,
+        label: 'Overview',
+        href: '/admin/overview',
+        icon: <Icon as={GrOverview} fontSize="lg" />,
       })
     }
 

@@ -10,7 +10,6 @@ import {
   Thead,
   Tr,
   Stack,
-  useColorModeValue as mode,
 } from '@chakra-ui/react'
 
 import CategoryTag from '@components/category-tag'
@@ -20,7 +19,7 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
 
   return (
     <Table my="8" borderWidth="1px" fontSize="sm" background="#ffffff">
-      <Thead bg={mode('gray.50', 'gray.800')}>
+      <Thead bg="gray.50">
         <Tr>
           {columns.map((column, index) => (
             <Th whiteSpace="nowrap" scope="col" key={index}>

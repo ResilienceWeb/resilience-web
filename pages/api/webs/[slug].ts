@@ -18,10 +18,47 @@ const handler = async (
     const { slug } = req.query
     switch (req.method) {
       case 'GET':
+        const withListings = req.query.withListings
+          ? stringToBoolean(req.query.withListings as string)
+          : false
+
+        const withAdminInfo = req.query.withAdminInfo
+          ? stringToBoolean(req.query.withAdminInfo as string)
+          : false
+
+        const include = Prisma.validator<Prisma.WebInclude>()({
+          listings: {},
+          permissions: {},
+          ownerships: {},
+        })
+
+        if (withListings) {
+          include.listings = {
+            select: {
+              id: true,
+              webId: true,
+            },
+          }
+        }
+
+        if (withAdminInfo) {
+          include.permissions = {
+            include: {
+              user: true,
+            },
+          }
+          include.ownerships = {
+            include: {
+              user: true,
+            },
+          }
+        }
+
         const web: Data['web'] = await prisma.web.findFirst({
           where: {
             slug,
           },
+          include,
         })
         res.status(200).send({ web })
         break

@@ -63,18 +63,18 @@ model VerificationToken {
 }
 
 model Web {
-  createdAt  DateTime     @default(now()) @map("created_at")
-  updatedAt  DateTime     @default(now()) @map("updated_at")
-  id         Int          @id @default(autoincrement())
-  title      String       @unique
-  slug       String       @unique
-  categories Category[]
-  listings   Listing[]
-  tags       Tag[]
-  permission Permission[]
-  published  Boolean      @default(false)
-  image      String?
-  ownerships Ownership[]
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @default(now()) @map("updated_at")
+  id          Int          @id @default(autoincrement())
+  title       String       @unique
+  slug        String       @unique
+  categories  Category[]
+  listings    Listing[]
+  tags        Tag[]
+  published   Boolean      @default(false)
+  image       String?
+  permissions Permission[]
+  ownerships  Ownership[]
 
   @@map("Location")
 }

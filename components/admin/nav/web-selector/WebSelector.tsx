@@ -1,4 +1,5 @@
 import { memo, useMemo, useCallback, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Select from 'react-select'
 import { Text } from '@chakra-ui/react'
 import type { Options } from 'react-select'
@@ -15,6 +16,7 @@ type WebOption = {
 }
 
 const WebSelector = () => {
+  const router = useRouter()
   const { data: session } = useSession()
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
   const {
@@ -69,7 +71,6 @@ const WebSelector = () => {
 
   const handleWebChange = useCallback(
     (webOption) => {
-      console.log('setting to', webOption.value)
       setSelectedWebSlug(webOption.value)
     },
     [setSelectedWebSlug],
@@ -107,6 +108,11 @@ const WebSelector = () => {
     isFetchingOwnerships,
   ])
 
+  const isOverviewPage = useMemo(
+    () => router.pathname.includes('/admin/overview'),
+    [router.pathname],
+  )
+
   if (webOptions.length === 1) {
     return (
       <Text fontWeight={600} fontSize="lg" color="gray.700">
@@ -115,7 +121,7 @@ const WebSelector = () => {
     )
   }
 
-  if (webOptions.length === 0) {
+  if (webOptions.length === 0 || isOverviewPage) {
     return null
   }
 

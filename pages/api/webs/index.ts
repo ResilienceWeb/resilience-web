@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import type { Web } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
@@ -42,12 +43,36 @@ const handler = async (
         ? stringToBoolean(req.query.withListings as string)
         : false
 
+      const withAdminInfo = req.query.withAdminInfo
+        ? stringToBoolean(req.query.withAdminInfo as string)
+        : false
+
       const onlyPublished = req.query.published
         ? stringToBoolean(req.query.published as string)
         : false
 
+      const include = Prisma.validator<Prisma.WebInclude>()({
+        listings: {},
+        permissions: {},
+        ownerships: {},
+      })
+
+      if (withListings) {
+        include.listings = {
+          select: {
+            id: true,
+            webId: true,
+          },
+        }
+      }
+
+      if (withAdminInfo) {
+        include.permissions = true
+        include.ownerships = true
+      }
+
       try {
-        const webs: Data['webs'] = await prisma.web.findMany({
+        const webs = await prisma.web.findMany({
           where: {
             ...(onlyPublished
               ? {
@@ -55,16 +80,7 @@ const handler = async (
                 }
               : {}),
           },
-          include: withListings
-            ? {
-                listings: {
-                  select: {
-                    id: true,
-                    webId: true,
-                  },
-                },
-              }
-            : null,
+          include,
         })
 
         res.status(200).json({ data: webs, webs })
