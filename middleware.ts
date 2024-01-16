@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 

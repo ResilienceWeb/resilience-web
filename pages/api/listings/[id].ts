@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
 import { getServerSession } from 'next-auth/next'

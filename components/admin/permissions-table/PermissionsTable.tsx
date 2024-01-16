@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import { memo } from 'react'
 import { Badge, Stack, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 

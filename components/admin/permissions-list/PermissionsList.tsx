@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import { memo, useCallback, useMemo } from 'react'
 import { Formik, Form, Field, FieldProps } from 'formik'
 import isEqual from 'lodash/isEqual'

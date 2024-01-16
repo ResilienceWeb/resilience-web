@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import { memo, useEffect, useMemo } from 'react'
 import { Formik, Form, Field, FieldProps, useFormikContext } from 'formik'
 import ReactSelect from 'react-select'

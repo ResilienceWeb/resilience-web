@@ -10,7 +10,6 @@ import InviteEmail from '@components/emails/InviteEmail'
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const session = await getServerSession(req, res, authOptions)

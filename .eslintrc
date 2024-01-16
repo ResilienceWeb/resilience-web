@@ -147,6 +147,7 @@
         "allowFinally": true
       }
     ],
-    "@typescript-eslint/no-base-to-string": 0
+    "@typescript-eslint/no-base-to-string": 0,
+    "sonarjs/cognitive-complexity": 0
   }
 }
