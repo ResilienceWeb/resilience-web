@@ -33,7 +33,7 @@ export default function Settings() {
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
   const { isPending: isPendingPermissions } = usePermissions()
   const { selectedWebSlug } = useAppContext()
-  const { web: webData } = useWeb(selectedWebSlug)
+  const { web: webData } = useWeb({ webSlug: selectedWebSlug })
   const { updateWeb, isPending, isSuccess } = useUpdateWeb()
 
   const toast = useToast()
