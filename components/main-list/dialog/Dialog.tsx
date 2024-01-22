@@ -227,13 +227,7 @@ const Dialog = ({
             {socialLinks}
 
             <Link as={NextLink} href={individualListingLink}>
-              <Button
-                bg="rw.700"
-                colorScheme="rw.700"
-                mt={2}
-                variant="solid"
-                _hover={{ bg: 'rw.900' }}
-              >
+              <Button mt={2} variant="solid">
                 Go to listing
               </Button>
             </Link>

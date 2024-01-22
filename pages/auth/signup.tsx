@@ -33,14 +33,7 @@ export default function SignUp({ csrfToken }) {
               Email
               <Input type="email" id="email" name="email" />
             </label>
-            <Button
-              type="submit"
-              bg="rw.700"
-              colorScheme="rw.700"
-              mt={2}
-              width="100%"
-              _hover={{ bg: 'rw.900' }}
-            >
+            <Button type="submit" mt={2} width="100%">
               Sign up
             </Button>
           </form>

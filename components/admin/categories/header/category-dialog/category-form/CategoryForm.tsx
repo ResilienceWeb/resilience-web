@@ -98,15 +98,12 @@ const CategoryForm = ({
             )}
 
             <Button
-              bg="rw.700"
-              colorScheme="rw.700"
               mt={4}
               ml={2}
               variant="solid"
               isDisabled={!props.isValid}
               isLoading={props.isSubmitting}
               type="submit"
-              _hover={{ bg: 'rw.900' }}
             >
               {category ? 'Update' : 'Create'}
             </Button>

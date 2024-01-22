@@ -500,13 +500,10 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
 
             <Box px={{ base: 4, sm: 6 }} py={3} bg="gray.50" textAlign="right">
               <Button
-                bg="rw.700"
-                colorScheme="rw.700"
                 isDisabled={!props.isValid}
                 isLoading={props.isSubmitting}
                 size="md"
                 type="submit"
-                _hover={{ bg: 'rw.900' }}
               >
                 Submit
               </Button>

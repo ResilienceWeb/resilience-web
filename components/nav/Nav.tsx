@@ -173,7 +173,6 @@ export default function MainNav() {
                 <Button
                   onClick={handleOpenFeedbackDialog}
                   size="md"
-                  colorScheme="rw.900"
                   variant="outline"
                 >
                   Get in touch

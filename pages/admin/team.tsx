@@ -198,14 +198,11 @@ export default function Team() {
                           </chakra.div>
 
                           <Button
-                            bg="rw.700"
-                            colorScheme="rw.700"
                             mt={4}
                             variant="solid"
                             isDisabled={!props.isValid}
                             isLoading={props.isSubmitting}
                             type="submit"
-                            _hover={{ bg: 'rw.900' }}
                           >
                             Send invite
                           </Button>

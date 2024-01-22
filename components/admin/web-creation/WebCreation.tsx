@@ -161,13 +161,10 @@ const WebCreation = () => {
                 </chakra.div>
 
                 <Button
-                  bg="rw.700"
-                  colorScheme="rw.700"
                   mt={4}
                   variant="solid"
                   isLoading={isPending}
                   type="submit"
-                  _hover={{ bg: 'rw.900' }}
                 >
                   Get started
                 </Button>

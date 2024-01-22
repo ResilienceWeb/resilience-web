@@ -46,15 +46,7 @@ const DeleteConfirmationialog: React.FC<props> = ({
             >
               Yes, delete
             </Button>
-            <Button
-              bg="rw.700"
-              colorScheme="rw.700"
-              mt={4}
-              ml={2}
-              variant="solid"
-              onClick={onClose}
-              _hover={{ bg: 'rw.900' }}
-            >
+            <Button mt={4} ml={2} variant="solid" onClick={onClose}>
               Cancel
             </Button>
           </ModalFooter>

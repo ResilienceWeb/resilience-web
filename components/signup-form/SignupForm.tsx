@@ -72,8 +72,6 @@ const SignupForm = () => {
                 type="submit"
                 h="100%"
                 size="md"
-                bg="rw.700"
-                colorScheme="rw.700"
                 color="white"
                 borderLeftRadius="none"
                 borderRightRadius="md"
@@ -81,7 +79,6 @@ const SignupForm = () => {
                 cursor="pointer"
                 fontWeight={600}
                 isDisabled={!props.isValid}
-                _hover={{ bg: 'rw.900' }}
               >
                 Submit
               </Button>

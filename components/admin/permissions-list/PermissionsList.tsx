@@ -226,8 +226,6 @@ const PermissionsList = ({ permissions }) => {
                         bgColor="whiteAlpha.800"
                       >
                         <Button
-                          bg="rw.700"
-                          colorScheme="rw.700"
                           isDisabled={
                             !props.isValid ||
                             isEqual(
@@ -238,7 +236,6 @@ const PermissionsList = ({ permissions }) => {
                           isLoading={isUpdatingPermission}
                           size="md"
                           type="submit"
-                          _hover={{ bg: 'rw.900' }}
                         >
                           Update permissions
                         </Button>

@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { DefaultSeo } from 'next-seo'
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import {
+  ChakraProvider,
+  defineStyleConfig,
+  extendTheme,
+} from '@chakra-ui/react'
 import {
   HydrationBoundary,
   QueryClientProvider,
@@ -29,6 +33,27 @@ if (typeof window !== 'undefined') {
   posthog.debug(false)
 }
 
+const Button = defineStyleConfig({
+  defaultProps: {
+    colorScheme: 'rw',
+  },
+  variants: {
+    solid: {
+      bg: 'rw.700',
+      _hover: {
+        bg: 'rw.900',
+      },
+    },
+    outline: {
+      borderColor: 'rw.700',
+      _hover: {
+        bg: 'rw.100',
+        color: 'rw.900',
+      },
+    },
+  },
+})
+
 const theme = extendTheme({
   styles: {
     global: {
@@ -41,9 +66,7 @@ const theme = extendTheme({
     },
   },
   components: {
-    Button: {
-      defaultProps: {},
-    },
+    Button,
   },
   colors: {
     rw: {

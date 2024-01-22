@@ -85,14 +85,11 @@ const TableActions = ({
             </InputGroup>
           </Stack>
           <Button
-            bg="rw.700"
-            colorScheme="rw.700"
             leftIcon={<HiPlus fontSize="1.25em" />}
             onClick={goToCreateListing}
             variant="solid"
             size="lg"
             maxHeight="36px"
-            _hover={{ bg: 'rw.900' }}
           >
             New listing
           </Button>

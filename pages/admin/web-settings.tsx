@@ -186,14 +186,11 @@ export default function Settings() {
                         </Field>
 
                         <Button
-                          bg="rw.700"
-                          colorScheme="rw.700"
                           mt={4}
                           variant="solid"
                           isDisabled={!props.isValid || !props.dirty}
                           isLoading={isPending}
                           type="submit"
-                          _hover={{ bg: 'rw.900' }}
                         >
                           Update
                         </Button>

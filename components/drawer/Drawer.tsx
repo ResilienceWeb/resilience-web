@@ -66,14 +66,7 @@ const Drawer = ({
           <Divider />
           <Box p="1rem">
             <Link href={`${window.location.href}new-listing`} target="_blank">
-              <Button
-                bg="rw.700"
-                colorScheme="rw.700"
-                size="lg"
-                _hover={{ bg: 'rw.900' }}
-              >
-                Propose new listing
-              </Button>
+              <Button size="lg">Propose new listing</Button>
             </Link>
             <Text fontSize="0.875rem" color="gray.600" mt="0.25rem">
               Know something that isn't yet listed? Let us know!
@@ -156,7 +149,6 @@ const Drawer = ({
           >
             <Button
               className={styles.donateButton}
-              colorScheme="rw.700"
               size="lg"
               rightIcon={<HiHeart />}
             >

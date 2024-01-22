@@ -27,14 +27,11 @@ const Header = () => {
     <>
       <Flex justifyContent="flex-end" mb={8}>
         <Button
-          bg="rw.700"
-          colorScheme="rw.700"
           iconSpacing="1"
           leftIcon={<HiPlus fontSize="1.25em" />}
           onClick={onOpen}
           variant="solid"
           size="sm"
-          _hover={{ bg: 'rw.900' }}
         >
           New category
         </Button>
