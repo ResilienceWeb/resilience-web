@@ -40,10 +40,21 @@ const theme = extendTheme({
       },
     },
   },
+  components: {
+    Button: {
+      defaultProps: {},
+    },
+  },
   colors: {
     rw: {
-      600: '#6BA182',
+      100: '#ccffd2',
+      200: '#b4fdbd',
+      300: '#8fef99',
+      400: '#75d77e',
+      500: '#64b46c',
+      600: '#429466',
       700: '#3A8159',
+      800: '#219152',
       900: '#09622f',
     },
   },
