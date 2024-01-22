@@ -108,7 +108,7 @@ export default function WebOverview() {
                 Published
               </Badge>
             ) : (
-              <Badge>Private</Badge>
+              <Badge fontSize="lg">Private</Badge>
             )}
           </Flex>
           <Link

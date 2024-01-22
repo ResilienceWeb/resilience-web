@@ -14,7 +14,6 @@ export default function VerifyRequest() {
           bgColor="#ffffff"
           p={12}
           borderRadius={12}
-          opacity="0.9"
           display="flex"
           justifyContent="center"
           alignItems="center"
@@ -24,7 +23,7 @@ export default function VerifyRequest() {
             Check your email
           </Heading>
 
-          <p>A sign in link has been sent to your email address.</p>
+          <p>An authentication link has been sent to your email address.</p>
         </Box>
       </Flex>
     </div>

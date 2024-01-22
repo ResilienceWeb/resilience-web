@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import { useSession } from 'next-auth/react'
 import {
   chakra,
   Heading,
@@ -78,7 +77,6 @@ const SlugField = () => {
 }
 
 const WebCreation = () => {
-  const { data: session } = useSession()
   const { createWeb, isPending, isSuccess } = useCreateWeb()
   const { setSelectedWebSlug } = useAppContext()
   const router = useRouter()
@@ -98,10 +96,6 @@ const WebCreation = () => {
     },
     [createWeb],
   )
-
-  if (!session) {
-    return null
-  }
 
   return (
     <>

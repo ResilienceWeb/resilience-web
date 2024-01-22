@@ -1,20 +1,12 @@
 import { getCsrfToken } from 'next-auth/react'
 import type { GetServerSideProps } from 'next'
 import NextLink from 'next/link'
-import {
-  Button,
-  Input,
-  Flex,
-  Box,
-  Heading,
-  Center,
-  Link,
-} from '@chakra-ui/react'
+import { Button, Input, Flex, Box, Text, Center, Link } from '@chakra-ui/react'
 import Image from 'next/legacy/image'
 import LogoImage from '../../public/logo.png'
 import styles from './auth.module.scss'
 
-export default function SignIn({ csrfToken }) {
+export default function SignUp({ csrfToken }) {
   return (
     <div className={styles.root}>
       <Flex
@@ -32,10 +24,8 @@ export default function SignIn({ csrfToken }) {
               height="104"
             />
           </Box>
-          <Center mb="3rem">
-            <Heading as="h2" fontSize="2xl">
-              Sign in
-            </Heading>
+          <Center mb="2rem">
+            <Text fontSize="md">Welcome! Enter your email to get started:</Text>
           </Center>
           <form method="post" action="/api/auth/signin/email">
             <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
@@ -51,19 +41,19 @@ export default function SignIn({ csrfToken }) {
               width="100%"
               _hover={{ bg: 'rw.900' }}
             >
-              Sign in
+              Sign up
             </Button>
           </form>
         </Box>
         <Box bgColor="#ffffff" p={6} borderRadius={12} width="400px">
-          Not a member of Resilience Web?{' '}
+          Already have an account?{' '}
           <Link
             as={NextLink}
-            href="/auth/signup"
+            href="/auth/signin"
             color="rw.900"
             _hover={{ color: 'rw.700' }}
           >
-            Sign up
+            Sign in
           </Link>
         </Box>
       </Flex>
