@@ -1,10 +1,10 @@
 /* stylelint-disable declaration-property-unit-allowed-list */
 .donateButton {
-  color: rgb(255 255 255 / 90%);
-  border-radius: 50px;
-  background: linear-gradient(-45deg, #FFA63D, #FF3D77, #338AFF, #3CF0C5);
-  background-size: 600%;
-  animation: animate-gradient 16s linear infinite;
+  color: rgb(255 255 255 / 90%) !important;
+  border-radius: 50px !important;
+  background: linear-gradient(-45deg, #FFA63D, #FF3D77, #338AFF, #3CF0C5) !important;
+  background-size: 600% !important;
+  animation: animate-gradient 16s linear infinite !important;
 }
 
 @keyframes animate-gradient {
