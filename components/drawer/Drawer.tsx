@@ -147,13 +147,10 @@ const Drawer = ({
             href="https://opencollective.com/resilience-web"
             target="_blank"
           >
-            <Button
-              className={styles.donateButton}
-              size="lg"
-              rightIcon={<HiHeart />}
-            >
-              Donate
-            </Button>
+            <button className={styles.donateButton}>
+              Donate &nbsp;
+              <HiHeart />
+            </button>
           </Link>
         </Box>
       </Flex>

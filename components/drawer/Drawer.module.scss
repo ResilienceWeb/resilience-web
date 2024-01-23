@@ -1,5 +1,13 @@
 /* stylelint-disable declaration-property-unit-allowed-list */
 .donateButton {
+  min-width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.125rem;
+  padding-left: 24px;
+  padding-right: 24px;
   color: rgb(255 255 255 / 90%) !important;
   border-radius: 50px !important;
   background: linear-gradient(-45deg, #FFA63D, #FF3D77, #338AFF, #3CF0C5) !important;
