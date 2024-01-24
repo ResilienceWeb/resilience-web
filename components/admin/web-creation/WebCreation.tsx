@@ -160,12 +160,7 @@ const WebCreation = () => {
                   <SlugField />
                 </chakra.div>
 
-                <Button
-                  mt={4}
-                  variant="solid"
-                  isLoading={isPending}
-                  type="submit"
-                >
+                <Button mt={4} variant="rw" isLoading={isPending} type="submit">
                   Get started
                 </Button>
               </Form>

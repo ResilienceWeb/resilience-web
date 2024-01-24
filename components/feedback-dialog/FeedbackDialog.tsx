@@ -133,7 +133,7 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
                   <ModalFooter pr="0">
                     <Button
                       mt={4}
-                      variant="solid"
+                      variant="rw"
                       isLoading={props.isSubmitting}
                       type="submit"
                     >

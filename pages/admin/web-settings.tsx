@@ -187,7 +187,7 @@ export default function Settings() {
 
                         <Button
                           mt={4}
-                          variant="solid"
+                          variant="rw"
                           isDisabled={!props.isValid || !props.dirty}
                           isLoading={isPending}
                           type="submit"

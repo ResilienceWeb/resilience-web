@@ -44,7 +44,7 @@ const JoinTheCommunity = () => {
             2. Join our Discord community
           </Heading>
           <Link href="https://discord.gg/SHj2wmRDwR" isExternal>
-            <Button mt={2} variant="solid" size="md" leftIcon={<FaDiscord />}>
+            <Button mt={2} variant="rw" size="md" leftIcon={<FaDiscord />}>
               Join the Community
             </Button>
           </Link>

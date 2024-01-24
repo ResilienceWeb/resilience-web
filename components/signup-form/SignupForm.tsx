@@ -79,6 +79,7 @@ const SignupForm = () => {
                 cursor="pointer"
                 fontWeight={600}
                 isDisabled={!props.isValid}
+                variant="rw"
               >
                 Submit
               </Button>

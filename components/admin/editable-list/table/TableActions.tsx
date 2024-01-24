@@ -87,7 +87,7 @@ const TableActions = ({
           <Button
             leftIcon={<HiPlus fontSize="1.25em" />}
             onClick={goToCreateListing}
-            variant="solid"
+            variant="rw"
             size="lg"
             maxHeight="36px"
           >

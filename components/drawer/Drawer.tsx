@@ -66,7 +66,9 @@ const Drawer = ({
           <Divider />
           <Box p="1rem">
             <Link href={`${window.location.href}new-listing`} target="_blank">
-              <Button size="lg">Propose new listing</Button>
+              <Button size="lg" variant="rw">
+                Propose new listing
+              </Button>
             </Link>
             <Text fontSize="0.875rem" color="gray.600" mt="0.25rem">
               Know something that isn't yet listed? Let us know!

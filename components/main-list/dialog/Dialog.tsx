@@ -227,7 +227,7 @@ const Dialog = ({
             {socialLinks}
 
             <Link as={NextLink} href={individualListingLink}>
-              <Button mt={2} variant="solid">
+              <Button mt={2} variant="rw">
                 Go to listing
               </Button>
             </Link>

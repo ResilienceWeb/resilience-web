@@ -199,7 +199,7 @@ export default function Team() {
 
                           <Button
                             mt={4}
-                            variant="solid"
+                            variant="rw"
                             isDisabled={!props.isValid}
                             isLoading={props.isSubmitting}
                             type="submit"

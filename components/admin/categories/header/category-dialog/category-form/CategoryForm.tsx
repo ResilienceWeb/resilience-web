@@ -100,7 +100,7 @@ const CategoryForm = ({
             <Button
               mt={4}
               ml={2}
-              variant="solid"
+              variant="rw"
               isDisabled={!props.isValid}
               isLoading={props.isSubmitting}
               type="submit"

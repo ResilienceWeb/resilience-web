@@ -30,7 +30,7 @@ const Header = () => {
           iconSpacing="1"
           leftIcon={<HiPlus fontSize="1.25em" />}
           onClick={onOpen}
-          variant="solid"
+          variant="rw"
           size="sm"
         >
           New tag

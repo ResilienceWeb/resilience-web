@@ -38,17 +38,18 @@ const Button = defineStyleConfig({
     colorScheme: 'rw',
   },
   variants: {
-    solid: {
-      bg: 'rw.700',
-      _hover: {
-        bg: 'rw.900',
-      },
-    },
     outline: {
       borderColor: 'rw.700',
       _hover: {
         bg: 'rw.100',
         color: 'rw.900',
+      },
+    },
+    rw: {
+      color: 'white',
+      bg: 'rw.700',
+      _hover: {
+        bg: 'rw.900',
       },
     },
   },
