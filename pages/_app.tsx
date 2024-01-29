@@ -24,7 +24,7 @@ import '@styles/vis-network-simplified.css'
 import StoreProvider from '@store/StoreProvider'
 
 // Check that PostHog is client-side (used to handle Next.js SSR)
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
     api_host: 'https://resilienceweb.org.uk/ingest',
     ui_host: 'https://eu.posthog.com',
