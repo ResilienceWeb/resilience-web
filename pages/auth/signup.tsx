@@ -33,7 +33,7 @@ export default function SignUp({ csrfToken }) {
               Email
               <Input type="email" id="email" name="email" />
             </label>
-            <Button type="submit" mt={2} width="100%">
+            <Button type="submit" mt={2} width="100%" variant="rw">
               Sign up
             </Button>
           </form>

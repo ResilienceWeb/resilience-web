@@ -165,6 +165,7 @@ const Nav = () => {
           <Menu>
             <MenuButton
               as={Button}
+              colorScheme="gray"
               rounded="full"
               variant="link"
               cursor="pointer"

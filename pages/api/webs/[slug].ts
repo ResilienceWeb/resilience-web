@@ -54,7 +54,7 @@ const handler = async (
           }
         }
 
-        const web: Data['web'] = await prisma.web.findFirst({
+        const web: Data['web'] = await prisma.web.findUnique({
           where: {
             slug,
           },

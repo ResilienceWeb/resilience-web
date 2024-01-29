@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       })
     } else {
-      const ownership = await prisma.ownership.findFirst({
+      const ownership = await prisma.ownership.findUnique({
         where: {
           user: {
             id: {

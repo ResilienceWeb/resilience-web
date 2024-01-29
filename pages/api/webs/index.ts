@@ -105,32 +105,18 @@ const handler = async (
           title,
           slug,
           published: false,
-        },
-      })
-
-      for (const category of defaultCategories) {
-        await prisma.category.create({
-          data: {
-            ...category,
-            webId: web.id,
+          categories: {
+            create: defaultCategories,
           },
-        })
-      }
-
-      await prisma.ownership.upsert({
-        where: {
-          email: session.user.email,
-        },
-        create: {
-          email: session.user.email,
-          webs: {
-            connect: [{ id: web.id }],
-          },
-        },
-        update: {
-          email: session.user.email,
-          webs: {
-            connect: [{ id: web.id }],
+          ownerships: {
+            connectOrCreate: {
+              where: {
+                email: session.user.email,
+              },
+              create: {
+                email: session.user.email,
+              },
+            },
           },
         },
       })
