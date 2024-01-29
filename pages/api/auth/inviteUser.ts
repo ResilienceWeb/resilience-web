@@ -75,7 +75,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const emailEncoded = encodeURIComponent(email)
     const callToActionButtonUrl = `${REMOTE_URL}/admin?activate=${emailEncoded}`
 
-    const selectedWeb = await prisma.web.findUnique({
+    const selectedWeb = await prisma.web.findFirst({
       where: {
         id: webId,
       },
