@@ -77,7 +77,7 @@ const SlugField = () => {
 }
 
 const WebCreation = () => {
-  const { createWeb, isPending, isSuccess } = useCreateWeb()
+  const { createWeb, isPending, isSuccess, isError, error } = useCreateWeb()
   const { setSelectedWebSlug } = useAppContext()
   const router = useRouter()
 
@@ -159,6 +159,14 @@ const WebCreation = () => {
                 <chakra.div mb={3} maxW="450px">
                   <SlugField />
                 </chakra.div>
+
+                {isError && error.message === 'Conflict' && (
+                  <Text color="red.500" fontSize="0.875rem">
+                    Sorry, there's already be a web with the same title or link.
+                    Get in touch at info@resilienceweb.org.uk and we can put you
+                    in touch with the right people.
+                  </Text>
+                )}
 
                 <Button mt={4} variant="rw" isLoading={isPending} type="submit">
                   Get started

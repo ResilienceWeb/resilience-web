@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Web } from '@prisma/client'
 
-async function createWebRequest(webData): Promise<Web> {
+async function createWebRequest(webData): Promise<{ web: Web }> {
   const response = await fetch('/api/webs', {
     method: 'POST',
     headers: {
@@ -10,27 +10,24 @@ async function createWebRequest(webData): Promise<Web> {
     body: JSON.stringify(webData),
   })
 
-  const data = await response.json()
-  const { web } = data
-  return web
+  if (!response.ok) {
+    throw Error(response.statusText)
+  }
+
+  return response.json()
 }
 
 export default function useCreateWeb() {
-  const queryClient = useQueryClient()
-
-  const { data, isPending, isSuccess, mutate } = useMutation({
+  const { data, isPending, isSuccess, isError, error, mutate } = useMutation({
     mutationFn: createWebRequest,
-    onMutate: (newWeb) => {
-      const previousWebs = queryClient.getQueryData(['webs'])
-      queryClient.setQueryData(['webs', newWeb.id], newWeb)
-      return { previousWebs, newWeb }
-    },
   })
 
   return {
     createWeb: mutate,
     data,
+    error,
     isPending,
     isSuccess,
+    isError,
   }
 }

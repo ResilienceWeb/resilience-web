@@ -100,38 +100,38 @@ const handler = async (
 
       const { title, slug } = req.body
 
-      const web = await prisma.web.create({
-        data: {
-          title,
-          slug,
-          published: false,
-          categories: {
-            create: defaultCategories,
-          },
-          ownerships: {
-            connectOrCreate: {
-              where: {
-                email: session.user.email,
-              },
-              create: {
-                email: session.user.email,
+      try {
+        const web = await prisma.web.create({
+          data: {
+            title,
+            slug,
+            published: false,
+            categories: {
+              create: defaultCategories,
+            },
+            ownerships: {
+              connectOrCreate: {
+                where: {
+                  email: session.user.email,
+                },
+                create: {
+                  email: session.user.email,
+                },
               },
             },
           },
-        },
-      })
+        })
 
-      const webCreatedEmailComponent = WebCreatedEmail({
-        webTitle: `${web.title}`,
-        url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin`,
-      })
+        const webCreatedEmailComponent = WebCreatedEmail({
+          webTitle: `${web.title}`,
+          url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin`,
+        })
 
-      const webCreatedAdminEmailComponent = WebCreatedAdminEmail({
-        webTitle: `${web.title}`,
-        email: `${session?.user.email}`,
-      })
+        const webCreatedAdminEmailComponent = WebCreatedAdminEmail({
+          webTitle: `${web.title}`,
+          email: `${session?.user.email}`,
+        })
 
-      try {
         await sendEmail({
           to: session?.user.email,
           subject: `Thank you for creating ${web.title} Resilience Web 🎉`,
@@ -145,16 +145,15 @@ const handler = async (
           subject: `Someone just created a new resilience web 🎉`,
           email: webCreatedAdminEmailComponent,
         })
-      } catch (error) {
-        console.error(error)
 
-        if (error.response) {
-          console.error(error.response.body)
+        res.status(201).json({ data: web, webs: null })
+      } catch (error) {
+        if (error.code === 'P2002') {
+          res.status(409).json({
+            error: 'Sorry, a web with the same title or link already exists',
+          })
         }
       }
-
-      res.status(201)
-      res.json({ data: web, webs: null })
 
       break
     }
