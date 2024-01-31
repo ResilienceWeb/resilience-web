@@ -50,6 +50,9 @@ const Button = defineStyleConfig({
       bg: 'rw.700',
       _hover: {
         bg: 'rw.900',
+        _disabled: {
+          bg: 'rw.900',
+        },
       },
     },
   },
