@@ -12,6 +12,7 @@ import {
   Flex,
   Stack,
   Icon,
+  Text,
 } from '@chakra-ui/react'
 
 import optimizeImage from '@helpers/optimizeImage'
@@ -59,6 +60,10 @@ const ImageUpload = ({
       <FormLabel htmlFor="image" fontSize="sm" fontWeight="600">
         {`Image${isRequired ? '*' : ''}`}
       </FormLabel>
+      <Text fontSize="0.8125rem" color="gray.600" mb="0.5rem">
+        Please ensure this is either a copyright-free image, you own the
+        copyright of this image, or you have permission to use the image.
+      </Text>
       {helperText && <FormHelperText mb="1.5rem">{helperText}</FormHelperText>}
       <InputGroup display="flex" alignItems="center" justifyContent="center">
         <VisuallyHidden>
