@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { ReactNode } from 'react'
-import { FaGithub, FaTwitter } from 'react-icons/fa'
+import { FaGithub, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa'
 import Image from 'next/legacy/image'
 
 import { REMOTE_URL } from '@helpers/config'
@@ -98,6 +98,18 @@ export default function Footer({ hideBorder = false }) {
                 href="https://twitter.com/ResilienceWeb"
               >
                 <FaTwitter />
+              </SocialButton>
+              <SocialButton
+                label="Instagram"
+                href="https://instagram.com/resilienceweb"
+              >
+                <FaInstagram />
+              </SocialButton>
+              <SocialButton
+                label="LinkedIn"
+                href="https://www.linkedin.com/company/resilience-web"
+              >
+                <FaLinkedin />
               </SocialButton>
               <SocialButton
                 label="Github"
