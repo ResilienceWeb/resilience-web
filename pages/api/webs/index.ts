@@ -92,8 +92,7 @@ const handler = async (
     case 'POST': {
       const session = await getServerSession(req, res, authOptions)
       if (!session?.user) {
-        res.status(403)
-        res.json({
+        res.status(403).json({
           error: 'You are not allowed to perform this action',
         })
       }
@@ -101,6 +100,22 @@ const handler = async (
       const { title, slug } = req.body
 
       try {
+        const currentOwnerships = await prisma.ownership.findUnique({
+          where: {
+            email: session.user.email,
+          },
+          include: {
+            webs: true,
+          },
+        })
+
+        if (currentOwnerships?.webs.length > 0 && !session.user.admin) {
+          res.status(403).json({
+            error:
+              'You already own a web and at present we do not allow anyone to create more than one. If you want to delete your current Resilience Web to create a new one please get in touch at info@resilienceweb.org.uk',
+          })
+        }
+
         const web = await prisma.web.create({
           data: {
             title,

@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Web } from '@prisma/client'
 
 async function createWebRequest(webData): Promise<{ web: Web }> {
@@ -11,7 +11,8 @@ async function createWebRequest(webData): Promise<{ web: Web }> {
   })
 
   if (!response.ok) {
-    throw Error(response.statusText)
+    const { error } = await response.json()
+    throw error
   }
 
   return response.json()
@@ -25,7 +26,7 @@ export default function useCreateWeb() {
   return {
     createWeb: mutate,
     data,
-    error,
+    errorMessage: error,
     isPending,
     isSuccess,
     isError,
