@@ -6,6 +6,9 @@ import { Prisma } from '@prisma/client'
 import prisma from '../../../prisma/client'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
+import ListingProposedEmail from '@components/emails/ListingProposedEmail'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { sendEmail } from '@helpers/email'
 
 type ResponseData = {
   error?: string
@@ -38,6 +41,8 @@ const handler = async (
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     void form.parse(req, async (_err, fields, files) => {
+      const isProposedListing = stringToBoolean(fields.pending[0])
+      const webId = parseInt(fields.webId[0])
       const newData: Prisma.ListingUncheckedCreateInput = {
         title: fields.title[0],
         categoryId: parseInt(fields.category[0]),
@@ -48,7 +53,7 @@ const handler = async (
         facebook: fields.facebook[0],
         instagram: fields.instagram[0],
         twitter: fields.twitter[0],
-        pending: stringToBoolean(fields.pending[0]),
+        pending: isProposedListing,
         seekingVolunteers: stringToBoolean(fields.seekingVolunteers[0]),
         slug: fields.slug[0],
       }
@@ -56,21 +61,51 @@ const handler = async (
       let imageUrl = null
       if (files.image) {
         imageUrl = await uploadImage(files.image[0])
-      }
-      if (imageUrl) {
-        newData.image = imageUrl
+        if (imageUrl) {
+          newData.image = imageUrl
+        }
       }
 
       const listing = await prisma.listing.create({
         data: newData,
       })
 
-      res.status(201)
-      res.json({ listing })
+      if (isProposedListing) {
+        const selectedWeb = await prisma.web.findUnique({
+          where: {
+            id: webId,
+          },
+          include: {
+            ownerships: {
+              select: {
+                email: true,
+              },
+            },
+          },
+        })
+
+        const webCreatedEmailComponent = ListingProposedEmail({
+          proposedListingTitle: listing.title,
+          webTitle: `${selectedWeb.title}`,
+          url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin/${selectedWeb.slug}`,
+        })
+
+        const emails = selectedWeb.ownerships.map(
+          (ownership) => ownership.email,
+        )
+        emails.forEach(async (email) => {
+          await sendEmail({
+            to: email,
+            subject: `Someone proposed a new listing for the ${selectedWeb.title} Resilience Web 🎉`,
+            email: webCreatedEmailComponent,
+          })
+        })
+      }
+
+      res.status(201).json({ listing })
     })
   } catch (e) {
-    res.status(500)
-    res.json({ error: `Unable to save listing to database - ${e}` })
+    res.status(500).json({ error: `Unable to save listing to database - ${e}` })
     console.error(`[RW] Unable to save listing to database - ${e}`)
   }
 }

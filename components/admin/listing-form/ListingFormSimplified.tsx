@@ -504,6 +504,7 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                 isLoading={props.isSubmitting}
                 size="md"
                 type="submit"
+                variant="rw"
               >
                 Submit
               </Button>

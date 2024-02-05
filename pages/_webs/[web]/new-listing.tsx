@@ -77,7 +77,7 @@ function Submit() {
               <Link
                 href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
               >
-                <Button mt="2rem" size="md">
+                <Button mt="2rem" size="md" variant="rw">
                   Go back to {selectedWebName} Resilience Web
                 </Button>
               </Link>

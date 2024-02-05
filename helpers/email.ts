@@ -4,8 +4,8 @@ import sgMail from '@sendgrid/mail'
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 export const sendEmail = async ({ to, subject, email }) => {
-  const webCreatedEmailHtml = render(email)
-  const webCreatedEmailText = render(email, {
+  const emailHtml = render(email)
+  const emailText = render(email, {
     plainText: true,
   })
 
@@ -13,7 +13,7 @@ export const sendEmail = async ({ to, subject, email }) => {
     from: `Resilience Web <info@resilienceweb.org.uk>`,
     to,
     subject,
-    text: webCreatedEmailText,
-    html: webCreatedEmailHtml,
+    html: emailHtml,
+    text: emailText,
   })
 }
