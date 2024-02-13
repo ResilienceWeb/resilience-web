@@ -124,8 +124,8 @@ export default function Footer({ hideBorder = false }) {
             <Link as={NextLink} href={`${REMOTE_URL}/about`}>
               About us
             </Link>
-            <Link as={NextLink} href={`${REMOTE_URL}/how-it-works`}>
-              How it works
+            <Link as={NextLink} href="https://resilienceweb.gitbook.io">
+              Knowledgebase
             </Link>
             <Link
               href="https://opencollective.com/resilience-web/donate"

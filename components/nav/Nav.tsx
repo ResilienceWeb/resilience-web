@@ -87,8 +87,9 @@ export default function MainNav() {
         href: '/news',
       },
       {
-        label: 'How it works',
-        href: `${REMOTE_URL}/how-it-works`,
+        label: 'Knowledgebase',
+        href: 'https://resilienceweb.gitbook.io',
+        isExternal: true,
       },
       {
         label: 'Donate',
