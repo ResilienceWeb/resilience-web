@@ -34,7 +34,7 @@ export default function useCategories() {
   })
 
   return {
-    categories: categories.sort((category1, category2) => {
+    categories: categories?.sort((category1, category2) => {
       if (category1.label < category2.label) {
         return -1
       }
