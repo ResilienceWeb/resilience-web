@@ -1,11 +1,16 @@
 .root {
   margin-top: 1rem;
 
-  p {
+  p, ul, ol {
     font-size: 1.125rem;
     line-height: 1.6;
     margin-bottom: 0.5rem;
     color: rgb(0 0 0 / 70%);
+  }
+
+  ul, ol {
+    list-style-position: outside;
+    padding-inline-start: 1.25rem;
   }
 
   h2, h3 {
