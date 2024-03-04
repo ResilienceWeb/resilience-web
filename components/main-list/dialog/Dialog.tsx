@@ -145,6 +145,7 @@ const Dialog = ({
           <Box
             width="672px"
             height="300px"
+            minHeight="300px"
             overflow="hidden"
             position="relative"
           >
