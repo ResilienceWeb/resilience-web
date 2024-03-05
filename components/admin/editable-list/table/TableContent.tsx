@@ -26,6 +26,7 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
               {column.Header}
             </Th>
           ))}
+          <Th>Info</Th>
           <Th />
         </Tr>
       </Thead>
@@ -41,6 +42,23 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
                 </Td>
               )
             })}
+
+            <Td maxWidth="120px">
+              Created on{' '}
+              <b>
+                {Intl.DateTimeFormat('en-GB', {
+                  dateStyle: 'long',
+                }).format(new Date(row.createdAt))}
+              </b>
+              <br />
+              Last updated on{' '}
+              <b>
+                {Intl.DateTimeFormat('en-GB', {
+                  dateStyle: 'long',
+                }).format(new Date(row.updatedAt))}
+              </b>
+            </Td>
+
             <Td textAlign="right" maxWidth="80px">
               <Stack direction="column" spacing={2}>
                 <Button
