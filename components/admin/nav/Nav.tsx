@@ -55,6 +55,7 @@ const Nav = () => {
         label: 'Listings',
         href: '/admin',
         icon: <Icon as={HiViewList} fontSize="lg" />,
+        tourId: 'nav-listings',
       })
     }
 
@@ -63,12 +64,14 @@ const Nav = () => {
         label: 'Categories & Tags',
         href: '/admin/categories',
         icon: <Icon as={BiCategory} fontSize="lg" />,
+        tourId: 'nav-categories',
       })
 
       links.push({
         label: 'Team',
         href: '/admin/team',
         icon: <Icon as={HiUsers} fontSize="lg" />,
+        tourId: 'nav-team',
       })
     }
 
@@ -77,6 +80,7 @@ const Nav = () => {
         label: 'Web Settings',
         href: '/admin/web-settings',
         icon: <Icon as={FiSettings} fontSize="lg" />,
+        tourId: 'nav-websettings',
       })
     }
 
@@ -137,6 +141,7 @@ const Nav = () => {
                   aria-current={
                     router.pathname === link.href ? 'page' : undefined
                   }
+                  data-tourid={link.tourId}
                   background="transparent"
                   color="gray.600"
                   fontWeight="600"

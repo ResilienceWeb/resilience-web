@@ -34,8 +34,6 @@ export default function Overview() {
 
   if (!session || !session.user.admin) return null
 
-  console.log({ webs })
-
   return (
     <>
       <NextSeo

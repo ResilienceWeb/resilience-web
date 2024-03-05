@@ -54,3 +54,9 @@ p > a {
     color: #09622f !important;
   }
 }
+
+/* driver.js popover */
+.driver-popover {
+  /* stylelint-disable-next-line declaration-property-unit-allowed-list */
+  max-width: 360px;
+}
