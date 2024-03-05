@@ -3,6 +3,8 @@ import { memo, useEffect, useMemo } from 'react'
 import { Center, Spinner } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
+import { driver } from 'driver.js'
+import 'driver.js/dist/driver.css'
 
 import LayoutContainer from '@components/admin/layout-container'
 import EditableList from '@components/admin/editable-list'
@@ -11,6 +13,58 @@ import { usePermissions } from '@hooks/permissions'
 import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 import { useAppContext } from '@store/hooks'
 import { useWebs } from '@hooks/webs'
+
+const driverObj = driver({
+  showProgress: true,
+  steps: [
+    {
+      element: '[data-tourid=new-listing]',
+      popover: {
+        title: 'Create your first listing 🙌',
+        description:
+          'Try to create your first listing here. Feel free to experiment, anything can be edited or deleted.',
+        side: 'left',
+        align: 'start',
+      },
+    },
+    {
+      element: '[data-tourid=nav-categories]',
+      popover: {
+        title: 'Edit categories & tags 🏷️',
+        description:
+          'All the categories and tags are customisable and you can edit them here.',
+        side: 'bottom',
+        align: 'center',
+      },
+    },
+    {
+      element: '[data-tourid=nav-team]',
+      popover: {
+        title: 'Manage your team',
+        description: 'Invite collaborators and manage your team here.',
+        side: 'bottom',
+        align: 'center',
+      },
+    },
+    {
+      element: '[data-tourid=nav-websettings]',
+      popover: {
+        title: 'Edit web settings ⚙️',
+        description:
+          'Upload a cover image for your web and publish it when it is ready.',
+        side: 'bottom',
+        align: 'center',
+      },
+    },
+    {
+      popover: {
+        title: 'We will let you crack on now 😊',
+        description:
+          "If you need any support along the way, don't hesitate to get in touch at info@resilienceweb.org.uk",
+      },
+    },
+  ],
+})
 
 const Admin = () => {
   const { data: session, status: sessionStatus } = useSession()
@@ -57,6 +111,15 @@ const Admin = () => {
     selectedWebId,
   ])
 
+  useEffect(() => {
+    if (router.query.firstTime === 'true') {
+      setTimeout(() => {
+        driverObj.drive()
+        router.replace('/admin', undefined, { shallow: true })
+      }, 3000)
+    }
+  }, [router, router.query.firstTime])
+
   if (sessionStatus === 'loading') {
     return (
       <Center height="100vh">
@@ -69,7 +132,9 @@ const Admin = () => {
     console.error('[RW-Client] Error fetching listings')
   }
 
-  if (!session) return null
+  if (!session) {
+    return null
+  }
 
   if (!isLoadingWebs && selectedWebSlug === null) {
     router.push('/admin/welcome')

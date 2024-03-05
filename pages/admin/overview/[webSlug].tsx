@@ -70,8 +70,6 @@ export default function WebOverview() {
 
   if (!session || !session.user.admin) return null
 
-  console.log({ web })
-
   return (
     <>
       <NextSeo

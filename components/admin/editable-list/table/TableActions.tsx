@@ -90,6 +90,7 @@ const TableActions = ({
             variant="rw"
             size="lg"
             maxHeight="36px"
+            data-tourid="new-listing"
           >
             New listing
           </Button>
