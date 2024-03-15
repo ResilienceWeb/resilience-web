@@ -1,14 +1,8 @@
-import { useCallback, useMemo } from 'react'
-import Image from 'next/legacy/image'
-import NextLink from 'next/link'
-import { useRouter } from 'next/router'
+import { useCallback } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import {
   Box,
   Flex,
-  HStack,
-  Link,
-  Icon,
   IconButton,
   Button,
   Menu,
@@ -16,89 +10,16 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  useDisclosure,
   useColorModeValue,
   Text,
-  Stack,
 } from '@chakra-ui/react'
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
-import { HiViewList, HiUsers } from 'react-icons/hi'
-import { FiSettings } from 'react-icons/fi'
+import { FiMenu } from 'react-icons/fi'
 import { BsPersonCircle } from 'react-icons/bs'
-import { BiCategory } from 'react-icons/bi'
-import { GrOverview } from 'react-icons/gr'
 
 import WebSelector from './web-selector'
-import LogoImage from '../../../public/logo.png'
-import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
-import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
-import { useAppContext } from '@store/hooks'
 
-const NavLink = ({ children, href }) => (
-  <Link as={NextLink} px={2} py={1} rounded={'md'} href={href}>
-    {children}
-  </Link>
-)
-
-const Nav = () => {
+const Nav = ({ onOpen }) => {
   const { data: session } = useSession()
-  const router = useRouter()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
-  const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
-  const { selectedWebId } = useAppContext()
-
-  const navLinks = useMemo(() => {
-    const links = []
-    if (selectedWebId) {
-      links.push({
-        label: 'Listings',
-        href: '/admin',
-        icon: <Icon as={HiViewList} fontSize="lg" />,
-        tourId: 'nav-listings',
-      })
-    }
-
-    if (hasPermissionForCurrentWeb || isOwnerOfCurrentWeb) {
-      links.push({
-        label: 'Categories & Tags',
-        href: '/admin/categories',
-        icon: <Icon as={BiCategory} fontSize="lg" />,
-        tourId: 'nav-categories',
-      })
-
-      links.push({
-        label: 'Team',
-        href: '/admin/team',
-        icon: <Icon as={HiUsers} fontSize="lg" />,
-        tourId: 'nav-team',
-      })
-    }
-
-    if (isOwnerOfCurrentWeb) {
-      links.push({
-        label: 'Web Settings',
-        href: '/admin/web-settings',
-        icon: <Icon as={FiSettings} fontSize="lg" />,
-        tourId: 'nav-websettings',
-      })
-    }
-
-    if (session?.user.admin) {
-      links.push({
-        label: 'Overview',
-        href: '/admin/overview',
-        icon: <Icon as={GrOverview} fontSize="lg" />,
-      })
-    }
-
-    return links
-  }, [
-    hasPermissionForCurrentWeb,
-    isOwnerOfCurrentWeb,
-    selectedWebId,
-    session?.user.admin,
-  ])
 
   const handleSignOut = useCallback(() => {
     signOut()
@@ -111,59 +32,17 @@ const Nav = () => {
       borderBottom={1}
       borderStyle="solid"
       borderColor={useColorModeValue('gray.200', 'gray.900')}
+      flex="1"
     >
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
         <IconButton
-          size={'md'}
-          icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-          aria-label={'Open Menu'}
-          display={{ lg: !isOpen ? 'none' : 'inherit' }}
-          onClick={isOpen ? onClose : onOpen}
+          variant="outline"
+          onClick={onOpen}
+          aria-label="open menu"
+          icon={<FiMenu />}
+          display={{ base: 'inherit', md: 'none' }}
         />
-        <HStack spacing={8} alignItems={'center'}>
-          <Box display={{ base: 'none', xl: 'inherit' }}>
-            <Link as={NextLink} href="/">
-              <button>
-                <Image
-                  alt="Resilience Web logo"
-                  src={LogoImage}
-                  width="148"
-                  height="50"
-                  unoptimized
-                />
-              </button>
-            </Link>
-          </Box>
-          <HStack as="nav" spacing={8} display={{ base: 'none', lg: 'flex' }}>
-            {navLinks.map((link) => (
-              <NavLink key={link.label} href={link.href}>
-                <Button
-                  aria-current={
-                    router.pathname === link.href ? 'page' : undefined
-                  }
-                  data-tourid={link.tourId}
-                  background="transparent"
-                  color="gray.600"
-                  fontWeight="600"
-                  leftIcon={link.icon}
-                  px="3"
-                  py="2"
-                  rounded="md"
-                  transition="all 0.2s"
-                  _hover={{
-                    bg: 'blackAlpha.100',
-                  }}
-                  _activeLink={{
-                    bg: 'blackAlpha.100',
-                  }}
-                >
-                  {link.label}
-                </Button>
-              </NavLink>
-            ))}
-          </HStack>
-        </HStack>
-        <Flex alignItems="center">
+        <Flex alignItems="center" justifyContent="space-between" width="100%">
           <Box mr="1rem">
             <WebSelector />
           </Box>
@@ -195,18 +74,6 @@ const Nav = () => {
           </Menu>
         </Flex>
       </Flex>
-
-      {isOpen ? (
-        <Box pb={4}>
-          <Stack as={'nav'} spacing={4}>
-            {navLinks.map((link) => (
-              <NavLink key={link.label} href={link.href}>
-                {link.label}
-              </NavLink>
-            ))}
-          </Stack>
-        </Box>
-      ) : null}
     </Box>
   )
 }
