@@ -78,9 +78,9 @@ const TableActions = ({
                 style={{
                   backgroundColor: '#ffffff',
                 }}
-                rounded="base"
                 value={searchTerm}
                 maxHeight="38px"
+                borderRadius="6px"
               />
             </InputGroup>
           </Stack>

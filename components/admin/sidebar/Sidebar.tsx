@@ -16,9 +16,10 @@ import {
   Button,
   Link,
   Stack,
+  Heading,
+  Text,
 } from '@chakra-ui/react'
-import { FiSettings } from 'react-icons/fi'
-import { HiViewList, HiUsers } from 'react-icons/hi'
+import { HiViewList, HiOutlineUsers, HiOutlineCog } from 'react-icons/hi'
 import { BiCategory } from 'react-icons/bi'
 import { GrOverview } from 'react-icons/gr'
 import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
@@ -82,7 +83,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       links.push({
         label: 'Team',
         href: '/admin/team',
-        icon: <Icon as={HiUsers} fontSize="lg" />,
+        icon: <Icon as={HiOutlineUsers} fontSize="lg" />,
         tourId: 'nav-team',
       })
     }
@@ -91,7 +92,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       links.push({
         label: 'Web Settings',
         href: '/admin/web-settings',
-        icon: <Icon as={FiSettings} fontSize="lg" />,
+        icon: <Icon as={HiOutlineCog} fontSize="xl" />,
         tourId: 'nav-websettings',
       })
     }
@@ -160,7 +161,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             ))}
           </Stack>
         </Box>
-        <Box padding="1.25rem">
+        <Box p="1rem">
+          <Heading as="h2" fontSize="1.25rem">
+            Support this project
+          </Heading>
+          <Text mb="0.75rem">
+            If you can, please support us via Open Collective to help us
+            continue building this platform.
+          </Text>
           <DonateButton />
         </Box>
       </Flex>
