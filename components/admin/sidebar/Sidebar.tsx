@@ -128,7 +128,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           <Flex
             h="20"
             alignItems="center"
-            mx="8"
+            ml="0.5rem"
+            my="0.75rem"
             justifyContent="space-between"
           >
             <Link as={NextLink} href="/">
@@ -136,8 +137,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 <Image
                   alt="Resilience Web logo"
                   src={LogoImage}
-                  width="148"
-                  height="50"
+                  width="222"
+                  height="75"
                   unoptimized
                 />
               </button>

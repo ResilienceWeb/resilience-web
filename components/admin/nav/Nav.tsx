@@ -41,6 +41,7 @@ const Nav = ({ onOpen }) => {
           aria-label="open menu"
           icon={<FiMenu />}
           display={{ base: 'inherit', md: 'none' }}
+          mr="1rem"
         />
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           <Box mr="1rem">

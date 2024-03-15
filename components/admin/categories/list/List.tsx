@@ -1,4 +1,5 @@
 import {
+  TableContainer,
   Table,
   Tbody,
   Td,
@@ -63,52 +64,54 @@ const List = ({ categories }) => {
 
   return (
     <>
-      <Table borderWidth="1px" fontSize="sm" background="#ffffff" mb={'2rem'}>
-        <Thead bg={'gray.50'}>
-          <Tr>
-            {columns.map((column, index) => (
-              <Th whiteSpace="nowrap" scope="col" key={index}>
-                {column.Header}
-              </Th>
-            ))}
-            <Th />
-          </Tr>
-        </Thead>
-        <Tbody>
-          {categories.map((row) => (
-            <Tr key={row.id}>
-              {columns.map((column, index) => {
-                const cell = row[column.accessor]
+      <TableContainer borderRadius="10px" borderStyle="solid" borderWidth="1px">
+        <Table fontSize="sm" background="#ffffff" mb="2rem">
+          <Thead bg={'gray.50'}>
+            <Tr>
+              {columns.map((column, index) => (
+                <Th whiteSpace="nowrap" scope="col" key={index}>
+                  {column.Header}
+                </Th>
+              ))}
+              <Th />
+            </Tr>
+          </Thead>
+          <Tbody>
+            {categories.map((row) => (
+              <Tr key={row.id}>
+                {columns.map((column, index) => {
+                  const cell = row[column.accessor]
 
-                if (column.accessor === 'color') {
+                  if (column.accessor === 'color') {
+                    return (
+                      <Td key={index} width="100px">
+                        <CategoryTag colorHex={cell}>{`#${cell}`}</CategoryTag>
+                      </Td>
+                    )
+                  }
+
                   return (
-                    <Td key={index} width="100px">
-                      <CategoryTag colorHex={cell}>{`#${cell}`}</CategoryTag>
+                    <Td key={index} maxWidth="100px">
+                      {cell}
                     </Td>
                   )
-                }
-
-                return (
-                  <Td key={index} maxWidth="100px">
-                    {cell}
-                  </Td>
-                )
-              })}
-              <Td textAlign="right" maxWidth="80px">
-                <Stack direction="column" spacing={2}>
-                  <Button
-                    colorScheme="blue"
-                    onClick={() => handleOpen(row.id)}
-                    size="sm"
-                  >
-                    Edit
-                  </Button>
-                </Stack>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
+                })}
+                <Td textAlign="right" maxWidth="80px">
+                  <Stack direction="column" spacing={2}>
+                    <Button
+                      colorScheme="blue"
+                      onClick={() => handleOpen(row.id)}
+                      size="sm"
+                    >
+                      Edit
+                    </Button>
+                  </Stack>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
       <UpdateCategoryDialog
         category={selectedCategory}
         isOpen={isOpen}

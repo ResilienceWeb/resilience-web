@@ -151,7 +151,7 @@ export default function Team() {
         <Stack spacing="2rem" divider={<StackDivider />}>
           {isOwnerOfCurrentWeb && (
             <Box>
-              <Heading mb="0.5rem">Invite team member</Heading>
+              <Heading mb="1.5rem">Invite team member</Heading>
               <Box
                 shadow="base"
                 rounded={[null, 'md']}
