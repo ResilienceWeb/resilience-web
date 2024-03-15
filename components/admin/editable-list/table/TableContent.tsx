@@ -38,14 +38,10 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
               {columns.map((column, index) => {
                 const cell = row[column.accessor]
                 const element = column.Cell?.(cell) ?? cell
-                return (
-                  <Td key={index} maxWidth="100px">
-                    {element}
-                  </Td>
-                )
+                return <Td key={index}>{element}</Td>
               })}
 
-              <Td maxWidth="120px">
+              <Td>
                 Created on{' '}
                 <b>
                   {Intl.DateTimeFormat('en-GB', {
@@ -61,7 +57,7 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
                 </b>
               </Td>
 
-              <Td textAlign="right" maxWidth="80px">
+              <Td textAlign="right">
                 <Stack direction="column" spacing={2}>
                   <Button
                     colorScheme={row.pending ? 'purple' : 'blue'}

@@ -33,6 +33,7 @@ const Nav = ({ onOpen }) => {
       borderStyle="solid"
       borderColor={useColorModeValue('gray.200', 'gray.900')}
       flex="1"
+      maxWidth="100vw"
     >
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
         <IconButton
@@ -40,7 +41,7 @@ const Nav = ({ onOpen }) => {
           onClick={onOpen}
           aria-label="open menu"
           icon={<FiMenu />}
-          display={{ base: 'inherit', md: 'none' }}
+          display={{ base: 'inherit', lg: 'none' }}
           mr="1rem"
         />
         <Flex alignItems="center" justifyContent="space-between" width="100%">

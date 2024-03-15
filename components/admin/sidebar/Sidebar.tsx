@@ -30,10 +30,15 @@ import LogoImage from '../../../public/logo.png'
 
 export default function Sidebar({ isOpen, onClose }) {
   return (
-    <Box position="relative" height="100vh" maxWidth="240px" flex={1}>
+    <Box
+      position="relative"
+      height="100vh"
+      width={{ base: '0', lg: '240px' }}
+      flexShrink="0"
+    >
       <SidebarContent
         onClose={() => onClose}
-        display={{ base: 'none', md: 'block' }}
+        display={{ base: 'none', lg: 'block' }}
       />
       <Drawer
         isOpen={isOpen}
@@ -118,7 +123,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       bg="#fafafa"
       borderRight="1px"
       borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-      w={{ base: 'full', md: 60 }}
+      maxWidth={{ base: 'full', lg: '240px' }}
       pos="fixed"
       h="full"
       zIndex="100"
@@ -145,7 +150,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
               </button>
             </Link>
             <CloseButton
-              display={{ base: 'flex', md: 'none' }}
+              display={{ base: 'flex', lg: 'none' }}
               onClick={onClose}
             />
           </Flex>
