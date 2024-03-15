@@ -1,11 +1,11 @@
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import {
-  Box,
   Heading,
   Badge,
   Center,
   Spinner,
+  TableContainer,
   Table,
   Tbody,
   Td,
@@ -43,17 +43,13 @@ export default function Overview() {
         }}
       />
       <LayoutContainer>
-        <Box
-          px={{
-            base: '4',
-            md: '10',
-          }}
-          py={4}
-          maxWidth="5xl"
-          mx="auto"
+        <Heading mb="1.5rem">Overview</Heading>
+        <TableContainer
+          borderRadius="10px"
+          borderStyle="solid"
+          borderWidth="1px"
         >
-          <Heading>Overview</Heading>
-          <Table my="8" borderWidth="1px" fontSize="sm" background="#ffffff">
+          <Table fontSize="sm" background="#ffffff">
             <Thead bg="gray.50">
               <Tr>
                 {columns.map((column, index) => (
@@ -110,7 +106,7 @@ export default function Overview() {
                 })}
             </Tbody>
           </Table>
-        </Box>
+        </TableContainer>
       </LayoutContainer>
     </>
   )

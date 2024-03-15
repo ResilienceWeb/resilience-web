@@ -68,41 +68,27 @@ export default function Categories() {
         }}
       />
       <LayoutContainer>
-        <Box
-          px={{
-            base: '4',
-            md: '10',
-          }}
-          py={4}
-          maxWidth="3xl"
-          mx="auto"
-        >
-          <Tabs>
-            <TabList>
-              <Tab>Categories</Tab>
-              <Tab>Tags</Tab>
-            </TabList>
+        <Tabs>
+          <TabList>
+            <Tab>Categories</Tab>
+            <Tab>Tags</Tab>
+          </TabList>
 
-            <TabPanels>
-              <TabPanel>
-                <Box mt={6}>
-                  <CategoriesHeader />
-                  <CategoriesList categories={orderedCategories} />
-                </Box>
-              </TabPanel>
-              <TabPanel>
-                <Box mt={6}>
-                  <TagsHeader />
-                  {isTagsPending ? (
-                    <LoadingSpinner />
-                  ) : (
-                    <TagsList tags={tags} />
-                  )}
-                </Box>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Box>
+          <TabPanels>
+            <TabPanel>
+              <Box mt={6}>
+                <CategoriesHeader />
+                <CategoriesList categories={orderedCategories} />
+              </Box>
+            </TabPanel>
+            <TabPanel>
+              <Box mt={6}>
+                <TagsHeader />
+                {isTagsPending ? <LoadingSpinner /> : <TagsList tags={tags} />}
+              </Box>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </LayoutContainer>
     </>
   )

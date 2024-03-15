@@ -3,6 +3,7 @@ import {
   Button,
   Badge,
   Tooltip,
+  TableContainer,
   Table,
   Tbody,
   Td,
@@ -18,69 +19,71 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
   if (!items) return null
 
   return (
-    <Table my="8" borderWidth="1px" fontSize="sm" background="#ffffff">
-      <Thead bg="gray.50">
-        <Tr>
-          {columns.map((column, index) => (
-            <Th whiteSpace="nowrap" scope="col" key={index}>
-              {column.Header}
-            </Th>
-          ))}
-          <Th>Info</Th>
-          <Th />
-        </Tr>
-      </Thead>
-      <Tbody>
-        {items.map((row, index) => (
-          <Tr key={index}>
-            {columns.map((column, index) => {
-              const cell = row[column.accessor]
-              const element = column.Cell?.(cell) ?? cell
-              return (
-                <Td key={index} maxWidth="100px">
-                  {element}
-                </Td>
-              )
-            })}
-
-            <Td maxWidth="120px">
-              Created on{' '}
-              <b>
-                {Intl.DateTimeFormat('en-GB', {
-                  dateStyle: 'long',
-                }).format(new Date(row.createdAt))}
-              </b>
-              <br />
-              Last updated on{' '}
-              <b>
-                {Intl.DateTimeFormat('en-GB', {
-                  dateStyle: 'long',
-                }).format(new Date(row.updatedAt))}
-              </b>
-            </Td>
-
-            <Td textAlign="right" maxWidth="80px">
-              <Stack direction="column" spacing={2}>
-                <Button
-                  colorScheme={row.pending ? 'purple' : 'blue'}
-                  onClick={() => goToEdit(row)}
-                  size="sm"
-                >
-                  {row.pending ? 'Review' : 'Edit'}
-                </Button>
-                <Button
-                  colorScheme="red"
-                  onClick={() => removeItem(row.id)}
-                  size="sm"
-                >
-                  Remove
-                </Button>
-              </Stack>
-            </Td>
+    <TableContainer borderRadius="10px" borderStyle="solid" borderWidth="1px">
+      <Table fontSize="sm" background="#ffffff">
+        <Thead bg="gray.50">
+          <Tr>
+            {columns.map((column, index) => (
+              <Th whiteSpace="nowrap" scope="col" key={index}>
+                {column.Header}
+              </Th>
+            ))}
+            <Th>Info</Th>
+            <Th />
           </Tr>
-        ))}
-      </Tbody>
-    </Table>
+        </Thead>
+        <Tbody>
+          {items.map((row, index) => (
+            <Tr key={index}>
+              {columns.map((column, index) => {
+                const cell = row[column.accessor]
+                const element = column.Cell?.(cell) ?? cell
+                return (
+                  <Td key={index} maxWidth="100px">
+                    {element}
+                  </Td>
+                )
+              })}
+
+              <Td maxWidth="120px">
+                Created on{' '}
+                <b>
+                  {Intl.DateTimeFormat('en-GB', {
+                    dateStyle: 'long',
+                  }).format(new Date(row.createdAt))}
+                </b>
+                <br />
+                Last updated on{' '}
+                <b>
+                  {Intl.DateTimeFormat('en-GB', {
+                    dateStyle: 'long',
+                  }).format(new Date(row.updatedAt))}
+                </b>
+              </Td>
+
+              <Td textAlign="right" maxWidth="80px">
+                <Stack direction="column" spacing={2}>
+                  <Button
+                    colorScheme={row.pending ? 'purple' : 'blue'}
+                    onClick={() => goToEdit(row)}
+                    size="sm"
+                  >
+                    {row.pending ? 'Review' : 'Edit'}
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    onClick={() => removeItem(row.id)}
+                    size="sm"
+                  >
+                    Remove
+                  </Button>
+                </Stack>
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
   )
 }
 

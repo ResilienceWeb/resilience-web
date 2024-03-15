@@ -1,4 +1,5 @@
 import {
+  TableContainer,
   Table,
   Tbody,
   Td,
@@ -50,44 +51,46 @@ const List = ({ tags }) => {
 
   return (
     <>
-      <Table borderWidth="1px" fontSize="sm" background="#ffffff" mb={'2rem'}>
-        <Thead bg={'gray.50'}>
-          <Tr>
-            {columns.map((column, index) => (
-              <Th whiteSpace="nowrap" scope="col" key={index}>
-                {column.Header}
-              </Th>
-            ))}
-            <Th />
-          </Tr>
-        </Thead>
-        <Tbody>
-          {tags.map((row) => (
-            <Tr key={row.id}>
-              {columns.map((column, index) => {
-                const cell = row[column.accessor]
-
-                return (
-                  <Td key={index} maxWidth="100px">
-                    {cell}
-                  </Td>
-                )
-              })}
-              <Td textAlign="right" maxWidth="80px">
-                <Stack direction="column" spacing={2}>
-                  <Button
-                    colorScheme="blue"
-                    onClick={() => handleOpen(row.id)}
-                    size="sm"
-                  >
-                    Edit
-                  </Button>
-                </Stack>
-              </Td>
+      <TableContainer borderRadius="10px" borderStyle="solid" borderWidth="1px">
+        <Table fontSize="sm" background="#ffffff" mb={'2rem'}>
+          <Thead bg={'gray.50'}>
+            <Tr>
+              {columns.map((column, index) => (
+                <Th whiteSpace="nowrap" scope="col" key={index}>
+                  {column.Header}
+                </Th>
+              ))}
+              <Th />
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {tags.map((row) => (
+              <Tr key={row.id}>
+                {columns.map((column, index) => {
+                  const cell = row[column.accessor]
+
+                  return (
+                    <Td key={index} maxWidth="100px">
+                      {cell}
+                    </Td>
+                  )
+                })}
+                <Td textAlign="right" maxWidth="80px">
+                  <Stack direction="column" spacing={2}>
+                    <Button
+                      colorScheme="blue"
+                      onClick={() => handleOpen(row.id)}
+                      size="sm"
+                    >
+                      Edit
+                    </Button>
+                  </Stack>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
       <UpdateTagDialog
         tag={selectedTag}
         isOpen={isOpen}

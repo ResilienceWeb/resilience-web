@@ -79,62 +79,52 @@ export default function WebOverview() {
         }}
       />
       <LayoutContainer>
-        <Box
-          px={{
-            base: '4',
-            md: '10',
-          }}
-          py={4}
-          maxWidth="5xl"
-          mx="auto"
+        <Button
+          leftIcon={<HiArrowLeft />}
+          name="Back"
+          mb={2}
+          ml={2}
+          onClick={goBack}
+          variant="link"
+          color="gray.700"
         >
-          <Button
-            leftIcon={<HiArrowLeft />}
-            name="Back"
-            mb={2}
-            ml={2}
-            onClick={goBack}
-            variant="link"
-            color="gray.700"
-          >
-            Back to main list
-          </Button>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Heading mb="1rem">{web.title}</Heading>
-            {web.published ? (
-              <Badge colorScheme="green" fontSize="lg">
-                Published
-              </Badge>
-            ) : (
-              <Badge fontSize="lg">Private</Badge>
-            )}
-          </Flex>
-          <Link
-            href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
-            target="_blank"
-            fontWeight={600}
-            color="rw.900"
-          >
-            {`${web.slug}.${REMOTE_HOSTNAME}`}
-          </Link>
-          <Text mt="1rem">
-            <strong>{web.listings.length}</strong> listings
-          </Text>
-
-          {(web.permissions?.length > 0 || decoratedOwnerships?.length > 0) && (
-            <Box mt="2rem">
-              <Heading as="h3" fontSize="1.75rem" mb="0.5rem">
-                Team
-              </Heading>
-              <PermissionsTable
-                permissions={[
-                  ...decoratedOwnerships,
-                  ...permissionsForCurrentWebWithoutOwners,
-                ]}
-              />
-            </Box>
+          Back to main list
+        </Button>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Heading mb="1rem">{web.title}</Heading>
+          {web.published ? (
+            <Badge colorScheme="green" fontSize="lg">
+              Published
+            </Badge>
+          ) : (
+            <Badge fontSize="lg">Private</Badge>
           )}
-        </Box>
+        </Flex>
+        <Link
+          href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
+          target="_blank"
+          fontWeight={600}
+          color="rw.900"
+        >
+          {`${web.slug}.${REMOTE_HOSTNAME}`}
+        </Link>
+        <Text mt="1rem">
+          <strong>{web.listings.length}</strong> listings
+        </Text>
+
+        {(web.permissions?.length > 0 || decoratedOwnerships?.length > 0) && (
+          <Box mt="2rem">
+            <Heading as="h3" fontSize="1.75rem" mb="0.5rem">
+              Team
+            </Heading>
+            <PermissionsTable
+              permissions={[
+                ...decoratedOwnerships,
+                ...permissionsForCurrentWebWithoutOwners,
+              ]}
+            />
+          </Box>
+        )}
       </LayoutContainer>
     </>
   )

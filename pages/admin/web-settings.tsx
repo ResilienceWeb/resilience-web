@@ -95,60 +95,54 @@ export default function Settings() {
         }}
       />
       <LayoutContainer>
-        <Box
-          px={{ base: '4', md: '10' }}
-          py={4}
-          mb="2rem"
-          maxWidth="4xl"
-          mx="auto"
-        >
-          <Stack spacing="1.5rem">
-            <Box>
-              <Heading>Web settings</Heading>
-              <Text color="gray.600">
-                This page is only accessible to web owners.
-              </Text>
-              <Box
-                shadow="base"
-                rounded={[null, 'md']}
-                overflow={{ sm: 'hidden' }}
-                bg="white"
-                padding="1rem"
-                mt="1rem"
+        <Stack spacing="1.5rem">
+          <Box>
+            <Heading>Web settings</Heading>
+            <Text color="gray.600">
+              This page is only accessible to web owners.
+            </Text>
+            <Box
+              shadow="base"
+              rounded={[null, 'md']}
+              overflow={{ sm: 'hidden' }}
+              bg="white"
+              padding="1rem"
+              mt="1rem"
+            >
+              <Formik
+                initialValues={{
+                  published: Boolean(webData?.published),
+                  image: webData?.image,
+                }}
+                enableReinitialize
+                onSubmit={onSubmit}
               >
-                <Formik
-                  initialValues={{
-                    published: Boolean(webData?.published),
-                    image: webData?.image,
-                  }}
-                  enableReinitialize
-                  onSubmit={onSubmit}
-                >
-                  {(props) => {
-                    return (
-                      <Form>
-                        <chakra.div mb="2rem">
-                          <Field name="published">
-                            {({ field, form }: FieldProps) => {
-                              return (
-                                <FormControl
-                                  isInvalid={Boolean(
-                                    form.errors.published &&
-                                      form.touched.published,
-                                  )}
+                {(props) => {
+                  return (
+                    <Form>
+                      <chakra.div mb="2rem">
+                        <Field name="published">
+                          {({ field, form }: FieldProps) => {
+                            return (
+                              <FormControl
+                                isInvalid={Boolean(
+                                  form.errors.published &&
+                                    form.touched.published,
+                                )}
+                              >
+                                <Checkbox
+                                  isChecked={field.value}
+                                  id="published"
+                                  onChange={field.onChange}
+                                  colorScheme="green"
+                                  disabled
                                 >
-                                  <Checkbox
-                                    isChecked={field.value}
-                                    id="published"
-                                    onChange={field.onChange}
-                                    colorScheme="green"
-                                    disabled
-                                  >
-                                    Published
-                                  </Checkbox>
-                                  <FormErrorMessage>
-                                    {form.errors.published?.toString()}
-                                  </FormErrorMessage>
+                                  Published
+                                </Checkbox>
+                                <FormErrorMessage>
+                                  {form.errors.published?.toString()}
+                                </FormErrorMessage>
+                                {field.value === false && (
                                   <FormHelperText>
                                     We don't allow self-publishing webs yet.
                                     When your web is ready to share with the
@@ -168,40 +162,40 @@ export default function Settings() {
                                     images, and that your web has a cover image
                                     uploaded below.
                                   </FormHelperText>
-                                </FormControl>
-                              )
-                            }}
-                          </Field>
-                        </chakra.div>
-
-                        <Field name="image">
-                          {({ field, form }: FieldProps) => (
-                            <ImageUpload
-                              field={field}
-                              form={form}
-                              formProps={props}
-                              helperText={`This should be a picture that best represents ${webData?.title}`}
-                            />
-                          )}
+                                )}
+                              </FormControl>
+                            )
+                          }}
                         </Field>
+                      </chakra.div>
 
-                        <Button
-                          mt={4}
-                          variant="rw"
-                          isDisabled={!props.isValid || !props.dirty}
-                          isLoading={isPending}
-                          type="submit"
-                        >
-                          Update
-                        </Button>
-                      </Form>
-                    )
-                  }}
-                </Formik>
-              </Box>
+                      <Field name="image">
+                        {({ field, form }: FieldProps) => (
+                          <ImageUpload
+                            field={field}
+                            form={form}
+                            formProps={props}
+                            helperText={`This should be a picture that best represents ${webData?.title}`}
+                          />
+                        )}
+                      </Field>
+
+                      <Button
+                        mt={4}
+                        variant="rw"
+                        isDisabled={!props.isValid || !props.dirty}
+                        isLoading={isPending}
+                        type="submit"
+                      >
+                        Update
+                      </Button>
+                    </Form>
+                  )
+                }}
+              </Formik>
             </Box>
-          </Stack>
-        </Box>
+          </Box>
+        </Stack>
       </LayoutContainer>
     </>
   )

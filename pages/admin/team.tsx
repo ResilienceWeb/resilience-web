@@ -148,89 +148,87 @@ export default function Team() {
         }}
       />
       <LayoutContainer>
-        <Box px={{ base: '4', md: '10' }} py={4} maxWidth="3xl" mx="auto">
-          <Stack spacing="2rem" divider={<StackDivider />}>
-            {isOwnerOfCurrentWeb && (
-              <Box>
-                <Heading mb="0.5rem">Invite team member</Heading>
-                <Box
-                  shadow="base"
-                  rounded={[null, 'md']}
-                  overflow={{ sm: 'hidden' }}
-                  bg="white"
-                  padding="1rem"
-                >
-                  <Box maxW="450px">
-                    <Formik
-                      initialValues={{
-                        email: '',
-                        listings: [],
-                      }}
-                      onSubmit={sendInvite}
-                      enableReinitialize
-                    >
-                      {(props) => (
-                        <Form>
-                          <chakra.div mb={3}>
-                            <Field
-                              name="email"
-                              type="email"
-                              validate={emailRequiredValidator}
-                            >
-                              {({ field, form }) => (
-                                <FormControl isInvalid={form.errors.email}>
-                                  <FormLabel htmlFor="email">Email</FormLabel>
-                                  <Input
-                                    {...field}
-                                    id="email"
-                                    background="white"
-                                  />
-                                  <FormErrorMessage>
-                                    {form.errors.email}
-                                  </FormErrorMessage>
-                                  <FormHelperText>
-                                    The invited user will have the permission to
-                                    add/edit listings, categories and tags.
-                                  </FormHelperText>
-                                </FormControl>
-                              )}
-                            </Field>
-                          </chakra.div>
-
-                          <Button
-                            mt={4}
-                            variant="rw"
-                            isDisabled={!props.isValid}
-                            isLoading={props.isSubmitting}
-                            type="submit"
+        <Stack spacing="2rem" divider={<StackDivider />}>
+          {isOwnerOfCurrentWeb && (
+            <Box>
+              <Heading mb="1.5rem">Invite team member</Heading>
+              <Box
+                shadow="base"
+                rounded={[null, 'md']}
+                overflow={{ sm: 'hidden' }}
+                bg="white"
+                padding="1rem"
+              >
+                <Box maxW="450px">
+                  <Formik
+                    initialValues={{
+                      email: '',
+                      listings: [],
+                    }}
+                    onSubmit={sendInvite}
+                    enableReinitialize
+                  >
+                    {(props) => (
+                      <Form>
+                        <chakra.div mb={3}>
+                          <Field
+                            name="email"
+                            type="email"
+                            validate={emailRequiredValidator}
                           >
-                            Send invite
-                          </Button>
-                        </Form>
-                      )}
-                    </Formik>
-                  </Box>
+                            {({ field, form }) => (
+                              <FormControl isInvalid={form.errors.email}>
+                                <FormLabel htmlFor="email">Email</FormLabel>
+                                <Input
+                                  {...field}
+                                  id="email"
+                                  background="white"
+                                />
+                                <FormErrorMessage>
+                                  {form.errors.email}
+                                </FormErrorMessage>
+                                <FormHelperText>
+                                  The invited user will have the permission to
+                                  add/edit listings, categories and tags.
+                                </FormHelperText>
+                              </FormControl>
+                            )}
+                          </Field>
+                        </chakra.div>
+
+                        <Button
+                          mt={4}
+                          variant="rw"
+                          isDisabled={!props.isValid}
+                          isLoading={props.isSubmitting}
+                          type="submit"
+                        >
+                          Send invite
+                        </Button>
+                      </Form>
+                    )}
+                  </Formik>
                 </Box>
               </Box>
-            )}
-            {(permissionsForCurrentWeb?.length > 0 ||
-              decoratedOwnerships?.length > 0) && (
-              <Box>
-                <Heading>Team</Heading>
-                <Text mb="1rem">
-                  List of people who have permissions to add and edit listings
-                  on the <b>{selectedWebName}</b> web.
-                </Text>
-                <PermissionsTable
-                  permissions={[
-                    ...decoratedOwnerships,
-                    ...permissionsForCurrentWebWithoutOwners,
-                  ]}
-                />
-              </Box>
-            )}
-          </Stack>
-        </Box>
+            </Box>
+          )}
+          {(permissionsForCurrentWeb?.length > 0 ||
+            decoratedOwnerships?.length > 0) && (
+            <Box>
+              <Heading>Team</Heading>
+              <Text mb="1rem">
+                List of people who have permissions to add and edit listings on
+                the <b>{selectedWebName}</b> web.
+              </Text>
+              <PermissionsTable
+                permissions={[
+                  ...decoratedOwnerships,
+                  ...permissionsForCurrentWebWithoutOwners,
+                ]}
+              />
+            </Box>
+          )}
+        </Stack>
       </LayoutContainer>
     </>
   )

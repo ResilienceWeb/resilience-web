@@ -4,14 +4,8 @@ import TableContent from './TableContent'
 
 const Table = ({ goToEdit, items, removeItem }) => {
   return (
-    <Box as="section" py="1rem">
-      <Box overflowX="auto">
-        <TableContent
-          goToEdit={goToEdit}
-          items={items}
-          removeItem={removeItem}
-        />
-      </Box>
+    <Box as="section" py="1rem" overflowX="auto">
+      <TableContent goToEdit={goToEdit} items={items} removeItem={removeItem} />
     </Box>
   )
 }
