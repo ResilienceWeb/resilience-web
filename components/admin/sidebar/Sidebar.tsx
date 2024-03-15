@@ -24,6 +24,7 @@ import { GrOverview } from 'react-icons/gr'
 import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
 import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 import { useAppContext } from '@store/hooks'
+import DonateButton from '@components/donate-button'
 import LogoImage from '../../../public/logo.png'
 
 export default function Sidebar({ isOpen, onClose }) {
@@ -122,31 +123,46 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       zIndex="100"
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Link as={NextLink} href="/">
-          <button>
-            <Image
-              alt="Resilience Web logo"
-              src={LogoImage}
-              width="148"
-              height="50"
-              unoptimized
+      <Flex flexDirection="column" justifyContent="space-between" height="100%">
+        <Box>
+          <Flex
+            h="20"
+            alignItems="center"
+            mx="8"
+            justifyContent="space-between"
+          >
+            <Link as={NextLink} href="/">
+              <button>
+                <Image
+                  alt="Resilience Web logo"
+                  src={LogoImage}
+                  width="148"
+                  height="50"
+                  unoptimized
+                />
+              </button>
+            </Link>
+            <CloseButton
+              display={{ base: 'flex', md: 'none' }}
+              onClick={onClose}
             />
-          </button>
-        </Link>
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+          </Flex>
+          <Stack as="nav" gap="0.75rem">
+            {navLinks.map((link) => (
+              <NavItem
+                key={link.label}
+                label={link.label}
+                href={link.href}
+                tourId={link.tourId}
+                icon={link.icon}
+              />
+            ))}
+          </Stack>
+        </Box>
+        <Box padding="1.25rem">
+          <DonateButton />
+        </Box>
       </Flex>
-      <Stack as="nav" gap="0.75rem">
-        {navLinks.map((link) => (
-          <NavItem
-            key={link.label}
-            label={link.label}
-            href={link.href}
-            tourId={link.tourId}
-            icon={link.icon}
-          />
-        ))}
-      </Stack>
     </Box>
   )
 }

@@ -18,13 +18,13 @@ import {
   Divider,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import { HiHeart, HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
+import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
 
 import VolunteerSwitch from '@components/volunteer-switch'
+import DonateButton from '@components/donate-button'
 import customMultiSelectStyles from '@styles/select-styles'
 import { REMOTE_URL } from '@helpers/config'
 import LogoImage from '../../public/logo.png'
-import styles from './Drawer.module.scss'
 
 const Drawer = ({
   categories,
@@ -145,15 +145,7 @@ const Drawer = ({
             If you can, please support us via Open Collective to help us
             continue building this platform.
           </Text>
-          <Link
-            href="https://opencollective.com/resilience-web"
-            target="_blank"
-          >
-            <button className={styles.donateButton}>
-              Donate &nbsp;
-              <HiHeart />
-            </button>
-          </Link>
+          <DonateButton />
         </Box>
       </Flex>
     </chakra.div>
