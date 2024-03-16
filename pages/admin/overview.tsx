@@ -48,6 +48,7 @@ export default function Overview() {
           borderRadius="10px"
           borderStyle="solid"
           borderWidth="1px"
+          mb="2rem"
         >
           <Table fontSize="sm" background="#ffffff">
             <Thead bg="gray.50">
@@ -72,7 +73,6 @@ export default function Overview() {
 
                   return (
                     <Tr
-                      borderWidth="1px"
                       key={web.id}
                       onClick={() => {
                         router.push(`/admin/overview/${web.slug}`)

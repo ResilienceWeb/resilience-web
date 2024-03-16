@@ -68,7 +68,7 @@ export default function Categories() {
         }}
       />
       <LayoutContainer>
-        <Tabs>
+        <Tabs colorScheme="rw">
           <TabList>
             <Tab>Categories</Tab>
             <Tab>Tags</Tab>

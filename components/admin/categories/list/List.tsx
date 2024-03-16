@@ -22,6 +22,10 @@ const columns = [
     accessor: 'label',
   },
   {
+    Header: 'Number of listings',
+    accessor: 'listings',
+  },
+  {
     Header: 'Color',
     accessor: 'color',
   },
@@ -58,14 +62,21 @@ const List = ({ categories }) => {
     deleteCategory({ id: selectedCategoryId })
   }, [deleteCategory, onClose, selectedCategoryId])
 
+  console.log(categories)
+
   if (!categories) {
     return null
   }
 
   return (
     <>
-      <TableContainer borderRadius="10px" borderStyle="solid" borderWidth="1px">
-        <Table fontSize="sm" background="#ffffff" mb="2rem">
+      <TableContainer
+        borderRadius="10px"
+        borderStyle="solid"
+        borderWidth="1px"
+        mb="2rem"
+      >
+        <Table fontSize="sm" background="#ffffff">
           <Thead bg={'gray.50'}>
             <Tr>
               {columns.map((column, index) => (
@@ -81,6 +92,14 @@ const List = ({ categories }) => {
               <Tr key={row.id}>
                 {columns.map((column, index) => {
                   const cell = row[column.accessor]
+
+                  if (column.accessor === 'listings') {
+                    return (
+                      <Td key={index}>
+                        <strong>{cell.length}</strong>
+                      </Td>
+                    )
+                  }
 
                   if (column.accessor === 'color') {
                     return (

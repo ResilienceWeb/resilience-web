@@ -31,7 +31,7 @@ const Header = () => {
           leftIcon={<HiPlus fontSize="1.25em" />}
           onClick={onOpen}
           variant="rw"
-          size="sm"
+          size="md"
         >
           New tag
         </Button>
