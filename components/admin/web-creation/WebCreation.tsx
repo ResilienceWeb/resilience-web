@@ -10,6 +10,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  FormHelperText,
   Input,
   InputGroup,
   InputRightAddon,
@@ -58,6 +59,7 @@ const SlugField = () => {
                 shadow="sm"
                 size="sm"
                 rounded="md"
+                placeholder="e.g. york"
               />
               <InputRightAddon
                 bg="gray.50"
@@ -69,6 +71,10 @@ const SlugField = () => {
               </InputRightAddon>
             </InputGroup>
             <FormErrorMessage>{form.errors.slug?.toString()}</FormErrorMessage>
+            <FormHelperText>
+              This will form part of the link to your web, e.g.
+              york.resilienceweb.org.uk
+            </FormHelperText>
           </FormControl>
         )
       }}
@@ -148,6 +154,7 @@ const WebCreation = () => {
                           shadow="sm"
                           size="sm"
                           rounded="md"
+                          placeholder="e.g. York"
                         />
                         <FormErrorMessage>
                           {form.errors.title?.toString()}
@@ -157,7 +164,7 @@ const WebCreation = () => {
                   </Field>
                 </chakra.div>
 
-                <chakra.div mb={3} maxW="450px">
+                <chakra.div mb={3} maxW="500px">
                   <SlugField />
                 </chakra.div>
 

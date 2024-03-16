@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { FiMenu } from 'react-icons/fi'
 import { BsPersonCircle } from 'react-icons/bs'
+import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 
 import WebSelector from './web-selector'
 
@@ -48,32 +49,35 @@ const Nav = ({ onOpen }) => {
           <Box mr="1rem">
             <WebSelector />
           </Box>
-          <Menu>
-            <MenuButton
-              as={Button}
-              colorScheme="gray"
-              rounded="full"
-              variant="link"
-              cursor="pointer"
-            >
-              <BsPersonCircle size="32" />
-            </MenuButton>
-            <MenuList zIndex={5}>
-              {session?.user.email && (
-                <>
-                  <MenuItem isDisabled color="gray.600">
-                    <Text fontSize="14px">
-                      Signed in as {session?.user.email}
-                    </Text>
-                  </MenuItem>
-                  <MenuDivider />
-                </>
-              )}
-              <MenuItem onClick={handleSignOut} fontSize={'15px'}>
-                Sign out
-              </MenuItem>
-            </MenuList>
-          </Menu>
+          <Flex gap="1rem">
+            <GetInTouchButton />
+            <Menu>
+              <MenuButton
+                as={Button}
+                colorScheme="gray"
+                rounded="full"
+                variant="link"
+                cursor="pointer"
+              >
+                <BsPersonCircle size="32" />
+              </MenuButton>
+              <MenuList zIndex={5}>
+                {session?.user.email && (
+                  <>
+                    <MenuItem isDisabled color="gray.600">
+                      <Text fontSize="14px">
+                        Signed in as {session?.user.email}
+                      </Text>
+                    </MenuItem>
+                    <MenuDivider />
+                  </>
+                )}
+                <MenuItem onClick={handleSignOut} fontSize={'15px'}>
+                  Sign out
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </Flex>
         </Flex>
       </Flex>
     </Box>

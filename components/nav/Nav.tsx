@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
 import { useSession } from 'next-auth/react'
@@ -16,7 +16,6 @@ import {
   PopoverContent,
   Button,
   IconButton,
-  Tooltip,
   useColorModeValue,
   useDisclosure,
   Icon,
@@ -24,15 +23,13 @@ import {
 import {
   HamburgerIcon,
   CloseIcon,
-  ChatIcon,
   ChevronRightIcon,
   ChevronDownIcon,
 } from '@chakra-ui/icons'
 
-import { useAppContext } from '@store/hooks'
 import { useWebs } from '@hooks/webs'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
-import FeedbackDialog from '../feedback-dialog'
+import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 import LogoImage from '../../public/logo.png'
 import styles from './Nav.module.scss'
 
@@ -47,19 +44,8 @@ export default function MainNav() {
   const { data: session } = useSession()
   const { isOpen, onToggle } = useDisclosure()
   const router = useRouter()
-  const { isMobile } = useAppContext()
 
   const { webs } = useWebs()
-
-  const {
-    isOpen: isFeedbackDialogOpen,
-    onOpen: onOpenFeedbackDialog,
-    onClose: onCloseFeedbackDialog,
-  } = useDisclosure()
-
-  const handleOpenFeedbackDialog = useCallback(() => {
-    onOpenFeedbackDialog()
-  }, [onOpenFeedbackDialog])
 
   const navItems = useMemo(() => {
     return [
@@ -160,26 +146,7 @@ export default function MainNav() {
             </Flex>
           </Flex>
           <HStack>
-            <Tooltip label="Any suggestions or bug reports are welcome!">
-              {isMobile ? (
-                <IconButton
-                  aria-label="Send feedback"
-                  icon={<ChatIcon />}
-                  onClick={handleOpenFeedbackDialog}
-                  size="md"
-                  colorScheme="rw.900"
-                  variant="outline"
-                />
-              ) : (
-                <Button
-                  onClick={handleOpenFeedbackDialog}
-                  size="md"
-                  variant="outline"
-                >
-                  Get in touch
-                </Button>
-              )}
-            </Tooltip>
+            <GetInTouchButton />
             {session && (
               <Link as={NextLink} href="/admin">
                 <Button colorScheme="blue" variant="solid" size="md" mr={-2}>
@@ -193,11 +160,6 @@ export default function MainNav() {
       <Collapse in={isOpen} animateOpacity>
         <MobileNav navItems={navItems} />
       </Collapse>
-
-      <FeedbackDialog
-        isOpen={isFeedbackDialogOpen}
-        onClose={onCloseFeedbackDialog}
-      />
     </>
   )
 }
