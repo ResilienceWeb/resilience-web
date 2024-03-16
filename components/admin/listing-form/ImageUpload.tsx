@@ -57,10 +57,10 @@ const ImageUpload = ({
 
   return (
     <FormControl isInvalid={form.errors.image && form.touched.image} mb="1rem">
-      <FormLabel htmlFor="image" fontSize="sm" fontWeight="600">
+      <FormLabel htmlFor="image" fontSize="md" fontWeight="600">
         {`Image${isRequired ? '*' : ''}`}
       </FormLabel>
-      <Text fontSize="0.8125rem" color="gray.600" mb="0.5rem">
+      <Text fontSize="sm" color="gray.600" mb="0.5rem">
         Please ensure this is either a copyright-free image, you own the
         copyright of this image, or you have permission to use the image.
       </Text>

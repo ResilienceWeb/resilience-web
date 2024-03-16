@@ -1,5 +1,6 @@
 import { signIn, useSession } from 'next-auth/react'
 import { memo, useEffect, useMemo } from 'react'
+import posthog from 'posthog-js'
 import { Center, Spinner } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
@@ -72,6 +73,14 @@ const Admin = () => {
   const { selectedWebId, selectedWebSlug } = useAppContext()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
   const { isPending: isLoadingWebs } = useWebs()
+
+  useEffect(() => {
+    if (session) {
+      console.log('[Posthog] Identifying user')
+      posthog.identify(session.user.id, { email: session.user.email })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionStatus])
 
   const {
     listings,
