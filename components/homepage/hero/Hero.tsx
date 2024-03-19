@@ -34,7 +34,7 @@ const wordsToDisplay = [
   'Celebrating',
   'Encouraging',
   'Galvanising',
-  'Uplifting',
+  'Facilitating',
 ]
 
 export default function Hero() {

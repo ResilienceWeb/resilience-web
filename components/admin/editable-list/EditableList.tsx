@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import NextLink from 'next/link'
 import { useCallback, useState, useMemo, memo } from 'react'
 import { Heading, Text, Box, Center, Link } from '@chakra-ui/react'
 
@@ -24,11 +25,10 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
   const filteredItems = useMemo(() => {
     if (!items) return []
 
-    let results = items.filter(
-      (item) =>
-        removeNonAlphaNumeric(item.title)
-          ?.toLowerCase()
-          .includes(searchTerm.toLowerCase()),
+    let results = items.filter((item) =>
+      removeNonAlphaNumeric(item.title)
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase()),
     )
 
     if (selectedCategories.length > 0) {
@@ -125,7 +125,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
         <Center my="3rem">
           <Text fontWeight="700">
             No listings yet. Why not{' '}
-            <Link href="/admin/new-listing" color="rw.900">
+            <Link as={NextLink} href="/admin/new-listing" color="rw.900">
               start adding
             </Link>
             .

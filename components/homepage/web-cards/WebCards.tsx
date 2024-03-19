@@ -1,6 +1,15 @@
 import NextLink from 'next/link'
 import Image from 'next/image'
-import { Container, Stack, Grid, Heading, Box, Link } from '@chakra-ui/react'
+import {
+  Container,
+  Button,
+  Stack,
+  Text,
+  Grid,
+  Heading,
+  Box,
+  Link,
+} from '@chakra-ui/react'
 
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { useWebs } from '@hooks/webs'
@@ -42,6 +51,8 @@ const WebCards = () => {
             }
           })
           .map((web) => <Card key={web.id} web={web} />)}
+
+        <CreateNewWebCard />
       </Grid>
     </Container>
   )
@@ -51,11 +62,7 @@ export default WebCards
 
 const Card = ({ web }) => {
   return (
-    <Link
-      key={web.id}
-      as={NextLink}
-      href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
-    >
+    <Link as={NextLink} href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}>
       <Box
         w="full"
         bg="white"
@@ -76,15 +83,42 @@ const Card = ({ web }) => {
             style={{ objectFit: 'cover', objectPosition: 'bottom' }}
           />
         </Box>
-        <Stack>
-          <Heading color="gray.700" fontSize={'2xl'} fontFamily={'body'}>
-            {web.title}
-          </Heading>
-          {/* <Text color={'gray.500'}>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua.
-        </Text> */}
+        <Heading color="gray.700" fontSize="2xl">
+          {web.title}
+        </Heading>
+      </Box>
+    </Link>
+  )
+}
+
+const CreateNewWebCard = () => {
+  return (
+    <Link as={NextLink} href="/auth/signup">
+      <Box
+        w="full"
+        h="full"
+        bg="white"
+        boxShadow="md"
+        rounded="md"
+        p={4}
+        overflow="hidden"
+        transition="box-shadow 300ms ease-in-out"
+        _hover={{
+          boxShadow: '2xl',
+        }}
+        background="#defce2"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Stack display="flex">
+          <Stack>
+            <Heading fontSize="2xl">Put your place here</Heading>
+            <Text fontSize="sm">Click here to create a web for your area</Text>
+          </Stack>
+          <Button as={NextLink} href="/auth/signup" variant="rw">
+            Create new web
+          </Button>
         </Stack>
       </Box>
     </Link>
