@@ -87,7 +87,7 @@ const handler = async (
         const webCreatedEmailComponent = ListingProposedEmail({
           proposedListingTitle: listing.title,
           webTitle: `${selectedWeb.title}`,
-          url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin/${selectedWeb.slug}`,
+          url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin`,
         })
 
         const emails = selectedWeb.ownerships.map(
