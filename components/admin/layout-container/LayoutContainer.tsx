@@ -13,9 +13,9 @@ const LayoutContainer = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
-    <Flex data-testid="flex-container">
+    <Flex>
       <Sidebar isOpen={isOpen} onClose={onClose} />
-      <Box maxWidth="100%" flex="1" data-testid="flex-inner-container">
+      <Box maxWidth="100%" flex="1">
         <Nav onOpen={onOpen} />
         <SlideFade in>
           <Box

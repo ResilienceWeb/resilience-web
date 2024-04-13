@@ -1,5 +1,6 @@
 import NextLink from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import {
   Container,
   Button,
@@ -92,35 +93,40 @@ const Card = ({ web }) => {
 }
 
 const CreateNewWebCard = () => {
+  const router = useRouter()
+
+  const handleClick = () => {
+    router.push('/auth/signup')
+  }
+
   return (
-    <Link as={NextLink} href="/auth/signup">
-      <Box
-        w="full"
-        h="full"
-        bg="white"
-        boxShadow="md"
-        rounded="md"
-        p={4}
-        overflow="hidden"
-        transition="box-shadow 300ms ease-in-out"
-        _hover={{
-          boxShadow: '2xl',
-        }}
-        background="#defce2"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Stack display="flex">
-          <Stack>
-            <Heading fontSize="2xl">Put your place here</Heading>
-            <Text fontSize="sm">Click here to create a web for your area</Text>
-          </Stack>
-          <Button as={NextLink} href="/auth/signup" variant="rw">
-            Create new web
-          </Button>
+    <Box
+      w="full"
+      h="full"
+      bg="white"
+      boxShadow="md"
+      rounded="md"
+      p={4}
+      overflow="hidden"
+      transition="box-shadow 300ms ease-in-out"
+      _hover={{
+        boxShadow: '2xl',
+      }}
+      background="#defce2"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      onClick={handleClick}
+    >
+      <Stack display="flex">
+        <Stack>
+          <Heading fontSize="2xl">Put your place here</Heading>
+          <Text fontSize="sm">Click here to create a web for your area</Text>
         </Stack>
-      </Box>
-    </Link>
+        <Button as={NextLink} href="/auth/signup" variant="rw">
+          Create new web
+        </Button>
+      </Stack>
+    </Box>
   )
 }
