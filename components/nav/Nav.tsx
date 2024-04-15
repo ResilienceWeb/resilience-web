@@ -45,7 +45,7 @@ export default function MainNav() {
   const { isOpen, onToggle } = useDisclosure()
   const router = useRouter()
 
-  const { webs } = useWebs()
+  const { webs } = useWebs({ published: true })
 
   const navItems = useMemo(() => {
     return [

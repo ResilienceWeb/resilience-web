@@ -9,7 +9,7 @@ const StoreProvider = ({ children }) => {
   const [selectedWebSlug, setSelectedWebSlug] = useState<string>()
   const [subdomain, setSubdomain] = useState<string>()
 
-  const { webs } = useWebs()
+  const { webs } = useWebs({ published: !isAdminMode })
 
   useEffect(() => {
     const hostname = window.location.hostname
