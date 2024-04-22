@@ -12,7 +12,13 @@ import {
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { ReactNode } from 'react'
-import { FaGithub, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa'
+import {
+  FaGithub,
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+} from 'react-icons/fa'
 import Image from 'next/legacy/image'
 
 import { REMOTE_URL } from '@helpers/config'
@@ -93,6 +99,12 @@ export default function Footer({ hideBorder = false }) {
               Built with ❤️ <span style={{ marginLeft: '3px' }}>by Diner</span>
             </Link>
             <Stack direction="row" spacing={6}>
+              <SocialButton
+                label="Facebook"
+                href="https://www.facebook.com/profile.php?id=61557759839430"
+              >
+                <FaFacebook />
+              </SocialButton>
               <SocialButton
                 label="Twitter"
                 href="https://twitter.com/ResilienceWeb"
