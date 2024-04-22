@@ -10,6 +10,8 @@ import Layout from '@components/layout'
 import ErrorBoundary from '@components/error-boundary'
 
 export default function NewsPost({ post, contentHtml }) {
+  console.log('post', post)
+  console.log('contentHtml', contentHtml)
   if (!post || !contentHtml) {
     return {
       notFound: true,
