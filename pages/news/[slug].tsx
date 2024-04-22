@@ -1,5 +1,8 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
+import Error from 'next/error'
+import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import { GraphQLClient } from 'graphql-request'
 import { Box, Heading } from '@chakra-ui/react'
@@ -10,13 +13,24 @@ import Layout from '@components/layout'
 import ErrorBoundary from '@components/error-boundary'
 
 export default function NewsPost({ post, contentHtml }) {
-  console.log('post', post)
-  console.log('contentHtml', contentHtml)
+  const router = useRouter()
+  if (router.isFallback) {
+    return (
+      <section>
+        <h1>Please wait…</h1>
+      </section>
+    )
+  }
+
   if (!post || !contentHtml) {
-    return {
-      notFound: true,
-      revalidate: 10,
-    }
+    return (
+      <section>
+        <Head>
+          <meta name="robots" content="noindex" />
+        </Head>
+        <Error statusCode={404} />
+      </section>
+    )
   }
 
   return (
@@ -91,7 +105,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   }
 }
 
