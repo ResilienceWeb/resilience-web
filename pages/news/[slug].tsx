@@ -96,9 +96,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL)
 
-  try {
-    const { page } = await graphcms.request<{ page: any }>(
-      `
+  const { page } = await graphcms.request<{ page: any }>(
+    `
       query NewsPostQuery($slug: String!){
         page(where: {slug: $slug}) {
           slug
@@ -114,26 +113,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           }
         }
       }`,
-      {
-        slug: params.slug,
-      },
-    )
+    {
+      slug: params.slug,
+    },
+  )
 
-    const processedContent = await remark()
-      .use(html)
-      .process(page.content.markdown)
-    const contentHtml = processedContent.toString()
+  const processedContent = await remark()
+    .use(html)
+    .process(page.content.markdown)
+  const contentHtml = processedContent.toString()
 
-    return {
-      props: {
-        post: page,
-        contentHtml,
-      },
-      revalidate: 5,
-    }
-  } catch (error) {
-    return {
-      props: { post: { notFound: true } },
-    }
+  return {
+    props: {
+      post: page,
+      contentHtml,
+    },
+    revalidate: 5,
   }
 }
