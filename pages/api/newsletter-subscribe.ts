@@ -1,4 +1,6 @@
-import mailchimp from '@mailchimp/mailchimp_marketing'
+import client from '@sendgrid/client'
+
+client.setApiKey(process.env.SENDGRID_API_KEY)
 
 export default async (req, res) => {
   const { email } = req.body
@@ -9,23 +11,28 @@ export default async (req, res) => {
     })
   }
 
-  mailchimp.setConfig({
-    apiKey: process.env.MAILCHIMP_API_KEY,
-    server: 'us13',
-  })
+  const request = {
+    url: `/v3/marketing/contacts`,
+    method: 'PUT',
+    body: {
+      contacts: [
+        {
+          email,
+        },
+      ],
+    },
+  }
 
   try {
-    await mailchimp.lists.addListMember(process.env.MAILCHIMP_LIST_ID, {
-      email_address: email,
-      status: 'pending',
-    })
+    // @ts-ignore
+    await client.request(request)
 
     return res.status(201).json({ error: null })
   } catch (error) {
     console.error(`[RW] Failed to sign up user to newsletter - ${error}`)
     return res.status(400).json({
       error:
-        'Oops, something went wrong. Please send an email to cambridgeresilienceweb@gmail.com and we can add you to the list.',
+        'Oops, something went wrong. Please send an email to info@resilienceweb.org.uk and we can add you to the list.',
     })
   }
 }
