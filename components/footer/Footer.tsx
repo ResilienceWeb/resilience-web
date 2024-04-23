@@ -101,7 +101,7 @@ export default function Footer({ hideBorder = false }) {
             <Stack direction="row" spacing={6}>
               <SocialButton
                 label="Facebook"
-                href="https://www.facebook.com/profile.php?id=61557759839430"
+                href="https://www.facebook.com/resilienceweb"
               >
                 <FaFacebook />
               </SocialButton>

@@ -55,7 +55,7 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
       } else {
         toast({
           title: 'Error',
-          description: `There was an error. Please try again or email directly at cambridgeresilienceweb@gmail.com`,
+          description: `There was an error. Please try again or email directly at info@resilienceweb.org.uk`,
           status: 'error',
           duration: 5000,
           isClosable: true,
