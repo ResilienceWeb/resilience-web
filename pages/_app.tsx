@@ -117,6 +117,7 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
           type: 'website',
           locale: 'en_GB',
           title: 'Resilience Web',
+          images: [{ url: 'static/preview-image.png' }],
           description:
             'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
         }}
@@ -132,7 +133,6 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
           name="viewport"
           content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover"
         />
-        <meta name="og:image" content="static/preview-image.png" />
         <meta
           name="google-site-verification"
           content="ChMwFePa1V0s36L1f6Gj4CaD74qxfcMSNas2w0GGu1Q"
