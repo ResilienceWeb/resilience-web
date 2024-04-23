@@ -141,7 +141,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             <Link as={NextLink} href="/">
               <button>
                 <Image
-                  alt="Resilience Web logo"
+                  alt="Resilience Web CIC logo"
                   src={LogoImage}
                   width="222"
                   height="75"

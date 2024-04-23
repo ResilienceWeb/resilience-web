@@ -1,0 +1,11 @@
+/* stylelint-disable declaration-property-unit-allowed-list */
+
+.modalContent {
+  background:
+    linear-gradient(white 30%, rgb(255 255 255 / 0%)), linear-gradient(rgb(255 255 255 / 0%), white 70%) 0 100%, /* Shadows */
+    radial-gradient(farthest-side at 50% 0, rgb(0 0 0 / 20%), rgb(0 0 0 / 0%)), radial-gradient(farthest-side at 50% 100%, rgb(0 0 0 / 20%), rgb(0 0 0 / 0%)) 0 100%;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+  background-attachment: local, local, scroll, scroll;
+}

@@ -55,7 +55,7 @@ const Drawer = ({
           <Link as={NextLink} href={REMOTE_URL}>
             <Flex justifyContent="center" my={2} px={4} cursor="pointer">
               <Image
-                alt="Resilience Web logo"
+                alt="Resilience Web CIC logo"
                 src={LogoImage}
                 width="306"
                 height="104"

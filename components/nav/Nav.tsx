@@ -124,7 +124,7 @@ export default function MainNav() {
               <Link as={NextLink} href="/">
                 <button>
                   <Image
-                    alt="Resilience Web logo"
+                    alt="Resilience Web CIC logo"
                     src={LogoImage}
                     width="145"
                     height="50"
@@ -258,11 +258,11 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
-    <Stack spacing={4} onClick={children && onToggle}>
+    <Stack data-testid="stack" spacing={4} onClick={children && onToggle}>
       <Flex
         py={2}
         as={Link}
-        href={href}
+        href={children ? undefined : href}
         justify={'space-between'}
         align={'center'}
         _hover={{
@@ -282,6 +282,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
             transform={isOpen ? 'rotate(180deg)' : ''}
             w={6}
             h={6}
+            // zIndex={1000}
           />
         )}
       </Flex>

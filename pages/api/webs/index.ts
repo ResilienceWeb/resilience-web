@@ -145,6 +145,7 @@ const handler = async (
         const webCreatedAdminEmailComponent = WebCreatedAdminEmail({
           webTitle: `${web.title}`,
           email: `${session?.user.email}`,
+          slug: web.slug,
         })
 
         await sendEmail({

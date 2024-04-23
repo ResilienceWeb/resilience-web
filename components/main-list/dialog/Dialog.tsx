@@ -28,6 +28,7 @@ import { sanitizeLink } from '@helpers/utils'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import CategoryTag from '@components/category-tag'
+import styles from './Dialog.module.scss'
 
 const Dialog = ({
   isOpen,
@@ -115,19 +116,19 @@ const Dialog = ({
             />
           </Link>
         )}
+        {item.seekingVolunteers && (
+          <Flex justifyContent="right">
+            <Tooltip
+              borderRadius="md"
+              label="This group is seeking volunteers or members. Get in touch with them if you'd like to help."
+            >
+              <Text color="rw.900">
+                Seeking volunteers <Icon as={HiUserGroup} />
+              </Text>
+            </Tooltip>
+          </Flex>
+        )}
       </HStack>
-      {item.seekingVolunteers && (
-        <Flex justifyContent={'right'}>
-          <Tooltip
-            borderRadius="md"
-            label="This group is seeking volunteers or members. Get in touch with them if you'd like to help."
-          >
-            <Text color="rw.900">
-              Seeking volunteers <Icon as={HiUserGroup} />
-            </Text>
-          </Tooltip>
-        </Flex>
-      )}
     </>
   )
 
@@ -165,7 +166,7 @@ const Dialog = ({
         )}
 
         <ModalHeader display="flex" alignItems="center" pb={0}>
-          {item.label}{' '}
+          {item.label}
           <Icon
             as={HiOutlineLink}
             cursor="pointer"
@@ -179,7 +180,7 @@ const Dialog = ({
           />
         </ModalHeader>
         <ModalCloseButton size="lg" backgroundColor="rgba(160,174,192,0.4)" />
-        <ModalBody>
+        <ModalBody className={styles.modalContent}>
           <Flex justifyContent="space-between">
             <CategoryTag mb={4} colorHex={item.category.color}>
               {item.category.label}
@@ -188,15 +189,20 @@ const Dialog = ({
           <br />
 
           {item.website && (
-            <chakra.a
-              color="blue.400"
-              href={item.website}
-              rel="noreferrer"
-              target="_blank"
-              verticalAlign="text-bottom"
-            >
-              {websiteSanitized} <ExternalLinkIcon ml={1} />
-            </chakra.a>
+            <HStack>
+              <Text color="gray.700" fontWeight="600">
+                Website:
+              </Text>
+              <chakra.a
+                color="blue.400"
+                href={item.website}
+                rel="noreferrer"
+                target="_blank"
+                verticalAlign="text-bottom"
+              >
+                {websiteSanitized} <ExternalLinkIcon ml={1} />
+              </chakra.a>
+            </HStack>
           )}
 
           {isMobile && (

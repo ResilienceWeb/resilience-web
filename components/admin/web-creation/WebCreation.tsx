@@ -107,7 +107,7 @@ const WebCreation = () => {
   return (
     <>
       <Box display="flex" justifyContent="center" mb="2rem">
-        <Image alt="Resilience Web logo" src={LogoImage} />
+        <Image alt="Resilience Web CIC logo" src={LogoImage} />
       </Box>
       <Heading as="h1">Welcome 👋</Heading>
       <Text mt="1rem">

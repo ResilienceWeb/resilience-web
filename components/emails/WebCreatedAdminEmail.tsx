@@ -7,6 +7,7 @@ import {
   Img,
   Preview,
   Text,
+  Link,
 } from '@react-email/components'
 import {
   main,
@@ -21,9 +22,10 @@ import {
 type props = {
   webTitle: string
   email: string
+  slug: string
 }
 
-const WebCreatedAdminEmail = ({ webTitle, email }: props) => {
+const WebCreatedAdminEmail = ({ webTitle, email, slug }: props) => {
   return (
     <Html lang="en" dir="ltr">
       <Head />
@@ -46,8 +48,14 @@ const WebCreatedAdminEmail = ({ webTitle, email }: props) => {
           </Text>
           <Text style={paragraph}>Here are the details:</Text>
           <Text style={listItem}>User email: {email}</Text>
+          <Text style={listItem}>
+            Link:{' '}
+            <Link
+              href={`https://${slug}.resilienceweb.org.uk`}
+            >{`https://${slug}.resilienceweb.org.uk`}</Link>
+          </Text>
           <Hr style={hr} />
-          <Text style={footer}>Resilience Web</Text>
+          <Text style={footer}>Resilience Web CIC</Text>
         </Container>
       </Body>
     </Html>

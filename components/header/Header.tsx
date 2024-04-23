@@ -59,7 +59,7 @@ const Header = ({
         >
           <Box my={4}>
             <Image
-              alt="Resilience Web logo"
+              alt="Resilience Web CIC logo"
               src="/logo.png"
               width="306"
               height="104"
