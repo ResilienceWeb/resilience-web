@@ -56,6 +56,18 @@ function Listing({ listing }) {
     return categoriesIndexesObj
   }, [categories])
 
+  const listingWebsite = useMemo(() => {
+    if (!listing?.website) {
+      return null
+    }
+
+    if (listing.website.includes('http')) {
+      return listing.website
+    }
+
+    return `//${listing.website}`
+  }, [listing.website])
+
   return (
     <>
       <Box maxWidth={{ base: '100%', md: '700px' }} mt="1rem">
@@ -126,7 +138,7 @@ function Listing({ listing }) {
                 </Box>
                 <HStack spacing={4}>
                   {listing.website && (
-                    <Link href={listing.website} target="_blank">
+                    <Link href={listingWebsite} target="_blank">
                       <Icon
                         as={SlGlobe}
                         color="gray.600"

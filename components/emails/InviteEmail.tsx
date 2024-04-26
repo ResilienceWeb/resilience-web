@@ -101,7 +101,7 @@ const InviteEmail = ({ webTitle, email, url }: props) => {
           <Text style={paragraph}>
             Best,
             <br />
-            The Resilience Web team
+            The Resilience Web CIC team
           </Text>
           <Hr style={hr} />
           <Text style={footer}>Resilience Web CIC</Text>

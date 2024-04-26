@@ -132,6 +132,18 @@ const Dialog = ({
     </>
   )
 
+  const listingWebsite = useMemo(() => {
+    if (!item?.website) {
+      return null
+    }
+
+    if (item.website.includes('http')) {
+      return item.website
+    }
+
+    return `//${item.website}`
+  }, [item.website])
+
   return (
     <Modal
       isCentered
@@ -195,7 +207,7 @@ const Dialog = ({
               </Text>
               <chakra.a
                 color="blue.400"
-                href={item.website}
+                href={listingWebsite}
                 rel="noreferrer"
                 target="_blank"
                 verticalAlign="text-bottom"

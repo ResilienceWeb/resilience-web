@@ -23,7 +23,7 @@ export default function VerifyRequest() {
             Check your email
           </Heading>
 
-          <p>An authentication link has been sent to your email address.</p>
+          <p>A sign in link has been sent to your email address.</p>
         </Box>
       </Flex>
     </div>
