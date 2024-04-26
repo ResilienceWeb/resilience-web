@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/prefer-immediate-return */
 import { NextSeo } from 'next-seo'
 import { useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
@@ -56,6 +57,18 @@ export default function WebOverview() {
     })
 
     return filteredPermissions
+  }, [web])
+
+  const mailToEmails = useMemo(() => {
+    if (!web || !web.ownerships || !web.permissions) {
+      return []
+    }
+    const ownershipsEmails = web.ownerships?.map((o) => o.user?.email)
+    const permissionsEmails = web.permissions
+      ?.map((p) => (p.user?.emailVerified ? p.user?.email : undefined))
+      .filter(Boolean)
+
+    return [...ownershipsEmails, ...permissionsEmails].join(',')
   }, [web])
 
   if (sessionStatus === 'loading' || isLoadingWeb) {
@@ -125,6 +138,15 @@ export default function WebOverview() {
             />
           </Box>
         )}
+
+        <Button
+          variant="rw"
+          mb="2rem"
+          as={Link}
+          href={`mailto:${mailToEmails}`}
+        >
+          Send email to owners and editors
+        </Button>
       </LayoutContainer>
     </>
   )
