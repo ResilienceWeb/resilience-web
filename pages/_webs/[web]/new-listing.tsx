@@ -30,7 +30,7 @@ function Submit() {
 
   const handleSubmit = useCallback(
     (data) => {
-      data.webId = web.id
+      data.webId = web?.id
       data.pending = true
       data.inactive = false
       data.relations = []
@@ -42,7 +42,7 @@ function Submit() {
         }
       }, 1000)
     },
-    [createListing, web.id],
+    [createListing, web?.id],
   )
 
   if (router.isFallback || !categories) {
@@ -72,13 +72,13 @@ function Submit() {
                 You have submitted your new proposed listing succesfully 🎉{' '}
                 <br /> Thank you for your contribution. It will next be checked
                 and hopefully approved by the admins of the{' '}
-                <strong>{web.title}</strong> web.
+                <strong>{web?.title}</strong> web.
               </Text>
               <Link
                 href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
               >
                 <Button mt="2rem" size="md" variant="rw">
-                  Go back to {web.title} Resilience Web
+                  Go back to {web?.title} Resilience Web
                 </Button>
               </Link>
             </>
@@ -89,7 +89,7 @@ function Submit() {
               </Heading>
               <Text>
                 You are proposing a new listing for the{' '}
-                <strong>{web.title}</strong> web.
+                <strong>{web?.title}</strong> web.
               </Text>
               <Box
                 my="2rem"
