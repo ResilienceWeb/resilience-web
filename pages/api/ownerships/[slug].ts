@@ -13,7 +13,7 @@ const handler = async (
 ) => {
   try {
     const { slug } = req.query
-    // eslint-disable-next-line sonarjs/no-small-switch
+
     switch (req.method) {
       case 'GET':
         const ownerships: Data['ownerships'] = await prisma.ownership.findMany({

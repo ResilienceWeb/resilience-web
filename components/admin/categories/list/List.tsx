@@ -62,8 +62,6 @@ const List = ({ categories }) => {
     deleteCategory({ id: selectedCategoryId })
   }, [deleteCategory, onClose, selectedCategoryId])
 
-  console.log(categories)
-
   if (!categories) {
     return null
   }

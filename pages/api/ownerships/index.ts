@@ -45,7 +45,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ownerships = ownership?.webs ?? []
     }
 
-    // eslint-disable-next-line sonarjs/no-small-switch
     switch (req.method) {
       case 'GET':
         res.json({ ownerships })

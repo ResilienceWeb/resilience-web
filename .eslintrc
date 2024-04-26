@@ -12,7 +12,6 @@
     "jsx-a11y",
     "@typescript-eslint",
     "promise",
-    "sonarjs",
     "@tanstack/query"
   ],
   "extends": [
@@ -25,7 +24,6 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@next/next/recommended",
-    "plugin:sonarjs/recommended",
     "prettier",
     "plugin:@tanstack/eslint-plugin-query/recommended"
   ],
@@ -147,7 +145,6 @@
         "allowFinally": true
       }
     ],
-    "@typescript-eslint/no-base-to-string": 0,
-    "sonarjs/cognitive-complexity": 0
+    "@typescript-eslint/no-base-to-string": 0
   }
 }

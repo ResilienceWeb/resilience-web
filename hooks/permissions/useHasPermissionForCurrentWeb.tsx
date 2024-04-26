@@ -9,7 +9,6 @@ export default function useHasPermissionForCurrentWeb() {
   const { selectedWebId } = useAppContext()
   const { data: session, status: sessionStatus } = useSession()
 
-  // eslint-disable-next-line sonarjs/prefer-immediate-return
   const hasPermission = useMemo(
     () => permissions?.webIds?.includes(selectedWebId),
     [permissions?.webIds, selectedWebId],

@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/prefer-immediate-return */
 import { NextSeo } from 'next-seo'
 import { useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'

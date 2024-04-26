@@ -13,7 +13,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    // eslint-disable-next-line sonarjs/no-small-switch
     switch (req.method) {
       case 'DELETE': {
         const { id: categoryId } = req.query
