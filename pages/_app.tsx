@@ -16,6 +16,7 @@ import {
 import { SessionProvider } from 'next-auth/react'
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
+import { ReCaptchaProvider } from 'next-recaptcha-v3'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/600.css'
 import '@styles/colors.css'
@@ -145,7 +146,9 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
             <HydrationBoundary state={pageProps.dehydratedState}>
               <StoreProvider>
                 <ChakraProvider theme={theme}>
-                  <Component {...pageProps} />
+                  <ReCaptchaProvider>
+                    <Component {...pageProps} />
+                  </ReCaptchaProvider>
                 </ChakraProvider>
               </StoreProvider>
             </HydrationBoundary>

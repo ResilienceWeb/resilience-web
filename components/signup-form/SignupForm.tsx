@@ -9,24 +9,37 @@ import {
   Button,
 } from '@chakra-ui/react'
 import { Formik, Form, Field } from 'formik'
+import { useReCaptcha } from 'next-recaptcha-v3'
 
 import { fieldRequiredValidator } from '@helpers/formValidation'
 
 const SignupForm = () => {
+  const { executeRecaptcha } = useReCaptcha()
   const [isSuccess, setIsSuccess] = useState(false)
+  const [errorMessage, setErrorMessage] = useState()
 
-  const onSubmit = useCallback(async (data) => {
-    const response = await fetch('/api/newsletter-subscribe', {
-      method: 'POST',
-      body: JSON.stringify({ email: data.email }),
-      headers: { 'Content-Type': 'application/json' },
-    })
-    if (response.status === 201) {
-      setIsSuccess(true)
-    } else {
-      setIsSuccess(false)
-    }
-  }, [])
+  const onSubmit = useCallback(
+    async (data) => {
+      const recaptchaToken = await executeRecaptcha('form_submit')
+
+      const response = await fetch('/api/newsletter-subscribe', {
+        method: 'POST',
+        body: JSON.stringify({ email: data.email, recaptchaToken }),
+        headers: { 'Content-Type': 'application/json' },
+      })
+      if (response.status === 201) {
+        setIsSuccess(true)
+      } else {
+        setIsSuccess(false)
+
+        const responseJson = await response.json()
+        if (response.status === 400 || response.status === 403) {
+          setErrorMessage(responseJson.error)
+        }
+      }
+    },
+    [executeRecaptcha],
+  )
 
   return (
     <Formik
@@ -62,6 +75,11 @@ const SignupForm = () => {
                   {isSuccess && (
                     <FormHelperText fontWeight={600} textColor="rw.700">
                       Thanks! You're now on our mailing list 🙌
+                    </FormHelperText>
+                  )}
+                  {errorMessage && (
+                    <FormHelperText fontWeight={600} textColor="red.600">
+                      {errorMessage}
                     </FormHelperText>
                   )}
                 </FormControl>
