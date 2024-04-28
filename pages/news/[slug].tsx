@@ -5,12 +5,13 @@ import Error from 'next/error'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import { GraphQLClient } from 'graphql-request'
-import { Box, Heading } from '@chakra-ui/react'
+import { Text, Box, Heading } from '@chakra-ui/react'
 import { remark } from 'remark'
 import html from 'remark-html'
 
 import Layout from '@components/layout'
 import ErrorBoundary from '@components/error-boundary'
+import SignupForm from '@components/signup-form'
 
 export default function NewsPost({ post, contentHtml }) {
   const router = useRouter()
@@ -81,11 +82,25 @@ export default function NewsPost({ post, contentHtml }) {
             base: '90%',
             md: '650px',
           }}
-          mb={8}
+          mb="3rem"
         >
           <ErrorBoundary>
             <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
           </ErrorBoundary>
+        </Box>
+
+        <Box mb="3rem">
+          <Text
+            fontWeight={600}
+            mb={2}
+            style={{
+              color: 'var(--chakra-colors-rw-900)',
+              fontSize: 'var(--chakra-fontSizes-xl)',
+            }}
+          >
+            Sign up to our mailing list to stay up to date
+          </Text>
+          <SignupForm />
         </Box>
       </Layout>
     </>

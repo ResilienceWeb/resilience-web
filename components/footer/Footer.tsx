@@ -133,6 +133,9 @@ export default function Footer({ hideBorder = false }) {
           </Stack>
           <Stack align="flex-start">
             <ListHeader>Useful links</ListHeader>
+            <Link as={NextLink} href={`${REMOTE_URL}/admin`}>
+              Admin login
+            </Link>
             <Link as={NextLink} href={`${REMOTE_URL}/about`}>
               About us
             </Link>
