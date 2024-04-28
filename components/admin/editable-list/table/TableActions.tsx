@@ -80,7 +80,7 @@ const TableActions = ({
                 }}
                 value={searchTerm}
                 maxHeight="38px"
-                borderRadius="6px"
+                borderRadius="10px"
               />
             </InputGroup>
           </Stack>

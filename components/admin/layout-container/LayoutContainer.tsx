@@ -15,7 +15,7 @@ const LayoutContainer = ({ children }) => {
   return (
     <Flex>
       <Sidebar isOpen={isOpen} onClose={onClose} />
-      <Box maxWidth="100%" flex="1">
+      <Box maxWidth={{ base: '100%', lg: 'calc(100% - 239px)' }} flex="1">
         <Nav onOpen={onOpen} />
         <SlideFade in>
           <Box

@@ -136,6 +136,10 @@ const WebSelector = () => {
           ...baseStyles,
           minWidth: '250px',
         }),
+        control: (provided) => ({
+          ...provided,
+          borderRadius: '10px',
+        }),
         menu: (baseStyles) => ({
           ...baseStyles,
           zIndex: 10,

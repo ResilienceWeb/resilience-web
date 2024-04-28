@@ -44,7 +44,9 @@ const Button = defineStyleConfig({
   },
   variants: {
     outline: {
-      borderColor: 'rw.700',
+      color: 'rw.900',
+      borderColor: 'rw.900',
+      borderRadius: '10px',
       _hover: {
         bg: 'rw.100',
         color: 'rw.900',
@@ -53,12 +55,16 @@ const Button = defineStyleConfig({
     rw: {
       color: 'white',
       bg: 'rw.700',
+      borderRadius: '10px',
       _hover: {
         bg: 'rw.900',
         _disabled: {
           bg: 'rw.900',
         },
       },
+    },
+    solid: {
+      borderRadius: '10px',
     },
   },
 })
@@ -79,7 +85,7 @@ const theme = extendTheme({
   },
   colors: {
     rw: {
-      100: '#ccffd2',
+      100: '#dff7e2',
       200: '#b4fdbd',
       300: '#8fef99',
       400: '#75d77e',

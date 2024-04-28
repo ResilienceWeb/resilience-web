@@ -36,7 +36,7 @@ const Nav = ({ onOpen }) => {
       flex="1"
       maxWidth="100vw"
     >
-      <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+      <Flex h={16} alignItems="center" justifyContent="space-between">
         <IconButton
           variant="outline"
           onClick={onOpen}

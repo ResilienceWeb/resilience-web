@@ -24,7 +24,6 @@ const GetInTouchButton = () => {
             icon={<ChatIcon />}
             onClick={handleOpenFeedbackDialog}
             size="md"
-            colorScheme="rw.900"
             variant="outline"
           />
         ) : (

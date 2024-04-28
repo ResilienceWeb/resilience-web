@@ -7,7 +7,7 @@ const customMultiSelectStyles = {
   control: (provided) => ({
     ...provided,
     borderColor: '#E2E8F0',
-    borderRadius: '0.375rem',
+    borderRadius: '10px',
   }),
   placeholder: (provided) => ({
     ...provided,

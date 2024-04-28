@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import {
   Box,
@@ -41,7 +40,6 @@ interface NavItem {
 }
 
 export default function MainNav() {
-  const { data: session } = useSession()
   const { isOpen, onToggle } = useDisclosure()
   const router = useRouter()
 
@@ -136,7 +134,8 @@ export default function MainNav() {
               <Flex
                 display={{ base: 'none', md: 'flex' }}
                 alignItems="center"
-                ml={10}
+                ml="2.5rem"
+                mr="0.5rem"
               >
                 <DesktopNav
                   currentPathname={router.pathname}
@@ -147,13 +146,11 @@ export default function MainNav() {
           </Flex>
           <HStack>
             <GetInTouchButton />
-            {session && (
-              <Link as={NextLink} href="/admin">
-                <Button colorScheme="blue" variant="solid" size="md" mr={-2}>
-                  Dashboard
-                </Button>
-              </Link>
-            )}
+            <Link as={NextLink} href="/admin">
+              <Button colorScheme="blue" variant="solid" size="md" mr={-2}>
+                Admin login
+              </Button>
+            </Link>
           </HStack>
         </Flex>
       </Flex>
