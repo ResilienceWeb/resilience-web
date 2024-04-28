@@ -81,6 +81,7 @@ const Card = ({ web }) => {
             alt={`Image representing ${web.title} web`}
             src={web.image}
             fill={true}
+            sizes="(max-width: 768px) 90vw, 400px"
             style={{ objectFit: 'cover', objectPosition: 'bottom' }}
           />
         </Box>
