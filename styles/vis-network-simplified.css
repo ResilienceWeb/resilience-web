@@ -1,9 +1,6 @@
 .vis-overlay {
   position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
+  inset: 0;
 
   /* Must be displayed above for example selected Timeline items */
   z-index: 10;
@@ -18,27 +15,19 @@ div.vis-tooltip {
   visibility: hidden;
   padding: 5px;
   white-space: nowrap;
-
-  font-family: verdana;
   font-size: 14px;
   color: #000000;
   background-color: #f5f4ed;
-
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
   border-radius: 3px;
   border: 1px solid #808074;
-
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
   pointer-events: none;
-
   z-index: 5;
 }
 
 div.vis-network div.vis-navigation div.vis-button {
   width: 34px;
   height: 34px;
-  -moz-border-radius: 17px;
   border-radius: 17px;
   position: absolute;
   display: inline-block;
@@ -46,10 +35,6 @@ div.vis-network div.vis-navigation div.vis-button {
   background-repeat: no-repeat;
   cursor: pointer;
   -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
