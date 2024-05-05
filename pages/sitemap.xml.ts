@@ -10,7 +10,7 @@ function generateSiteMap(items) {
        <loc>https://resilienceweb.org.uk/about</loc>
      </url>
      <url>
-       <loc>https://resilienceweb.org.uk/how-it-works</loc>
+      <loc>https://resilienceweb.org.uk/news</loc>
      </url>
      ${items
        .map((item) => {
