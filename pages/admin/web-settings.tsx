@@ -27,7 +27,7 @@ import { useWeb, useUpdateWeb } from '@hooks/webs'
 import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 import { useAppContext } from '@store/hooks'
 
-export default function Settings() {
+export default function WebSettings() {
   const router = useRouter()
   const { data: session, status: sessionStatus } = useSession()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()

@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import NextLink from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import {
   Box,
@@ -65,9 +66,12 @@ const Nav = ({ onOpen }) => {
                 {session?.user.email && (
                   <>
                     <MenuItem isDisabled color="gray.600">
-                      <Text fontSize="14px">
+                      <Text fontSize="0.75rem">
                         Signed in as {session?.user.email}
                       </Text>
+                    </MenuItem>
+                    <MenuItem as={NextLink} href="/admin/user-settings">
+                      <Text fontSize="1rem">User settings</Text>
                     </MenuItem>
                     <MenuDivider />
                   </>
