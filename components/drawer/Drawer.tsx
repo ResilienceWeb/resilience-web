@@ -37,6 +37,7 @@ const Drawer = ({
   handleVolunteerSwitchChange,
   isVolunteer,
   searchTerm,
+  webDescription,
 }) => {
   const maxInputWidth = useBreakpointValue({ base: 'initial', md: '280px' })
 
@@ -75,7 +76,12 @@ const Drawer = ({
             </Text>
           </Box>
           <Divider />
-          <Flex direction="column" alignItems="center" gap="1.25rem" mt="1rem">
+          <Flex
+            direction="column"
+            alignItems="center"
+            gap="1.25rem"
+            my="1.25rem"
+          >
             <InputGroup
               maxW={useBreakpointValue({ base: 'initial', md: '280px' })}
             >
@@ -136,12 +142,25 @@ const Drawer = ({
               handleSwitchChange={handleVolunteerSwitchChange}
             />
           </Flex>
+          {webDescription && (
+            <>
+              <Divider />
+              <Box mt="1.25rem" mx="0.5rem">
+                <Heading as="h2" fontSize="1.25rem">
+                  About this web
+                </Heading>
+                <Text fontSize="0.9375rem" color="gray.600">
+                  {webDescription}
+                </Text>
+              </Box>
+            </>
+          )}
         </Box>
         <Box p="1rem">
           <Heading as="h2" fontSize="1.25rem">
             Support this project
           </Heading>
-          <Text mb="0.75rem">
+          <Text mb="0.75rem" color="gray.600">
             If you can, please support us via Open Collective to help us
             continue building this platform.
           </Text>

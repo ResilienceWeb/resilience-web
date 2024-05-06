@@ -49,7 +49,7 @@ type INetwork = {
 
 const CENTRAL_NODE_ID = 999
 
-const Web = ({ data, webName, webImage }) => {
+const Web = ({ data, webName, webImage, webDescription }) => {
   const router = useRouter()
 
   const { isMobile } = useAppContext()
@@ -248,6 +248,7 @@ const Web = ({ data, webName, webImage }) => {
           handleVolunteerSwitchChange={handleVolunteerSwitchChange}
           isVolunteer={isVolunteer}
           searchTerm={searchTerm}
+          webDescription={webDescription}
         />
       )}
       <Box
@@ -515,6 +516,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
       data: transformedData,
       webName: webData.title,
       webImage: webData.image,
+      webDescription: webData.description,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 30,
