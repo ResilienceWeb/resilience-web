@@ -18,6 +18,7 @@ import { useAppContext } from '@store/hooks'
 import { REMOTE_URL } from '@helpers/config'
 import { decodeUriElements } from '@helpers/routes'
 import MainList from '@components/main-list'
+import AlertBanner from '@components/alert-banner'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
 import { fetchCategoriesHydrate } from '@hooks/categories/useCategories'
@@ -49,7 +50,7 @@ type INetwork = {
 
 const CENTRAL_NODE_ID = 999
 
-const Web = ({ data, webName, webImage, webDescription }) => {
+const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
   const router = useRouter()
 
   const { isMobile } = useAppContext()
@@ -256,6 +257,13 @@ const Web = ({ data, webName, webImage, webDescription }) => {
         ml={{ base: '0', md: '18.75rem' }}
         position="relative"
       >
+        {webIsPublished === false && (
+          <AlertBanner
+            content="Note: this web is currently work in progress and not fully published yet."
+            type="info"
+            colorScheme="rw"
+          />
+        )}
         <Header
           categories={categories}
           handleCategorySelection={handleCategorySelection}
@@ -517,6 +525,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
       webName: webData.title,
       webImage: webData.image,
       webDescription: webData.description,
+      webIsPublished: webData.published,
       dehydratedState: dehydrate(queryClient),
     },
     revalidate: 30,

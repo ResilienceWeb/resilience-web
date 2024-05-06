@@ -72,7 +72,7 @@ const Drawer = ({
               </Button>
             </Link>
             <Text fontSize="0.875rem" color="gray.600" mt="0.25rem">
-              Know something that isn't yet listed? Let us know!
+              Know something that isn't yet listed? Let us know! 🙏
             </Text>
           </Box>
           <Divider />

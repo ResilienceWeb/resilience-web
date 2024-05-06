@@ -1,6 +1,13 @@
 import { memo, useCallback, useEffect, useState, useMemo } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import { chakra, Flex, Grid, Center, useDisclosure } from '@chakra-ui/react'
+import {
+  chakra,
+  Flex,
+  Grid,
+  Center,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 import { useCategories } from '@hooks/categories'
@@ -85,7 +92,12 @@ const MainList = ({ filteredItems, isMobile }) => {
               </AnimatePresence>
             </Grid>
           ) : (
-            <Center mt="2rem">No groups matched your search criteria</Center>
+            <Center mt="2rem">
+              <Text maxW="400px" textAlign="center" color="gray.600">
+                No groups matched your search criteria 🤔 Maybe propose the
+                listing to the maintainers via the Propose new listing button?
+              </Text>
+            </Center>
           )}
         </chakra.div>
       </Flex>
