@@ -12,9 +12,11 @@ import {
   Heading,
   chakra,
   Button,
+  FormLabel,
   FormControl,
   FormErrorMessage,
   FormHelperText,
+  Textarea,
   Text,
   Link,
   useToast,
@@ -107,11 +109,12 @@ export default function WebSettings() {
               overflow={{ sm: 'hidden' }}
               bg="white"
               padding="1rem"
-              mt="1rem"
+              my="1rem"
             >
               <Formik
                 initialValues={{
                   published: Boolean(webData?.published),
+                  description: webData?.description ?? '',
                   image: webData?.image,
                 }}
                 enableReinitialize
@@ -166,6 +169,38 @@ export default function WebSettings() {
                               </FormControl>
                             )
                           }}
+                        </Field>
+                      </chakra.div>
+
+                      <chakra.div mb="2rem">
+                        <Field name="description" type="text">
+                          {({ field, form }: FieldProps) => (
+                            <FormControl
+                              isInvalid={Boolean(
+                                form.errors.description &&
+                                  form.touched.description,
+                              )}
+                            >
+                              <FormLabel
+                                htmlFor="description"
+                                fontSize="sm"
+                                fontWeight="600"
+                              >
+                                Description
+                              </FormLabel>
+                              <Textarea
+                                {...field}
+                                id="description"
+                                fontSize="sm"
+                                shadow="sm"
+                                size="sm"
+                                rounded="md"
+                              />
+                              <FormErrorMessage>
+                                {form.errors.description?.toString()}
+                              </FormErrorMessage>
+                            </FormControl>
+                          )}
                         </Field>
                       </chakra.div>
 

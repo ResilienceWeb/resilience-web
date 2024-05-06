@@ -71,6 +71,7 @@ const handler = async (
         form.parse(req, async (_err, fields, files) => {
           const newData: Prisma.WebUncheckedUpdateInput = {
             published: stringToBoolean(fields.published[0]),
+            description: fields.description[0],
           }
 
           let imageUrl = null
