@@ -30,11 +30,11 @@ const Layout = ({
           alignItems="center"
           flexDirection="column"
         >
-          <AlertBanner
+          {/* <AlertBanner
             content="Join us on a seminar series to imagine a thriving, sustainable future for Cambridge, rooted in community resilience! What works well now – and where are the gaps?"
             type="info"
             url="https://www.transitioncambridge.org/wiki/TTResilienceWeb/TogetherWeCan"
-          />
+          /> */}
 
           {children}
         </Flex>

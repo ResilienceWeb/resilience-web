@@ -60,7 +60,11 @@ export default function MainNav() {
           .map((web) => ({
             label: web.title,
             href: `${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`,
-          })),
+          }))
+          .concat({
+            label: 'Create your own web',
+            href: '/auth/signup',
+          }),
       },
       {
         label: 'About',
