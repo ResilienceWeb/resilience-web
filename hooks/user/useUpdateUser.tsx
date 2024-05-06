@@ -9,26 +9,19 @@ async function updateUserRequest(userData) {
     body: JSON.stringify(userData),
   })
 
-  const data = await response.json()
-  const { user } = data
+  const responseJson = await response.json()
+  const { data: user } = responseJson
   return user
 }
 
 export default function useUpdateUser() {
-  // const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
 
   const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: updateUserRequest,
-    // onMutate: (newCategory) => {
-    //   const previousCategories = queryClient.getQueryData(['categories'])
-    //   queryClient.setQueryData(['categories'], newCategory)
-    //   return { previousCategories, newCategory }
-    // },
-    // onSettled: () => {
-    //   void queryClient.invalidateQueries({
-    //     queryKey: ['categories'],
-    //   })
-    // },
+    onSuccess: (data) => {
+      queryClient.setQueryData(['user', { email: data.email }], data)
+    },
   })
 
   return {

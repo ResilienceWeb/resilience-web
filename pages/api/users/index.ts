@@ -14,7 +14,6 @@ const handler = async (
   res: NextApiResponse<ResponseData>,
 ) => {
   const session = await getServerSession(req, res, authOptions)
-  console.log(req.body)
 
   if (!session?.user) {
     res.status(403)
@@ -27,11 +26,13 @@ const handler = async (
     case 'PATCH':
       const updatedUser = await prisma.user.update({
         where: { email: session.user.email },
-        data: {},
+        data: {
+          name: req.body.name,
+        },
       })
 
-      // console.log(updatedUser)
       res.status(200)
+      res.json({ data: updatedUser })
   }
 }
 

@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           include: { ownerships: true },
         })
         res.status(200)
-        res.json({ user })
+        res.json({ data: user })
         break
       case 'PUT':
         const updatedUser = await prisma.user.update({

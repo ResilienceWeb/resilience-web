@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/react'
 import { NextSeo } from 'next-seo'
 import { Formik, Form, Field, FieldProps } from 'formik'
@@ -15,19 +14,16 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
-  FormHelperText,
-  Text,
-  Link,
   useToast,
 } from '@chakra-ui/react'
 
 import LayoutContainer from '@components/admin/layout-container'
-import { useUpdateUser } from '@hooks/user'
+import { useUpdateUser, useCurrentUser } from '@hooks/user'
 
 export default function UserSettings() {
-  const router = useRouter()
   const { data: session, status: sessionStatus } = useSession()
   const { updateUser, isPending, isSuccess } = useUpdateUser()
+  const { user } = useCurrentUser()
 
   const toast = useToast()
   useEffect(() => {
@@ -68,7 +64,7 @@ export default function UserSettings() {
     )
   }
 
-  if (!session) {
+  if (!session || !user) {
     return null
   }
 
@@ -92,60 +88,62 @@ export default function UserSettings() {
               padding="1rem"
               mt="1rem"
             >
-              <Formik
-                initialValues={{
-                  name: '',
-                }}
-                enableReinitialize
-                onSubmit={onSubmit}
-              >
-                {(props) => {
-                  return (
-                    <Form>
-                      <chakra.div mb="2rem">
-                        <Field name="name" type="text">
-                          {({ field, form }: FieldProps) => (
-                            <FormControl
-                              isInvalid={Boolean(
-                                form.errors.name && form.touched.name,
-                              )}
-                            >
-                              <FormLabel
-                                htmlFor="name"
-                                fontSize="sm"
-                                fontWeight="600"
+              <Box maxWidth="400px">
+                <Formik
+                  initialValues={{
+                    name: user.name ?? '',
+                  }}
+                  enableReinitialize
+                  onSubmit={onSubmit}
+                >
+                  {(props) => {
+                    return (
+                      <Form>
+                        <chakra.div mb="2rem">
+                          <Field name="name" type="text">
+                            {({ field, form }: FieldProps) => (
+                              <FormControl
+                                isInvalid={Boolean(
+                                  form.errors.name && form.touched.name,
+                                )}
                               >
-                                Your name
-                              </FormLabel>
-                              <Input
-                                {...field}
-                                id="name"
-                                fontSize="sm"
-                                shadow="sm"
-                                size="sm"
-                                rounded="md"
-                              />
-                              <FormErrorMessage>
-                                {form.errors.name?.toString()}
-                              </FormErrorMessage>
-                            </FormControl>
-                          )}
-                        </Field>
-                      </chakra.div>
+                                <FormLabel
+                                  htmlFor="name"
+                                  fontSize="sm"
+                                  fontWeight="600"
+                                >
+                                  Your name
+                                </FormLabel>
+                                <Input
+                                  {...field}
+                                  id="name"
+                                  fontSize="sm"
+                                  shadow="sm"
+                                  size="sm"
+                                  rounded="md"
+                                />
+                                <FormErrorMessage>
+                                  {form.errors.name?.toString()}
+                                </FormErrorMessage>
+                              </FormControl>
+                            )}
+                          </Field>
+                        </chakra.div>
 
-                      <Button
-                        mt={4}
-                        variant="rw"
-                        isDisabled={!props.isValid || !props.dirty}
-                        isLoading={isPending}
-                        type="submit"
-                      >
-                        Update
-                      </Button>
-                    </Form>
-                  )
-                }}
-              </Formik>
+                        <Button
+                          mt={4}
+                          variant="rw"
+                          isDisabled={!props.isValid || !props.dirty}
+                          isLoading={isPending}
+                          type="submit"
+                        >
+                          Update
+                        </Button>
+                      </Form>
+                    )
+                  }}
+                </Formik>
+              </Box>
             </Box>
           </Box>
         </Stack>
