@@ -10,10 +10,12 @@ import {
   Heading,
   chakra,
   Button,
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
+  Text,
   useToast,
 } from '@chakra-ui/react'
 
@@ -49,7 +51,7 @@ export default function UserSettings() {
 
   const onSubmit = useCallback(
     (data) => {
-      updateUser({ name: data.name })
+      updateUser({ name: data.name, subscribed: data.subscribed })
     },
     [updateUser],
   )
@@ -92,6 +94,7 @@ export default function UserSettings() {
                 <Formik
                   initialValues={{
                     name: user.name ?? '',
+                    subscribed: user.subscribed ?? false,
                   }}
                   enableReinitialize
                   onSubmit={onSubmit}
@@ -124,6 +127,36 @@ export default function UserSettings() {
                                 />
                                 <FormErrorMessage>
                                   {form.errors.name?.toString()}
+                                </FormErrorMessage>
+                              </FormControl>
+                            )}
+                          </Field>
+                        </chakra.div>
+
+                        <chakra.div>
+                          <Field name="subscribed">
+                            {({ field, form }: FieldProps) => (
+                              <FormControl
+                                isInvalid={Boolean(
+                                  form.errors.subscribed &&
+                                    form.touched.subscribed,
+                                )}
+                              >
+                                <Checkbox
+                                  isChecked={field.value}
+                                  id="subscribed"
+                                  onChange={field.onChange}
+                                  colorScheme="green"
+                                >
+                                  Subscribed to the Resilience Web mailing list
+                                </Checkbox>
+                                <Text color="gray.500" fontSize="sm">
+                                  Check the box if you'd like to receive our
+                                  newsletter with news, platform updates and
+                                  more. You can unsubscribe anytime.
+                                </Text>
+                                <FormErrorMessage>
+                                  {form.errors.subscribed?.toString()}
                                 </FormErrorMessage>
                               </FormControl>
                             )}

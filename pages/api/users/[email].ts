@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
+import client from '@sendgrid/client'
 import { authOptions } from '../auth/[...nextauth]'
 import prisma from '../../../prisma/client'
+
+client.setApiKey(process.env.SENDGRID_API_KEY)
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -16,12 +19,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     switch (req.method) {
       case 'GET':
+        let subscribedToMailingList = false
+        try {
+          const request = {
+            url: `/v3/marketing/contacts/search/emails`,
+            method: 'POST',
+            body: {
+              emails: [session?.user.email],
+            },
+          }
+          // @ts-ignore
+          const response = await client.request(request)
+          if (response[0].statusCode === 200) {
+            subscribedToMailingList = true
+          }
+        } catch (e) {
+          // User is not currently subscribed. It shouldn't be an error, but for some reason the Sendgrid API throws an error.
+        }
+
         const user = await prisma.user.findUnique({
           where: { email },
           include: { ownerships: true },
         })
         res.status(200)
-        res.json({ data: user })
+        res.json({ data: { ...user, subscribed: subscribedToMailingList } })
         break
       case 'PUT':
         const updatedUser = await prisma.user.update({
