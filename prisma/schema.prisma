@@ -68,6 +68,7 @@ model Web {
   id          Int          @id @default(autoincrement())
   title       String       @unique
   slug        String       @unique
+  description String?
   categories  Category[]
   listings    Listing[]
   tags        Tag[]

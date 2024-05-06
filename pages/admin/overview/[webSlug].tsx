@@ -135,17 +135,16 @@ export default function WebOverview() {
                 ...permissionsForCurrentWebWithoutOwners,
               ]}
             />
+            <Button
+              variant="rw"
+              mb="2rem"
+              as={Link}
+              href={`mailto:${mailToEmails}`}
+            >
+              Send email to owners and editors
+            </Button>
           </Box>
         )}
-
-        <Button
-          variant="rw"
-          mb="2rem"
-          as={Link}
-          href={`mailto:${mailToEmails}`}
-        >
-          Send email to owners and editors
-        </Button>
       </LayoutContainer>
     </>
   )
