@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import { Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react'
 import Nav from '@components/nav'
 import Footer from '@components/footer'
-import AlertBanner from '@components/alert-banner'
+// import AlertBanner from '@components/alert-banner'
 import styles from './Layout.module.scss'
 
 const Layout = ({
