@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         to: 'cambridgeresilienceweb@gmail.com',
         from: `${process.env.EMAIL_FROM}`,
         replyTo: email,
-        subject: `Website feedback`,
+        subject: `Message from ${email}`,
         text: `Feedback submitted through website form:\n\n${feedback}`,
       },
       (error) => {
