@@ -16,7 +16,7 @@ import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { useWebs } from '@hooks/webs'
 
 // Hardcoded array to determine which webs are displayed first
-const orderOnHomepage = ['Cambridge', 'York', 'Durham']
+const orderOnHomepage = ['Cambridge', 'York', 'Norwich', 'Durham']
 
 const WebCards = () => {
   const { webs } = useWebs({ published: true })

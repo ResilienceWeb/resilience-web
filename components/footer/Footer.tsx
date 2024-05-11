@@ -69,7 +69,7 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 export default function Footer({ hideBorder = false }) {
   return (
     <Box
-      bg="white"
+      bg="#fcfcfc"
       color="gray.600"
       borderTopColor={hideBorder ? null : 'gray.200'}
       borderTopWidth={hideBorder ? null : '1px'}
