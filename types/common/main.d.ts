@@ -17,6 +17,7 @@ declare global {
     twitter?: string
     notes?: string
     seekingVolunteers: boolean
+    featured: boolean
     inactive: boolean
     slug: string
     image?: string

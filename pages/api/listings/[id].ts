@@ -62,6 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             instagram: fields.instagram[0],
             twitter: fields.twitter[0],
             seekingVolunteers: stringToBoolean(fields.seekingVolunteers[0]),
+            featured: stringToBoolean(fields.featured[0]),
             pending: false,
             slug: fields.slug[0],
             tags: {

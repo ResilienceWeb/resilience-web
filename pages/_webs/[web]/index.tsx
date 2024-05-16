@@ -142,6 +142,15 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
     let results = data?.nodes
       .filter((item) => !item.isDescriptive)
       .sort(sortStringsFunc)
+      .sort((item) => {
+        if (item.featured) {
+          return -1
+        } else {
+          return 1
+        }
+      })
+
+    console.log(data?.nodes)
 
     if (isVolunteer) {
       results = results.filter((item) => item.seekingVolunteers)
@@ -380,6 +389,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
         twitter,
         instagram,
         seekingVolunteers,
+        featured,
         slug,
         tags,
         relations,
@@ -399,6 +409,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
           twitter,
           instagram,
           seekingVolunteers,
+          featured,
           category: {
             color: `#${category.color}`,
             label: category.label,

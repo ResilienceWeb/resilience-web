@@ -180,6 +180,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
         twitter: listing?.twitter || '',
         instagram: listing?.instagram || '',
         seekingVolunteers: listing?.seekingVolunteers || false,
+        featured: listing?.featured || false,
         image: listing?.image,
         slug: listing?.slug || '',
         tags: initialTagsValues || [],
@@ -599,6 +600,34 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                       </Text>
                       <FormErrorMessage>
                         {form.errors.seekingVolunteers?.toString()}
+                      </FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+              </chakra.div>
+
+              <chakra.div mt="0.5rem">
+                <Field name="featured">
+                  {({ field, form }: FieldProps) => (
+                    <FormControl
+                      isInvalid={Boolean(
+                        form.errors.featured && form.touched.featured,
+                      )}
+                    >
+                      <Checkbox
+                        isChecked={field.value}
+                        id="featured"
+                        onChange={field.onChange}
+                        colorScheme="green"
+                      >
+                        Featured
+                      </Checkbox>
+                      <Text color="gray.500" fontSize="sm">
+                        Determines whether the listing is shown at the top of
+                        the page.
+                      </Text>
+                      <FormErrorMessage>
+                        {form.errors.featured?.toString()}
                       </FormErrorMessage>
                     </FormControl>
                   )}

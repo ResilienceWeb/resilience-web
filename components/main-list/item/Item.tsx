@@ -4,6 +4,7 @@ import Image from 'next/image'
 import chroma from 'chroma-js'
 import { Box, Flex, Text, Icon, Tooltip, chakra } from '@chakra-ui/react'
 import { HiUserGroup } from 'react-icons/hi'
+import { FaStar } from 'react-icons/fa'
 
 import CategoryTag from '@components/category-tag'
 
@@ -76,6 +77,25 @@ const Item = ({
         _hover={{ boxShadow: 'xl' }}
         ref={ref}
       >
+        {dataItem.featured && (
+          <Tooltip
+            borderRadius="md"
+            label="Featured listing"
+            placement="right-end"
+          >
+            <span>
+              <Icon
+                as={FaStar}
+                position="absolute"
+                width="26px"
+                height="26px"
+                color="yellow.200"
+                top="4px"
+                left="4px"
+              />
+            </span>
+          </Tooltip>
+        )}
         <CategoryTag
           alpha={1}
           colorHex={dataItem.category.color}
@@ -89,7 +109,6 @@ const Item = ({
         >
           {dataItem.category.label}
         </CategoryTag>
-
         {dataItem.image ? (
           <Box
             width="100%"
@@ -119,7 +138,6 @@ const Item = ({
             />
           )
         )}
-
         <Box px={3} pb={3}>
           <Flex justifyContent="space-between" mt={3}>
             <chakra.h2
