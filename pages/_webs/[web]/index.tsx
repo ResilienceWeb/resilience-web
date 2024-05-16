@@ -150,8 +150,6 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
         }
       })
 
-    console.log(data?.nodes)
-
     if (isVolunteer) {
       results = results.filter((item) => item.seekingVolunteers)
     }
