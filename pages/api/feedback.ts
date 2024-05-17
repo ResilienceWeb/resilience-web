@@ -6,7 +6,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { email, feedback } = req.body
 
-    await nodemailer.createTransport(appConfig.emailServer).sendMail(
+    console.log(email, feedback)
+
+    const transporter = await nodemailer.createTransport(appConfig.emailServer)
+    const result = transporter.sendMail(
       {
         to: 'cambridgeresilienceweb@gmail.com',
         from: `${process.env.EMAIL_FROM}`,
@@ -20,6 +23,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       },
     )
+
+    console.log('[RW] Feedback sending result', result)
 
     res.status(201)
     res.json({

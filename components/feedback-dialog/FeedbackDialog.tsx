@@ -30,6 +30,9 @@ const FeedbackDialog = ({ isOpen, onClose }) => {
 
   const onFormSubmit = useCallback(
     async (data) => {
+      if (!data.email || !data.feedback) {
+        console.error('[RW] Making API request with empty email and feedback')
+      }
       const response = await fetch(`${REMOTE_URL}/api/feedback`, {
         method: 'POST',
         headers: {
