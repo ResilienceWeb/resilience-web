@@ -18,7 +18,10 @@ const readPhoto = async (photo) => {
   // draw image in canvas element
   canvas.width = img.width
   canvas.height = img.height
-  canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+  const ctx = canvas.getContext('2d')
+  ctx.fillStyle = 'white'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
 
   return canvas
 }
