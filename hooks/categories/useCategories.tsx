@@ -31,6 +31,7 @@ export default function useCategories() {
     queryKey: ['categories', { webSlug }],
     queryFn: fetchCategoriesRequest,
     refetchOnWindowFocus: false,
+    enabled: Boolean(webSlug),
   })
 
   return {
