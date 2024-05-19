@@ -59,8 +59,8 @@ const ImageUpload = ({
       type: file.type,
     })
     const optimizedBlob = await optimizeImage(file)
-    const optimizedFile = new File([optimizedBlob], file.name, {
-      type: file.type,
+    const optimizedFile = new File([optimizedBlob], file?.name, {
+      type: file?.type,
     })
 
     if (optimizedFile?.type.substr(0, 5) === 'image') {
@@ -172,17 +172,15 @@ const ImageUpload = ({
             </Flex>
           )}
 
-          {!preview && hasImageAlready && (
-            <Button
-              position="absolute"
-              colorScheme="blue"
-              size="sm"
-              opacity="0.8"
-              onClick={() => fileInputRef.current.click()}
-            >
-              Replace image
-            </Button>
-          )}
+          <Button
+            position="absolute"
+            colorScheme="blue"
+            size="sm"
+            opacity="0.8"
+            onClick={() => fileInputRef.current.click()}
+          >
+            Replace image
+          </Button>
         </InputGroup>
         <FormErrorMessage>Please upload an image</FormErrorMessage>
       </FormControl>

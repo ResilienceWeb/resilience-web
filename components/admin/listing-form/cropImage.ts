@@ -26,6 +26,8 @@ async function cropImage(imageSrc, pixelCrop): Promise<HTMLCanvasElement> {
   canvas.height = safeArea
 
   // draw rotated image and store data.
+  ctx.fillStyle = 'white'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
   ctx.drawImage(
     image,
     safeArea / 2 - image.width * 0.5,

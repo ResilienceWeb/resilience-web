@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Cropper from 'react-easy-crop'
 import {
   Modal,
@@ -10,7 +10,13 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  chakra,
+  HStack,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  Box,
+  Text,
 } from '@chakra-ui/react'
 
 import { getCroppedImage, getCroppedImageDataUrl } from './cropImage'
@@ -45,7 +51,7 @@ const ImageCropDialog = ({
       imageUrl,
       croppedAreaPixels,
     )
-    console.log(crop, zoom, croppedImage)
+
     setCroppedImage(croppedImage)
     setPreview(croppedImageDataUrl)
   }
@@ -55,46 +61,64 @@ const ImageCropDialog = ({
       isCentered
       isOpen={isOpen}
       onClose={onClose}
-      size={{ base: 'full', md: 'xl' }}
+      size={{ base: 'full', md: '3xl' }}
     >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Crop image</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <div className="crop-container">
-            <Cropper
-              classes={{ containerClassName: styles.cropperContainer }}
-              image={imageUrl}
-              zoom={zoom}
-              crop={crop}
-              aspect={2 / 1}
-              onCropChange={onCropChange}
-              onZoomChange={onZoomChange}
-              onCropComplete={onCropComplete}
-            />
-          </div>
-          <div className="controls">
-            <div className="controls-upper-area">
-              <input
-                type="range"
-                min={1}
-                max={3}
-                step={0.1}
-                value={zoom}
-                onInput={(e) => {
-                  // @ts-ignore
-                  onZoomChange(e.target.value)
-                }}
-                className="slider"
-              ></input>
-            </div>
-            <div className="button-area">
-              <button onClick={onClose}>Cancel</button>
-              <button onClick={onCrop}>Crop</button>
-            </div>
-          </div>
+          <Cropper
+            classes={{ containerClassName: styles.cropperContainer }}
+            image={imageUrl}
+            zoom={zoom}
+            crop={crop}
+            aspect={2 / 1}
+            onCropChange={onCropChange}
+            onZoomChange={onZoomChange}
+            onCropComplete={onCropComplete}
+          />
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            mt="2rem"
+          >
+            <Text>Zoom:</Text>
+            <Slider
+              value={zoom}
+              min={1}
+              max={3}
+              step={0.1}
+              colorScheme="rw"
+              onChange={(value) => {
+                onZoomChange(value)
+              }}
+              maxWidth="300px"
+            >
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+              <SliderThumb boxSize={5} bg="rw.700" />
+            </Slider>
+          </Box>
         </ModalBody>
+        <ModalFooter>
+          <HStack>
+            <Button
+              onClick={onClose}
+              bg="gray.500"
+              colorScheme="gray.500"
+              _hover={{ bg: 'gray.600' }}
+            >
+              Cancel
+            </Button>
+            <Button onClick={onCrop} variant="rw">
+              Crop
+            </Button>
+          </HStack>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   )
