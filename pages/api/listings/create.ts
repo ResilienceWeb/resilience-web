@@ -55,7 +55,9 @@ const handler = async (
         twitter: fields.twitter[0],
         pending: isProposedListing,
         seekingVolunteers: stringToBoolean(fields.seekingVolunteers[0]),
-        featured: stringToBoolean(fields.featured[0]),
+        featured: isProposedListing
+          ? false
+          : stringToBoolean(fields.featured[0]),
         slug: fields.slug[0],
       }
 

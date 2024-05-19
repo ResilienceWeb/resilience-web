@@ -172,15 +172,17 @@ const ImageUpload = ({
             </Flex>
           )}
 
-          <Button
-            position="absolute"
-            colorScheme="blue"
-            size="sm"
-            opacity="0.8"
-            onClick={() => fileInputRef.current.click()}
-          >
-            Replace image
-          </Button>
+          {(preview || field.value) && (
+            <Button
+              position="absolute"
+              colorScheme="blue"
+              size="sm"
+              opacity="0.8"
+              onClick={() => fileInputRef.current.click()}
+            >
+              Replace image
+            </Button>
+          )}
         </InputGroup>
         <FormErrorMessage>Please upload an image</FormErrorMessage>
       </FormControl>
