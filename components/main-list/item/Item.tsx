@@ -92,6 +92,7 @@ const Item = ({
                 color="yellow.200"
                 top="4px"
                 left="4px"
+                zIndex="2"
               />
             </span>
           </Tooltip>
@@ -125,7 +126,7 @@ const Item = ({
               style={{
                 borderTopLeftRadius: '.375rem',
                 borderTopRightRadius: '.375rem',
-                objectFit: 'cover',
+                objectFit: 'contain',
               }}
             />
           </Box>

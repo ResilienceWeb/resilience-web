@@ -13,9 +13,11 @@ import {
   Stack,
   Icon,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react'
 
 import optimizeImage from '@helpers/optimizeImage'
+import ImageCropDialog from './ImageCropDialog'
 
 const ImageUpload = ({
   field,
@@ -30,16 +32,35 @@ const ImageUpload = ({
   helperText?: string
   isRequired?: boolean
 }) => {
+  const {
+    isOpen: isCropDialogOpen,
+    onOpen: onOpenCropDialog,
+    onClose: onCloseCropDialog,
+  } = useDisclosure()
+  const [fileInfo, setFileInfo] = useState<{ name: string; type: string }>()
+
   const fileInputRef = useRef<HTMLInputElement>()
   const [preview, setPreview] = useState<string | ArrayBuffer>()
 
   const hasImageAlready = field.value && !field.value.name
 
+  const setCroppedImage = (croppedImage) => {
+    const croppedImageFile = new File([croppedImage], fileInfo?.name, {
+      type: fileInfo?.type,
+    })
+    formProps.setFieldValue('image', croppedImageFile)
+    onCloseCropDialog()
+  }
+
   const handleFileInputChange = async (event) => {
     const file = event.target.files[0]
-    const optimizedBlob = await optimizeImage(file)
-    const optimizedFile = new File([optimizedBlob], file.name, {
+    setFileInfo({
+      name: file.name,
       type: file.type,
+    })
+    const optimizedBlob = await optimizeImage(file)
+    const optimizedFile = new File([optimizedBlob], file?.name, {
+      type: file?.type,
     })
 
     if (optimizedFile?.type.substr(0, 5) === 'image') {
@@ -47,6 +68,7 @@ const ImageUpload = ({
       reader.readAsDataURL(optimizedFile)
       reader.onloadend = () => {
         setPreview(reader.result)
+        onOpenCropDialog()
       }
 
       formProps.setFieldValue('image', optimizedFile)
@@ -56,88 +78,100 @@ const ImageUpload = ({
   }
 
   return (
-    <FormControl isInvalid={form.errors.image && form.touched.image} mb="1rem">
-      <FormLabel htmlFor="image" fontSize="md" fontWeight="600">
-        {`Image${isRequired ? '*' : ''}`}
-      </FormLabel>
-      <Text fontSize="sm" color="gray.600" mb="0.5rem">
-        Please ensure this is either a copyright-free image, you own the
-        copyright of this image, or you have permission to use the image.
-      </Text>
-      {helperText && <FormHelperText mb="1.5rem">{helperText}</FormHelperText>}
-      <InputGroup display="flex" alignItems="center" justifyContent="center">
-        <VisuallyHidden>
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={(event) => void handleFileInputChange(event)}
-          />
-        </VisuallyHidden>
-
-        {hasImageAlready || preview ? (
-          <div style={{ width: '200px', height: '200px' }}>
-            <Image
-              alt="Preview of image uploaded by user"
-              src={preview ?? field.value}
-              layout="fill"
-              objectFit="contain"
-              unoptimized
-            />
-          </div>
-        ) : (
-          <Flex
-            width="100%"
-            mt={1}
-            justify="center"
-            p={6}
-            borderWidth={2}
-            borderColor="gray.300"
-            borderStyle="dashed"
-            rounded="md"
-            cursor="pointer"
-            onClick={() => fileInputRef.current.click()}
-          >
-            <Stack spacing={1} textAlign="center">
-              <Icon
-                mx="auto"
-                boxSize={12}
-                color="gray.400"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 48 48"
-                aria-hidden="true"
-              >
-                <path
-                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </Icon>
-              <Flex fontSize="sm" color="gray.600" alignItems="baseline">
-                <chakra.label
-                  htmlFor="file-upload"
-                  cursor="pointer"
-                  rounded="md"
-                  fontSize="md"
-                  color="brand.600"
-                  pos="relative"
-                  _hover={{
-                    color: 'brand.400',
-                  }}
-                >
-                  <span>Upload an image</span>
-                  <VisuallyHidden>
-                    <input id="file-upload" name="file-upload" type="file" />
-                  </VisuallyHidden>
-                </chakra.label>
-              </Flex>
-            </Stack>
-          </Flex>
+    <>
+      <ImageCropDialog
+        imageUrl={preview}
+        isOpen={isCropDialogOpen}
+        onClose={onCloseCropDialog}
+        setCroppedImage={setCroppedImage}
+        setPreview={setPreview}
+      />
+      <FormControl
+        isInvalid={form.errors.image && form.touched.image}
+        mb="1rem"
+      >
+        <FormLabel htmlFor="image" fontSize="md" fontWeight="600">
+          {`Image${isRequired ? '*' : ''}`}
+        </FormLabel>
+        <Text fontSize="sm" color="gray.600" mb="0.5rem">
+          Please ensure this is either a copyright-free image, you own the
+          copyright of this image, or you have permission to use the image.
+        </Text>
+        {helperText && (
+          <FormHelperText mb="1.5rem">{helperText}</FormHelperText>
         )}
+        <InputGroup display="flex" alignItems="center" justifyContent="center">
+          <VisuallyHidden>
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={(event) => void handleFileInputChange(event)}
+            />
+          </VisuallyHidden>
 
-        {!preview && hasImageAlready && (
+          {hasImageAlready || preview ? (
+            <div style={{ width: '200px', height: '200px' }}>
+              <Image
+                alt="Preview of image uploaded by user"
+                src={preview ?? field.value}
+                layout="fill"
+                objectFit="contain"
+                unoptimized
+              />
+            </div>
+          ) : (
+            <Flex
+              width="100%"
+              mt={1}
+              justify="center"
+              p={6}
+              borderWidth={2}
+              borderColor="gray.300"
+              borderStyle="dashed"
+              rounded="md"
+              cursor="pointer"
+              onClick={() => fileInputRef.current.click()}
+            >
+              <Stack spacing={1} textAlign="center">
+                <Icon
+                  mx="auto"
+                  boxSize={12}
+                  color="gray.400"
+                  stroke="currentColor"
+                  fill="none"
+                  viewBox="0 0 48 48"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </Icon>
+                <Flex fontSize="sm" color="gray.600" alignItems="baseline">
+                  <chakra.label
+                    htmlFor="file-upload"
+                    cursor="pointer"
+                    rounded="md"
+                    fontSize="md"
+                    color="brand.600"
+                    pos="relative"
+                    _hover={{
+                      color: 'brand.400',
+                    }}
+                  >
+                    <span>Upload an image</span>
+                    <VisuallyHidden>
+                      <input id="file-upload" name="file-upload" type="file" />
+                    </VisuallyHidden>
+                  </chakra.label>
+                </Flex>
+              </Stack>
+            </Flex>
+          )}
+
           <Button
             position="absolute"
             colorScheme="blue"
@@ -147,10 +181,10 @@ const ImageUpload = ({
           >
             Replace image
           </Button>
-        )}
-      </InputGroup>
-      <FormErrorMessage>Please upload an image</FormErrorMessage>
-    </FormControl>
+        </InputGroup>
+        <FormErrorMessage>Please upload an image</FormErrorMessage>
+      </FormControl>
+    </>
   )
 }
 
