@@ -21,8 +21,7 @@ Sentry.init({
   replaysSessionSampleRate: 0.1,
 
   integrations: [
-    new Sentry.Replay({
-      // Additional Replay configuration goes in here, for example:
+    Sentry.replayIntegration({
       maskAllText: false,
       blockAllMedia: true,
     }),
