@@ -28,7 +28,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         form.parse(req, async (_err, fields, files) => {
-          const tagsArray = fields.tags[0] !== '' ? fields.tags : []
+          const tagsArray =
+            fields.tags[0] !== '' ? fields.tags[0].split(',') : []
 
           const tagsToConnect = tagsArray.map((tagId) => ({
             id: Number(tagId),
@@ -40,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }))
 
           const relationsArray =
-            fields.relations[0] !== '' ? fields.relations : []
+            fields.relations[0] !== '' ? fields.relations[0].split(',') : []
           const relationsToConnect = relationsArray.map((relationId) => ({
             id: Number(relationId),
           }))
