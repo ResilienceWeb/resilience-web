@@ -30,4 +30,8 @@ declare global {
   type CategoryWithListings = Prisma.CategoryGetPayload<{
     include: { listings: true }
   }>
+
+  type TagWithListings = Prisma.TagGetPayload<{
+    include: { listings: true }
+  }>
 }

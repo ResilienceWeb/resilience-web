@@ -6,18 +6,20 @@ import {
   FormLabel,
   Input,
   FormErrorMessage,
+  Tooltip,
 } from '@chakra-ui/react'
 import { Formik, Form, Field } from 'formik'
-import { Tag } from '@prisma/client'
 
 import { fieldRequiredValidator } from '@helpers/formValidation'
 
 const TagForm = ({
   onSubmit,
+  onDelete,
   tag,
 }: {
   onSubmit: (data: any) => void
-  tag?: Tag
+  onDelete?: (data: any) => void
+  tag?: TagWithListings
 }) => {
   return (
     <Formik
@@ -40,7 +42,29 @@ const TagForm = ({
               )}
             </Field>
           </chakra.div>
-          <ModalFooter pr="0">
+          <ModalFooter
+            pr="0"
+            pl="0"
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="flex-end"
+          >
+            {tag && (
+              <Tooltip
+                isDisabled={tag?.listings?.length === 0}
+                borderRadius="md"
+                label="To delete this tag, first ensure there are no listings associated with it"
+              >
+                <Button
+                  colorScheme="red"
+                  isDisabled={tag?.listings?.length > 0}
+                  opacity="0.85"
+                  onClick={onDelete}
+                >
+                  Remove
+                </Button>
+              </Tooltip>
+            )}
             <Button
               mt={4}
               ml={2}

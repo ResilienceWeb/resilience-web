@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { memo, useCallback, useState } from 'react'
 
-import { useUpdateTag } from '@hooks/tags'
+import { useUpdateTag, useDeleteTag } from '@hooks/tags'
 import { UpdateTagDialog } from '../header/tag-dialog'
 
 const columns = [
@@ -20,11 +20,16 @@ const columns = [
     Header: 'Tag label',
     accessor: 'label',
   },
+  {
+    Header: 'Number of listings',
+    accessor: 'listings',
+  },
 ]
 
 const List = ({ tags }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { mutate: updateTag } = useUpdateTag()
+  const { mutate: deleteTag } = useDeleteTag()
 
   const [selectedTagId, setSelectedTagId] = useState(null)
   const selectedTag = tags.find((tag) => tag.id === selectedTagId)
@@ -45,6 +50,11 @@ const List = ({ tags }) => {
     [onClose, updateTag, selectedTagId],
   )
 
+  const handleDelete = useCallback(() => {
+    onClose()
+    deleteTag({ id: selectedTagId })
+  }, [deleteTag, onClose, selectedTagId])
+
   if (!tags) {
     return null
   }
@@ -52,7 +62,7 @@ const List = ({ tags }) => {
   return (
     <>
       <TableContainer borderRadius="10px" borderStyle="solid" borderWidth="1px">
-        <Table fontSize="sm" background="#ffffff" mb={'2rem'}>
+        <Table fontSize="sm" background="#ffffff">
           <Thead bg={'gray.50'}>
             <Tr>
               {columns.map((column, index) => (
@@ -68,6 +78,14 @@ const List = ({ tags }) => {
               <Tr key={row.id}>
                 {columns.map((column, index) => {
                   const cell = row[column.accessor]
+
+                  if (column.accessor === 'listings') {
+                    return (
+                      <Td key={index}>
+                        <strong>{cell.length}</strong>
+                      </Td>
+                    )
+                  }
 
                   return (
                     <Td key={index} maxWidth="100px">
@@ -95,6 +113,7 @@ const List = ({ tags }) => {
         tag={selectedTag}
         isOpen={isOpen}
         onClose={onClose}
+        onDelete={handleDelete}
         onSubmit={handleSubmit}
       />
     </>
