@@ -6,30 +6,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { email, feedback } = req.body
 
-    console.log(email, feedback)
+    if (req.method === 'POST') {
+      const transporter = await nodemailer.createTransport(
+        appConfig.emailServer,
+      )
+      transporter.sendMail(
+        {
+          to: 'cambridgeresilienceweb@gmail.com',
+          from: `${process.env.EMAIL_FROM}`,
+          replyTo: email,
+          subject: `Message from ${email}`,
+          text: `Feedback submitted through website form:\n\n${feedback}`,
+        },
+        (error) => {
+          if (error) {
+            console.error('[RW] Error sending feedback email', email, error)
+          }
+        },
+      )
 
-    const transporter = await nodemailer.createTransport(appConfig.emailServer)
-    const result = transporter.sendMail(
-      {
-        to: 'cambridgeresilienceweb@gmail.com',
-        from: `${process.env.EMAIL_FROM}`,
-        replyTo: email,
-        subject: `Message from ${email}`,
-        text: `Feedback submitted through website form:\n\n${feedback}`,
-      },
-      (error) => {
-        if (error) {
-          console.error('[RW] Error sending feedback email', email, error)
-        }
-      },
-    )
-
-    console.log('[RW] Feedback sending result', result)
-
-    res.status(201)
-    res.json({
-      result: 'Feedback sent successfully',
-    })
+      res.status(201)
+      res.json({
+        result: 'Feedback sent successfully',
+      })
+    }
   } catch (e) {
     res.status(500)
     res.json({
