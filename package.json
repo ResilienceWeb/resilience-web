@@ -79,10 +79,10 @@
     "@tanstack/eslint-plugin-query": "5.35.6",
     "@tanstack/react-query-devtools": "5.37.1",
     "@types/formidable": "3.4.5",
-    "@types/node": "20.11.28",
-    "@types/react": "18.2.66",
-    "@typescript-eslint/eslint-plugin": "6.21.0",
-    "@typescript-eslint/parser": "6.21.0",
+    "@types/node": "20.12.12",
+    "@types/react": "18.3.2",
+    "@typescript-eslint/eslint-plugin": "7.10.0",
+    "@typescript-eslint/parser": "7.10.0",
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.3",
     "eslint-config-prettier": "9.1.0",
@@ -99,6 +99,6 @@
     "stylelint-config-recommended": "14.0.0",
     "stylelint-config-standard-scss": "13.0.0",
     "ts-node": "10.9.2",
-    "typescript": "5.4.2"
+    "typescript": "5.4.5"
   }
 }
