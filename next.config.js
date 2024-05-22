@@ -33,6 +33,7 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     scrollRestoration: process.env.NODE_ENV === 'development' ? false : true,
+    instrumentationHook: true
   },
   // eslint-disable-next-line @typescript-eslint/require-await
   async headers() {
@@ -68,16 +69,16 @@ module.exports = withSentryConfig(
   {
     org: 'resilience-web',
     project: 'resilience-web',
+    telemetry: false,
+    authToken: process.env.SENTRY_AUTH_TOKEN,
     // Suppresses source map uploading logs during build
     silent: false,
-  },
-  {
     // Upload a larger set of source maps for prettier stack traces (increases build time)
     widenClientFileUpload: true,
     // Transpiles SDK to be compatible with IE11 (increases bundle size)
     transpileClientSDK: false,
     // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
-    tunnelRoute: '/monitoring',
+    // tunnelRoute: '/monitoring',
     // Hides source maps from generated client bundles
     hideSourceMaps: true,
     // Automatically tree-shake Sentry logger statements to reduce bundle size
