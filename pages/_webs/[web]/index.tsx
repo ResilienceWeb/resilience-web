@@ -78,8 +78,20 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
     [setQuery],
   )
   const [categories, setCategories] = useState({})
-
   const [tags, setTags] = useState([])
+
+  const selectedCategories = useMemo(() => {
+    return query.categories.map((categoryLabel) => ({
+      value: categoryLabel,
+      label: categoryLabel,
+    }))
+  }, [query.categories])
+  const selectedTags = useMemo(() => {
+    return query.tags.map((tagLabel) => ({
+      value: tagLabel,
+      label: tagLabel,
+    }))
+  }, [query.tags])
 
   const [selectedId, setSelectedId] = useState()
   const [_network, setNetwork] = useState<INetwork>()
@@ -232,7 +244,9 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
       {!isMobile && (
         <Drawer
           categories={categories}
+          selectedCategories={selectedCategories}
           tags={tags}
+          selectedTags={selectedTags}
           handleCategorySelection={handleCategorySelection}
           handleTagSelection={handleTagSelection}
           handleClearSearchTermValue={handleClearSearchTermValue}
@@ -257,6 +271,9 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
         )}
         <Header
           categories={categories}
+          selectedCategories={selectedCategories}
+          tags={tags}
+          selectedTags={selectedTags}
           handleCategorySelection={handleCategorySelection}
           handleClearSearchTermValue={handleClearSearchTermValue}
           handleSearchTermChange={handleSearchTermChange}
@@ -265,7 +282,6 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
           isMobile={isMobile}
           isWebMode={isWebMode}
           searchTerm={query.searchTerm}
-          tags={tags}
           selectedWebName={webName}
         />
         {isWebMode && (
