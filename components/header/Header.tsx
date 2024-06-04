@@ -34,7 +34,6 @@ const Header = ({
   isWebMode,
   searchTerm,
   tags,
-  selectedTags,
   selectedWebName,
 }) => {
   if (isMobile) {
@@ -137,7 +136,6 @@ const Header = ({
                   options={tags}
                   placeholder="Filter by tag"
                   styles={customMultiSelectStyles}
-                  value={selectedTags}
                 />
               </InputGroup>
             </VStack>

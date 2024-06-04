@@ -29,7 +29,6 @@ import LogoImage from '../../public/logo.png'
 const Drawer = ({
   categories,
   tags,
-  selectedTags,
   handleTagSelection,
   handleCategorySelection,
   handleClearSearchTermValue,
@@ -133,7 +132,7 @@ const Drawer = ({
                   options={tags}
                   placeholder="Tag"
                   styles={customMultiSelectStyles}
-                  value={selectedTags}
+                  // value={selectedTags}
                 />
               </InputGroup>
             )}

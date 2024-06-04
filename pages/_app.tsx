@@ -17,12 +17,18 @@ import { SessionProvider } from 'next-auth/react'
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
 import { ReCaptchaProvider } from 'next-recaptcha-v3'
+import NextAdapterPages from 'next-query-params/pages'
+import { QueryParamProvider } from 'use-query-params'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/600.css'
 import '@styles/colors.css'
 import '@styles/styles.global.scss'
 import '@styles/vis-network-simplified.css'
 import StoreProvider from '@store/StoreProvider'
+
+function NextAdapter(props) {
+  return <NextAdapterPages {...props} shallow={false} />
+}
 
 // Check that PostHog is client-side (used to handle Next.js SSR)
 if (
@@ -153,7 +159,9 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
               <StoreProvider>
                 <ChakraProvider theme={theme}>
                   <ReCaptchaProvider>
-                    <Component {...pageProps} />
+                    <QueryParamProvider adapter={NextAdapter}>
+                      <Component {...pageProps} />
+                    </QueryParamProvider>
                   </ReCaptchaProvider>
                 </ChakraProvider>
               </StoreProvider>

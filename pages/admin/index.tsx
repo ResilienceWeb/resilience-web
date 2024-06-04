@@ -70,9 +70,18 @@ const driverObj = driver({
 const Admin = () => {
   const { data: session, status: sessionStatus } = useSession()
   const router = useRouter()
-  const { selectedWebId, selectedWebSlug } = useAppContext()
+  const { selectedWebId, selectedWebSlug, setSelectedWebSlug } = useAppContext()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
-  const { isPending: isLoadingWebs } = useWebs()
+  const { isPending: isLoadingWebs, webs } = useWebs()
+
+  useEffect(() => {
+    if (!isLoadingWebs) {
+      const existingWebSlugs = webs.map((w) => w.slug)
+      if (!existingWebSlugs.includes(selectedWebSlug)) {
+        setSelectedWebSlug(undefined)
+      }
+    }
+  }, [isLoadingWebs, selectedWebSlug, setSelectedWebSlug, webs])
 
   useEffect(() => {
     if (session) {

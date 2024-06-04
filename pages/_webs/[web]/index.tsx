@@ -8,6 +8,12 @@ import { useDebounce } from 'use-debounce'
 import intersection from 'lodash/intersection'
 import useLocalStorage from 'use-local-storage'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
+import {
+  useQueryParams,
+  StringParam,
+  ArrayParam,
+  withDefault,
+} from 'use-query-params'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
@@ -16,7 +22,6 @@ import Header from '@components/header'
 import { selectMoreAccessibleColor } from '@helpers/colors'
 import { useAppContext } from '@store/hooks'
 import { REMOTE_URL } from '@helpers/config'
-import { decodeUriElements } from '@helpers/routes'
 import MainList from '@components/main-list'
 import AlertBanner from '@components/alert-banner'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
@@ -57,17 +62,23 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
   const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
 
-  const [searchTerm, setSearchTerm] = useState('')
-  const [searchTermValue] = useDebounce(searchTerm, 500)
+  const [query, setQuery] = useQueryParams({
+    searchTerm: withDefault(StringParam, ''),
+    categories: withDefault(ArrayParam, []),
+    tags: withDefault(ArrayParam, []),
+  })
+
+  const [searchTermValue] = useDebounce(query.searchTerm, 500)
   const handleSearchTermChange = useCallback(
-    (event) => setSearchTerm(event.target.value),
-    [],
+    (event) => setQuery({ searchTerm: event.target.value }),
+    [setQuery],
   )
-  const handleClearSearchTermValue = useCallback(() => setSearchTerm(''), [])
-  const [selectedCategories, setSelectedCategories] = useState([])
+  const handleClearSearchTermValue = useCallback(
+    () => setQuery({ searchTerm: '' }),
+    [setQuery],
+  )
   const [categories, setCategories] = useState({})
 
-  const [selectedTags, setSelectedTags] = useState([])
   const [tags, setTags] = useState([])
 
   const [selectedId, setSelectedId] = useState()
@@ -75,20 +86,6 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
 
   const { categories: fetchedCategories } = useCategories()
   const { tags: fetchedTags } = useTags()
-
-  useEffect(() => {
-    const tagsFromQueryParam = router.query.tags
-    if (!tagsFromQueryParam) {
-      return
-    }
-
-    const tagValuesArray = decodeUriElements(tagsFromQueryParam as string)
-    const fullTagsFromQuery = tags.filter((t) =>
-      tagValuesArray.includes(t.value),
-    )
-    setTimeout(() => setSelectedTags(fullTagsFromQuery), 1000)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.pathname, router.query.tags, tags])
 
   useEffect(() => {
     if (!fetchedCategories) return
@@ -113,29 +110,21 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
     )
   }, [fetchedTags])
 
-  const handleCategorySelection = useCallback((value) => {
-    setSelectedCategories(value)
-  }, [])
+  const handleCategorySelection = useCallback(
+    (value) => {
+      const categoryLabels = value.map((c) => c.label)
+      setQuery({ categories: categoryLabels })
+    },
+    [setQuery],
+  )
 
-  // const [subdomain, setSubdomain] = useState<string>()
-  // useEffect(() => {
-  //   const hostname = window.location.hostname
-  //   if (!hostname.includes('.')) {
-  //     return null
-  //   }
-
-  //   setSubdomain(hostname.split('.')[0])
-  // }, [])
-
-  const handleTagSelection = useCallback((value) => {
-    // const tagsLabels = value.map((t) => t.value)
-    // const uriEncodedTags = encodeUriElements(tagsLabels)
-    // void router.replace({
-    //   pathname: `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`,
-    //   query: { tags: uriEncodedTags },
-    // })
-    setSelectedTags(value)
-  }, [])
+  const handleTagSelection = useCallback(
+    (value) => {
+      const tagsLabels = value.map((t) => t.value)
+      setQuery({ tags: tagsLabels })
+    },
+    [setQuery],
+  )
 
   const filteredItems = useMemo(() => {
     if (!data) return []
@@ -154,18 +143,16 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
       results = results.filter((item) => item.seekingVolunteers)
     }
 
-    if (selectedCategories.length > 0) {
-      const categories = selectedCategories.map((c) => c.label)
+    if (query.categories.length > 0) {
       results = results.filter((item) =>
-        categories.includes(item.category.label),
+        query.categories.includes(item.category.label),
       )
     }
 
-    if (selectedTags.length > 0) {
-      const tags = selectedTags.map((c) => c.label)
+    if (query.tags.length > 0) {
       results = results.filter((item) => {
         const itemTags = item.tags.map((c) => c.label)
-        return intersection(tags, itemTags).length > 0
+        return intersection(query.tags, itemTags).length > 0
       })
     }
 
@@ -178,7 +165,7 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
     }
 
     return results
-  }, [data, isVolunteer, selectedCategories, selectedTags, searchTermValue])
+  }, [data, isVolunteer, query.categories, query.tags, searchTermValue])
 
   const descriptiveNodes = useMemo(
     () =>
@@ -188,13 +175,11 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
             .filter(
               (item) =>
                 item.id === CENTRAL_NODE_ID ||
-                selectedCategories.length === 0 ||
-                selectedCategories.some(
-                  (category) => category.label === item.label,
-                ),
+                query.categories.length === 0 ||
+                query.categories.some((l) => l === item.label),
             )
         : [],
-    [data, selectedCategories],
+    [data, query.categories],
   )
 
   const filteredNetworkData = useMemo(
@@ -248,14 +233,13 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
         <Drawer
           categories={categories}
           tags={tags}
-          selectedTags={selectedTags}
           handleCategorySelection={handleCategorySelection}
           handleTagSelection={handleTagSelection}
           handleClearSearchTermValue={handleClearSearchTermValue}
           handleSearchTermChange={handleSearchTermChange}
           handleVolunteerSwitchChange={handleVolunteerSwitchChange}
           isVolunteer={isVolunteer}
-          searchTerm={searchTerm}
+          searchTerm={query.searchTerm}
           webDescription={webDescription}
         />
       )}
@@ -280,9 +264,8 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
           handleTagSelection={handleTagSelection}
           isMobile={isMobile}
           isWebMode={isWebMode}
-          searchTerm={searchTerm}
+          searchTerm={query.searchTerm}
           tags={tags}
-          selectedTags={selectedTags}
           selectedWebName={webName}
         />
         {isWebMode && (
