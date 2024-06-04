@@ -4,6 +4,7 @@ import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import { Category } from '@prisma/client'
 import NextLink from 'next/link'
+import dynamic from 'next/dynamic'
 import {
   chakra,
   Box,
@@ -31,6 +32,13 @@ import { useListings } from '@hooks/listings'
 import { useAppContext } from '@store/hooks'
 
 import EditorField from './RichTextEditor'
+
+const Map = dynamic(() => import('./Map'), {
+  ssr: false,
+  loading: () => (
+    <div style={{ textAlign: 'center', paddingTop: 20 }}>Chargement…</div>
+  ),
+})
 
 const SlugField = () => {
   const { selectedWebSlug } = useAppContext()
@@ -634,6 +642,8 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                 </Field>
               </chakra.div>
             </chakra.div>
+
+            <Map />
 
             <Box
               px={{ base: 4, sm: 6 }}
