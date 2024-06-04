@@ -28,6 +28,7 @@ import LogoImage from '../../public/logo.png'
 
 const Drawer = ({
   categories,
+  selectedCategories,
   tags,
   selectedTags,
   handleTagSelection,
@@ -121,6 +122,7 @@ const Drawer = ({
                 options={categories}
                 placeholder="Category"
                 styles={customMultiSelectStyles}
+                value={selectedCategories}
               />
             </InputGroup>
             {tags.length > 0 && (

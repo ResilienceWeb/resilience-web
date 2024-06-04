@@ -25,6 +25,9 @@ import customMultiSelectStyles from '@styles/select-styles'
 
 const Header = ({
   categories,
+  selectedCategories,
+  tags,
+  selectedTags,
   handleCategorySelection,
   handleSearchTermChange,
   handleSwitchChange,
@@ -33,8 +36,6 @@ const Header = ({
   isMobile,
   isWebMode,
   searchTerm,
-  tags,
-  selectedTags,
   selectedWebName,
 }) => {
   if (isMobile) {
@@ -126,6 +127,7 @@ const Header = ({
                   options={categories}
                   placeholder="Filter by category"
                   styles={customMultiSelectStyles}
+                  value={selectedCategories}
                 />
               </InputGroup>
               <InputGroup>
