@@ -8,12 +8,7 @@ import { useDebounce } from 'use-debounce'
 import intersection from 'lodash/intersection'
 import useLocalStorage from 'use-local-storage'
 import { dehydrate, QueryClient } from '@tanstack/react-query'
-import {
-  useQueryParams,
-  StringParam,
-  ArrayParam,
-  withDefault,
-} from 'use-query-params'
+import { useQueryParams, ArrayParam, withDefault } from 'use-query-params'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
@@ -63,20 +58,18 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
   const [isVolunteer, setIsVolunteer] = useState(false)
 
   const [query, setQuery] = useQueryParams({
-    searchTerm: withDefault(StringParam, ''),
     categories: withDefault(ArrayParam, []),
     tags: withDefault(ArrayParam, []),
   })
 
-  const [searchTermValue] = useDebounce(query.searchTerm, 500)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTermValue] = useDebounce(searchTerm, 500)
   const handleSearchTermChange = useCallback(
-    (event) => setQuery({ searchTerm: event.target.value }),
-    [setQuery],
+    (event) => setSearchTerm(event.target.value),
+    [],
   )
-  const handleClearSearchTermValue = useCallback(
-    () => setQuery({ searchTerm: '' }),
-    [setQuery],
-  )
+  const handleClearSearchTermValue = useCallback(() => setSearchTerm(''), [])
+
   const [categories, setCategories] = useState({})
   const [tags, setTags] = useState([])
 
@@ -253,7 +246,7 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
           handleSearchTermChange={handleSearchTermChange}
           handleVolunteerSwitchChange={handleVolunteerSwitchChange}
           isVolunteer={isVolunteer}
-          searchTerm={query.searchTerm}
+          searchTerm={searchTerm}
           webDescription={webDescription}
         />
       )}
@@ -281,7 +274,7 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
           handleTagSelection={handleTagSelection}
           isMobile={isMobile}
           isWebMode={isWebMode}
-          searchTerm={query.searchTerm}
+          searchTerm={searchTerm}
           selectedWebName={webName}
         />
         {isWebMode && (
