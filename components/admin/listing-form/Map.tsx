@@ -13,7 +13,7 @@ import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch'
 import { useFormikContext } from 'formik'
 
 const provider = new GoogleProvider({
-  apiKey: process.env.GOOGLE_MAPS_API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
 })
 
 const DEFAULT_CENTER = {
