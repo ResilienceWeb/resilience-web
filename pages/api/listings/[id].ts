@@ -66,8 +66,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             featured: stringToBoolean(fields.featured[0]),
             pending: false,
             slug: fields.slug[0],
-            latitude: parseFloat(fields.latitude[0]),
-            longitude: parseFloat(fields.longitude[0]),
+            latitude: fields.latitude[0]
+              ? parseFloat(fields.latitude[0])
+              : null,
+            longitude: fields.longitude[0]
+              ? parseFloat(fields.longitude[0])
+              : null,
             tags: {
               connect: tagsToConnect,
               disconnect: tagsToDisconnect,

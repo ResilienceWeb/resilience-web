@@ -24,7 +24,6 @@ export default function useUpdateListing() {
   return useMutation({
     mutationFn: updateListingRequest,
     onSuccess: (data) => {
-      console.log('onSuccess', data)
       queryClient.setQueryData(
         ['listings', 'detail', { webSlug, listingSlug: data.slug }],
         data,

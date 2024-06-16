@@ -15,6 +15,14 @@ import { useFormikContext } from 'formik'
 const provider = new GoogleProvider({
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
 })
+// @ts-ignore
+const geoSearchControl = new GeoSearchControl({
+  provider,
+  style: 'bar',
+  marker: {
+    draggable: true,
+  },
+})
 
 const DEFAULT_CENTER = {
   lat: 51.505,
@@ -32,7 +40,6 @@ const MapContent = ({ latitude, longitude }) => {
   useMapEvents({
     click(event) {
       // map.locate()
-      console.log('clicked', event)
       setPosition(event.latlng)
       setFieldValue('location', {
         latitude: event.latlng.lat,
@@ -45,12 +52,37 @@ const MapContent = ({ latitude, longitude }) => {
     // },
   })
 
-  useEffect(() => {
-    // @ts-ignore
-    const geoSearchControl = new GeoSearchControl({
-      provider,
-      style: 'bar',
+  map.on('geosearch/showlocation', (event) => {
+    setPosition({
+      // @ts-ignore
+      lat: event.location.y,
+      // @ts-ignore
+      lng: event.location.x,
     })
+    setFieldValue('location', {
+      // @ts-ignore
+      latitude: event.location.y,
+      // @ts-ignore
+      longitude: event.location.x,
+    })
+  })
+
+  map.on('geosearch/marker/dragend', (event) => {
+    setPosition({
+      // @ts-ignore
+      lat: event.location.lat,
+      // @ts-ignore
+      lng: event.location.lng,
+    })
+    setFieldValue('location', {
+      // @ts-ignore
+      latitude: event.location.lat,
+      // @ts-ignore
+      longitude: event.location.lng,
+    })
+  })
+
+  useEffect(() => {
     map.addControl(geoSearchControl)
 
     return () => {
