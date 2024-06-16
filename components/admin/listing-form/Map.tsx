@@ -4,7 +4,6 @@ import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
   useMapEvents,
   useMap,
 } from 'react-leaflet'
@@ -14,7 +13,7 @@ import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch'
 import { useFormikContext } from 'formik'
 
 const provider = new GoogleProvider({
-  apiKey: 'AIzaSyBxtqBPTrSNHjRKl8t0H2bZFIEHQ3Hrtfo',
+  apiKey: process.env.GOOGLE_MAPS_API_KEY,
 })
 
 const DEFAULT_CENTER = {
