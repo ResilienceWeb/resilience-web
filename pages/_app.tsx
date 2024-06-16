@@ -12,7 +12,7 @@ import {
   QueryClientProvider,
   QueryClient,
 } from '@tanstack/react-query'
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { SessionProvider } from 'next-auth/react'
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
@@ -166,7 +166,7 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
                 </ChakraProvider>
               </StoreProvider>
             </HydrationBoundary>
-            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+            <ReactQueryDevtools />
           </QueryClientProvider>
         </SessionProvider>
       </PostHogProvider>

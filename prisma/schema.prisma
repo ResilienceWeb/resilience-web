@@ -131,6 +131,8 @@ model Listing {
   relationOf        Listing[]    @relation("related")
   pending           Boolean      @default(false)
   featured          Boolean      @default(false)
+  latitude          Float?
+  longitude         Float?
 
   @@unique([webId, slug])
   @@map("listings")

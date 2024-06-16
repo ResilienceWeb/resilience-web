@@ -4,6 +4,7 @@ import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import { Category } from '@prisma/client'
 import NextLink from 'next/link'
+import dynamic from 'next/dynamic'
 import {
   chakra,
   Box,
@@ -31,6 +32,13 @@ import { useListings } from '@hooks/listings'
 import { useAppContext } from '@store/hooks'
 
 import EditorField from './RichTextEditor'
+
+const Map = dynamic(() => import('./Map'), {
+  ssr: false,
+  loading: () => (
+    <div style={{ textAlign: 'center', paddingTop: 20 }}>Chargement…</div>
+  ),
+})
 
 const SlugField = () => {
   const { selectedWebSlug } = useAppContext()
@@ -149,6 +157,11 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
   }, [listing?.relations])
 
   const handleSubmitForm = (data) => {
+    if (data.location) {
+      data.latitude = data.location.latitude
+      data.longitude = data.location.longitude
+      delete data.location
+    }
     data.tags = data.tags?.map((t) => t.value)
     data.relations = data.relations?.map((l) => l.value)
     if (listing) {
@@ -185,6 +198,13 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
         slug: listing?.slug || '',
         tags: initialTagsValues || [],
         relations: initialRelationsValues || [],
+        location:
+          listing?.latitude && listing?.longitude
+            ? {
+                latitude: listing.latitude,
+                longitude: listing.longitude,
+              }
+            : undefined,
       }}
       enableReinitialize
       onSubmit={handleSubmitForm}
@@ -634,6 +654,15 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                 </Field>
               </chakra.div>
             </chakra.div>
+
+            <Field name="location">
+              {({ field }: FieldProps) => (
+                <Map
+                  latitude={field.value?.latitude}
+                  longitude={field.value?.longitude}
+                />
+              )}
+            </Field>
 
             <Box
               px={{ base: 4, sm: 6 }}

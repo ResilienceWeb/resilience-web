@@ -60,3 +60,8 @@ p > a {
   /* stylelint-disable-next-line declaration-property-unit-allowed-list */
   max-width: 360px;
 }
+
+.leaflet-container {
+  /* stylelint-disable-next-line declaration-property-unit-allowed-list */
+  height: 300px;
+}

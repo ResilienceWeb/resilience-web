@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useAppContext } from '@store/hooks'
 
 async function updateListingRequest(listingData) {
   const formData = new FormData()
@@ -18,30 +19,16 @@ async function updateListingRequest(listingData) {
 
 export default function useUpdateListing() {
   const queryClient = useQueryClient()
+  const { selectedWebSlug: webSlug } = useAppContext()
 
   return useMutation({
     mutationFn: updateListingRequest,
     onSuccess: (data) => {
-      queryClient.setQueryData(['listings', { id: data.id }], data)
-    },
-    onMutate: (newListing) => {
-      const previousListing = queryClient.getQueryData([
-        'listings',
-        newListing.id,
-      ])
-      queryClient.setQueryData(['listings', newListing.id], newListing)
-      return { previousListing, newListing }
-    },
-    onError: (_err, _newListing, context) => {
+      console.log('onSuccess', data)
       queryClient.setQueryData(
-        ['listings', context.newListing.id],
-        context.previousListing,
+        ['listings', 'detail', { webSlug, listingSlug: data.slug }],
+        data,
       )
-    },
-    onSettled: () => {
-      void queryClient.invalidateQueries({
-        queryKey: ['listings'],
-      })
     },
   })
 }
