@@ -25,6 +25,8 @@ declare global {
     relations?: Listing[]
     relationOf?: Listing[]
     pending: boolean
+    latitude?: number
+    longitude?: number
   }
 
   type CategoryWithListings = Prisma.CategoryGetPayload<{

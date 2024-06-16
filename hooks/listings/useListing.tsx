@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 
 import { useAppContext } from '@store/hooks'
 
-export async function fetchListingsRequest({ queryKey }) {
-  const [_key, { webSlug, listingSlug }] = queryKey
+export async function fetchListingRequest({ queryKey }) {
+  const [_key1, _key2, { webSlug, listingSlug }] = queryKey
   const response = await fetch(`/api/listing/${listingSlug}?web=${webSlug}`)
   const data = await response.json()
   const { listing } = data
@@ -17,8 +17,8 @@ export default function useListing(listingSlug) {
     isPending,
     isError,
   } = useQuery({
-    queryKey: ['listing', { webSlug, listingSlug }],
-    queryFn: fetchListingsRequest,
+    queryKey: ['listings', 'detail', { webSlug, listingSlug }],
+    queryFn: fetchListingRequest,
     enabled:
       listingSlug !== undefined &&
       listingSlug !== '' &&

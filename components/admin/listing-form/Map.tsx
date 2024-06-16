@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { chakra } from '@chakra-ui/react'
+import { Text, chakra } from '@chakra-ui/react'
 import {
   MapContainer,
   TileLayer,
@@ -11,27 +11,34 @@ import {
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-geosearch/dist/geosearch.css'
 import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch'
-import { useEffectOnce } from '@hooks/application'
+import { useFormikContext } from 'formik'
 
 const provider = new GoogleProvider({
   apiKey: 'AIzaSyBxtqBPTrSNHjRKl8t0H2bZFIEHQ3Hrtfo',
 })
 
-const center = {
+const DEFAULT_CENTER = {
   lat: 51.505,
   lng: -0.09,
 }
 
-const MapContent = () => {
+const MapContent = ({ latitude, longitude }) => {
+  const { setFieldValue } = useFormikContext<any>()
   const map = useMap()
   const markerRef = useRef(null)
-  const [position, setPosition] = useState(center)
+  const initialCenter =
+    latitude && longitude ? { lat: latitude, lng: longitude } : DEFAULT_CENTER
+  const [position, setPosition] = useState(initialCenter)
 
   useMapEvents({
     click(event) {
       // map.locate()
       console.log('clicked', event)
       setPosition(event.latlng)
+      setFieldValue('location', {
+        latitude: event.latlng.lat,
+        longitude: event.latlng.lng,
+      })
     },
     // locationfound(e) {
     //   // setPosition(e.latlng)
@@ -59,13 +66,15 @@ const MapContent = () => {
         const marker = markerRef.current
         if (marker != null) {
           setPosition(marker.getLatLng())
+          setFieldValue('location', {
+            latitude: marker.getLatLng().lat,
+            longitude: marker.getLatLng().lng,
+          })
         }
       },
     }),
-    [],
+    [setFieldValue],
   )
-
-  console.log({ position })
 
   return (
     <>
@@ -79,19 +88,30 @@ const MapContent = () => {
         draggable
         ref={markerRef}
       >
-        <Popup>
+        {/* <Popup>
           A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
+        </Popup> */}
       </Marker>
     </>
   )
 }
 
-const Map = () => {
+const Map = ({ latitude, longitude }) => {
   return (
     <chakra.div mt="0.5rem">
-      <MapContainer center={[center.lat, center.lng]} zoom={13}>
-        <MapContent />
+      <Text color="gray.700" fontStyle="italic" fontSize="sm" padding="0.5rem">
+        Beta: this feature is currently under construction. Feel free to select
+        a location for this listing, however note that it is not currently
+        displayed anywhere.
+      </Text>
+      <MapContainer
+        center={[
+          latitude ?? DEFAULT_CENTER.lat,
+          longitude ?? DEFAULT_CENTER.lng,
+        ]}
+        zoom={13}
+      >
+        <MapContent latitude={latitude} longitude={longitude} />
       </MapContainer>
     </chakra.div>
   )

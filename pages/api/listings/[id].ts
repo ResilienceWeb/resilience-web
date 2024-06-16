@@ -66,6 +66,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             featured: stringToBoolean(fields.featured[0]),
             pending: false,
             slug: fields.slug[0],
+            latitude: parseFloat(fields.latitude[0]),
+            longitude: parseFloat(fields.longitude[0]),
             tags: {
               connect: tagsToConnect,
               disconnect: tagsToDisconnect,
@@ -96,6 +98,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
           const listing = await prisma.listing.update({
             where: { id: parseInt(listingId as string) },
+            include: {
+              tags: {
+                select: {
+                  id: true,
+                  label: true,
+                },
+              },
+              relations: {
+                include: {
+                  category: {
+                    select: {
+                      id: true,
+                      color: true,
+                      label: true,
+                    },
+                  },
+                },
+              },
+            },
             data: newData,
           })
 

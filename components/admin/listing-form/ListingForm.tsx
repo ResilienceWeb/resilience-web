@@ -157,6 +157,11 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
   }, [listing?.relations])
 
   const handleSubmitForm = (data) => {
+    if (data.location) {
+      data.latitude = data.location.latitude
+      data.longitude = data.location.longitude
+      delete data.location
+    }
     data.tags = data.tags?.map((t) => t.value)
     data.relations = data.relations?.map((l) => l.value)
     if (listing) {
@@ -193,6 +198,13 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
         slug: listing?.slug || '',
         tags: initialTagsValues || [],
         relations: initialRelationsValues || [],
+        location:
+          listing?.latitude && listing?.longitude
+            ? {
+                latitude: listing.latitude,
+                longitude: listing.longitude,
+              }
+            : undefined,
       }}
       enableReinitialize
       onSubmit={handleSubmitForm}
@@ -643,7 +655,14 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
               </chakra.div>
             </chakra.div>
 
-            <Map />
+            <Field name="location">
+              {({ field }: FieldProps) => (
+                <Map
+                  latitude={field.value?.latitude}
+                  longitude={field.value?.longitude}
+                />
+              )}
+            </Field>
 
             <Box
               px={{ base: 4, sm: 6 }}
