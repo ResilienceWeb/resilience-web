@@ -71,7 +71,7 @@
     "remark-html": "16.0.1",
     "sass": "1.77.4",
     "sharp": "0.33.4",
-    "tinymce": "7.1.1",
+    "tinymce": "7.2.0",
     "use-debounce": "10.0.1",
     "use-local-storage": "3.0.0",
     "use-query-params": "2.2.1",
