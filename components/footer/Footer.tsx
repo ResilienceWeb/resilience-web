@@ -74,7 +74,7 @@ export default function Footer({ hideBorder = false }) {
       borderTopColor={hideBorder ? null : 'gray.200'}
       borderTopWidth={hideBorder ? null : '1px'}
     >
-      <Container as={Stack} maxW="7xl" py={10}>
+      <Container as={Stack} flex="1" maxWidth="100vw" py={10}>
         <SimpleGrid
           templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 2fr' }}
           spacing={8}
@@ -98,7 +98,7 @@ export default function Footer({ hideBorder = false }) {
             >
               Built with ❤️ <span style={{ marginLeft: '3px' }}>by Diner</span>
             </Link>
-            <Stack direction="row" spacing={6}>
+            <Stack direction="row" spacing="0.75rem">
               <SocialButton
                 label="Facebook"
                 href="https://www.facebook.com/resilienceweb"

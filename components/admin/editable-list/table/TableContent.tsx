@@ -20,7 +20,7 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
 
   return (
     <TableContainer borderRadius="10px" borderStyle="solid" borderWidth="1px">
-      <Table fontSize="sm" background="#ffffff">
+      <Table fontSize="sm">
         <Thead bg="gray.50">
           <Tr>
             {columns.map((column, index) => (
@@ -29,7 +29,7 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
               </Th>
             ))}
             <Th>Info</Th>
-            <Th />
+            <Th position="sticky" right={0} bg="gray.100"></Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -57,7 +57,7 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
                 </b>
               </Td>
 
-              <Td textAlign="right">
+              <Td position="sticky" right={0} background="gray.100">
                 <Stack direction="column" spacing={2}>
                   <Button
                     colorScheme={row.pending ? 'purple' : 'blue'}
