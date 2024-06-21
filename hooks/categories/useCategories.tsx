@@ -5,7 +5,7 @@ import { REMOTE_URL } from '@helpers/config'
 
 export async function fetchCategoriesHydrate({ webSlug }) {
   const BASE_URL =
-    process.env.VERCEL_ENV === 'preview'
+    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
       ? 'https://resilienceweb.org.uk'
       : REMOTE_URL
 
