@@ -11,10 +11,10 @@ import {
 import { FaDiscord } from 'react-icons/fa'
 
 import SignupForm from '@components/signup-form'
-import { useAppContext } from '@store/hooks'
+import { useIsMobile } from '@hooks/application'
 
 const JoinTheCommunity = () => {
-  const { isMobile } = useAppContext()
+  const isMobile = useIsMobile()
 
   return (
     <Container maxW="7xl">

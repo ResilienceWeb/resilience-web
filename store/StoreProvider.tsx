@@ -1,11 +1,9 @@
 import { useEffect, useState, useMemo } from 'react'
 import useLocalStorage from 'use-local-storage'
-import { useMediaQuerySSR } from '@hooks/application'
 import { AppContext } from '@store/AppContext'
 import { useWebs } from '@hooks/webs'
 
 const StoreProvider = ({ children }) => {
-  const isMobile = useMediaQuerySSR('(max-width: 760px)')
   const [isAdminMode, setIsAdminMode] = useState(false)
   const [selectedWebSlug, setSelectedWebSlug] = useLocalStorage<string>(
     'selected-web-slug',
@@ -44,12 +42,11 @@ const StoreProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       isAdminMode,
-      isMobile,
       selectedWebSlug,
       setSelectedWebSlug,
       selectedWebId,
     }),
-    [isAdminMode, isMobile, selectedWebId, selectedWebSlug, setSelectedWebSlug],
+    [isAdminMode, selectedWebId, selectedWebSlug, setSelectedWebSlug],
   )
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
