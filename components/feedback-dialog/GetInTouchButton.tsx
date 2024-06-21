@@ -1,10 +1,10 @@
 import { Tooltip, IconButton, Button, useDisclosure } from '@chakra-ui/react'
 import { ChatIcon } from '@chakra-ui/icons'
-import { useAppContext } from '@store/hooks'
+import { useIsMobile } from '@hooks/application'
 import FeedbackDialog from './FeedbackDialog'
 
 const GetInTouchButton = () => {
-  const { isMobile } = useAppContext()
+  const isMobile = useIsMobile()
   const {
     isOpen: isFeedbackDialogOpen,
     onOpen: onOpenFeedbackDialog,

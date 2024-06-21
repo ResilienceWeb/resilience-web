@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useAppContext } from '@store/hooks'
 import { Tag } from '@prisma/client'
 import { REMOTE_URL } from '@helpers/config'
+import { useIsAdminMode } from '@hooks/application'
 
 export async function fetchTagsHydrate({ webSlug }) {
   const BASE_URL =
@@ -23,7 +24,8 @@ async function fetchTagsRequest({ queryKey }) {
 }
 
 export default function useTags() {
-  const { selectedWebSlug: webSlug, isAdminMode } = useAppContext()
+  const isAdminMode = useIsAdminMode()
+  const { selectedWebSlug: webSlug } = useAppContext()
   const {
     data: tags,
     isPending,

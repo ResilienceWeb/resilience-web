@@ -1,19 +1,26 @@
 import { useEffect, useState, useMemo } from 'react'
 import useLocalStorage from 'use-local-storage'
-import { useMediaQuerySSR } from '@hooks/application'
 import { AppContext } from '@store/AppContext'
-import { useWebs } from '@hooks/webs'
+import { useAllowedWebs, useWebs } from '@hooks/webs'
+import { useIsAdminMode } from '@hooks/application'
 
 const StoreProvider = ({ children }) => {
-  const isMobile = useMediaQuerySSR('(max-width: 760px)')
-  const [isAdminMode, setIsAdminMode] = useState(false)
+  const isAdminMode = useIsAdminMode()
   const [selectedWebSlug, setSelectedWebSlug] = useLocalStorage<string>(
     'selected-web-slug',
     undefined,
   )
   const [subdomain, setSubdomain] = useState<string>()
 
+  const { allowedWebs, isLoading: isLoadingAllowedWebs } = useAllowedWebs()
   const { webs } = useWebs({ published: !isAdminMode })
+
+  useEffect(() => {
+    const allowedWebSlugs = allowedWebs.map((w) => w.slug)
+    if (!isLoadingAllowedWebs && !allowedWebSlugs.includes(selectedWebSlug)) {
+      setSelectedWebSlug(undefined)
+    }
+  }, [allowedWebs, isLoadingAllowedWebs, selectedWebSlug, setSelectedWebSlug])
 
   useEffect(() => {
     const hostname = window.location.hostname
@@ -22,11 +29,6 @@ const StoreProvider = ({ children }) => {
     }
 
     setSubdomain(hostname.split('.')[0])
-  }, [])
-
-  useEffect(() => {
-    const isAdminMode = window.location.href.includes('/admin')
-    setIsAdminMode(isAdminMode)
   }, [])
 
   useEffect(() => {
@@ -43,13 +45,11 @@ const StoreProvider = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      isAdminMode,
-      isMobile,
       selectedWebSlug,
       setSelectedWebSlug,
       selectedWebId,
     }),
-    [isAdminMode, isMobile, selectedWebId, selectedWebSlug, setSelectedWebSlug],
+    [selectedWebId, selectedWebSlug, setSelectedWebSlug],
   )
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>

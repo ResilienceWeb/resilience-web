@@ -3,12 +3,10 @@ import { useRouter } from 'next/router'
 import Select from 'react-select'
 import { Text } from '@chakra-ui/react'
 import type { Options } from 'react-select'
-import { useSession } from 'next-auth/react'
 
 import { useAppContext } from '@store/hooks'
-import { useWebs } from '@hooks/webs'
+import { useAllowedWebs, useWebs } from '@hooks/webs'
 import { usePermissions } from '@hooks/permissions'
-import { useMyOwnerships } from '@hooks/ownership'
 
 type WebOption = {
   value: string
@@ -17,52 +15,23 @@ type WebOption = {
 
 const WebSelector = () => {
   const router = useRouter()
-  const { data: session } = useSession()
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
   const {
     isPending: isLoadingWebs,
     isFetching: isFetchingWebs,
     webs,
   } = useWebs()
-  const {
-    isPending: isLoadingPermissions,
-    isFetching: isFetchingPermissions,
-    permissions,
-  } = usePermissions()
-  const {
-    isPending: isLoadingOwnerships,
-    isFetching: isFetchingOwnerships,
-    ownerships,
-  } = useMyOwnerships()
-
-  const allUniqueWebIds = useMemo(() => {
-    if (!permissions && !ownerships) {
-      return []
-    }
-
-    const allWebIds =
-      permissions?.fullPermissionData?.listings.map((l) => l.webId) ?? []
-    const ownedWebsIds = ownerships?.map((o) => o.id) ?? []
-
-    return Array.from(new Set([...allWebIds, ...ownedWebsIds]))
-  }, [ownerships, permissions])
+  const { permissions } = usePermissions()
+  const { allowedWebs, isLoading: isLoadingAllowedWebs } = useAllowedWebs()
 
   const webOptions: Options<WebOption> = useMemo(() => {
     if (!webs || !permissions) return []
-
-    const allowedWebs = session?.user.admin
-      ? webs
-      : webs.filter(
-          (s) =>
-            permissions.webIds?.includes(s.id) ||
-            allUniqueWebIds.includes(s.id),
-        )
 
     return allowedWebs?.map((s) => ({
       value: s.slug,
       label: s.title,
     }))
-  }, [allUniqueWebIds, permissions, session?.user.admin, webs])
+  }, [allowedWebs, permissions, webs])
 
   const selectedOption = useMemo(
     () => webOptions.find((s) => s.value === selectedWebSlug),
@@ -86,10 +55,7 @@ const WebSelector = () => {
     } else if (
       isLoadingWebs === false &&
       isFetchingWebs === false &&
-      isLoadingPermissions === false &&
-      isFetchingPermissions === false &&
-      isLoadingOwnerships === false &&
-      isFetchingOwnerships === false &&
+      isLoadingAllowedWebs === false &&
       webOptions.length === 0
     ) {
       setSelectedWebSlug(null)
@@ -97,19 +63,12 @@ const WebSelector = () => {
       setSelectedWebSlug(undefined)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    webOptions,
-    setSelectedWebSlug,
-    isLoadingWebs,
-    isLoadingPermissions,
-    isLoadingOwnerships,
-    isFetchingWebs,
-    isFetchingPermissions,
-    isFetchingOwnerships,
-  ])
+  }, [webOptions, setSelectedWebSlug, isLoadingWebs, isFetchingWebs])
 
-  const isOverviewPage = useMemo(
-    () => router.pathname.includes('/admin/overview'),
+  const hideWebSelector = useMemo(
+    () =>
+      router.pathname.includes('/admin/overview') ||
+      router.pathname === '/admin/[slug]',
     [router.pathname],
   )
 
@@ -121,7 +80,7 @@ const WebSelector = () => {
     )
   }
 
-  if (webOptions.length === 0 || isOverviewPage) {
+  if (webOptions.length === 0 || hideWebSelector) {
     return null
   }
 

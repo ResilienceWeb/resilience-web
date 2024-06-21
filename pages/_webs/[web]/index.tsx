@@ -15,7 +15,7 @@ import type { ParsedUrlQuery } from 'querystring'
 
 import Header from '@components/header'
 import { selectMoreAccessibleColor } from '@helpers/colors'
-import { useAppContext } from '@store/hooks'
+import { useIsMobile } from '@hooks/application'
 import { REMOTE_URL } from '@helpers/config'
 import MainList from '@components/main-list'
 import AlertBanner from '@components/alert-banner'
@@ -53,7 +53,7 @@ const CENTRAL_NODE_ID = 999
 const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
   const router = useRouter()
 
-  const { isMobile } = useAppContext()
+  const isMobile = useIsMobile()
   const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
 
