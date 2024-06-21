@@ -156,15 +156,15 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
         <SessionProvider refetchInterval={5 * 60} session={session}>
           <QueryClientProvider client={queryClient}>
             <HydrationBoundary state={pageProps.dehydratedState}>
-              <StoreProvider>
-                <ChakraProvider theme={theme}>
-                  <ReCaptchaProvider>
-                    <QueryParamProvider adapter={NextAdapter}>
+              <ChakraProvider theme={theme}>
+                <ReCaptchaProvider>
+                  <QueryParamProvider adapter={NextAdapter}>
+                    <StoreProvider>
                       <Component {...pageProps} />
-                    </QueryParamProvider>
-                  </ReCaptchaProvider>
-                </ChakraProvider>
-              </StoreProvider>
+                    </StoreProvider>
+                  </QueryParamProvider>
+                </ReCaptchaProvider>
+              </ChakraProvider>
             </HydrationBoundary>
             <ReactQueryDevtools />
           </QueryClientProvider>

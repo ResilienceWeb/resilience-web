@@ -5,6 +5,10 @@ const { withSentryConfig } = require('@sentry/nextjs')
  */
 const nextConfig = {
   reactStrictMode: true,
+  webpack(config) {
+    config.resolve.modules.push(__dirname)
+    return config
+  },
   images: {
     remotePatterns: [
       {

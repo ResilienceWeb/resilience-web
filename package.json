@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true npm run build",
     "start": "next start -H 0.0.0.0 -p ${PORT:-8080}",
@@ -76,8 +76,7 @@
     "use-local-storage": "3.0.0",
     "use-query-params": "2.2.1",
     "usehooks-ts": "3.1.0",
-    "vis-network-react": "DinerIsmail/vis-network-react",
-    "zustand": "4.5.2"
+    "vis-network-react": "DinerIsmail/vis-network-react"
   },
   "devDependencies": {
     "@playwright/test": "1.43.1",
