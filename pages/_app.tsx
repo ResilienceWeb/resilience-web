@@ -114,6 +114,7 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
 
   useEffect(() => {
     // Track page views
+    console.log('VERCEL_ENV', process.env.VERCEL_ENV)
     const handleRouteChange = () => posthog?.capture('$pageview')
     router.events.on('routeChangeComplete', handleRouteChange)
 
