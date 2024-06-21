@@ -6,7 +6,7 @@ import { useIsAdminMode } from '@hooks/application'
 
 export async function fetchTagsHydrate({ webSlug }) {
   const BASE_URL =
-    process.env.VERCEL_ENV === 'preview'
+    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
       ? 'https://resilienceweb.org.uk'
       : REMOTE_URL
 

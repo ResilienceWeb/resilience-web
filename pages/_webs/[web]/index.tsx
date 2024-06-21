@@ -296,7 +296,7 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
 
 export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
   const BASE_URL =
-    process.env.VERCEL_ENV === 'preview'
+    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
       ? 'https://resilienceweb.org.uk'
       : REMOTE_URL
 
@@ -325,7 +325,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   const { web } = params
 
   const BASE_URL =
-    process.env.VERCEL_ENV === 'preview'
+    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
       ? 'https://resilienceweb.org.uk'
       : REMOTE_URL
 

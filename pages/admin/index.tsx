@@ -84,7 +84,7 @@ const Admin = () => {
   }, [isLoadingWebs, selectedWebSlug, setSelectedWebSlug, webs])
 
   useEffect(() => {
-    if (session) {
+    if (session && process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
       console.log('[Posthog] Identifying user')
       posthog.identify(session.user.id, { email: session.user.email })
     }

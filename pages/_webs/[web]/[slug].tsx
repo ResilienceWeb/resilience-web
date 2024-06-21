@@ -47,7 +47,7 @@ function Listing({ listing }: { listing: ListingType }) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const BASE_URL =
-    process.env.VERCEL_ENV === 'preview'
+    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
       ? 'https://resilienceweb.org.uk'
       : REMOTE_URL
 
@@ -73,7 +73,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const BASE_URL =
-    process.env.VERCEL_ENV === 'preview'
+    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
       ? 'https://resilienceweb.org.uk'
       : REMOTE_URL
 
