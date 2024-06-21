@@ -40,6 +40,20 @@ const nextConfig = {
     instrumentationHook: true
   },
   // eslint-disable-next-line @typescript-eslint/require-await
+  async rewrites() {
+    return [
+      {
+        source: "/ph-ingest/static/:path*",
+        destination: "https://eu-assets.i.posthog.com/static/:path(.*)"
+      },
+      {
+        source: "/ph-ingest/:path*",
+        destination: "https://eu.i.posthog.com/:path(.*)"
+      }
+    ]
+  },
+  skipTrailingSlashRedirect: true,
+  // eslint-disable-next-line @typescript-eslint/require-await
   async headers() {
     return [
       {
