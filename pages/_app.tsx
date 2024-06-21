@@ -34,7 +34,7 @@ function NextAdapter(props) {
 if (
   typeof window !== 'undefined' &&
   process.env.NODE_ENV === 'production' &&
-  process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
+  process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
 ) {
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
     api_host: 'https://resilienceweb.org.uk/ingest',
@@ -113,10 +113,11 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
   const [queryClient] = useState(() => new QueryClient())
 
   useEffect(() => {
-    // Track page views
-    console.log('VERCEL_ENV', process.env.NEXT_PUBLIC_VERCEL_ENV)
     const handleRouteChange = () => posthog?.capture('$pageview')
-    router.events.on('routeChangeComplete', handleRouteChange)
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+      // Track page views
+      router.events.on('routeChangeComplete', handleRouteChange)
+    }
 
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange)
