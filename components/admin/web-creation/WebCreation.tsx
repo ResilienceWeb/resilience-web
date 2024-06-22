@@ -17,10 +17,10 @@ import {
 } from '@chakra-ui/react'
 import { Formik, Form, Field, FieldProps, useFormikContext } from 'formik'
 import LogoImage from '../../../public/logo.png'
-
 import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
 import { useCreateWeb } from '@hooks/webs'
 import { useAppContext } from '@store/hooks'
+import Faq from './faq'
 
 const SlugField = () => {
   const {
@@ -181,6 +181,10 @@ const WebCreation = () => {
             )
           }}
         </Formik>
+      </Box>
+
+      <Box mt="4rem" mb="2rem">
+        <Faq />
       </Box>
     </>
   )

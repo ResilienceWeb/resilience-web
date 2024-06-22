@@ -18,7 +18,7 @@ const StoreProvider = ({ children }) => {
   useEffect(() => {
     const allowedWebSlugs = allowedWebs.map((w) => w.slug)
     if (!isLoadingAllowedWebs && !allowedWebSlugs.includes(selectedWebSlug)) {
-      setSelectedWebSlug(undefined)
+      setSelectedWebSlug(null)
     }
   }, [allowedWebs, isLoadingAllowedWebs, selectedWebSlug, setSelectedWebSlug])
 

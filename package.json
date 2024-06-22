@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true npm run build",
-    "start": "next start -H 0.0.0.0 -p ${PORT:-8080}",
+    "start": "next start -H 0.0.0.0 -p ${PORT:-3000}",
     "db": "prisma studio --port 7777",
     "db:up": "docker-compose --project-name=resilience-web up -d",
     "db:down": "docker-compose --project-name=resilience-web down",

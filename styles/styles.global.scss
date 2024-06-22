@@ -47,7 +47,7 @@ a {
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-p > a {
+p > a, div[role="region"] > a {
   color: #3A8159 !important;
 
   &:hover {
