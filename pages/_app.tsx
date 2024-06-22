@@ -114,13 +114,21 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
 
   useEffect(() => {
     const handleRouteChange = () => posthog?.capture('$pageview')
-    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+    if (
+      process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
+      !process.env.NEXT_PUBLIC_VERCEL_URL.includes('vercel.app')
+    ) {
       // Track page views
       router.events.on('routeChangeComplete', handleRouteChange)
     }
 
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange)
+      if (
+        process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
+        !process.env.NEXT_PUBLIC_VERCEL_URL.includes('vercel.app')
+      ) {
+        router.events.off('routeChangeComplete', handleRouteChange)
+      }
     }
   }, [router.events])
 
