@@ -1,5 +1,5 @@
 const emailRegex = new RegExp(/\S+@\S+\.\S+/)
-const urlRegex = new RegExp(/^[a-zA-Z 0-9\-]*$/)
+const urlRegex = new RegExp(/^[a-zA-Z0-9\-]*$/)
 
 export const emailValidator = (value: string) => {
   if (value === '') return false
