@@ -13,7 +13,7 @@ import { useListings, useDeleteListing } from '@hooks/listings'
 import { usePermissions } from '@hooks/permissions'
 import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 import { useAppContext } from '@store/hooks'
-import { useWebs } from '@hooks/webs'
+import { useAllowedWebs } from '@hooks/webs'
 
 const driverObj = driver({
   showProgress: true,
@@ -72,16 +72,16 @@ const Admin = () => {
   const router = useRouter()
   const { selectedWebId, selectedWebSlug, setSelectedWebSlug } = useAppContext()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
-  const { isPending: isLoadingWebs, webs } = useWebs()
+  const { allowedWebs, isLoading: isLoadingAllowedWebs } = useAllowedWebs()
 
   useEffect(() => {
-    if (!isLoadingWebs) {
-      const existingWebSlugs = webs.map((w) => w.slug)
+    if (!isLoadingAllowedWebs) {
+      const existingWebSlugs = allowedWebs.map((w) => w.slug)
       if (!existingWebSlugs.includes(selectedWebSlug)) {
         setSelectedWebSlug(undefined)
       }
     }
-  }, [isLoadingWebs, selectedWebSlug, setSelectedWebSlug, webs])
+  }, [isLoadingAllowedWebs, selectedWebSlug, setSelectedWebSlug, allowedWebs])
 
   useEffect(() => {
     if (
@@ -158,7 +158,7 @@ const Admin = () => {
     return null
   }
 
-  if (!isLoadingWebs && selectedWebSlug === null) {
+  if (!isLoadingAllowedWebs && allowedWebs.length === 0) {
     router.push('/admin/welcome')
   }
 

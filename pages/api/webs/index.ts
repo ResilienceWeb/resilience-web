@@ -97,7 +97,7 @@ const handler = async (
         })
       }
 
-      const { title, slug } = req.body
+      const { title, slug, description } = req.body
 
       try {
         const currentOwnerships = await prisma.ownership.findUnique({
@@ -120,6 +120,7 @@ const handler = async (
           data: {
             title,
             slug,
+            description,
             published: false,
             categories: {
               create: defaultCategories,

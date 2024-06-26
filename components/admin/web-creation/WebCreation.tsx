@@ -14,6 +14,7 @@ import {
   Input,
   InputGroup,
   InputRightAddon,
+  Textarea,
 } from '@chakra-ui/react'
 import { Formik, Form, Field, FieldProps, useFormikContext } from 'formik'
 import LogoImage from '../../../public/logo.png'
@@ -128,6 +129,7 @@ const WebCreation = () => {
           initialValues={{
             title: '',
             slug: '',
+            description: '',
           }}
           enableReinitialize
           onSubmit={onSubmit}
@@ -166,6 +168,40 @@ const WebCreation = () => {
 
                 <chakra.div mb={3} maxW="500px">
                   <SlugField />
+                </chakra.div>
+
+                <chakra.div mb="2rem">
+                  <Field name="description" type="text">
+                    {({ field, form }: FieldProps) => (
+                      <FormControl
+                        isInvalid={Boolean(
+                          form.errors.description && form.touched.description,
+                        )}
+                      >
+                        <FormLabel
+                          htmlFor="description"
+                          fontSize="sm"
+                          fontWeight="600"
+                        >
+                          Description (optional)
+                        </FormLabel>
+                        <Textarea
+                          {...field}
+                          id="description"
+                          fontSize="sm"
+                          shadow="sm"
+                          size="sm"
+                          rounded="md"
+                        />
+                        <FormErrorMessage>
+                          {form.errors.description?.toString()}
+                        </FormErrorMessage>
+                        <FormHelperText>
+                          This can also be edited later.
+                        </FormHelperText>
+                      </FormControl>
+                    )}
+                  </Field>
                 </chakra.div>
 
                 {isError && errorMessage && (
