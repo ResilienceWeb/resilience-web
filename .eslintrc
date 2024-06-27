@@ -64,6 +64,10 @@
           [
             "@styles",
             "./styles/"
+          ],
+          [
+            "@auth",
+            "./auth.ts"
           ]
         ],
         "extensions": [

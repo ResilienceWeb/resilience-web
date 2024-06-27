@@ -1,14 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth/next'
+import { auth } from '@auth'
 import client from '@sendgrid/client'
-import { authOptions } from '../auth/[...nextauth]'
 import prisma from '../../../prisma/client'
 
 client.setApiKey(process.env.SENDGRID_API_KEY)
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const session = await getServerSession(req, res, authOptions)
+    const session = await auth(req, res)
     const { email } = req.query
     if (!session?.user.admin && session?.user.email !== email) {
       res.status(403)

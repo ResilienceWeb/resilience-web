@@ -1,8 +1,7 @@
 import type { Web } from '@prisma/client'
 import { Prisma } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]'
+import { auth } from '@auth'
 import prisma from '../../../prisma/client'
 import type { Result } from '../type.d'
 import { stringToBoolean } from '@helpers/utils'
@@ -90,7 +89,7 @@ const handler = async (
       break
     }
     case 'POST': {
-      const session = await getServerSession(req, res, authOptions)
+      const session = await auth(req, res)
       if (!session?.user) {
         res.status(403).json({
           error: 'You are not allowed to perform this action',

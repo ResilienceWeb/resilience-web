@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]'
+import { auth } from '@auth'
 import prisma from '../../../prisma/client'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const session = await getServerSession(req, res, authOptions)
+    const session = await auth(req, res)
     if (!session?.user.admin) {
       res.status(403)
       res.json({

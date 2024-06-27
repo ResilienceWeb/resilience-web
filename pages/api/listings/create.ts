@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]'
+import { auth } from '@auth'
 import { Prisma } from '@prisma/client'
 import prisma from '../../../prisma/client'
 import uploadImage from '@helpers/uploadImage'
@@ -20,7 +19,7 @@ const handler = async (
   res: NextApiResponse<ResponseData>,
 ) => {
   try {
-    const session = await getServerSession(req, res, authOptions)
+    const session = await auth(req, res)
     if (!session?.user) {
       // TODO: Improve security
       console.log(req.body)
