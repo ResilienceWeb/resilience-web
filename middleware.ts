@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+export { auth as middleware } from '@auth'
+
 export default function middleware(req: NextRequest) {
   // Clone the request url
   const url = req.nextUrl.clone()

@@ -2,7 +2,6 @@ import { useState, useRef } from 'react'
 import { useInterval } from 'usehooks-ts'
 import { motion, useAnimation, useInView } from 'framer-motion'
 import { Container, Stack, Heading, Text } from '@chakra-ui/react'
-import { signIn } from 'next-auth/react'
 
 const word = {
   hidden: {
@@ -59,7 +58,6 @@ export default function Hero() {
   return (
     <>
       <Container maxW="7xl" mt="1rem">
-        <button onClick={() => signIn()}>Sign in</button>
         <Stack
           align="center"
           spacing={{ base: 8, md: 4 }}

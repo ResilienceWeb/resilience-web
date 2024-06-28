@@ -116,7 +116,7 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
     const handleRouteChange = () => posthog?.capture('$pageview')
     if (
       process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
-      !process.env.NEXT_PUBLIC_VERCEL_URL.includes('vercel.app')
+      !process.env?.NEXT_PUBLIC_VERCEL_URL?.includes('vercel.app')
     ) {
       // Track page views
       router.events.on('routeChangeComplete', handleRouteChange)
@@ -125,7 +125,7 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
     return () => {
       if (
         process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
-        !process.env.NEXT_PUBLIC_VERCEL_URL.includes('vercel.app')
+        !process.env?.NEXT_PUBLIC_VERCEL_URL?.includes('vercel.app')
       ) {
         router.events.off('routeChangeComplete', handleRouteChange)
       }
