@@ -64,7 +64,7 @@ const listingsDurham = [
   },
 ]
 
-async function main() {
+async function populateSeedData() {
   const newWebCambridge = await prisma.web.create({
     data: {
       title: 'Cambridge',
@@ -140,7 +140,9 @@ async function main() {
 
   const userCambridgeOwner = await prisma.user.create({
     data: {
-      email: 'ismail.diner+cambridge-owner@gmail.com',
+      email:
+        process.env.RW_TEST_USER_EMAIL ??
+        'ismail.diner+cambridge-owner@gmail.com',
     },
   })
 
@@ -154,7 +156,7 @@ async function main() {
   })
 }
 
-main()
+populateSeedData()
   .catch((e) => {
     console.error(e)
     process.exit(1)

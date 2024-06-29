@@ -6,3 +6,5 @@ obj
 !*.tsx
 !*.js
 !*.jsx
+!*.mts
+!*.mjs

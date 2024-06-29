@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es2022",
+		"target": "ES2022",
 		"lib": [
 			"dom",
 			"dom.iterable",
@@ -10,6 +10,7 @@
 		"skipLibCheck": true,
 		"strict": false,
 		"forceConsistentCasingInFileNames": true,
+		"allowImportingTsExtensions": true,
 		"noEmit": true,
 		"incremental": true,
 		"esModuleInterop": true,
@@ -45,10 +46,15 @@
 		"next-env.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
+		"**/*.mts",
+		"**/*.mjs",
 		"./next.config.js",
 		"./pages/_error.js"
 	],
 	"exclude": [
 		"node_modules"
-	]
+	],
+	"ts-node": {
+		"esm": true
+	}
 }
