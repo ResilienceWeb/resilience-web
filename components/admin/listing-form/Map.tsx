@@ -46,7 +46,6 @@ const MapContent = ({ latitude, longitude }) => {
   })
 
   map.on('geosearch/showlocation', (event) => {
-    console.log(event)
     setPosition({
       // @ts-ignore
       lat: event.location.y,
