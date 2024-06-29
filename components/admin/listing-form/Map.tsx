@@ -15,13 +15,11 @@ import { useFormikContext } from 'formik'
 const provider = new GoogleProvider({
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
 })
-// @ts-ignore
-const geoSearchControl = new GeoSearchControl({
+
+const geoSearchControl = GeoSearchControl({
   provider,
   style: 'bar',
-  marker: {
-    draggable: true,
-  },
+  showMarker: false,
 })
 
 const DEFAULT_CENTER = {
@@ -39,17 +37,12 @@ const MapContent = ({ latitude, longitude }) => {
 
   useMapEvents({
     click(event) {
-      // map.locate()
       setPosition(event.latlng)
       setFieldValue('location', {
         latitude: event.latlng.lat,
         longitude: event.latlng.lng,
       })
     },
-    // locationfound(e) {
-    //   // setPosition(e.latlng)
-    //   map.flyTo(e.latlng, map.getZoom())
-    // },
   })
 
   map.on('geosearch/showlocation', (event) => {
@@ -64,21 +57,6 @@ const MapContent = ({ latitude, longitude }) => {
       latitude: event.location.y,
       // @ts-ignore
       longitude: event.location.x,
-    })
-  })
-
-  map.on('geosearch/marker/dragend', (event) => {
-    setPosition({
-      // @ts-ignore
-      lat: event.location.lat,
-      // @ts-ignore
-      lng: event.location.lng,
-    })
-    setFieldValue('location', {
-      // @ts-ignore
-      latitude: event.location.lat,
-      // @ts-ignore
-      longitude: event.location.lng,
     })
   })
 
