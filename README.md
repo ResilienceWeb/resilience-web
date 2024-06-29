@@ -7,7 +7,8 @@ Currently online at [https://resilienceweb.org.uk](https://resilienceweb.org.uk)
 - Clone the repository locally
 - From the root directory of this project
 - Duplicate the `.env.example` file, renaming it to `.env`
-- Make sure you have Node.js installed from https://nodejs.org
+  - Ask Diner for env var values required for development
+- Make sure you have Node.js installed
   - To select the right runtime check the `.nvmrc` file, alternatively if you have node version manager (nvm) installed simply run the `nvm install` command
 - Run the `npm install` command to install the projects dependencies
 - Run the `npm run dev` command to build and run a development version of the app, it will then open in your default browser at http://localhost:3000
@@ -18,20 +19,18 @@ Currently online at [https://resilienceweb.org.uk](https://resilienceweb.org.uk)
 - Make sure you have docker installed from https://www.docker.com/
 - To create the local database run `npm run db:up`
 - To prepare the database with tables run `npx prisma migrate dev`
+- Fill out `RW_TEST_USER_EMAIL` in .env with your own email address. This will help the Prisma seed function create a test account for you. The email needs to be valid as authentication works via a magic login email.
 - To seed the database with some initial data run `npx prisma db seed`
 - To view the databases contents run `npm run db`
 - Once you are done with the database you can run the `npm run db:down` command to shut it down, and don't worry your data will be saved for next time!
 
-## Deploying updates
+## Contributing
 
-- The graph is hosted at Vercel, which is linked to this repository
-- Any changes to the data or the code will trigger a rebuild on Vercel, which then deploys the updates automatically
+If you'd like to contribute to the project, get in touch at info@resilienceweb.org.uk. We welcome anyone who wants to contribute code, documendation or testing efforts. If you'd prefer to support the project financially, you can do so at [https://opencollective.com/resilience-web](https://opencollective.com/resilience-web).
 
 ## Technical details
 
-- Using NextJS, a React framework - https://nextjs.org/
-- Dependencies of this project are listed in package.json, and I will update them at a regular interval
-- For the network visualisation, I used react-graph-vis which is a wrapper around [vis.js](https://visjs.org/)
+I wrote a blog post that goes through technical choices that I made for this project. You can read it here: [https://dinerismail.dev/blog/how-i-built-a-product-that-people-love](https://dinerismail.dev/blog/how-i-built-a-product-that-people-love)
 
 ## Acknowledgements
 
