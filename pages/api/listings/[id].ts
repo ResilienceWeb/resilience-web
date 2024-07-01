@@ -18,8 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     switch (req.method) {
-      case 'POST': {
-        // TODO: Update http method to PATCH?
+      case 'PUT': {
         const { id: listingId } = req.query
 
         const form = formidable({
@@ -28,9 +27,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         form.parse(req, async (_err, fields, files) => {
+          // Prepare tags
           const tagsArray =
             fields.tags[0] !== '' ? fields.tags[0].split(',') : []
-
           const tagsToConnect = tagsArray.map((tagId) => ({
             id: Number(tagId),
           }))
@@ -40,6 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             id: Number(tagId),
           }))
 
+          // Prepare relations
           const relationsArray =
             fields.relations[0] !== '' ? fields.relations[0].split(',') : []
           const relationsToConnect = relationsArray.map((relationId) => ({
@@ -53,9 +53,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             }),
           )
 
-          const newData: Prisma.ListingUncheckedUpdateInput = {
+          const newData: Prisma.ListingUpdateInput = {
             title: fields.title[0],
-            categoryId: parseInt(fields.category[0]),
+            category: {
+              connect: {
+                id: parseInt(fields.category[0]),
+              },
+            },
             website: fields.website[0],
             description: fields.description[0],
             email: fields.email[0],
@@ -66,14 +70,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             featured: stringToBoolean(fields.featured[0]),
             pending: false,
             slug: fields.slug[0],
-            latitude:
-              fields?.latitude && fields.latitude[0]
-                ? parseFloat(fields.latitude[0])
-                : null,
-            longitude:
-              fields?.longitude && fields.longitude[0]
-                ? parseFloat(fields.longitude[0])
-                : null,
+            location: {
+              ...(fields?.latitude &&
+              fields.latitude[0] &&
+              fields?.longitude &&
+              fields.longitude[0]
+                ? {
+                    upsert: {
+                      create: {
+                        latitude: parseFloat(fields.latitude[0]),
+                        longitude: parseFloat(fields.longitude[0]),
+                      },
+                      update: {
+                        latitude: parseFloat(fields.latitude[0]),
+                        longitude: parseFloat(fields.longitude[0]),
+                      },
+                    },
+                  }
+                : {}),
+            },
             tags: {
               connect: tagsToConnect,
               disconnect: tagsToDisconnect,
@@ -105,6 +120,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           const listing = await prisma.listing.update({
             where: { id: parseInt(listingId as string) },
             include: {
+              location: {
+                select: {
+                  latitude: true,
+                  longitude: true,
+                  description: true,
+                },
+              },
               tags: {
                 select: {
                   id: true,
@@ -136,6 +158,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const { id: listingId } = req.query
         const listing = await prisma.listing.delete({
           where: { id: parseInt(listingId as string) },
+        })
+
+        await prisma.listingLocation.delete({
+          where: { id: listing.locationId },
         })
         res.status(200)
         res.json({ listing })
