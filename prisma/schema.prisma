@@ -106,9 +106,9 @@ model Tag {
 }
 
 model Listing {
-  id                Int          @id @default(autoincrement())
-  createdAt         DateTime     @default(now()) @map("created_at")
-  updatedAt         DateTime     @default(now()) @updatedAt @map("updated_at")
+  id                Int              @id @default(autoincrement())
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @default(now()) @updatedAt @map("updated_at")
   title             String
   website           String?
   description       String?
@@ -117,25 +117,37 @@ model Listing {
   instagram         String?
   email             String?
   notes             String?
-  inactive          Boolean      @default(false)
-  seekingVolunteers Boolean?     @map("seeking_volunteers")
+  inactive          Boolean          @default(false)
+  seekingVolunteers Boolean?         @map("seeking_volunteers")
   categoryId        Int?
   image             String?
   slug              String
   webId             Int
-  web               Web?         @relation(fields: [webId], references: [id])
-  category          Category?    @relation(fields: [categoryId], references: [id])
+  web               Web?             @relation(fields: [webId], references: [id])
+  category          Category?        @relation(fields: [categoryId], references: [id])
   permissions       Permission[]
   tags              Tag[]
-  relations         Listing[]    @relation("related")
-  relationOf        Listing[]    @relation("related")
-  pending           Boolean      @default(false)
-  featured          Boolean      @default(false)
-  latitude          Float?
-  longitude         Float?
+  relations         Listing[]        @relation("related")
+  relationOf        Listing[]        @relation("related")
+  pending           Boolean          @default(false)
+  featured          Boolean          @default(false)
+  location          ListingLocation? @relation(fields: [locationId], references: [id])
+  locationId        Int?             @unique
 
   @@unique([webId, slug])
   @@map("listings")
+}
+
+model ListingLocation {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+  latitude    Float?
+  longitude   Float?
+  description String?
+  listing     Listing?
+
+  @@map("listing_locations")
 }
 
 model Permission {

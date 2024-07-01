@@ -41,12 +41,33 @@ const handler = async (
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     void form.parse(req, async (_err, fields, files) => {
+      // Prepare tags
+      const tagsArray = fields.tags[0] !== '' ? fields.tags[0].split(',') : []
+      const tagsToConnect = tagsArray.map((tagId) => ({
+        id: Number(tagId),
+      }))
+
+      // Prepare relations
+      const relationsArray =
+        fields.relations[0] !== '' ? fields.relations[0].split(',') : []
+      const relationsToConnect = relationsArray.map((relationId) => ({
+        id: Number(relationId),
+      }))
+
       const isProposedListing = stringToBoolean(fields.pending[0])
       const webId = parseInt(fields.webId[0])
-      const newData: Prisma.ListingUncheckedCreateInput = {
+      const newData: Prisma.ListingCreateInput = {
         title: fields.title[0],
-        categoryId: parseInt(fields.category[0]),
-        webId: parseInt(fields.webId[0]),
+        category: {
+          connect: {
+            id: parseInt(fields.category[0]),
+          },
+        },
+        web: {
+          connect: {
+            id: parseInt(fields.webId[0]),
+          },
+        },
         website: fields.website[0],
         description: fields.description[0],
         email: fields.email[0],
@@ -59,6 +80,28 @@ const handler = async (
           ? false
           : stringToBoolean(fields.featured[0]),
         slug: fields.slug[0],
+        location: {
+          ...(fields?.latitude &&
+          fields.latitude[0] &&
+          fields?.longitude &&
+          fields.longitude[0]
+            ? {
+                create: {
+                  latitude: parseFloat(fields.latitude[0]),
+                  longitude: parseFloat(fields.longitude[0]),
+                },
+              }
+            : {}),
+        },
+        tags: {
+          connect: tagsToConnect,
+        },
+        relations: {
+          connect: relationsToConnect,
+        },
+        relationOf: {
+          connect: relationsToConnect,
+        },
       }
 
       let imageUrl = null
