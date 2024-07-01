@@ -17,14 +17,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           : {}),
       },
       include: {
-        // TEMP
-        // location: {
-        //   select: {
-        //     latitude: true,
-        //     longitude: true,
-        //     description: true,
-        //   },
-        // },
+        location: {
+          select: {
+            latitude: true,
+            longitude: true,
+            description: true,
+          },
+        },
         category: {
           select: {
             id: true,

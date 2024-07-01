@@ -8,7 +8,7 @@ async function updateListingRequest(listingData) {
   )
 
   const response = await fetch(`/api/listings/${listingData.id}`, {
-    method: 'POST',
+    method: 'PUT',
     body: formData,
   })
 
@@ -28,6 +28,9 @@ export default function useUpdateListing() {
         ['listings', 'detail', { webSlug, listingSlug: data.slug }],
         data,
       )
+      queryClient.invalidateQueries({
+        queryKey: ['listings', 'list', { webSlug }],
+      })
     },
   })
 }

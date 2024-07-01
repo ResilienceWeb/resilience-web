@@ -199,10 +199,10 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
         tags: initialTagsValues || [],
         relations: initialRelationsValues || [],
         location:
-          listing?.latitude && listing?.longitude
+          listing?.location?.latitude && listing?.location?.longitude
             ? {
-                latitude: listing.latitude,
-                longitude: listing.longitude,
+                latitude: listing.location.latitude,
+                longitude: listing.location.longitude,
               }
             : undefined,
       }}
