@@ -57,6 +57,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       console.error('Failed to fetch data from', `${BASE_URL}/api/listings`, e),
     )
 
+  console.log('DATA', data)
   const { listings } = data
   const paths = listings.map((l) => ({
     params: {
