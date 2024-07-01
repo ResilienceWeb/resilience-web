@@ -34,6 +34,7 @@ export default function useTags() {
     queryKey: ['tags', { webSlug, all: isAdminMode }],
     queryFn: fetchTagsRequest,
     refetchOnWindowFocus: false,
+    enabled: webSlug !== undefined,
   })
 
   return {
