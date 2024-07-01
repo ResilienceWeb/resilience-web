@@ -7,7 +7,6 @@ async function fetchListingsRequest({ queryKey }) {
   const response = await fetch(`/api/listings?web=${webSlug}`)
   const data = await response.json()
   const { listings } = data
-  console.log({ listings })
   return listings
 }
 
