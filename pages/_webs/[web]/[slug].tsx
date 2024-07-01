@@ -45,29 +45,28 @@ function Listing({ listing }: { listing: ListingType }) {
   )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = () => {
   const BASE_URL =
     process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
       ? 'https://resilienceweb.org.uk'
       : REMOTE_URL
 
-  const data = await fetch(`${BASE_URL}/api/listings`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error('Failed to fetch data from', `${BASE_URL}/api/listings`, e),
-    )
+  // const data = await fetch(`${BASE_URL}/api/listings`)
+  //   .then((res) => res.json())
+  //   .catch((e) =>
+  //     console.error('Failed to fetch data from', `${BASE_URL}/api/listings`, e),
+  //   )
 
-  console.log('DATA', data)
-  const { listings } = data
-  const paths = listings.map((l) => ({
-    params: {
-      slug: l.slug,
-      web: l.web.slug,
-    },
-  }))
+  // const { listings } = data
+  // const paths = listings.map((l) => ({
+  //   params: {
+  //     slug: l.slug,
+  //     web: l.web.slug,
+  //   },
+  // }))
 
   return {
-    paths,
+    paths: [],
     fallback: 'blocking',
   }
 }
