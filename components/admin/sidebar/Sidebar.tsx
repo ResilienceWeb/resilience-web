@@ -102,6 +102,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       })
     }
 
+    return links
+  }, [hasPermissionForCurrentWeb, isOwnerOfCurrentWeb, selectedWebId])
+
+  const adminNavLinks = useMemo(() => {
+    const links = []
     if (session?.user.admin) {
       links.push({
         label: 'Overview',
@@ -111,12 +116,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     }
 
     return links
-  }, [
-    hasPermissionForCurrentWeb,
-    isOwnerOfCurrentWeb,
-    selectedWebId,
-    session?.user.admin,
-  ])
+  }, [session?.user.admin])
 
   return (
     <Box
@@ -156,6 +156,21 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           </Flex>
           <Stack as="nav" gap="0.75rem">
             {navLinks.map((link) => (
+              <NavItem
+                key={link.label}
+                label={link.label}
+                href={link.href}
+                tourId={link.tourId}
+                icon={link.icon}
+              />
+            ))}
+
+            {adminNavLinks.length > 0 && (
+              <Text pl="1rem" mt="1rem" fontWeight="700" color="gray.600">
+                ADMIN
+              </Text>
+            )}
+            {adminNavLinks.map((link) => (
               <NavItem
                 key={link.label}
                 label={link.label}
