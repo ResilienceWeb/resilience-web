@@ -1,12 +1,12 @@
 import { useCallback, useMemo, useRef, useEffect, useState, memo } from 'react'
 import { motion, useAnimation, useInView } from 'framer-motion'
-import Image from 'next/image'
 import chroma from 'chroma-js'
 import { Box, Flex, Text, Icon, Tooltip, chakra } from '@chakra-ui/react'
 import { HiUserGroup } from 'react-icons/hi'
 import { FaStar } from 'react-icons/fa'
 
 import CategoryTag from '@components/category-tag'
+import ListingImage from '@components/listing-image'
 
 import ImagePlaceholder from './image-placeholder'
 
@@ -23,7 +23,7 @@ const Item = ({
   const animation = useAnimation()
 
   useEffect(() => {
-    setInterval(() => {
+    setTimeout(() => {
       setIsWithinAFewSecondsOfRender(false)
     }, 3000)
   }, [])
@@ -116,17 +116,12 @@ const Item = ({
             overflow="hidden"
             position="relative"
           >
-            <Image
+            <ListingImage
               alt={`${dataItem.title} cover image`}
               src={dataItem.image}
               sizes="(max-width: 768px) 90vw, 300px"
-              fill
+              isInView={isInView}
               priority={isInView && isWithinAFewSecondsOfRender}
-              style={{
-                borderTopLeftRadius: '.375rem',
-                borderTopRightRadius: '.375rem',
-                objectFit: 'cover',
-              }}
             />
           </Box>
         ) : (

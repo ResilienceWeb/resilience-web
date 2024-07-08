@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import NextLink from 'next/link'
-import Image from 'next/image'
 import {
   Modal,
   ModalOverlay,
@@ -18,8 +17,8 @@ import {
   Tooltip,
   Text,
   Button,
-  useToast,
   Tag,
+  useToast,
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
@@ -28,6 +27,7 @@ import { sanitizeLink } from '@helpers/utils'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import CategoryTag from '@components/category-tag'
+import ListingImage from '@components/listing-image'
 import styles from './Dialog.module.scss'
 
 const Dialog = ({
@@ -153,7 +153,7 @@ const Dialog = ({
       scrollBehavior="inside"
     >
       <ModalOverlay />
-      <ModalContent opacity="1">
+      <ModalContent>
         {item.image && (
           <Box
             width="672px"
@@ -162,17 +162,10 @@ const Dialog = ({
             overflow="hidden"
             position="relative"
           >
-            <Image
+            <ListingImage
               alt={`${item.label} cover image`}
-              src={item.image}
-              fill
-              priority
               sizes="(max-width: 768px) 100vw, 672px"
-              style={{
-                borderTopLeftRadius: '0.375rem',
-                borderTopRightRadius: '0.375rem',
-                objectFit: 'cover',
-              }}
+              src={item.image}
             />
           </Box>
         )}
