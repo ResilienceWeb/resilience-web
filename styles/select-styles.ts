@@ -13,32 +13,32 @@ const customMultiSelectStyles = {
     ...provided,
     color: '#718096',
   }),
-  option: (provided, state) => ({
+  option: (provided, { data }) => ({
     ...provided,
-    color: state.data.color,
+    color: data.color,
   }),
-  multiValue: (styles, { data }) => {
+  multiValue: (provided, { data }) => {
     const color = data.color ? chroma(data.color) : chroma('#718096')
     return {
-      ...styles,
-      fontSize: '14px',
+      ...provided,
       backgroundColor: color.alpha(0.5).css(),
     }
   },
-  multiValueLabel: (styles) => ({
-    ...styles,
+  multiValueLabel: (provided) => ({
+    ...provided,
+    fontSize: '14px',
     color: '#000',
   }),
-  multiValueRemove: (styles, { data }) => ({
-    ...styles,
+  multiValueRemove: (provided, { data }) => ({
+    ...provided,
     color: data.color,
     ':hover': {
       backgroundColor: data.color,
       color: 'white',
     },
   }),
-  menuPortal: (baseStyles) => ({
-    ...baseStyles,
+  menuPortal: (provided) => ({
+    ...provided,
     zIndex: 10,
   }),
 }

@@ -70,15 +70,21 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
   )
   const handleClearSearchTermValue = useCallback(() => setSearchTerm(''), [])
 
-  const [categories, setCategories] = useState({})
+  const [categories, setCategories] = useState([])
   const [tags, setTags] = useState([])
 
   const selectedCategories = useMemo(() => {
-    return query.categories.map((categoryLabel) => ({
-      value: categoryLabel,
-      label: categoryLabel,
-    }))
-  }, [query.categories])
+    return query.categories.map((categoryLabel) => {
+      const categoryColor = categories.find(
+        (c) => c.label === categoryLabel,
+      )?.color
+      return {
+        value: categoryLabel,
+        label: categoryLabel,
+        color: categoryColor,
+      }
+    })
+  }, [categories, query.categories])
   const selectedTags = useMemo(() => {
     return query.tags.map((tagLabel) => ({
       value: tagLabel,
@@ -117,6 +123,7 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
 
   const handleCategorySelection = useCallback(
     (value) => {
+      console.log('value', value)
       const categoryLabels = value.map((c) => c.label)
       setQuery({ categories: categoryLabels })
     },
