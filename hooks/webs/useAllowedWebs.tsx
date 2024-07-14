@@ -6,17 +6,13 @@ import { useMyOwnerships } from '@hooks/ownership'
 
 const useAllowedWebs = () => {
   const { data: session } = useSession()
-  const { webs } = useWebs()
   const {
-    permissions,
-    isPending: isLoadingPermissions,
-    isFetching: isFetchingPermissions,
-  } = usePermissions()
-  const {
-    ownerships,
-    isPending: isLoadingOwnerships,
-    isFetching: isFetchingOwnerships,
-  } = useMyOwnerships()
+    webs,
+    isPending: isLoadingWebs,
+    isFetching: isFetchingWebs,
+  } = useWebs()
+  const { permissions, isPending: isLoadingPermissions } = usePermissions()
+  const { ownerships, isPending: isLoadingOwnerships } = useMyOwnerships()
 
   const allUniqueWebIds = useMemo(() => {
     if (!permissions && !ownerships) {
@@ -46,11 +42,8 @@ const useAllowedWebs = () => {
 
   return {
     allowedWebs: allAllowedWebs,
-    isLoading:
-      isLoadingPermissions ||
-      isFetchingPermissions ||
-      isLoadingOwnerships ||
-      isFetchingOwnerships,
+    isLoadingWebs: isLoadingWebs,
+    isLoading: isLoadingPermissions || isLoadingOwnerships || isFetchingWebs,
   }
 }
 

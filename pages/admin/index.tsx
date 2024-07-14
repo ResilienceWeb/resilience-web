@@ -1,7 +1,7 @@
 import { signIn, useSession } from 'next-auth/react'
 import { memo, useEffect, useMemo } from 'react'
 import posthog from 'posthog-js'
-import { Center, Spinner } from '@chakra-ui/react'
+import { Center, Spinner, Box } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 import { driver } from 'driver.js'
@@ -14,6 +14,7 @@ import { usePermissions } from '@hooks/permissions'
 import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 import { useAppContext } from '@store/hooks'
 import { useAllowedWebs } from '@hooks/webs'
+import WebCreation from '@components/admin/web-creation'
 
 const driverObj = driver({
   showProgress: true,
@@ -70,18 +71,9 @@ const driverObj = driver({
 const Admin = () => {
   const { data: session, status: sessionStatus } = useSession()
   const router = useRouter()
-  const { selectedWebId, selectedWebSlug, setSelectedWebSlug } = useAppContext()
+  const { selectedWebId } = useAppContext()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
-  const { allowedWebs, isLoading: isLoadingAllowedWebs } = useAllowedWebs()
-
-  useEffect(() => {
-    if (!isLoadingAllowedWebs) {
-      const existingWebSlugs = allowedWebs.map((w) => w.slug)
-      if (!existingWebSlugs.includes(selectedWebSlug)) {
-        setSelectedWebSlug(undefined)
-      }
-    }
-  }, [isLoadingAllowedWebs, selectedWebSlug, setSelectedWebSlug, allowedWebs])
+  const { allowedWebs, isLoadingWebs } = useAllowedWebs()
 
   useEffect(() => {
     if (
@@ -140,7 +132,8 @@ const Admin = () => {
         router.replace('/admin', undefined, { shallow: true })
       }, 3000)
     }
-  }, [router, router.query.firstTime])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.firstTime])
 
   if (sessionStatus === 'loading') {
     return (
@@ -158,16 +151,22 @@ const Admin = () => {
     return null
   }
 
-  if (!isLoadingAllowedWebs && allowedWebs.length === 0) {
-    router.push('/admin/welcome')
-  }
-
-  if (isListingsPending || isPermissionsPending) {
+  if (isLoadingWebs || isListingsPending || isPermissionsPending) {
     return (
       <LayoutContainer>
         <Center height="100%">
           <Spinner size="xl" />
         </Center>
+      </LayoutContainer>
+    )
+  }
+
+  if (!isLoadingWebs && allowedWebs.length === 0) {
+    return (
+      <LayoutContainer>
+        <Box px={{ base: '4', md: '10' }} py={4} maxWidth="2xl" mx="auto">
+          <WebCreation />
+        </Box>
       </LayoutContainer>
     )
   }

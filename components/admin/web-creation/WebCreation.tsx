@@ -20,7 +20,6 @@ import { Formik, Form, Field, FieldProps, useFormikContext } from 'formik'
 import LogoImage from '../../../public/logo.png'
 import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
 import { useCreateWeb } from '@hooks/webs'
-import { useAppContext } from '@store/hooks'
 import Faq from './faq'
 
 const SlugField = () => {
@@ -86,15 +85,15 @@ const SlugField = () => {
 const WebCreation = () => {
   const { createWeb, isPending, isSuccess, isError, errorMessage } =
     useCreateWeb()
-  const { setSelectedWebSlug } = useAppContext()
   const router = useRouter()
 
   useEffect(() => {
     if (isSuccess) {
-      setSelectedWebSlug(undefined)
       router.push('/admin?firstTime=true')
+      router.reload()
     }
-  }, [isSuccess, router, setSelectedWebSlug])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess])
 
   const onSubmit = useCallback(
     (data) => {

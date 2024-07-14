@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import useLocalStorage from 'use-local-storage'
 import { AppContext } from '@store/AppContext'
-import { useAllowedWebs, useWebs } from '@hooks/webs'
+import { useWebs } from '@hooks/webs'
 import { useIsAdminMode } from '@hooks/application'
 
 const StoreProvider = ({ children }) => {
@@ -12,15 +12,7 @@ const StoreProvider = ({ children }) => {
   )
   const [subdomain, setSubdomain] = useState<string>()
 
-  const { allowedWebs, isLoading: isLoadingAllowedWebs } = useAllowedWebs()
   const { webs } = useWebs({ published: !isAdminMode })
-
-  useEffect(() => {
-    const allowedWebSlugs = allowedWebs.map((w) => w.slug)
-    if (!isLoadingAllowedWebs && !allowedWebSlugs.includes(selectedWebSlug)) {
-      setSelectedWebSlug(null)
-    }
-  }, [allowedWebs, isLoadingAllowedWebs, selectedWebSlug, setSelectedWebSlug])
 
   useEffect(() => {
     const hostname = window.location.hostname

@@ -46,24 +46,40 @@ const WebSelector = () => {
   )
 
   useEffect(() => {
+    const allowedWebSlugs = allowedWebs.map((w) => w.slug)
+    if (!isLoadingAllowedWebs && !allowedWebSlugs.includes(selectedWebSlug)) {
+      if (webOptions.length > 0) {
+        setSelectedWebSlug(webOptions[0].value)
+      }
+    }
+  }, [
+    allowedWebs,
+    isLoadingAllowedWebs,
+    selectedWebSlug,
+    setSelectedWebSlug,
+    webOptions,
+  ])
+
+  useEffect(() => {
     if (selectedWebSlug) {
       return
     }
 
-    if (webOptions.length > 0) {
-      setSelectedWebSlug(webOptions[0].value)
-    } else if (
-      isLoadingWebs === false &&
-      isFetchingWebs === false &&
-      isLoadingAllowedWebs === false &&
-      webOptions.length === 0
-    ) {
-      setSelectedWebSlug(null)
-    } else {
-      setSelectedWebSlug(undefined)
+    if (isLoadingAllowedWebs) {
+      return
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [webOptions, setSelectedWebSlug, isLoadingWebs, isFetchingWebs])
+
+    if (selectedWebSlug === undefined && webOptions.length > 0) {
+      setSelectedWebSlug(webOptions[0].value)
+    }
+  }, [
+    webOptions,
+    setSelectedWebSlug,
+    isLoadingAllowedWebs,
+    isFetchingWebs,
+    selectedWebSlug,
+    isLoadingWebs,
+  ])
 
   const hideWebSelector = useMemo(
     () =>

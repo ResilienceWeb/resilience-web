@@ -4,7 +4,7 @@ const { withSentryConfig } = require('@sentry/nextjs')
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   webpack(config) {
     config.resolve.modules.push(__dirname)
     return config
