@@ -24,6 +24,7 @@ import { BiCategory } from 'react-icons/bi'
 import { GrOverview } from 'react-icons/gr'
 import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
 import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
+import { useSessionData } from '@hooks/session'
 import { useAppContext } from '@store/hooks'
 import DonateButton from '@components/donate-button'
 import LogoImage from '../../../public/logo.png'
@@ -61,7 +62,8 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
+  const { data: session } = useSessionData()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
   const { selectedWebId } = useAppContext()

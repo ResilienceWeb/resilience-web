@@ -79,7 +79,7 @@ const Admin = () => {
     if (
       session &&
       process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
-      !process.env.NEXT_PUBLIC_VERCEL_URL.includes('vercel.app')
+      !process.env.NEXT_PUBLIC_VERCEL_URL?.includes('vercel.app')
     ) {
       console.log('[Posthog] Identifying user')
       posthog.identify(session.user.id, { email: session.user.email })
