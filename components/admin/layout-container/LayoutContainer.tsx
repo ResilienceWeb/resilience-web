@@ -20,7 +20,6 @@ const LayoutContainer = ({ children }) => {
         <Nav onOpen={onOpen} />
         <SlideFade in>
           <Box
-            data-testid="test"
             mt="1rem"
             mx={4}
             flex={1}

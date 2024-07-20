@@ -13,10 +13,11 @@ export async function GET(request) {
       })
     }
 
-    const { web } = request.query ?? {}
+    const searchParams = request.nextUrl.searchParams
+    const web = searchParams.get('web')
 
     let ownerships
-    if (web !== undefined) {
+    if (web) {
       ownerships = await prisma.ownership.findMany({
         where: {
           webs: {

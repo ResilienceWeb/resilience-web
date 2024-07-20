@@ -1,7 +1,9 @@
 import prisma from '../../../prisma/client'
 
 export async function GET(request) {
-  const { web } = request.query ?? {}
+  const searchParams = request.nextUrl.searchParams
+  const web = searchParams.get('web')
+
   try {
     const listings = await prisma.listing.findMany({
       where: {
