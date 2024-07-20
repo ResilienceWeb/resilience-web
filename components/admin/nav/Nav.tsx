@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import NextLink from 'next/link'
+import dynamic from 'next/dynamic'
 import { useSession, signOut } from 'next-auth/react'
 import {
   Box,
@@ -17,8 +18,9 @@ import {
 import { FiMenu } from 'react-icons/fi'
 import { BsPersonCircle } from 'react-icons/bs'
 import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
+const WebSelector = dynamic(() => import('./web-selector'))
 
-import WebSelector from './web-selector'
+// import WebSelector from './web-selector'
 
 const Nav = ({ onOpen }) => {
   const { data: session } = useSession()

@@ -94,7 +94,7 @@ const WebSelector = () => {
     )
   }
 
-  if (webOptions.length === 0 || hideWebSelector) {
+  if (webOptions.length === 0 || !selectedOption || hideWebSelector) {
     return null
   }
 
