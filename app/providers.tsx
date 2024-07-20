@@ -11,6 +11,7 @@ import {
   defineStyleConfig,
   extendTheme,
 } from '@chakra-ui/react'
+import StoreProvider from '@store/StoreProvider'
 
 function makeQueryClient() {
   return new QueryClient({
@@ -114,7 +115,9 @@ export default function Providers({ children }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ChakraProvider theme={theme}>{children}</ChakraProvider>
+      <ChakraProvider theme={theme}>
+        <StoreProvider>{children}</StoreProvider>
+      </ChakraProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
   )

@@ -55,6 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       ],
     })
+    console.log(web, listings)
     res.status(200)
     res.json({ listings })
   } catch (e) {

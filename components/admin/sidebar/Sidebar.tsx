@@ -67,8 +67,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
   const { selectedWebId } = useAppContext()
 
-  console.log(selectedWebId)
-
   const navLinks = useMemo(() => {
     const links: any[] = []
     if (selectedWebId) {
