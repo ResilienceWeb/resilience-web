@@ -1,3 +1,4 @@
+import { headers } from 'next/headers'
 import {
   dehydrate,
   HydrationBoundary,
@@ -7,16 +8,33 @@ import { getServerSession } from 'next-auth'
 import SessionProvider from './components/SessionProvider'
 import Providers from './providers'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
-import { fetchPermissionsHydrate } from '@hooks/permissions/usePermissions'
-import { fetchMyOwnershipsHydrate } from '@hooks/ownership/useMyOwnerships'
 import { authOptions } from './auth'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/600.css'
+import { REMOTE_URL } from '@helpers/config'
 
 export const metadata = {
   title: 'Admin | Resilience Web',
   description:
     'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
+}
+
+async function fetchMyOwnershipsHydrate() {
+  const response = await fetch(`${REMOTE_URL}/api/ownerships`, {
+    headers: headers(),
+  })
+  const data = await response.json()
+  return data.ownerships
+}
+
+export async function fetchPermissionsHydrate() {
+  const response = await fetch(`${REMOTE_URL}/api/permissions`, {
+    headers: headers(),
+  })
+  const data = await response.json()
+  const listingIds = data.permission?.listings.map((l) => l.id)
+  const webIds = data.permission?.webs.map((l) => l.id)
+  return { listingIds, webIds, fullPermissionData: data.permission }
 }
 
 export default async function RootLayout({
