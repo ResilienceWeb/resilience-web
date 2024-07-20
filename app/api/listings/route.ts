@@ -1,5 +1,4 @@
 import { getServerSession } from 'next-auth'
-import formidable from 'formidable'
 import { Prisma } from '@prisma/client'
 import prisma from '../../../prisma/client'
 import { authOptions } from '../../auth'
@@ -84,15 +83,7 @@ export async function POST(request) {
       // TODO: Improve security
     }
 
-    const form = formidable({
-      keepExtensions: true,
-      allowEmptyFiles: false,
-      maxFileSize: 5 * 1024 * 1024,
-    })
-
     const formData = await request.formData()
-    console.log({ formData })
-
     const tags = formData.get('tags')
     const relations = formData.get('relations')
     const pending = formData.get('pending')
@@ -111,8 +102,6 @@ export async function POST(request) {
     const longitude = formData.get('longitude')
     const slug = formData.get('slug')
 
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    // void form.parse(request, async (_err, fields, files) => {
     // Prepare tags
     const tagsArray = tags !== '' ? tags.split(',') : []
     const tagsToConnect = tagsArray.map((tagId) => ({
@@ -172,7 +161,6 @@ export async function POST(request) {
     const image = formData.get('image')
     let imageUrl: string | null = null
     if (image && image !== 'undefined') {
-      // const imageBuffer = Buffer.from(await image.arrayBuffer())
       console.log('uploading image', image)
       imageUrl = await uploadImage(image)
       if (imageUrl) {
@@ -222,7 +210,6 @@ export async function POST(request) {
         status: 201,
       },
     )
-    // })
   } catch (e) {
     console.error(`[RW] Unable to create listing - ${e}`)
     return new Response(`Unable to create listing - ${e}`, {
