@@ -6,14 +6,20 @@ import type { File } from 'formidable'
 import doSpace from '../lib/digitalocean'
 import config from './config'
 
-const uploadImage = (image: File, oldImageKey?: string) => {
+const uploadImage = async (
+  image: File,
+  oldImageKey?: string,
+): Promise<string> => {
+  const filePath = `./public/file/${image.name}`
+  // const imageBuffer = Buffer.from(await image.arrayBuffer())
+
   return new Promise((resolve, reject) => {
     if (image) {
-      const params = {
+      const params: S3.PutRequestObject = {
         Bucket: `${config.bucketName}`,
-        Body: fs.createReadStream(image.filepath),
-        Key: path.basename(image.filepath),
-        ContentType: image.mimetype,
+        Body: fs.createReadStream(filePath),
+        Key: path.basename(image.name),
+        ContentType: image.type,
         ACL: 'public-read',
       }
 
@@ -28,7 +34,7 @@ const uploadImage = (image: File, oldImageKey?: string) => {
         .on('build', (request) => {
           request.httpRequest.headers.Host = `${config.digitalOceanSpaces}`
           request.httpRequest.headers['Content-Length'] = image.size
-          request.httpRequest.headers['Content-Type'] = image.mimetype
+          request.httpRequest.headers['Content-Type'] = image.type
           request.httpRequest.headers['x-amz-acl'] = 'public-read'
         })
         .send((err) => {
@@ -36,8 +42,7 @@ const uploadImage = (image: File, oldImageKey?: string) => {
             console.error(err)
             reject(err)
           } else {
-            imageUrl =
-              `${config.digitalOceanSpaces}` + image.filepath.split('/').pop()
+            imageUrl = `${config.digitalOceanSpaces}` + image.name
             console.log('File uploaded successfully', imageUrl)
             resolve(imageUrl)
 

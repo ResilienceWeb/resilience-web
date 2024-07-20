@@ -131,6 +131,14 @@ export default function AdminPage() {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [router.query.firstTime])
 
+  if (allowedListings === null) {
+    return (
+      <Center height="50vh">
+        <Spinner size="xl" />
+      </Center>
+    )
+  }
+
   return (
     <EditableList
       deleteListing={deleteListing}

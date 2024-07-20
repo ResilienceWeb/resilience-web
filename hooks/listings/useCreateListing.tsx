@@ -6,7 +6,7 @@ async function createListingRequest(listingData) {
     formData.append(key, listingData[key]),
   )
 
-  const response = await fetch('/api/listings/create', {
+  const response = await fetch('/api/listings', {
     method: 'POST',
     body: formData,
   })
@@ -26,9 +26,9 @@ export default function useCreateListing() {
       queryClient.setQueryData(['listings', newListing.id], newListing)
       return { previousListings, newListing }
     },
-    onError: (_err, _newListing, context) => {
-      queryClient.setQueryData(['listings'], context.previousListings)
-    },
+    // onError: (_err, _newListing, context) => {
+    //   queryClient.setQueryData(['listings'], context.previousListings)
+    // },
     onSettled: () => {
       void queryClient.invalidateQueries({
         queryKey: ['listings'],

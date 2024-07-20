@@ -88,7 +88,9 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
     return null
   }, [isAdmin, permissions?.webIds, selectedWebId, webs])
 
-  if (!filteredItems) return null
+  if (!filteredItems) {
+    return null
+  }
 
   return (
     <>
