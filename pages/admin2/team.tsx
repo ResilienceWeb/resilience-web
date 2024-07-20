@@ -1,6 +1,6 @@
 import { Formik, Form, Field, FormikHelpers } from 'formik'
 import { useEffect, useCallback, useMemo } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { NextSeo } from 'next-seo'
 import {
   chakra,

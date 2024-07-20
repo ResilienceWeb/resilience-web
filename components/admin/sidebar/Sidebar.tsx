@@ -1,7 +1,7 @@
 import { ReactElement, useMemo } from 'react'
 import NextLink from 'next/link'
 import Image from 'next/legacy/image'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import {
   Box,
@@ -24,7 +24,6 @@ import { BiCategory } from 'react-icons/bi'
 import { GrOverview } from 'react-icons/gr'
 import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
 import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
-import { useSessionData } from '@hooks/session'
 import { useAppContext } from '@store/hooks'
 import DonateButton from '@components/donate-button'
 import LogoImage from '../../../public/logo.png'
@@ -62,11 +61,12 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
-  // const { data: session } = useSession()
-  const { data: session } = useSessionData()
+  const { data: session } = useSession()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
   const { selectedWebId } = useAppContext()
+
+  console.log(session)
 
   const navLinks = useMemo(() => {
     const links = []
@@ -210,11 +210,11 @@ const NavLink = ({ children, href }) => (
   </Link>
 )
 const NavItem = ({ label, icon, href, tourId }: NavItemProps) => {
-  const router = useRouter()
+  const pathname = usePathname()
   return (
     <NavLink key={label} href={href}>
       <Button
-        aria-current={router.pathname === href ? 'page' : undefined}
+        aria-current={pathname === href ? 'page' : undefined}
         data-tourid={tourId}
         background="transparent"
         color="gray.600"

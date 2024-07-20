@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { signIn, useSession } from 'next-auth/react'
 import { NextSeo } from 'next-seo'
 import { Formik, Form, Field, FieldProps } from 'formik'

@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import NextLink from 'next/link'
 import { useCallback, useState, useMemo, memo } from 'react'
 import { Heading, Text, Box, Center, Link } from '@chakra-ui/react'

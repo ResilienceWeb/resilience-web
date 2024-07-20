@@ -1,6 +1,6 @@
 import { NextSeo } from 'next-seo'
 import { useCallback, useMemo } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import {
   Box,
   Flex,
