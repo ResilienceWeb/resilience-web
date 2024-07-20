@@ -1,4 +1,3 @@
-// In Next.js, this file would be called: app/providers.jsx
 'use client'
 
 import {

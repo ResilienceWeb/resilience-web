@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 import client from '@sendgrid/client'
-import { authOptions } from '../auth/[...nextauth]'
+import { authOptions } from '../../../app/auth'
 import prisma from '../../../prisma/client'
 
 client.setApiKey(process.env.SENDGRID_API_KEY)

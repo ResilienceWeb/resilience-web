@@ -3,8 +3,11 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query'
+import { getServerSession } from 'next-auth'
+import SessionProvider from './components/SessionProvider'
 import Providers from './providers'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
+import { authOptions } from './auth'
 
 export const metadata = {
   title: 'Next.js',
@@ -16,6 +19,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const session = await getServerSession(authOptions)
+
   // eslint-disable-next-line @tanstack/query/stable-query-client
   const queryClient = new QueryClient()
 
@@ -29,7 +34,7 @@ export default async function RootLayout({
       <body>
         <Providers>
           <HydrationBoundary state={dehydrate(queryClient)}>
-            {children}
+            <SessionProvider session={session}>{children}</SessionProvider>
           </HydrationBoundary>
         </Providers>
       </body>

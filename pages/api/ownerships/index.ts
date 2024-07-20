@@ -1,14 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]'
+import { authOptions } from '../../../app/auth'
 import prisma from '../../../prisma/client'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const session = await getServerSession(req, res, authOptions)
-    if (!session?.user) {
+    if (!session || !session?.user) {
       res.status(403)
-      res.json({
+      return res.json({
         error: `You don't have permission to perform this action.`,
       })
     }

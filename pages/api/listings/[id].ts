@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]'
+import { authOptions } from '../../../app/auth'
 import { Prisma } from '@prisma/client'
 import prisma from '../../../prisma/client'
 import uploadImage from '@helpers/uploadImage'

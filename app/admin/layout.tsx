@@ -1,16 +1,13 @@
-import { notFound } from 'next/navigation'
-import { QueryClient } from '@tanstack/react-query'
+import { redirect } from 'next/navigation'
 import LayoutContainer from '@components/admin/layout-container'
 import { getCurrentUser } from '@helpers/session'
 
 export default async function Layout({ children }) {
   const user = await getCurrentUser()
+  console.log(user)
   if (!user) {
-    return notFound()
+    redirect('/auth/signin')
   }
-
-  const queryClient = new QueryClient()
-  queryClient.setQueryData(['session'], user)
 
   return <LayoutContainer>{children}</LayoutContainer>
 }

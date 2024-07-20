@@ -12,9 +12,7 @@ import prisma from '../prisma/client'
 import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates'
 import config from '@helpers/config'
 
-// You'll need to import and pass this
-// to `NextAuth` in `app/api/auth/[...nextauth]/route.ts`
-export const options: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     EmailProvider({
       server: config.emailServer,
@@ -82,7 +80,6 @@ export const options: NextAuthOptions = {
     verifyRequest: '/auth/verify-request',
   },
   debug: false,
-  secret: process.env.NEXT_AUTH_SECRET,
 } satisfies NextAuthOptions
 
 // Use it in server contexts
@@ -92,5 +89,5 @@ export function auth(
     | [NextApiRequest, NextApiResponse]
     | []
 ) {
-  return getServerSession(...args, options)
+  return getServerSession(...args, authOptions)
 }
