@@ -25,7 +25,7 @@ export default function useAddRelation() {
       return { previousRelations, newRelation }
     },
     onError: (_err, _newListing, context) => {
-      queryClient.setQueryData(['relations'], context.previousRelations)
+      queryClient.setQueryData(['relations'], context?.previousRelations)
     },
     onSettled: () => {
       void queryClient.invalidateQueries({

@@ -13,7 +13,7 @@ type Props = {
 }
 
 const ListingImage = ({ alt, src, sizes, isInView, priority }: Props) => {
-  const imageRef = useRef()
+  const imageRef = useRef<any>()
   const [backgroundPosition, setBackgroundPosition] = useState<
     'cover' | 'contain'
   >('cover')
@@ -22,6 +22,7 @@ const ListingImage = ({ alt, src, sizes, isInView, priority }: Props) => {
   useEffect(() => {
     if (
       imageRef.current &&
+      width &&
       width > 0 &&
       (isInView === true || isInView === undefined)
     ) {

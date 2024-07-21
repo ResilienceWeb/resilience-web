@@ -22,7 +22,7 @@ const Layout = ({
       <Nav />
       <SlideFade in>
         <Flex
-          className={applyPostStyling ? styles.root : null}
+          className={applyPostStyling ? styles.root : undefined}
           minHeight={useBreakpointValue({
             base: 'calc(100vh - 186px)',
             lg: 'calc(100vh - 140px)',

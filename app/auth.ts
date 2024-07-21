@@ -15,6 +15,7 @@ import config from '@helpers/config'
 export const authOptions: NextAuthOptions = {
   providers: [
     EmailProvider({
+      // @ts-ignore
       server: config.emailServer,
       from: `Resilience Web <${process.env.EMAIL_FROM}>`,
       maxAge: 604800, // 7 days

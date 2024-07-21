@@ -67,8 +67,8 @@ export function getBackgroundColor(imgEl, aDoc) {
     height,
     ratio,
     ti,
-    count = [],
-    avg = []
+    count: any[] = [],
+    avg: any[] = []
 
   ratio = Math.max(
     Math.ceil((imgEl.naturalHeight + 1) / 256),

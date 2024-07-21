@@ -26,8 +26,8 @@ export default function useUpdateCategory() {
     },
     onError: (_err, _newCategory, context) => {
       queryClient.setQueryData(
-        ['categories', context.newCategory.id],
-        context.previousCategories,
+        ['categories', context?.newCategory.id],
+        context?.previousCategories,
       )
     },
     onSettled: () => {

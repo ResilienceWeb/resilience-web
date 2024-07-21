@@ -13,7 +13,7 @@ import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch'
 import { useFormikContext } from 'formik'
 
 const provider = new GoogleProvider({
-  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
 })
 
 const geoSearchControl = GeoSearchControl({
@@ -72,7 +72,7 @@ const MapContent = ({ latitude, longitude }) => {
   const eventHandlers = useMemo(
     () => ({
       dragend() {
-        const marker = markerRef.current
+        const marker: any = markerRef.current
         if (marker != null) {
           setPosition(marker.getLatLng())
           setFieldValue('location', {

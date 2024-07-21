@@ -33,7 +33,7 @@ function Listing({ listing }) {
   useEffect(() => {
     const hostname = window.location.hostname
     if (!hostname.includes('.')) {
-      return null
+      return
     }
 
     setSubdomain(hostname.split('.')[0])

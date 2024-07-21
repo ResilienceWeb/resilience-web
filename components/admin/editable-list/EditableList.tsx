@@ -18,9 +18,9 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
   const { webs } = useWebs()
   const { selectedWebId, selectedWebSlug } = useAppContext()
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategories, setSelectedCategories] = useState([])
+  const [selectedCategories, setSelectedCategories] = useState<Array<any>>([])
   const [isDeleteConfirmationOpenWithId, setIsDeleteConfirmationOpenWithId] =
-    useState()
+    useState<any>()
 
   const filteredItems = useMemo(() => {
     if (!items) return []

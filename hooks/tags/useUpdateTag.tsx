@@ -26,8 +26,8 @@ export default function useUpdateTag() {
     },
     onError: (_err, _newCategory, context) => {
       queryClient.setQueryData(
-        ['tags', context.newTag.id],
-        context.previousTags,
+        ['tags', context?.newTag.id],
+        context?.previousTags,
       )
     },
     onSettled: () => {

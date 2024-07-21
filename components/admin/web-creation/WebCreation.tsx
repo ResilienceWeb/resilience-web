@@ -90,7 +90,7 @@ const WebCreation = () => {
   useEffect(() => {
     if (isSuccess) {
       router.push('/admin?firstTime=true')
-      router.reload()
+      router.refresh()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess])

@@ -18,7 +18,7 @@ function Listing({ listing }: { listing: ListingType }) {
     )
   }
 
-  const descriptionStrippedOfHtml = listing.description.replace(
+  const descriptionStrippedOfHtml = listing.description?.replace(
     /<[^>]*>?/gm,
     '',
   )
@@ -35,7 +35,7 @@ function Listing({ listing }: { listing: ListingType }) {
         openGraph={{
           title: `${listing.title} | Resilience Web`,
           description: truncatedDescription,
-          images: [{ url: listing.image }],
+          images: [{ url: listing.image as string }],
         }}
       />
       <Layout>
@@ -77,15 +77,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       ? 'https://resilienceweb.org.uk'
       : REMOTE_URL
 
-  // TODO: make this more secure
+  // TODO: make this more secure & return null or something if params don't exist
   const data = await fetch(
-    `${BASE_URL}/api/listing/${params.slug}?web=${params.web}`,
+    `${BASE_URL}/api/listing/${params?.slug}?web=${params?.web}`,
   )
     .then((res) => res.json())
     .catch((e) =>
       console.error(
         'Failed to fetch data from',
-        `${BASE_URL}/api/listing/${params.slug}`,
+        `${BASE_URL}/api/listing/${params?.slug}`,
         e,
       ),
     )

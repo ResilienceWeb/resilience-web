@@ -26,9 +26,9 @@ export default function useCreateListing() {
       queryClient.setQueryData(['listings', newListing.id], newListing)
       return { previousListings, newListing }
     },
-    // onError: (_err, _newListing, context) => {
-    //   queryClient.setQueryData(['listings'], context.previousListings)
-    // },
+    onError: (_err, _newListing, context) => {
+      queryClient.setQueryData(['listings'], context?.previousListings)
+    },
     onSettled: () => {
       void queryClient.invalidateQueries({
         queryKey: ['listings'],

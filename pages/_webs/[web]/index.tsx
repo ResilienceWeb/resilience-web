@@ -25,6 +25,7 @@ import { fetchCategoriesHydrate } from '@hooks/categories/useCategories'
 import { fetchTagsHydrate } from '@hooks/tags/useTags'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import { useTags } from '@hooks/tags'
+import { Category } from '@prisma/client'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
@@ -70,13 +71,13 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
   )
   const handleClearSearchTermValue = useCallback(() => setSearchTerm(''), [])
 
-  const [categories, setCategories] = useState([])
-  const [tags, setTags] = useState([])
+  const [categories, setCategories] = useState<any[]>([])
+  const [tags, setTags] = useState<any[]>([])
 
   const selectedCategories = useMemo(() => {
     return query.categories.map((categoryLabel) => {
       const categoryColor = categories.find(
-        (c) => c.label === categoryLabel,
+        (c: Category) => c.label === categoryLabel,
       )?.color
       return {
         value: categoryLabel,
