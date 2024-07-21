@@ -17,7 +17,7 @@ import TagsList from '@components/admin/tags/list'
 import { useCategories } from '@hooks/categories'
 import { useTags } from '@hooks/tags'
 
-export default function Page() {
+export default function CategoriesPage() {
   const { tags, isPending: isTagsPending } = useTags()
   const { categories, isPending: isCategoriesPending } = useCategories()
 

@@ -3,7 +3,6 @@ import { signIn, useSession } from 'next-auth/react'
 import { memo, useEffect, useMemo } from 'react'
 import posthog from 'posthog-js'
 import { Center, Spinner, Box } from '@chakra-ui/react'
-import { useRouter } from 'next/navigation'
 import { driver } from 'driver.js'
 import 'driver.js/dist/driver.css'
 
@@ -110,16 +109,6 @@ export default function AdminPage() {
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [sessionStatus])
-
-  // useEffect(() => {
-  //   if (!session && sessionStatus !== 'loading') {
-  //     if (router.query.activate) {
-  //       signIn('email', { email: router.query.activate })
-  //     } else {
-  //       signIn().catch((e) => console.error(e))
-  //     }
-  //   }
-  // }, [session, sessionStatus, router.query.activate])
 
   // useEffect(() => {
   //   if (router.query.firstTime === 'true') {
