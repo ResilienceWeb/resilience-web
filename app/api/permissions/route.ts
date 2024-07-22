@@ -1,7 +1,6 @@
 import { getServerSession } from 'next-auth'
 
 import { authOptions } from '../../auth'
-import { Prisma } from '@prisma/client'
 import prisma from '../../../prisma/client'
 
 export async function GET(request) {
@@ -17,8 +16,8 @@ export async function GET(request) {
       )
     }
 
-    // TODO: below doesn't work, needs updating
-    const { email: targetEmail, listings, webs } = request?.body ?? {}
+    const searchParams = request.nextUrl.searchParams
+    const targetEmail = searchParams.get('email')
 
     const email = targetEmail ?? session?.user.email
     const permission = await prisma.permission.findUnique({

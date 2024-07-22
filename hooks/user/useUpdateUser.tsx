@@ -20,7 +20,7 @@ export default function useUpdateUser() {
   const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: updateUserRequest,
     onSuccess: (data) => {
-      queryClient.setQueryData(['user', { email: data.email }], data)
+      queryClient.setQueryData(['user'], data)
     },
   })
 

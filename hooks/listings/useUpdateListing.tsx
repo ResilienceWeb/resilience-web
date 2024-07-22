@@ -7,7 +7,7 @@ async function updateListingRequest(listingData) {
     formData.append(key, listingData[key]),
   )
 
-  const response = await fetch(`/api/listings/${listingData.id}`, {
+  const response = await fetch(`/api/listings/${listingData.slug}`, {
     method: 'PUT',
     body: formData,
   })

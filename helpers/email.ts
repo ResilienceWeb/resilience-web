@@ -1,7 +1,7 @@
 import { render } from '@react-email/render'
 import sgMail from '@sendgrid/mail'
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY as string)
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 export const sendEmail = async ({ to, subject, email }) => {
   const emailHtml = render(email)

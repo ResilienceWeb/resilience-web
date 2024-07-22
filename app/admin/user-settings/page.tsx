@@ -24,7 +24,6 @@ import { useUpdateUser, useCurrentUser } from '@hooks/user'
 export default function UserSettingsPage() {
   const { updateUser, isPending, isSuccess } = useUpdateUser()
   const { status: sessionStatus } = useSession()
-  // TODO: look into replacing useCurrentUser with just useSession and pass data via nextauth callbacks
   const { user } = useCurrentUser()
 
   const toast = useToast()

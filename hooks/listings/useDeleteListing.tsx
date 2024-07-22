@@ -1,8 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-async function deleteListingRequest({ id }) {
-  const response = await fetch(`/api/listings/${id}`, {
+async function deleteListingRequest({ slug, webId }) {
+  const response = await fetch(`/api/listings/${slug}`, {
     method: 'DELETE',
+    body: JSON.stringify({
+      webId,
+    }),
   })
   const data = await response.json()
   const { listing } = data

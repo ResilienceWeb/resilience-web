@@ -8,7 +8,7 @@ import prisma from '../../../prisma/client'
 import { REMOTE_URL } from '@helpers/config'
 import InviteEmail from '@components/emails/InviteEmail'
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY as string)
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

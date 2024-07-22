@@ -19,8 +19,10 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
   const { selectedWebId, selectedWebSlug } = useAppContext()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState<Array<any>>([])
-  const [isDeleteConfirmationOpenWithId, setIsDeleteConfirmationOpenWithId] =
-    useState<any>()
+  const [
+    isDeleteConfirmationOpenWithSlug,
+    setIsDeleteConfirmationOpenWithSlug,
+  ] = useState<any>()
 
   const filteredItems = useMemo(() => {
     if (!items) return []
@@ -54,17 +56,25 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
     router.push('/admin/new-listing')
   }, [router])
 
-  const openRemoveDialog = useCallback((id) => {
-    setIsDeleteConfirmationOpenWithId(id)
+  const openRemoveDialog = useCallback((slug) => {
+    setIsDeleteConfirmationOpenWithSlug(slug)
   }, [])
   const closeRemoveDialog = useCallback(() => {
-    setIsDeleteConfirmationOpenWithId(null)
+    setIsDeleteConfirmationOpenWithSlug(null)
   }, [])
 
   const handleRemove = useCallback(() => {
-    deleteListing({ id: isDeleteConfirmationOpenWithId })
+    deleteListing({
+      slug: isDeleteConfirmationOpenWithSlug,
+      webId: selectedWebId,
+    })
     closeRemoveDialog()
-  }, [closeRemoveDialog, deleteListing, isDeleteConfirmationOpenWithId])
+  }, [
+    closeRemoveDialog,
+    deleteListing,
+    isDeleteConfirmationOpenWithSlug,
+    selectedWebId,
+  ])
 
   const handleSearchTermChange = useCallback((event) => {
     setSearchTerm(event.target.value)
@@ -135,7 +145,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
         </Center>
       )}
       <DeleteConfirmationDialog
-        isOpen={isDeleteConfirmationOpenWithId}
+        isOpen={isDeleteConfirmationOpenWithSlug}
         onClose={closeRemoveDialog}
         handleRemove={handleRemove}
       />
