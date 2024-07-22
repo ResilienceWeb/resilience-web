@@ -26,6 +26,7 @@ import { fetchTagsHydrate } from '@hooks/tags/useTags'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import { useTags } from '@hooks/tags'
 import { Category } from '@prisma/client'
+import prisma from '../../../prisma/client'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
@@ -330,43 +331,64 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
   params,
 }) => {
   if (!params) throw new Error('No path parameters found')
-  const { web } = params
+  const { web: webSlug } = params
 
-  const BASE_URL =
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
-      ? 'https://resilienceweb.org.uk'
-      : REMOTE_URL
-
-  const { data: webs } = await fetch(`${BASE_URL}/api/webs`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error('Failed to fetch data from', `${BASE_URL}/api/webs`, e),
-    )
-
-  const paths = webs.map((l) => `${l.slug}`)
-  if (!paths.includes(web)) {
-    return { notFound: true, revalidate: 30 }
+  const webData = await prisma.web.findUnique({
+    where: {
+      slug: webSlug,
+    },
+  })
+  if (!webData) {
+    return { notFound: true }
   }
 
-  const { listings } = await fetch(`${BASE_URL}/api/listings?web=${web}`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error(
-        'Failed to fetch data from',
-        `${BASE_URL}/api/listings?web=${web}`,
-        e,
-      ),
-    )
-
-  const { web: webData } = await fetch(`${BASE_URL}/api/webs/${web}`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error(
-        'Failed to fetch data from',
-        `${BASE_URL}/api/webs/${web}`,
-        e,
-      ),
-    )
+  const listings = await prisma.listing.findMany({
+    where: {
+      web: {
+        slug: {
+          contains: webSlug,
+        },
+      },
+    },
+    include: {
+      location: {
+        select: {
+          latitude: true,
+          longitude: true,
+          description: true,
+        },
+      },
+      category: {
+        select: {
+          id: true,
+          color: true,
+          label: true,
+        },
+      },
+      web: true,
+      tags: {
+        select: {
+          label: true,
+        },
+      },
+      relations: {
+        include: {
+          category: {
+            select: {
+              id: true,
+              color: true,
+              label: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: [
+      {
+        id: 'asc',
+      },
+    ],
+  })
 
   const transformedData = {
     nodes: [],
@@ -514,6 +536,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
     return { notFound: true, revalidate: 30 }
   }
 
+  // TODO: switch below to just fetch and pass as props
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({
     queryKey: ['webs'],
@@ -537,7 +560,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
       webIsPublished: webData.published,
       dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 30,
+    revalidate: 60,
   }
 }
 
