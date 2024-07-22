@@ -82,7 +82,8 @@ const WebSelector = () => {
   ])
 
   const hideWebSelector = useMemo(
-    () => pathname?.includes('/admin/overview') || pathname === '/admin/[slug]',
+    () =>
+      pathname?.includes('/admin/overview') || pathname.match('^/admin/[^/]+$'),
     [pathname],
   )
 

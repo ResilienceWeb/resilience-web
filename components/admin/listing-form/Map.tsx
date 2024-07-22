@@ -13,7 +13,7 @@ import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch'
 import { useFormikContext } from 'formik'
 
 const provider = new GoogleProvider({
-  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
 })
 
 const geoSearchControl = GeoSearchControl({
@@ -119,6 +119,7 @@ const Map = ({ latitude, longitude }) => {
           longitude ?? DEFAULT_CENTER.lng,
         ]}
         zoom={13}
+        style={{ height: '300px' }}
       >
         <MapContent latitude={latitude} longitude={longitude} />
       </MapContainer>
