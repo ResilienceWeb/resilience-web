@@ -108,7 +108,7 @@ export async function PUT(request) {
     const tagsToConnect = tagsArray.map((tagId) => ({
       id: Number(tagId),
     }))
-    const removedTagsArray = removedTags !== '' ? removedTags : []
+    const removedTagsArray = removedTags !== '' ? removedTags.split(',') : []
     const tagsToDisconnect = removedTagsArray.map((tagId) => ({
       id: Number(tagId),
     }))
@@ -119,8 +119,8 @@ export async function PUT(request) {
       id: Number(relationId),
     }))
     const removedRelationsArray =
-      removedRelations !== '' ? removedRelations : []
-    const relationsToDisconnect = removedRelationsArray.map((relationId) => ({
+      removedRelations !== '' ? removedRelations.split(',') : []
+    const relationsToDisconnect = removedRelationsArray?.map((relationId) => ({
       id: Number(relationId),
     }))
 
