@@ -1,6 +1,5 @@
 'use client'
 import { useCallback, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { Formik, Form, Field, FieldProps } from 'formik'
 import {
   Box,
@@ -24,12 +23,9 @@ import {
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
 import { usePermissions } from '@hooks/permissions'
 import { useWeb, useUpdateWeb } from '@hooks/webs'
-import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
 import { useAppContext } from '@store/hooks'
 
 export default function WebSettingsPage() {
-  // const router = useRouter()
-  // const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
   const { isPending: isPendingPermissions } = usePermissions()
   const { selectedWebSlug } = useAppContext()
   const { web: webData } = useWeb({ webSlug: selectedWebSlug })
@@ -65,10 +61,6 @@ export default function WebSettingsPage() {
       </Center>
     )
   }
-
-  // if (isOwnerOfCurrentWeb === false) {
-  //   router.push('/admin')
-  // }
 
   return (
     <Stack spacing="1.5rem">

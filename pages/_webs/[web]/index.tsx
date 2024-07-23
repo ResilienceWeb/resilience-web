@@ -354,6 +354,7 @@ export const getStaticProps: GetStaticProps<WebProps> = async ({ params }) => {
       web: true,
       tags: {
         select: {
+          id: true,
           label: true,
         },
       },
