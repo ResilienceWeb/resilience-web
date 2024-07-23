@@ -174,7 +174,6 @@ export async function PUT(request) {
     const image = formData.get('image')
     let imageUrl: string | null = null
     if (image && image !== 'undefined' && image !== 'null') {
-      console.log('inside if')
       const { image: oldImageKey } = await prisma.listing.findUnique({
         where: { id: Number(listingId) },
         select: {

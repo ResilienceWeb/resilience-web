@@ -119,7 +119,6 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
 
   const handleCategorySelection = useCallback(
     (value) => {
-      console.log('value', value)
       const categoryLabels = value.map((c) => c.label)
       setQuery({ categories: categoryLabels })
     },
