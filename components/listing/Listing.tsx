@@ -243,7 +243,6 @@ function Listing({ listing }) {
                       dataItem={relatedListing}
                       handleClick={() => {
                         const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${relatedListing.slug}`
-                        // eslint-disable-next-line @typescript-eslint/no-floating-promises
                         router.push(individualListingLink)
                       }}
                       key={relatedListing.id}

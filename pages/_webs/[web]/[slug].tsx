@@ -111,7 +111,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         },
       },
       relations: {
-        include: {
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          featured: true,
           category: {
             select: {
               id: true,
