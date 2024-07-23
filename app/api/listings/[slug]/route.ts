@@ -3,9 +3,9 @@ import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import prisma from '../../../../prisma/client'
 
-function exclude(user, keys) {
+function exclude(data, keys) {
   return Object.fromEntries(
-    Object.entries(user).filter(([key]) => !keys.includes(key)),
+    Object.entries(data).filter(([key]) => !keys.includes(key)),
   )
 }
 

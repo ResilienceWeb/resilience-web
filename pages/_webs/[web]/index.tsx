@@ -11,12 +11,10 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { useQueryParams, ArrayParam, withDefault } from 'use-query-params'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'
-import type { ParsedUrlQuery } from 'querystring'
 
 import Header from '@components/header'
 import { selectMoreAccessibleColor } from '@helpers/colors'
 import { useIsMobile } from '@hooks/application'
-import { REMOTE_URL } from '@helpers/config'
 import MainList from '@components/main-list'
 import AlertBanner from '@components/alert-banner'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
@@ -34,10 +32,6 @@ const NetworkComponent = dynamic(() => import('@components/network'), {
 const Drawer = dynamic(() => import('@components/drawer'), {
   ssr: false,
 })
-
-interface PathProps extends ParsedUrlQuery {
-  web: string
-}
 
 interface WebProps {
   data: {
@@ -303,16 +297,9 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
   )
 }
 
-export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
-  const BASE_URL =
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
-      ? 'https://resilienceweb.org.uk'
-      : REMOTE_URL
-
-  const response = await fetch(`${BASE_URL}/api/webs`)
-  const responseJson = await response.json()
-  const { data: webs } = responseJson
-  const paths = webs.map((l) => `/${l.slug}`)
+export const getStaticPaths: GetStaticPaths = async () => {
+  const webs = await prisma.web.findMany()
+  const paths = webs.map((w) => `/${w.slug}`)
 
   return {
     paths: paths.map((path) => ({
@@ -327,9 +314,7 @@ export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
 const startsWithCapitalLetter = (word) =>
   word.charCodeAt(0) >= 65 && word.charCodeAt(0) <= 90
 
-export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
-  params,
-}) => {
+export const getStaticProps: GetStaticProps<WebProps> = async ({ params }) => {
   if (!params) throw new Error('No path parameters found')
   const { web: webSlug } = params
 
@@ -339,7 +324,9 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
     },
   })
   if (!webData) {
-    return { notFound: true }
+    return {
+      notFound: true,
+    }
   }
 
   const listings = await prisma.listing.findMany({

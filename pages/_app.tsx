@@ -36,7 +36,7 @@ if (
   process.env.NODE_ENV === 'production' &&
     process.env.NEXT_PUBLIC_VERCEL_ENV === 'production')
 ) {
-  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY as string, {
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
     api_host: '/ph-ingest',
     ui_host: 'https://eu.posthog.com',
     debug: false,
