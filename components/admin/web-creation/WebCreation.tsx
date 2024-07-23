@@ -219,6 +219,9 @@ const WebCreation = () => {
       </Box>
 
       <Box mt="4rem" mb="2rem">
+        <Heading as="h3" fontSize="1.5rem" mb="1rem">
+          Need help?
+        </Heading>
         <Faq />
       </Box>
     </>
