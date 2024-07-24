@@ -4,13 +4,14 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query'
+import { getServerSession } from 'next-auth'
 import SessionProvider from './components/SessionProvider'
 import Providers from './providers'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
+import { authOptions } from './auth'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/600.css'
 import { REMOTE_URL } from '@helpers/config'
-import { auth } from '@auth'
 
 export const metadata = {
   title: 'Admin | Resilience Web',
@@ -41,7 +42,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await auth()
+  const session = await getServerSession(authOptions)
 
   // eslint-disable-next-line @tanstack/query/stable-query-client
   const queryClient = new QueryClient()

@@ -1,12 +1,13 @@
+import { getServerSession } from 'next-auth'
 import client from '@sendgrid/client'
-import { auth } from '@auth'
+import { authOptions } from '../../../app/auth'
 import prisma from '../../../prisma/client'
 
 client.setApiKey(process.env.SENDGRID_API_KEY)
 
 export async function GET() {
   try {
-    const session = await auth()
+    const session = await getServerSession(authOptions)
     if (!session?.user) {
       return Response.json(
         {
@@ -54,7 +55,7 @@ export async function GET() {
 
 export async function PATCH(request) {
   try {
-    const session = await auth()
+    const session = await getServerSession(authOptions)
 
     if (!session?.user) {
       return Response.json(

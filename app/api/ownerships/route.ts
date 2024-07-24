@@ -1,9 +1,11 @@
-import { auth } from '@auth'
+import { getServerSession } from 'next-auth'
+
+import { authOptions } from '../../auth'
 import prisma from '../../../prisma/client'
 
 export async function GET(request) {
   try {
-    const session = await auth()
+    const session = await getServerSession(authOptions)
 
     if (!session || !session?.user) {
       return new Response(`You don't have permission to perform this action.`, {

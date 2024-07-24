@@ -1,16 +1,20 @@
-import NextAuth from 'next-auth'
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import type { Adapter } from 'next-auth/adapters'
-import Sendgrid from 'next-auth/providers/sendgrid'
+import type {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from 'next'
+import type { NextAuthOptions } from 'next-auth'
+import { getServerSession } from 'next-auth'
+import EmailProvider from 'next-auth/providers/email'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import nodemailer from 'nodemailer'
-import prisma from './prisma/client'
+import prisma from '../prisma/client'
 import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates'
 import config from '@helpers/config'
 
-export const { auth, handlers, signIn, signOut } = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
-    Sendgrid({
-      id: 'email',
+    EmailProvider({
       // @ts-ignore
       server: config.emailServer,
       from: `Resilience Web <${process.env.EMAIL_FROM}>`,
@@ -50,7 +54,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  adapter: PrismaAdapter(prisma) as Adapter,
+  adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'database',
     maxAge: 720 * 60 * 60,
@@ -77,4 +81,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     verifyRequest: '/auth/verify-request',
   },
   debug: false,
-})
+} satisfies NextAuthOptions
+
+// Use it in server contexts
+export function auth(
+  ...args:
+    | [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']]
+    | [NextApiRequest, NextApiResponse]
+    | []
+) {
+  return getServerSession(...args, authOptions)
+}
