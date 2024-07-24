@@ -1,7 +1,7 @@
 'use client'
 import { Formik, Form, Field, FormikHelpers } from 'formik'
-import { useEffect, useCallback, useMemo } from 'react'
-import { signIn, useSession } from 'next-auth/react'
+import { useCallback, useMemo } from 'react'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import {
   chakra,
@@ -71,15 +71,6 @@ export default function TeamPage() {
 
     return filteredPermissions
   }, [ownerships, permissionsForCurrentWeb])
-
-  useEffect(() => {
-    async function signInIfNeeded() {
-      if (!session && !(sessionStatus === 'loading')) {
-        await signIn()
-      }
-    }
-    signInIfNeeded()
-  }, [session, sessionStatus])
 
   const sendInvite = useCallback(
     async (data, actions: FormikHelpers<FormValues>) => {

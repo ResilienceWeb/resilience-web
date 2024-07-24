@@ -1,10 +1,9 @@
 import { redirect } from 'next/navigation'
-import { getServerSession } from 'next-auth'
 import LayoutContainer from '@components/admin/layout-container'
-import { authOptions } from '../auth'
+import { auth } from '@auth'
 
 export default async function Layout({ children }) {
-  const user = await getServerSession(authOptions)
+  const user = await auth()
   if (!user) {
     redirect('/auth/signin')
   }

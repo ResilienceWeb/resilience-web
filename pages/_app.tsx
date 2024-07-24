@@ -2,11 +2,7 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { DefaultSeo } from 'next-seo'
-import {
-  ChakraProvider,
-  defineStyleConfig,
-  extendTheme,
-} from '@chakra-ui/react'
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import {
   HydrationBoundary,
   QueryClientProvider,

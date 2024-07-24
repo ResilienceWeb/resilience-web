@@ -35,6 +35,9 @@
       ],
       "@styles/*": [
         "styles/*"
+      ],
+      "@auth": [
+        "auth.ts"
       ]
     },
     "typeRoots": [

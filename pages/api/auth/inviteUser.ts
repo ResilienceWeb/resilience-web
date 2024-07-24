@@ -1,9 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import sgMail from '@sendgrid/mail'
-import { getServerSession } from 'next-auth/next'
 import { render } from '@react-email/render'
 import { Prisma } from '@prisma/client'
-import { authOptions } from '../../../app/auth'
+import { auth } from '@auth'
 import prisma from '../../../prisma/client'
 import { REMOTE_URL } from '@helpers/config'
 import InviteEmail from '@components/emails/InviteEmail'
@@ -12,7 +11,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const session = await getServerSession(req, res, authOptions)
+    const session = await auth(req, res)
     if (!session) {
       res.status(403)
       return res.json({
