@@ -15,6 +15,7 @@ import config from '@helpers/config'
 export const authOptions: NextAuthOptions = {
   providers: [
     EmailProvider({
+      id: 'email',
       // @ts-ignore
       server: config.emailServer,
       from: `Resilience Web <${process.env.EMAIL_FROM}>`,

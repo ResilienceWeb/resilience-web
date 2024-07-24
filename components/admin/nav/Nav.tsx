@@ -20,8 +20,6 @@ import { BsPersonCircle } from 'react-icons/bs'
 import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 const WebSelector = dynamic(() => import('./web-selector'))
 
-// import WebSelector from './web-selector'
-
 const Nav = ({ onOpen }) => {
   const { data: session } = useSession()
 

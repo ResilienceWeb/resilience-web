@@ -73,7 +73,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const permission = await prisma.permission.upsert(newData)
 
     const emailEncoded = encodeURIComponent(email)
-    const callToActionButtonUrl = `${REMOTE_URL}/admin?activate=${emailEncoded}`
+    const callToActionButtonUrl = `${REMOTE_URL}/activate?email=${emailEncoded}`
 
     const selectedWeb = await prisma.web.findUnique({
       where: {

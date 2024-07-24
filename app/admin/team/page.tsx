@@ -39,9 +39,7 @@ interface FormValues {
 
 export default function TeamPage() {
   const toast = useToast()
-  const router = useRouter()
-  const { data: session, status: sessionStatus } = useSession()
-  const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
+  const { data: session } = useSession()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
   const { isPending: isPermissionsPending } = usePermissions()
   const { data: permissionsForCurrentWeb } = usePermissionsForCurrentWeb()
@@ -71,15 +69,6 @@ export default function TeamPage() {
 
     return filteredPermissions
   }, [ownerships, permissionsForCurrentWeb])
-
-  useEffect(() => {
-    async function signInIfNeeded() {
-      if (!session && !(sessionStatus === 'loading')) {
-        await signIn()
-      }
-    }
-    signInIfNeeded()
-  }, [session, sessionStatus])
 
   const sendInvite = useCallback(
     async (data, actions: FormikHelpers<FormValues>) => {
@@ -123,7 +112,7 @@ export default function TeamPage() {
     [selectedWebId, toast],
   )
 
-  if (sessionStatus === 'loading' || isPermissionsPending) {
+  if (isPermissionsPending) {
     return (
       <Center height="50vh">
         <Spinner size="xl" />
@@ -131,13 +120,9 @@ export default function TeamPage() {
     )
   }
 
-  if (!hasPermissionForCurrentWeb && !isOwnerOfCurrentWeb) {
-    router.push('/admin')
-  }
-
   return (
     <Stack spacing="2rem" divider={<StackDivider />}>
-      {isOwnerOfCurrentWeb && (
+      {(isOwnerOfCurrentWeb || session.user.admin) && (
         <Box>
           <Heading mb="1.5rem">Invite team member</Heading>
           <Box
@@ -197,7 +182,8 @@ export default function TeamPage() {
         </Box>
       )}
       {(permissionsForCurrentWeb?.length > 0 ||
-        decoratedOwnerships?.length > 0) && (
+        decoratedOwnerships?.length > 0 ||
+        session.user.admin) && (
         <Box>
           <Heading>Team</Heading>
           <Text mb="1rem">
