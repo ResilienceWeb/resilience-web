@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 import { DefaultSeo } from 'next-seo'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import {
@@ -27,45 +27,44 @@ function NextAdapter(props) {
   return <NextAdapterPages {...props} shallow={false} />
 }
 
-// Check that PostHog is client-side (used to handle Next.js SSR)
-if (
-  (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY,
-  process.env.NODE_ENV === 'production' &&
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'production')
-) {
-  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-    api_host: '/ph-ingest',
-    ui_host: 'https://eu.posthog.com',
-    debug: false,
-  })
-  posthog.debug(false)
-}
+// if (
+//   (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY,
+//   process.env.NODE_ENV === 'production' &&
+//     process.env.NEXT_PUBLIC_VERCEL_ENV === 'production')
+// ) {
+//   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+//     api_host: '/ph-ingest',
+//     ui_host: 'https://eu.posthog.com',
+//     debug: false,
+//   })
+//   posthog.debug(false)
+// }
 
 const theme = extendTheme(chakraTheme)
 
 function App({ Component, pageProps: { session, ...pageProps } }) {
-  const router = useRouter()
+  // const router = useRouter()
   const [queryClient] = useState(() => new QueryClient())
 
-  useEffect(() => {
-    const handleRouteChange = () => posthog?.capture('$pageview')
-    if (
-      process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
-      !process.env.NEXT_PUBLIC_VERCEL_URL?.includes('vercel.app')
-    ) {
-      // Track page views
-      router.events.on('routeChangeComplete', handleRouteChange)
-    }
+  // useEffect(() => {
+  //   const handleRouteChange = () => posthog?.capture('$pageview')
+  //   if (
+  //     process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
+  //     !process.env.NEXT_PUBLIC_VERCEL_URL?.includes('vercel.app')
+  //   ) {
+  //     // Track page views
+  //     router.events.on('routeChangeComplete', handleRouteChange)
+  //   }
 
-    return () => {
-      if (
-        process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
-        !process.env.NEXT_PUBLIC_VERCEL_URL?.includes('vercel.app')
-      ) {
-        router.events.off('routeChangeComplete', handleRouteChange)
-      }
-    }
-  }, [router.events])
+  //   return () => {
+  //     if (
+  //       process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
+  //       !process.env.NEXT_PUBLIC_VERCEL_URL?.includes('vercel.app')
+  //     ) {
+  //       router.events.off('routeChangeComplete', handleRouteChange)
+  //     }
+  //   }
+  // }, [router.events])
 
   return (
     <>

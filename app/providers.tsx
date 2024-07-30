@@ -12,7 +12,7 @@ import StoreProvider from '@store/StoreProvider'
 import { chakraTheme } from '@helpers/theme'
 
 if (
-  (process.env.NEXT_PUBLIC_POSTHOG_KEY,
+  (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY,
   process.env.NODE_ENV === 'production' &&
     process.env.NEXT_PUBLIC_VERCEL_ENV === 'production')
 ) {
@@ -20,6 +20,7 @@ if (
     api_host: '/ph-ingest',
     ui_host: 'https://eu.posthog.com',
     debug: false,
+    capture_pageview: false,
   })
   posthog.debug(false)
 }
@@ -63,13 +64,13 @@ export default function Providers({ children }) {
   const queryClient = getQueryClient()
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ChakraProvider theme={theme}>
-        <StoreProvider>
-          <PostHogProvider client={posthog}>{children}</PostHogProvider>
-        </StoreProvider>
-      </ChakraProvider>
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    <PostHogProvider client={posthog}>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider theme={theme}>
+          <StoreProvider>{children}</StoreProvider>
+        </ChakraProvider>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </PostHogProvider>
   )
 }

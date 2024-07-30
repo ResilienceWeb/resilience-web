@@ -82,6 +82,7 @@ export const authOptions: NextAuthOptions = {
     verifyRequest: '/auth/verify-request',
   },
   debug: false,
+  secret: process.env.AUTH_SECRET,
 } satisfies NextAuthOptions
 
 // Use it in server contexts
