@@ -12,8 +12,6 @@ export default function ActivatePage() {
     if (!session) {
       if (email) {
         signIn('email', { email: email })
-      } else {
-        // signIn().catch((e) => console.error(e))
       }
     }
   }, [session, email])
