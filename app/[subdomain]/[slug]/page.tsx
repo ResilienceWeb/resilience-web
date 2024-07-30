@@ -18,8 +18,6 @@ export async function generateMetadata({ params }) {
     listingSlug: params.slug,
   })
 
-  console.log(params, listing)
-
   const descriptionStrippedOfHtml = listing.description?.replace(
     /<[^>]*>?/gm,
     '',

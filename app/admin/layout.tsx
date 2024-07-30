@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query'
-import { headers } from 'next/headers'
+// import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import LayoutContainer from '@components/admin/layout-container'
@@ -18,17 +18,13 @@ export const metadata = {
 }
 
 async function fetchMyOwnershipsHydrate() {
-  const response = await fetch(`${REMOTE_URL}/api/ownerships`, {
-    headers: headers(),
-  })
+  const response = await fetch(`${REMOTE_URL}/api/ownerships`)
   const data = await response.json()
   return data.ownerships
 }
 
 export async function fetchPermissionsHydrate() {
-  const response = await fetch(`${REMOTE_URL}/api/permissions`, {
-    headers: headers(),
-  })
+  const response = await fetch(`${REMOTE_URL}/api/permissions`)
   const data = await response.json()
   const listingIds = data.permission?.listings.map((l) => l.id)
   const webIds = data.permission?.webs.map((l) => l.id)
