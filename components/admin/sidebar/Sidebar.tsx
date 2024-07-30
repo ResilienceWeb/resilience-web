@@ -1,7 +1,8 @@
+'use client'
 import { ReactElement, useMemo } from 'react'
 import NextLink from 'next/link'
 import Image from 'next/legacy/image'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import {
   Box,
@@ -67,7 +68,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const { selectedWebId } = useAppContext()
 
   const navLinks = useMemo(() => {
-    const links = []
+    const links: any[] = []
     if (selectedWebId) {
       links.push({
         label: 'Listings',
@@ -106,7 +107,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   }, [hasPermissionForCurrentWeb, isOwnerOfCurrentWeb, selectedWebId])
 
   const adminNavLinks = useMemo(() => {
-    const links = []
+    const links: any[] = []
     if (session?.user.admin) {
       links.push({
         label: 'Overview',
@@ -208,11 +209,11 @@ const NavLink = ({ children, href }) => (
   </Link>
 )
 const NavItem = ({ label, icon, href, tourId }: NavItemProps) => {
-  const router = useRouter()
+  const pathname = usePathname()
   return (
     <NavLink key={label} href={href}>
       <Button
-        aria-current={router.pathname === href ? 'page' : undefined}
+        aria-current={pathname === href ? 'page' : undefined}
         data-tourid={tourId}
         background="transparent"
         color="gray.600"

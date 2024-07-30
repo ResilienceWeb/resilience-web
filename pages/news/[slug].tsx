@@ -159,6 +159,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       post: page,
       contentHtml,
     },
-    revalidate: 5,
+    revalidate: 3600,
   }
 }

@@ -68,7 +68,7 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
                   </Button>
                   <Button
                     colorScheme="red"
-                    onClick={() => removeItem(row.id)}
+                    onClick={() => removeItem(row.slug)}
                     size="sm"
                   >
                     Remove

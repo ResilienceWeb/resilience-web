@@ -4,9 +4,9 @@ import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import truncate from 'lodash/truncate'
 import { Listing as ListingType } from '@prisma/client'
-import { REMOTE_URL } from '@helpers/config'
 import Layout from '@components/layout'
 import ListingDisplay from '@components/listing'
+import prisma from '../../../prisma/client'
 
 function Listing({ listing }: { listing: ListingType }) {
   const router = useRouter()
@@ -18,7 +18,7 @@ function Listing({ listing }: { listing: ListingType }) {
     )
   }
 
-  const descriptionStrippedOfHtml = listing.description.replace(
+  const descriptionStrippedOfHtml = listing.description?.replace(
     /<[^>]*>?/gm,
     '',
   )
@@ -46,18 +46,16 @@ function Listing({ listing }: { listing: ListingType }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const BASE_URL =
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
-      ? 'https://resilienceweb.org.uk'
-      : REMOTE_URL
+  const listings = await prisma.listing.findMany({
+    include: {
+      web: {
+        select: {
+          slug: true,
+        },
+      },
+    },
+  })
 
-  const data = await fetch(`${BASE_URL}/api/listings`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error('Failed to fetch data from', `${BASE_URL}/api/listings`, e),
-    )
-
-  const { listings } = data
   const paths = listings.map((l) => ({
     params: {
       slug: l.slug,
@@ -67,37 +65,82 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: true,
   }
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const BASE_URL =
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
-      ? 'https://resilienceweb.org.uk'
-      : REMOTE_URL
-
-  // TODO: make this more secure
-  const data = await fetch(
-    `${BASE_URL}/api/listing/${params.slug}?web=${params.web}`,
+function exclude(data, keys) {
+  return Object.fromEntries(
+    Object.entries(data).filter(([key]) => !keys.includes(key)),
   )
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error(
-        'Failed to fetch data from',
-        `${BASE_URL}/api/listing/${params.slug}`,
-        e,
-      ),
-    )
+}
 
-  const { listing } = data
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const listingData = await prisma.listing.findFirst({
+    where: {
+      slug: params?.slug,
+      ...(params?.web
+        ? {
+            web: {
+              slug: {
+                contains: params?.web,
+              },
+            },
+          }
+        : {}),
+    },
+    include: {
+      location: {
+        select: {
+          latitude: true,
+          longitude: true,
+          description: true,
+        },
+      },
+      category: {
+        select: {
+          id: true,
+          color: true,
+          label: true,
+        },
+      },
+      tags: {
+        select: {
+          id: true,
+          label: true,
+        },
+      },
+      relations: {
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          featured: true,
+          category: {
+            select: {
+              id: true,
+              color: true,
+              label: true,
+            },
+          },
+        },
+      },
+    },
+  })
 
-  if (!listing) {
+  if (!listingData) {
     return {
       notFound: true,
-      revalidate: 30,
+      revalidate: 60,
     }
   }
+
+  const listing = exclude(listingData, [
+    'createdAt',
+    'updatedAt',
+    'notes',
+    'inactive',
+  ])
 
   return {
     props: {

@@ -8,7 +8,7 @@ const readPhoto = async (photo) => {
   // create img element from File object
   img.src = await new Promise((resolve) => {
     const reader = new FileReader()
-    reader.onload = (e) => resolve(e.target.result as string)
+    reader.onload = (e) => resolve(e.target?.result as string)
     reader.readAsDataURL(photo)
   })
   await new Promise((resolve) => {
@@ -38,7 +38,7 @@ const optimizeImage = async (photo): Promise<Blob> => {
   }
 
   return new Promise((resolve) => {
-    canvas.toBlob(resolve, 'image/jpeg', QUALITY)
+    canvas.toBlob(resolve as BlobCallback, 'image/jpeg', QUALITY)
   })
 }
 
@@ -49,7 +49,7 @@ const scaleCanvas = (canvas, scale) => {
 
   scaledCanvas
     .getContext('2d')
-    .drawImage(canvas, 0, 0, scaledCanvas.width, scaledCanvas.height)
+    ?.drawImage(canvas, 0, 0, scaledCanvas.width, scaledCanvas.height)
 
   return scaledCanvas
 }

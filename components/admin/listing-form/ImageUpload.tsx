@@ -30,8 +30,8 @@ const ImageUpload = ({
   helperText?: string
   isRequired?: boolean
 }) => {
-  const fileInputRef = useRef<HTMLInputElement>()
-  const [preview, setPreview] = useState<string | ArrayBuffer>()
+  const fileInputRef = useRef<any>()
+  const [preview, setPreview] = useState<any>()
 
   const hasImageAlready = field.value && !field.value.name
 
@@ -42,7 +42,7 @@ const ImageUpload = ({
       type: file.type,
     })
 
-    if (optimizedFile?.type.substr(0, 5) === 'image') {
+    if (optimizedFile?.type.substring(0, 5) === 'image') {
       const reader = new FileReader()
       reader.readAsDataURL(optimizedFile)
       reader.onloadend = () => {
@@ -96,7 +96,7 @@ const ImageUpload = ({
             borderStyle="dashed"
             rounded="md"
             cursor="pointer"
-            onClick={() => fileInputRef.current.click()}
+            onClick={() => fileInputRef?.current?.click()}
           >
             <Stack spacing={1} textAlign="center">
               <Icon

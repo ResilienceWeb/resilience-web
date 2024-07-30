@@ -53,7 +53,7 @@ const Dialog = ({
     toast({
       title: 'Copied to clipboard',
       description:
-        'The link to this listing is now in your clipboard and ready to be shared.',
+        'The link to this listing is copied to your clipboard and ready to be shared.',
       status: 'info',
       duration: 4000,
     })
@@ -62,7 +62,7 @@ const Dialog = ({
   useEffect(() => {
     const hostname = window.location.hostname
     if (!hostname.includes('.')) {
-      return null
+      return
     }
 
     setSubdomain(hostname.split('.')[0])

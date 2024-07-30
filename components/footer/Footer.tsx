@@ -71,8 +71,8 @@ export default function Footer({ hideBorder = false }) {
     <Box
       bg="#fcfcfc"
       color="gray.600"
-      borderTopColor={hideBorder ? null : 'gray.200'}
-      borderTopWidth={hideBorder ? null : '1px'}
+      borderTopColor={hideBorder ? undefined : 'gray.200'}
+      borderTopWidth={hideBorder ? undefined : '1px'}
     >
       <Container as={Stack} flex="1" maxWidth="100vw" py={10}>
         <SimpleGrid

@@ -3,7 +3,7 @@ import sgMail from '@sendgrid/mail'
 import { getServerSession } from 'next-auth/next'
 import { render } from '@react-email/render'
 import { Prisma } from '@prisma/client'
-import { authOptions } from '../auth/[...nextauth]'
+import { authOptions } from '../../../app/auth'
 import prisma from '../../../prisma/client'
 import { REMOTE_URL } from '@helpers/config'
 import InviteEmail from '@components/emails/InviteEmail'
@@ -73,7 +73,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const permission = await prisma.permission.upsert(newData)
 
     const emailEncoded = encodeURIComponent(email)
-    const callToActionButtonUrl = `${REMOTE_URL}/admin?activate=${emailEncoded}`
+    const callToActionButtonUrl = `${REMOTE_URL}/activate?email=${emailEncoded}`
 
     const selectedWeb = await prisma.web.findUnique({
       where: {

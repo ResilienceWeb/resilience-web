@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import {
   chakra,
@@ -90,7 +90,7 @@ const WebCreation = () => {
   useEffect(() => {
     if (isSuccess) {
       router.push('/admin?firstTime=true')
-      router.reload()
+      router.refresh()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess])
@@ -219,6 +219,9 @@ const WebCreation = () => {
       </Box>
 
       <Box mt="4rem" mb="2rem">
+        <Heading as="h3" fontSize="1.5rem" mb="1rem">
+          Need help?
+        </Heading>
         <Faq />
       </Box>
     </>

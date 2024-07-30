@@ -1,14 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import nodemailer from 'nodemailer'
+import nodemailer, { type TransportOptions } from 'nodemailer'
 import appConfig from '@helpers/config'
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { email, feedback } = req.body
 
     if (req.method === 'POST') {
-      const transporter = await nodemailer.createTransport(
-        appConfig.emailServer,
+      const transporter = nodemailer.createTransport(
+        appConfig.emailServer as TransportOptions,
       )
       transporter.sendMail(
         {

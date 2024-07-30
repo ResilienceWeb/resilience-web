@@ -72,7 +72,7 @@ const MapContent = ({ latitude, longitude }) => {
   const eventHandlers = useMemo(
     () => ({
       dragend() {
-        const marker = markerRef.current
+        const marker: any = markerRef.current
         if (marker != null) {
           setPosition(marker.getLatLng())
           setFieldValue('location', {
@@ -119,6 +119,7 @@ const Map = ({ latitude, longitude }) => {
           longitude ?? DEFAULT_CENTER.lng,
         ]}
         zoom={13}
+        style={{ height: '300px' }}
       >
         <MapContent latitude={latitude} longitude={longitude} />
       </MapContainer>

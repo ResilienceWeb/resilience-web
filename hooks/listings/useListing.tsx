@@ -4,7 +4,7 @@ import { useAppContext } from '@store/hooks'
 
 export async function fetchListingRequest({ queryKey }) {
   const [_key1, _key2, { webSlug, listingSlug }] = queryKey
-  const response = await fetch(`/api/listing/${listingSlug}?web=${webSlug}`)
+  const response = await fetch(`/api/listings/${listingSlug}?web=${webSlug}`)
   const data = await response.json()
   const { listing } = data
   return listing

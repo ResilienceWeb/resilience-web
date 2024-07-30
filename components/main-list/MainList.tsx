@@ -18,7 +18,7 @@ import Item from './item'
 
 const MainList = ({ filteredItems, isMobile }) => {
   const router = useRouter()
-  const [selectedDataItem, setSelectedDataItem] = useState()
+  const [selectedDataItem, setSelectedDataItem] = useState<any>()
   const {
     isOpen: isDialogOpen,
     onOpen: onOpenDialog,
@@ -30,7 +30,7 @@ const MainList = ({ filteredItems, isMobile }) => {
   useEffect(() => {
     const hostname = window.location.hostname
     if (!hostname.includes('.')) {
-      return null
+      return
     }
 
     setSubdomain(hostname.split('.')[0])

@@ -1,5 +1,5 @@
 import { memo, useMemo, useCallback, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import Select from 'react-select'
 import { Text } from '@chakra-ui/react'
 import type { Options } from 'react-select'
@@ -14,7 +14,7 @@ type WebOption = {
 }
 
 const WebSelector = () => {
-  const router = useRouter()
+  const pathname = usePathname()
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
   const {
     isPending: isLoadingWebs,
@@ -83,9 +83,8 @@ const WebSelector = () => {
 
   const hideWebSelector = useMemo(
     () =>
-      router.pathname.includes('/admin/overview') ||
-      router.pathname === '/admin/[slug]',
-    [router.pathname],
+      pathname?.includes('/admin/overview') || pathname.match('^/admin/[^/]+$'),
+    [pathname],
   )
 
   if (webOptions.length === 1) {
@@ -96,7 +95,7 @@ const WebSelector = () => {
     )
   }
 
-  if (webOptions.length === 0 || hideWebSelector) {
+  if (webOptions.length === 0 || !selectedOption || hideWebSelector) {
     return null
   }
 

@@ -11,12 +11,10 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { useQueryParams, ArrayParam, withDefault } from 'use-query-params'
 
 import type { GetStaticPaths, GetStaticProps } from 'next'
-import type { ParsedUrlQuery } from 'querystring'
 
 import Header from '@components/header'
 import { selectMoreAccessibleColor } from '@helpers/colors'
 import { useIsMobile } from '@hooks/application'
-import { REMOTE_URL } from '@helpers/config'
 import MainList from '@components/main-list'
 import AlertBanner from '@components/alert-banner'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
@@ -25,6 +23,8 @@ import { fetchCategoriesHydrate } from '@hooks/categories/useCategories'
 import { fetchTagsHydrate } from '@hooks/tags/useTags'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import { useTags } from '@hooks/tags'
+import { Category } from '@prisma/client'
+import prisma from '../../../prisma/client'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
@@ -32,10 +32,6 @@ const NetworkComponent = dynamic(() => import('@components/network'), {
 const Drawer = dynamic(() => import('@components/drawer'), {
   ssr: false,
 })
-
-interface PathProps extends ParsedUrlQuery {
-  web: string
-}
 
 interface WebProps {
   data: {
@@ -70,13 +66,13 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
   )
   const handleClearSearchTermValue = useCallback(() => setSearchTerm(''), [])
 
-  const [categories, setCategories] = useState([])
-  const [tags, setTags] = useState([])
+  const [categories, setCategories] = useState<any[]>([])
+  const [tags, setTags] = useState<any[]>([])
 
   const selectedCategories = useMemo(() => {
     return query.categories.map((categoryLabel) => {
       const categoryColor = categories.find(
-        (c) => c.label === categoryLabel,
+        (c: Category) => c.label === categoryLabel,
       )?.color
       return {
         value: categoryLabel,
@@ -123,7 +119,6 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
 
   const handleCategorySelection = useCallback(
     (value) => {
-      console.log('value', value)
       const categoryLabels = value.map((c) => c.label)
       setQuery({ categories: categoryLabels })
     },
@@ -301,16 +296,9 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
   )
 }
 
-export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
-  const BASE_URL =
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
-      ? 'https://resilienceweb.org.uk'
-      : REMOTE_URL
-
-  const response = await fetch(`${BASE_URL}/api/webs`)
-  const responseJson = await response.json()
-  const { data: webs } = responseJson
-  const paths = webs.map((l) => `/${l.slug}`)
+export const getStaticPaths: GetStaticPaths = async () => {
+  const webs = await prisma.web.findMany()
+  const paths = webs.map((w) => `/${w.slug}`)
 
   return {
     paths: paths.map((path) => ({
@@ -325,47 +313,69 @@ export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
 const startsWithCapitalLetter = (word) =>
   word.charCodeAt(0) >= 65 && word.charCodeAt(0) <= 90
 
-export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
-  params,
-}) => {
+export const getStaticProps: GetStaticProps<WebProps> = async ({ params }) => {
   if (!params) throw new Error('No path parameters found')
-  const { web } = params
+  const { web: webSlug } = params
 
-  const BASE_URL =
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
-      ? 'https://resilienceweb.org.uk'
-      : REMOTE_URL
-
-  const { data: webs } = await fetch(`${BASE_URL}/api/webs`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error('Failed to fetch data from', `${BASE_URL}/api/webs`, e),
-    )
-
-  const paths = webs.map((l) => `${l.slug}`)
-  if (!paths.includes(web)) {
-    return { notFound: true, revalidate: 30 }
+  const webData = await prisma.web.findUnique({
+    where: {
+      slug: webSlug,
+    },
+  })
+  if (!webData) {
+    return {
+      notFound: true,
+    }
   }
 
-  const { listings } = await fetch(`${BASE_URL}/api/listings?web=${web}`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error(
-        'Failed to fetch data from',
-        `${BASE_URL}/api/listings?web=${web}`,
-        e,
-      ),
-    )
-
-  const { web: webData } = await fetch(`${BASE_URL}/api/webs/${web}`)
-    .then((res) => res.json())
-    .catch((e) =>
-      console.error(
-        'Failed to fetch data from',
-        `${BASE_URL}/api/webs/${web}`,
-        e,
-      ),
-    )
+  const listings = await prisma.listing.findMany({
+    where: {
+      web: {
+        slug: {
+          contains: webSlug,
+        },
+      },
+    },
+    include: {
+      location: {
+        select: {
+          latitude: true,
+          longitude: true,
+          description: true,
+        },
+      },
+      category: {
+        select: {
+          id: true,
+          color: true,
+          label: true,
+        },
+      },
+      web: true,
+      tags: {
+        select: {
+          id: true,
+          label: true,
+        },
+      },
+      relations: {
+        include: {
+          category: {
+            select: {
+              id: true,
+              color: true,
+              label: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: [
+      {
+        id: 'asc',
+      },
+    ],
+  })
 
   const transformedData = {
     nodes: [],
@@ -513,6 +523,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
     return { notFound: true, revalidate: 30 }
   }
 
+  // TODO: switch below to just fetch and pass as props
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({
     queryKey: ['webs'],
@@ -536,7 +547,7 @@ export const getStaticProps: GetStaticProps<WebProps, PathProps> = async ({
       webIsPublished: webData.published,
       dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 30,
+    revalidate: 60,
   }
 }
 

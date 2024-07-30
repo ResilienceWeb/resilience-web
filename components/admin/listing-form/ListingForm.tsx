@@ -36,7 +36,7 @@ import EditorField from './RichTextEditor'
 const Map = dynamic(() => import('./Map'), {
   ssr: false,
   loading: () => (
-    <div style={{ textAlign: 'center', paddingTop: 20 }}>Chargement…</div>
+    <div style={{ textAlign: 'center', paddingTop: 20 }}>Loading…</div>
   ),
 })
 
@@ -143,20 +143,23 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
   }, [listing?.title, listings])
 
   const initialTagsValues = useMemo(() => {
-    return listing?.tags.map((t) => ({
+    return listing?.tags?.map((t) => ({
       value: t.id,
       label: t.label,
     }))
   }, [listing?.tags])
 
   const initialRelationsValues = useMemo(() => {
-    return listing?.relations.map((l) => ({
+    return listing?.relations?.map((l) => ({
       value: l.id,
       label: l.title,
     }))
   }, [listing?.relations])
 
   const handleSubmitForm = (data) => {
+    if (data.image) {
+      delete data.image
+    }
     if (data.location) {
       data.latitude = data.location.latitude
       data.longitude = data.location.longitude
@@ -165,14 +168,14 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
     data.tags = data.tags?.map((t) => t.value)
     data.relations = data.relations?.map((l) => l.value)
     if (listing) {
-      const currentListingTagIds = listing?.tags.map((t) => t.id)
-      const removedTags = currentListingTagIds.filter(
+      const currentListingTagIds = listing?.tags?.map((t) => t.id)
+      const removedTags = currentListingTagIds?.filter(
         (t) => !data.tags.includes(t),
       )
       data.removedTags = removedTags
 
-      const currentListingRelationIds = listing?.relations.map((r) => r.id)
-      const removedRelations = currentListingRelationIds.filter(
+      const currentListingRelationIds = listing?.relations?.map((r) => r.id)
+      const removedRelations = currentListingRelationIds?.filter(
         (l) => !data.relations.includes(l),
       )
       data.removedRelations = removedRelations

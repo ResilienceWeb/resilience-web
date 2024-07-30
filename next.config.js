@@ -5,10 +5,6 @@ const { withSentryConfig } = require('@sentry/nextjs')
  */
 const nextConfig = {
   reactStrictMode: false,
-  webpack(config) {
-    config.resolve.modules.push(__dirname)
-    return config
-  },
   images: {
     remotePatterns: [
       {
@@ -34,10 +30,10 @@ const nextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
   },
-  swcMinify: true,
   experimental: {
     scrollRestoration: process.env.NODE_ENV === 'development' ? false : true,
-    instrumentationHook: true
+    instrumentationHook: true,
+    optimizePackageImports: ['@chakra-ui/react']
   },
   // eslint-disable-next-line @typescript-eslint/require-await
   async rewrites() {
@@ -92,7 +88,7 @@ module.exports = withSentryConfig(
     // Suppresses source map uploading logs during build
     silent: false,
     // Upload a larger set of source maps for prettier stack traces (increases build time)
-    widenClientFileUpload: true,
+    widenClientFileUpload: false,
     // Transpiles SDK to be compatible with IE11 (increases bundle size)
     transpileClientSDK: false,
     // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)

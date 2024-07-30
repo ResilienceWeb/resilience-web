@@ -32,8 +32,8 @@ export default function useUpdatePermission() {
     },
     onError: (_err, _newCategory, context) => {
       queryClient.setQueryData(
-        ['permission', context.newPermission.email],
-        context.previousPermissions,
+        ['permission', context?.newPermission.email],
+        context?.previousPermissions,
       )
     },
     onSettled: () => {

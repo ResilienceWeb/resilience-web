@@ -6,7 +6,7 @@ import { useIsAdminMode } from '@hooks/application'
 
 const StoreProvider = ({ children }) => {
   const isAdminMode = useIsAdminMode()
-  const [selectedWebSlug, setSelectedWebSlug] = useLocalStorage<string>(
+  const [selectedWebSlug, setSelectedWebSlug] = useLocalStorage<any>(
     'selected-web-slug',
     undefined,
   )
