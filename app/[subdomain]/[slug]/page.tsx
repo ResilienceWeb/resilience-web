@@ -5,8 +5,8 @@ import Listing from './Listing'
 
 export default async function ListingPage({ params }) {
   const listing = await getListing({
-    webSlug: params.webSlug,
-    listingSlug: params.listingSlug,
+    webSlug: params.subdomain,
+    listingSlug: params.slug,
   })
 
   return <Listing listing={listing} />
@@ -14,9 +14,11 @@ export default async function ListingPage({ params }) {
 
 export async function generateMetadata({ params }) {
   const listing = await getListing({
-    webSlug: params.webSlug,
-    listingSlug: params.listingSlug,
+    webSlug: params.subdomain,
+    listingSlug: params.slug,
   })
+
+  console.log(params, listing)
 
   const descriptionStrippedOfHtml = listing.description?.replace(
     /<[^>]*>?/gm,
@@ -53,8 +55,8 @@ export async function generateStaticParams() {
   })
 
   return listings.map((l) => ({
+    subdomain: l.web.slug,
     slug: l.slug,
-    web: l.web.slug,
   }))
 }
 
