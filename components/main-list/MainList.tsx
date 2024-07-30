@@ -8,7 +8,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import { useCategories } from '@hooks/categories'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'

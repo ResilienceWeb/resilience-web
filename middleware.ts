@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export default function middleware(req: NextRequest) {
-  // Clone the request url
   const url = req.nextUrl.clone()
 
   // Get pathname of request (e.g. /blog-slug)
@@ -29,11 +28,11 @@ export default function middleware(req: NextRequest) {
         : hostname.replace(`.localhost:3000`, '')
   }
 
-  if (pathname.startsWith(`/_webs`)) {
-    return new Response(null, {
-      status: 404,
-    })
-  }
+  // if (pathname.startsWith(`/_webs`)) {
+  //   return new Response(null, {
+  //     status: 404,
+  //   })
+  // }
 
   if (!pathname.includes('.') && !pathname.startsWith('/api')) {
     if (
@@ -46,8 +45,7 @@ export default function middleware(req: NextRequest) {
       return NextResponse.rewrite(url)
     }
 
-    url.pathname = `/_webs/${currentHost}${pathname}`
-    return NextResponse.rewrite(url)
+    return NextResponse.rewrite(new URL(`/${currentHost}${pathname}`, req.url))
   }
 }
 

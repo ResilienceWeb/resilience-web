@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useState, useMemo } from 'react'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import {
   Box,

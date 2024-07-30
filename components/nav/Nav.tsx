@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import {
   Box,
   Flex,
@@ -41,7 +41,7 @@ interface NavItem {
 
 export default function MainNav() {
   const { isOpen, onToggle } = useDisclosure()
-  const router = useRouter()
+  const pathname = usePathname()
 
   const { webs } = useWebs({ published: true })
 
@@ -141,10 +141,7 @@ export default function MainNav() {
                 ml="2.5rem"
                 mr="0.5rem"
               >
-                <DesktopNav
-                  currentPathname={router.pathname}
-                  navItems={navItems}
-                />
+                <DesktopNav currentPathname={pathname} navItems={navItems} />
               </Flex>
             </Flex>
           </Flex>
