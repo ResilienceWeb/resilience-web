@@ -8,8 +8,8 @@ import {
   QueryClient,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import posthog from 'posthog-js'
-import { PostHogProvider } from 'posthog-js/react'
+// import posthog from 'posthog-js'
+// import { PostHogProvider } from 'posthog-js/react'
 import { ReCaptchaProvider } from 'next-recaptcha-v3'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/600.css'
@@ -52,18 +52,18 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       </Head>
-      <PostHogProvider client={posthog}>
-        <QueryClientProvider client={queryClient}>
-          <HydrationBoundary state={pageProps.dehydratedState}>
-            <ChakraProvider theme={theme}>
-              <ReCaptchaProvider>
-                <Component {...pageProps} />
-              </ReCaptchaProvider>
-            </ChakraProvider>
-          </HydrationBoundary>
-          <ReactQueryDevtools />
-        </QueryClientProvider>
-      </PostHogProvider>
+      {/* <PostHogProvider client={posthog}> */}
+      <QueryClientProvider client={queryClient}>
+        <HydrationBoundary state={pageProps.dehydratedState}>
+          <ChakraProvider theme={theme}>
+            <ReCaptchaProvider>
+              <Component {...pageProps} />
+            </ReCaptchaProvider>
+          </ChakraProvider>
+        </HydrationBoundary>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+      {/* </PostHogProvider> */}
     </>
   )
 }

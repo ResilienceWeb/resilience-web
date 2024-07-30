@@ -27,6 +27,10 @@ export async function generateMetadata({ params }) {
     separator: /,.? +/,
   })
 
+  if (!listing) {
+    return null
+  }
+
   return {
     title: `${listing.title} | Resilience Web`,
     openGraph: {

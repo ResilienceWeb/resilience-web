@@ -27,6 +27,10 @@ export async function generateMetadata({ params }) {
     },
   })
 
+  if (!webData) {
+    return null
+  }
+
   return {
     title: `${webData.title} | Resilience Web`,
     openGraph: {
@@ -38,11 +42,12 @@ export async function generateMetadata({ params }) {
 
 export async function generateStaticParams() {
   const webs = await prisma.web.findMany()
-  const paths = webs.map((w) => `/${w.slug}`)
-
-  return paths.map((path) => ({
+  const paths = webs.map((w) => `${w.slug}`)
+  const subdomains = paths.map((path) => ({
     subdomain: path,
   }))
+
+  return subdomains
 }
 
 async function getData({ webSlug }) {
