@@ -1,30 +1,19 @@
-import { useCallback, useEffect, useState, useMemo, memo } from 'react'
-import { useRouter } from 'next/router'
+'use client'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import dynamic from 'next/dynamic'
-import { NextSeo } from 'next-seo'
-import groupBy from 'lodash/groupBy'
-import { Box, Center, Spinner } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
 import intersection from 'lodash/intersection'
 import useLocalStorage from 'use-local-storage'
-import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { useQueryParams, ArrayParam, withDefault } from 'use-query-params'
-
-import type { GetStaticPaths, GetStaticProps } from 'next'
-
 import Header from '@components/header'
-import { selectMoreAccessibleColor } from '@helpers/colors'
 import { useIsMobile } from '@hooks/application'
 import MainList from '@components/main-list'
 import AlertBanner from '@components/alert-banner'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
-import { fetchCategoriesHydrate } from '@hooks/categories/useCategories'
-import { fetchTagsHydrate } from '@hooks/tags/useTags'
-import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import { useTags } from '@hooks/tags'
 import { Category } from '@prisma/client'
-import prisma from '../../../prisma/client'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
@@ -33,22 +22,13 @@ const Drawer = dynamic(() => import('@components/drawer'), {
   ssr: false,
 })
 
-interface WebProps {
-  data: {
-    nodes: any[]
-    edges: any[]
-  }
-}
-
 type INetwork = {
   selectNodes: (ids: string[]) => void
 }
 
-const CENTRAL_NODE_ID = 999
+export const CENTRAL_NODE_ID = 999
 
-const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
-  const router = useRouter()
-
+export default function Web({ data, webName, webDescription, webIsPublished }) {
   const isMobile = useIsMobile()
   const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
@@ -219,23 +199,8 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
     }
   }, [isMobile, setIsWebMode])
 
-  if (router.isFallback) {
-    return (
-      <Center height="100vh">
-        <Spinner size="xl" />
-      </Center>
-    )
-  }
-
   return (
     <>
-      <NextSeo
-        title={`${webName} | Resilience Web`}
-        openGraph={{
-          title: `${webName} | Resilience Web`,
-          images: [{ url: webImage }],
-        }}
-      />
       {!isMobile && (
         <Drawer
           categories={categories}
@@ -295,260 +260,3 @@ const Web = ({ data, webName, webImage, webDescription, webIsPublished }) => {
     </>
   )
 }
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const webs = await prisma.web.findMany()
-  const paths = webs.map((w) => `/${w.slug}`)
-
-  return {
-    paths: paths.map((path) => ({
-      params: {
-        web: path,
-      },
-    })),
-    fallback: true,
-  }
-}
-
-const startsWithCapitalLetter = (word) =>
-  word.charCodeAt(0) >= 65 && word.charCodeAt(0) <= 90
-
-export const getStaticProps: GetStaticProps<WebProps> = async ({ params }) => {
-  if (!params) throw new Error('No path parameters found')
-  const { web: webSlug } = params
-
-  const webData = await prisma.web.findUnique({
-    where: {
-      slug: webSlug,
-    },
-  })
-  if (!webData) {
-    return {
-      notFound: true,
-    }
-  }
-
-  const listings = await prisma.listing.findMany({
-    where: {
-      web: {
-        slug: {
-          contains: webSlug,
-        },
-      },
-    },
-    include: {
-      location: {
-        select: {
-          latitude: true,
-          longitude: true,
-          description: true,
-        },
-      },
-      category: {
-        select: {
-          id: true,
-          color: true,
-          label: true,
-        },
-      },
-      web: true,
-      tags: {
-        select: {
-          id: true,
-          label: true,
-        },
-      },
-      relations: {
-        include: {
-          category: {
-            select: {
-              id: true,
-              color: true,
-              label: true,
-            },
-          },
-        },
-      },
-    },
-    orderBy: [
-      {
-        id: 'asc',
-      },
-    ],
-  })
-
-  const transformedData = {
-    nodes: [],
-    edges: [],
-  }
-
-  listings
-    ?.filter((l) => !l.pending && !l.inactive)
-    ?.map(
-      ({
-        id,
-        title,
-        category,
-        description,
-        image,
-        website,
-        facebook,
-        twitter,
-        instagram,
-        seekingVolunteers,
-        featured,
-        slug,
-        tags,
-        relations,
-      }) => {
-        const accessibleTextColor = selectMoreAccessibleColor(
-          `#${category.color}`,
-          '#3f3f40',
-          '#fff',
-        )
-        transformedData.nodes.push({
-          id,
-          title,
-          description,
-          image: image ?? '',
-          website,
-          facebook,
-          twitter,
-          instagram,
-          seekingVolunteers,
-          featured,
-          category: {
-            color: `#${category.color}`,
-            label: category.label,
-          },
-          slug,
-          tags,
-          // below are for vis-network node styling and data
-          label: title,
-          color: `#${category.color}`,
-          font: {
-            color: accessibleTextColor,
-            size: 28,
-          },
-        })
-
-        relations.map((relation) => {
-          const newEdge = {
-            from: id,
-            to: relation.id,
-            dashes: true,
-            physics: false,
-            smooth: {
-              enabled: true,
-              type: 'continuous',
-              roundness: 0,
-            },
-          }
-          if (
-            !transformedData.edges.find(
-              (e) => e.from === newEdge.to && e.to === newEdge.from,
-            )
-          ) {
-            transformedData.edges.push(newEdge)
-          }
-        })
-      },
-    )
-
-  let groupedByCategory = groupBy(
-    transformedData.nodes,
-    (n) => n.category.label,
-  )
-
-  groupedByCategory = Object.fromEntries(
-    Object.entries(groupedByCategory).filter(([key]) => {
-      return (
-        key.length > 0 && key !== 'undefined' && startsWithCapitalLetter(key)
-      )
-    }),
-  )
-
-  // Main node
-  transformedData.nodes.push({
-    id: CENTRAL_NODE_ID,
-    label: webData.title,
-    color: '#fcba03',
-    isDescriptive: true,
-    font: {
-      size: 56,
-    },
-    fixed: {
-      x: true,
-      y: true,
-    },
-  })
-
-  let categoryIndex = 1
-  for (const category in groupedByCategory) {
-    const categoryId = categoryIndex * 1000
-    transformedData.nodes.push({
-      id: categoryId,
-      label: category,
-      color: '#c3c4c7',
-      isDescriptive: true,
-      shape: 'ellipse',
-      mass: 3,
-    })
-    categoryIndex++
-
-    // From main node to category node
-    transformedData.edges.push({
-      from: CENTRAL_NODE_ID,
-      to: categoryId,
-      width: 2,
-      selectedWidth: 3,
-      length: 600,
-      smooth: {
-        enabled: true,
-        type: 'continuous',
-        roundness: 0,
-      },
-    })
-
-    // From category node to all subitems
-    groupedByCategory[category].forEach((item) => {
-      transformedData.edges.push({
-        from: categoryId,
-        to: item.id,
-      })
-    })
-  }
-
-  if (!transformedData) {
-    return { notFound: true, revalidate: 30 }
-  }
-
-  // TODO: switch below to just fetch and pass as props
-  const queryClient = new QueryClient()
-  await queryClient.prefetchQuery({
-    queryKey: ['webs'],
-    queryFn: () => fetchWebsHydrate({ published: true }),
-  })
-  await queryClient.prefetchQuery({
-    queryKey: ['categories', { webSlug: webData.slug }],
-    queryFn: () => fetchCategoriesHydrate({ webSlug: webData.slug }),
-  })
-  await queryClient.prefetchQuery({
-    queryKey: ['tags', { webSlug: webData.slug }],
-    queryFn: () => fetchTagsHydrate({ webSlug: webData.slug }),
-  })
-
-  return {
-    props: {
-      data: transformedData,
-      webName: webData.title,
-      webImage: webData.image,
-      webDescription: webData.description,
-      webIsPublished: webData.published,
-      dehydratedState: dehydrate(queryClient),
-    },
-    revalidate: 60,
-  }
-}
-
-export default memo(Web)

@@ -14,9 +14,12 @@ import '@fontsource/poppins/600.css'
 import { REMOTE_URL } from '@helpers/config'
 
 export const metadata = {
-  title: 'Admin | Resilience Web',
+  title: 'Resilience Web',
   description:
     'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
+  openGraph: {
+    title: 'Resilience Web',
+  },
 }
 
 async function fetchMyOwnershipsHydrate() {
@@ -64,6 +67,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+      </head>
       <body>
         <Providers>
           <HydrationBoundary state={dehydrate(queryClient)}>
