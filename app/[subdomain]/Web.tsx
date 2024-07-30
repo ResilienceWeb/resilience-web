@@ -14,9 +14,11 @@ import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import { useCategories } from '@hooks/categories'
 import { useTags } from '@hooks/tags'
 import { Category } from '@prisma/client'
-import Drawer from '@components/drawer'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
+  ssr: false,
+})
+const Drawer = dynamic(() => import('@components/drawer'), {
   ssr: false,
 })
 
