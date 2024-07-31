@@ -24,7 +24,6 @@ import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
 import { useCategories } from '@hooks/categories'
 import Item from '@components/main-list/item'
-import { encodeUriElements } from '@helpers/routes'
 
 function Listing({ listing }) {
   const router = useRouter()
@@ -199,27 +198,23 @@ function Listing({ listing }) {
 
           <Box mt={4} mb={8} display="flex" justifyContent="flex-end">
             {listing.tags.map((tag) => {
-              const urlEncodedTag = encodeUriElements([tag.label])
+              const urlEncodedTag = tag.label.replace(' ', '+')
               return (
-                // <NextLink
-                //   key={tag.id}
-                //   href={{
-                //     pathname: `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`,
-                //     query: { tags: urlEncodedTag },
-                //   }}
-                // >
-                <Tag
+                <NextLink
                   key={tag.id}
-                  backgroundColor="gray.200"
-                  userSelect="none"
-                  mr={1}
-                  // cursor="pointer"
-                  transition="background-color 0.2s ease"
-                  // _hover={{ bgColor: 'gray.300' }}
+                  href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
                 >
-                  #{tag.label}
-                </Tag>
-                // </NextLink>
+                  <Tag
+                    backgroundColor="gray.200"
+                    userSelect="none"
+                    mr={1}
+                    cursor="pointer"
+                    transition="background-color 0.2s ease"
+                    _hover={{ bgColor: 'gray.300' }}
+                  >
+                    #{tag.label}
+                  </Tag>
+                </NextLink>
               )
             })}
           </Box>
