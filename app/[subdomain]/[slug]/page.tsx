@@ -18,6 +18,10 @@ export async function generateMetadata({ params }) {
     listingSlug: params.slug,
   })
 
+  if (!listing) {
+    return null
+  }
+
   const descriptionStrippedOfHtml = listing.description?.replace(
     /<[^>]*>?/gm,
     '',
@@ -26,10 +30,6 @@ export async function generateMetadata({ params }) {
     length: 160,
     separator: /,.? +/,
   })
-
-  if (!listing) {
-    return null
-  }
 
   return {
     title: `${listing.title} | Resilience Web`,
@@ -116,6 +116,10 @@ async function getListing({ webSlug, listingSlug }): Promise<ListingType> {
       },
     },
   })
+
+  if (!listingData) {
+    return null
+  }
 
   const listing = exclude(listingData, [
     'createdAt',

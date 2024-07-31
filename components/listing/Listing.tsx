@@ -201,24 +201,25 @@ function Listing({ listing }) {
             {listing.tags.map((tag) => {
               const urlEncodedTag = encodeUriElements([tag.label])
               return (
-                <NextLink
+                // <NextLink
+                //   key={tag.id}
+                //   href={{
+                //     pathname: `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`,
+                //     query: { tags: urlEncodedTag },
+                //   }}
+                // >
+                <Tag
                   key={tag.id}
-                  href={{
-                    pathname: `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`,
-                    query: { tags: urlEncodedTag },
-                  }}
+                  backgroundColor="gray.200"
+                  userSelect="none"
+                  mr={1}
+                  // cursor="pointer"
+                  transition="background-color 0.2s ease"
+                  // _hover={{ bgColor: 'gray.300' }}
                 >
-                  <Tag
-                    backgroundColor="gray.200"
-                    userSelect="none"
-                    mr={1}
-                    cursor="pointer"
-                    transition="background-color 0.2s ease"
-                    _hover={{ bgColor: 'gray.300' }}
-                  >
-                    #{tag.label}
-                  </Tag>
-                </NextLink>
+                  #{tag.label}
+                </Tag>
+                // </NextLink>
               )
             })}
           </Box>
