@@ -72,7 +72,7 @@ export default function MainNav() {
       },
       {
         label: 'News',
-        href: `${REMOTE_URL}/about`,
+        href: `${REMOTE_URL}/news`,
       },
       {
         label: 'Knowledgebase',
