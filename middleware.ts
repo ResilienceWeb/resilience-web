@@ -34,6 +34,10 @@ export default function middleware(req: NextRequest) {
   //   })
   // }
 
+  console.log('[RW]', {
+    VERCEL_ENV: process.env.VERCEL_ENV,
+    VERCEL_URL: process.env.VERCEL_URL,
+  })
   if (!pathname.includes('.') && !pathname.startsWith('/api')) {
     if (
       hostname === 'localhost:3000' ||
