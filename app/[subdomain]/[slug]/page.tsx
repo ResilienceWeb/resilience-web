@@ -10,7 +10,9 @@ export default async function ListingPage({ params }) {
   })
 
   if (!listing) {
-    console.log(`[RW] Listing not found for slug ${params.slug}`)
+    console.log(
+      `[RW] Listing not found for slugs ${params.subdomain}, ${params.slug}`,
+    )
     return null
   }
 
@@ -123,6 +125,7 @@ async function getListing({ webSlug, listingSlug }): Promise<ListingType> {
   })
 
   if (!listingData) {
+    console.log(`[RW] Listing not found for slugs ${webSlug}, ${listingSlug}`)
     return null
   }
 

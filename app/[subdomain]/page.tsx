@@ -114,6 +114,7 @@ async function getData({ webSlug }) {
   })
 
   if (!webData || !listings) {
+    console.log(`[RW] Web or listings not found for webSlug ${webSlug}`)
     return null
   }
 
