@@ -9,6 +9,11 @@ export default async function ListingPage({ params }) {
     listingSlug: params.slug,
   })
 
+  if (!listing) {
+    console.log(`[RW] Listing not found for slug ${params.slug}`)
+    return null
+  }
+
   return <Listing listing={listing} />
 }
 

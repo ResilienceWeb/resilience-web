@@ -7,7 +7,14 @@ import Web, { CENTRAL_NODE_ID } from './Web'
 
 export default async function WebPage({ params }) {
   const { subdomain: webSlug } = params
-  const { transformedData, webData } = await getData({ webSlug })
+  const data = await getData({ webSlug })
+
+  if (!data) {
+    console.log(`[RW] Web or listings not found for webSlug ${webSlug}`)
+    return null
+  }
+
+  const { transformedData, webData } = data
 
   return (
     <Web
@@ -105,6 +112,10 @@ async function getData({ webSlug }) {
       },
     ],
   })
+
+  if (!webData || !listings) {
+    return null
+  }
 
   const transformedData = {
     nodes: [],
