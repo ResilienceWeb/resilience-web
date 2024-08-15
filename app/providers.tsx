@@ -1,4 +1,5 @@
 'use client'
+import { useEffect } from 'react'
 import {
   isServer,
   QueryClient,
@@ -10,19 +11,19 @@ import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
 import { chakraTheme } from '@helpers/theme'
 
-if (
-  (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY,
-  process.env.NODE_ENV === 'production' &&
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'production')
-) {
-  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-    api_host: '/ph-ingest',
-    ui_host: 'https://eu.posthog.com',
-    debug: false,
-    capture_pageview: false,
-  })
-  posthog.debug(false)
-}
+// if (
+//   (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY,
+//   process.env.NODE_ENV === 'production' &&
+//     process.env.NEXT_PUBLIC_VERCEL_ENV === 'production')
+// ) {
+//   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+//     api_host: '/ph-ingest',
+//     ui_host: 'https://eu.posthog.com',
+//     debug: false,
+//     capture_pageview: false,
+//   })
+//   posthog.debug(false)
+// }
 
 function makeQueryClient() {
   return new QueryClient({
@@ -61,6 +62,15 @@ export default function Providers({ children }) {
   //       suspend because React will throw away the client on the initial
   //       render if it suspends and there is no boundary
   const queryClient = getQueryClient()
+
+  useEffect(() => {
+    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+      api_host: '/ph-ingest',
+      ui_host: 'https://eu.posthog.com',
+      debug: false,
+      capture_pageview: false,
+    })
+  }, [])
 
   return (
     <PostHogProvider client={posthog}>
