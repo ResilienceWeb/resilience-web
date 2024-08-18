@@ -15,7 +15,7 @@ import {
   Tooltip,
   Grid,
 } from '@chakra-ui/react'
-import { SiFacebook, SiInstagram, SiTwitter } from 'react-icons/si'
+import { SiFacebook, SiInstagram, SiX } from 'react-icons/si'
 import { SlGlobe } from 'react-icons/sl'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 
@@ -165,7 +165,7 @@ function Listing({ listing }) {
                   {listing.twitter && (
                     <Link href={listing.twitter} target="_blank">
                       <Icon
-                        as={SiTwitter}
+                        as={SiX}
                         color="gray.600"
                         cursor="pointer"
                         w={8}
