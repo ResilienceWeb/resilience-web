@@ -9,11 +9,6 @@ export default async function WebPage({ params }) {
   const { subdomain: webSlug } = params
   const data = await getData({ webSlug })
 
-  console.log('[RW]', {
-    VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV,
-    VERCEL_URL: process.env.NEXT_PUBLIC_VERCEL_URL,
-  })
-
   if (!data) {
     console.log(`[RW] Web or listings not found for webSlug ${webSlug}`)
     return null
@@ -271,4 +266,4 @@ async function getData({ webSlug }) {
   }
 }
 
-export const dynamic = 'force-static'
+export const dynamicParams = true

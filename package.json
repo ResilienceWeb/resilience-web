@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true npm run build",
     "start": "next start -H 0.0.0.0 -p ${PORT:-3000}",
