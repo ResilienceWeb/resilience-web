@@ -40,12 +40,16 @@ const nextConfig = {
     return [
       {
         source: "/ph-ingest/static/:path*",
-        destination: "https://eu-assets.i.posthog.com/static/:path(.*)"
+        destination: "https://eu-assets.i.posthog.com/static/:path*"
       },
       {
         source: "/ph-ingest/:path*",
-        destination: "https://eu.i.posthog.com/:path(.*)"
-      }
+        destination: "https://eu.i.posthog.com/:path*"
+      },
+      {
+        source: "/ph-ingest/decide",
+        destination: "https://eu.i.posthog.com/decide",
+      },
     ]
   },
   skipTrailingSlashRedirect: true,
