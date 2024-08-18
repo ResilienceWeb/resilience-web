@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 
-import { useCategories } from '@hooks/categories'
+import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import Footer from '@components/footer'
 import Dialog from './dialog'
@@ -54,7 +54,7 @@ const MainList = ({ filteredItems, isMobile }) => {
     onCloseDialog()
   }, [onCloseDialog])
 
-  const { categories } = useCategories()
+  const { categories } = useCategoriesPublic()
   const categoriesIndexes = useMemo(() => {
     const categoriesIndexesObj = {}
     categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))

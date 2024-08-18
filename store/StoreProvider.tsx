@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import useLocalStorage from 'use-local-storage'
 import { AppContext } from '@store/AppContext'
 import { useWebs } from '@hooks/webs'
@@ -10,24 +10,8 @@ const StoreProvider = ({ children }) => {
     'selected-web-slug',
     undefined,
   )
-  const [subdomain, setSubdomain] = useState<string>()
 
   const { webs } = useWebs({ published: !isAdminMode })
-
-  useEffect(() => {
-    const hostname = window.location.hostname
-    if (!hostname.includes('.')) {
-      return
-    }
-
-    setSubdomain(hostname.split('.')[0])
-  }, [])
-
-  useEffect(() => {
-    if (subdomain && subdomain !== 'resilienceweb') {
-      setSelectedWebSlug(subdomain)
-    }
-  }, [setSelectedWebSlug, subdomain])
 
   const selectedWebId = useMemo(() => {
     if (webs) {

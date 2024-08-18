@@ -11,7 +11,7 @@ import { useIsMobile } from '@hooks/application'
 import MainList from '@components/main-list'
 import AlertBanner from '@components/alert-banner'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
-import { useCategories } from '@hooks/categories'
+import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import { useTags } from '@hooks/tags'
 import { Category } from '@prisma/client'
 
@@ -71,7 +71,7 @@ export default function Web({ data, webName, webDescription, webIsPublished }) {
   const [selectedId, setSelectedId] = useState()
   const [_network, setNetwork] = useState<INetwork>()
 
-  const { categories: fetchedCategories } = useCategories()
+  const { categories: fetchedCategories } = useCategoriesPublic()
   const { tags: fetchedTags } = useTags()
 
   useEffect(() => {

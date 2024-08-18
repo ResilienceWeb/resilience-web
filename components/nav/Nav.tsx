@@ -147,7 +147,7 @@ export default function MainNav() {
           </Flex>
           <HStack>
             <GetInTouchButton />
-            <Link as={NextLink} href="/admin">
+            <Link as={NextLink} href={`${REMOTE_URL}/admin`}>
               <Button colorScheme="blue" variant="solid" size="md" mr={-2}>
                 Admin login
               </Button>

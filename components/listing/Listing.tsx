@@ -22,7 +22,7 @@ import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
-import { useCategories } from '@hooks/categories'
+import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import Item from '@components/main-list/item'
 
 function Listing({ listing }) {
@@ -47,7 +47,7 @@ function Listing({ listing }) {
     }
   }, [router, subdomain])
 
-  const { categories } = useCategories()
+  const { categories } = useCategoriesPublic()
   const categoriesIndexes = useMemo(() => {
     const categoriesIndexesObj = {}
     categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))

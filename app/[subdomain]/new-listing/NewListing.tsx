@@ -13,17 +13,17 @@ import {
   Spinner,
 } from '@chakra-ui/react'
 
-import { useCategories } from '@hooks/categories'
+import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import { useCreateListing } from '@hooks/listings'
-import { useAppContext } from '@store/hooks'
+import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import { useWeb } from '@hooks/webs'
 import Layout from '@components/layout'
 import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 export default function NewListing() {
-  const { selectedWebSlug } = useAppContext()
-  const { categories, isPending: isCategoriesLoading } = useCategories()
+  const selectedWebSlug = useSelectedWebSlug()
+  const { categories, isPending: isCategoriesLoading } = useCategoriesPublic()
   const { mutate: createListing } = useCreateListing()
   const [isSubmitted, setIsSubmitted] = useState(false)
   const { web } = useWeb({ webSlug: selectedWebSlug })
