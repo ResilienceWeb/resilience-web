@@ -267,3 +267,4 @@ async function getData({ webSlug }) {
 }
 
 export const dynamicParams = true
+export const revalidate = 60
