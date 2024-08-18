@@ -18,9 +18,7 @@ export async function GET(request) {
         ...(web
           ? {
               web: {
-                slug: {
-                  contains: web,
-                },
+                slug: web,
               },
             }
           : {}),
