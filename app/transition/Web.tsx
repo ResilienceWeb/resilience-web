@@ -33,8 +33,6 @@ export default function Web({ data, webName, webDescription, webIsPublished }) {
   const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
 
-  // console.log(data)
-
   const [query, setQuery] = useQueryParams({
     categories: withDefault(ArrayParam, []),
     tags: withDefault(ArrayParam, []),

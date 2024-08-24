@@ -34,6 +34,10 @@ export default function middleware(req: NextRequest) {
   //   })
   // }
 
+  if (hostname === 'transition') {
+    return NextResponse.rewrite(new URL('/transition', req.url))
+  }
+
   if (!pathname.includes('.') && !pathname.startsWith('/api')) {
     if (
       hostname === 'localhost:3000' ||
