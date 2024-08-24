@@ -221,7 +221,7 @@ const Dialog = ({
           </Box>
 
           <Box mt={4} display="flex" justifyContent="flex-end">
-            {item.tags.map((tag) => (
+            {item.tags?.map((tag) => (
               <Tag
                 backgroundColor="gray.300"
                 userSelect="none"

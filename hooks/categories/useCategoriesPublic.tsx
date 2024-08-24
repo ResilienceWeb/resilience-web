@@ -1,18 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Category } from '@prisma/client'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
-import { REMOTE_URL } from '@helpers/config'
-
-export async function fetchCategoriesHydrate({ webSlug }) {
-  const BASE_URL =
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
-      ? 'https://resilienceweb.org.uk'
-      : REMOTE_URL
-
-  const response = await fetch(`${BASE_URL}/api/categories?web=${webSlug}`)
-  const { data: categories } = await response.json()
-  return categories
-}
 
 async function fetchCategoriesRequest({ queryKey }) {
   const [_key, { webSlug }] = queryKey
@@ -21,8 +9,9 @@ async function fetchCategoriesRequest({ queryKey }) {
   return categories
 }
 
-export default function useCategories() {
+export default function useCategoriesPublic() {
   const selectedWebSlug = useSelectedWebSlug()
+  console.log('useCategoriesPublic', selectedWebSlug)
   const {
     data: categories,
     isPending,

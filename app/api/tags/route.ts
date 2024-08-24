@@ -13,7 +13,7 @@ export async function GET(request) {
       where: {
         web: {
           slug: {
-            contains: web,
+            equals: web,
           },
         },
       },
