@@ -1,5 +1,6 @@
 'use client'
 import { useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import {
   isServer,
   QueryClient,
@@ -10,6 +11,10 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
 import { chakraTheme } from '@helpers/theme'
+
+const PostHogPageView = dynamic(() => import('./PostHogPageView'), {
+  ssr: false,
+})
 
 function makeQueryClient() {
   return new QueryClient({
@@ -61,7 +66,10 @@ export default function Providers({ children }) {
   return (
     <PostHogProvider client={posthog}>
       <QueryClientProvider client={queryClient}>
-        <ChakraProvider theme={theme}>{children}</ChakraProvider>
+        <ChakraProvider theme={theme}>
+          <PostHogPageView />
+          {children}
+        </ChakraProvider>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </PostHogProvider>
