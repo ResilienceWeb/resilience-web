@@ -5,7 +5,7 @@ import Error from 'next/error'
 import Head from 'next/head'
 import { NextSeo } from 'next-seo'
 import { GraphQLClient } from 'graphql-request'
-import { Text, Box, Heading } from '@chakra-ui/react'
+import { Flex, Text, Box, Heading } from '@chakra-ui/react'
 import { remark } from 'remark'
 import html from 'remark-html'
 
@@ -34,6 +34,12 @@ export default function NewsPost({ post, contentHtml }) {
     )
   }
 
+  const postDateFormatted = Intl.DateTimeFormat('en-gb', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(post.date))
+
   return (
     <>
       <NextSeo
@@ -52,10 +58,23 @@ export default function NewsPost({ post, contentHtml }) {
           /* @ts-ignore */
           textwrap="pretty"
           mt={{ base: '1rem', md: '1.5rem' }}
-          mb={{ base: '1.5rem', md: '2.5rem' }}
         >
           {post.title}
         </Heading>
+        <Flex
+          justifyContent="center"
+          width={{
+            base: '90%',
+            md: '650px',
+          }}
+          mt="0.5rem"
+          mb={{ base: '1.5rem', md: '1.5rem' }}
+        >
+          {post.author?.name && (
+            <Text fontWeight="700">{post.author.name}&nbsp;•&nbsp;</Text>
+          )}
+          <Text as="time">{postDateFormatted}</Text>
+        </Flex>
         {post.coverImage?.url && (
           <Box
             overflow="hidden"
@@ -133,6 +152,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         page(where: {slug: $slug}) {
           slug
           title
+          author {
+            name
+          }
           date
           excerpt
           displayInBlogSection

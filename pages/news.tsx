@@ -82,16 +82,17 @@ const News = ({ posts }) => {
                       {/* <Text color={'gray.500'}>{post.excerpt}</Text> */}
                     </Stack>
                     <Stack
-                      mt={6}
-                      direction={'row'}
-                      spacing={4}
-                      align={'center'}
+                      mt="1rem"
+                      direction="column"
+                      gap="0"
+                      align="flex-start"
                     >
-                      <Stack direction={'column'} spacing={0} fontSize={'sm'}>
-                        <Text as="time" color={'gray.500'}>
-                          {postDateFormatted}
-                        </Text>
-                      </Stack>
+                      {post.author?.name && (
+                        <Text color={'gray.500'}>{post.author.name}</Text>
+                      )}
+                      <Text as="time" color={'gray.500'}>
+                        {postDateFormatted}
+                      </Text>
                     </Stack>
                   </Box>
                 </Link>
@@ -113,6 +114,9 @@ export async function getStaticProps() {
     pages(where: { displayInBlogSection: true }, orderBy: date_DESC) {
       slug
       title
+      author {
+        name
+      }
       date
       excerpt
       displayInBlogSection
