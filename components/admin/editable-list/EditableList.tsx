@@ -114,7 +114,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
           <Link
             href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
             target="_blank"
-            fontWeight={600}
+            fontWeight="600"
             color="rw.900"
           >
             {`${selectedWebSlug}.${REMOTE_HOSTNAME}`}
@@ -135,7 +135,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
         />
       ) : (
         <Center my="3rem">
-          <Text fontWeight="700">
+          <Text fontWeight="600">
             No listings yet. Why not{' '}
             <Link as={NextLink} href="/admin/new-listing" color="rw.900">
               start adding

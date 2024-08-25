@@ -167,7 +167,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             ))}
 
             {adminNavLinks.length > 0 && (
-              <Text pl="1rem" mt="1rem" fontWeight="700" color="gray.600">
+              <Text pl="1rem" mt="1rem" fontWeight="600" color="gray.600">
                 ADMIN
               </Text>
             )}

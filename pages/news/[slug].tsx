@@ -71,7 +71,7 @@ export default function NewsPost({ post, contentHtml }) {
           mb={{ base: '1.5rem', md: '1.5rem' }}
         >
           {post.author?.name && (
-            <Text fontWeight="700">{post.author.name}&nbsp;•&nbsp;</Text>
+            <Text fontWeight="600">{post.author.name}&nbsp;•&nbsp;</Text>
           )}
           <Text as="time">{postDateFormatted}</Text>
         </Flex>

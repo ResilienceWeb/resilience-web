@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import {
   Badge,
+  Text,
   Stack,
   TableContainer,
   Table,
@@ -9,6 +10,7 @@ import {
   Th,
   Thead,
   Tr,
+  VStack,
 } from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
 
@@ -47,13 +49,21 @@ const PermissionsTable = ({ permissions }) => {
           {permissions.map((permission) => (
             <Tr key={permission.id}>
               {columns.map((column, index) => {
-                const cell = permission[column.accessor]
-
                 if (column.accessor === 'email') {
+                  const emailAddress = permission.email
+                  const name = permission.user.name
                   return (
                     <Td key={index}>
-                      {cell}
-                      {session.user.email === cell && ' (You)'}
+                      <VStack
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
+                      >
+                        <Text fontWeight="600">{name}</Text>
+                        <Text>
+                          {emailAddress}
+                          {session.user.email === emailAddress && ' (You)'}
+                        </Text>
+                      </VStack>
                     </Td>
                   )
                 }
