@@ -39,6 +39,7 @@ export const generateSlug = (title: string) => {
     .trim()
     .replace(/ /g, '-')
     .replace(/[^a-z0-9-]/gi, '')
+    .replace(/--/g, '-')
     .trim()
 }
 

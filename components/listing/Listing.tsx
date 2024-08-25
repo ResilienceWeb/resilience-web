@@ -95,7 +95,7 @@ function Listing({ listing }) {
               sizes="(max-width: 768px) 100vw, 700px"
               fill
               priority
-              style={{ objectFit: 'cover' }}
+              style={{ objectFit: 'contain' }}
             />
           </Box>
         )}
@@ -197,7 +197,7 @@ function Listing({ listing }) {
           </Box>
 
           <Box mt={4} mb={8} display="flex" justifyContent="flex-end">
-            {listing.tags.map((tag) => {
+            {listing.tags?.map((tag) => {
               const urlEncodedTag = tag.label.replace(' ', '+')
               return (
                 <NextLink
@@ -219,7 +219,7 @@ function Listing({ listing }) {
             })}
           </Box>
 
-          {listing.relations.length > 0 && (
+          {listing.relations?.length > 0 && (
             <>
               <Heading as="h2" fontSize="xl" mb="1rem">
                 Related groups
