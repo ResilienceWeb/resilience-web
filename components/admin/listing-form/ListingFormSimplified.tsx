@@ -26,6 +26,7 @@ import {
 import ImageUpload from './ImageUpload'
 import { useTags } from '@hooks/tags'
 import { useAppContext } from '@store/hooks'
+import { generateSlug } from '@helpers/utils'
 
 import EditorField from './RichTextEditor'
 
@@ -37,12 +38,7 @@ const SlugField = () => {
   } = useFormikContext<any>()
 
   useEffect(() => {
-    const generatedSlug = title
-      .toLowerCase()
-      .trim()
-      .replace(/ /g, '-')
-      .replace(/[^a-z0-9-]/gi, '')
-      .trim()
+    const generatedSlug = generateSlug(title)
 
     if (title.trim() !== '') {
       setFieldValue('slug', generatedSlug)

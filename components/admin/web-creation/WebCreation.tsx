@@ -20,6 +20,7 @@ import { Formik, Form, Field, FieldProps, useFormikContext } from 'formik'
 import LogoImage from '../../../public/logo.png'
 import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
 import { useCreateWeb } from '@hooks/webs'
+import { generateSlug } from '@helpers/utils'
 import Faq from './faq'
 
 const SlugField = () => {
@@ -29,12 +30,7 @@ const SlugField = () => {
   } = useFormikContext<any>()
 
   useEffect(() => {
-    const generatedSlug = title
-      .toLowerCase()
-      .trim()
-      .replace(/ /g, '-')
-      .replace(/[^a-z0-9-]/gi, '')
-      .trim()
+    const generatedSlug = generateSlug(title)
 
     if (title.trim() !== '') {
       setFieldValue('slug', generatedSlug)

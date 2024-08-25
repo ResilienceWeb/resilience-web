@@ -3,7 +3,7 @@ import {
   dehydrate,
   HydrationBoundary,
 } from '@tanstack/react-query'
-
+import { generateSlug } from '@helpers/utils'
 import Web from '../[subdomain]/Web'
 
 export default async function TransitionPage() {
@@ -33,24 +33,40 @@ export default async function TransitionPage() {
   )
 }
 
+const COLOR_MAPPING = {
+  'England & Wales': '#ff5757',
+  Scotland: '#7ed957',
+  'London & South East': '#d0d07b',
+  'No Hub': '#737373',
+}
+
 async function getData() {
   const response = await fetch(
     'https://transitiongroups.org/wp-json/cds/v1/initiatives?country=GB&per_page=10000',
   )
   const { body: data } = await response.json()
 
-  const cleanedData = data.map((item) => ({
-    id: item.id,
-    title: item.title,
-    description: item.description,
-    website: item.url,
-    image: item.logo,
-    category: {
-      color: '#d0d07b', // TODO: replace with actual color
-      label: item.hubs.replace(/&amp;/g, '&'),
-    },
-    color: '#d0d07b', // TODO: replace with actual color
-  }))
+  const cleanedData = data.map((item) => {
+    const categoryLabel = item.hubs.replace(/&amp;/g, '&')
+
+    return {
+      id: item.id,
+      title: item.title,
+      slug: generateSlug(item.title),
+      description: item.description,
+      website: item.url, // or item.contact.website?
+      image: item.logo,
+      facebook: item.contact.facebook,
+      instagram: item.contact.instagram,
+      twitter: item.contact.twitter,
+      category: {
+        color: COLOR_MAPPING[categoryLabel],
+        label: categoryLabel,
+      },
+      label: item.title,
+      color: COLOR_MAPPING[categoryLabel],
+    }
+  })
 
   const categories = [
     ...new Set(cleanedData.map((item) => item.category.label)),
