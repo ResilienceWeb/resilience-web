@@ -87,8 +87,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         email: email,
         url: callToActionButtonUrl,
       })
-      const inviteEmailHtml = render(inviteEmailComponent)
-      const inviteEmailText = render(inviteEmailComponent, { plainText: true })
+      // eslint-disable-next-line @typescript-eslint/await-thenable
+      const inviteEmailHtml = await render(inviteEmailComponent)
+      // eslint-disable-next-line @typescript-eslint/await-thenable
+      const inviteEmailText = await render(inviteEmailComponent, {
+        plainText: true,
+      })
 
       const msg = {
         from: `Resilience Web <info@resilienceweb.org.uk>`,
