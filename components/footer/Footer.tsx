@@ -79,7 +79,7 @@ export default function Footer({ hideBorder = false }) {
           templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 2fr' }}
           spacing={8}
         >
-          <Stack spacing={6}>
+          <Stack spacing="1rem">
             <Box>
               <Image
                 alt="Resilience Web CIC logo"
@@ -130,6 +130,9 @@ export default function Footer({ hideBorder = false }) {
                 <FaGithub />
               </SocialButton>
             </Stack>
+            <Text fontSize="0.875rem">
+              Resilience Web CIC - Company number 15322382
+            </Text>
           </Stack>
           <Stack align="flex-start">
             <ListHeader>Useful links</ListHeader>
