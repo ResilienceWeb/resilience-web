@@ -7,6 +7,7 @@ import Providers from './providers'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/600.css'
+import '@styles/styles.global.scss'
 
 export const metadata = {
   title: 'Resilience Web',

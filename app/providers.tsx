@@ -70,7 +70,7 @@ export default function Providers({ children }) {
           <PostHogPageView />
           {children}
         </ChakraProvider>
-        <ReactQueryDevtools />
+        <ReactQueryDevtools buttonPosition="bottom-left" />
       </QueryClientProvider>
     </PostHogProvider>
   )

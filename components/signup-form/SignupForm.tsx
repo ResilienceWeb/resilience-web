@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import {
+  Text,
   InputGroup,
   Input,
   InputRightElement,
@@ -103,6 +104,12 @@ const SignupForm = () => {
               </Button>
             </InputRightElement>
           </InputGroup>
+          <Text fontSize="10px" mt="0.25rem">
+            This site is protected by reCAPTCHA and the Google{' '}
+            <a href="https://policies.google.com/privacy">Privacy Policy</a> and{' '}
+            <a href="https://policies.google.com/terms">Terms of Service</a>{' '}
+            apply.
+          </Text>
         </Form>
       )}
     </Formik>

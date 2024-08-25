@@ -65,3 +65,7 @@ p > a, div[role="region"] > a {
   /* stylelint-disable-next-line declaration-property-unit-allowed-list */
   height: 300px;
 }
+
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
