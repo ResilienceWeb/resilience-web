@@ -11,7 +11,6 @@ async function fetchCategoriesRequest({ queryKey }) {
 
 export default function useCategoriesPublic() {
   const selectedWebSlug = useSelectedWebSlug()
-  console.log('useCategoriesPublic', selectedWebSlug)
   const {
     data: categories,
     isPending,
