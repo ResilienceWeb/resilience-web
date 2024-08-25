@@ -10,6 +10,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import { useSession } from 'next-auth/react'
 
 const columns = [
   {
@@ -23,6 +24,8 @@ const columns = [
 ]
 
 const PermissionsTable = ({ permissions }) => {
+  const { data: session } = useSession()
+
   return (
     <TableContainer
       borderRadius="10px"
@@ -46,6 +49,15 @@ const PermissionsTable = ({ permissions }) => {
               {columns.map((column, index) => {
                 const cell = permission[column.accessor]
 
+                if (column.accessor === 'email') {
+                  return (
+                    <Td key={index}>
+                      {cell}
+                      {session.user.email === cell && ' (You)'}
+                    </Td>
+                  )
+                }
+
                 if (column.accessor === 'webs') {
                   if (permission.owner === true) {
                     return (
@@ -66,8 +78,6 @@ const PermissionsTable = ({ permissions }) => {
                     </Td>
                   )
                 }
-
-                return <Td key={index}>{cell}</Td>
               })}
             </Tr>
           ))}
