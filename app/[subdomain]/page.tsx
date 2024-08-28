@@ -1,8 +1,5 @@
-import groupBy from 'lodash/groupBy'
-
 import { selectMoreAccessibleColor } from '@helpers/colors'
 import prisma from '../../prisma/client'
-import { startsWithCapitalLetter } from '@helpers/utils'
 import Web, { CENTRAL_NODE_ID } from './Web'
 
 export default async function WebPage({ params }) {
@@ -64,38 +61,31 @@ async function getData({ webSlug }) {
     },
   })
 
-  const listings = await prisma.listing.findMany({
+  const categories = await prisma.category.findMany({
     where: {
       web: {
-        slug: {
-          contains: webSlug,
-        },
+        slug: webSlug,
       },
     },
     include: {
-      location: {
-        select: {
-          latitude: true,
-          longitude: true,
-          description: true,
+      listings: {
+        where: {
+          inactive: false,
+          pending: false,
         },
-      },
-      category: {
-        select: {
-          id: true,
-          color: true,
-          label: true,
-        },
-      },
-      web: true,
-      tags: {
-        select: {
-          id: true,
-          label: true,
-        },
-      },
-      relations: {
+        orderBy: [
+          {
+            id: 'asc',
+          },
+        ],
         include: {
+          location: {
+            select: {
+              latitude: true,
+              longitude: true,
+              description: true,
+            },
+          },
           category: {
             select: {
               id: true,
@@ -103,33 +93,58 @@ async function getData({ webSlug }) {
               label: true,
             },
           },
+          web: true,
+          tags: {
+            select: {
+              id: true,
+              label: true,
+            },
+          },
+          relations: {
+            include: {
+              category: {
+                select: {
+                  id: true,
+                  color: true,
+                  label: true,
+                },
+              },
+            },
+          },
         },
       },
     },
-    orderBy: [
-      {
-        id: 'asc',
-      },
-    ],
   })
 
-  if (!webData || !listings) {
+  if (!webData || !categories) {
     console.log(`[RW] Web or listings not found for webSlug ${webSlug}`)
     return null
   }
+
+  const categoriesCount = categories.length
+  const categoryNodePositions = drawCirclePoints(
+    categoriesCount,
+    categoriesCount * 150,
+    {
+      x: 0,
+      y: 0,
+    },
+  )
+  const categoryPositions = {}
+  categories.forEach((category, index) => {
+    categoryPositions[category.id] = categoryNodePositions[index]
+  })
 
   const transformedData = {
     nodes: [],
     edges: [],
   }
 
-  listings
-    ?.filter((l) => !l.pending && !l.inactive)
-    ?.map(
+  categories.map((category) => {
+    category.listings.map(
       ({
-        id,
+        id: listingId,
         title,
-        category,
         description,
         image,
         website,
@@ -147,8 +162,9 @@ async function getData({ webSlug }) {
           '#3f3f40',
           '#fff',
         )
+
         transformedData.nodes.push({
-          id,
+          id: listingId,
           title,
           description,
           image: image ?? '',
@@ -175,7 +191,7 @@ async function getData({ webSlug }) {
 
         relations.map((relation) => {
           const newEdge = {
-            from: id,
+            from: listingId,
             to: relation.id,
             dashes: true,
             physics: false,
@@ -193,21 +209,20 @@ async function getData({ webSlug }) {
             transformedData.edges.push(newEdge)
           }
         })
+
+        transformedData.edges.push({
+          from: category.id * 1000,
+          to: listingId,
+          length: category.listings.length * 15,
+          smooth: {
+            enabled: true,
+            type: 'continuous',
+            roundness: 0,
+          },
+        })
       },
     )
-
-  let groupedByCategory = groupBy(
-    transformedData.nodes,
-    (n) => n.category.label,
-  )
-
-  groupedByCategory = Object.fromEntries(
-    Object.entries(groupedByCategory).filter(([key]) => {
-      return (
-        key.length > 0 && key !== 'undefined' && startsWithCapitalLetter(key)
-      )
-    }),
-  )
+  })
 
   // Main node
   transformedData.nodes.push({
@@ -224,18 +239,18 @@ async function getData({ webSlug }) {
     },
   })
 
-  let categoryIndex = 1
-  for (const category in groupedByCategory) {
-    const categoryId = categoryIndex * 1000
+  for (const category of categories) {
+    const categoryId = category.id * 1000
     transformedData.nodes.push({
       id: categoryId,
-      label: category,
+      label: category.label,
       color: '#c3c4c7',
       isDescriptive: true,
       shape: 'ellipse',
-      mass: 3,
+      mass: 1,
+      x: categoryPositions[category.id].x,
+      y: categoryPositions[category.id].y,
     })
-    categoryIndex++
 
     // From main node to category node
     transformedData.edges.push({
@@ -243,20 +258,12 @@ async function getData({ webSlug }) {
       to: categoryId,
       width: 2,
       selectedWidth: 3,
-      length: 600,
+      // length: categoriesCount * 75,
       smooth: {
         enabled: true,
         type: 'continuous',
         roundness: 0,
       },
-    })
-
-    // From category node to all subitems
-    groupedByCategory[category].forEach((item) => {
-      transformedData.edges.push({
-        from: categoryId,
-        to: item.id,
-      })
     })
   }
 
@@ -264,6 +271,23 @@ async function getData({ webSlug }) {
     transformedData,
     webData,
   }
+}
+
+function drawCirclePoints(points, radius, center) {
+  const positions = []
+  const slice = (2 * Math.PI) / points
+  for (let i = 0; i < points; i++) {
+    const angle = slice * i
+
+    const radiusToUse = i % 2 === 1 ? radius / 2 : radius
+    const newX = Math.round(center.x + radiusToUse * Math.cos(angle))
+    const newY = Math.round(center.y + radiusToUse * Math.sin(angle))
+    const p = { x: newX, y: newY }
+
+    positions.push(p)
+  }
+
+  return positions
 }
 
 export const dynamicParams = true

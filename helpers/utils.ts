@@ -36,6 +36,3 @@ export const sanitizeLink = (link: string) => {
 export const removeNonAlphaNumeric = (str: string) => {
   return str.replace(/[^\w\s]/gi, '')
 }
-
-export const startsWithCapitalLetter = (word) =>
-  word.charCodeAt(0) >= 65 && word.charCodeAt(0) <= 90
