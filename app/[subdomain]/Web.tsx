@@ -28,12 +28,16 @@ type INetwork = {
 
 export const CENTRAL_NODE_ID = 999
 
-export default function Web({ data, webName, webDescription, webIsPublished }) {
+export default function Web({
+  data,
+  webName,
+  webDescription,
+  webIsPublished,
+  hideProposeListing = false,
+}) {
   const isMobile = useIsMobile()
   const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
-
-  // console.log(data)
 
   const [query, setQuery] = useQueryParams({
     categories: withDefault(ArrayParam, []),
@@ -217,6 +221,7 @@ export default function Web({ data, webName, webDescription, webIsPublished }) {
           isVolunteer={isVolunteer}
           searchTerm={searchTerm}
           webDescription={webDescription}
+          hideProposeListing={hideProposeListing}
         />
       )}
       <Box

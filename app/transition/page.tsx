@@ -1,10 +1,11 @@
+import groupBy from 'lodash/groupBy'
 import {
   QueryClient,
   dehydrate,
   HydrationBoundary,
 } from '@tanstack/react-query'
 import { generateSlug } from '@helpers/utils'
-import Web from '../[subdomain]/Web'
+import Web, { CENTRAL_NODE_ID } from '../[subdomain]/Web'
 import { COLOR_MAPPING } from './utils'
 
 export default async function TransitionPage() {
@@ -15,10 +16,7 @@ export default async function TransitionPage() {
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: ['categories', { webSlug: 'transition' }],
     queryFn: () => {
-      return data.categories.map((category) => ({
-        label: category,
-        color: '#d0d07b', // TODO: replace with actual color
-      }))
+      return data.categories
     },
   })
 
@@ -29,6 +27,7 @@ export default async function TransitionPage() {
         webName="Transition UK"
         webDescription="Transition Initiatives"
         webIsPublished={true}
+        hideProposeListing={true}
       />
     </HydrationBoundary>
   )
@@ -41,10 +40,20 @@ async function getData() {
   )
   const { body: data } = await response.json()
 
-  const cleanedData = data.map((item) => {
-    const categoryLabel = item.hubs.replace(/&amp;/g, '&')
+  const nodes = []
+  const edges = []
+  const categories = []
 
-    return {
+  data.forEach((item) => {
+    const categoryLabel = item.hubs.replace(/&amp;/g, '&')
+    if (!categories.some((c) => c.label === categoryLabel)) {
+      categories.push({
+        label: categoryLabel,
+        color: COLOR_MAPPING[categoryLabel].substring(1),
+      })
+    }
+
+    nodes.push({
       id: item.id,
       title: item.title,
       slug: generateSlug(item.title),
@@ -60,15 +69,64 @@ async function getData() {
       },
       label: item.title,
       color: COLOR_MAPPING[categoryLabel],
-    }
+    })
   })
 
-  const categories = [
-    ...new Set(cleanedData.map((item) => item.category.label)),
-  ]
+  const nodesGroupedByCategory = groupBy(nodes, (node) => node.category.label)
+
+  // Central node
+  nodes.push({
+    id: CENTRAL_NODE_ID,
+    label: 'Transition UK',
+    color: '#fcba03',
+    isDescriptive: true,
+    font: {
+      size: 56,
+    },
+    fixed: {
+      x: true,
+      y: true,
+    },
+  })
+
+  let categoryIndex = 1
+  for (const category in nodesGroupedByCategory) {
+    const categoryId = categoryIndex * 10000
+    nodes.push({
+      id: categoryId,
+      label: category,
+      color: '#c3c4c7',
+      isDescriptive: true,
+      shape: 'ellipse',
+    })
+    categoryIndex++
+
+    // From central node to category node
+    edges.push({
+      from: CENTRAL_NODE_ID,
+      to: categoryId,
+      width: 2,
+      selectedWidth: 3,
+      length: 600,
+      smooth: {
+        enabled: true,
+        type: 'continuous',
+        roundness: 0,
+      },
+    })
+
+    // From category node to all subitems
+    nodesGroupedByCategory[category].forEach((item) => {
+      edges.push({
+        from: categoryId,
+        to: item.id,
+      })
+    })
+  }
 
   const structuredData = {
-    nodes: cleanedData,
+    nodes,
+    edges,
     categories,
   }
 
