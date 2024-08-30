@@ -8,6 +8,15 @@ import { generateSlug } from '@helpers/utils'
 import Web, { CENTRAL_NODE_ID } from '../[subdomain]/Web'
 import { COLOR_MAPPING } from './utils'
 
+export const metadata = {
+  title: 'Transition UK',
+  description:
+    'A movement of communities coming together to reimagine and rebuild our world.',
+  openGraph: {
+    title: 'Transition UK',
+  },
+}
+
 export default async function TransitionPage() {
   const queryClient = new QueryClient()
   const data = await getData()
@@ -18,6 +27,7 @@ export default async function TransitionPage() {
     queryFn: () => {
       return data.categories
     },
+    staleTime: Infinity,
   })
 
   return (

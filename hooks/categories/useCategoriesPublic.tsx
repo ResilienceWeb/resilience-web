@@ -20,6 +20,7 @@ export default function useCategoriesPublic() {
     queryFn: fetchCategoriesRequest,
     refetchOnWindowFocus: false,
     enabled: Boolean(selectedWebSlug),
+    staleTime: Infinity,
   })
 
   return {
