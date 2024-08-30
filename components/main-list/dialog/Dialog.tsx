@@ -166,6 +166,7 @@ const Dialog = ({
               alt={`${item.label} cover image`}
               sizes="(max-width: 768px) 100vw, 672px"
               src={item.image}
+              imageObjectFit="contain"
             />
           </Box>
         )}
@@ -194,7 +195,7 @@ const Dialog = ({
           <br />
 
           {item.website && (
-            <HStack>
+            <HStack alignItems="flex-start">
               <Text color="gray.700" fontWeight="600">
                 Website:
               </Text>

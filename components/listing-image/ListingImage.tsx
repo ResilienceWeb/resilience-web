@@ -10,16 +10,28 @@ type Props = {
   sizes: string
   isInView?: boolean
   priority?: boolean
+  imageObjectFit?: 'cover' | 'contain'
 }
 
-const ListingImage = ({ alt, src, sizes, isInView, priority }: Props) => {
+const ListingImage = ({
+  alt,
+  src,
+  sizes,
+  isInView,
+  priority,
+  imageObjectFit,
+}: Props) => {
   const imageRef = useRef<any>()
   const [backgroundPosition, setBackgroundPosition] = useState<
     'cover' | 'contain'
-  >('cover')
+  >(imageObjectFit ?? 'cover')
   const { width } = useResizeObserver({ ref: imageRef })
 
   useEffect(() => {
+    if (imageObjectFit) {
+      return
+    }
+
     if (
       imageRef.current &&
       width &&
@@ -41,7 +53,7 @@ const ListingImage = ({ alt, src, sizes, isInView, priority }: Props) => {
         setBackgroundPosition('contain')
       }
     }
-  }, [isInView, width])
+  }, [imageObjectFit, isInView, width])
 
   return (
     <Image

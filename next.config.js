@@ -27,6 +27,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'opencollective.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'transitiongroups.org'
+      }
     ],
     formats: ['image/avif', 'image/webp'],
   },

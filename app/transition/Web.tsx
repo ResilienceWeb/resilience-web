@@ -28,13 +28,7 @@ type INetwork = {
 
 export const CENTRAL_NODE_ID = 999
 
-export default function Web({
-  data,
-  webName,
-  webDescription,
-  webIsPublished,
-  hideProposeListing = false,
-}) {
+export default function Web({ data, webName, webDescription, webIsPublished }) {
   const isMobile = useIsMobile()
   const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
@@ -221,7 +215,6 @@ export default function Web({
           isVolunteer={isVolunteer}
           searchTerm={searchTerm}
           webDescription={webDescription}
-          hideProposeListing={hideProposeListing}
         />
       )}
       <Box

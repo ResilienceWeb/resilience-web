@@ -33,6 +33,16 @@ export const sanitizeLink = (link: string) => {
   return result
 }
 
+export const generateSlug = (title: string) => {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/ /g, '-')
+    .replace(/[^a-z0-9-]/gi, '')
+    .replace(/--/g, '-')
+    .trim()
+}
+
 export const removeNonAlphaNumeric = (str: string) => {
   return str.replace(/[^\w\s]/gi, '')
 }
