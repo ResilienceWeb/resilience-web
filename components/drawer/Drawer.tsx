@@ -39,7 +39,7 @@ const Drawer = ({
   isVolunteer,
   searchTerm,
   webDescription,
-  hideProposeListing,
+  hideProposeListing = false,
 }) => {
   const maxInputWidth = useBreakpointValue({ base: 'initial', md: '280px' })
 
