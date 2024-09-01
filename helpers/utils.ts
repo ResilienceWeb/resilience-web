@@ -17,7 +17,9 @@ export const stringToBoolean = function (value: string): boolean {
 
   if (value === 'false') return false
 
-  throw 'Invalid input. This function only takes "true" or "false" and converts them to primitive boolean.'
+  throw Error(
+    'Invalid input. This function only takes "true" or "false" and converts them to primitive boolean.',
+  )
 }
 
 export const sanitizeLink = (link: string) => {
