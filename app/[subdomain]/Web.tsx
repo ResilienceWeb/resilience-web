@@ -12,7 +12,7 @@ import MainList from '@components/main-list'
 import AlertBanner from '@components/alert-banner'
 import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
-import { useTags } from '@hooks/tags'
+import { useTagsPublic } from '@hooks/tags'
 import { Category } from '@prisma/client'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
@@ -78,7 +78,7 @@ export default function Web({
   const [_network, setNetwork] = useState<INetwork>()
 
   const { categories: fetchedCategories } = useCategoriesPublic()
-  const { tags: fetchedTags } = useTags()
+  const { tags: fetchedTags } = useTagsPublic()
 
   useEffect(() => {
     if (!fetchedCategories) return

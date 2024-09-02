@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { useAppContext } from '@store/hooks'
 import { Tag } from '@prisma/client'
 import { useIsAdminMode } from '@hooks/application'
+import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 
 async function fetchTagsRequest({ queryKey }) {
   const [_key, { webSlug, all }] = queryKey
@@ -13,16 +13,16 @@ async function fetchTagsRequest({ queryKey }) {
 
 export default function useTags() {
   const isAdminMode = useIsAdminMode()
-  const { selectedWebSlug: webSlug } = useAppContext()
+  const selectedWebSlug = useSelectedWebSlug()
   const {
     data: tags,
     isPending,
     isError,
   } = useQuery<Tag[]>({
-    queryKey: ['tags', { webSlug, all: isAdminMode }],
+    queryKey: ['tags', { webSlug: selectedWebSlug, all: isAdminMode }],
     queryFn: fetchTagsRequest,
     refetchOnWindowFocus: false,
-    enabled: webSlug !== undefined,
+    enabled: selectedWebSlug !== undefined,
   })
 
   return {
