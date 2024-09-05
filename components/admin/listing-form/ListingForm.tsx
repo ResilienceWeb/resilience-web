@@ -153,6 +153,10 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
   }, [listing?.relations])
 
   const handleSubmitForm = (data) => {
+    const isNewImage = data.image instanceof File
+    if (!isNewImage && data.image) {
+      delete data.image
+    }
     if (data.location) {
       data.latitude = data.location.latitude
       data.longitude = data.location.longitude
