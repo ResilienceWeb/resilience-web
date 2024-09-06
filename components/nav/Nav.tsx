@@ -26,7 +26,7 @@ import {
   ChevronDownIcon,
 } from '@chakra-ui/icons'
 
-import { useWebs } from '@hooks/webs'
+import useWebs from '@hooks/webs/useWebs'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 import LogoImage from '../../public/logo.png'

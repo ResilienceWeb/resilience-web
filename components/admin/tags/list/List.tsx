@@ -12,7 +12,8 @@ import {
 } from '@chakra-ui/react'
 import { memo, useCallback, useState } from 'react'
 
-import { useUpdateTag, useDeleteTag } from '@hooks/tags'
+import useUpdateTag from '@hooks/tags/useUpdateTag'
+import useDeleteTag from '@hooks/tags/useDeleteTag'
 import { UpdateTagDialog } from '../header/tag-dialog'
 
 const columns = [

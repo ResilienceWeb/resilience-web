@@ -11,8 +11,9 @@ import {
   AlertIcon,
 } from '@chakra-ui/react'
 import { HiArrowLeft } from 'react-icons/hi'
-import { useListing, useUpdateListing } from '@hooks/listings'
-import { useCategories } from '@hooks/categories'
+import useListing from '@hooks/listings/useListing'
+import useUpdateListing from '@hooks/listings/useUpdateListing'
+import useCategories from '@hooks/categories/useCategories'
 import ListingForm from '@components/admin/listing-form'
 
 export default function ListingPage({ params }) {

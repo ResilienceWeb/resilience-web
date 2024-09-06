@@ -3,7 +3,7 @@ import { memo, useCallback } from 'react'
 import { HiPlus } from 'react-icons/hi'
 import { useAppContext } from '@store/hooks'
 
-import { useCreateTag } from '@hooks/tags'
+import useCreateTag from '@hooks/tags/useCreateTag'
 import { NewTagDialog } from './tag-dialog'
 
 const Header = () => {

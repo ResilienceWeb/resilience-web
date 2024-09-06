@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 import useLocalStorage from 'use-local-storage'
-import { AppContext } from '@store/AppContext'
-import { useWebs } from '@hooks/webs'
-import { useIsAdminMode } from '@hooks/application'
+import useWebs from '@hooks/webs/useWebs'
+import useIsAdminMode from '@hooks/application/useIsAdminMode'
+import { AppContext } from './AppContext'
 
 const StoreProvider = ({ children }) => {
   const isAdminMode = useIsAdminMode()

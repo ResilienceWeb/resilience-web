@@ -10,7 +10,6 @@ import { remark } from 'remark'
 import html from 'remark-html'
 
 import Layout from '@components/layout'
-import ErrorBoundary from '@components/error-boundary'
 import SignupForm from '@components/signup-form'
 
 export default function NewsPost({ post, contentHtml }) {
@@ -103,9 +102,7 @@ export default function NewsPost({ post, contentHtml }) {
           }}
           mb="3rem"
         >
-          <ErrorBoundary>
-            <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-          </ErrorBoundary>
+          <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
         </Box>
 
         <Box mb="3rem">

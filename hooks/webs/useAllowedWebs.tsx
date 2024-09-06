@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 import { useSession } from 'next-auth/react'
-import { useWebs } from '@hooks/webs'
-import { usePermissions } from '@hooks/permissions'
-import { useMyOwnerships } from '@hooks/ownership'
+import useWebs from '@hooks/webs/useWebs'
+import usePermissions from '@hooks/permissions/usePermissions'
+import useMyOwnerships from '@hooks/ownership/useMyOwnerships'
 
 const useAllowedWebs = () => {
   const { data: session } = useSession()

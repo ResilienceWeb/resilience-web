@@ -13,7 +13,8 @@ import {
 import { memo, useCallback, useState } from 'react'
 
 import CategoryTag from '@components/category-tag'
-import { useUpdateCategory, useDeleteCategory } from '@hooks/categories'
+import useUpdateCategory from '@hooks/categories/useUpdateCategory'
+import useDeleteCategory from '@hooks/categories/useDeleteCategory'
 import { UpdateCategoryDialog } from '../header/category-dialog'
 
 const columns = [

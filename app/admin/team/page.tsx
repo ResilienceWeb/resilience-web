@@ -22,9 +22,11 @@ import {
 import PermissionsTable from '@components/admin/permissions-table'
 import { emailRequiredValidator } from '@helpers/formValidation'
 import { REMOTE_URL } from '@helpers/config'
-import { usePermissions, usePermissionsForCurrentWeb } from '@hooks/permissions'
-import { useIsOwnerOfCurrentWeb, useOwnerships } from '@hooks/ownership'
-import { useSelectedWebName } from '@hooks/webs'
+import usePermissions from '@hooks/permissions/usePermissions'
+import usePermissionsForCurrentWeb from '@hooks/permissions/usePermissionsForCurrentWeb'
+import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
+import useOwnerships from '@hooks/ownership/useOwnerships'
+import useSelectedWebName from '@hooks/webs/useSelectedWebName'
 import { useAppContext } from '@store/hooks'
 
 interface FormValues {

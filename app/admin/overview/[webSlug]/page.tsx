@@ -13,7 +13,7 @@ import {
   Button,
 } from '@chakra-ui/react'
 import PermissionsTable from '@components/admin/permissions-table'
-import { useWeb } from '@hooks/webs'
+import useWeb from '@hooks/webs/useWeb'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { HiArrowLeft } from 'react-icons/hi'
 

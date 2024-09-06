@@ -19,7 +19,7 @@ import {
 import { Formik, Form, Field, FieldProps, useFormikContext } from 'formik'
 import LogoImage from '../../../public/logo.png'
 import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
-import { useCreateWeb } from '@hooks/webs'
+import useCreateWeb from '@hooks/webs/useCreateWeb'
 import { generateSlug } from '@helpers/utils'
 import Faq from './faq'
 

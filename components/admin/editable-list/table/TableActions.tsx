@@ -8,10 +8,10 @@ import {
 } from '@chakra-ui/react'
 import Select from 'react-select'
 import { HiOutlineSearch, HiPlus } from 'react-icons/hi'
-import { useCategories } from '@hooks/categories'
+import useCategories from '@hooks/categories/useCategories'
 import customMultiSelectStyles from '@styles/select-styles'
-import { useHasPermissionForCurrentWeb } from '@hooks/permissions'
-import { useIsOwnerOfCurrentWeb } from '@hooks/ownership'
+import useHasPermissionForCurrentWeb from '@hooks/permissions/useHasPermissionForCurrentWeb'
+import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
 
 const TableActions = ({
   searchTerm,

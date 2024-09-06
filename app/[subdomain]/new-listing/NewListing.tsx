@@ -14,9 +14,9 @@ import {
 } from '@chakra-ui/react'
 
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
-import { useCreateListing } from '@hooks/listings'
+import useCreateListing from '@hooks/listings/useCreateListing'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
-import { useWeb } from '@hooks/webs'
+import useWeb from '@hooks/webs/useWeb'
 import Layout from '@components/layout'
 import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'

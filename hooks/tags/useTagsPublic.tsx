@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Tag } from '@prisma/client'
-import { useIsAdminMode } from '@hooks/application'
+import useIsAdminMode from '@hooks/application/useIsAdminMode'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 
 async function fetchTagsRequest({ queryKey }) {

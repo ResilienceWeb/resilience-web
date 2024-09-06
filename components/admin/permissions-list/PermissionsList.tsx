@@ -20,9 +20,9 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import Select from 'react-select'
-import { useListings } from '@hooks/listings'
-import { useWebs } from '@hooks/webs'
-import { useUpdatePermission } from '@hooks/permissions'
+import useListings from '@hooks/listings/useListings'
+import useWebs from '@hooks/webs/useWebs'
+import useUpdatePermission from '@hooks/permissions/useUpdatePermission'
 import { useAppContext } from '@store/hooks'
 
 const customMultiSelectStyles = {
