@@ -37,7 +37,6 @@ const nextConfig = {
   experimental: {
     scrollRestoration: process.env.NODE_ENV === 'development' ? false : true,
     // instrumentationHook: true, // TODO: set up properly with instrumentation.ts https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-    esmExternals: true,
   },
   // eslint-disable-next-line @typescript-eslint/require-await
   async rewrites() {
