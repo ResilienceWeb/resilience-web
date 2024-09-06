@@ -41,6 +41,9 @@ export async function generateMetadata({ params }) {
       title: `${webData.title} | Resilience Web`,
       images: [{ url: webData.image }],
     },
+    alternates: {
+      canonical: `https://${webData.slug}.resilienceweb.org.uk`,
+    },
   }
 }
 
