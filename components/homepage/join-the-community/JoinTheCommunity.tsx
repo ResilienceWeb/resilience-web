@@ -11,7 +11,7 @@ import {
 import { FaDiscord } from 'react-icons/fa'
 
 import SignupForm from '@components/signup-form'
-import { useIsMobile } from '@hooks/application'
+import useIsMobile from '@hooks/application/useIsMobile'
 
 const JoinTheCommunity = () => {
   const isMobile = useIsMobile()

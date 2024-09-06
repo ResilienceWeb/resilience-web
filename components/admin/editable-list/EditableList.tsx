@@ -7,9 +7,9 @@ import DeleteConfirmationDialog from './delete-confirmation-dialog'
 import { removeNonAlphaNumeric } from '@helpers/utils'
 import Table from './table/Table'
 import TableActions from './table/TableActions'
-import { usePermissions } from '@hooks/permissions'
+import usePermissions from '@hooks/permissions/usePermissions'
 import { useAppContext } from '@store/hooks'
-import { useWebs } from '@hooks/webs'
+import useWebs from '@hooks/webs/useWebs'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 const EditableList = ({ deleteListing, isAdmin, items }) => {

@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
-import { useWebs } from '@hooks/webs'
+import useWebs from '@hooks/webs/useWebs'
 
 // Hardcoded array to determine which webs are displayed first
 const orderOnHomepage = ['Cambridge', 'York', 'Norwich', 'Durham']

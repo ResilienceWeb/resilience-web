@@ -24,7 +24,7 @@ import {
   urlValidator,
 } from '@helpers/formValidation'
 import ImageUpload from './ImageUpload'
-import { useTags } from '@hooks/tags'
+import useTags from '@hooks/tags/useTags'
 import { useAppContext } from '@store/hooks'
 import { generateSlug } from '@helpers/utils'
 

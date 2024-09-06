@@ -13,7 +13,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
-import { useWebs } from '@hooks/webs'
+import useWebs from '@hooks/webs/useWebs'
 
 const columns = [
   {

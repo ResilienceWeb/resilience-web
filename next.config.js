@@ -36,8 +36,7 @@ const nextConfig = {
   },
   experimental: {
     scrollRestoration: process.env.NODE_ENV === 'development' ? false : true,
-    instrumentationHook: true,
-    optimizePackageImports: ['@chakra-ui/react']
+    // instrumentationHook: true, // TODO: set up properly with instrumentation.ts https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
   },
   // eslint-disable-next-line @typescript-eslint/require-await
   async rewrites() {
@@ -78,6 +77,15 @@ const nextConfig = {
       },
     ]
   },
+  webpack: (config, { webpack }) => {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __SENTRY_DEBUG__: false,
+        __SENTRY_TRACING__: false,
+      })
+    )
+    return config
+  }
 }
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({

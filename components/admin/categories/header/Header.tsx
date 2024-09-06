@@ -3,7 +3,7 @@ import { memo, useCallback } from 'react'
 import { HiPlus } from 'react-icons/hi'
 
 import { useAppContext } from '@store/hooks'
-import { useCreateCategory } from '@hooks/categories'
+import useCreateCategory from '@hooks/categories/useCreateCategory'
 import { NewCategoryDialog } from './category-dialog'
 
 const Header = () => {

@@ -6,7 +6,6 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { remark } from 'remark'
 import html from 'remark-html'
 
-import ErrorBoundary from '@components/error-boundary'
 import Layout from '@components/layout'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 
@@ -35,9 +34,7 @@ const About = ({ page, contentHtml }) => {
             <Heading as="h1" mb={8}>
               {page.title}
             </Heading>
-            <ErrorBoundary>
-              <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-            </ErrorBoundary>
+            <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
           </Box>
         </Flex>
       </Layout>

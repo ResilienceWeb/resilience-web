@@ -21,8 +21,9 @@ import {
 } from '@chakra-ui/react'
 
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
-import { usePermissions } from '@hooks/permissions'
-import { useWeb, useUpdateWeb } from '@hooks/webs'
+import usePermissions from '@hooks/permissions/usePermissions'
+import useWeb from '@hooks/webs/useWeb'
+import useUpdateWeb from '@hooks/webs/useUpdateWeb'
 import { useAppContext } from '@store/hooks'
 
 export default function WebSettingsPage() {

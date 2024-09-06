@@ -19,7 +19,8 @@ import {
   useToast,
 } from '@chakra-ui/react'
 
-import { useUpdateUser, useCurrentUser } from '@hooks/user'
+import useUpdateUser from '@hooks/user/useUpdateUser'
+import useCurrentUser from '@hooks/user/useCurrentUser'
 
 export default function UserSettingsPage() {
   const { updateUser, isPending, isSuccess } = useUpdateUser()

@@ -14,8 +14,8 @@ import CategoriesHeader from '@components/admin/categories/header'
 import CategoriesList from '@components/admin/categories/list'
 import TagsHeader from '@components/admin/tags/header'
 import TagsList from '@components/admin/tags/list'
-import { useCategories } from '@hooks/categories'
-import { useTags } from '@hooks/tags'
+import useCategories from '@hooks/categories/useCategories'
+import useTags from '@hooks/tags/useTags'
 
 export default function CategoriesPage() {
   const { tags, isPending: isTagsPending } = useTags()

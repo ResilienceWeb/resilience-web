@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useSession } from 'next-auth/react'
 
 import { useAppContext } from '@store/hooks'
-import { usePermissions } from '@hooks/permissions'
+import usePermissions from '@hooks/permissions/usePermissions'
 
 export default function useHasPermissionForCurrentWeb() {
   const { permissions } = usePermissions()
