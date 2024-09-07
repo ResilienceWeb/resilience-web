@@ -55,12 +55,14 @@ export default function Providers({ children }) {
   const queryClient = getQueryClient()
 
   useEffect(() => {
-    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-      api_host: '/ph-ingest',
-      ui_host: 'https://eu.posthog.com',
-      debug: false,
-      capture_pageview: false,
-    })
+    if (process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+      posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+        api_host: '/ph-ingest',
+        ui_host: 'https://eu.posthog.com',
+        debug: false,
+        capture_pageview: false,
+      })
+    }
   }, [])
 
   return (
