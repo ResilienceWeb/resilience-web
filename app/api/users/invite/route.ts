@@ -76,7 +76,8 @@ export async function POST(request) {
         },
       },
     }
-    const permission = await prisma.permission.upsert(newData)
+
+    await prisma.permission.upsert(newData)
 
     const emailEncoded = encodeURIComponent(email)
     const callToActionButtonUrl = `${REMOTE_URL}/activate?email=${emailEncoded}`
@@ -87,49 +88,30 @@ export async function POST(request) {
       },
     })
 
-    if (permission) {
-      const inviteEmailComponent = InviteEmail({
-        webTitle: `${selectedWeb.title}`,
-        email: email,
-        url: callToActionButtonUrl,
-      })
+    const inviteEmailComponent = InviteEmail({
+      webTitle: `${selectedWeb.title}`,
+      email: email,
+      url: callToActionButtonUrl,
+    })
 
-      const inviteEmailHtml = await render(inviteEmailComponent)
-      const inviteEmailText = await render(inviteEmailComponent, {
-        plainText: true,
-      })
+    const inviteEmailHtml = await render(inviteEmailComponent)
+    const inviteEmailText = await render(inviteEmailComponent, {
+      plainText: true,
+    })
 
-      const msg = {
-        from: `Resilience Web <info@resilienceweb.org.uk>`,
-        to: email,
-        subject: `Your invite to the ${selectedWeb.title} Resilience Web`,
-        text: inviteEmailText,
-        html: inviteEmailHtml,
-      }
-
-      void (async () => {
-        try {
-          await sgMail.send(msg)
-
-          return Response.json({
-            message: 'Invite sent successfully',
-          })
-        } catch (error) {
-          console.error(error)
-
-          if (error.response) {
-            console.error(error.response.body)
-          }
-        }
-      })()
-    } else {
-      return Response.json(
-        {
-          error: `Permission hasn't been updated successfully. Please try again.`,
-        },
-        { status: 400 },
-      )
+    const msg = {
+      from: `Resilience Web <info@resilienceweb.org.uk>`,
+      to: email,
+      subject: `Your invite to the ${selectedWeb.title} Resilience Web`,
+      text: inviteEmailText,
+      html: inviteEmailHtml,
     }
+
+    await sgMail.send(msg)
+
+    return Response.json({
+      message: 'Invite sent successfully',
+    })
   } catch (e) {
     console.error(`[RW] Unable to invite user - ${e}`)
     return Response.json(

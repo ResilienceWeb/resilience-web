@@ -24,12 +24,6 @@ export default async function AboutPage() {
 async function getData(): Promise<any> {
   const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL)
 
-  // const queryClient = new QueryClient()
-  // await queryClient.fetchQuery({
-  //   queryKey: ['webs'],
-  //   queryFn: () => fetchWebsHydrate({ published: true }),
-  // })
-
   const { page } = await graphcms.request<{ page: any }>(`
 	{
 		page(where: {slug: "about"}) {
@@ -49,7 +43,6 @@ async function getData(): Promise<any> {
   return {
     page,
     contentHtml,
-    // dehydratedState: dehydrate(queryClient),
   }
 }
 

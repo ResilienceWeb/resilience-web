@@ -77,7 +77,7 @@ export default function TeamPage() {
         web: selectedWebId,
       }
 
-      const response = await fetch(`${REMOTE_URL}/api/user/invite`, {
+      const response = await fetch(`${REMOTE_URL}/api/users/invite`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
