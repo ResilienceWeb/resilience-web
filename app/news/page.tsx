@@ -6,6 +6,7 @@ export const metadata = {
   description: 'News & updates from the Resilience Web team',
   openGraph: {
     title: 'News | Resilience Web',
+    description: 'News & updates from the Resilience Web team',
   },
 }
 
@@ -39,3 +40,6 @@ async function getData(): Promise<any> {
     posts: pages,
   }
 }
+
+export const dynamicParams = true
+export const revalidate = 3600
