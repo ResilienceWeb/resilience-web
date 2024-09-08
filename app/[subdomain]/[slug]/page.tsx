@@ -1,6 +1,7 @@
 import truncate from 'lodash/truncate'
 import type { Listing as ListingType } from '@prisma/client'
 import prisma from '../../../prisma/client'
+import { exclude } from '@helpers/utils'
 import Listing from './Listing'
 
 export default async function ListingPage({ params }) {
@@ -63,12 +64,6 @@ export async function generateStaticParams() {
     subdomain: l.web.slug,
     slug: l.slug,
   }))
-}
-
-function exclude(data, keys) {
-  return Object.fromEntries(
-    Object.entries(data).filter(([key]) => !keys.includes(key)),
-  )
 }
 
 async function getListing({ webSlug, listingSlug }): Promise<ListingType> {

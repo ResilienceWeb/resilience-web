@@ -48,3 +48,9 @@ export const generateSlug = (title: string) => {
 export const removeNonAlphaNumeric = (str: string) => {
   return str.replace(/[^\w\s]/gi, '')
 }
+
+export function exclude(data, keys) {
+  return Object.fromEntries(
+    Object.entries(data).filter(([key]) => !keys.includes(key)),
+  )
+}

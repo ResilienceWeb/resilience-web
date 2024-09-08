@@ -1,6 +1,14 @@
-'use client'
 import { Suspense } from 'react'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth'
+import SessionProvider from '../admin/SessionProvider'
 
-export default function Layout({ children }) {
-  return <Suspense>{children}</Suspense>
+export default async function Layout({ children }) {
+  const session = await getServerSession(authOptions)
+
+  return (
+    <Suspense>
+      <SessionProvider session={session}>{children}</SessionProvider>
+    </Suspense>
+  )
 }

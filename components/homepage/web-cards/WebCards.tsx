@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import {
   Container,
   Button,
@@ -13,14 +13,11 @@ import {
 } from '@chakra-ui/react'
 
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
-import useWebs from '@hooks/webs/useWebs'
 
 // Hardcoded array to determine which webs are displayed first
 const orderOnHomepage = ['Cambridge', 'York', 'Norwich', 'Durham']
 
-const WebCards = () => {
-  const { webs } = useWebs({ published: true })
-
+const WebCards = ({ webs }) => {
   return (
     <Container maxW="7xl" id="web-cards">
       <Heading as="h2" fontSize="2rem" my="1rem">
@@ -36,10 +33,9 @@ const WebCards = () => {
         {webs
           ?.filter(
             (web) =>
-              web.published &&
               Boolean(web.image) &&
               web.slug !== 'ctrlshift' &&
-              web.slug !== 'transition',
+              web.slug !== 'transition-uk',
           )
           .sort((a, b) => {
             if (
