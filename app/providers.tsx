@@ -10,6 +10,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
+import { ReCaptchaProvider } from 'next-recaptcha-v3'
 import { chakraTheme } from '@helpers/theme'
 
 const PostHogPageView = dynamic(() => import('./PostHogPageView'), {
@@ -70,7 +71,7 @@ export default function Providers({ children }) {
       <QueryClientProvider client={queryClient}>
         <ChakraProvider theme={theme}>
           <PostHogPageView />
-          {children}
+          <ReCaptchaProvider>{children}</ReCaptchaProvider>
         </ChakraProvider>
         <ReactQueryDevtools buttonPosition="bottom-left" />
       </QueryClientProvider>
