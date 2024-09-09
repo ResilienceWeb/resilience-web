@@ -66,6 +66,13 @@ async function getListing({ listingSlug }): Promise<any> {
   const cleanedData = data.map((item) => {
     const categoryLabel = item.hubs.replace(/&amp;/g, '&')
 
+    const itemTags = []
+    item.tags.forEach((tagLabel) => {
+      itemTags.push({
+        label: tagLabel,
+      })
+    })
+
     return {
       id: item.id,
       title: item.title,
@@ -80,6 +87,7 @@ async function getListing({ listingSlug }): Promise<any> {
         color: COLOR_MAPPING[categoryLabel],
         label: categoryLabel,
       },
+      tags: itemTags,
       label: item.title,
       color: COLOR_MAPPING[categoryLabel],
     }

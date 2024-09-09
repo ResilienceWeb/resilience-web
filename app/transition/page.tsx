@@ -30,6 +30,15 @@ export default async function TransitionPage() {
     staleTime: Infinity,
   })
 
+  await queryClient.prefetchQuery({
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: ['tags', { webSlug: 'transition', all: false }],
+    queryFn: () => {
+      return data.tags
+    },
+    staleTime: Infinity,
+  })
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Web
@@ -53,6 +62,7 @@ async function getData() {
   const nodes = []
   const edges = []
   const categories = []
+  const tags = []
 
   data.forEach((item) => {
     const categoryLabel = item.hubs.replace(/&amp;/g, '&')
@@ -62,6 +72,22 @@ async function getData() {
         color: COLOR_MAPPING[categoryLabel].substring(1),
       })
     }
+
+    const itemTags = []
+    item.tags.forEach((tagLabel) => {
+      const tagId = tags.length + 1
+      if (!tags.some((t) => t.label === tagLabel)) {
+        tags.push({
+          id: tagId,
+          label: tagLabel,
+        })
+      }
+
+      itemTags.push({
+        id: tagId,
+        label: tagLabel,
+      })
+    })
 
     nodes.push({
       id: item.id,
@@ -77,6 +103,7 @@ async function getData() {
         color: COLOR_MAPPING[categoryLabel],
         label: categoryLabel,
       },
+      tags: itemTags,
       label: item.title,
       color: COLOR_MAPPING[categoryLabel],
     })
@@ -138,6 +165,7 @@ async function getData() {
     nodes,
     edges,
     categories,
+    tags,
   }
 
   return structuredData

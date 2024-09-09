@@ -23,6 +23,7 @@ export default function useTags() {
     queryFn: fetchTagsRequest,
     refetchOnWindowFocus: false,
     enabled: selectedWebSlug !== undefined,
+    staleTime: Infinity,
   })
 
   return {

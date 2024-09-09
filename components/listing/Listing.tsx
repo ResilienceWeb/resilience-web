@@ -196,7 +196,14 @@ function Listing({ listing }) {
             <DescriptionRichText html={listing.description} />
           </Box>
 
-          <Box mt={4} mb={8} display="flex" justifyContent="flex-end">
+          <Box
+            mt={4}
+            mb={8}
+            display="flex"
+            justifyContent="flex-end"
+            flexWrap="wrap"
+            gap="0.25rem"
+          >
             {listing.tags?.map((tag) => {
               const urlEncodedTag = tag.label.replace(' ', '+')
               return (
@@ -207,7 +214,6 @@ function Listing({ listing }) {
                   <Tag
                     backgroundColor="gray.200"
                     userSelect="none"
-                    mr={1}
                     cursor="pointer"
                     transition="background-color 0.2s ease"
                     _hover={{ bgColor: 'gray.300' }}

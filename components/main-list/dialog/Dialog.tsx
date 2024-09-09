@@ -221,14 +221,15 @@ const Dialog = ({
             <DescriptionRichText html={item.description} />
           </Box>
 
-          <Box mt={4} display="flex" justifyContent="flex-end">
+          <Box
+            mt={4}
+            display="flex"
+            justifyContent="flex-end"
+            flexWrap="wrap"
+            gap="0.25rem"
+          >
             {item.tags?.map((tag) => (
-              <Tag
-                backgroundColor="gray.300"
-                userSelect="none"
-                key={tag.id}
-                mr={1}
-              >
+              <Tag backgroundColor="gray.300" userSelect="none" key={tag.id}>
                 #{tag.label}
               </Tag>
             ))}
