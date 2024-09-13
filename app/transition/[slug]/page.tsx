@@ -64,11 +64,16 @@ async function getListing({ listingSlug }): Promise<any> {
   const { body: data } = await response.json()
 
   const cleanedData = data.map((item) => {
-    const categoryLabel = item.hubs.replace(/&amp;/g, '&')
+    const categoryLabel = item.countries
+      .replace(/&amp;/g, '&')
+      .replace(' | United Kingdom', '')
+      .replace('United Kingdom | ', '')
 
     const itemTags = []
     item.tags.forEach((tagLabel) => {
+      const tagId = itemTags.length + 1
       itemTags.push({
+        id: tagId,
         label: tagLabel,
       })
     })

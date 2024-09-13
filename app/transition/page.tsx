@@ -69,7 +69,6 @@ async function getData() {
       .replace(' | United Kingdom', '')
       .replace('United Kingdom | ', '')
     if (!categories.some((c) => c.label === categoryLabel)) {
-      console.log(categoryLabel)
       categories.push({
         label: categoryLabel,
         color: COLOR_MAPPING[categoryLabel].substring(1),
