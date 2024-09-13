@@ -64,8 +64,12 @@ async function getData() {
   const tags = []
 
   data.forEach((item) => {
-    const categoryLabel = item.hubs.replace(/&amp;/g, '&')
+    const categoryLabel = item.countries
+      .replace(/&amp;/g, '&')
+      .replace(' | United Kingdom', '')
+      .replace('United Kingdom | ', '')
     if (!categories.some((c) => c.label === categoryLabel)) {
+      console.log(categoryLabel)
       categories.push({
         label: categoryLabel,
         color: COLOR_MAPPING[categoryLabel].substring(1),
