@@ -169,10 +169,17 @@ const Drawer = ({
           <Heading as="h2" fontSize="1.25rem">
             Support this project
           </Heading>
-          <Text mb="0.75rem" color="gray.600">
-            If you can, please support us via Open Collective to help us
-            continue building this platform.
-          </Text>
+          {isTransitionMode ? (
+            <Text mb="0.75rem" color="gray.600">
+              If you can, please support the technology behind this with a small
+              donation.
+            </Text>
+          ) : (
+            <Text mb="0.75rem" color="gray.600">
+              If you can, please support us with a small donation to help us
+              continue building this platform.
+            </Text>
+          )}
           <DonateButton />
         </Box>
       </Flex>
