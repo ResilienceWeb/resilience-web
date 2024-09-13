@@ -70,10 +70,7 @@ const Drawer = ({
           {!isTransitionMode && (
             <>
               <Box p="1rem">
-                <Link
-                  href={`${window.location.href}new-listing`}
-                  target="_blank"
-                >
+                <Link href="/new-listing" target="_blank">
                   <Button size="lg" variant="rw">
                     Propose new listing
                   </Button>
