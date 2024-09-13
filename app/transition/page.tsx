@@ -44,9 +44,8 @@ export default async function TransitionPage() {
       <Web
         data={data}
         webName="Transition UK"
-        webDescription="Transition Initiatives"
-        webIsPublished={true}
-        hideProposeListing={true}
+        webIsPublished
+        isTransitionMode
       />
     </HydrationBoundary>
   )

@@ -39,7 +39,7 @@ const Drawer = ({
   isVolunteer,
   searchTerm,
   webDescription,
-  hideProposeListing = false,
+  isTransitionMode = false,
 }) => {
   const maxInputWidth = useBreakpointValue({ base: 'initial', md: '280px' })
 
@@ -67,7 +67,7 @@ const Drawer = ({
             </Flex>
           </Link>
           <Divider />
-          {!hideProposeListing && (
+          {!isTransitionMode && (
             <>
               <Box p="1rem">
                 <Link
@@ -147,10 +147,12 @@ const Drawer = ({
                 />
               </InputGroup>
             )}
-            <VolunteerSwitch
-              checked={isVolunteer}
-              handleSwitchChange={handleVolunteerSwitchChange}
-            />
+            {!isTransitionMode && (
+              <VolunteerSwitch
+                checked={isVolunteer}
+                handleSwitchChange={handleVolunteerSwitchChange}
+              />
+            )}
           </Flex>
           {webDescription && (
             <>

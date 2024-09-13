@@ -5,7 +5,12 @@ import { Box } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
 import intersection from 'lodash/intersection'
 import useLocalStorage from 'use-local-storage'
-import { useQueryParams, ArrayParam, withDefault } from 'use-query-params'
+import {
+  useQueryParams,
+  ArrayParam,
+  BooleanParam,
+  withDefault,
+} from 'use-query-params'
 import Header from '@components/header'
 import useIsMobile from '@hooks/application/useIsMobile'
 import MainList from '@components/main-list'
@@ -31,17 +36,18 @@ export const CENTRAL_NODE_ID = 999
 export default function Web({
   data,
   webName,
-  webDescription,
+  webDescription = null,
   webIsPublished,
-  hideProposeListing = false,
+  isTransitionMode = false,
 }) {
   const isMobile = useIsMobile()
-  const [isWebMode, setIsWebMode] = useLocalStorage('is-web-mode', undefined)
+  const [isWebModeDefault] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
 
   const [query, setQuery] = useQueryParams({
     categories: withDefault(ArrayParam, []),
     tags: withDefault(ArrayParam, []),
+    web: withDefault(BooleanParam, isWebModeDefault),
   })
 
   const [searchTerm, setSearchTerm] = useState('')
@@ -186,9 +192,9 @@ export default function Web({
   const handleSwitchChange = useCallback(
     (event) => {
       setSelectedId(null)
-      setIsWebMode(!(event.target.value == 'true'))
+      setQuery({ web: !(event.target.value == 'true') })
     },
-    [setIsWebMode],
+    [setQuery],
   )
 
   const handleVolunteerSwitchChange = useCallback(
@@ -201,9 +207,9 @@ export default function Web({
 
   useEffect(() => {
     if (isMobile) {
-      setIsWebMode(false)
+      setQuery({ web: false })
     }
-  }, [isMobile, setIsWebMode])
+  }, [isMobile, setQuery])
 
   return (
     <>
@@ -221,7 +227,7 @@ export default function Web({
           isVolunteer={isVolunteer}
           searchTerm={searchTerm}
           webDescription={webDescription}
-          hideProposeListing={hideProposeListing}
+          isTransitionMode={isTransitionMode}
         />
       )}
       <Box
@@ -247,11 +253,11 @@ export default function Web({
           handleSwitchChange={handleSwitchChange}
           handleTagSelection={handleTagSelection}
           isMobile={isMobile}
-          isWebMode={isWebMode}
+          isWebMode={query.web}
           searchTerm={searchTerm}
           selectedWebName={webName}
         />
-        {isWebMode && (
+        {query.web && (
           <NetworkComponent
             data={filteredNetworkData}
             selectedId={selectedId}
@@ -260,7 +266,7 @@ export default function Web({
           />
         )}
 
-        {!isWebMode && (
+        {!query.web && (
           <MainList filteredItems={filteredItems} isMobile={isMobile} />
         )}
       </Box>
