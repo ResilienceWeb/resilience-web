@@ -1,9 +1,8 @@
 import { QueryClient } from '@tanstack/react-query'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { getServerSession } from 'next-auth'
 import LayoutContainer from '@components/admin/layout-container'
-import { authOptions } from '../auth'
+import { auth } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
 import SessionProvider from './SessionProvider'
 import Providers from './providers'
@@ -36,7 +35,7 @@ export async function fetchPermissionsHydrate() {
 }
 
 export default async function Layout({ children }) {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
   if (!session) {
     redirect('/auth/signin')
   }

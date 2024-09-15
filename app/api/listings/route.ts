@@ -1,7 +1,6 @@
-import { getServerSession } from 'next-auth'
 import { Prisma } from '@prisma/client'
+import { auth } from '@auth'
 import prisma from '../../../prisma/client'
-import { authOptions } from '../../auth'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingProposedEmail from '@components/emails/ListingProposedEmail'
@@ -75,7 +74,7 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
 
     if (!session?.user) {
       // TODO: Improve security

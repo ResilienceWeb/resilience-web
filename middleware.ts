@@ -28,12 +28,6 @@ export default function middleware(req: NextRequest) {
         : hostname.replace(`.localhost:3000`, '')
   }
 
-  // if (pathname.startsWith(`/_webs`)) {
-  //   return new Response(null, {
-  //     status: 404,
-  //   })
-  // }
-
   if (hostname === 'transition') {
     return NextResponse.rewrite(new URL('/transition', req.url))
   }

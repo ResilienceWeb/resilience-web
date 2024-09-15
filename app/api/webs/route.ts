@@ -1,12 +1,11 @@
 import { Prisma } from '@prisma/client'
-import { getServerSession } from 'next-auth'
+import { auth } from '@auth'
 import prisma from '../../../prisma/client'
 import WebCreatedEmail from '@components/emails/WebCreatedEmail'
 import WebCreatedAdminEmail from '@components/emails/WebCreatedAdminEmail'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { stringToBoolean } from '@helpers/utils'
 import { sendEmail } from '@helpers/email'
-import { authOptions } from '../../auth'
 
 const defaultCategories = [
   {
@@ -82,7 +81,7 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
     if (!session?.user) {
       return Response.json(
         {
