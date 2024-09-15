@@ -54,3 +54,7 @@ export function exclude(data, keys) {
     Object.entries(data).filter(([key]) => !keys.includes(key)),
   )
 }
+
+export function intersection(arrays) {
+  return arrays.reduce((a, b) => a.filter((c) => b.includes(c)))
+}

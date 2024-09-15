@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import { Box } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
-import intersection from 'lodash/intersection'
 import useLocalStorage from 'use-local-storage'
 import {
   useQueryParams,
@@ -15,7 +14,11 @@ import Header from '@components/header'
 import useIsMobile from '@hooks/application/useIsMobile'
 import MainList from '@components/main-list'
 import AlertBanner from '@components/alert-banner'
-import { removeNonAlphaNumeric, sortStringsFunc } from '@helpers/utils'
+import {
+  removeNonAlphaNumeric,
+  sortStringsFunc,
+  intersection,
+} from '@helpers/utils'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import useTagsPublic from '@hooks/tags/useTagsPublic'
 import { Category } from '@prisma/client'
@@ -151,7 +154,7 @@ export default function Web({
     if (query.tags.length > 0) {
       results = results.filter((item) => {
         const itemTags = item.tags.map((c) => c.label)
-        return intersection(query.tags, itemTags).length > 0
+        return intersection([query.tags, itemTags]).length > 0
       })
     }
 
