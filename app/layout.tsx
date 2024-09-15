@@ -1,4 +1,3 @@
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import {
   dehydrate,
   HydrationBoundary,
@@ -42,7 +41,6 @@ export default async function RootLayout({
         <Providers>
           <HydrationBoundary state={dehydrate(queryClient)}>
             {children}
-            <SpeedInsights />
           </HydrationBoundary>
         </Providers>
       </body>
