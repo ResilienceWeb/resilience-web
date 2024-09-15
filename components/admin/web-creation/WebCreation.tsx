@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import posthog from 'posthog-js'
 import {
   chakra,
   Heading,
@@ -82,6 +83,10 @@ const WebCreation = () => {
   const { createWeb, isPending, isSuccess, isError, errorMessage } =
     useCreateWeb()
   const router = useRouter()
+
+  useEffect(() => {
+    posthog.capture('web-creation-start')
+  }, [])
 
   useEffect(() => {
     if (isSuccess) {
