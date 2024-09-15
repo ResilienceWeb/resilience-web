@@ -1,10 +1,9 @@
 import { Suspense } from 'react'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '../auth'
+import { auth } from '@auth'
 import SessionProvider from '../admin/SessionProvider'
 
 export default async function Layout({ children }) {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
 
   return (
     <Suspense>

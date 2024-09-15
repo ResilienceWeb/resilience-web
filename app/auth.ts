@@ -1,20 +1,14 @@
-import type {
-  GetServerSidePropsContext,
-  NextApiRequest,
-  NextApiResponse,
-} from 'next'
-import type { NextAuthOptions } from 'next-auth'
-import { getServerSession } from 'next-auth'
-import EmailProvider from 'next-auth/providers/email'
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import NextAuth from 'next-auth'
+import { PrismaAdapter } from '@auth/prisma-adapter'
+import Sendgrid from 'next-auth/providers/sendgrid'
 import nodemailer from 'nodemailer'
 import prisma from '../prisma/client'
 import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates'
 import config from '@helpers/config'
 
-export const authOptions: NextAuthOptions = {
+export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
-    EmailProvider({
+    Sendgrid({
       id: 'email',
       // @ts-ignore
       server: config.emailServer,
@@ -82,15 +76,14 @@ export const authOptions: NextAuthOptions = {
     verifyRequest: '/auth/verify-request',
   },
   debug: false,
-  secret: process.env.NEXTAUTH_SECRET,
-} satisfies NextAuthOptions
+})
 
 // Use it in server contexts
-export function auth(
-  ...args:
-    | [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']]
-    | [NextApiRequest, NextApiResponse]
-    | []
-) {
-  return getServerSession(...args, authOptions)
-}
+// export function auth(
+//   ...args:
+//     | [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']]
+//     | [NextApiRequest, NextApiResponse]
+//     | []
+// ) {
+//   return getServerSession(...args, authOptions)
+// }
