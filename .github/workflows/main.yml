@@ -1,0 +1,16 @@
+name: Deploy main to production every 24 hours
+
+on:
+  schedule:
+    - cron: "0 */24 * * *"
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy main to production
+      uses: wei/curl@master
+      with:
+        args: env.DEPLOY_HOOK_URL
+
+        
