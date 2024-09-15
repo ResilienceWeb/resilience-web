@@ -62,6 +62,7 @@ export default function Providers({ children }) {
         ui_host: 'https://eu.posthog.com',
         debug: false,
         capture_pageview: false,
+        capture_pageleave: true,
       })
     }
   }, [])
