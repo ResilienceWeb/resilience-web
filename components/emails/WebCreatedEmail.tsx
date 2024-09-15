@@ -58,6 +58,10 @@ const WebCreatedEmail = ({ webTitle, url }: props) => {
             If you ever need help, you can always get in touch at{' '}
             <Link href="mailto@resilienceweb.org.uk">
               info@resilienceweb.org.uk
+            </Link>{' '}
+            or book a training session{' '}
+            <Link href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3POx5B9YlGkzuVp02JmN0Vb_9U5HMOy5MMPi5818YomktgkhdQ3ijmh14rL0gm6aOc5_7uuEvb">
+              here
             </Link>
           </Text>
           <Section style={btnContainer}>
