@@ -112,6 +112,7 @@ export default function AdminPage() {
   const firstTime = searchParams.get('firstTime')
   useEffect(() => {
     if (firstTime === 'true') {
+      posthog.capture('web-creation-dashboard-landing')
       setTimeout(() => {
         driverObj.drive()
       }, 3000)
