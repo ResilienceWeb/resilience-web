@@ -11,6 +11,6 @@ jobs:
     - name: Deploy main to production
       uses: wei/curl@master
       with:
-        args: vars.DEPLOY_HOOK_URL
+        args: ${{ vars.DEPLOY_HOOK_URL }}
 
         
