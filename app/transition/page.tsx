@@ -82,13 +82,15 @@ async function getData() {
         tags.push({
           id: tagId,
           label: tagLabel,
+          // itemIds: [],
         })
       }
+      // Add item ID to tag
+      // tags.find((t) => t.label === tagLabel).itemIds.push(item.id)
 
-      itemTags.push({
-        id: tagId,
-        label: tagLabel,
-      })
+      const newTag = tags.find((t) => t.label === tagLabel)
+
+      itemTags.push(newTag)
     })
 
     nodes.push({
@@ -126,8 +128,47 @@ async function getData() {
       x: true,
       y: true,
     },
+    shape: 'box',
+    shapeProperties: {
+      borderRadius: 3,
+    },
+    margin: 10,
+    borderWidthSelected: 2,
+    widthConstraint: false,
   })
 
+  // Mapping based on tags
+  // tags.forEach((tag) => {
+  //   nodes.push({
+  //     id: tag.id,
+  //     label: tag.label,
+  //     color: '#c3c4c7',
+  //     isDescriptive: true,
+  //     shape: 'ellipse',
+  //   })
+
+  //   edges.push({
+  //     from: CENTRAL_NODE_ID,
+  //     to: tag.id,
+  //     width: 2,
+  //     selectedWidth: 3,
+  //     length: 600,
+  //     smooth: {
+  //       enabled: true,
+  //       type: 'continuous',
+  //       roundness: 0,
+  //     },
+  //   })
+
+  //   tag.itemIds.forEach((itemId) => {
+  //     edges.push({
+  //       from: tag.id,
+  //       to: itemId,
+  //     })
+  //   })
+  // })
+
+  // Mapping based on categories
   let categoryIndex = 1
   for (const category in nodesGroupedByCategory) {
     const categoryId = categoryIndex * 10000
@@ -137,6 +178,7 @@ async function getData() {
       color: '#c3c4c7',
       isDescriptive: true,
       shape: 'ellipse',
+      group: 'category',
     })
     categoryIndex++
 

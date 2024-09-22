@@ -6,52 +6,64 @@ import Dialog from '@components/main-list/dialog'
 import styles from './Network.module.scss'
 
 const options = {
+  autoResize: true,
   nodes: {
-    shape: 'box',
-    shapeProperties: {
-      borderRadius: 3,
+    scaling: {
+      min: 16,
+      max: 32,
     },
-    size: 32,
+    shape: 'hexagon',
+    shadow: true,
     font: {
-      size: 26,
+      multi: true,
     },
-    margin: 10,
-    shadow: {
-      enabled: true,
+    widthConstraint: {
+      maximum: 120,
     },
-    borderWidthSelected: 2,
   },
   edges: {
     color: '#000000',
+    shadow: false,
+    smooth: false,
     arrows: {
       to: {
         enabled: false,
       },
     },
   },
+  groups: {
+    category: {
+      shape: 'box',
+      shapeProperties: {
+        borderRadius: 3,
+      },
+      size: 32,
+      font: {
+        size: 26,
+      },
+      margin: 10,
+      borderWidthSelected: 2,
+      widthConstraint: {
+        maximum: 160,
+      },
+    },
+  },
   physics: {
     forceAtlas2Based: {
-      gravitationalConstant: -26,
-      damping: 0.7,
-      centralGravity: 0.001,
-      springLength: 230,
-      springConstant: 0.08,
+      springLength: 100,
+      damping: 1.3,
+      gravitationalConstant: -130,
     },
-    maxVelocity: 146,
-    minVelocity: 1,
+    minVelocity: 0.85,
     solver: 'forceAtlas2Based',
-    stabilization: {
-      enabled: true,
-      iterations: 200,
-      fit: true,
-    },
-    timestep: 1,
+    stabilization: false,
   },
   interaction: {
     zoomView: true,
     hover: true,
     dragView: true,
     navigationButtons: true,
+    dragNodes: true,
     keyboard: {
       enabled: true,
       bindToWindow: true,
