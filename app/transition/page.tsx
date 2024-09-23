@@ -76,7 +76,7 @@ async function getData() {
     }
 
     const itemTags = []
-    item.tags.forEach((tagLabel) => {
+    item.tags?.forEach((tagLabel) => {
       const tagId = tags.length + 1
       if (!tags.some((t) => t.label === tagLabel)) {
         tags.push({
@@ -95,7 +95,6 @@ async function getData() {
 
     nodes.push({
       id: item.id,
-      title: item.title,
       slug: generateSlug(item.title),
       description: item.description,
       website: item.url, // or item.contact.website?
@@ -108,7 +107,7 @@ async function getData() {
         label: categoryLabel,
       },
       tags: itemTags,
-      label: item.title,
+      label: item.title.replace(/&amp;/g, '&'),
       color: COLOR_MAPPING[categoryLabel],
     })
   })
@@ -120,7 +119,7 @@ async function getData() {
     id: CENTRAL_NODE_ID,
     label: 'Transition UK',
     color: '#fcba03',
-    isDescriptive: true,
+    group: 'central-node',
     font: {
       size: 56,
     },
@@ -143,7 +142,7 @@ async function getData() {
   //     id: tag.id,
   //     label: tag.label,
   //     color: '#c3c4c7',
-  //     isDescriptive: true,
+  //     isDescriptive: true, // set group instead
   //     shape: 'ellipse',
   //   })
 
@@ -176,8 +175,6 @@ async function getData() {
       id: categoryId,
       label: category,
       color: '#c3c4c7',
-      isDescriptive: true,
-      shape: 'ellipse',
       group: 'category',
     })
     categoryIndex++

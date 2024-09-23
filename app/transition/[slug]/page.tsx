@@ -70,7 +70,7 @@ async function getListing({ listingSlug }): Promise<any> {
       .replace('United Kingdom | ', '')
 
     const itemTags = []
-    item.tags.forEach((tagLabel) => {
+    item.tags?.forEach((tagLabel) => {
       const tagId = itemTags.length + 1
       itemTags.push({
         id: tagId,

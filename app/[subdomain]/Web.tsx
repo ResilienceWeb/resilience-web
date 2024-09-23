@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useState, useMemo } from 'react'
+import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import dynamic from 'next/dynamic'
 import { Box } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
@@ -18,6 +18,7 @@ import {
   removeNonAlphaNumeric,
   sortStringsFunc,
   intersection,
+  htmlTitle,
 } from '@helpers/utils'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import useTagsPublic from '@hooks/tags/useTagsPublic'
@@ -30,19 +31,15 @@ const Drawer = dynamic(() => import('@components/drawer'), {
   ssr: false,
 })
 
-type INetwork = {
-  selectNodes: (ids: string[]) => void
-}
-
 export const CENTRAL_NODE_ID = 999
 
-export default function Web({
+const Web = ({
   data,
   webName,
   webDescription = null,
   webIsPublished,
   isTransitionMode = false,
-}) {
+}) => {
   const isMobile = useIsMobile()
   const [isWebModeDefault] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
@@ -84,7 +81,6 @@ export default function Web({
   }, [query.tags])
 
   const [selectedId, setSelectedId] = useState()
-  const [_network, setNetwork] = useState<INetwork>()
 
   const { categories: fetchedCategories } = useCategoriesPublic()
   const { tags: fetchedTags } = useTagsPublic()
@@ -131,7 +127,9 @@ export default function Web({
   const filteredItems = useMemo(() => {
     if (!data) return []
     let results = data?.nodes
-      .filter((item) => !item.isDescriptive)
+      .filter(
+        (item) => item.group !== 'category' && item.group !== 'central-node',
+      )
       .sort(sortStringsFunc)
       .sort((item) => {
         if (item.featured) {
@@ -166,6 +164,19 @@ export default function Web({
       )
     }
 
+    results = results.map((item) => {
+      let tagsHTML = ''
+      item.tags?.forEach((tag) => {
+        tagsHTML += `<span class="vis-network-title-tag">${tag.label}</span>`
+      })
+      return {
+        ...item,
+        title: htmlTitle(
+          `<span class="vis-network-title-label">${item.label}</span><br><div class="vis-network-title-tag-list">${tagsHTML}</div>`,
+        ),
+      }
+    })
+
     return results
   }, [data, isVolunteer, query.categories, query.tags, searchTermValue])
 
@@ -173,7 +184,10 @@ export default function Web({
     () =>
       data
         ? data.nodes
-            .filter((item) => item.isDescriptive)
+            .filter(
+              (item) =>
+                item.group === 'category' || item.group === 'central-node',
+            )
             .filter(
               (item) =>
                 item.id === CENTRAL_NODE_ID ||
@@ -264,7 +278,6 @@ export default function Web({
           <NetworkComponent
             data={filteredNetworkData}
             selectedId={selectedId}
-            setNetwork={setNetwork}
             setSelectedId={setSelectedId}
           />
         )}
@@ -276,3 +289,5 @@ export default function Web({
     </>
   )
 }
+
+export default memo(Web)

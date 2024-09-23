@@ -168,7 +168,7 @@ async function getData({ webSlug }) {
 
         transformedData.nodes.push({
           id: listingId,
-          title,
+          // title,
           description,
           image: image ?? '',
           website,
@@ -232,7 +232,7 @@ async function getData({ webSlug }) {
     id: CENTRAL_NODE_ID,
     label: webData.title,
     color: '#fcba03',
-    isDescriptive: true,
+    group: 'central-node',
     font: {
       size: 56,
     },
@@ -240,6 +240,13 @@ async function getData({ webSlug }) {
       x: true,
       y: true,
     },
+    shape: 'box',
+    shapeProperties: {
+      borderRadius: 3,
+    },
+    margin: 10,
+    borderWidthSelected: 2,
+    widthConstraint: false,
   })
 
   for (const category of categories) {
@@ -248,11 +255,8 @@ async function getData({ webSlug }) {
       id: categoryId,
       label: category.label,
       color: '#c3c4c7',
-      isDescriptive: true,
-      shape: 'ellipse',
+      group: 'category',
       mass: 1,
-      x: categoryPositions[category.id].x,
-      y: categoryPositions[category.id].y,
     })
 
     // From main node to category node

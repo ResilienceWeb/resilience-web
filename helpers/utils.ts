@@ -58,3 +58,14 @@ export function exclude(data, keys) {
 export function intersection(arrays) {
   return arrays.reduce((a, b) => a.filter((c) => b.includes(c)))
 }
+
+export function htmlTitle(html) {
+  if (typeof window === 'undefined') {
+    return null
+  }
+
+  const container = document.createElement('div')
+  container.className = 'vis-network-custom-tooltip'
+  container.innerHTML = html
+  return container
+}

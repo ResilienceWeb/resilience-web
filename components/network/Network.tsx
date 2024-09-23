@@ -9,17 +9,18 @@ const options = {
   autoResize: true,
   nodes: {
     scaling: {
-      min: 16,
+      min: 8,
       max: 32,
     },
     shape: 'hexagon',
     shadow: true,
     font: {
-      multi: true,
+      size: 18,
     },
     widthConstraint: {
-      maximum: 120,
+      maximum: 130,
     },
+    labelHighlightBold: false,
   },
   edges: {
     color: '#000000',
@@ -68,11 +69,12 @@ const options = {
       enabled: true,
       bindToWindow: true,
     },
+    tooltipDelay: 100,
   },
   height: '100%',
 }
 
-const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
+const Network = ({ data, selectedId, setSelectedId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
@@ -86,9 +88,6 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
       select: function (event) {
         const { nodes } = event
         setSelectedId(nodes[0])
-      },
-      showPopup: function (_event) {
-        console.log('show popup?')
       },
     }),
     [setSelectedId],
@@ -104,8 +103,6 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
     onClose()
   }, [onClose, setSelectedId])
 
-  const getNetwork = useCallback((network) => setNetwork(network), [setNetwork])
-
   return (
     <>
       <Head>
@@ -117,13 +114,18 @@ const Network = ({ data, selectedId, setSelectedId, setNetwork }) => {
       <div className={styles.graph}>
         <VisNetworkReactComponent
           events={events}
-          getNetwork={getNetwork}
           data={data}
           options={options}
         />
-        {Boolean(selectedId) && !selectedItem?.isDescriptive && (
-          <Dialog isOpen={isOpen} item={selectedItem} onClose={onCloseDialog} />
-        )}
+        {Boolean(selectedId) &&
+          selectedItem?.group !== 'category' &&
+          selectedItem?.group !== 'central-node' && (
+            <Dialog
+              isOpen={isOpen}
+              item={selectedItem}
+              onClose={onCloseDialog}
+            />
+          )}
       </div>
     </>
   )
