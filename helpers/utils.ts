@@ -1,6 +1,6 @@
 export const sortStringsFunc = (a, b): number => {
-  const labelA = a.title?.toLowerCase()
-  const labelB = b.title?.toLowerCase()
+  const labelA = a.label?.toLowerCase()
+  const labelB = b.label?.toLowerCase()
 
   if (labelA < labelB) {
     return -1

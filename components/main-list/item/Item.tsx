@@ -117,7 +117,7 @@ const Item = ({
             position="relative"
           >
             <ListingImage
-              alt={`${dataItem.title} cover image`}
+              alt={`${dataItem.label} cover image`}
               src={dataItem.image}
               sizes="(max-width: 768px) 90vw, 300px"
               isInView={isInView}
@@ -142,7 +142,7 @@ const Item = ({
               mb={0}
               noOfLines={3}
             >
-              {dataItem.title}
+              {dataItem.label}
             </chakra.h2>
           </Flex>
           {dataItem.seekingVolunteers && !simplified && (
