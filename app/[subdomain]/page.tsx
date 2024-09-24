@@ -160,12 +160,6 @@ async function getData({ webSlug }) {
         tags,
         relations,
       }) => {
-        const accessibleTextColor = selectMoreAccessibleColor(
-          `#${category.color}`,
-          '#3f3f40',
-          '#fff',
-        )
-
         transformedData.nodes.push({
           id: listingId,
           // title,
@@ -186,10 +180,6 @@ async function getData({ webSlug }) {
           // below are for vis-network node styling and data
           label: title,
           color: `#${category.color}`,
-          font: {
-            color: accessibleTextColor,
-            size: 28,
-          },
         })
 
         relations.map((relation) => {
