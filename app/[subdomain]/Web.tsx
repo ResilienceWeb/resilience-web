@@ -158,7 +158,7 @@ const Web = ({
 
     if (searchTermValue) {
       results = results.filter((item) =>
-        removeNonAlphaNumeric(item.title)
+        removeNonAlphaNumeric(item.label)
           .toLowerCase()
           .includes(searchTermValue.toLowerCase()),
       )
