@@ -1,13 +1,30 @@
 name: Playwright Tests
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://postgres:password@localhost:5432/postgres # postgresql://postgres:postgres@localhost:5432/grading-app
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${DATABASE_USER}
+          POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+          POSTGRES_DB: ${DATABASE_NAME}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
