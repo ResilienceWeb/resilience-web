@@ -12,4 +12,5 @@ test('Listings are loaded', async ({ page }) => {
   await page.goto('http://durham.localhost:3000')
 
   await expect(page.getByText('Conservation Research Institute')).toBeVisible()
+  await expect(page.getByText('Durham Community Kitchen')).toBeVisible()
 })
