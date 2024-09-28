@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { memo, useCallback, useEffect, useMemo } from 'react'
+import { memo, useState, useCallback, useEffect, useMemo } from 'react'
 import VisNetworkReactComponent from 'vis-network-react'
 import { useDisclosure } from '@chakra-ui/react'
 import Dialog from '@components/main-list/dialog'
@@ -76,6 +76,7 @@ const options = {
 
 const Network = ({ data, selectedId, setSelectedId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [network, setNetwork] = useState<any>()
 
   useEffect(() => {
     if (selectedId) {
@@ -89,8 +90,18 @@ const Network = ({ data, selectedId, setSelectedId }) => {
         const { nodes } = event
         setSelectedId(nodes[0])
       },
+      hoverNode: function () {
+        if (network) {
+          network.canvas.body.container.style.cursor = 'pointer'
+        }
+      },
+      blurNode: function () {
+        if (network) {
+          network.canvas.body.container.style.cursor = 'default'
+        }
+      },
     }),
-    [setSelectedId],
+    [network, setSelectedId],
   )
 
   const selectedItem = useMemo(
@@ -102,6 +113,8 @@ const Network = ({ data, selectedId, setSelectedId }) => {
     setSelectedId(null)
     onClose()
   }, [onClose, setSelectedId])
+
+  const getNetwork = useCallback((network) => setNetwork(network), [setNetwork])
 
   return (
     <>
@@ -116,6 +129,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
           events={events}
           data={data}
           options={options}
+          getNetwork={getNetwork}
         />
         {Boolean(selectedId) &&
           selectedItem?.group !== 'category' &&

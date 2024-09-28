@@ -41,6 +41,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${listing.title} | Resilience Web`,
+    description: truncatedDescription,
     openGraph: {
       title: `${listing.title} | Resilience Web`,
       description: truncatedDescription,
