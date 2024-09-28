@@ -19,6 +19,8 @@ test('Titles are displayed', async ({ page }) => {
 test('Web cards are loaded', async ({ page }) => {
   await page.goto('/')
 
-  await expect(page.getByRole('heading', { name: 'Cambridge' })).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: 'Intentionally wrong to test the test' }),
+  ).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Durham' })).toBeVisible()
 })
