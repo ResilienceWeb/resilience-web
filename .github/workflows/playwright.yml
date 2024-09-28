@@ -13,10 +13,6 @@ jobs:
     services:
       postgres:
         image: postgres:latest
-        env:
-          POSTGRES_USER: ${DATABASE_USER}
-          POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-          POSTGRES_DB: ${DATABASE_NAME}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
