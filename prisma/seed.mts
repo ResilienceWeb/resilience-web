@@ -33,7 +33,7 @@ const categoriesCambridge = [
   },
 ]
 
-const categoriesUni = [
+const categoriesDurham = [
   {
     label: 'Policy',
     color: '000000',
@@ -101,7 +101,7 @@ async function populateSeedData() {
     },
   })
 
-  for (const category of categoriesUni) {
+  for (const category of categoriesDurham) {
     await prisma.category.create({
       data: {
         ...category,
