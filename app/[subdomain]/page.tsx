@@ -1,4 +1,3 @@
-import { selectMoreAccessibleColor } from '@helpers/colors'
 import prisma from '../../prisma/client'
 import Web, { CENTRAL_NODE_ID } from './Web'
 
@@ -12,6 +11,8 @@ export default async function WebPage({ params }) {
   }
 
   const { transformedData, webData } = data
+
+  console.log(transformedData.nodes)
 
   return (
     <Web
@@ -57,7 +58,21 @@ export async function generateStaticParams() {
   return subdomains
 }
 
-async function getData({ webSlug }) {
+type DataType = {
+  transformedData: {
+    nodes: ListingNodeType[]
+    edges: any[]
+  }
+  webData: {
+    title: string
+    description: string
+    published: boolean
+    image: string
+    slug: string
+  }
+}
+
+async function getData({ webSlug }): Promise<DataType> {
   const webData = await prisma.web.findUnique({
     where: {
       slug: webSlug,
@@ -162,7 +177,7 @@ async function getData({ webSlug }) {
       }) => {
         transformedData.nodes.push({
           id: listingId,
-          // title,
+          title,
           description,
           image: image ?? '',
           website,

@@ -10,12 +10,19 @@ import ListingImage from '@components/listing-image'
 
 import ImagePlaceholder from './image-placeholder'
 
+type Props = {
+  categoriesIndexes: Record<string, number>
+  dataItem: ListingNodeType
+  handleClick: (dataItem: ListingNodeType) => void
+  simplified?: boolean
+}
+
 const Item = ({
   categoriesIndexes,
   dataItem,
   handleClick,
   simplified = false,
-}) => {
+}: Props) => {
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
   const ref = useRef(null)
@@ -142,7 +149,7 @@ const Item = ({
               mb={0}
               noOfLines={3}
             >
-              {dataItem.label}
+              {dataItem.label ?? dataItem.title}
             </chakra.h2>
           </Flex>
           {dataItem.seekingVolunteers && !simplified && (

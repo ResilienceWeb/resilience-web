@@ -108,6 +108,7 @@ async function getListing({ webSlug, listingSlug }): Promise<ListingType> {
           slug: true,
           title: true,
           featured: true,
+          image: true,
           category: {
             select: {
               id: true,

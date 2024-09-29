@@ -228,7 +228,7 @@ function Listing({ listing }) {
           {listing.relations?.length > 0 && (
             <>
               <Heading as="h2" fontSize="xl" mb="1rem">
-                Related groups
+                Related listings
               </Heading>
               <Grid
                 templateColumns={{
