@@ -33,13 +33,24 @@ const Drawer = dynamic(() => import('@components/drawer'), {
 
 export const CENTRAL_NODE_ID = 999
 
+type Props = {
+  data: {
+    nodes: ListingNodeType[]
+    edges: any[]
+  }
+  webName: string
+  webDescription?: string
+  webIsPublished: boolean
+  isTransitionMode?: boolean
+}
+
 const Web = ({
   data,
   webName,
   webDescription = null,
   webIsPublished,
   isTransitionMode = false,
-}) => {
+}: Props) => {
   const isMobile = useIsMobile()
   const [isWebModeDefault] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
@@ -126,7 +137,7 @@ const Web = ({
 
   const filteredItems = useMemo(() => {
     if (!data) return []
-    let results = data?.nodes
+    let results: any[] = data?.nodes
       .filter(
         (item) => item.group !== 'category' && item.group !== 'central-node',
       )

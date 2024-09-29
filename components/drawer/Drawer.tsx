@@ -167,7 +167,7 @@ const Drawer = ({
         </Box>
         <Box p="1rem">
           <Heading as="h2" fontSize="1.25rem">
-            Support this project
+            Like what you see?
           </Heading>
           {isTransitionMode ? (
             <Text mb="0.75rem" color="gray.600">
@@ -176,8 +176,8 @@ const Drawer = ({
             </Text>
           ) : (
             <Text mb="0.75rem" color="gray.600">
-              If you can, please support us with a small donation to help us
-              continue building this platform.
+              Consider making a donation to help us host and develop the
+              Resilience Web platform 🙏🏼
             </Text>
           )}
           <DonateButton />

@@ -39,4 +39,26 @@ declare global {
   type TagWithListings = Prisma.TagGetPayload<{
     include: { listings: true }
   }>
+
+  type ListingNodeType = {
+    id: number
+    title: string
+    description: string
+    image: string
+    website: string
+    facebook: string
+    twitter: string
+    instagram: string
+    seekingVolunteers: boolean
+    featured: boolean
+    category: {
+      color: string
+      label: string
+    }
+    slug: string
+    tags: any[]
+    label: string
+    color: string
+    group?: string
+  }
 }

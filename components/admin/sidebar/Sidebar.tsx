@@ -184,11 +184,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         </Box>
         <Box p="1rem">
           <Heading as="h2" fontSize="1.25rem">
-            Support this project
+            Like what you see?
           </Heading>
           <Text mb="0.75rem">
-            If you can, please support us via Open Collective to help us
-            continue building this platform.
+            Consider making a donation to help us host and develop the
+            Resilience Web platform 🙏🏼
           </Text>
           <DonateButton />
         </Box>

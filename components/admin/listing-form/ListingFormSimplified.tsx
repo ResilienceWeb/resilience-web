@@ -25,13 +25,13 @@ import {
 } from '@helpers/formValidation'
 import ImageUpload from './ImageUpload'
 import useTags from '@hooks/tags/useTags'
-import { useAppContext } from '@store/hooks'
+import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import { generateSlug } from '@helpers/utils'
 
 import EditorField from './RichTextEditor'
 
 const SlugField = () => {
-  const { selectedWebSlug } = useAppContext()
+  const selectedWebSlug = useSelectedWebSlug()
   const {
     values: { title },
     setFieldValue,
