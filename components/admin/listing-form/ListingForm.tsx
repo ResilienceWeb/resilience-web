@@ -554,7 +554,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           fontSize="sm"
                           fontWeight="600"
                         >
-                          Relations
+                          Related listings
                         </FormLabel>
                         <InputGroup size="sm">
                           <ReactSelect
@@ -579,7 +579,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                             options={relationOptions.filter(
                               (t) => !field?.value?.includes(t),
                             )}
-                            placeholder="Relations"
+                            placeholder="Related listings"
                             value={field.value}
                             isClearable={false}
                             styles={customMultiSelectStyles}
@@ -593,7 +593,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                   }}
                 </Field>
                 <Text color="gray.500" fontSize="sm">
-                  What other listings is it related to?
+                  Link to other listings that this relates to
                 </Text>
               </chakra.div>
 
