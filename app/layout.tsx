@@ -34,8 +34,9 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body>
         <Providers>
