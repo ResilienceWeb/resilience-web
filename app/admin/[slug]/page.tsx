@@ -1,4 +1,5 @@
 'use client'
+import NextLink from 'next/link'
 import { useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import {
@@ -9,18 +10,22 @@ import {
   Center,
   Alert,
   AlertIcon,
+  Link,
+  Text,
 } from '@chakra-ui/react'
 import { HiArrowLeft } from 'react-icons/hi'
 import useListing from '@hooks/listings/useListing'
 import useUpdateListing from '@hooks/listings/useUpdateListing'
 import useCategories from '@hooks/categories/useCategories'
 import ListingForm from '@components/admin/listing-form'
+import { useAppContext } from '@store/hooks'
 
 export default function ListingPage({ params }) {
   const router = useRouter()
   const slug = params.slug
   const { categories } = useCategories()
   const { mutate: updateListing } = useUpdateListing()
+  const { selectedWebSlug } = useAppContext()
 
   const goBack = useCallback(() => {
     router.back()
@@ -69,6 +74,16 @@ export default function ListingPage({ params }) {
       </Button>
 
       <Box mt={4}>
+        <Text mb="1rem" fontSize="0.875rem">
+          You can view this listing at{' '}
+          <Link
+            as={NextLink}
+            href={`https://${selectedWebSlug}.resilienceweb.org.uk/${slug}`}
+            target="_blank"
+          >
+            {selectedWebSlug}.resilienceweb.org.uk/{slug}
+          </Link>
+        </Text>
         <Box shadow="base" rounded={[null, 'md']} overflow={{ sm: 'hidden' }}>
           {listing.pending && (
             <Alert status="info" colorScheme="purple">
