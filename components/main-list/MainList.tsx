@@ -1,10 +1,12 @@
 import { memo, useCallback, useEffect, useState, useMemo } from 'react'
+import NextLink from 'next/link'
 import { AnimatePresence } from 'framer-motion'
 import {
   chakra,
   Flex,
   Grid,
   Center,
+  Button,
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
@@ -92,11 +94,14 @@ const MainList = ({ filteredItems, isMobile }) => {
               </AnimatePresence>
             </Grid>
           ) : (
-            <Center mt="2rem">
+            <Center mt="2rem" flexDirection="column" gap="1rem">
               <Text maxW="400px" textAlign="center" color="gray.600">
-                No groups matched your search criteria 🤔 Maybe propose the
-                listing to the maintainers via the Propose new listing button?
+                No listings were found that match your search 🤔 Maybe propose
+                the listing to the maintainers?
               </Text>
+              <Button as={NextLink} href="/new-listing" variant="rw">
+                Propose new listing
+              </Button>
             </Center>
           )}
         </chakra.div>
