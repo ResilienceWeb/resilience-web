@@ -16,6 +16,7 @@ import PermissionsTable from '@components/admin/permissions-table'
 import useWeb from '@hooks/webs/useWeb'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { HiArrowLeft } from 'react-icons/hi'
+import usePublishWeb from '@hooks/webs/usePublishWeb'
 
 export default function WebOverviewPage({ params }) {
   const router = useRouter()
@@ -24,6 +25,8 @@ export default function WebOverviewPage({ params }) {
     webSlug,
     withAdminInfo: true,
   })
+  const { mutate: publishWeb, isPending: isPublishingWeb } =
+    usePublishWeb(webSlug)
 
   const goBack = useCallback(() => {
     router.back()
@@ -96,7 +99,16 @@ export default function WebOverviewPage({ params }) {
             Published
           </Badge>
         ) : (
-          <Badge fontSize="lg">Private</Badge>
+          <Flex gap="1rem" flexDirection="column" alignItems="center">
+            <Badge fontSize="lg">Private</Badge>
+            <Button
+              variant="rw"
+              onClick={() => publishWeb()}
+              isLoading={isPublishingWeb}
+            >
+              Publish 🚀
+            </Button>
+          </Flex>
         )}
       </Flex>
       <Link
