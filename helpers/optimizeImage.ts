@@ -26,6 +26,10 @@ const readPhoto = async (photo) => {
   return canvas
 }
 
+/**
+ * This function also uses the readPhoto function
+ * which adds a white background canvas to ensure transparent images get a white background instead of a black one
+ */
 const optimizeImage = async (photo): Promise<Blob> => {
   let canvas = await readPhoto(photo)
 

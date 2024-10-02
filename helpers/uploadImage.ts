@@ -1,4 +1,5 @@
 import path from 'path'
+import sharp from 'sharp'
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import doSpace from '../lib/digitalocean'
 import config from './config'
@@ -17,23 +18,25 @@ const uploadImage = async (
   const uniqueFileId = generateUniqueId()
   const fileName = `${uniqueFileId}-${image.name}`
 
+  const compressedImage = await sharp(imageBuffer)
+    .webp({ quality: 80 })
+    .toBuffer()
+
   const putObjectCommand = new PutObjectCommand({
     Bucket: config.bucketName,
-    Body: imageBuffer,
+    Body: compressedImage,
     Key: fileName,
-    ContentType: image.type,
-    ContentLength: image.size,
     ACL: 'public-read',
   })
 
   const response = await doSpace.send(putObjectCommand)
+  console.log(response)
 
   if (response['$metadata'].httpStatusCode === 200) {
     const imageUrl = `${config.digitalOceanSpaces}${fileName}`
 
     if (oldImageKey) {
       // Delete previous image
-      console.log(path.basename(oldImageKey))
       const deleteObjectCommand = new DeleteObjectCommand({
         Bucket: config.bucketName,
         Key: path.basename(oldImageKey),
