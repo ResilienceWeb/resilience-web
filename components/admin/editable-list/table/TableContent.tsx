@@ -41,7 +41,6 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
           {items.map((item, index) => (
             <Tr key={index}>
               {columns.map((column, index) => {
-                console.log(item)
                 const cell = item[column.accessor]
                 const element = column.Cell?.(cell) ?? cell
                 return <Td key={index}>{element}</Td>
