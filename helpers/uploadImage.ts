@@ -1,11 +1,11 @@
-// @ts-nocheck
 import path from 'path'
+import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import doSpace from '../lib/digitalocean'
 import config from './config'
 
 function generateUniqueId() {
   const timestamp = Date.now().toString(36)
-  const random = Math.random().toString(36).substr(2, 10)
+  const random = Math.random().toString(36).substring(2, 10)
   return `${timestamp}-${random}`
 }
 
@@ -15,56 +15,40 @@ const uploadImage = async (
 ): Promise<string> => {
   const imageBuffer = Buffer.from(await image.arrayBuffer())
   const uniqueFileId = generateUniqueId()
+  const fileName = `${uniqueFileId}-${image.name}`
 
-  return new Promise((resolve, reject) => {
-    if (image) {
-      const params = {
-        Bucket: `${config.bucketName}`,
-        Body: imageBuffer,
-        Key: uniqueFileId,
-        ContentType: image.type,
-        ACL: 'public-read',
-      }
-
-      let imageUrl
-      doSpace
-        .upload(params, function (err, _data) {
-          if (err) {
-            console.error(err)
-            reject(err)
-          }
-        })
-        .on('build', (request) => {
-          request.httpRequest.headers.Host = `${config.digitalOceanSpaces}`
-          request.httpRequest.headers['Content-Length'] = image.size
-          request.httpRequest.headers['Content-Type'] = image.type
-          request.httpRequest.headers['x-amz-acl'] = 'public-read'
-        })
-        .send((err) => {
-          if (err) {
-            console.error(err)
-            reject(err)
-          } else {
-            imageUrl = `${config.digitalOceanSpaces}` + uniqueFileId
-            console.log('File uploaded successfully', imageUrl)
-            resolve(imageUrl)
-
-            if (oldImageKey) {
-              // Delete previous image
-              const deleteParams = {
-                Bucket: `${config.bucketName}`,
-                Key: path.basename(oldImageKey),
-              }
-              doSpace.deleteObject(deleteParams, function (err, data) {
-                console.log(err, data)
-              })
-            }
-          }
-        })
-    } else {
-      resolve(null)
-    }
+  const putObjectCommand = new PutObjectCommand({
+    Bucket: config.bucketName,
+    Body: imageBuffer,
+    Key: fileName,
+    ContentType: image.type,
+    ContentLength: image.size,
+    ACL: 'public-read',
   })
+
+  const response = await doSpace.send(putObjectCommand)
+
+  if (response['$metadata'].httpStatusCode === 200) {
+    const imageUrl = `${config.digitalOceanSpaces}${fileName}`
+
+    if (oldImageKey) {
+      // Delete previous image
+      console.log(path.basename(oldImageKey))
+      const deleteObjectCommand = new DeleteObjectCommand({
+        Bucket: config.bucketName,
+        Key: path.basename(oldImageKey),
+      })
+
+      const deleteResponse = await doSpace.send(deleteObjectCommand)
+      if (deleteResponse['$metadata'].httpStatusCode !== 204) {
+        console.error('[RW] Error deleting old image', deleteResponse)
+      }
+    }
+
+    return imageUrl
+  } else {
+    console.error('[RW] Error uploading image', response)
+  }
 }
 
 export default uploadImage
