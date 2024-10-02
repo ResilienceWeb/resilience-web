@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import {
+  Flex,
   Button,
   Badge,
   Tooltip,
@@ -11,7 +12,11 @@ import {
   Thead,
   Tr,
   Stack,
+  Tag,
+  TagLeftIcon,
+  TagLabel,
 } from '@chakra-ui/react'
+import { PiWarningCircleBold } from 'react-icons/pi'
 
 import CategoryTag from '@components/category-tag'
 
@@ -33,10 +38,11 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {items.map((row, index) => (
+          {items.map((item, index) => (
             <Tr key={index}>
               {columns.map((column, index) => {
-                const cell = row[column.accessor]
+                console.log(item)
+                const cell = item[column.accessor]
                 const element = column.Cell?.(cell) ?? cell
                 return <Td key={index}>{element}</Td>
               })}
@@ -46,29 +52,44 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
                 <b>
                   {Intl.DateTimeFormat('en-GB', {
                     dateStyle: 'long',
-                  }).format(new Date(row.createdAt))}
+                  }).format(new Date(item.createdAt))}
                 </b>
                 <br />
                 Last updated on{' '}
                 <b>
                   {Intl.DateTimeFormat('en-GB', {
                     dateStyle: 'long',
-                  }).format(new Date(row.updatedAt))}
+                  }).format(new Date(item.updatedAt))}
                 </b>
+                <br />
+                <Flex mt="0.5rem" flexWrap="wrap" gap="0.25rem">
+                  {!item.image && (
+                    <Tag>
+                      <TagLeftIcon boxSize="18px" as={PiWarningCircleBold} />
+                      <TagLabel>No image</TagLabel>
+                    </Tag>
+                  )}
+                  {item.description.length < 50 && (
+                    <Tag>
+                      <TagLeftIcon boxSize="18px" as={PiWarningCircleBold} />
+                      <TagLabel>Short description</TagLabel>
+                    </Tag>
+                  )}
+                </Flex>
               </Td>
 
               <Td position="sticky" right={0} background="gray.100">
                 <Stack direction="column" spacing={2}>
                   <Button
-                    colorScheme={row.pending ? 'purple' : 'blue'}
-                    onClick={() => goToEdit(row)}
+                    colorScheme={item.pending ? 'purple' : 'blue'}
+                    onClick={() => goToEdit(item)}
                     size="sm"
                   >
-                    {row.pending ? 'Review' : 'Edit'}
+                    {item.pending ? 'Review' : 'Edit'}
                   </Button>
                   <Button
                     colorScheme="red"
-                    onClick={() => removeItem(row.slug)}
+                    onClick={() => removeItem(item.slug)}
                     size="sm"
                   >
                     Remove
