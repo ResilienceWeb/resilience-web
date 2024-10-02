@@ -41,10 +41,22 @@ const JoinTheCommunity = () => {
           </Box>
 
           <Heading as="h3" fontSize="2xl" mt="6">
-            2. Join our Discord community
+            2. Attend one of our monthly assemblies
+          </Heading>
+          <Link
+            href="https://www.eventbrite.co.uk/e/resilience-web-monthly-assembly-drop-in-tickets-966287189997"
+            isExternal
+          >
+            <Button mt={2} variant="outline" size="md">
+              Book your place
+            </Button>
+          </Link>
+
+          <Heading as="h3" fontSize="2xl" mt="6">
+            3. Join our Discord community
           </Heading>
           <Link href="https://discord.gg/SHj2wmRDwR" isExternal>
-            <Button mt={2} variant="rw" size="md" leftIcon={<FaDiscord />}>
+            <Button mt={2} variant="outline" size="md" leftIcon={<FaDiscord />}>
               Join the Community
             </Button>
           </Link>

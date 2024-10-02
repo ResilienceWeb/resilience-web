@@ -59,8 +59,9 @@ const WebCreatedEmail = ({ webTitle, url }: props) => {
             <Link href="mailto@resilienceweb.org.uk">
               info@resilienceweb.org.uk
             </Link>{' '}
-            or book a training session{' '}
-            <Link href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3POx5B9YlGkzuVp02JmN0Vb_9U5HMOy5MMPi5818YomktgkhdQ3ijmh14rL0gm6aOc5_7uuEvb">
+            or join one of our monthly assemblies on the first Wednesday of the
+            month. Book your spot{' '}
+            <Link href="https://www.eventbrite.co.uk/e/resilience-web-monthly-assembly-drop-in-tickets-966287189997">
               here
             </Link>
           </Text>

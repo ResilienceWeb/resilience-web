@@ -54,8 +54,8 @@ const SignupForm = () => {
     >
       {(props) => (
         <Form>
-          <InputGroup size="md">
-            <Field name="email" validate={fieldRequiredValidator}>
+          <InputGroup size="md" width="26rem">
+            <Field name="email" validate={fieldRequiredValidator} flex={1}>
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.email}>
                   <Input
@@ -65,7 +65,6 @@ const SignupForm = () => {
                     placeholder="Your email address"
                     background="white"
                     textColor="gray.900"
-                    width="22rem"
                     autoCapitalize="off"
                     autoCorrect="off"
                     _placeholder={{ color: 'gray.700' }}
@@ -86,7 +85,7 @@ const SignupForm = () => {
                 </FormControl>
               )}
             </Field>
-            <InputRightElement width="8.5rem" justifyContent="flex-end">
+            <InputRightElement width="9rem" justifyContent="flex-end">
               <Button
                 type="submit"
                 h="100%"
@@ -104,7 +103,13 @@ const SignupForm = () => {
               </Button>
             </InputRightElement>
           </InputGroup>
-          <Text fontSize="10px" mt="0.25rem">
+          <Text
+            className="google-recaptcha-text"
+            mt="0.25rem"
+            style={{
+              fontSize: '10px',
+            }}
+          >
             This site is protected by reCAPTCHA and the Google{' '}
             <a href="https://policies.google.com/privacy">Privacy Policy</a> and{' '}
             <a href="https://policies.google.com/terms">Terms of Service</a>{' '}

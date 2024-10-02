@@ -12,8 +12,6 @@ export default async function WebPage({ params }) {
 
   const { transformedData, webData } = data
 
-  console.log(transformedData.nodes)
-
   return (
     <Web
       data={transformedData}

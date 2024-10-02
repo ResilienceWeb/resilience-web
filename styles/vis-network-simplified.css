@@ -113,7 +113,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   max-width: 250px;
   gap: 3px;
 }
-.vis-network-title-tag:first-of-type {
+.vis-network-title-tag-list:has(.vis-network-title-tag) {
   margin-top: 4px;
 }
 .vis-network-title-tag {

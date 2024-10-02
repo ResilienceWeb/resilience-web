@@ -32,7 +32,7 @@ const Layout = ({
         >
           {isHomepage && (
             <AlertBanner
-              content="Starting September 4th, we will be hosting an online Monthly Assembly every first Wednesday of the month, at midday. Click here to read more."
+              content="Join our online monthly Assembly every first Wednesday of the month, at midday. Click here to read more."
               type="info"
               url="https://resilienceweb.org.uk/news/monthly-assembly"
             />
