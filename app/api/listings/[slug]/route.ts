@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client'
 import uploadImage from '@helpers/uploadImage'
+import deleteImage from '@helpers/deleteImage'
 import { stringToBoolean } from '@helpers/utils'
 import prisma from '../../../../prisma/client'
 
@@ -242,6 +243,10 @@ export async function DELETE(request, { params }) {
       await prisma.listingLocation.delete({
         where: { id: listing.locationId },
       })
+    }
+
+    if (listing.image) {
+      await deleteImage(listing.image)
     }
 
     return Response.json({

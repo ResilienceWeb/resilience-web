@@ -10,10 +10,10 @@ function generateUniqueId() {
   return `${timestamp}-${random}`
 }
 
-const uploadImage = async (
+export default async function uploadImage(
   image: File,
   oldImageKey?: string,
-): Promise<string> => {
+): Promise<string> {
   const imageBuffer = Buffer.from(await image.arrayBuffer())
   const uniqueFileId = generateUniqueId()
   const fileName = `${uniqueFileId}-${image.name}`
@@ -30,7 +30,6 @@ const uploadImage = async (
   })
 
   const response = await doSpace.send(putObjectCommand)
-  console.log(response)
 
   if (response['$metadata'].httpStatusCode === 200) {
     const imageUrl = `${config.digitalOceanSpaces}${fileName}`
@@ -53,5 +52,3 @@ const uploadImage = async (
     console.error('[RW] Error uploading image', response)
   }
 }
-
-export default uploadImage
