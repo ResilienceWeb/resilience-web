@@ -15,7 +15,7 @@ import {
   useColorModeValue,
   Text,
 } from '@chakra-ui/react'
-import { FiMenu } from 'react-icons/fi'
+import { RxHamburgerMenu } from 'react-icons/rx'
 import { BsPersonCircle } from 'react-icons/bs'
 import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 const WebSelector = dynamic(() => import('./web-selector'))
@@ -42,7 +42,7 @@ const Nav = ({ onOpen }) => {
           variant="outline"
           onClick={onOpen}
           aria-label="open menu"
-          icon={<FiMenu />}
+          icon={<RxHamburgerMenu />}
           display={{ base: 'inherit', lg: 'none' }}
           mr="1rem"
         />

@@ -19,12 +19,8 @@ import {
   useDisclosure,
   Icon,
 } from '@chakra-ui/react'
-import {
-  HamburgerIcon,
-  CloseIcon,
-  ChevronRightIcon,
-  ChevronDownIcon,
-} from '@chakra-ui/icons'
+import { RxHamburgerMenu } from 'react-icons/rx'
+import { HiChevronRight, HiOutlineX } from 'react-icons/hi'
 
 import useWebs from '@hooks/webs/useWebs'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
@@ -110,15 +106,10 @@ export default function MainNav() {
           <Flex ml={{ base: -2 }} display={{ base: 'flex', md: 'none' }}>
             <IconButton
               onClick={onToggle}
-              icon={
-                isOpen ? (
-                  <CloseIcon w={3} h={3} />
-                ) : (
-                  <HamburgerIcon w={5} h={5} />
-                )
-              }
+              icon={isOpen ? <HiOutlineX /> : <RxHamburgerMenu />}
               variant={'ghost'}
               aria-label={'Toggle Navigation'}
+              fontSize="1.5rem"
             />
           </Flex>
           <Flex alignItems="center">
@@ -231,7 +222,7 @@ const DesktopSubNavItem = ({ label, href }) => {
           align={'center'}
           flex={1}
         >
-          <Icon color={'rw.700'} w={5} h={5} as={ChevronRightIcon} />
+          <Icon color={'rw.700'} w={5} h={5} as={HiChevronRight} />
         </Flex>
       </Stack>
     </Link>
@@ -275,12 +266,11 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         </Text>
         {children && (
           <Icon
-            as={ChevronDownIcon}
+            as={HiChevronRight}
             transition={'all .25s ease-in-out'}
-            transform={isOpen ? 'rotate(180deg)' : ''}
+            transform={isOpen ? 'rotate(270deg)' : 'rotate(90deg)'}
             w={6}
             h={6}
-            // zIndex={1000}
           />
         )}
       </Flex>

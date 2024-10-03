@@ -15,7 +15,7 @@ import {
   Tooltip,
   Grid,
 } from '@chakra-ui/react'
-import { SiFacebook, SiInstagram, SiX } from 'react-icons/si'
+import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa'
 import { SlGlobe } from 'react-icons/sl'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 
@@ -152,7 +152,7 @@ function Listing({ listing }) {
                   {listing.facebook && (
                     <Link href={listing.facebook} target="_blank">
                       <Icon
-                        as={SiFacebook}
+                        as={FaFacebook}
                         color="gray.600"
                         cursor="pointer"
                         w={8}
@@ -165,7 +165,7 @@ function Listing({ listing }) {
                   {listing.twitter && (
                     <Link href={listing.twitter} target="_blank">
                       <Icon
-                        as={SiX}
+                        as={FaTwitter}
                         color="gray.600"
                         cursor="pointer"
                         w={8}
@@ -178,7 +178,7 @@ function Listing({ listing }) {
                   {listing.instagram && (
                     <Link href={listing.instagram} target="_blank">
                       <Icon
-                        as={SiInstagram}
+                        as={FaInstagram}
                         color="gray.600"
                         cursor="pointer"
                         w={8}

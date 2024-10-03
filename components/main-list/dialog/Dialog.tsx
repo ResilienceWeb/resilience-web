@@ -12,7 +12,6 @@ import {
   Icon,
   HStack,
   Link,
-  chakra,
   Flex,
   Tooltip,
   Text,
@@ -20,9 +19,8 @@ import {
   Tag,
   useToast,
 } from '@chakra-ui/react'
-import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { SiFacebook, SiInstagram, SiX } from 'react-icons/si'
-import { HiUserGroup, HiOutlineLink } from 'react-icons/hi'
+import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa'
+import { HiUserGroup, HiOutlineLink, HiExternalLink } from 'react-icons/hi'
 import { sanitizeLink } from '@helpers/utils'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import DescriptionRichText from '@components/main-list/description-rich-text'
@@ -80,7 +78,7 @@ const Dialog = ({
         {item.facebook && (
           <Link href={item.facebook} target="_blank">
             <Icon
-              as={SiFacebook}
+              as={FaFacebook}
               color="gray.600"
               cursor="pointer"
               w={8}
@@ -93,7 +91,7 @@ const Dialog = ({
         {item.twitter && (
           <Link href={item.twitter} target="_blank">
             <Icon
-              as={SiX}
+              as={FaTwitter}
               color="gray.600"
               cursor="pointer"
               w={8}
@@ -106,7 +104,7 @@ const Dialog = ({
         {item.instagram && (
           <Link href={item.instagram} target="_blank">
             <Icon
-              as={SiInstagram}
+              as={FaInstagram}
               color="gray.600"
               cursor="pointer"
               w={8}
@@ -199,15 +197,18 @@ const Dialog = ({
               <Text color="gray.700" fontWeight="600">
                 Website:
               </Text>
-              <chakra.a
+              <Link
                 color="blue.400"
                 href={listingWebsite}
                 rel="noreferrer"
                 target="_blank"
-                verticalAlign="text-bottom"
+                display="flex"
+                alignItems="center"
+                gap="0.125rem"
               >
-                {websiteSanitized} <ExternalLinkIcon ml={1} />
-              </chakra.a>
+                <span>{websiteSanitized}</span>
+                <HiExternalLink />
+              </Link>
             </HStack>
           )}
 

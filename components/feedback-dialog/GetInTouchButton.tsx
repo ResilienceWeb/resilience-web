@@ -1,5 +1,6 @@
 import { Tooltip, IconButton, Button, useDisclosure } from '@chakra-ui/react'
-import { ChatIcon } from '@chakra-ui/icons'
+import { HiOutlineChatBubbleLeft } from 'react-icons/hi2'
+
 import useIsMobile from '@hooks/application/useIsMobile'
 import FeedbackDialog from './FeedbackDialog'
 
@@ -21,9 +22,10 @@ const GetInTouchButton = () => {
         {isMobile ? (
           <IconButton
             aria-label="Send feedback"
-            icon={<ChatIcon />}
+            icon={<HiOutlineChatBubbleLeft />}
             onClick={handleOpenFeedbackDialog}
             size="md"
+            fontSize="22px"
             variant="outline"
           />
         ) : (

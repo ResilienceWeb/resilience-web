@@ -20,7 +20,7 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react'
-import { HiViewList, HiOutlineUsers, HiOutlineCog } from 'react-icons/hi'
+import { HiViewList, HiUserGroup, HiOutlineCog } from 'react-icons/hi'
 import { BiCategory } from 'react-icons/bi'
 import { GrOverview } from 'react-icons/gr'
 import useHasPermissionForCurrentWeb from '@hooks/permissions/useHasPermissionForCurrentWeb'
@@ -89,7 +89,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       links.push({
         label: 'Team',
         href: '/admin/team',
-        icon: <Icon as={HiOutlineUsers} fontSize="lg" />,
+        icon: <Icon as={HiUserGroup} fontSize="lg" />,
         tourId: 'nav-team',
       })
     }
