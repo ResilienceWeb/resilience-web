@@ -46,6 +46,7 @@ export default function MainNav() {
       {
         label: 'Webs',
         href: '/#web-cards',
+        rel: 'nofollow',
         children: webs
           ?.filter(
             (web) =>
@@ -160,7 +161,7 @@ const DesktopNav = ({ currentPathname, navItems }) => {
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
-              <NextLink href={navItem.href} passHref>
+              <NextLink href={navItem.href} passHref rel={navItem.rel}>
                 <button
                   className={`${styles.navLink} ${
                     currentPathname === navItem.href ? styles.active : ''
@@ -280,9 +281,9 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           mt={2}
           pl={4}
           borderLeft={1}
-          borderStyle={'solid'}
+          borderStyle="solid"
           borderColor={useColorModeValue('gray.200', 'gray.700')}
-          align={'start'}
+          align="start"
         >
           {children &&
             children.map((child) => (
