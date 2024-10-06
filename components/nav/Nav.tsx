@@ -33,6 +33,7 @@ interface NavItem {
   subLabel?: string
   children?: Array<NavItem>
   href?: string
+  rel?: string
 }
 
 export default function MainNav() {
