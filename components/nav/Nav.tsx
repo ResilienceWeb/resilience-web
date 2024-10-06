@@ -161,7 +161,7 @@ const DesktopNav = ({ currentPathname, navItems }) => {
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
-              <NextLink href={navItem.href} passHref rel={navItem.rel}>
+              <NextLink href={navItem.href} passHref>
                 <button
                   className={`${styles.navLink} ${
                     currentPathname === navItem.href ? styles.active : ''
@@ -244,7 +244,7 @@ const MobileNav = ({ navItems }) => {
   )
 }
 
-const MobileNavItem = ({ label, children, href }: NavItem) => {
+const MobileNavItem = ({ label, children, href, rel }: NavItem) => {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
@@ -253,8 +253,9 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         py={2}
         as={Link}
         href={children ? undefined : href}
-        justify={'space-between'}
-        align={'center'}
+        rel={rel}
+        justify="space-between"
+        align="center"
         _hover={{
           textDecoration: 'none',
         }}
