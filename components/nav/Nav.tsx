@@ -33,7 +33,6 @@ interface NavItem {
   subLabel?: string
   children?: Array<NavItem>
   href?: string
-  rel?: string
 }
 
 export default function MainNav() {
@@ -47,7 +46,6 @@ export default function MainNav() {
       {
         label: 'Webs',
         href: '/#web-cards',
-        rel: 'nofollow',
         children: webs
           ?.filter(
             (web) =>
@@ -245,16 +243,16 @@ const MobileNav = ({ navItems }) => {
   )
 }
 
-const MobileNavItem = ({ label, children, href, rel }: NavItem) => {
+const MobileNavItem = ({ label, children, href }: NavItem) => {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
     <Stack data-testid="stack" spacing={4} onClick={children && onToggle}>
       <Flex
         py={2}
-        as={Link}
-        href={children ? undefined : href}
-        rel={rel}
+        as={children ? 'button' : Link}
+        // @ts-ignore
+        href={children ? null : href}
         justify="space-between"
         align="center"
         _hover={{
