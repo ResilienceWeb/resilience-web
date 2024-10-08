@@ -29,7 +29,6 @@ function makeQueryClient() {
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 let browserQueryClient: QueryClient | undefined = undefined
 
 function getQueryClient() {

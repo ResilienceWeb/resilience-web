@@ -42,7 +42,7 @@ const useAllowedWebs = () => {
 
   return {
     allowedWebs: allAllowedWebs,
-    isLoadingWebs: isLoadingWebs,
+    isLoadingWebs: isLoadingWebs || isFetchingWebs,
     isLoading: isLoadingPermissions || isLoadingOwnerships || isFetchingWebs,
   }
 }

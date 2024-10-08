@@ -1,4 +1,9 @@
-import { QueryClient } from '@tanstack/react-query'
+import {
+  QueryClient,
+  dehydrate,
+  HydrationBoundary,
+} from '@tanstack/react-query'
+import { Suspense } from 'react'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import LayoutContainer from '@components/admin/layout-container'
@@ -29,8 +34,8 @@ export async function fetchPermissionsHydrate() {
     headers: headers(),
   })
   const data = await response.json()
-  const listingIds = data.permission?.listings.map((l) => l.id)
-  const webIds = data.permission?.webs.map((l) => l.id)
+  const listingIds = data.permission?.listings.map((l) => l.id) ?? []
+  const webIds = data.permission?.webs.map((l) => l.id) ?? []
   return { listingIds, webIds, fullPermissionData: data.permission }
 }
 
@@ -44,18 +49,22 @@ export default async function Layout({ children }) {
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({
     queryKey: ['permission'],
-    queryFn: () => fetchPermissionsHydrate(),
+    queryFn: fetchPermissionsHydrate,
   })
 
   await queryClient.prefetchQuery({
     queryKey: ['my-ownerships'],
-    queryFn: () => fetchMyOwnershipsHydrate(),
+    queryFn: fetchMyOwnershipsHydrate,
   })
 
   return (
     <Providers>
       <SessionProvider session={session}>
-        <LayoutContainer>{children}</LayoutContainer>
+        <LayoutContainer>
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <Suspense>{children}</Suspense>
+          </HydrationBoundary>
+        </LayoutContainer>
       </SessionProvider>
     </Providers>
   )

@@ -1,9 +1,9 @@
 'use client'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo } from 'react'
 import posthog from 'posthog-js'
-import { Center, Spinner, Box } from '@chakra-ui/react'
+import { Center, Spinner } from '@chakra-ui/react'
 import { driver } from 'driver.js'
 import 'driver.js/dist/driver.css'
 
@@ -14,7 +14,6 @@ import useDeleteListing from '@hooks/listings/useDeleteListing'
 import usePermissions from '@hooks/permissions/usePermissions'
 import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
 import { useAppContext } from '@store/hooks'
-import WebCreation from '@components/admin/web-creation'
 
 const driverObj = driver({
   showProgress: true,
@@ -120,7 +119,7 @@ export default function AdminPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstTime])
 
-  if (allowedListings === null) {
+  if (isLoadingWebs || allowedListings === null) {
     return (
       <Center height="50vh">
         <Spinner size="xl" />
@@ -128,12 +127,8 @@ export default function AdminPage() {
     )
   }
 
-  if (!isLoadingWebs && allowedWebs.length === 0) {
-    return (
-      <Box px={{ base: '4', md: '10' }} py={4} maxWidth="2xl" mx="auto">
-        <WebCreation />
-      </Box>
-    )
+  if (allowedWebs.length === 0) {
+    redirect('/admin/welcome')
   }
 
   return (
