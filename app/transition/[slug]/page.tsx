@@ -1,6 +1,6 @@
 import truncate from 'lodash/truncate'
 import Listing from '../../[subdomain]/[slug]/Listing'
-import { COLOR_MAPPING } from '../utils'
+import { CATEGORY_COLOR_MAPPING, TAG_COLOR_MAPPING } from '../utils'
 import { generateSlug } from '@helpers/utils'
 
 export default async function TransitionListingPage({ params }) {
@@ -75,6 +75,7 @@ async function getListing({ listingSlug }): Promise<any> {
       itemTags.push({
         id: tagId,
         label: tagLabel,
+        color: TAG_COLOR_MAPPING[tagLabel],
       })
     })
 
@@ -89,12 +90,12 @@ async function getListing({ listingSlug }): Promise<any> {
       instagram: item.contact.instagram,
       twitter: item.contact.twitter,
       category: {
-        color: COLOR_MAPPING[categoryLabel],
+        color: CATEGORY_COLOR_MAPPING[categoryLabel],
         label: categoryLabel,
       },
       tags: itemTags,
       label: item.title,
-      color: COLOR_MAPPING[categoryLabel],
+      color: CATEGORY_COLOR_MAPPING[categoryLabel],
     }
   })
 

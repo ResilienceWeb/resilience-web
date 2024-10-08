@@ -74,13 +74,11 @@ const Web = ({
 
   const selectedCategories = useMemo(() => {
     return query.categories.map((categoryLabel) => {
-      const categoryColor = categories.find(
-        (c: Category) => c.label === categoryLabel,
-      )?.color
       return {
         value: categoryLabel,
         label: categoryLabel,
-        color: categoryColor,
+        color: categories.find((c: Category) => c.label === categoryLabel)
+          ?.color,
       }
     })
   }, [categories, query.categories])
@@ -88,8 +86,9 @@ const Web = ({
     return query.tags.map((tagLabel) => ({
       value: tagLabel,
       label: tagLabel,
+      color: tags.find((t) => t.label === tagLabel)?.color,
     }))
-  }, [query.tags])
+  }, [tags, query.tags])
 
   const [selectedId, setSelectedId] = useState()
 
@@ -112,9 +111,11 @@ const Web = ({
     if (!fetchedTags) return
 
     setTags(
-      fetchedTags.map((c) => ({
-        value: c.label,
-        label: c.label,
+      fetchedTags.map((t) => ({
+        value: t.label,
+        label: t.label,
+        // @ts-ignore
+        color: t.color ?? '#2f2f30',
       })),
     )
   }, [fetchedTags])
@@ -178,7 +179,7 @@ const Web = ({
     results = results.map((item) => {
       let tagsHTML = ''
       item.tags?.forEach((tag) => {
-        tagsHTML += `<span class="vis-network-title-tag">${tag.label}</span>`
+        tagsHTML += `<span class="vis-network-title-tag" style="background-color: ${tag.color ?? '#b4fdbd'}">${tag.label}</span>`
       })
       return {
         ...item,

@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query'
 import { generateSlug } from '@helpers/utils'
 import Web, { CENTRAL_NODE_ID } from '../[subdomain]/Web'
-import { COLOR_MAPPING } from './utils'
+import { CATEGORY_COLOR_MAPPING, TAG_COLOR_MAPPING } from './utils'
 
 export const metadata = {
   title: 'Transition UK',
@@ -71,7 +71,7 @@ async function getData() {
     if (!categories.some((c) => c.label === categoryLabel)) {
       categories.push({
         label: categoryLabel,
-        color: COLOR_MAPPING[categoryLabel].substring(1),
+        color: CATEGORY_COLOR_MAPPING[categoryLabel].substring(1),
       })
     }
 
@@ -82,14 +82,14 @@ async function getData() {
         tags.push({
           id: tagId,
           label: tagLabel,
-          // itemIds: [],
+          color: TAG_COLOR_MAPPING[tagLabel],
+          itemIds: [],
         })
       }
       // Add item ID to tag
       // tags.find((t) => t.label === tagLabel).itemIds.push(item.id)
 
       const newTag = tags.find((t) => t.label === tagLabel)
-
       itemTags.push(newTag)
     })
 
@@ -103,12 +103,12 @@ async function getData() {
       instagram: item.contact.instagram,
       twitter: item.contact.twitter,
       category: {
-        color: COLOR_MAPPING[categoryLabel],
+        color: CATEGORY_COLOR_MAPPING[categoryLabel],
         label: categoryLabel,
       },
       tags: itemTags,
       label: item.title.replace(/&amp;/g, '&'),
-      color: COLOR_MAPPING[categoryLabel],
+      color: CATEGORY_COLOR_MAPPING[categoryLabel],
     })
   })
 
@@ -142,8 +142,7 @@ async function getData() {
   //     id: tag.id,
   //     label: tag.label,
   //     color: '#c3c4c7',
-  //     isDescriptive: true, // set group instead
-  //     shape: 'ellipse',
+  //     group: 'category',
   //   })
 
   //   edges.push({

@@ -212,11 +212,11 @@ function Listing({ listing }) {
                   href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
                 >
                   <Tag
-                    backgroundColor="gray.200"
+                    backgroundColor={tag.color ?? 'gray.300'}
                     userSelect="none"
                     cursor="pointer"
-                    transition="background-color 0.2s ease"
-                    _hover={{ bgColor: 'gray.300' }}
+                    transition="opacity 0.2s ease"
+                    _hover={{ opacity: 0.9 }}
                   >
                     #{tag.label}
                   </Tag>

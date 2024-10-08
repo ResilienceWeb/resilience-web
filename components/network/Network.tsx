@@ -52,7 +52,7 @@ const options = {
   physics: {
     forceAtlas2Based: {
       springLength: 100,
-      damping: 1.3,
+      damping: 1,
       gravitationalConstant: -130,
     },
     minVelocity: 0.85,

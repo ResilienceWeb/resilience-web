@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import NextLink from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import {
   Modal,
   ModalOverlay,
@@ -142,6 +143,9 @@ const Dialog = ({
     return `//${item.website}`
   }, [item.website])
 
+  const searchParams = useSearchParams()
+  const webSearchParam = searchParams.get('web')
+
   return (
     <Modal
       isCentered
@@ -229,11 +233,24 @@ const Dialog = ({
             flexWrap="wrap"
             gap="0.25rem"
           >
-            {item.tags?.map((tag) => (
-              <Tag backgroundColor="gray.300" userSelect="none" key={tag.id}>
-                #{tag.label}
-              </Tag>
-            ))}
+            {item.tags?.map((tag) => {
+              const urlEncodedTag = tag.label.replace(' ', '+')
+              return (
+                <NextLink
+                  key={tag.id}
+                  href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?web=${webSearchParam}&tags=${urlEncodedTag}`}
+                  onClick={onClose}
+                >
+                  <Tag
+                    backgroundColor={tag.color ?? 'gray.300'}
+                    userSelect="none"
+                    _hover={{ opacity: 0.8 }}
+                  >
+                    #{tag.label}
+                  </Tag>
+                </NextLink>
+              )
+            })}
           </Box>
         </ModalBody>
 
