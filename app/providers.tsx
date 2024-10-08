@@ -63,6 +63,7 @@ export default function Providers({ children }) {
         debug: false,
         capture_pageview: false,
         capture_pageleave: true,
+        persistence: 'localStorage',
       })
     }
   }, [])
