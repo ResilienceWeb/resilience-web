@@ -41,7 +41,7 @@ const Map = dynamic(() => import('./Map'), {
   ),
 })
 
-const SlugField = () => {
+const SlugField = ({ isEditMode }) => {
   const { selectedWebSlug } = useAppContext()
   const {
     values: { title },
@@ -49,12 +49,16 @@ const SlugField = () => {
   } = useFormikContext<any>()
 
   useEffect(() => {
+    if (isEditMode) {
+      return
+    }
+
     const generatedSlug = generateSlug(title)
 
     if (title.trim() !== '') {
       setFieldValue('slug', generatedSlug)
     }
-  }, [setFieldValue, title])
+  }, [setFieldValue, title, isEditMode])
 
   return (
     <Field name="slug" validate={urlValidator}>
@@ -483,7 +487,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
               </HStack>
 
               <chakra.div mb={3}>
-                <SlugField />
+                <SlugField isEditMode={Boolean(listing)} />
               </chakra.div>
 
               <chakra.div mb={3}>
