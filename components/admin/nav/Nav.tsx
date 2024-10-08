@@ -76,7 +76,7 @@ const Nav = ({ onOpen }) => {
                     <MenuDivider />
                   </>
                 )}
-                <MenuItem onClick={handleSignOut} fontSize={'15px'}>
+                <MenuItem onClick={handleSignOut} fontSize="15px">
                   Sign out
                 </MenuItem>
               </MenuList>

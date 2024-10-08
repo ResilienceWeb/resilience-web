@@ -12,7 +12,6 @@ import {
   useColorModeValue,
   Drawer,
   DrawerContent,
-  BoxProps,
   FlexProps,
   Button,
   Link,
@@ -38,7 +37,7 @@ export default function Sidebar({ isOpen, onClose }) {
       flexShrink="0"
     >
       <SidebarContent
-        onClose={() => onClose}
+        closeMenu={onClose}
         display={{ base: 'none', lg: 'block' }}
       />
       <Drawer
@@ -50,18 +49,14 @@ export default function Sidebar({ isOpen, onClose }) {
         size="full"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent closeMenu={onClose} />
         </DrawerContent>
       </Drawer>
     </Box>
   )
 }
 
-interface SidebarProps extends BoxProps {
-  onClose: () => void
-}
-
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+const SidebarContent = ({ closeMenu, ...rest }) => {
   const { data: session } = useSession()
   const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
@@ -152,7 +147,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             </Link>
             <CloseButton
               display={{ base: 'flex', lg: 'none' }}
-              onClick={onClose}
+              size="xl"
+              mr="1rem"
+              onClick={closeMenu}
             />
           </Flex>
           <Stack as="nav" gap="0.75rem">
@@ -163,6 +160,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 href={link.href}
                 tourId={link.tourId}
                 icon={link.icon}
+                closeMenu={closeMenu}
               />
             ))}
 
@@ -178,6 +176,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 href={link.href}
                 tourId={link.tourId}
                 icon={link.icon}
+                closeMenu={closeMenu}
               />
             ))}
           </Stack>
@@ -202,13 +201,14 @@ interface NavItemProps extends FlexProps {
   tourId: string
   label: string
   href: string
+  closeMenu: () => void
 }
 const NavLink = ({ children, href }) => (
   <Link as={NextLink} px={2} py={1} rounded={'md'} href={href}>
     {children}
   </Link>
 )
-const NavItem = ({ label, icon, href, tourId }: NavItemProps) => {
+const NavItem = ({ label, icon, href, tourId, closeMenu }: NavItemProps) => {
   const pathname = usePathname()
   return (
     <NavLink key={label} href={href}>
@@ -229,6 +229,7 @@ const NavItem = ({ label, icon, href, tourId }: NavItemProps) => {
         _activeLink={{
           bg: 'blackAlpha.100',
         }}
+        onClick={closeMenu}
       >
         {label}
       </Button>

@@ -58,6 +58,7 @@ const TableActions = ({
               <Select
                 isMulti
                 isSearchable={false}
+                menuPortalTarget={document.body}
                 onChange={handleSelectedCategoriesChange}
                 options={categories}
                 placeholder="Filter by category"
