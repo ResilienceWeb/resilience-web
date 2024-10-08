@@ -9,7 +9,6 @@ import { NewTagDialog } from './tag-dialog'
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { mutate: createTag } = useCreateTag()
-
   const { selectedWebId } = useAppContext()
 
   const handleSubmit = useCallback(

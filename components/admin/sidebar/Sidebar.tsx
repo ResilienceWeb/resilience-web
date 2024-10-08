@@ -186,7 +186,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           <Heading as="h2" fontSize="1.25rem">
             Like what you see?
           </Heading>
-          <Text mb="0.75rem">
+          <Text mb="0.75rem" fontSize="0.9375rem" color="gray.600">
             Consider making a donation to help us host and develop the
             Resilience Web platform 🙏🏼
           </Text>

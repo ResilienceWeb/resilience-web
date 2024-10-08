@@ -31,6 +31,12 @@ export default function useUpdateListing() {
       queryClient.invalidateQueries({
         queryKey: ['listings', 'list', { webSlug }],
       })
+      queryClient.invalidateQueries({
+        queryKey: ['categories', { webSlug }],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['tags', { webSlug }],
+      })
     },
   })
 }
