@@ -3,7 +3,6 @@ import { useSearchParams, redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo } from 'react'
 import posthog from 'posthog-js'
-import { Center, Spinner } from '@chakra-ui/react'
 import { driver } from 'driver.js'
 import 'driver.js/dist/driver.css'
 
@@ -71,13 +70,13 @@ export default function AdminPage() {
   const { data: session } = useSession()
   const { selectedWebId } = useAppContext()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
-  const { allowedWebs, isLoadingWebs } = useAllowedWebs()
-  const { listings, isPending: isListingsPending } = useListings()
-  const { permissions, isPending: isPermissionsPending } = usePermissions()
+  const { allowedWebs } = useAllowedWebs()
+  const { listings, isPending: isLoadingListings } = useListings()
+  const { permissions, isPending: isLoadingPermissions } = usePermissions()
   const { mutate: deleteListing } = useDeleteListing()
 
   const allowedListings = useMemo(() => {
-    if (isPermissionsPending || isListingsPending) return null
+    if (isLoadingListings || isLoadingPermissions) return null
     if (isOwnerOfCurrentWeb || session.user.admin) return listings
 
     if (permissions?.webIds?.includes(selectedWebId)) return listings
@@ -87,8 +86,8 @@ export default function AdminPage() {
     })
   }, [
     session,
-    isPermissionsPending,
-    isListingsPending,
+    isLoadingPermissions,
+    isLoadingListings,
     isOwnerOfCurrentWeb,
     listings,
     permissions?.webIds,
@@ -118,14 +117,6 @@ export default function AdminPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstTime])
-
-  if (isLoadingWebs || allowedListings === null) {
-    return (
-      <Center height="50vh">
-        <Spinner size="xl" />
-      </Center>
-    )
-  }
 
   if (allowedWebs.length === 0) {
     redirect('/admin/welcome')
