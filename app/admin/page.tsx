@@ -3,6 +3,7 @@ import { useSearchParams, redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo } from 'react'
 import posthog from 'posthog-js'
+import { Center, Spinner } from '@chakra-ui/react'
 import { driver } from 'driver.js'
 import 'driver.js/dist/driver.css'
 
@@ -70,7 +71,7 @@ export default function AdminPage() {
   const { data: session } = useSession()
   const { selectedWebId } = useAppContext()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
-  const { allowedWebs } = useAllowedWebs()
+  const { allowedWebs, isLoadingWebs } = useAllowedWebs()
   const { listings, isPending: isLoadingListings } = useListings()
   const { permissions, isPending: isLoadingPermissions } = usePermissions()
   const { mutate: deleteListing } = useDeleteListing()
@@ -117,6 +118,14 @@ export default function AdminPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstTime])
+
+  if (isLoadingWebs || isLoadingListings || isLoadingPermissions) {
+    return (
+      <Center height="50vh">
+        <Spinner size="xl" />
+      </Center>
+    )
+  }
 
   if (allowedWebs.length === 0) {
     redirect('/admin/welcome')
