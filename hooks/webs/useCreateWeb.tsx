@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Web } from '@prisma/client'
 
 async function createWebRequest(webData): Promise<{ web: Web }> {
@@ -19,8 +19,24 @@ async function createWebRequest(webData): Promise<{ web: Web }> {
 }
 
 export default function useCreateWeb() {
+  const queryClient = useQueryClient()
+
   const { data, isPending, isSuccess, isError, error, mutate } = useMutation({
     mutationFn: createWebRequest,
+    onMutate: (newWeb) => {
+      const previousWebs = queryClient.getQueryData([
+        'webs',
+        { withAdminInfo: false },
+      ])
+      return { previousWebs, newWeb }
+    },
+    onSuccess: (data, variables, context) => {
+      queryClient.setQueryData(
+        ['webs', { withAdminInfo: false }],
+        [...(context.previousWebs as Web[]), data.web],
+      )
+      queryClient.invalidateQueries({ queryKey: ['my-ownerships'] })
+    },
   })
 
   return {

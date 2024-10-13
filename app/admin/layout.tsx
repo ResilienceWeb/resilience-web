@@ -58,14 +58,14 @@ export default async function Layout({ children }) {
   })
 
   return (
-    <Providers>
-      <SessionProvider session={session}>
-        <LayoutContainer>
-          <HydrationBoundary state={dehydrate(queryClient)}>
+    <SessionProvider session={session}>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Providers>
+          <LayoutContainer>
             <Suspense>{children}</Suspense>
-          </HydrationBoundary>
-        </LayoutContainer>
-      </SessionProvider>
-    </Providers>
+          </LayoutContainer>
+        </Providers>
+      </HydrationBoundary>
+    </SessionProvider>
   )
 }

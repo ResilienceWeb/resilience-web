@@ -22,6 +22,7 @@ export default function useUpdateWeb() {
     mutationFn: updateWebRequest,
     onMutate: (newWeb) => {
       queryClient.setQueryData(['webs', { webSlug: newWeb.slug }], newWeb)
+      // TODO: set query data for list of webs
       return { newWeb }
     },
     onSettled: () => {
