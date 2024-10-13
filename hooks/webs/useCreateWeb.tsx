@@ -20,7 +20,6 @@ async function createWebRequest(webData): Promise<{ web: Web }> {
 
 export default function useCreateWeb() {
   const queryClient = useQueryClient()
-
   const { data, isPending, isSuccess, isError, error, mutate } = useMutation({
     mutationFn: createWebRequest,
     onMutate: (newWeb) => {
@@ -30,7 +29,7 @@ export default function useCreateWeb() {
       ])
       return { previousWebs, newWeb }
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, _variables, context) => {
       queryClient.setQueryData(
         ['webs', { withAdminInfo: false }],
         [...(context.previousWebs as Web[]), data.web],

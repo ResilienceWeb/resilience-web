@@ -131,7 +131,12 @@ export default function AdminPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstTime])
 
-  if (isLoadingWebs || isLoadingListings || isLoadingAllowedWebs) {
+  if (
+    isLoadingWebs ||
+    isLoadingListings ||
+    isLoadingAllowedWebs ||
+    allowedWebs === null
+  ) {
     return (
       <Center height="50vh">
         <Spinner size="xl" />
