@@ -5,7 +5,6 @@ import { Text } from '@chakra-ui/react'
 import type { Options } from 'react-select'
 
 import { useAppContext } from '@store/hooks'
-import useWebs from '@hooks/webs/useWebs'
 import useAllowedWebs from '@hooks/webs/useAllowedWebs'
 import usePermissions from '@hooks/permissions/usePermissions'
 

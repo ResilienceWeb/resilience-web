@@ -23,6 +23,9 @@ model Account {
   token_type        String?
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   @@index([providerAccountId], map: "providerAccountId")
   @@index([userId], map: "userId")
   @@map("accounts")
@@ -40,6 +43,9 @@ model User {
   permission    Permission[]
   ownerships    Ownership[]
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   @@map("users")
 }
 
@@ -49,6 +55,9 @@ model Session {
   expires      DateTime
   sessionToken String?  @unique @map("session_token")
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("sessions")
 }
