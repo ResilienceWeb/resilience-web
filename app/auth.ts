@@ -49,6 +49,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  // @ts-ignore
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'database',
@@ -77,13 +78,3 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   },
   debug: false,
 })
-
-// Use it in server contexts
-// export function auth(
-//   ...args:
-//     | [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']]
-//     | [NextApiRequest, NextApiResponse]
-//     | []
-// ) {
-//   return getServerSession(...args, authOptions)
-// }
