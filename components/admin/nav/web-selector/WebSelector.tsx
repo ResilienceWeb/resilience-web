@@ -17,22 +17,17 @@ type WebOption = {
 const WebSelector = () => {
   const pathname = usePathname()
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
-  const {
-    isPending: isLoadingWebs,
-    isFetching: isFetchingWebs,
-    webs,
-  } = useWebs()
   const { permissions } = usePermissions()
   const { allowedWebs, isLoading: isLoadingAllowedWebs } = useAllowedWebs()
 
   const webOptions: Options<WebOption> = useMemo(() => {
-    if (!webs || !permissions) return []
+    if (!permissions || !allowedWebs) return []
 
     return allowedWebs?.map((s) => ({
       value: s.slug,
       label: s.title,
     }))
-  }, [allowedWebs, permissions, webs])
+  }, [allowedWebs, permissions])
 
   const selectedOption = useMemo(
     () => webOptions.find((s) => s.value === selectedWebSlug),
@@ -73,14 +68,7 @@ const WebSelector = () => {
     if (selectedWebSlug === undefined && webOptions.length > 0) {
       setSelectedWebSlug(webOptions[0].value)
     }
-  }, [
-    webOptions,
-    setSelectedWebSlug,
-    isLoadingAllowedWebs,
-    isFetchingWebs,
-    selectedWebSlug,
-    isLoadingWebs,
-  ])
+  }, [webOptions, setSelectedWebSlug, isLoadingAllowedWebs, selectedWebSlug])
 
   const hideWebSelector = useMemo(
     () =>
