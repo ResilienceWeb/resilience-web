@@ -1,5 +1,5 @@
 'use client'
-import { useSearchParams, redirect } from 'next/navigation'
+import { useSearchParams, useRouter, redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo } from 'react'
 import posthog from 'posthog-js'
@@ -68,13 +68,20 @@ const driverObj = driver({
 })
 
 export default function AdminPage() {
+  const router = useRouter()
   const { data: session } = useSession()
   const { selectedWebId } = useAppContext()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
-  const { allowedWebs, isLoadingWebs } = useAllowedWebs()
+  const {
+    allowedWebs,
+    isLoadingWebs,
+    isLoading: isLoadingAllowedWebs,
+  } = useAllowedWebs()
   const { listings, isPending: isLoadingListings } = useListings()
   const { permissions, isPending: isLoadingPermissions } = usePermissions()
   const { mutate: deleteListing } = useDeleteListing()
+
+  console.log('AdminPage', allowedWebs)
 
   const allowedListings = useMemo(() => {
     if (isLoadingListings || isLoadingPermissions) return null
@@ -107,6 +114,10 @@ export default function AdminPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const clearSearchParams = () => {
+    router.replace('/admin')
+  }
+
   const searchParams = useSearchParams()
   const firstTime = searchParams.get('firstTime')
   useEffect(() => {
@@ -114,12 +125,13 @@ export default function AdminPage() {
       posthog.capture('web-creation-dashboard-landing')
       setTimeout(() => {
         driverObj.drive()
+        clearSearchParams()
       }, 3000)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstTime])
 
-  if (isLoadingWebs || isLoadingListings || isLoadingPermissions) {
+  if (isLoadingWebs || isLoadingListings || isLoadingAllowedWebs) {
     return (
       <Center height="50vh">
         <Spinner size="xl" />

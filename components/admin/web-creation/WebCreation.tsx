@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { useQueryClient } from '@tanstack/react-query'
 import posthog from 'posthog-js'
 import {
   chakra,
@@ -81,7 +80,6 @@ const SlugField = () => {
 }
 
 const WebCreation = () => {
-  const queryClient = useQueryClient()
   const { createWeb, isPending, isSuccess, isError, errorMessage } =
     useCreateWeb()
   const router = useRouter()
@@ -92,8 +90,6 @@ const WebCreation = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      queryClient.invalidateQueries({ queryKey: ['webs'] })
-      queryClient.invalidateQueries({ queryKey: ['my-ownerships'] })
       router.push('/admin?firstTime=true')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

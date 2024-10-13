@@ -69,8 +69,7 @@ export async function GET(request) {
       include,
     })
 
-    // TODO: tidy up to only return one of these:
-    return Response.json({ data: webs, webs })
+    return Response.json({ data: webs })
   } catch (e) {
     console.error(`[RW] Unable to fetch webs - ${e}`)
     return new Response(`Unable to fetch webs - ${e}`, {
@@ -163,10 +162,8 @@ export async function POST(request) {
       email: webCreatedAdminEmailComponent,
     })
 
-    // TODO: tidy up below
     return Response.json({
-      data: web,
-      webs: null,
+      web,
     })
   } catch (error) {
     if (error.code === 'P2002') {

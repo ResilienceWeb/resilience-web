@@ -27,7 +27,9 @@ const useAllowedWebs = () => {
   }, [ownerships, permissions])
 
   const allAllowedWebs = useMemo(() => {
-    if (!webs || !permissions) return []
+    if (!webs || !permissions) {
+      return []
+    }
 
     const allowedWebs = session?.user.admin
       ? webs

@@ -22,7 +22,7 @@ import {
 import { RxHamburgerMenu } from 'react-icons/rx'
 import { HiChevronRight, HiOutlineX } from 'react-icons/hi'
 
-import useWebs from '@hooks/webs/useWebs'
+import useWebsPublic from '@hooks/webs/useWebsPublic'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 import LogoImage from '../../public/logo.png'
@@ -39,7 +39,7 @@ export default function MainNav() {
   const { isOpen, onToggle } = useDisclosure()
   const pathname = usePathname()
 
-  const { webs } = useWebs({ published: true })
+  const { webs } = useWebsPublic()
 
   const navItems = useMemo(() => {
     return [

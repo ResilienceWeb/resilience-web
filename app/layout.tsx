@@ -27,7 +27,7 @@ export default async function RootLayout({
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery({
-    queryKey: ['webs', { published: false, withAdminInfo: false }],
+    queryKey: ['webs', { withAdminInfo: false }],
     queryFn: () => fetchWebsHydrate(),
   })
 

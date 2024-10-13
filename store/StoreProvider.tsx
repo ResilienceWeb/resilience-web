@@ -1,23 +1,21 @@
 import { useMemo } from 'react'
 import useLocalStorage from 'use-local-storage'
-import useWebs from '@hooks/webs/useWebs'
-import useIsAdminMode from '@hooks/application/useIsAdminMode'
+import useAllowedWebs from '@hooks/webs/useAllowedWebs'
 import { AppContext } from './AppContext'
 
 const StoreProvider = ({ children }) => {
-  const isAdminMode = useIsAdminMode()
   const [selectedWebSlug, setSelectedWebSlug] = useLocalStorage<any>(
     'selected-web-slug',
     undefined,
   )
 
-  const { webs } = useWebs({ published: !isAdminMode })
+  const { allowedWebs } = useAllowedWebs()
 
   const selectedWebId = useMemo(() => {
-    if (webs) {
-      return webs.find((web) => web.slug === selectedWebSlug)?.id
+    if (allowedWebs) {
+      return allowedWebs.find((web) => web.slug === selectedWebSlug)?.id
     }
-  }, [selectedWebSlug, webs])
+  }, [selectedWebSlug, allowedWebs])
 
   const value = useMemo(
     () => ({
