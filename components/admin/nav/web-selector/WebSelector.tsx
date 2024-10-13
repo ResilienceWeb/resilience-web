@@ -47,7 +47,7 @@ const WebSelector = () => {
   )
 
   useEffect(() => {
-    const allowedWebSlugs = allowedWebs.map((w) => w.slug)
+    const allowedWebSlugs = allowedWebs?.map((w) => w.slug)
     if (!isLoadingAllowedWebs && !allowedWebSlugs.includes(selectedWebSlug)) {
       if (webOptions.length > 0) {
         setSelectedWebSlug(webOptions[0].value)

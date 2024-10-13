@@ -144,7 +144,7 @@ export default function AdminPage() {
     )
   }
 
-  if (allowedWebs.length === 0) {
+  if (allowedWebs?.length === 0) {
     redirect('/admin/welcome')
   }
 
