@@ -17,9 +17,9 @@ Currently online at [https://resilienceweb.org.uk](https://resilienceweb.org.uk)
 
 - Make sure you have a valid `.env` file, the example DATABASE_URL environment variable will be used in this process
 - Make sure you have docker installed from https://www.docker.com/
+- Fill out `RW_TEST_USER_EMAIL` in .env with your own email address. This will help the Prisma seed function create a test account for you. The email needs to be valid as authentication works via a magic login email.
 - To create the local database run `npm run db:up`
 - To prepare the database with tables run `npx prisma migrate reset`
-- Fill out `RW_TEST_USER_EMAIL` in .env with your own email address. This will help the Prisma seed function create a test account for you. The email needs to be valid as authentication works via a magic login email.
 - To view the databases contents run `npm run db`
 
 ## Contributing
