@@ -32,7 +32,7 @@ export default async function TransitionPage() {
 
   await queryClient.prefetchQuery({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ['tags', { webSlug: 'transition', all: false }],
+    queryKey: ['tags', { webSlug: 'transition', public: true }],
     queryFn: () => {
       return data.tags
     },
