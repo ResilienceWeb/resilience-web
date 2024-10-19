@@ -26,7 +26,7 @@
     "seed": "node --loader ts-node/esm prisma/seed.mts"
   },
   "dependencies": {
-    "@auth/prisma-adapter": "2.7.0",
+    "@auth/prisma-adapter": "2.7.1",
     "@aws-sdk/client-s3": "3.662.0",
     "@chakra-ui/react": "2.8.2",
     "@emotion/react": "11.13.3",
@@ -52,7 +52,7 @@
     "leaflet-geosearch": "4.0.0",
     "lodash-es": "4.17.21",
     "next": "14.2.15",
-    "next-auth": "5.0.0-beta.22",
+    "next-auth": "5.0.0-beta.23",
     "next-query-params": "5.0.1",
     "next-recaptcha-v3": "1.4.1",
     "nodemailer": "6.9.15",
