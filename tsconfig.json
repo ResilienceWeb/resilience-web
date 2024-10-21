@@ -38,6 +38,9 @@
       ],
       "@auth": [
         "app/auth.ts"
+      ],
+      "@trigger/*": [
+        "trigger/*"
       ]
     },
     "typeRoots": [
@@ -59,7 +62,8 @@
     "**/*.mjs",
     "./next.config.js",
     "./pages/_error.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "trigger.config.ts"
   ],
   "exclude": [
     "node_modules"
