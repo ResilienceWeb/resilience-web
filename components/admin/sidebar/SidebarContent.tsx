@@ -8,7 +8,6 @@ import {
   CloseButton,
   Flex,
   Icon,
-  useColorModeValue,
   FlexProps,
   Button,
   Link,
@@ -87,7 +86,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     <Box
       bg="#fafafa"
       borderRight="1px"
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
+      borderRightColor="gray.200"
       maxWidth={{ base: 'full', lg: '240px' }}
       pos="fixed"
       h="full"
