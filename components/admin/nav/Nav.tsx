@@ -12,7 +12,6 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  useColorModeValue,
   Text,
 } from '@chakra-ui/react'
 import { RxHamburgerMenu } from 'react-icons/rx'
@@ -33,7 +32,7 @@ const Nav = ({ onOpen }) => {
       px={4}
       borderBottom={1}
       borderStyle="solid"
-      borderColor={useColorModeValue('gray.200', 'gray.900')}
+      borderColor="gray.200"
       flex="1"
       maxWidth="100vw"
     >

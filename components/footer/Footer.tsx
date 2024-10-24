@@ -4,7 +4,6 @@ import {
   Stack,
   Text,
   Link,
-  useColorModeValue,
   Flex,
   chakra,
   SimpleGrid,
@@ -36,20 +35,20 @@ const SocialButton = ({
 }) => {
   return (
     <chakra.button
-      bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
-      rounded={'full'}
+      bg="blackAlpha.100"
+      rounded="full"
       w={8}
       h={8}
-      cursor={'pointer'}
-      as={'a'}
+      cursor="pointer"
+      as="a"
       href={href}
       target="_blank"
-      display={'inline-flex'}
-      alignItems={'center'}
-      justifyContent={'center'}
-      transition={'background 0.3s ease'}
+      display="inline-flex"
+      alignItems="center"
+      justifyContent="center"
+      transition="background 0.3s ease"
       _hover={{
-        bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
+        bg: 'blackAlpha.200',
       }}
     >
       <VisuallyHidden>{label}</VisuallyHidden>
