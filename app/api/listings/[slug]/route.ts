@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 import uploadImage from '@helpers/uploadImage'
 import deleteImage from '@helpers/deleteImage'
 import { stringToBoolean } from '@helpers/utils'
-import prisma from '../../../../prisma/client'
+import prisma from '@prisma-rw'
 
 function exclude(data, keys) {
   return Object.fromEntries(

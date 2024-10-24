@@ -1,4 +1,4 @@
-import prisma from '../../../../prisma/client'
+import prisma from '@prisma-rw'
 
 export async function DELETE(_request: Request, { params }) {
   const id = params.id

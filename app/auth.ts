@@ -2,7 +2,7 @@ import NextAuth from 'next-auth'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import Sendgrid from 'next-auth/providers/sendgrid'
 import nodemailer from 'nodemailer'
-import prisma from '../prisma/client'
+import prisma from '@prisma-rw'
 import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates'
 import config from '@helpers/config'
 

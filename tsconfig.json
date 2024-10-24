@@ -41,6 +41,9 @@
       ],
       "@trigger/*": [
         "trigger/*"
+      ],
+      "@prisma-rw": [
+        "prisma/client"
       ]
     },
     "typeRoots": [

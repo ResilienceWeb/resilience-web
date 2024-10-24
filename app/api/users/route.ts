@@ -1,6 +1,6 @@
 import client from '@sendgrid/client'
 import { auth } from '@auth'
-import prisma from '../../../prisma/client'
+import prisma from '@prisma-rw'
 
 client.setApiKey(process.env.SENDGRID_API_KEY)
 

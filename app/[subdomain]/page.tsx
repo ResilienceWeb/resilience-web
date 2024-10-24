@@ -1,4 +1,4 @@
-import prisma from '../../prisma/client'
+import prisma from '@prisma-rw'
 import Web, { CENTRAL_NODE_ID } from './Web'
 
 export default async function WebPage({ params }) {

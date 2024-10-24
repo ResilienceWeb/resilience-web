@@ -1,5 +1,5 @@
 import { Web, Prisma } from '@prisma/client'
-import prisma from '../../../../prisma/client'
+import prisma from '@prisma-rw'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import { auth } from '@auth'

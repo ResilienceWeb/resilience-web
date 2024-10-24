@@ -1,4 +1,4 @@
-import prisma from '../prisma/client'
+import prisma from '@prisma-rw'
 import Homepage from './Homepage'
 
 export const metadata = {

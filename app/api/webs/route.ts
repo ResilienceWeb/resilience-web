@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client'
 import { auth } from '@auth'
-import prisma from '../../../prisma/client'
+import prisma from '@prisma-rw'
 import WebCreatedEmail from '@components/emails/WebCreatedEmail'
 import WebCreatedAdminEmail from '@components/emails/WebCreatedAdminEmail'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'

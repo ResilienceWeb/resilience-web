@@ -1,5 +1,5 @@
 import { auth } from '@auth'
-import prisma from '../../../../prisma/client'
+import prisma from '@prisma-rw'
 
 export async function GET(_request, { params }) {
   try {

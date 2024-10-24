@@ -1,5 +1,5 @@
 import { Category } from '@prisma/client'
-import prisma from '../../../prisma/client'
+import prisma from '@prisma-rw'
 
 export async function GET(request) {
   try {

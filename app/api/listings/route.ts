@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client'
 import { auth } from '@auth'
-import prisma from '../../../prisma/client'
+import prisma from '@prisma-rw'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingProposedEmail from '@components/emails/ListingProposedEmail'

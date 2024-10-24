@@ -1,6 +1,6 @@
 import truncate from 'lodash/truncate'
 import type { Listing as ListingType } from '@prisma/client'
-import prisma from '../../../prisma/client'
+import prisma from '@prisma-rw'
 import { exclude } from '@helpers/utils'
 import Listing from './Listing'
 

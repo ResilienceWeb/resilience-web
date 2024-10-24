@@ -2,7 +2,7 @@ import sgMail from '@sendgrid/mail'
 import { render } from '@react-email/render'
 import { Prisma } from '@prisma/client'
 import { auth } from '@auth'
-import prisma from '../../../../prisma/client'
+import prisma from '@prisma-rw'
 import { REMOTE_URL } from '@helpers/config'
 import InviteEmail from '@components/emails/InviteEmail'
 
