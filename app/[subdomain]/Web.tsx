@@ -136,7 +136,25 @@ const Web = ({
     [setQuery],
   )
 
-  const filteredItems = useMemo(() => {
+  const descriptiveNodes = useMemo(
+    () =>
+      data
+        ? data.nodes
+            .filter(
+              (item) =>
+                item.group === 'category' || item.group === 'central-node',
+            )
+            .filter(
+              (item) =>
+                item.id === CENTRAL_NODE_ID ||
+                query.categories.length === 0 ||
+                query.categories.some((l) => l === item.label),
+            )
+        : [],
+    [data, query.categories],
+  )
+
+  const [filteredItems, filteredDescriptiveNodes] = useMemo(() => {
     if (!data) return []
     let results: any[] = data?.nodes
       .filter(
@@ -189,33 +207,33 @@ const Web = ({
       }
     })
 
-    return results
-  }, [data, isVolunteer, query.categories, query.tags, searchTermValue])
+    const filteredDescriptiveNodes = descriptiveNodes.filter(
+      (descriptiveNode) =>
+        results.some(
+          (item) =>
+            item.category.label === descriptiveNode.label ||
+            descriptiveNode.group === 'central-node',
+        ),
+    )
 
-  const descriptiveNodes = useMemo(
-    () =>
-      data
-        ? data.nodes
-            .filter(
-              (item) =>
-                item.group === 'category' || item.group === 'central-node',
-            )
-            .filter(
-              (item) =>
-                item.id === CENTRAL_NODE_ID ||
-                query.categories.length === 0 ||
-                query.categories.some((l) => l === item.label),
-            )
-        : [],
-    [data, query.categories],
-  )
+    return [results, filteredDescriptiveNodes]
+  }, [
+    data,
+    descriptiveNodes,
+    isVolunteer,
+    query.categories,
+    query.tags,
+    searchTermValue,
+  ])
+
+  console.log('descriptiveNodes', descriptiveNodes)
 
   const filteredNetworkData = useMemo(
     () => ({
       edges: data?.edges,
-      nodes: [...filteredItems, ...descriptiveNodes],
+      nodes: [...filteredItems, ...filteredDescriptiveNodes],
     }),
-    [data?.edges, filteredItems, descriptiveNodes],
+    [data?.edges, filteredItems, filteredDescriptiveNodes],
   )
 
   const handleSwitchChange = useCallback(
