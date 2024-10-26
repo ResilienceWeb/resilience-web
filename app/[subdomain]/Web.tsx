@@ -226,8 +226,6 @@ const Web = ({
     searchTermValue,
   ])
 
-  console.log('descriptiveNodes', descriptiveNodes)
-
   const filteredNetworkData = useMemo(
     () => ({
       edges: data?.edges,
