@@ -22,7 +22,7 @@ export default function useCreateListing() {
   return useMutation({
     mutationFn: createListingRequest,
     onMutate: (newListing) => {
-      const previousListings = queryClient.getQueryData(['listings'])
+      const previousListings = queryClient.getQueryData(['listings', 'list'])
       queryClient.setQueryData(['listings', newListing.id], newListing)
       return { previousListings, newListing }
     },
@@ -30,7 +30,7 @@ export default function useCreateListing() {
       queryClient.setQueryData(['listings'], context?.previousListings)
     },
     onSettled: () => {
-      void queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ['listings'],
       })
     },

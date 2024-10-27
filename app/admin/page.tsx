@@ -81,8 +81,6 @@ export default function AdminPage() {
   const { permissions, isPending: isLoadingPermissions } = usePermissions()
   const { mutate: deleteListing } = useDeleteListing()
 
-  console.log('AdminPage', allowedWebs)
-
   const allowedListings = useMemo(() => {
     if (isLoadingListings || isLoadingPermissions) return null
     if (isOwnerOfCurrentWeb || session.user.admin) return listings

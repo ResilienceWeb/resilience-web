@@ -647,8 +647,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                         Featured
                       </Checkbox>
                       <Text color="gray.500" fontSize="sm">
-                        Determines whether the listing is shown at the top of
-                        the page.
+                        Display this listing at the top of the page for 7 days.
                       </Text>
                       <FormErrorMessage>
                         {form.errors.featured?.toString()}

@@ -15,12 +15,16 @@ import {
   Tag,
   TagLeftIcon,
   TagLabel,
+  IconButton,
 } from '@chakra-ui/react'
 import { PiWarningCircleBold } from 'react-icons/pi'
+import { FaStar, FaRegStar } from 'react-icons/fa'
+import useFeatureListing from '@hooks/listings/useFeatureListing'
 
 import CategoryTag from '@components/category-tag'
 
 const TableContent = ({ goToEdit, items, removeItem }) => {
+  const { featureListing, unfeatureListing } = useFeatureListing()
   if (!items) return null
 
   return (
@@ -34,6 +38,7 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
               </Th>
             ))}
             <Th>Info</Th>
+            <Th>Featured</Th>
             <Th position="sticky" right={0} bg="gray.100"></Th>
           </Tr>
         </Thead>
@@ -77,6 +82,31 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
                 </Flex>
               </Td>
 
+              <Td>
+                <Tooltip
+                  borderRadius="md"
+                  label="Display this listing at the top of the web page for 7 days."
+                >
+                  <IconButton
+                    aria-label="Toggle featured"
+                    icon={
+                      item.featured ? <FaStar color="green" /> : <FaRegStar />
+                    }
+                    colorScheme="gray"
+                    size="md"
+                    fontSize="20px"
+                    isRound={true}
+                    onClick={() => {
+                      if (item.featured) {
+                        unfeatureListing(item.id)
+                      } else {
+                        featureListing(item.id)
+                      }
+                    }}
+                  />
+                </Tooltip>
+              </Td>
+
               <Td position="sticky" right={0} background="gray.100">
                 <Stack direction="column" spacing={2}>
                   <Button
@@ -111,7 +141,7 @@ export const columns = [
   {
     Header: 'Category',
     accessor: 'category',
-    Cell: function StatusCell(category) {
+    Cell: function CategoryCell(category) {
       if (!category || !category.color) return null
       return (
         <CategoryTag fontSize="xs" colorHex={category.color}>
