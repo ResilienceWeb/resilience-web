@@ -11,7 +11,7 @@ const featureListingRequest = async (id) => {
   return listing
 }
 
-const unfeatureListingRequest = async (id) => {
+export const unfeatureListingRequest = async (id) => {
   const response = await fetch(`api/listing/${id}/unfeature`, {
     method: 'PATCH',
   })
