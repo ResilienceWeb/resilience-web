@@ -164,6 +164,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
     if (data.location) {
       data.latitude = data.location.latitude
       data.longitude = data.location.longitude
+      data.locationDescription = data.location.description
       delete data.location
     }
     data.tags = data.tags?.map((t) => t.value)
@@ -207,6 +208,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
             ? {
                 latitude: listing.location.latitude,
                 longitude: listing.location.longitude,
+                description: listing.location.description,
               }
             : undefined,
       }}
@@ -663,6 +665,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                 <Map
                   latitude={field.value?.latitude}
                   longitude={field.value?.longitude}
+                  locationDescription={field.value?.description}
                 />
               )}
             </Field>
