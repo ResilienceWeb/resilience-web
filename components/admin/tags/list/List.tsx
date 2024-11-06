@@ -75,9 +75,13 @@ const List = ({ tags }) => {
     onAddToListingsDialogOpen()
   }
 
-  const handleAddTagToListingsSubmit = (data) => {
+  const handleAddTagToListingsSubmit = (addedListingIds, removedListingIds) => {
     onAddToListingsDialogClose()
-    addTagToListings({ tagId: selectedTagId, listingIds: data })
+    addTagToListings({
+      tagId: selectedTagId,
+      addedListingIds,
+      removedListingIds,
+    })
   }
 
   if (!tags) {

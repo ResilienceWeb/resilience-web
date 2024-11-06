@@ -27,8 +27,11 @@ export default function AddTagToListingsDialog({
   })
 
   const handleSubmit = () => {
-    const integerValues = value.map((v) => Number(v))
-    onSubmit(integerValues)
+    const addedListingIds = value.map((v) => Number(v))
+    const removedListingIds = linkedListingsIds.filter(
+      (id) => !addedListingIds.includes(id),
+    )
+    onSubmit(addedListingIds, removedListingIds)
   }
 
   return (

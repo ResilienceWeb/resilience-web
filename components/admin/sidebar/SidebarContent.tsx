@@ -102,17 +102,13 @@ export default function SidebarContent({ closeMenu, ...rest }) {
             my="0.75rem"
             justifyContent="space-between"
           >
-            <Link as={NextLink} href="/">
-              <button>
-                <Image
-                  alt="Resilience Web CIC logo"
-                  src={LogoImage}
-                  width="222"
-                  height="75"
-                  unoptimized
-                />
-              </button>
-            </Link>
+            <Image
+              alt="Resilience Web CIC logo"
+              src={LogoImage}
+              width="222"
+              height="75"
+              unoptimized
+            />
             <CloseButton
               display={{ base: 'flex', lg: 'none' }}
               size="xl"

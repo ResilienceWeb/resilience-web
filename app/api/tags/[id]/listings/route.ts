@@ -2,9 +2,10 @@ import prisma from '@prisma-rw'
 
 export async function PUT(request: Request, { params }) {
   const id = params.id
-  const listingIds = await request.json()
+  const { addedListingIds, removedListingIds } = await request.json()
 
-  const listingIdsToConnect = listingIds.map((id) => ({ id }))
+  const listingIdsToConnect = addedListingIds.map((id) => ({ id }))
+  const listingIdsToDisconnect = removedListingIds.map((id) => ({ id }))
 
   try {
     const tag = await prisma.tag.update({
@@ -14,6 +15,7 @@ export async function PUT(request: Request, { params }) {
       data: {
         listings: {
           connect: listingIdsToConnect,
+          disconnect: listingIdsToDisconnect,
         },
       },
     })

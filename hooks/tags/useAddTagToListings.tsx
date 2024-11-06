@@ -1,13 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAppContext } from '@store/hooks'
 
-async function addTagToListingsRequest({ tagId, listingIds }) {
+async function addTagToListingsRequest({
+  tagId,
+  addedListingIds,
+  removedListingIds,
+}) {
   const response = await fetch(`/api/tags/${tagId}/listings`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
-    body: JSON.stringify(listingIds),
+    body: JSON.stringify({
+      addedListingIds,
+      removedListingIds,
+    }),
   })
 
   const data = await response.json()
