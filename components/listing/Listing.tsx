@@ -37,8 +37,6 @@ function Listing({ listing }) {
   const router = useRouter()
   const [subdomain, setSubdomain] = useState<string>()
 
-  console.log(listing)
-
   useEffect(() => {
     const hostname = window.location.hostname
     if (!hostname.includes('.')) {
@@ -210,11 +208,15 @@ function Listing({ listing }) {
             <DescriptionRichText html={listing.description} />
           </Box>
 
-          <ListingMap
-            latitude={listing.location.latitude}
-            longitude={listing.location.longitude}
-            locationDescription={listing.location.description}
-          />
+          {listing.location?.latitude &&
+            listing.location?.longitude &&
+            listing.location?.description && (
+              <ListingMap
+                latitude={listing.location.latitude}
+                longitude={listing.location.longitude}
+                locationDescription={listing.location.description}
+              />
+            )}
 
           <Box
             mt="2rem"
