@@ -94,7 +94,7 @@ const Map = ({ latitude, longitude, locationDescription }) => {
           latitude ?? DEFAULT_CENTER.lat,
           longitude ?? DEFAULT_CENTER.lng,
         ]}
-        zoom={13}
+        zoom={14}
         style={{ height: '300px' }}
       >
         <MapContent
