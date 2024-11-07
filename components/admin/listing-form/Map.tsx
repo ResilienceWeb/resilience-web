@@ -4,11 +4,9 @@ import { useFormikContext } from 'formik'
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-geosearch/dist/geosearch.css'
-import { GoogleProvider, GeoSearchControl } from 'leaflet-geosearch'
+import { OpenStreetMapProvider, GeoSearchControl } from 'leaflet-geosearch'
 
-const provider = new GoogleProvider({
-  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-})
+const provider = new OpenStreetMapProvider()
 
 const geoSearchControl = GeoSearchControl({
   provider,
