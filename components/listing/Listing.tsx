@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useState, useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
@@ -25,9 +26,18 @@ import CategoryTag from '@components/category-tag'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import Item from '@components/main-list/item'
 
+const ListingMap = dynamic(() => import('./listing-map'), {
+  ssr: false,
+  loading: () => (
+    <div style={{ textAlign: 'center', paddingTop: 20 }}>Loading…</div>
+  ),
+})
+
 function Listing({ listing }) {
   const router = useRouter()
   const [subdomain, setSubdomain] = useState<string>()
+
+  console.log(listing)
 
   useEffect(() => {
     const hostname = window.location.hostname
@@ -69,7 +79,11 @@ function Listing({ listing }) {
 
   return (
     <>
-      <Box maxWidth={{ base: '100%', md: '700px' }} mt="1rem">
+      <Box
+        maxWidth={{ base: '100%', md: '700px' }}
+        minWidth={{ base: 'initial', md: '684px' }}
+        mt="1rem"
+      >
         <Button
           leftIcon={<HiArrowLeft />}
           name="Back"
@@ -196,8 +210,14 @@ function Listing({ listing }) {
             <DescriptionRichText html={listing.description} />
           </Box>
 
+          <ListingMap
+            latitude={listing.location.latitude}
+            longitude={listing.location.longitude}
+            locationDescription={listing.location.description}
+          />
+
           <Box
-            mt={4}
+            mt="2rem"
             mb={8}
             display="flex"
             justifyContent="flex-end"
