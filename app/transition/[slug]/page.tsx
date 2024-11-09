@@ -93,6 +93,11 @@ async function getListing({ listingSlug }): Promise<any> {
         color: CATEGORY_COLOR_MAPPING[categoryLabel],
         label: categoryLabel,
       },
+      location: {
+        latitude: item.location.lat,
+        longitude: item.location.lng,
+        description: item.location.label,
+      },
       tags: itemTags,
       label: item.title,
       color: CATEGORY_COLOR_MAPPING[categoryLabel],

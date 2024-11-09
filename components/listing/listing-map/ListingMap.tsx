@@ -1,5 +1,4 @@
 import { Box, Text } from '@chakra-ui/react'
-import { LiaMapMarkerSolid } from 'react-icons/lia'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 
