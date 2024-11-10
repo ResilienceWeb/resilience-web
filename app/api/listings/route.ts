@@ -28,6 +28,7 @@ export async function GET(request) {
             latitude: true,
             longitude: true,
             description: true,
+            noPhysicalLocation: true,
           },
         },
         category: {
@@ -97,6 +98,7 @@ export async function POST(request) {
     const featured = formData.get('featured')
     const latitude = formData.get('latitude')
     const longitude = formData.get('longitude')
+    const locationDescription = formData.get('locationDescription')
     const slug = formData.get('slug')
 
     // Prepare tags
@@ -135,11 +137,12 @@ export async function POST(request) {
       featured: isProposedListing ? false : stringToBoolean(featured),
       slug: slug,
       location: {
-        ...(latitude && longitude
+        ...(latitude && longitude && locationDescription
           ? {
               create: {
                 latitude: parseFloat(latitude),
                 longitude: parseFloat(longitude),
+                description: locationDescription,
               },
             }
           : {}),

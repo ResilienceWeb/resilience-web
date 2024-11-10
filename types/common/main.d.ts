@@ -29,6 +29,7 @@ declare global {
       latitude?: number
       longitude?: number
       description?: string
+      noPhysicalLocation?: boolean
     }
   }
 

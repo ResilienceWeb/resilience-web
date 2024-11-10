@@ -148,13 +148,14 @@ model Listing {
 }
 
 model ListingLocation {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
-  latitude    Float?
-  longitude   Float?
-  description String?
-  listing     Listing?
+  id                 Int      @id @default(autoincrement())
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @default(now()) @updatedAt @map("updated_at")
+  latitude           Float?
+  longitude          Float?
+  description        String?
+  listing            Listing?
+  noPhysicalLocation Boolean? @map("no_physical_location")
 
   @@map("listing_locations")
 }

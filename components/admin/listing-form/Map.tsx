@@ -80,9 +80,18 @@ const MapContent = ({ latitude, longitude, locationDescription }) => {
   )
 }
 
-const Map = ({ latitude, longitude, locationDescription }) => {
+const Map = ({
+  latitude,
+  longitude,
+  locationDescription,
+  noPhysicalLocation,
+}) => {
   return (
-    <chakra.div mt="0.5rem">
+    <chakra.div
+      mt="0.5rem"
+      pointerEvents={noPhysicalLocation ? 'none' : 'all'}
+      opacity={noPhysicalLocation ? 0.5 : 1}
+    >
       <Text color="gray.700" fontStyle="italic" fontSize="sm" padding="0.5rem">
         The location can only be selected via adding an address via the search
         bar below. Selecting a location without an address is not supported.

@@ -161,7 +161,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
     if (!isNewImage && data.image) {
       delete data.image
     }
-    if (data.location) {
+    if (!data.noPhysicalLocation && data.location) {
       data.latitude = data.location.latitude
       data.longitude = data.location.longitude
       data.locationDescription = data.location.description
@@ -203,6 +203,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
         slug: listing?.slug || '',
         tags: initialTagsValues || [],
         relations: initialRelationsValues || [],
+        noPhysicalLocation: listing?.location.noPhysicalLocation || false,
         location:
           listing?.location?.latitude && listing?.location?.longitude
             ? {
@@ -227,7 +228,12 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                         form.errors.title && form.touched.title,
                       )}
                     >
-                      <FormLabel htmlFor="title" fontSize="sm" fontWeight="600">
+                      <FormLabel
+                        htmlFor="title"
+                        fontSize="sm"
+                        fontWeight="600"
+                        mb="0.25rem"
+                      >
                         Title*
                       </FormLabel>
                       <Input
@@ -258,6 +264,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                         htmlFor="category"
                         fontSize="sm"
                         fontWeight="600"
+                        mb="0.25rem"
                       >
                         Category*
                       </FormLabel>
@@ -315,6 +322,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                         htmlFor="description"
                         fontSize="sm"
                         fontWeight="600"
+                        mb="0.25rem"
                       >
                         Description*
                       </FormLabel>
@@ -341,7 +349,12 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                         form.errors.email && form.touched.email,
                       )}
                     >
-                      <FormLabel htmlFor="email" fontSize="sm" fontWeight="600">
+                      <FormLabel
+                        htmlFor="email"
+                        fontSize="sm"
+                        fontWeight="600"
+                        mb="0.25rem"
+                      >
                         Contact email for organisation
                       </FormLabel>
                       <Input
@@ -404,6 +417,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           htmlFor="facebook"
                           fontSize="sm"
                           fontWeight="600"
+                          mb="0.25rem"
                         >
                           Facebook
                         </FormLabel>
@@ -437,6 +451,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           htmlFor="twitter"
                           fontSize="sm"
                           fontWeight="600"
+                          mb="0.25rem"
                         >
                           Twitter
                         </FormLabel>
@@ -468,6 +483,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           htmlFor="instagram"
                           fontSize="sm"
                           fontWeight="600"
+                          mb="0.25rem"
                         >
                           Instagram
                         </FormLabel>
@@ -505,6 +521,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           htmlFor="tags"
                           fontSize="sm"
                           fontWeight="600"
+                          mb="0.25rem"
                         >
                           Tags
                         </FormLabel>
@@ -559,6 +576,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           htmlFor="relations"
                           fontSize="sm"
                           fontWeight="600"
+                          mb="0.25rem"
                         >
                           Related listings
                         </FormLabel>
@@ -660,14 +678,50 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
               </chakra.div>
             </chakra.div>
 
+            <chakra.div px="1.5rem" mt="0.5rem">
+              <Field name="noPhysicalLocation">
+                {({ field, form }: FieldProps) => (
+                  <FormControl
+                    isInvalid={Boolean(
+                      form.errors.noPhysicalLocation &&
+                        form.touched.noPhysicalLocation,
+                    )}
+                  >
+                    <FormLabel
+                      htmlFor="relations"
+                      fontSize="sm"
+                      fontWeight="600"
+                      mb="0.25rem"
+                    >
+                      Location
+                    </FormLabel>
+                    <Checkbox
+                      isChecked={field.value}
+                      id="noPhysicalLocation"
+                      onChange={field.onChange}
+                      colorScheme="green"
+                    >
+                      No physical location
+                    </Checkbox>
+                    <FormErrorMessage>
+                      {form.errors.noPhysicalLocation?.toString()}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+            </chakra.div>
+
             <Field name="location">
-              {({ field }: FieldProps) => (
-                <Map
-                  latitude={field.value?.latitude}
-                  longitude={field.value?.longitude}
-                  locationDescription={field.value?.description}
-                />
-              )}
+              {({ field, form }: FieldProps) => {
+                return (
+                  <Map
+                    latitude={field.value?.latitude}
+                    longitude={field.value?.longitude}
+                    locationDescription={field.value?.description}
+                    noPhysicalLocation={form.values.noPhysicalLocation}
+                  />
+                )
+              }}
             </Field>
 
             <Box

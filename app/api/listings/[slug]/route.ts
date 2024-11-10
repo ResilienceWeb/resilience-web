@@ -35,6 +35,7 @@ export async function GET(request, { params }) {
             latitude: true,
             longitude: true,
             description: true,
+            noPhysicalLocation: true,
           },
         },
         category: {
@@ -103,7 +104,10 @@ export async function PUT(request) {
     const latitude = formData.get('latitude')
     const longitude = formData.get('longitude')
     const locationDescription = formData.get('locationDescription')
+    const noPhysicalLocation = formData.get('noPhysicalLocation')
     const slug = formData.get('slug')
+
+    console.log('noPhysicalLocation', noPhysicalLocation)
 
     // Prepare tags
     const tagsArray = tags !== '' ? tags.split(',') : []
@@ -126,6 +130,44 @@ export async function PUT(request) {
       id: Number(relationId),
     }))
 
+    let locationData
+    if (noPhysicalLocation) {
+      locationData = {
+        upsert: {
+          create: {
+            noPhysicalLocation: true,
+          },
+          update: {
+            latitude: null,
+            longitude: null,
+            description: null,
+            noPhysicalLocation: true,
+          },
+        },
+      }
+    } else {
+      locationData = {
+        ...(latitude && longitude && locationDescription
+          ? {
+              upsert: {
+                create: {
+                  latitude: parseFloat(latitude),
+                  longitude: parseFloat(longitude),
+                  description: locationDescription,
+                  noPhysicalLocation: false,
+                },
+                update: {
+                  latitude: parseFloat(latitude),
+                  longitude: parseFloat(longitude),
+                  description: locationDescription,
+                  noPhysicalLocation: false,
+                },
+              },
+            }
+          : {}),
+      }
+    }
+
     const newData: Prisma.ListingUpdateInput = {
       title: title,
       category: {
@@ -143,24 +185,7 @@ export async function PUT(request) {
       seekingVolunteers: stringToBoolean(seekingVolunteers),
       featured: stringToBoolean(featured),
       slug: slug,
-      location: {
-        ...(latitude && longitude && locationDescription
-          ? {
-              upsert: {
-                create: {
-                  latitude: parseFloat(latitude),
-                  longitude: parseFloat(longitude),
-                  description: locationDescription,
-                },
-                update: {
-                  latitude: parseFloat(latitude),
-                  longitude: parseFloat(longitude),
-                  description: locationDescription,
-                },
-              },
-            }
-          : {}),
-      },
+      location: locationData,
       tags: {
         connect: tagsToConnect,
         disconnect: tagsToDisconnect,
