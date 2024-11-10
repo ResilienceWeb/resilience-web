@@ -107,8 +107,6 @@ export async function PUT(request) {
     const noPhysicalLocation = formData.get('noPhysicalLocation')
     const slug = formData.get('slug')
 
-    console.log('noPhysicalLocation', noPhysicalLocation)
-
     // Prepare tags
     const tagsArray = tags !== '' ? tags.split(',') : []
     const tagsToConnect = tagsArray.map((tagId) => ({
