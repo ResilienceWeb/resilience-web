@@ -203,7 +203,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
         slug: listing?.slug || '',
         tags: initialTagsValues || [],
         relations: initialRelationsValues || [],
-        noPhysicalLocation: listing?.location.noPhysicalLocation || false,
+        noPhysicalLocation: listing?.location?.noPhysicalLocation || false,
         location:
           listing?.location?.latitude && listing?.location?.longitude
             ? {
