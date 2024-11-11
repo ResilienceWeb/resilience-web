@@ -65,9 +65,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       }
       return session
     },
-    redirect({ baseUrl }) {
-      return `${baseUrl}/admin`
-    },
   },
   theme: {
     colorScheme: 'light',

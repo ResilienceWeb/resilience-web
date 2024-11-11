@@ -13,12 +13,14 @@ import {
 import { useRouter } from 'next/navigation'
 
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
+import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import Footer from '@components/footer'
 import Dialog from './dialog'
 import Item from './item'
 
 const MainList = ({ filteredItems, isMobile }) => {
+  const selectedWebSlug = useSelectedWebSlug()
   const router = useRouter()
   const [selectedDataItem, setSelectedDataItem] = useState<any>()
   const {
@@ -56,7 +58,7 @@ const MainList = ({ filteredItems, isMobile }) => {
     onCloseDialog()
   }, [onCloseDialog])
 
-  const { categories } = useCategoriesPublic()
+  const { categories } = useCategoriesPublic({ webSlug: selectedWebSlug })
   const categoriesIndexes = useMemo(() => {
     const categoriesIndexesObj = {}
     categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))

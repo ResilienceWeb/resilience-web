@@ -21,7 +21,7 @@ import { SlGlobe } from 'react-icons/sl'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 
 import DescriptionRichText from '@components/main-list/description-rich-text'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import Item from '@components/main-list/item'
@@ -55,7 +55,7 @@ function Listing({ listing }) {
     }
   }, [router, subdomain])
 
-  const { categories } = useCategoriesPublic()
+  const { categories } = useCategoriesPublic({ webSlug: subdomain })
   const categoriesIndexes = useMemo(() => {
     const categoriesIndexesObj = {}
     categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))
@@ -277,6 +277,13 @@ function Listing({ listing }) {
               </Grid>
             </>
           )}
+
+          <Button
+            as={Link}
+            href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}
+          >
+            Edit
+          </Button>
         </Box>
       </Box>
     </>

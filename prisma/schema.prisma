@@ -72,43 +72,47 @@ model VerificationToken {
 }
 
 model Web {
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
-  id          Int          @id @default(autoincrement())
-  title       String       @unique
-  slug        String       @unique
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
+  id          Int           @id @default(autoincrement())
+  title       String        @unique
+  slug        String        @unique
   description String?
   categories  Category[]
   listings    Listing[]
   tags        Tag[]
-  published   Boolean      @default(false)
+  published   Boolean       @default(false)
   image       String?
   permissions Permission[]
   ownerships  Ownership[]
+  ListingEdit ListingEdit[]
 
   @@map("Location")
 }
 
 model Category {
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
-  label     String
-  color     String?   @default("f1f1f1")
-  id        Int       @id @default(autoincrement())
-  webId     Int?
-  web       Web?      @relation(fields: [webId], references: [id])
-  listings  Listing[]
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
+  label       String
+  color       String?       @default("f1f1f1")
+  id          Int           @id @default(autoincrement())
+  webId       Int?
+  web         Web?          @relation(fields: [webId], references: [id])
+  listings    Listing[]
+  ListingEdit ListingEdit[]
 
   @@unique([webId, label], name: "categoryIdentifier")
   @@map("categories")
 }
 
 model Tag {
-  id       Int       @id @default(autoincrement())
-  label    String
-  webId    Int?
-  web      Web?      @relation(fields: [webId], references: [id])
-  listings Listing[]
+  id            Int          @id @default(autoincrement())
+  label         String
+  webId         Int?
+  web           Web?         @relation(fields: [webId], references: [id])
+  listings      Listing[]
+  ListingEdit   ListingEdit? @relation(fields: [listingEditId], references: [id])
+  listingEditId Int?
 
   @@unique([webId, label], name: "tagIdentifier")
   @@map("tags")
@@ -142,20 +146,48 @@ model Listing {
   featured          Boolean          @default(false)
   location          ListingLocation? @relation(fields: [locationId], references: [id])
   locationId        Int?             @unique
+  edits             ListingEdit[]
 
   @@unique([webId, slug])
   @@map("listings")
 }
 
+model ListingEdit {
+  id          Int              @id @default(autoincrement())
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @default(now()) @updatedAt @map("updated_at")
+  listing     Listing          @relation(fields: [listingId], references: [id])
+  listingId   Int
+  title       String?
+  website     String?
+  description String?
+  facebook    String?
+  twitter     String?
+  instagram   String?
+  email       String?
+  categoryId  Int?
+  image       String?
+  slug        String?
+  webId       Int?
+  web         Web?             @relation(fields: [webId], references: [id])
+  category    Category?        @relation(fields: [categoryId], references: [id])
+  tags        Tag[]
+  location    ListingLocation? @relation(fields: [locationId], references: [id])
+  locationId  Int?
+
+  @@map("listing_edits")
+}
+
 model ListingLocation {
-  id                 Int      @id @default(autoincrement())
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @default(now()) @updatedAt @map("updated_at")
+  id                 Int           @id @default(autoincrement())
+  createdAt          DateTime      @default(now()) @map("created_at")
+  updatedAt          DateTime      @default(now()) @updatedAt @map("updated_at")
   latitude           Float?
   longitude          Float?
   description        String?
   listing            Listing?
-  noPhysicalLocation Boolean? @map("no_physical_location")
+  noPhysicalLocation Boolean?      @map("no_physical_location")
+  ListingEdit        ListingEdit[]
 
   @@map("listing_locations")
 }

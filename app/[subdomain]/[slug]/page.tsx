@@ -67,7 +67,10 @@ export async function generateStaticParams() {
   }))
 }
 
-async function getListing({ webSlug, listingSlug }): Promise<ListingType> {
+export async function getListing({
+  webSlug,
+  listingSlug,
+}): Promise<ListingType> {
   const listingData = await prisma.listing.findFirst({
     where: {
       slug: listingSlug,
