@@ -129,11 +129,9 @@ export default function AdminPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstTime])
 
-  console.log(isLoadingWebs, isLoadingListings, isLoadingAllowedWebs, allowedWebs)
-
   if (
     isLoadingWebs ||
-    isLoadingListings ||
+    (selectedWebId && isLoadingListings) ||
     isLoadingAllowedWebs ||
     allowedWebs === null
   ) {
