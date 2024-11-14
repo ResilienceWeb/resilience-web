@@ -1,5 +1,45 @@
-import { Prisma } from '@prisma/client'
 import { auth } from '@auth'
+import { stringToBoolean } from '@helpers/utils'
+import prisma from '@prisma-rw'
+
+export async function GET(request, { params }) {
+  try {
+    const session = await auth()
+    if (!session?.user) {
+      return new Response('Not authorized', { status: 401 })
+    }
+
+    const slug = params.slug
+    const searchParams = request.nextUrl.searchParams
+    const webSlug = searchParams.get('web')
+
+    const listingEdits = await prisma.listingEdit.findMany({
+      where: {
+        listing: {
+          slug,
+          ...(webSlug
+            ? {
+                web: {
+                  slug: {
+                    contains: webSlug,
+                  },
+                },
+              }
+            : {}),
+        },
+      },
+    })
+
+    return Response.json({
+      listingEdits,
+    })
+  } catch (e) {
+    console.error(`[RW] Unable to get listing edits - ${e}`)
+    return new Response(`Unable to get listing edits - ${e}`, {
+      status: 500,
+    })
+  }
+}
 
 export async function POST(request) {
   try {
@@ -9,10 +49,10 @@ export async function POST(request) {
     }
 
     const formData = await request.formData()
+    const listingId = Number(formData.get('listingId'))
+    const userId = Number(formData.get('userId'))
     const tags = formData.get('tags')
     const relations = formData.get('relations')
-    const pending = formData.get('pending')
-    const webId = parseInt(formData.get('webId'))
     const category = parseInt(formData.get('category'))
     const title = formData.get('title')
     const website = formData.get('website')
@@ -27,6 +67,32 @@ export async function POST(request) {
     // const longitude = formData.get('longitude')
     // const locationDescription = formData.get('locationDescription')
     const slug = formData.get('slug')
+
+    const listingEdit = await prisma.listingEdit.create({
+      data: {
+        listing: {
+          connect: {
+            id: listingId,
+          },
+        },
+        title,
+        description,
+        email,
+        website,
+        facebook,
+        instagram,
+        twitter,
+      },
+    })
+
+    return Response.json(
+      {
+        listingEdit,
+      },
+      {
+        status: 201,
+      },
+    )
   } catch (e) {
     console.error(`[RW] Unable to create listing edit - ${e}`)
     return new Response(`Unable to create listing edit - ${e}`, {

@@ -43,8 +43,9 @@ model User {
   permission    Permission[]
   ownerships    Ownership[]
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  ListingEdit ListingEdit[]
 
   @@map("users")
 }
@@ -72,20 +73,19 @@ model VerificationToken {
 }
 
 model Web {
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
-  id          Int           @id @default(autoincrement())
-  title       String        @unique
-  slug        String        @unique
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
+  id          Int          @id @default(autoincrement())
+  title       String       @unique
+  slug        String       @unique
   description String?
   categories  Category[]
   listings    Listing[]
   tags        Tag[]
-  published   Boolean       @default(false)
+  published   Boolean      @default(false)
   image       String?
   permissions Permission[]
   ownerships  Ownership[]
-  ListingEdit ListingEdit[]
 
   @@map("Location")
 }
@@ -168,12 +168,12 @@ model ListingEdit {
   categoryId  Int?
   image       String?
   slug        String?
-  webId       Int?
-  web         Web?             @relation(fields: [webId], references: [id])
   category    Category?        @relation(fields: [categoryId], references: [id])
   tags        Tag[]
   location    ListingLocation? @relation(fields: [locationId], references: [id])
   locationId  Int?
+  user        User             @relation(fields: [userId], references: [id])
+  userId      String
 
   @@map("listing_edits")
 }

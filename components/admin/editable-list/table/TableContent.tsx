@@ -23,7 +23,7 @@ import useFeatureListing from '@hooks/listings/useFeatureListing'
 
 import CategoryTag from '@components/category-tag'
 
-const TableContent = ({ goToEdit, items, removeItem }) => {
+const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
   const { featureListing, unfeatureListing } = useFeatureListing()
   if (!items) return null
 
@@ -109,6 +109,15 @@ const TableContent = ({ goToEdit, items, removeItem }) => {
 
               <Td position="sticky" right={0} background="gray.100">
                 <Stack direction="column" spacing={2}>
+                  {item.edits?.length > 0 && (
+                    <Button
+                      colorScheme="purple"
+                      onClick={() => goToProposedEdits(item)}
+                      size="sm"
+                    >
+                      View suggested edit
+                    </Button>
+                  )}
                   <Button
                     colorScheme={item.pending ? 'purple' : 'blue'}
                     onClick={() => goToEdit(item)}

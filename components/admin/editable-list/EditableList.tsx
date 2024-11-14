@@ -52,6 +52,13 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
     [router],
   )
 
+  const goToProposedEdits = useCallback(
+    (dataItem) => {
+      router.push(`/admin/${dataItem.slug}/edits`)
+    },
+    [router],
+  )
+
   const goToCreateListing = useCallback(() => {
     router.push('/admin/new-listing')
   }, [router])
@@ -130,6 +137,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
       {filteredItems.length > 0 ? (
         <Table
           goToEdit={goToEdit}
+          goToProposedEdits={goToProposedEdits}
           removeItem={openRemoveDialog}
           items={filteredItems}
         />
