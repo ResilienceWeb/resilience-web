@@ -25,6 +25,7 @@ declare global {
     relations?: Listing[]
     relationOf?: Listing[]
     pending: boolean
+    category: Category
     location: {
       latitude?: number
       longitude?: number

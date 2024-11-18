@@ -97,6 +97,7 @@ interface Props {
   listing?: Listing
   categories: Category[]
   handleSubmit: (data: any) => void
+  isEditMode: boolean
 }
 
 type TagOption = {
@@ -108,6 +109,7 @@ const ListingFormSimplified = ({
   listing,
   categories,
   handleSubmit,
+  isEditMode = false,
 }: Props) => {
   const { tags } = useTags()
 
@@ -244,16 +246,18 @@ const ListingFormSimplified = ({
                 </Field>
               </chakra.div>
 
-              <Field name="image">
-                {({ field, form }: FieldProps) => (
-                  <ImageUpload
-                    field={field}
-                    form={form}
-                    formProps={props}
-                    isRequired={false}
-                  />
-                )}
-              </Field>
+              {!isEditMode && (
+                <Field name="image">
+                  {({ field, form }: FieldProps) => (
+                    <ImageUpload
+                      field={field}
+                      form={form}
+                      formProps={props}
+                      isRequired={false}
+                    />
+                  )}
+                </Field>
+              )}
 
               <chakra.div mb={3}>
                 <Field name="email" type="email" validate={emailValidator}>
@@ -410,9 +414,11 @@ const ListingFormSimplified = ({
                 </chakra.div>
               </HStack>
 
-              <chakra.div mb={3}>
-                <SlugField />
-              </chakra.div>
+              {!isEditMode && (
+                <chakra.div mb={3}>
+                  <SlugField />
+                </chakra.div>
+              )}
 
               {tagOptions.length > 0 && (
                 <chakra.div mb={3}>

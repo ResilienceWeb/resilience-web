@@ -19,6 +19,7 @@ import useListing from '@hooks/listings/useListing'
 import useUpdateListing from '@hooks/listings/useUpdateListing'
 import useListingEdits from '@hooks/listings/useListingEdits'
 import { useAppContext } from '@store/hooks'
+import ListingEditReview from '@components/admin/listing-form/listing-edit-review'
 
 export default function ListingEditsPage({ params }) {
   const router = useRouter()
@@ -53,7 +54,9 @@ export default function ListingEditsPage({ params }) {
     )
   }
 
-  console.log(listingEdits)
+  const editedListing = listingEdits[0]
+
+  console.log(listing, editedListing)
 
   return (
     <Box
@@ -88,22 +91,19 @@ export default function ListingEditsPage({ params }) {
             {selectedWebSlug}.resilienceweb.org.uk/{slug}
           </Link>
         </Text>
-        <Box shadow="base" rounded={[null, 'md']} overflow={{ sm: 'hidden' }}>
-          {listing.pending && (
-            <Alert status="info" colorScheme="purple">
-              <AlertIcon />
-              This listing was submitted externally and is currently in pending
-              state. Check through the information below, and if everything
-              looks okay click Approve.
-            </Alert>
-          )}
-          <Stack bg="white" spacing={6}>
-            {/* <ListingForm
-              categories={categories}
-              listing={listing}
-              handleSubmit={handleSubmit}
-            /> */}
-          </Stack>
+        <Box overflow={{ sm: 'hidden' }}>
+          <Alert status="info" rounded="md" colorScheme="purple" mb="2rem">
+            <AlertIcon />
+            The changes highlighted below were submitted externally by X. Check
+            through them, and if everything looks okay click Accept changes. If
+            the changes are incorrect or low quality, click Reject changes.
+          </Alert>
+          <ListingEditReview
+            categories={categories}
+            listing={listing}
+            editedListing={editedListing}
+            handleSubmit={handleSubmit}
+          />
         </Box>
       </Box>
     </Box>

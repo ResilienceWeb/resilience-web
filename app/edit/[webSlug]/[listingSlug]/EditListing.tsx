@@ -64,6 +64,7 @@ export default function EditListing({ listing, webSlug }) {
             listing={listing}
             categories={categories}
             handleSubmit={handleSubmit}
+            isEditMode
           />
         </Box>
       </Box>

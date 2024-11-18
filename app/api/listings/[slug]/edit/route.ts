@@ -28,6 +28,15 @@ export async function GET(request, { params }) {
             : {}),
         },
       },
+      include: {
+        category: {
+          select: {
+            id: true,
+            color: true,
+            label: true,
+          },
+        },
+      },
     })
 
     return Response.json({
@@ -50,7 +59,7 @@ export async function POST(request) {
 
     const formData = await request.formData()
     const listingId = Number(formData.get('listingId'))
-    const userId = Number(formData.get('userId'))
+    // const userId = Number(formData.get('userId'))
     const tags = formData.get('tags')
     const relations = formData.get('relations')
     const category = parseInt(formData.get('category'))
@@ -73,6 +82,11 @@ export async function POST(request) {
         listing: {
           connect: {
             id: listingId,
+          },
+        },
+        user: {
+          connect: {
+            id: session.user.id,
           },
         },
         title,
