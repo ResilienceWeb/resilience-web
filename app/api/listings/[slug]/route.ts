@@ -104,7 +104,9 @@ export async function PUT(request) {
     const latitude = formData.get('latitude')
     const longitude = formData.get('longitude')
     const locationDescription = formData.get('locationDescription')
-    const noPhysicalLocation = formData.get('noPhysicalLocation')
+    const noPhysicalLocation = stringToBoolean(
+      formData.get('noPhysicalLocation'),
+    )
     const slug = formData.get('slug')
 
     // Prepare tags
