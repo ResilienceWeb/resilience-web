@@ -11,12 +11,14 @@ import {
   Link,
   Icon,
   Button,
+  IconButton,
   Tag,
   Text,
   Tooltip,
   Grid,
 } from '@chakra-ui/react'
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa'
+import { FiEdit } from 'react-icons/fi'
 import { SlGlobe } from 'react-icons/sl'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 
@@ -277,14 +279,29 @@ function Listing({ listing }) {
               </Grid>
             </>
           )}
-
-          <Button
-            as={Link}
-            href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}
-          >
-            Edit
-          </Button>
         </Box>
+      </Box>
+      <Box
+        display="flex"
+        flex="1"
+        width="100%"
+        height="100%"
+        justifyContent="flex-end"
+        alignItems="flex-end"
+        padding="1rem"
+      >
+        <Link href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}>
+          <IconButton
+            icon={<FiEdit />}
+            variant="solid"
+            aria-label="Edit listing"
+            fontSize="1.5rem"
+            width="60px"
+            height="60px"
+            borderRadius="50%"
+            colorScheme="blue"
+          />
+        </Link>
       </Box>
     </>
   )

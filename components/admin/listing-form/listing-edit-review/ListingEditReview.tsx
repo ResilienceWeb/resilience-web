@@ -1,60 +1,27 @@
-import { memo, useEffect } from 'react'
-import { Formik, Form, Field, FieldProps, useFormikContext } from 'formik'
-import { Category } from '@prisma/client'
-import {
-  chakra,
-  Box,
-  Button,
-  Checkbox,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  Select,
-  HStack,
-  Text,
-  Tooltip,
-  Heading,
-  Stack,
-  Flex,
-} from '@chakra-ui/react'
-import { emailValidator, fieldRequiredValidator } from '@helpers/formValidation'
+import { memo } from 'react'
+import { Button, Stack, Flex } from '@chakra-ui/react'
 import Diff from './Diff'
-
-import EditorField from '../RichTextEditor'
+import useDeleteListingEdit from '@hooks/listings/useDeleteListingEdit'
+import { useRouter } from 'next/navigation'
 
 interface Props {
   listing: Listing
   editedListing: Listing
-  categories: Category[]
   handleSubmit: (data: any) => void
+  webSlug: string
 }
 
-// function compareStrings(string1, string2) {
-//   const results = Diff.diffChars(string1, string2)
+const ListingEditReview = ({ listing, editedListing, handleSubmit, webSlug }: Props) => {
+  const router = useRouter()
+  const { deleteListingEdit } = useDeleteListingEdit()
 
-//   console.log(results)
-
-//   let output = ''
-//   results.forEach((item) => {
-//     if (item.removed) {
-//       output += `<span style="background-color:yellow">${item.value}</span>`
-//     } else if (!item.added) {
-//       output += `${item.value}`
-//     }
-//   })
-
-//   return output
-// }
-
-const ListingEditReview = ({
-  listing,
-  editedListing,
-  categories,
-  handleSubmit,
-}: Props) => {
-  // const diffstring = compareStrings(listing.title, editedListing.title)
-  // console.log(listing.title, editedListing.title, diffstring)
+  const handleReject = async () => {
+    await deleteListingEdit({ 
+      listingSlug: listing.slug,
+      webSlug,
+    })
+    router.back()
+  }
 
   return (
     <Stack bg="white" spacing={6}>
@@ -101,14 +68,10 @@ const ListingEditReview = ({
       />
 
       <Flex justifyContent="flex-end" gap="1rem">
-        <Button colorScheme="red">Reject</Button>
-        <Button
-          // isDisabled={!props.isValid || !props.dirty}
-          // isLoading={props.isSubmitting}
-          size="md"
-          variant="rw"
-          onClick={handleSubmit}
-        >
+        <Button colorScheme="red" onClick={handleReject}>
+          Reject
+        </Button>
+        <Button size="md" variant="rw" onClick={handleSubmit}>
           Accept changes
         </Button>
       </Flex>

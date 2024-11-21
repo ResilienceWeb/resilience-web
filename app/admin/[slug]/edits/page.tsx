@@ -13,7 +13,6 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { HiArrowLeft } from 'react-icons/hi'
-import useCategories from '@hooks/categories/useCategories'
 import useListing from '@hooks/listings/useListing'
 import useApplyListingEdit from '@hooks/listings/useApplyListingEdit'
 import useListingEdits from '@hooks/listings/useListingEdits'
@@ -23,7 +22,6 @@ import ListingEditReview from '@components/admin/listing-form/listing-edit-revie
 export default function ListingEditsPage({ params }) {
   const router = useRouter()
   const slug = params.slug
-  const { categories } = useCategories()
   const { mutate: applyListingEdit } = useApplyListingEdit()
   const { selectedWebSlug } = useAppContext()
 
@@ -49,7 +47,7 @@ export default function ListingEditsPage({ params }) {
     navigateToListing()
   }, [applyListingEdit, listing?.id, listingEdits, navigateToListing])
 
-  if (!categories || !listing || isLoadingListing || isLoadingListingEdits) {
+  if (!listing || isLoadingListing || isLoadingListingEdits) {
     return (
       <Center height="50vh">
         <Spinner size="xl" />
@@ -135,10 +133,10 @@ export default function ListingEditsPage({ params }) {
             the changes are incorrect or low quality, click Reject changes.
           </Alert>
           <ListingEditReview
-            categories={categories}
             listing={listing}
             editedListing={editedListing}
             handleSubmit={handleSubmit}
+            webSlug={selectedWebSlug}
           />
         </Box>
       </Box>

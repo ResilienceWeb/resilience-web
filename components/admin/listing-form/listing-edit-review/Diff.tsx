@@ -53,6 +53,11 @@ export default function Diff({
         </Heading>
       )}
       <span>{mappedNodes}</span>
+      {string1 !== '' && string2 === '' && (
+        <Text ml="0.25rem" display="inline" fontStyle="italic">
+          (deleted)
+        </Text>
+      )}
     </Box>
   )
 }

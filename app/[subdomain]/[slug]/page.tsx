@@ -121,6 +121,11 @@ export async function getListing({
           },
         },
       },
+      edits: {
+        select: {
+          id: true,
+        },
+      },
     },
   })
 
