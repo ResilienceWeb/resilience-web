@@ -103,6 +103,7 @@ export default function NewListing() {
                 <ListingFormSimplified
                   categories={categories}
                   handleSubmit={handleSubmit}
+                  isEditMode={false}
                 />
               </Stack>
             </Box>

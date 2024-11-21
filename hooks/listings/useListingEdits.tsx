@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { useAppContext } from '@store/hooks'
 
 async function fetchListingEditsRequest({ queryKey }) {
   const [_queryKey, { webSlug, listingSlug }] = queryKey
@@ -11,8 +10,7 @@ async function fetchListingEditsRequest({ queryKey }) {
   return listingEdits
 }
 
-export default function useListingEdits(listingSlug) {
-  const { selectedWebSlug: webSlug } = useAppContext()
+export default function useListingEdits(listingSlug, webSlug) {
   const {
     data: listingEdits,
     isPending,

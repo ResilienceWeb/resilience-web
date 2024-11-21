@@ -4,7 +4,6 @@ import { useCallback } from 'react'
 import NextLink from 'next/link'
 import {
   Box,
-  Stack,
   Button,
   Spinner,
   Center,
@@ -16,7 +15,7 @@ import {
 import { HiArrowLeft } from 'react-icons/hi'
 import useCategories from '@hooks/categories/useCategories'
 import useListing from '@hooks/listings/useListing'
-import useUpdateListing from '@hooks/listings/useUpdateListing'
+import useApplyListingEdit from '@hooks/listings/useApplyListingEdit'
 import useListingEdits from '@hooks/listings/useListingEdits'
 import { useAppContext } from '@store/hooks'
 import ListingEditReview from '@components/admin/listing-form/listing-edit-review'
@@ -25,26 +24,30 @@ export default function ListingEditsPage({ params }) {
   const router = useRouter()
   const slug = params.slug
   const { categories } = useCategories()
-  const { mutate: updateListing } = useUpdateListing()
+  const { mutate: applyListingEdit } = useApplyListingEdit()
   const { selectedWebSlug } = useAppContext()
+
+  const { listing, isPending: isLoadingListing } = useListing(slug)
+  const { listingEdits, isPending: isLoadingListingEdits } = useListingEdits(
+    slug,
+    selectedWebSlug,
+  )
 
   const goBack = useCallback(() => {
     router.back()
   }, [router])
 
-  const handleSubmit = useCallback(
-    (data) => {
-      if (data.id) {
-        updateListing(data)
-      }
-      goBack()
-    },
-    [updateListing, goBack],
-  )
+  const navigateToListing = useCallback(() => {
+    router.push(`admin/${slug}`)
+  }, [router, slug])
 
-  const { listing, isPending: isLoadingListing } = useListing(slug)
-  const { listingEdits, isPending: isLoadingListingEdits } =
-    useListingEdits(slug)
+  const handleSubmit = useCallback(() => {
+    applyListingEdit({
+      listingId: listing?.id,
+      listingEditId: listingEdits[0]?.id,
+    })
+    navigateToListing()
+  }, [applyListingEdit, listing?.id, listingEdits, navigateToListing])
 
   if (!categories || !listing || isLoadingListing || isLoadingListingEdits) {
     return (
@@ -54,9 +57,42 @@ export default function ListingEditsPage({ params }) {
     )
   }
 
-  const editedListing = listingEdits[0]
+  if (!listingEdits || listingEdits.length === 0) {
+    return (
+      <Box
+        px={{
+          base: '4',
+          md: '10',
+        }}
+        maxWidth="3xl"
+        mx="auto"
+      >
+        <Button
+          leftIcon={<HiArrowLeft />}
+          name="Back"
+          mb={2}
+          ml={2}
+          onClick={goBack}
+          variant="link"
+          color="gray.700"
+        >
+          Back
+        </Button>
 
-  console.log(listing, editedListing)
+        <Center flexDirection="column" gap={4}>
+          <Alert status="info" rounded="md">
+            <AlertIcon />
+            No pending edits found for this listing.
+          </Alert>
+          <Button onClick={goBack} variant="rw">
+            Go back to listings
+          </Button>
+        </Center>
+      </Box>
+    )
+  }
+
+  const editedListing = listingEdits[0]
 
   return (
     <Box

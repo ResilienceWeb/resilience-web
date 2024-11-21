@@ -1,4 +1,4 @@
-import { Box, Heading } from '@chakra-ui/react'
+import { Box, Heading, Text } from '@chakra-ui/react'
 import * as diff from 'diff'
 
 const styles = {
@@ -25,7 +25,7 @@ export default function Diff({
   string2 = '',
   mode = 'characters',
 }: Props) {
-  if (!string1 || !string2) return null
+  if (!string1 && !string2) return null
   if (string1 === string2) return null
 
   let groups = []

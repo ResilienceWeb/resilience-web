@@ -13,6 +13,8 @@ export async function GET(request, { params }) {
     const searchParams = request.nextUrl.searchParams
     const webSlug = searchParams.get('web')
 
+    console.log(slug, webSlug)
+
     const listingEdits = await prisma.listingEdit.findMany({
       where: {
         listing: {

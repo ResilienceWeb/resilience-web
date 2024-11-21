@@ -1,8 +1,7 @@
 'use client'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import {
   Box,
-  Stack,
   Heading,
   Alert,
   AlertIcon,
@@ -15,7 +14,10 @@ import Layout from '@components/layout'
 import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import useCreateListingEdit from '@hooks/listings/useCreateListingEdit'
+import useListingEdits from '@hooks/listings/useListingEdits'
 import useWeb from '@hooks/webs/useWeb'
+import Link from 'next/link'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 export default function EditListing({ listing, webSlug }) {
   const { categories, isPending: isCategoriesLoading } = useCategoriesPublic({
@@ -23,6 +25,11 @@ export default function EditListing({ listing, webSlug }) {
   })
   const { web } = useWeb({ webSlug })
   const { mutate: createListingEdit } = useCreateListingEdit()
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const { listingEdits, isPending: isLoadingEdits } = useListingEdits(
+    listing.slug,
+    webSlug,
+  )
 
   const handleSubmit = useCallback(
     (data) => {
@@ -32,7 +39,7 @@ export default function EditListing({ listing, webSlug }) {
       data.relations = []
       createListingEdit(data)
       setTimeout(() => {
-        // setIsSubmitted(true)
+        setIsSubmitted(true)
         if (window) {
           window.scrollTo({ top: 0, behavior: 'smooth' })
         }
@@ -41,7 +48,7 @@ export default function EditListing({ listing, webSlug }) {
     [web?.id, listing.id, createListingEdit],
   )
 
-  if (isCategoriesLoading) {
+  if (isCategoriesLoading || isLoadingEdits) {
     return (
       <Layout>
         <Center height="50vh">
@@ -51,22 +58,59 @@ export default function EditListing({ listing, webSlug }) {
     )
   }
 
+  if (listingEdits && listingEdits.length > 0) {
+    return (
+      <Layout>
+        <Box mt="3rem" maxWidth={{ base: '100%', md: '700px' }}>
+          <Center flexDirection="column" gap={4}>
+            <Alert status="info" rounded="md">
+              <AlertIcon />
+              This listing cannot be edited as there is already a suggested edit
+              under review for it.
+            </Alert>
+            <Link href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`}>
+              <Button variant="rw">Go back to Resilience Web</Button>
+            </Link>
+          </Center>
+        </Box>
+      </Layout>
+    )
+  }
+
   return (
     <Layout>
       <Box maxWidth={{ base: '100%', md: '700px' }}>
-        <Box
-          my="2rem"
-          shadow="base"
-          rounded={[null, 'md']}
-          overflow={{ sm: 'hidden' }}
-        >
-          <ListingFormSimplified
-            listing={listing}
-            categories={categories}
-            handleSubmit={handleSubmit}
-            isEditMode
-          />
-        </Box>
+        {isSubmitted ? (
+          <>
+            <Heading as="h1" my="1rem">
+              Thank you!
+            </Heading>
+            <Text>
+              You have submitted your changes succesfully 🎉 <br /> Thank you
+              for your contribution. It will be checked and hopefully approved
+              by the admins of the <strong>{web?.title}</strong> web.
+            </Text>
+            <Link href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`}>
+              <Button mt="2rem" size="md" variant="rw">
+                Go back to {web?.title} Resilience Web
+              </Button>
+            </Link>
+          </>
+        ) : (
+          <Box
+            my="2rem"
+            shadow="base"
+            rounded={[null, 'md']}
+            overflow={{ sm: 'hidden' }}
+          >
+            <ListingFormSimplified
+              listing={listing}
+              categories={categories}
+              handleSubmit={handleSubmit}
+              isEditMode
+            />
+          </Box>
+        )}
       </Box>
     </Layout>
   )
