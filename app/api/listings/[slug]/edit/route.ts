@@ -1,5 +1,7 @@
 import { auth } from '@auth'
 import prisma from '@prisma-rw'
+import { sendEmail } from '@helpers/email'
+import ListingEditProposedAdminEmail from '@components/emails/ListingEditProposedAdminEmail'
 
 export async function GET(request, { params }) {
   try {
@@ -11,8 +13,6 @@ export async function GET(request, { params }) {
     const slug = params.slug
     const searchParams = request.nextUrl.searchParams
     const webSlug = searchParams.get('web')
-
-    console.log(slug, webSlug)
 
     const listingEdits = await prisma.listingEdit.findMany({
       where: {
@@ -37,6 +37,7 @@ export async function GET(request, { params }) {
             label: true,
           },
         },
+        user: true,
       },
     })
 
@@ -88,7 +89,38 @@ export async function POST(request) {
         instagram,
         twitter,
       },
+      include: {
+        listing: {
+          include: {
+            web: {
+              include: {
+                ownerships: {
+                  include: {
+                    user: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     })
+
+    const web = listingEdit.listing.web
+    const emailPromises = web.ownerships.map(async (ownership) => {
+      if (!ownership.user?.email) return
+
+      await sendEmail({
+        to: ownership.user.email,
+        subject: `New listing edit proposed for ${web.title} Resilience Web`,
+        email: ListingEditProposedAdminEmail({
+          webTitle: web.title,
+          listingTitle: listingEdit.title || listingEdit.listing.title,
+        }),
+      })
+    })
+
+    await Promise.all(emailPromises)
 
     return Response.json(
       {

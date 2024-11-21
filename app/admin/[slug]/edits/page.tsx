@@ -35,17 +35,13 @@ export default function ListingEditsPage({ params }) {
     router.back()
   }, [router])
 
-  const navigateToListing = useCallback(() => {
-    router.push(`admin/${slug}`)
-  }, [router, slug])
-
   const handleSubmit = useCallback(() => {
     applyListingEdit({
       listingId: listing?.id,
       listingEditId: listingEdits[0]?.id,
     })
-    navigateToListing()
-  }, [applyListingEdit, listing?.id, listingEdits, navigateToListing])
+    router.push(`admin/${slug}`)
+  }, [applyListingEdit, listing?.id, listingEdits, router, slug])
 
   if (!listing || isLoadingListing || isLoadingListingEdits) {
     return (
@@ -128,9 +124,10 @@ export default function ListingEditsPage({ params }) {
         <Box overflow={{ sm: 'hidden' }}>
           <Alert status="info" rounded="md" colorScheme="purple" mb="2rem">
             <AlertIcon />
-            The changes highlighted below were submitted externally by X. Check
-            through them, and if everything looks okay click Accept changes. If
-            the changes are incorrect or low quality, click Reject changes.
+            The changes highlighted below were submitted externally by{' '}
+            {editedListing.user?.name ?? editedListing.user?.email}. Review
+            them, and if everything looks okay click Accept changes. If the
+            changes are incorrect or low quality, click Reject changes.
           </Alert>
           <ListingEditReview
             listing={listing}

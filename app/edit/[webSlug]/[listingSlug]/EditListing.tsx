@@ -68,8 +68,10 @@ export default function EditListing({ listing, webSlug }) {
               This listing cannot be edited as there is already a suggested edit
               under review for it.
             </Alert>
-            <Link href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`}>
-              <Button variant="rw">Go back to Resilience Web</Button>
+            <Link
+              href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}/${listing.slug}`}
+            >
+              <Button variant="rw">Go back to listing</Button>
             </Link>
           </Center>
         </Box>
