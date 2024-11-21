@@ -1,4 +1,4 @@
-import { getListing } from '../../../[subdomain]/[slug]/page'
+import getListing from '../../../[subdomain]/[slug]/getListing'
 import EditListing from './EditListing'
 
 export default async function EditListingPage({ params }) {
