@@ -20,6 +20,7 @@ import {
   Select,
   HStack,
   Text,
+  Tooltip,
 } from '@chakra-ui/react'
 import {
   emailValidator,
@@ -386,6 +387,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
                           htmlFor="title"
                           fontSize="sm"
                           fontWeight="600"
+                          mb="0.25rem"
                         >
                           Website
                         </FormLabel>
@@ -724,22 +726,28 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
               }}
             </Field>
 
-            <Box
-              px={{ base: 4, sm: 6 }}
-              py="0.75rem"
-              bg="gray.50"
-              textAlign="right"
-            >
-              <Button
-                bg={listing?.pending ? 'purple.600' : 'rw.700'}
-                colorScheme={listing?.pending ? 'purple' : 'rw.700'}
-                isLoading={props.isSubmitting}
-                size="md"
-                type="submit"
-                _hover={{ bg: listing?.pending ? 'purple.700' : 'rw.900' }}
+            <Box p="0.75rem" bg="gray.50" textAlign="right">
+              <Tooltip
+                isDisabled={props.dirty}
+                borderRadius="md"
+                label="You haven't made any changes yet"
               >
-                {listing ? (listing.pending ? 'Approve' : 'Update') : 'Create'}
-              </Button>
+                <Button
+                  bg={listing?.pending ? 'purple.600' : 'rw.700'}
+                  colorScheme={listing?.pending ? 'purple' : 'rw.700'}
+                  isLoading={props.isSubmitting}
+                  isDisabled={!props.dirty}
+                  size="md"
+                  type="submit"
+                  _hover={{ bg: listing?.pending ? 'purple.700' : 'rw.900' }}
+                >
+                  {listing
+                    ? listing.pending
+                      ? 'Approve'
+                      : 'Update'
+                    : 'Create'}
+                </Button>
+              </Tooltip>
             </Box>
           </Form>
         )

@@ -11,17 +11,19 @@ import {
   Link,
   Icon,
   Button,
+  IconButton,
   Tag,
   Text,
   Tooltip,
   Grid,
 } from '@chakra-ui/react'
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa'
+import { FiEdit } from 'react-icons/fi'
 import { SlGlobe } from 'react-icons/sl'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 
 import DescriptionRichText from '@components/main-list/description-rich-text'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import Item from '@components/main-list/item'
@@ -55,7 +57,7 @@ function Listing({ listing }) {
     }
   }, [router, subdomain])
 
-  const { categories } = useCategoriesPublic()
+  const { categories } = useCategoriesPublic({ webSlug: subdomain })
   const categoriesIndexes = useMemo(() => {
     const categoriesIndexesObj = {}
     categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))
@@ -278,6 +280,28 @@ function Listing({ listing }) {
             </>
           )}
         </Box>
+      </Box>
+      <Box
+        display="flex"
+        flex="1"
+        width="100%"
+        height="100%"
+        justifyContent="flex-end"
+        alignItems="flex-end"
+        padding="1rem"
+      >
+        <Link href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}>
+          <IconButton
+            icon={<FiEdit />}
+            variant="solid"
+            aria-label="Edit listing"
+            fontSize="1.5rem"
+            width="60px"
+            height="60px"
+            borderRadius="50%"
+            colorScheme="blue"
+          />
+        </Link>
       </Box>
     </>
   )

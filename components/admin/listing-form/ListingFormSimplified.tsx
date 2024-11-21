@@ -17,6 +17,7 @@ import {
   Select,
   HStack,
   Text,
+  Tooltip,
 } from '@chakra-ui/react'
 import {
   emailValidator,
@@ -93,8 +94,10 @@ const customMultiSelectStyles = {
 }
 
 interface Props {
+  listing?: Listing
   categories: Category[]
   handleSubmit: (data: any) => void
+  isEditMode: boolean
 }
 
 type TagOption = {
@@ -102,7 +105,12 @@ type TagOption = {
   label: string
 }
 
-const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
+const ListingFormSimplified = ({
+  listing,
+  categories,
+  handleSubmit,
+  isEditMode = false,
+}: Props) => {
   const { tags } = useTags()
 
   const tagOptions: Options<TagOption> = useMemo(() => {
@@ -123,18 +131,18 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
   return (
     <Formik
       initialValues={{
-        id: null,
-        title: '',
-        description: '',
-        category: undefined,
-        email: '',
-        website: '',
-        facebook: '',
-        twitter: '',
-        instagram: '',
-        seekingVolunteers: false,
-        image: undefined,
-        slug: '',
+        id: listing?.id || null,
+        title: listing?.title ?? '',
+        description: listing?.description || '',
+        category: listing?.categoryId || undefined,
+        email: listing?.email || '',
+        website: listing?.website || '',
+        facebook: listing?.facebook || '',
+        twitter: listing?.twitter || '',
+        instagram: listing?.instagram || '',
+        seekingVolunteers: listing?.seekingVolunteers || false,
+        image: listing?.image,
+        slug: listing?.slug || '', // TODO: make this not editable?
         tags: [],
       }}
       enableReinitialize
@@ -238,16 +246,18 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                 </Field>
               </chakra.div>
 
-              <Field name="image">
-                {({ field, form }: FieldProps) => (
-                  <ImageUpload
-                    field={field}
-                    form={form}
-                    formProps={props}
-                    isRequired={false}
-                  />
-                )}
-              </Field>
+              {!isEditMode && (
+                <Field name="image">
+                  {({ field, form }: FieldProps) => (
+                    <ImageUpload
+                      field={field}
+                      form={form}
+                      formProps={props}
+                      isRequired={false}
+                    />
+                  )}
+                </Field>
+              )}
 
               <chakra.div mb={3}>
                 <Field name="email" type="email" validate={emailValidator}>
@@ -404,9 +414,11 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
                 </chakra.div>
               </HStack>
 
-              <chakra.div mb={3}>
-                <SlugField />
-              </chakra.div>
+              {!isEditMode && (
+                <chakra.div mb={3}>
+                  <SlugField />
+                </chakra.div>
+              )}
 
               {tagOptions.length > 0 && (
                 <chakra.div mb={3}>
@@ -494,16 +506,22 @@ const ListingFormSimplified = ({ categories, handleSubmit }: Props) => {
               </chakra.div>
             </chakra.div>
 
-            <Box px={{ base: 4, sm: 6 }} py={3} bg="gray.50" textAlign="right">
-              <Button
-                isDisabled={!props.isValid}
-                isLoading={props.isSubmitting}
-                size="md"
-                type="submit"
-                variant="rw"
+            <Box p="0.75rem" bg="gray.50" textAlign="right">
+              <Tooltip
+                isDisabled={props.dirty}
+                borderRadius="md"
+                label="You haven't made any changes yet"
               >
-                Submit
-              </Button>
+                <Button
+                  isDisabled={!props.isValid || !props.dirty}
+                  isLoading={props.isSubmitting}
+                  size="md"
+                  type="submit"
+                  variant="rw"
+                >
+                  Submit
+                </Button>
+              </Tooltip>
             </Box>
           </Form>
         )

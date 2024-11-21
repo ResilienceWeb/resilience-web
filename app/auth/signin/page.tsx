@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import NextLink from 'next/link'
 import {
@@ -19,6 +20,8 @@ import styles from '../auth.module.scss'
 export default function SignIn() {
   const [error, setError] = useState('')
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirectTo')
 
   return (
     <div className={styles.root}>
@@ -50,6 +53,7 @@ export default function SignIn() {
                 const response = await signIn('email', {
                   email: formData.get('email'),
                   redirect: false,
+                  redirectTo: redirectTo ?? '/admin',
                   callbackUrl: window.location.origin,
                 })
 

@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { Category } from '@prisma/client'
-import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 
 async function fetchCategoriesRequest({ queryKey }) {
   const [_key, { webSlug }] = queryKey
@@ -9,17 +8,16 @@ async function fetchCategoriesRequest({ queryKey }) {
   return categories
 }
 
-export default function useCategoriesPublic() {
-  const selectedWebSlug = useSelectedWebSlug()
+export default function useCategoriesPublic({ webSlug }) {
   const {
     data: categories,
     isPending,
     isError,
   } = useQuery<Category[]>({
-    queryKey: ['categories', { webSlug: selectedWebSlug }],
+    queryKey: ['categories', { webSlug }],
     queryFn: fetchCategoriesRequest,
     refetchOnWindowFocus: false,
-    enabled: Boolean(selectedWebSlug),
+    enabled: Boolean(webSlug),
     staleTime: Infinity,
   })
 

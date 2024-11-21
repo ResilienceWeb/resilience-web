@@ -23,7 +23,9 @@ import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 export default function NewListing() {
   const selectedWebSlug = useSelectedWebSlug()
-  const { categories, isPending: isCategoriesLoading } = useCategoriesPublic()
+  const { categories, isPending: isCategoriesLoading } = useCategoriesPublic({
+    webSlug: selectedWebSlug,
+  })
   const { mutate: createListing } = useCreateListing()
   const [isSubmitted, setIsSubmitted] = useState(false)
   const { web } = useWeb({ webSlug: selectedWebSlug })
@@ -101,6 +103,7 @@ export default function NewListing() {
                 <ListingFormSimplified
                   categories={categories}
                   handleSubmit={handleSubmit}
+                  isEditMode={false}
                 />
               </Stack>
             </Box>

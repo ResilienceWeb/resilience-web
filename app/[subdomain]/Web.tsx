@@ -21,6 +21,7 @@ import {
   htmlTitle,
 } from '@helpers/utils'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
+import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import useTagsPublic from '@hooks/tags/useTagsPublic'
 import { Category } from '@prisma/client'
 
@@ -54,6 +55,7 @@ const Web = ({
   const isMobile = useIsMobile()
   const [isWebModeDefault] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
+  const selectedWebSlug = useSelectedWebSlug()
 
   const [query, setQuery] = useQueryParams({
     categories: withDefault(ArrayParam, []),
@@ -92,7 +94,9 @@ const Web = ({
 
   const [selectedId, setSelectedId] = useState()
 
-  const { categories: fetchedCategories } = useCategoriesPublic()
+  const { categories: fetchedCategories } = useCategoriesPublic({
+    webSlug: selectedWebSlug,
+  })
   const { tags: fetchedTags } = useTagsPublic()
 
   useEffect(() => {

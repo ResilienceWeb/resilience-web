@@ -1,7 +1,6 @@
 import truncate from 'lodash/truncate'
-import type { Listing as ListingType } from '@prisma/client'
 import prisma from '@prisma-rw'
-import { exclude } from '@helpers/utils'
+import getListing from './getListing'
 import Listing from './Listing'
 
 export default async function ListingPage({ params }) {
@@ -65,75 +64,6 @@ export async function generateStaticParams() {
     subdomain: l.web.slug,
     slug: l.slug,
   }))
-}
-
-async function getListing({ webSlug, listingSlug }): Promise<ListingType> {
-  const listingData = await prisma.listing.findFirst({
-    where: {
-      slug: listingSlug,
-      ...(webSlug
-        ? {
-            web: {
-              slug: {
-                contains: webSlug,
-              },
-            },
-          }
-        : {}),
-    },
-    include: {
-      location: {
-        select: {
-          latitude: true,
-          longitude: true,
-          description: true,
-        },
-      },
-      category: {
-        select: {
-          id: true,
-          color: true,
-          label: true,
-        },
-      },
-      tags: {
-        select: {
-          id: true,
-          label: true,
-        },
-      },
-      relations: {
-        select: {
-          id: true,
-          slug: true,
-          title: true,
-          featured: true,
-          image: true,
-          category: {
-            select: {
-              id: true,
-              color: true,
-              label: true,
-            },
-          },
-        },
-      },
-    },
-  })
-
-  if (!listingData) {
-    console.log(`[RW] Listing not found for slugs ${webSlug}, ${listingSlug}`)
-    return null
-  }
-
-  const listing = exclude(listingData, [
-    'createdAt',
-    'updatedAt',
-    'notes',
-    'inactive',
-  ])
-
-  return listing as ListingType
 }
 
 export const dynamicParams = true

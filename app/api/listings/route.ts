@@ -55,6 +55,7 @@ export async function GET(request) {
             },
           },
         },
+        edits: true,
       },
       orderBy: [
         {
@@ -78,7 +79,7 @@ export async function POST(request) {
     const session = await auth()
 
     if (!session?.user) {
-      // TODO: Improve security
+      return new Response('Not authorized', { status: 401 })
     }
 
     const formData = await request.formData()
