@@ -21,7 +21,7 @@ const ListingImage = ({
   priority,
   imageObjectFit,
 }: Props) => {
-  const imageRef = useRef<any>()
+  const imageRef = useRef<any>(null)
   const [backgroundPosition, setBackgroundPosition] = useState<
     'cover' | 'contain'
   >(imageObjectFit ?? 'cover')

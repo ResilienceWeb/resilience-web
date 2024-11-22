@@ -23,6 +23,7 @@ export const metadata = {
 
 async function fetchMyOwnershipsHydrate() {
   const response = await fetch(`${REMOTE_URL}/api/ownerships`, {
+    // @ts-ignore
     headers: headers(),
   })
   const data = await response.json()
@@ -31,6 +32,7 @@ async function fetchMyOwnershipsHydrate() {
 
 export async function fetchPermissionsHydrate() {
   const response = await fetch(`${REMOTE_URL}/api/permissions`, {
+    // @ts-ignore
     headers: headers(),
   })
   const data = await response.json()
