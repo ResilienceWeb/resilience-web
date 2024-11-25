@@ -1,6 +1,7 @@
 import prisma from '@prisma-rw'
 
-export async function DELETE(_request: Request, { params }) {
+export async function DELETE(_request: Request, props) {
+  const params = await props.params
   const id = params.id
 
   try {

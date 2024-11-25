@@ -3,7 +3,8 @@ import Listing from '../../[subdomain]/[slug]/Listing'
 import { CATEGORY_COLOR_MAPPING, TAG_COLOR_MAPPING } from '../utils'
 import { generateSlug } from '@helpers/utils'
 
-export default async function TransitionListingPage({ params }) {
+export default async function TransitionListingPage(props) {
+  const params = await props.params
   const listing = await getListing({
     listingSlug: params.slug,
   })
@@ -16,7 +17,8 @@ export default async function TransitionListingPage({ params }) {
   return <Listing listing={listing} />
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata(props) {
+  const params = await props.params
   const listing = await getListing({
     listingSlug: params.slug,
   })

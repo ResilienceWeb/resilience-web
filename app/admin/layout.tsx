@@ -23,7 +23,8 @@ export const metadata = {
 
 async function fetchMyOwnershipsHydrate() {
   const response = await fetch(`${REMOTE_URL}/api/ownerships`, {
-    headers: headers(),
+    // @ts-ignore
+    headers: await headers(),
   })
   const data = await response.json()
   return data.ownerships
@@ -31,7 +32,8 @@ async function fetchMyOwnershipsHydrate() {
 
 export async function fetchPermissionsHydrate() {
   const response = await fetch(`${REMOTE_URL}/api/permissions`, {
-    headers: headers(),
+    // @ts-ignore
+    headers: await headers(),
   })
   const data = await response.json()
   const listingIds = data.permission?.listings.map((l) => l.id) ?? []

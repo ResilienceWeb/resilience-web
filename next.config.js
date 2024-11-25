@@ -36,7 +36,9 @@ const nextConfig = {
   },
   experimental: {
     scrollRestoration: process.env.NODE_ENV === 'development' ? false : true,
-    instrumentationHook: true,
+  },
+  sassOptions: {
+    silenceDeprecations: ['legacy-js-api'],
   },
   // eslint-disable-next-line @typescript-eslint/require-await
   async rewrites() {

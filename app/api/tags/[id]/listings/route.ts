@@ -1,6 +1,7 @@
 import prisma from '@prisma-rw'
 
-export async function PUT(request: Request, { params }) {
+export async function PUT(request: Request, props) {
+  const params = await props.params
   const id = params.id
   const { addedListingIds, removedListingIds } = await request.json()
 

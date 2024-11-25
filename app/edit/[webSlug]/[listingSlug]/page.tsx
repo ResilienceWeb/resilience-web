@@ -1,7 +1,8 @@
 import getListing from '../../../[subdomain]/[slug]/getListing'
 import EditListing from './EditListing'
 
-export default async function EditListingPage({ params }) {
+export default async function EditListingPage(props) {
+  const params = await props.params
   const listing = await getListing({
     webSlug: params.webSlug,
     listingSlug: params.listingSlug,

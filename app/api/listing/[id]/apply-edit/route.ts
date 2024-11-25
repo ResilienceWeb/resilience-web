@@ -3,7 +3,8 @@ import prisma from '@prisma-rw'
 import { sendEmail } from '@helpers/email'
 import ListingEditAcceptedEmail from '@components/emails/ListingEditAcceptedEmail'
 
-export async function POST(request, { params }) {
+export async function POST(request, props) {
+  const params = await props.params
   try {
     const session = await auth()
     if (!session?.user) {
@@ -22,10 +23,10 @@ export async function POST(request, { params }) {
         user: true,
         listing: {
           include: {
-            web: true
-          }
-        }
-      }
+            web: true,
+          },
+        },
+      },
     })
 
     if (!listingEdit) {

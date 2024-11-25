@@ -1,7 +1,8 @@
 import prisma from '@prisma-rw'
 import Web, { CENTRAL_NODE_ID } from './Web'
 
-export default async function WebPage({ params }) {
+export default async function WebPage(props) {
+  const params = await props.params;
   const { subdomain: webSlug } = params
   const data = await getData({ webSlug })
 
@@ -22,7 +23,8 @@ export default async function WebPage({ params }) {
   )
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata(props) {
+  const params = await props.params;
   const { subdomain: webSlug } = params
   const webData = await prisma.web.findUnique({
     where: {

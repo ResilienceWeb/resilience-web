@@ -30,7 +30,7 @@ const ImageUpload = ({
   helperText?: string
   isRequired?: boolean
 }) => {
-  const fileInputRef = useRef<any>()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<any>()
 
   const hasImageAlready = field.value && !field.value.name
