@@ -1,6 +1,6 @@
 'use client'
 import NextLink from 'next/link'
-import { useCallback } from 'react'
+import { useCallback, use } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Box,
@@ -21,8 +21,9 @@ import ListingForm from '@components/admin/listing-form'
 import { useAppContext } from '@store/hooks'
 
 export default function ListingPage({ params }) {
+  // @ts-ignore
+  const { slug } = use(params)
   const router = useRouter()
-  const slug = params.slug
   const { categories } = useCategories()
   const { mutate: updateListing } = useUpdateListing()
   const { selectedWebSlug } = useAppContext()

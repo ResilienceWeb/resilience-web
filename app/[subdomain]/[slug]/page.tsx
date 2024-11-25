@@ -3,7 +3,8 @@ import prisma from '@prisma-rw'
 import getListing from './getListing'
 import Listing from './Listing'
 
-export default async function ListingPage({ params }) {
+export default async function ListingPage(props) {
+  const params = await props.params
   const listing = await getListing({
     webSlug: params.subdomain,
     listingSlug: params.slug,
@@ -19,7 +20,8 @@ export default async function ListingPage({ params }) {
   return <Listing listing={listing} />
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata(props) {
+  const params = await props.params
   const listing = await getListing({
     webSlug: params.subdomain,
     listingSlug: params.slug,

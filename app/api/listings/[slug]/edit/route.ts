@@ -3,7 +3,8 @@ import prisma from '@prisma-rw'
 import { sendEmail } from '@helpers/email'
 import ListingEditProposedAdminEmail from '@components/emails/ListingEditProposedAdminEmail'
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   try {
     const session = await auth()
     if (!session?.user) {
@@ -138,7 +139,8 @@ export async function POST(request) {
   }
 }
 
-export async function DELETE(request, { params }) {
+export async function DELETE(request, props) {
+  const params = await props.params;
   try {
     const session = await auth()
     if (!session) {

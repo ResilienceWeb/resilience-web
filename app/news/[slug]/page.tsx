@@ -3,7 +3,8 @@ import { remark } from 'remark'
 import html from 'remark-html'
 import NewsItem from './NewsItem'
 
-export default async function NewsItemPage({ params }) {
+export default async function NewsItemPage(props) {
+  const params = await props.params
   const { post, contentHtml } = await getNewsItem({ slug: params.slug })
 
   if (!post || !contentHtml) {
@@ -16,7 +17,8 @@ export default async function NewsItemPage({ params }) {
   return <NewsItem post={post} contentHtml={contentHtml} />
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata(props) {
+  const params = await props.params
   const { post } = await getNewsItem({ slug: params.slug })
 
   if (!post) {

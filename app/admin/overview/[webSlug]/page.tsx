@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, use } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Box,
@@ -19,8 +19,9 @@ import { HiArrowLeft } from 'react-icons/hi'
 import usePublishWeb from '@hooks/webs/usePublishWeb'
 
 export default function WebOverviewPage({ params }) {
+  // @ts-ignore
+  const { webSlug } = use(params)
   const router = useRouter()
-  const webSlug = params.webSlug
   const { web, isPending: isLoadingWeb } = useWeb({
     webSlug,
     withAdminInfo: true,

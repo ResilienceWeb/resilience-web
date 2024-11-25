@@ -1,7 +1,8 @@
 import prisma from '@prisma-rw'
 import { unfeatureListingTask } from '@trigger/unfeature-listing'
 
-export async function PATCH(_request, { params }) {
+export async function PATCH(_request, props) {
+  const params = await props.params
   try {
     const listingId = Number(params.id)
 

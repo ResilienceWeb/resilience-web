@@ -1,7 +1,8 @@
 import { auth } from '@auth'
 import prisma from '@prisma-rw'
 
-export async function POST(_request, { params }) {
+export async function POST(_request, props) {
+  const params = await props.params
   const session = await auth()
 
   if (!session?.user.admin) {

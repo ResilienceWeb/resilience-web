@@ -8,7 +8,8 @@ type Data = {
   web: Web
 }
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params
   const slug = params.slug
 
   const searchParams = request.nextUrl.searchParams
@@ -61,7 +62,8 @@ export async function GET(request, { params }) {
   })
 }
 
-export async function POST(request, { params }) {
+export async function POST(request, props) {
+  const params = await props.params
   const session = await auth()
 
   if (!session?.user) {

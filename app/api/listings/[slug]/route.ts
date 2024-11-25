@@ -10,7 +10,8 @@ function exclude(data, keys) {
   )
 }
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   try {
     const slug = params.slug
     const searchParams = request.nextUrl.searchParams
@@ -258,7 +259,8 @@ export async function PUT(request) {
   }
 }
 
-export async function DELETE(request, { params }) {
+export async function DELETE(request, props) {
+  const params = await props.params;
   try {
     const slug = params.slug
     const { webId } = await request.json()

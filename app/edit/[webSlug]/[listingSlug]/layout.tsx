@@ -5,7 +5,11 @@ import SessionProvider from '../../../admin/SessionProvider'
 
 // TODO: export metadata
 
-export default async function Layout({ children, params }) {
+export default async function Layout(props) {
+  const params = await props.params
+
+  const { children } = props
+
   const session = await auth()
   if (!session) {
     redirect(

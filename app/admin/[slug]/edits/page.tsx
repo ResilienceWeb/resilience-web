@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { useCallback } from 'react'
+import { useCallback, use } from 'react'
 import NextLink from 'next/link'
 import {
   Box,
@@ -20,8 +20,9 @@ import { useAppContext } from '@store/hooks'
 import ListingEditReview from '@components/admin/listing-form/listing-edit-review'
 
 export default function ListingEditsPage({ params }) {
+  // @ts-ignore
+  const { slug } = use(params)
   const router = useRouter()
-  const slug = params.slug
   const { mutate: applyListingEdit } = useApplyListingEdit()
   const { selectedWebSlug } = useAppContext()
 
