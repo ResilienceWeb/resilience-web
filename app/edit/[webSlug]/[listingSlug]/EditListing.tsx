@@ -105,6 +105,13 @@ export default function EditListing({ listing, webSlug }) {
             rounded={[null, 'md']}
             overflow={{ sm: 'hidden' }}
           >
+            <Alert status="info" colorScheme="blue">
+              <AlertIcon />
+              You are now editing a listing. Note that your changes will be
+              submitted to the maintainers of the {web?.title} Resilience Web,
+              who will review your suggested changes. Thank you for taking the
+              keep information up to date. You're a ⭐!
+            </Alert>
             <ListingFormSimplified
               listing={listing}
               categories={categories}

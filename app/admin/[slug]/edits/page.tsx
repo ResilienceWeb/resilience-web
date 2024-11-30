@@ -41,7 +41,7 @@ export default function ListingEditsPage({ params }) {
       listingId: listing?.id,
       listingEditId: listingEdits[0]?.id,
     })
-    router.push(`admin/${slug}`)
+    router.push(`/admin/${slug}`)
   }, [applyListingEdit, listing?.id, listingEdits, router, slug])
 
   if (!listing || isLoadingListing || isLoadingListingEdits) {

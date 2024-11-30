@@ -282,13 +282,10 @@ function Listing({ listing }) {
         </Box>
       </Box>
       <Box
-        display="flex"
-        flex="1"
-        width="100%"
-        height="100%"
-        justifyContent="flex-end"
-        alignItems="flex-end"
-        padding="1rem"
+        position="fixed"
+        bottom="2rem"
+        right="2rem"
+        zIndex={10}
       >
         <Link href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}>
           <IconButton

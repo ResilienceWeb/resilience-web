@@ -11,12 +11,17 @@ interface Props {
   webSlug: string
 }
 
-const ListingEditReview = ({ listing, editedListing, handleSubmit, webSlug }: Props) => {
+const ListingEditReview = ({
+  listing,
+  editedListing,
+  handleSubmit,
+  webSlug,
+}: Props) => {
   const router = useRouter()
   const { deleteListingEdit } = useDeleteListingEdit()
 
   const handleReject = async () => {
-    await deleteListingEdit({ 
+    await deleteListingEdit({
       listingSlug: listing.slug,
       webSlug,
     })

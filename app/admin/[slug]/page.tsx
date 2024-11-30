@@ -29,7 +29,7 @@ export default function ListingPage({ params }) {
   const { selectedWebSlug } = useAppContext()
 
   const goBack = useCallback(() => {
-    router.back()
+    router.push('/admin')
   }, [router])
 
   const handleSubmit = useCallback(
