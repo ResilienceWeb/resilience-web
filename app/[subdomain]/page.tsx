@@ -2,9 +2,14 @@ import prisma from '@prisma-rw'
 import Web, { CENTRAL_NODE_ID } from './Web'
 
 export default async function WebPage(props) {
-  const params = await props.params;
+  const params = await props.params
   const { subdomain: webSlug } = params
   const data = await getData({ webSlug })
+
+  if (webSlug === 'marker-shadow.png') {
+    // Prevent errors from leaflet fetching marker icon
+    return null
+  }
 
   if (!data) {
     console.log(`[RW] Web or listings not found for webSlug ${webSlug}`)
@@ -24,7 +29,7 @@ export default async function WebPage(props) {
 }
 
 export async function generateMetadata(props) {
-  const params = await props.params;
+  const params = await props.params
   const { subdomain: webSlug } = params
   const webData = await prisma.web.findUnique({
     where: {
@@ -73,6 +78,11 @@ type DataType = {
 }
 
 async function getData({ webSlug }): Promise<DataType> {
+  if (webSlug === 'marker-shadow.png') {
+    // Prevent errors from leaflet fetching marker icon
+    return null
+  }
+
   const webData = await prisma.web.findUnique({
     where: {
       slug: webSlug,
