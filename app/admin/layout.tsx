@@ -23,7 +23,6 @@ export const metadata = {
 
 async function fetchMyOwnershipsHydrate() {
   const response = await fetch(`${REMOTE_URL}/api/ownerships`, {
-    // @ts-ignore
     headers: await headers(),
   })
   const data = await response.json()
@@ -32,7 +31,6 @@ async function fetchMyOwnershipsHydrate() {
 
 export async function fetchPermissionsHydrate() {
   const response = await fetch(`${REMOTE_URL}/api/permissions`, {
-    // @ts-ignore
     headers: await headers(),
   })
   const data = await response.json()
@@ -47,7 +45,6 @@ export default async function Layout({ children }) {
     redirect('/auth/signin')
   }
 
-  // eslint-disable-next-line @tanstack/query/stable-query-client
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({
     queryKey: ['permission'],

@@ -1,6 +1,7 @@
 {
   "name": "resilience-web",
   "version": "0.1.0",
+  "type": "module",
   "license": "MIT",
   "scripts": {
     "dev": "next dev --turbopack",
@@ -89,13 +90,14 @@
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@typescript-eslint/eslint-plugin": "8.16.0",
     "@typescript-eslint/parser": "8.16.0",
-    "eslint": "8.57.0",
+    "eslint": "9.16.0",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-promise": "7.2.1",
     "eslint-plugin-react": "7.37.2",
     "eslint-plugin-react-hooks": "5.0.0",
+    "globals": "15.12.0",
     "prettier": "3.4.1",
     "prisma": "5.22.0",
     "react-email": "3.0.2",
@@ -103,7 +105,8 @@
     "stylelint-config-recommended": "14.0.1",
     "stylelint-config-standard-scss": "14.0.0",
     "ts-node": "10.9.2",
-    "typescript": "5.7.2"
+    "typescript": "5.7.2",
+    "typescript-eslint": "8.16.0"
   },
   "overrides": {
     "@types/react": "npm:types-react@19.0.0-rc.1"

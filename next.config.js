@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { withSentryConfig } = require('@sentry/nextjs')
 
 /**
@@ -87,6 +88,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 module.exports = withBundleAnalyzer(nextConfig)
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 module.exports = withSentryConfig(
   module.exports,
   {

@@ -23,7 +23,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // eslint-disable-next-line @tanstack/query/stable-query-client
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery({

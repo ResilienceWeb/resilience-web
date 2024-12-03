@@ -281,12 +281,7 @@ function Listing({ listing }) {
           )}
         </Box>
       </Box>
-      <Box
-        position="fixed"
-        bottom="2rem"
-        right="2rem"
-        zIndex={10}
-      >
+      <Box position="fixed" bottom="2rem" right="2rem" zIndex={10}>
         <Link href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}>
           <IconButton
             icon={<FiEdit />}
