@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-const { withSentryConfig } = require('@sentry/nextjs')
+import { withSentryConfig } from '@sentry/nextjs'
 
 /**
  * @type {import('next').NextConfig}
@@ -82,15 +81,8 @@ const nextConfig = {
   }
 }
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
-
-module.exports = withBundleAnalyzer(nextConfig)
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-module.exports = withSentryConfig(
-  module.exports,
+export default withSentryConfig(
+  nextConfig,
   {
     org: 'resilience-web',
     project: 'resilience-web',
