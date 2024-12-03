@@ -193,8 +193,8 @@ export async function POST(request) {
       })
 
       const emails = selectedWeb.ownerships.map((ownership) => ownership.email)
-      emails.forEach(async (email) => {
-        await sendEmail({
+      emails.forEach((email) => {
+        sendEmail({
           to: email,
           subject: `Someone proposed a new listing for the ${selectedWeb.title} Resilience Web 🎉`,
           email: webCreatedEmailComponent,

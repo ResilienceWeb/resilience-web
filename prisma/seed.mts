@@ -169,5 +169,5 @@ populateSeedData()
     process.exit(1)
   })
   .finally(() => {
-    prisma.$disconnect()
+    void prisma.$disconnect()
   })

@@ -1,4 +1,4 @@
-const { withSentryConfig } = require('@sentry/nextjs')
+import { withSentryConfig } from '@sentry/nextjs'
 
 /**
  * @type {import('next').NextConfig}
@@ -81,14 +81,8 @@ const nextConfig = {
   }
 }
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
-
-module.exports = withBundleAnalyzer(nextConfig)
-
-module.exports = withSentryConfig(
-  module.exports,
+export default withSentryConfig(
+  nextConfig,
   {
     org: 'resilience-web',
     project: 'resilience-web',

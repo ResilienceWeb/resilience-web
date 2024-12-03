@@ -20,8 +20,8 @@ const ListingEditReview = ({
   const router = useRouter()
   const { deleteListingEdit } = useDeleteListingEdit()
 
-  const handleReject = async () => {
-    await deleteListingEdit({
+  const handleReject = () => {
+    deleteListingEdit({
       listingSlug: listing.slug,
       webSlug,
     })
