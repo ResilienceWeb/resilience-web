@@ -254,12 +254,6 @@ const Web = ({
     [setIsVolunteer],
   )
 
-  useEffect(() => {
-    if (isMobile) {
-      setQuery({ web: false })
-    }
-  }, [isMobile, setQuery])
-
   return (
     <>
       {!isMobile && (
