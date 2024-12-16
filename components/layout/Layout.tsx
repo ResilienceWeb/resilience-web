@@ -1,9 +1,9 @@
-import React, { useMemo, memo } from 'react'
-import { usePathname } from 'next/navigation'
+import React, { memo } from 'react'
+// import { usePathname } from 'next/navigation'
 import { Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react'
 import Nav from '@components/nav'
 import Footer from '@components/footer'
-import AlertBanner from '@components/alert-banner'
+// import AlertBanner from '@components/alert-banner'
 import styles from './Layout.module.scss'
 
 const Layout = ({
@@ -13,9 +13,8 @@ const Layout = ({
   applyPostStyling?: boolean
   children: React.ReactNode
 }) => {
-  const pathname = usePathname()
-
-  const isHomepage = useMemo(() => pathname === '/', [pathname])
+  // const pathname = usePathname()
+  // const isHomepage = useMemo(() => pathname === '/', [pathname])
 
   return (
     <>
@@ -30,13 +29,13 @@ const Layout = ({
           alignItems="center"
           flexDirection="column"
         >
-          {isHomepage && (
+          {/* {isHomepage && (
             <AlertBanner
               content="Join our online monthly Assembly every first Wednesday of the month, at midday. Click here to read more."
               type="info"
               url="https://resilienceweb.org.uk/news/monthly-assembly"
             />
-          )}
+          )} */}
 
           {children}
         </Flex>
