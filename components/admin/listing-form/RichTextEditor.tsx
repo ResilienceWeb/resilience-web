@@ -27,7 +27,7 @@ const RichTextEditor = (props) => {
           menubar: 'file edit view insert format tools table tc help',
           toolbar: true,
           plugins:
-            'media advlist autolink lists link anchor image code fullscreen table code emoticons help',
+            'media advlist autolink lists anchor image code fullscreen table code emoticons help',
         }}
       />
       {/* {meta.touched && meta.error ? (
