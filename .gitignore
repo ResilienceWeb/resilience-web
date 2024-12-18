@@ -47,3 +47,6 @@ yarn-error.log*
 /playwright/.cache/
 
 .trigger
+
+# Typescript cache
+*.tsbuildinfo

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, memo } from 'react'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -152,7 +152,7 @@ export default function MainNav() {
   )
 }
 
-const DesktopNav = ({ currentPathname, navItems }) => {
+const DesktopNav = memo(({ currentPathname, navItems }) => {
   return (
     <Stack direction={'row'} spacing={8}>
       {navItems.map((navItem) => (
@@ -190,7 +190,7 @@ const DesktopNav = ({ currentPathname, navItems }) => {
       ))}
     </Stack>
   )
-}
+})
 
 const DesktopSubNavItem = ({ label, href }) => {
   return (
