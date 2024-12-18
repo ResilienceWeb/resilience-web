@@ -100,7 +100,7 @@
     "globals": "15.13.0",
     "prettier": "3.4.1",
     "prisma": "5.22.0",
-    "react-email": "3.0.2",
+    "react-email": "3.0.4",
     "stylelint": "16.11.0",
     "stylelint-config-recommended": "14.0.1",
     "stylelint-config-standard-scss": "14.0.0",
