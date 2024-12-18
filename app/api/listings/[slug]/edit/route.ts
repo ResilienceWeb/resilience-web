@@ -4,7 +4,7 @@ import { sendEmail } from '@helpers/email'
 import ListingEditProposedAdminEmail from '@components/emails/ListingEditProposedAdminEmail'
 
 export async function GET(request, props) {
-  const params = await props.params;
+  const params = await props.params
   try {
     const session = await auth()
     if (!session?.user) {
@@ -100,6 +100,11 @@ export async function POST(request) {
                     user: true,
                   },
                 },
+                permissions: {
+                  include: {
+                    user: true,
+                  },
+                },
               },
             },
           },
@@ -108,11 +113,16 @@ export async function POST(request) {
     })
 
     const web = listingEdit.listing.web
-    const emailPromises = web.ownerships.map(async (ownership) => {
-      if (!ownership.user?.email) return
 
+    const ownerEmails = web.ownerships.map((ownership) => ownership.user?.email)
+    const editorEmails = web.permissions.map(
+      (permission) => permission.user?.email,
+    )
+    const allEmails = [...ownerEmails, ...editorEmails]
+
+    const emailPromises = allEmails.map(async (emailAddress) => {
       await sendEmail({
-        to: ownership.user.email,
+        to: emailAddress,
         subject: `New listing edit proposed for ${web.title} Resilience Web`,
         email: ListingEditProposedAdminEmail({
           webTitle: web.title,
@@ -140,7 +150,7 @@ export async function POST(request) {
 }
 
 export async function DELETE(request, props) {
-  const params = await props.params;
+  const params = await props.params
   try {
     const session = await auth()
     if (!session) {
