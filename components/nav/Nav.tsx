@@ -152,7 +152,13 @@ export default function MainNav() {
   )
 }
 
-const DesktopNav = memo(({ currentPathname, navItems }) => {
+type DesktopNavProps = {
+  currentPathname: string
+  navItems: Array<NavItem>
+}
+
+// eslint-disable-next-line react/display-name
+const DesktopNav = memo(({ currentPathname, navItems }: DesktopNavProps) => {
   return (
     <Stack direction={'row'} spacing={8}>
       {navItems.map((navItem) => (
@@ -192,7 +198,12 @@ const DesktopNav = memo(({ currentPathname, navItems }) => {
   )
 })
 
-const DesktopSubNavItem = ({ label, href }) => {
+type DesktopSubNavItemProps = {
+  label: string
+  href?: string
+}
+
+const DesktopSubNavItem = ({ label, href }: DesktopSubNavItemProps) => {
   return (
     <Link
       href={href}
