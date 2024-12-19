@@ -20,7 +20,7 @@ export default function SignIn() {
         justifyContent="center"
         height="100vh"
       >
-        <Box bgColor="#ffffff" p={12} borderRadius={12} mb="2rem" width="400px">
+        <Box bgColor="#ffffff" p={12} borderRadius={12} mb="2rem" width="500px">
           <Box mb="1rem" display="flex" justifyContent="center">
             <Image
               alt="Resilience Web logo"
@@ -62,7 +62,7 @@ export default function SignIn() {
             {error}
           </form>
         </Box>
-        <Box bgColor="#ffffff" p={6} borderRadius={12} width="400px">
+        <Box bgColor="#ffffff" p={6} borderRadius={12} width="500px">
           Not a member of Resilience Web?{' '}
           <Link
             as={NextLink}

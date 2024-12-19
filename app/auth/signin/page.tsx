@@ -12,6 +12,7 @@ import {
   Heading,
   Center,
   Link,
+  Text,
 } from '@chakra-ui/react'
 import Image from 'next/legacy/image'
 import LogoImage from '../../../public/logo.png'
@@ -23,6 +24,8 @@ export default function SignIn() {
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo')
 
+  const isUserAttemptingEdit = redirectTo?.includes('/edit')
+
   return (
     <div className={styles.root}>
       <Flex
@@ -31,7 +34,7 @@ export default function SignIn() {
         justifyContent="center"
         height="100vh"
       >
-        <Box bgColor="#ffffff" p={12} borderRadius={12} mb="2rem" width="400px">
+        <Box bgColor="#ffffff" p={10} borderRadius={12} mb="2rem" width="500px">
           <Box mb="1rem" display="flex" justifyContent="center">
             <Image
               alt="Resilience Web logo"
@@ -40,11 +43,22 @@ export default function SignIn() {
               height="104"
             />
           </Box>
-          <Center mb="3rem">
-            <Heading as="h2" fontSize="2xl">
-              Sign in
-            </Heading>
-          </Center>
+          {!isUserAttemptingEdit && (
+            <Center mb="3rem">
+              <Heading as="h2" fontSize="2xl" mt="1rem">
+                Sign in
+              </Heading>
+            </Center>
+          )}
+
+          {isUserAttemptingEdit && (
+            <Text my="2rem">
+              <Text fontWeight="700">
+                Everyone can edit listings on Resilience Web.
+              </Text>{' '}
+              Just enter your email to start contributing.
+            </Text>
+          )}
           <form
             onSubmit={async (e) => {
               try {
@@ -76,7 +90,7 @@ export default function SignIn() {
             {error}
           </form>
         </Box>
-        <Box bgColor="#ffffff" p={6} borderRadius={12} width="400px">
+        <Box bgColor="#ffffff" p={6} borderRadius={12} width="500px">
           Not a member of Resilience Web?{' '}
           <Link
             as={NextLink}
