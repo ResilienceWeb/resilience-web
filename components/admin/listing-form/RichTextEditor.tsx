@@ -24,7 +24,7 @@ const RichTextEditor = (props) => {
         onBlur={handleBlur}
         init={{
           height: 300,
-          menubar: 'file edit view insert format tools table tc help',
+          menubar: 'edit view insert format tools table tc help',
           toolbar: true,
           contextmenu: false,
           plugins:
