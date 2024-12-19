@@ -130,18 +130,20 @@ const Header = ({
                   value={selectedCategories}
                 />
               </InputGroup>
-              <InputGroup>
-                <Select
-                  isMulti
-                  isSearchable={false}
-                  menuPortalTarget={document.body}
-                  onChange={handleTagSelection}
-                  options={tags}
-                  placeholder="Filter by tag"
-                  styles={customMultiSelectStyles}
-                  value={selectedTags}
-                />
-              </InputGroup>
+              {tags.length > 0 && (
+                <InputGroup>
+                  <Select
+                    isMulti
+                    isSearchable={false}
+                    menuPortalTarget={document.body}
+                    onChange={handleTagSelection}
+                    options={tags}
+                    placeholder="Filter by tag"
+                    styles={customMultiSelectStyles}
+                    value={selectedTags}
+                  />
+                </InputGroup>
+              )}
             </VStack>
           </chakra.div>
         </Flex>

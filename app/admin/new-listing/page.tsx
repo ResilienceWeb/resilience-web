@@ -39,11 +39,11 @@ export default function NewListingPage() {
   return (
     <Box
       px={{
-        base: '4',
+        base: 0,
         md: '10',
       }}
       py={4}
-      maxWidth="3xl"
+      maxWidth="5xl"
       mx="auto"
     >
       <Button

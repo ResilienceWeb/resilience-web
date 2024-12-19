@@ -55,7 +55,7 @@ export default function ListingPage({ params }) {
   return (
     <Box
       px={{
-        base: '4',
+        base: 0,
         md: '10',
       }}
       py={4}

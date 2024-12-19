@@ -220,7 +220,7 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
       {(props) => {
         return (
           <Form encType="multipart/form-data">
-            <chakra.div p={{ sm: 6 }} px={4} py="1rem">
+            <chakra.div p={{ sm: 6 }} px="1rem" py="1rem">
               <chakra.div mb="0.5rem">
                 <Field name="title" validate={fieldRequiredValidator}>
                   {({ field, form }: FieldProps) => (
