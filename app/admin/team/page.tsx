@@ -28,6 +28,15 @@ import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
 import useOwnerships from '@hooks/ownership/useOwnerships'
 import useSelectedWebName from '@hooks/webs/useSelectedWebName'
 import { useAppContext } from '@store/hooks'
+import Faq from '@components/faq'
+
+const faqs = [
+  {
+    question: 'What is the difference between an editor and an owner?',
+    answer:
+      'An editor can add and edit listings, categories and tags. An owner can also invite new editors to the web.',
+  },
+]
 
 interface FormValues {
   email: string
@@ -195,6 +204,13 @@ export default function TeamPage() {
           />
         </Box>
       )}
+
+      <Box mb="3rem">
+        <Heading as="h3" fontSize="1.5rem" mb="1rem">
+          FAQs
+        </Heading>
+        <Faq content={faqs} />
+      </Box>
     </Stack>
   )
 }

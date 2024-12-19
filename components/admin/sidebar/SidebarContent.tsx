@@ -15,9 +15,15 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react'
-import { HiViewList, HiUserGroup, HiOutlineCog } from 'react-icons/hi'
+import {
+  HiViewList,
+  HiUserGroup,
+  HiOutlineCog,
+  HiExternalLink,
+} from 'react-icons/hi'
 import { BiCategory } from 'react-icons/bi'
 import { GrOverview } from 'react-icons/gr'
+import { LuBook } from 'react-icons/lu'
 import useHasPermissionForCurrentWeb from '@hooks/permissions/useHasPermissionForCurrentWeb'
 import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
 import { useAppContext } from '@store/hooks'
@@ -65,6 +71,16 @@ export default function SidebarContent({ closeMenu, ...rest }) {
         tourId: 'nav-websettings',
       })
     }
+
+    links.push({
+      label: (
+        <Text>
+          Knowledgebase <Icon as={HiExternalLink} fontSize="sm" />
+        </Text>
+      ),
+      href: 'https://resilienceweb.gitbook.io/knowledgebase',
+      icon: <Icon as={LuBook} fontSize="lg" />,
+    })
 
     return links
   }, [hasPermissionForCurrentWeb, isOwnerOfCurrentWeb, selectedWebId])

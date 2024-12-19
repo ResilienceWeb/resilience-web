@@ -22,7 +22,45 @@ import LogoImage from '../../../public/logo.png'
 import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
 import useCreateWeb from '@hooks/webs/useCreateWeb'
 import { generateSlug } from '@helpers/utils'
-import Faq from './faq'
+import Faq from '@components/faq'
+
+const faqs = [
+  {
+    question: '🌱 What is a Resilience Web?',
+    answer:
+      'A Resilience Web is a digital mapping of environmental and social justice groups in a place, curated by people who live there. These webs are intended to help the discovery, collaboration and networking between activists and groups around issues that they care about.',
+  },
+  {
+    question: '💵 How much does it cost to use the platform?',
+    answer: (
+      <Text>
+        It's completely free! However we rely on grants, the hard work of
+        volunteers and donations from people like you. If you can support the
+        project with as little as £3/month we would be hugely grateful. Go to{' '}
+        <a href="https://opencollective.com/resilience-web">
+          {' '}
+          our Open Collective
+        </a>{' '}
+        to donate.
+      </Text>
+    ),
+  },
+  {
+    question: '❓ I have some questions',
+    answer: (
+      <Text>
+        Get in touch with us anytime via the button at the top right of the
+        page. We are happy to set up a call to take you through what the
+        platform can offer and listen to your feedback if you have any. You
+        might also find the answer to your questions in{' '}
+        <a href="https://resilienceweb.gitbook.io/knowledgebase">
+          our Knowledgebase
+        </a>
+        .
+      </Text>
+    ),
+  },
+]
 
 const SlugField = () => {
   const {
@@ -222,7 +260,7 @@ const WebCreation = () => {
         <Heading as="h3" fontSize="1.5rem" mb="1rem">
           Need help?
         </Heading>
-        <Faq />
+        <Faq content={faqs} />
       </Box>
     </>
   )
