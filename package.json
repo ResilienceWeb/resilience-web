@@ -4,7 +4,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "NODE_OPTIONS='--inspect' next dev --turbopack",
     "trigger": "npx trigger.dev@latest dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true npm run build",
