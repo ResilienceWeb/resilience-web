@@ -59,7 +59,7 @@ export default function ListingPage({ params }) {
         md: '10',
       }}
       py={4}
-      maxWidth="3xl"
+      maxWidth="5xl"
       mx="auto"
     >
       <Button

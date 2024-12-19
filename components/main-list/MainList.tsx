@@ -1,63 +1,15 @@
-import { memo, useCallback, useEffect, useState, useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import NextLink from 'next/link'
 import { AnimatePresence } from 'framer-motion'
-import {
-  chakra,
-  Flex,
-  Grid,
-  Center,
-  Button,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react'
-import { useRouter } from 'next/navigation'
+import { chakra, Flex, Grid, Center, Button, Text } from '@chakra-ui/react'
 
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import Footer from '@components/footer'
-import Dialog from './dialog'
 import Item from './item'
 
-const MainList = ({ filteredItems, isMobile }) => {
+const MainList = ({ filteredItems }) => {
   const selectedWebSlug = useSelectedWebSlug()
-  const router = useRouter()
-  const [selectedDataItem, setSelectedDataItem] = useState<any>()
-  const {
-    isOpen: isDialogOpen,
-    onOpen: onOpenDialog,
-    onClose: onCloseDialog,
-  } = useDisclosure()
-
-  const [subdomain, setSubdomain] = useState<string>()
-
-  useEffect(() => {
-    const hostname = window.location.hostname
-    if (!hostname.includes('.')) {
-      return
-    }
-
-    setSubdomain(hostname.split('.')[0])
-  }, [])
-
-  const handleItemClick = useCallback(
-    (item) => {
-      setSelectedDataItem(item)
-      if (isMobile) {
-        const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${item.slug}`
-        router.push(individualListingLink)
-      } else {
-        onOpenDialog()
-      }
-    },
-    [isMobile, onOpenDialog, router, subdomain],
-  )
-
-  const handleCloseDialog = useCallback(() => {
-    setSelectedDataItem(null)
-    onCloseDialog()
-  }, [onCloseDialog])
-
   const { categories } = useCategoriesPublic({ webSlug: selectedWebSlug })
   const categoriesIndexes = useMemo(() => {
     const categoriesIndexesObj = {}
@@ -89,7 +41,6 @@ const MainList = ({ filteredItems, isMobile }) => {
                   <Item
                     categoriesIndexes={categoriesIndexes}
                     dataItem={item}
-                    handleClick={handleItemClick}
                     key={item.id}
                   />
                 ))}
@@ -109,14 +60,6 @@ const MainList = ({ filteredItems, isMobile }) => {
         </chakra.div>
       </Flex>
       <Footer hideBorder />
-      {selectedDataItem && (
-        <Dialog
-          isOpen={isDialogOpen}
-          isMobile={isMobile}
-          item={selectedDataItem}
-          onClose={handleCloseDialog}
-        />
-      )}
     </>
   )
 }

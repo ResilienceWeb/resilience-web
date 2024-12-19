@@ -1,10 +1,10 @@
+import { useRouter } from 'next/navigation'
 import { useCallback, useMemo, useRef, useEffect, useState, memo } from 'react'
 import { motion, useAnimation, useInView } from 'framer-motion'
 import chroma from 'chroma-js'
 import { Box, Flex, Text, Icon, Tooltip, chakra } from '@chakra-ui/react'
 import { HiUserGroup } from 'react-icons/hi'
 import { FaStar } from 'react-icons/fa'
-
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
 
@@ -13,16 +13,11 @@ import ImagePlaceholder from './image-placeholder'
 type Props = {
   categoriesIndexes: Record<string, number>
   dataItem: ListingNodeType
-  handleClick: (dataItem: ListingNodeType) => void
   simplified?: boolean
 }
 
-const Item = ({
-  categoriesIndexes,
-  dataItem,
-  handleClick,
-  simplified = false,
-}: Props) => {
+const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
+  const router = useRouter()
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
   const ref = useRef(null)
@@ -52,8 +47,8 @@ const Item = ({
   }, [animation, isInView])
 
   const onClick = useCallback(() => {
-    handleClick(dataItem)
-  }, [dataItem, handleClick])
+    router.push(`/${dataItem.slug}`)
+  }, [dataItem.slug, router])
 
   const categoryBackgroundColor = useMemo(
     () => chroma(dataItem.category.color).alpha(0.5).css(),

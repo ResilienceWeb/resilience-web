@@ -308,9 +308,7 @@ const Web = ({
           />
         )}
 
-        {!query.web && (
-          <MainList filteredItems={filteredItems} isMobile={isMobile} />
-        )}
+        {!query.web && <MainList filteredItems={filteredItems} />}
       </Box>
     </>
   )
