@@ -51,9 +51,9 @@ function Listing({ listing }) {
   const goBack = useCallback(() => {
     const referrer = document.referrer
     if (referrer.includes('google') || referrer.includes('bing')) {
-      void router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
+      router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
     } else {
-      router.back()
+      router.push('/')
     }
   }, [router, subdomain])
 
@@ -267,10 +267,6 @@ function Listing({ listing }) {
                     <Item
                       categoriesIndexes={categoriesIndexes}
                       dataItem={relatedListing}
-                      handleClick={() => {
-                        const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${relatedListing.slug}`
-                        router.push(individualListingLink)
-                      }}
                       key={relatedListing.id}
                       simplified
                     />
@@ -280,6 +276,17 @@ function Listing({ listing }) {
             </>
           )}
         </Box>
+
+        <Button
+          leftIcon={<HiArrowLeft />}
+          name="Back"
+          mb="1rem"
+          onClick={goBack}
+          variant="link"
+          color="gray.700"
+        >
+          Back to main list
+        </Button>
       </Box>
       <Box position="fixed" bottom="2rem" right="2rem" zIndex={10}>
         <Link href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}>
