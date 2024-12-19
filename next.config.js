@@ -89,7 +89,7 @@ export default withSentryConfig(
     telemetry: false,
     authToken: process.env.SENTRY_AUTH_TOKEN,
     // Suppresses source map uploading logs during build
-    silent: false,
+    silent: true,
     // Upload a larger set of source maps for prettier stack traces (increases build time)
     widenClientFileUpload: false,
     // Transpiles SDK to be compatible with IE11 (increases bundle size)

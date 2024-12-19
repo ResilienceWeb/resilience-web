@@ -88,16 +88,16 @@
     "@types/node": "22.10.2",
     "@types/nodemailer": "6.4.17",
     "@types/react": "19.0.1",
-    "@typescript-eslint/eslint-plugin": "8.17.0",
-    "@typescript-eslint/parser": "8.17.0",
-    "eslint": "9.16.0",
+    "@typescript-eslint/eslint-plugin": "8.18.1",
+    "@typescript-eslint/parser": "8.18.1",
+    "eslint": "9.17.0",
     "eslint-config-next": "15.1.1",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-promise": "7.2.1",
     "eslint-plugin-react": "7.37.2",
     "eslint-plugin-react-hooks": "5.1.0",
-    "globals": "15.13.0",
+    "globals": "15.14.0",
     "prettier": "3.4.2",
     "prisma": "5.22.0",
     "react-email": "3.0.4",
@@ -106,7 +106,7 @@
     "stylelint-config-standard-scss": "14.0.0",
     "ts-node": "10.9.2",
     "typescript": "5.7.2",
-    "typescript-eslint": "8.17.0"
+    "typescript-eslint": "8.18.1"
   },
   "overrides": {
     "prettier": "3.4.2"

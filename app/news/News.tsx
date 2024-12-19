@@ -69,6 +69,7 @@ export default function News({ posts }) {
                         src={post.coverImage?.url}
                         layout="fill"
                         objectFit="cover"
+                        alt={`Image for blog post ${post.title}`}
                       />
                     </Box>
                     <Stack>

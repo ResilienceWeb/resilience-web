@@ -15,7 +15,7 @@ export const REMOTE_HOSTNAME =
 export const PROTOCOL =
   process.env.NODE_ENV === 'development' ? 'http' : 'https'
 
-export default {
+const config = {
   digitalOceanSpaces: 'https://resilienceweb.ams3.digitaloceanspaces.com/',
   bucketName: 'resilienceweb',
   emailServer: {
@@ -27,3 +27,5 @@ export default {
     },
   },
 }
+
+export default config
