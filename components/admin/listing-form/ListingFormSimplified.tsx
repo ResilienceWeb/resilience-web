@@ -1,8 +1,9 @@
 import { memo, useEffect, useMemo } from 'react'
-import { Formik, Form, Field, FieldProps, useFormikContext } from 'formik'
+import { Formik, Form, Field, useFormikContext } from 'formik'
+import type { FieldProps } from 'formik'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
-import { Category } from '@prisma/client'
+import type { Category } from '@prisma/client'
 import {
   chakra,
   Box,

@@ -11,11 +11,16 @@
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
+    // Make indexing stricter
+    "noUncheckedIndexedAccess": true,
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "module": "Preserve",
+    // No accidental global scripts
+    "moduleDetection": "force",
+    // Enforced 'type-only' imports
+    "verbatimModuleSyntax": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",

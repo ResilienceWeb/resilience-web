@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Category } from '@prisma/client'
+import type { Category } from '@prisma/client'
 
 async function fetchCategoriesRequest({ queryKey }) {
   const [_key, { webSlug }] = queryKey

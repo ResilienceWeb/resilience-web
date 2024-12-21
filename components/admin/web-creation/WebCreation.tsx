@@ -17,7 +17,8 @@ import {
   InputRightAddon,
   Textarea,
 } from '@chakra-ui/react'
-import { Formik, Form, Field, FieldProps, useFormikContext } from 'formik'
+import { Formik, Form, Field, useFormikContext } from 'formik'
+import type { FieldProps } from 'formik'
 import LogoImage from '../../../public/logo.png'
 import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
 import useCreateWeb from '@hooks/webs/useCreateWeb'

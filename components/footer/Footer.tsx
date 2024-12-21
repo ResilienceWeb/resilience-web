@@ -10,7 +10,7 @@ import {
   VisuallyHidden,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import {
   FaGithub,
   FaFacebook,

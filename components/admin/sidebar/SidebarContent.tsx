@@ -1,4 +1,5 @@
-import { ReactElement, useMemo } from 'react'
+import { useMemo } from 'react'
+import type { ReactElement } from 'react'
 import NextLink from 'next/link'
 import Image from 'next/legacy/image'
 import { usePathname } from 'next/navigation'
@@ -8,13 +9,13 @@ import {
   CloseButton,
   Flex,
   Icon,
-  FlexProps,
   Button,
   Link,
   Stack,
   Heading,
   Text,
 } from '@chakra-ui/react'
+import type { FlexProps } from '@chakra-ui/react'
 import {
   HiViewList,
   HiUserGroup,

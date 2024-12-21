@@ -1,6 +1,7 @@
 'use client'
 import { useCallback, useEffect } from 'react'
-import { Formik, Form, Field, FieldProps } from 'formik'
+import { Formik, Form, Field } from 'formik'
+import type { FieldProps } from 'formik'
 import {
   Box,
   Center,

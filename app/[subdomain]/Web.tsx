@@ -23,7 +23,7 @@ import {
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import useTagsPublic from '@hooks/tags/useTagsPublic'
-import { Category } from '@prisma/client'
+import type { Category } from '@prisma/client'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,

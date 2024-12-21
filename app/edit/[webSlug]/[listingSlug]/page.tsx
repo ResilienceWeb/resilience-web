@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import getListing from '../../../[subdomain]/[slug]/getListing'
 import EditListing from './EditListing'
 

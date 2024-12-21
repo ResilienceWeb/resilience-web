@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Tag } from '@prisma/client'
+import type { Tag } from '@prisma/client'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 
 async function fetchTagsRequest({ queryKey }) {
