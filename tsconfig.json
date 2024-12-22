@@ -71,7 +71,8 @@
     "./next.config.js",
     "./pages/_error.js",
     ".next/types/**/*.ts",
-    "trigger.config.ts"
+    "trigger.config.ts",
+    "tailwind.config.js"
   ],
   "exclude": [
     "node_modules"
