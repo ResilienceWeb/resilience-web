@@ -17,8 +17,8 @@ export default function middleware(req: NextRequest) {
   }
 
   let currentHost
-  if (process.env.VERCEL_ENV === 'preview') {
-    currentHost = hostname.replace(`.${process.env.VERCEL_URL}`, '')
+  if (hostname.includes('staging.')) {
+    currentHost = hostname.replace(`.staging.resilienceweb.org.uk`, '')
   } else {
     currentHost =
       process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
@@ -37,6 +37,7 @@ export default function middleware(req: NextRequest) {
       hostname === 'localhost:3000' ||
       hostname === 'cambridgeresilienceweb.org.uk' ||
       hostname === 'resilienceweb.org.uk' ||
+      hostname === 'staging.resilienceweb.org.uk' ||
       (process.env.VERCEL_ENV === 'preview' &&
         hostname === process.env.VERCEL_URL)
     ) {
@@ -57,6 +58,6 @@ export default function middleware(req: NextRequest) {
  */
 export const config = {
   matcher: [
-    '/((?!api|admin|_next/static|_next/image|favicon.ico|ph-ingest).*)',
+    '/((?!api|admin|_next/static|_next/image|favicon.svg|favicon.ico|ph-ingest).*)',
   ],
 }
