@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react'
 import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import ModeSwitch from '@components/mode-switch'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { REMOTE_URL } from '@helpers/config'
 import customMultiSelectStyles from '@styles/select-styles'
 
 const Header = ({
@@ -41,7 +41,7 @@ const Header = ({
   if (isMobile) {
     return (
       <>
-        <Link as={NextLink} href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
+        <Link as={NextLink} href={REMOTE_URL}>
           <Button
             leftIcon={<HiHome />}
             colorScheme="blue"
@@ -163,7 +163,7 @@ const Header = ({
           checked={isWebMode}
           handleSwitchChange={handleSwitchChange}
         />
-        <Link as={NextLink} href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
+        <Link as={NextLink} href={REMOTE_URL}>
           <Button leftIcon={<HiHome />} colorScheme="blue" size="sm" px={6}>
             Homepage
           </Button>
