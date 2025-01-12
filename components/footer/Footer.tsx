@@ -1,15 +1,4 @@
-import {
-  Box,
-  Container,
-  Stack,
-  Text,
-  Link,
-  Flex,
-  chakra,
-  SimpleGrid,
-  VisuallyHidden,
-} from '@chakra-ui/react'
-import NextLink from 'next/link'
+import Link from 'next/link'
 import type { ReactNode } from 'react'
 import {
   FaGithub,
@@ -34,52 +23,32 @@ const SocialButton = ({
   href: string
 }) => {
   return (
-    <chakra.button
-      bg="blackAlpha.100"
-      rounded="full"
-      w={8}
-      h={8}
-      cursor="pointer"
-      as="a"
+    <a
+      className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black/10 transition-colors duration-300 hover:bg-black/20"
       href={href}
       target="_blank"
-      display="inline-flex"
-      alignItems="center"
-      justifyContent="center"
-      transition="background 0.3s ease"
-      _hover={{
-        bg: 'blackAlpha.200',
-      }}
     >
-      <VisuallyHidden>{label}</VisuallyHidden>
+      <span className="sr-only">{label}</span>
       {children}
-    </chakra.button>
+    </a>
   )
 }
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
-  return (
-    <Text fontWeight={600} fontSize={'lg'} mb={2}>
-      {children}
-    </Text>
-  )
+  return <h3 className="mb-2 text-lg">{children}</h3>
 }
 
 export default function Footer({ hideBorder = false }) {
   return (
-    <Box
-      bg="#fcfcfc"
-      color="gray.600"
-      borderTopColor={hideBorder ? undefined : 'gray.200'}
-      borderTopWidth={hideBorder ? undefined : '1px'}
+    <div
+      className={`bg-[#fcfcfc] text-gray-600 ${
+        !hideBorder ? 'border-t border-t-gray-200' : ''
+      }`}
     >
-      <Container as={Stack} flex="1" maxWidth="100vw" py={10}>
-        <SimpleGrid
-          templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 2fr' }}
-          spacing={8}
-        >
-          <Stack spacing="1rem">
-            <Box>
+      <div className="w-screen flex-1 px-4 py-10">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-[2fr_1fr_2fr]">
+          <div className="stack-l">
+            <div>
               <Image
                 alt="Resilience Web CIC logo"
                 src={LogoImage}
@@ -87,17 +56,15 @@ export default function Footer({ hideBorder = false }) {
                 height="55"
                 unoptimized
               />
-            </Box>
+            </div>
             <Link
-              fontWeight={600}
+              className="font-semibold hover:text-gray-900"
               href="https://dinerismail.dev"
               target="_blank"
-              isExternal
-              _hover={{ color: 'black' }}
             >
               Built with ❤️ <span style={{ marginLeft: '3px' }}>by Diner</span>
             </Link>
-            <Stack direction="row" spacing="0.75rem">
+            <div className="flex gap-3">
               <SocialButton
                 label="Facebook"
                 href="https://www.facebook.com/resilienceweb"
@@ -128,20 +95,16 @@ export default function Footer({ hideBorder = false }) {
               >
                 <FaGithub />
               </SocialButton>
-            </Stack>
-            <Text fontSize="0.875rem">
+            </div>
+            <p className="text-sm">
               Resilience Web CIC - Company number 15322382
-            </Text>
-          </Stack>
-          <Stack align="flex-start">
+            </p>
+          </div>
+          <div className="stack-l stack-l_space-2">
             <ListHeader>Useful links</ListHeader>
-            <Link as={NextLink} href={`${REMOTE_URL}/admin`}>
-              Admin login
-            </Link>
-            <Link as={NextLink} href={`${REMOTE_URL}/about`}>
-              About us
-            </Link>
-            <Link as={NextLink} href="https://resilienceweb.gitbook.io">
+            <Link href={`${REMOTE_URL}/admin`}>Admin login</Link>
+            <Link href={`${REMOTE_URL}/about`}>About us</Link>
+            <Link href="https://resilienceweb.gitbook.io" target="_blank">
               Knowledgebase
             </Link>
             <Link
@@ -151,26 +114,13 @@ export default function Footer({ hideBorder = false }) {
             >
               Donate
             </Link>
-          </Stack>
-          <Stack align="flex-start" justifyContent="space-between">
-            <Box>
-              <ListHeader>Stay up to date</ListHeader>
-              <SignupForm />
-            </Box>
-            <Flex alignItems="center" display={{ base: 'none', md: 'flex' }}>
-              <Text mr={1} fontSize="sm">
-                Powered by
-              </Text>
-              <Image
-                alt="Powered by Vercel"
-                src="/vercel.svg"
-                width="56"
-                height="13"
-              />
-            </Flex>
-          </Stack>
-        </SimpleGrid>
-      </Container>
-    </Box>
+          </div>
+          <div>
+            <ListHeader>Stay up to date</ListHeader>
+            <SignupForm />
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
