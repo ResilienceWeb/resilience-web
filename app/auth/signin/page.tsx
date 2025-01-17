@@ -3,18 +3,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
-import NextLink from 'next/link'
-import {
-  Button,
-  Input,
-  Flex,
-  Box,
-  Heading,
-  Center,
-  Link,
-  Text,
-} from '@chakra-ui/react'
+import Link from 'next/link'
 import Image from 'next/legacy/image'
+import { Button } from '@components/ui/button'
 import LogoImage from '../../../public/logo.png'
 import styles from '../auth.module.scss'
 
@@ -28,36 +19,31 @@ export default function SignIn() {
 
   return (
     <div className={styles.root}>
-      <Flex
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
-      >
-        <Box bgColor="#ffffff" p={10} borderRadius={12} mb="2rem" width="500px">
-          <Box mb="1rem" display="flex" justifyContent="center">
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="bg-white p-10 rounded-xl mb-8 w-[500px]">
+          <div className="mb-4 flex justify-center">
             <Image
               alt="Resilience Web logo"
               src={LogoImage}
               width="306"
               height="104"
             />
-          </Box>
+          </div>
           {!isUserAttemptingEdit && (
-            <Center mb="3rem">
-              <Heading as="h2" fontSize="2xl" mt="1rem">
+            <div className="flex justify-center mb-12">
+              <h2 className="text-2xl font-bold mt-4">
                 Sign in
-              </Heading>
-            </Center>
+              </h2>
+            </div>
           )}
 
           {isUserAttemptingEdit && (
-            <Text my="2rem">
-              <Text fontWeight="700">
+            <p className="my-8">
+              <span className="font-bold">
                 Everyone can edit listings on Resilience Web.
-              </Text>{' '}
+              </span>{' '}
               Just enter your email to start contributing.
-            </Text>
+            </p>
           )}
           <form
             onSubmit={async (e) => {
@@ -75,33 +61,39 @@ export default function SignIn() {
                 router.push(response?.url ?? '/')
               } catch (error) {
                 setError(
-                  e instanceof Error ? e.message : 'An unknown error occurred.',
+                  error instanceof Error ? error.message : 'An unknown error occurred.',
                 )
               }
             }}
           >
-            <label htmlFor="email">
+            <label htmlFor="email" className="block">
               Email
-              <Input type="email" id="email" name="email" />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </label>
-            <Button type="submit" mt={2} width="100%" variant="rw">
+            <Button
+              type="submit"
+              className="w-full mt-2"
+            >
               Sign in
             </Button>
-            {error}
+            {error && <p className="mt-2 text-red-600">{error}</p>}
           </form>
-        </Box>
-        <Box bgColor="#ffffff" p={6} borderRadius={12} width="500px">
-          Not a member of Resilience Web?{' '}
+        </div>
+        <div className="bg-white p-6 rounded-xl w-[500px]">
+          <span>Not a member of Resilience Web?{' '}</span>
           <Link
-            as={NextLink}
             href="/auth/signup"
-            color="rw.900"
-            _hover={{ color: 'rw.700' }}
+            className="text-green-700 hover:text-green-600"
           >
             Sign up
           </Link>
-        </Box>
-      </Flex>
+        </div>
+      </div>
     </div>
   )
 }
