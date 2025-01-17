@@ -1,13 +1,11 @@
 import { memo } from 'react'
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react'
-
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@components/ui/dialog'
 import CategoryForm from './category-form'
 
 type props = {
@@ -26,25 +24,19 @@ const UpdateCategoryDialog: React.FC<props> = ({
   onDelete,
 }) => {
   return (
-    <Modal
-      isCentered
-      isOpen={isOpen}
-      onClose={onClose}
-      size={{ base: 'full', md: 'md' }}
-    >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Update category</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <CategoryForm
-            category={category}
-            onDelete={onDelete}
-            onSubmit={onSubmit}
-          />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Update category</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>Update the category details.</DialogDescription>
+        <CategoryForm
+          category={category}
+          onDelete={onDelete}
+          onSubmit={onSubmit}
+        />
+      </DialogContent>
+    </Dialog>
   )
 }
 

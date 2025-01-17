@@ -2,18 +2,9 @@
 import NextLink from 'next/link'
 import { useCallback, use } from 'react'
 import { useRouter } from 'next/navigation'
-import {
-  Box,
-  Stack,
-  Button,
-  Spinner,
-  Center,
-  Alert,
-  AlertIcon,
-  Link,
-  Text,
-} from '@chakra-ui/react'
 import { HiArrowLeft } from 'react-icons/hi'
+import { Spinner } from '@components/ui/spinner'
+import { PiInfoBold } from 'react-icons/pi'
 import useListing from '@hooks/listings/useListing'
 import useUpdateListing from '@hooks/listings/useUpdateListing'
 import useCategories from '@hooks/categories/useCategories'
@@ -45,64 +36,49 @@ export default function ListingPage({ params }) {
   const { listing, isPending } = useListing(slug)
 
   if (!categories || !listing || isPending) {
-    return (
-      <Center height="50vh">
-        <Spinner size="xl" />
-      </Center>
-    )
+    return <Spinner />
   }
 
   return (
-    <Box
-      px={{
-        base: 0,
-        md: '10',
-      }}
-      py={4}
-      maxWidth="5xl"
-      mx="auto"
-    >
-      <Button
-        leftIcon={<HiArrowLeft />}
-        name="Back"
-        mb={2}
-        ml={2}
+    <div className="mx-auto max-w-5xl px-0 py-4 md:px-10">
+      <button
+        className="mb-2 ml-2 flex items-center gap-2 text-gray-700 hover:text-gray-900"
         onClick={goBack}
-        variant="link"
-        color="gray.700"
       >
+        <HiArrowLeft className="h-4 w-4" />
         Back
-      </Button>
+      </button>
 
-      <Box mt={4}>
-        <Text mb="1rem" fontSize="0.875rem">
+      <div className="mt-4">
+        <p className="mb-4 text-sm">
           You can view this listing at{' '}
-          <Link
-            as={NextLink}
+          <NextLink
             href={`https://${selectedWebSlug}.resilienceweb.org.uk/${slug}`}
             target="_blank"
+            className="text-blue-600 hover:text-blue-800 hover:underline"
           >
             {selectedWebSlug}.resilienceweb.org.uk/{slug}
-          </Link>
-        </Text>
-        <Box shadow="base" rounded={[null, 'md']} overflow={{ sm: 'hidden' }}>
+          </NextLink>
+        </p>
+        <div className="overflow-hidden rounded-none shadow-md md:rounded-md">
           {listing.pending && (
-            <Alert status="info" colorScheme="purple">
-              <AlertIcon />
+            <div className="flex items-center gap-3 bg-purple-50 p-4 text-purple-900">
+              <PiInfoBold className="h-5 w-5 shrink-0" />
               This listing was submitted externally and is currently in pending
               state. Check through the information below, and if everything
               looks okay click Approve.
-            </Alert>
+            </div>
           )}
-          <Stack bg="white" spacing={6}>
+          <div className="space-y-6 bg-white">
             <ListingForm
               categories={categories}
               listing={listing}
               handleSubmit={handleSubmit}
+              isSubmitting={isPending}
             />
-          </Stack>
-        </Box>
-      </Box>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

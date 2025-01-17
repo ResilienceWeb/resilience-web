@@ -1,26 +1,21 @@
+'use client'
+
 import { memo, useCallback, useEffect, useState, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import {
-  Box,
-  Heading,
-  Flex,
-  HStack,
-  Link,
-  Icon,
-  Button,
-  IconButton,
-  Tag,
-  Text,
-  Tooltip,
-  Grid,
-} from '@chakra-ui/react'
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi'
 import { SlGlobe } from 'react-icons/sl'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
+import { Badge } from '@components/ui/badge'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip'
 
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
@@ -30,12 +25,14 @@ import Item from '@components/main-list/item'
 
 const ListingMap = dynamic(() => import('./listing-map'), {
   ssr: false,
-  loading: () => (
-    <div style={{ textAlign: 'center', paddingTop: 20 }}>Loading…</div>
-  ),
+  loading: () => <div className="pt-5 text-center">Loading…</div>,
 })
 
-function Listing({ listing }) {
+interface ListingProps {
+  listing: any // TODO: Add proper type
+}
+
+function Listing({ listing }: ListingProps) {
   const router = useRouter()
   const [subdomain, setSubdomain] = useState<string>()
 
@@ -79,30 +76,17 @@ function Listing({ listing }) {
 
   return (
     <>
-      <Box
-        maxWidth={{ base: '100%', md: '700px' }}
-        minWidth={{ base: 'initial', md: '684px' }}
-        mt="1rem"
-      >
-        <Button
-          leftIcon={<HiArrowLeft />}
-          name="Back"
-          mb={2}
-          ml={2}
+      <div className="mt-4 w-full md:min-w-[684px] md:max-w-[700px]">
+        <button
           onClick={goBack}
-          variant="link"
-          color="gray.700"
+          className="mb-2 ml-2 flex items-center text-gray-700 hover:text-gray-600"
         >
+          <HiArrowLeft className="mr-2" />
           Back to main list
-        </Button>
+        </button>
+
         {listing.image && (
-          <Box
-            borderRadius={{ base: 'none', md: '8px' }}
-            overflow="hidden"
-            position="relative"
-            width={{ base: '100vw', md: '700px' }}
-            height={{ base: '250px', md: '400px' }}
-          >
+          <div className="relative h-[250px] w-screen overflow-hidden md:h-[400px] md:w-[700px] md:rounded-lg">
             <Image
               src={listing.image}
               alt={`Image for ${listing.title}`}
@@ -111,104 +95,89 @@ function Listing({ listing }) {
               priority
               style={{ objectFit: 'contain' }}
             />
-          </Box>
+          </div>
         )}
-        <Box px={{ base: 4, md: 2 }}>
-          <Flex
-            flexDirection={{ base: 'column', md: 'row' }}
-            width="100%"
-            mb={{ base: 6, md: 10 }}
-            py={4}
-          >
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="space-between"
-              width="100%"
-            >
-              <Heading as="h1" data-testid="Title">
+
+        <div className="px-4 md:px-2">
+          <div className="mb-6 w-full py-4 md:mb-10 md:flex">
+            <div className="flex w-full flex-col justify-between">
+              <h1 data-testid="Title" className="text-2xl font-bold">
                 {listing.title}
-              </Heading>
-              <HStack justifyContent="space-between" mt={8} width="100%">
-                <Box>
-                  <CategoryTag
-                    mb={2}
-                    colorHex={listing.category.color}
-                    size="md"
-                  >
+              </h1>
+
+              <div className="mt-8 flex w-full justify-between">
+                <div>
+                  <CategoryTag colorHex={listing.category.color}>
                     {listing.category.label}
                   </CategoryTag>
                   {listing.seekingVolunteers && (
-                    <Tooltip
-                      borderRadius="md"
-                      label="This group is seeking volunteers or members. Get in touch with them if you'd like to help."
-                    >
-                      <Text color="rw.900">
-                        <Icon as={HiUserGroup} /> Seeking volunteers
-                      </Text>
-                    </Tooltip>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <p className="flex items-center text-[#2B8257]">
+                            <HiUserGroup className="mr-1" /> Seeking volunteers
+                          </p>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            This group is seeking volunteers or members. Get in
+                            touch with them if you'd like to help.
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   )}
-                </Box>
-                <HStack spacing={4}>
+                </div>
+
+                <div className="flex space-x-4">
                   {listing.website && (
-                    <Link href={listingWebsite} target="_blank">
-                      <Icon
-                        as={SlGlobe}
-                        color="gray.600"
-                        cursor="pointer"
-                        w={8}
-                        h={8}
-                        transition="color 150ms"
-                        _hover={{ color: 'gray.500' }}
-                      />
-                    </Link>
+                    <a
+                      href={listingWebsite}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 transition-colors duration-150 hover:text-gray-500"
+                    >
+                      <SlGlobe className="h-8 w-8" />
+                    </a>
                   )}
                   {listing.facebook && (
-                    <Link href={listing.facebook} target="_blank">
-                      <Icon
-                        as={FaFacebook}
-                        color="gray.600"
-                        cursor="pointer"
-                        w={8}
-                        h={8}
-                        transition="color 150ms"
-                        _hover={{ color: 'gray.500' }}
-                      />
-                    </Link>
+                    <a
+                      href={listing.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 transition-colors duration-150 hover:text-gray-500"
+                    >
+                      <FaFacebook className="h-8 w-8" />
+                    </a>
                   )}
                   {listing.twitter && (
-                    <Link href={listing.twitter} target="_blank">
-                      <Icon
-                        as={FaTwitter}
-                        color="gray.600"
-                        cursor="pointer"
-                        w={8}
-                        h={8}
-                        transition="color 150ms"
-                        _hover={{ color: 'gray.500' }}
-                      />
-                    </Link>
+                    <a
+                      href={listing.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 transition-colors duration-150 hover:text-gray-500"
+                    >
+                      <FaTwitter className="h-8 w-8" />
+                    </a>
                   )}
                   {listing.instagram && (
-                    <Link href={listing.instagram} target="_blank">
-                      <Icon
-                        as={FaInstagram}
-                        color="gray.600"
-                        cursor="pointer"
-                        w={8}
-                        h={8}
-                        transition="color 150ms"
-                        _hover={{ color: 'gray.500' }}
-                      />
-                    </Link>
+                    <a
+                      href={listing.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 transition-colors duration-150 hover:text-gray-500"
+                    >
+                      <FaInstagram className="h-8 w-8" />
+                    </a>
                   )}
-                </HStack>
-              </HStack>
-            </Box>
-          </Flex>
-          <Box mb={8}>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-8">
             <DescriptionRichText html={listing.description} />
-          </Box>
+          </div>
 
           {listing.location?.latitude &&
             listing.location?.longitude &&
@@ -220,14 +189,7 @@ function Listing({ listing }) {
               />
             )}
 
-          <Box
-            mt="2rem"
-            mb={8}
-            display="flex"
-            justifyContent="flex-end"
-            flexWrap="wrap"
-            gap="0.25rem"
-          >
+          <div className="mb-8 mt-8 flex flex-wrap justify-end gap-1">
             {listing.tags?.map((tag) => {
               const urlEncodedTag = tag.label.replace(' ', '+')
               return (
@@ -235,73 +197,51 @@ function Listing({ listing }) {
                   key={tag.id}
                   href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
                 >
-                  <Tag
-                    backgroundColor={tag.color ?? 'gray.300'}
-                    userSelect="none"
-                    cursor="pointer"
-                    transition="opacity 0.2s ease"
-                    _hover={{ opacity: 0.9 }}
+                  <Badge
+                    className="cursor-pointer select-none transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: tag.color ?? '#718096' }}
                   >
                     #{tag.label}
-                  </Tag>
+                  </Badge>
                 </NextLink>
               )
             })}
-          </Box>
+          </div>
 
           {listing.relations?.length > 0 && (
             <>
-              <Heading as="h2" fontSize="xl" mb="1rem">
-                Related listings
-              </Heading>
-              <Grid
-                templateColumns={{
-                  base: '1fr 1fr',
-                  md: 'repeat(3, 1fr)',
-                }}
-                gap="1rem"
-                mb="2rem"
-              >
-                {listing.relations.map((relatedListing) => {
-                  return (
-                    <Item
-                      categoriesIndexes={categoriesIndexes}
-                      dataItem={relatedListing}
-                      key={relatedListing.id}
-                      simplified
-                    />
-                  )
-                })}
-              </Grid>
+              <h2 className="mb-4 text-xl font-bold">Related listings</h2>
+              <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-3">
+                {listing.relations.map((relatedListing) => (
+                  <Item
+                    categoriesIndexes={categoriesIndexes}
+                    dataItem={relatedListing}
+                    key={relatedListing.id}
+                    simplified
+                  />
+                ))}
+              </div>
             </>
           )}
-        </Box>
+        </div>
 
-        <Button
-          leftIcon={<HiArrowLeft />}
-          name="Back"
-          mb="1rem"
+        <button
           onClick={goBack}
-          variant="link"
-          color="gray.700"
+          className="mb-4 flex items-center text-gray-700 hover:text-gray-600"
         >
+          <HiArrowLeft className="mr-2" />
           Back to main list
-        </Button>
-      </Box>
-      <Box position="fixed" bottom="2rem" right="2rem" zIndex={10}>
-        <Link href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}>
-          <IconButton
-            icon={<FiEdit />}
-            variant="solid"
-            aria-label="Edit listing"
-            fontSize="1.5rem"
-            width="60px"
-            height="60px"
-            borderRadius="50%"
-            colorScheme="blue"
-          />
-        </Link>
-      </Box>
+        </button>
+      </div>
+
+      <div className="fixed bottom-8 right-8 z-10">
+        <a
+          href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}
+          className="flex h-[60px] w-[60px] items-center justify-center rounded-full bg-blue-500 text-2xl text-white transition-colors hover:bg-blue-600"
+        >
+          <FiEdit />
+        </a>
+      </div>
     </>
   )
 }

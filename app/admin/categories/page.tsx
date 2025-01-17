@@ -1,15 +1,7 @@
 'use client'
 import { useMemo } from 'react'
-import {
-  Box,
-  Spinner,
-  Center,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
-} from '@chakra-ui/react'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@components/ui/tabs'
+import { Spinner } from '@components/ui/spinner'
 import CategoriesHeader from '@components/admin/categories/header'
 import CategoriesList from '@components/admin/categories/list'
 import TagsHeader from '@components/admin/tags/header'
@@ -26,34 +18,25 @@ export default function CategoriesPage() {
   }, [categories])
 
   if (isCategoriesPending) {
-    return (
-      <Center height="50vh">
-        <Spinner size="xl" />
-      </Center>
-    )
+    return <Spinner />
   }
 
   return (
-    <Tabs colorScheme="rw">
-      <TabList>
-        <Tab>Categories</Tab>
-        <Tab>Tags</Tab>
-      </TabList>
+    <Tabs defaultValue="categories">
+      <TabsList>
+        <TabsTrigger value="categories">Categories</TabsTrigger>
+        <TabsTrigger value="tags">Tags</TabsTrigger>
+      </TabsList>
 
-      <TabPanels>
-        <TabPanel>
-          <Box mt={6}>
-            <CategoriesHeader />
-            <CategoriesList categories={orderedCategories} />
-          </Box>
-        </TabPanel>
-        <TabPanel>
-          <Box mt={6}>
-            <TagsHeader />
-            {isTagsPending ? <Spinner size="xl" /> : <TagsList tags={tags} />}
-          </Box>
-        </TabPanel>
-      </TabPanels>
+      <TabsContent value="categories" className="mt-6">
+        <CategoriesHeader />
+        <CategoriesList categories={orderedCategories} />
+      </TabsContent>
+
+      <TabsContent value="tags" className="mt-6">
+        <TagsHeader />
+        {isTagsPending ? <Spinner /> : <TagsList tags={tags} />}
+      </TabsContent>
     </Tabs>
   )
 }

@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation'
-import NextLink from 'next/link'
+import Link from 'next/link'
 import { useCallback, useState, useMemo, memo } from 'react'
-import { Heading, Text, Box, Center, Link } from '@chakra-ui/react'
 
 import DeleteConfirmationDialog from './delete-confirmation-dialog'
 import { removeNonAlphaNumeric } from '@helpers/utils'
@@ -112,23 +111,20 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
 
   return (
     <>
-      <Box mb="1rem">
-        <Heading>Listings</Heading>
-        <Text color={'gray.600'} fontSize="sm" maxW="500px">
-          {explanatoryText}
-        </Text>
-        <Text color={'gray.600'} fontSize="sm" maxW="500px" mt="1rem">
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold">Listings</h1>
+        <p className="max-w-[500px] text-sm text-gray-600">{explanatoryText}</p>
+        <p className="mt-4 max-w-[500px] text-sm text-gray-600">
           This web is publicly accessible at{' '}
-          <Link
+          <a
             href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
             target="_blank"
-            fontWeight="600"
-            color="rw.900"
+            className="font-semibold text-[#2B6CB0] hover:underline"
           >
             {`${selectedWebSlug}.${REMOTE_HOSTNAME}`}
-          </Link>
-        </Text>
-      </Box>
+          </a>
+        </p>
+      </div>
       <TableActions
         searchTerm={searchTerm}
         handleSearchTermChange={handleSearchTermChange}
@@ -143,15 +139,18 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
           items={filteredItems}
         />
       ) : (
-        <Center my="3rem">
-          <Text fontWeight="600">
+        <div className="my-12 flex justify-center">
+          <p className="font-semibold">
             No listings yet. Why not{' '}
-            <Link as={NextLink} href="/admin/new-listing" color="rw.900">
+            <Link
+              href="/admin/new-listing"
+              className="text-[#2B6CB0] hover:underline"
+            >
               start adding
             </Link>
             .
-          </Text>
-        </Center>
+          </p>
+        </div>
       )}
       <DeleteConfirmationDialog
         isOpen={isDeleteConfirmationOpenWithSlug}

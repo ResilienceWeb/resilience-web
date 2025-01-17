@@ -1,14 +1,20 @@
+'use client'
+
 import { memo, useMemo } from 'react'
 import NextLink from 'next/link'
 import { AnimatePresence } from 'framer-motion'
-import { chakra, Flex, Grid, Center, Button, Text } from '@chakra-ui/react'
+import { Button } from '@components/ui/button'
 
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import Footer from '@components/footer'
 import Item from './item'
 
-const MainList = ({ filteredItems }) => {
+interface MainListProps {
+  filteredItems: any[]
+}
+
+const MainList = ({ filteredItems }: MainListProps) => {
   const selectedWebSlug = useSelectedWebSlug()
   const { categories } = useCategoriesPublic({ webSlug: selectedWebSlug })
   const categoriesIndexes = useMemo(() => {
@@ -20,22 +26,10 @@ const MainList = ({ filteredItems }) => {
 
   return (
     <>
-      <Flex
-        alignItems="center"
-        flexDirection="column"
-        minHeight="calc(100vh - 302px)"
-        py="1rem"
-        px={{ base: '1rem', md: '2rem' }}
-      >
-        <chakra.div marginTop={4} width="100%" maxW="1400px">
+      <div className="flex min-h-[calc(100vh-302px)] flex-col items-center px-4 py-4 md:px-8">
+        <div className="mt-4 w-full max-w-[1400px]">
           {filteredItems.length > 0 ? (
-            <Grid
-              templateColumns={{
-                base: '1fr',
-                md: 'repeat(3, 1fr)',
-              }}
-              gap="1rem"
-            >
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <AnimatePresence>
                 {filteredItems.map((item) => (
                   <Item
@@ -45,20 +39,22 @@ const MainList = ({ filteredItems }) => {
                   />
                 ))}
               </AnimatePresence>
-            </Grid>
+            </div>
           ) : (
-            <Center mt="2rem" flexDirection="column" gap="1rem">
-              <Text maxW="400px" textAlign="center" color="gray.600">
+            <div className="mt-8 flex flex-col items-center gap-4">
+              <p className="max-w-[400px] text-center text-gray-600">
                 No listings were found that match your search 🤔 Maybe propose
                 the listing to the maintainers?
-              </Text>
-              <Button as={NextLink} href="/new-listing" variant="rw">
-                Propose new listing
-              </Button>
-            </Center>
+              </p>
+              <NextLink href="/new-listing">
+                <Button variant="default" className="bg-[#2B8257] hover:bg-[#236c47]">
+                  Propose new listing
+                </Button>
+              </NextLink>
+            </div>
           )}
-        </chakra.div>
-      </Flex>
+        </div>
+      </div>
       <Footer hideBorder />
     </>
   )

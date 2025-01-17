@@ -1,9 +1,22 @@
-import { Tag, Text } from '@chakra-ui/react'
+import { Badge } from '@components/ui/badge'
 import chroma from 'chroma-js'
+import { cn } from '@components/lib/utils'
 
 import { selectMoreAccessibleColor } from '@helpers/colors'
 
-const CategoryTag = ({ children, colorHex, alpha = 1, ...props }) => {
+interface CategoryTagProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode
+  colorHex: string
+  alpha?: number
+}
+
+const CategoryTag = ({
+  children,
+  colorHex,
+  alpha = 1,
+  className,
+  ...props
+}: CategoryTagProps) => {
   const color = chroma(colorHex)
 
   const accessibleTextColor = selectMoreAccessibleColor(
@@ -13,16 +26,19 @@ const CategoryTag = ({ children, colorHex, alpha = 1, ...props }) => {
   )
 
   return (
-    <Tag
-      backgroundColor={color.alpha(alpha).css()}
-      userSelect="none"
-      flexShrink="0"
+    <Badge
+      className={cn(
+        'flex-shrink-0 select-none text-xs font-semibold',
+        className,
+      )}
+      style={{
+        backgroundColor: color.alpha(alpha).css(),
+        color: accessibleTextColor,
+      }}
       {...props}
     >
-      <Text color={accessibleTextColor} fontWeight="600" fontSize="0.75rem">
-        {children}
-      </Text>
-    </Tag>
+      {children}
+    </Badge>
   )
 }
 

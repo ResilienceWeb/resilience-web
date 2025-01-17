@@ -1,7 +1,6 @@
 'use client'
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import dynamic from 'next/dynamic'
-import { Box } from '@chakra-ui/react'
 import { useDebounce } from 'use-debounce'
 import useLocalStorage from 'use-local-storage'
 import {
@@ -239,17 +238,17 @@ const Web = ({
   )
 
   const handleSwitchChange = useCallback(
-    (event) => {
+    (value) => {
       setSelectedId(null)
-      setQuery({ web: !(event.target.value == 'true') })
+      setQuery({ web: value })
     },
     [setQuery],
   )
 
   const handleVolunteerSwitchChange = useCallback(
-    (event) => {
+    (value) => {
       setSelectedId(null)
-      setIsVolunteer(event.target.checked)
+      setIsVolunteer(value)
     },
     [setIsVolunteer],
   )
@@ -273,11 +272,7 @@ const Web = ({
           isTransitionMode={isTransitionMode}
         />
       )}
-      <Box
-        height="100vh"
-        ml={{ base: '0', md: '18.75rem' }}
-        position="relative"
-      >
+      <div className="relative h-screen md:ml-[18.75rem]">
         {webIsPublished === false && (
           <AlertBanner
             content="Note: this web is currently work in progress and not fully published yet."
@@ -309,7 +304,7 @@ const Web = ({
         )}
 
         {!query.web && <MainList filteredItems={filteredItems} />}
-      </Box>
+      </div>
     </>
   )
 }

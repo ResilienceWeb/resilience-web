@@ -1,17 +1,9 @@
 'use client'
 import { useCallback, useMemo, use } from 'react'
 import { useRouter } from 'next/navigation'
-import {
-  Box,
-  Flex,
-  Badge,
-  Heading,
-  Center,
-  Spinner,
-  Text,
-  Link,
-  Button,
-} from '@chakra-ui/react'
+import { Button } from '@components/ui/button'
+import { Badge } from '@components/ui/badge'
+import { Spinner } from '@components/ui/spinner'
 import PermissionsTable from '@components/admin/permissions-table'
 import useWeb from '@hooks/webs/useWeb'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
@@ -73,78 +65,68 @@ export default function WebOverviewPage({ params }) {
   }, [web])
 
   if (isLoadingWeb) {
-    return (
-      <Center height="50vh">
-        <Spinner size="xl" />
-      </Center>
-    )
+    return <Spinner />
   }
 
   return (
-    <>
-      <Button
-        leftIcon={<HiArrowLeft />}
-        name="Back"
-        mb={2}
-        ml={2}
+    <div className="space-y-6">
+      <button
+        className="mb-2 ml-2 flex items-center gap-2 text-gray-700 hover:text-gray-900"
         onClick={goBack}
-        variant="link"
-        color="gray.700"
       >
+        <HiArrowLeft className="h-4 w-4" />
         Back to main list
-      </Button>
-      <Flex justifyContent="space-between" alignItems="center">
-        <Heading mb="1rem">{web.title}</Heading>
+      </button>
+
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold tracking-tight">{web.title}</h1>
         {web.published ? (
-          <Badge colorScheme="green" fontSize="lg">
-            Published
-          </Badge>
+          <Badge className="text-lg">Published</Badge>
         ) : (
-          <Flex gap="1rem" flexDirection="column" alignItems="center">
-            <Badge fontSize="lg">Private</Badge>
-            <Button
-              variant="rw"
-              onClick={() => publishWeb()}
-              isLoading={isPublishingWeb}
-            >
-              Publish 🚀
+          <div className="flex flex-col items-center gap-4">
+            <Badge variant="secondary" className="text-lg">
+              Private
+            </Badge>
+            <Button onClick={() => publishWeb()} disabled={isPublishingWeb}>
+              {isPublishingWeb ? <Spinner /> : null}
+              Publish
             </Button>
-          </Flex>
+          </div>
         )}
-      </Flex>
-      <Link
+      </div>
+
+      <a
         href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
         target="_blank"
-        fontWeight={600}
-        color="rw.900"
+        rel="noopener noreferrer"
+        className="text-primary hover:underline"
       >
         {`${web.slug}.${REMOTE_HOSTNAME}`}
-      </Link>
-      <Text mt="1rem">
-        <strong>{web.listings.length}</strong> listings
-      </Text>
+      </a>
+
+      <p className="text-muted-foreground">
+        <span className="font-medium text-foreground">
+          {web.listings.length}
+        </span>{' '}
+        listings
+      </p>
 
       {(web.permissions?.length > 0 || decoratedOwnerships?.length > 0) && (
-        <Box mt="2rem">
-          <Heading as="h3" fontSize="1.75rem" mb="0.5rem">
-            Team
-          </Heading>
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold">Team</h2>
           <PermissionsTable
             permissions={[
               ...decoratedOwnerships,
               ...permissionsForCurrentWebWithoutOwners,
             ]}
           />
-          <Button
-            variant="rw"
-            mb="2rem"
-            as={Link}
-            href={`mailto:${mailToEmails}`}
-          >
-            Send email to owners and editors
+          <Button asChild className="mb-8">
+            <a href={`mailto:${mailToEmails}`}>
+              Send email to owners and editors
+            </a>
           </Button>
-        </Box>
+        </div>
       )}
-    </>
+    </div>
   )
 }

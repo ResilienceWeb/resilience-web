@@ -1,17 +1,12 @@
 import { memo, useEffect, useState } from 'react'
-import {
-  Button,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Stack,
-} from '@chakra-ui/react'
 import Select from 'react-select'
 import { HiOutlineSearch, HiPlus } from 'react-icons/hi'
 import useCategories from '@hooks/categories/useCategories'
 import customMultiSelectStyles from '@styles/select-styles'
 import useHasPermissionForCurrentWeb from '@hooks/permissions/useHasPermissionForCurrentWeb'
 import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
+import { Input } from '@components/ui/input'
+import { Button } from '@components/ui/button'
 
 const TableActions = ({
   searchTerm,
@@ -38,23 +33,11 @@ const TableActions = ({
   }, [fetchedCategories])
 
   return (
-    <Stack
-      direction={{
-        base: 'column',
-        md: 'row',
-      }}
-      spacing="4"
-      justify="flex-start"
-      flex="1"
-    >
+    <div className="flex flex-col md:flex-row gap-4 justify-start flex-1">
       {(hasPermissionForCurrentWeb || isOwnerOfCurrentWeb) && (
         <>
-          <Stack
-            direction={{ base: 'column', md: 'row' }}
-            spacing="1rem"
-            flex="1"
-          >
-            <InputGroup minW="250px">
+          <div className="flex flex-col md:flex-row gap-4 flex-1">
+            <div className="flex-1">
               <Select
                 isMulti
                 isSearchable={false}
@@ -64,40 +47,32 @@ const TableActions = ({
                 placeholder="Filter by category"
                 styles={customMultiSelectStyles}
               />
-            </InputGroup>
-            <InputGroup>
-              <InputLeftElement
-                pointerEvents="none"
-                color="gray.400"
-                fontSize="xl"
-              >
+            </div>
+            <div className="relative flex-1">
+              <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
                 <HiOutlineSearch />
-              </InputLeftElement>
+              </div>
               <Input
                 placeholder="Search"
                 onChange={handleSearchTermChange}
-                style={{
-                  backgroundColor: '#ffffff',
-                }}
                 value={searchTerm}
-                maxHeight="38px"
-                borderRadius="10px"
+                className="h-[38px] pl-10 bg-white rounded-[10px]"
               />
-            </InputGroup>
-          </Stack>
+            </div>
+          </div>
           <Button
-            leftIcon={<HiPlus fontSize="1.25em" />}
             onClick={goToCreateListing}
-            variant="rw"
+            variant="default"
             size="lg"
-            maxHeight="36px"
+            className="h-[36px]"
             data-tourid="new-listing"
           >
+            <HiPlus className="text-xl" />
             New listing
           </Button>
         </>
       )}
-    </Stack>
+    </div>
   )
 }
 

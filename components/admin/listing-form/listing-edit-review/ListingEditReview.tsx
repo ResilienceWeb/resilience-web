@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Button, Stack, Flex } from '@chakra-ui/react'
+import { Button } from '@components/ui/button'
 import Diff from './Diff'
 import useDeleteListingEdit from '@hooks/listings/useDeleteListingEdit'
 import { useRouter } from 'next/navigation'
@@ -29,7 +29,7 @@ const ListingEditReview = ({
   }
 
   return (
-    <Stack bg="white" spacing={6}>
+    <div className="space-y-6 bg-white">
       <Diff
         label="Title"
         string1={listing.title}
@@ -72,15 +72,21 @@ const ListingEditReview = ({
         string2={editedListing.instagram}
       />
 
-      <Flex justifyContent="flex-end" gap="1rem">
-        <Button colorScheme="red" onClick={handleReject}>
+      <div className="flex justify-end gap-4">
+        <Button
+          variant="destructive"
+          onClick={handleReject}
+        >
           Reject
         </Button>
-        <Button size="md" variant="rw" onClick={handleSubmit}>
+        <Button
+          variant="default"
+          onClick={handleSubmit}
+        >
           Accept changes
         </Button>
-      </Flex>
-    </Stack>
+      </div>
+    </div>
   )
 }
 

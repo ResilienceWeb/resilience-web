@@ -1,42 +1,37 @@
 import { useRef, useState, memo } from 'react'
 import Image from 'next/legacy/image'
-import {
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
-  InputGroup,
-  Button,
-  VisuallyHidden,
-  chakra,
-  Flex,
-  Stack,
-  Icon,
-  Text,
-} from '@chakra-ui/react'
-
+import { useFormContext } from 'react-hook-form'
 import optimizeImage from '@helpers/optimizeImage'
 
-const ImageUpload = ({
-  field,
-  form,
-  formProps,
-  helperText,
-  isRequired = false,
-}: {
-  field: any
-  form: any
-  formProps: any
+interface ImageUploadProps {
+  name: string
   helperText?: string
   isRequired?: boolean
-}) => {
+}
+
+const ImageUpload = ({
+  name,
+  helperText,
+  isRequired = false,
+}: ImageUploadProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [preview, setPreview] = useState<any>()
+  const [preview, setPreview] = useState<string | null>(null)
+  const {
+    register,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useFormContext()
 
-  const hasImageAlready = field.value && !field.value.name
+  const currentValue = getValues(name)
+  const hasImageAlready = currentValue && !currentValue.name
 
-  const handleFileInputChange = async (event) => {
-    const file = event.target.files[0]
+  const handleFileInputChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
     const optimizedBlob = await optimizeImage(file)
     const optimizedFile = new File([optimizedBlob], file.name, {
       type: file.type,
@@ -46,63 +41,55 @@ const ImageUpload = ({
       const reader = new FileReader()
       reader.readAsDataURL(optimizedFile)
       reader.onloadend = () => {
-        setPreview(reader.result)
+        setPreview(reader.result as string)
       }
 
-      formProps.setFieldValue('image', optimizedFile)
+      setValue(name, optimizedFile, { shouldValidate: true })
     } else {
       setPreview(null)
     }
   }
 
   return (
-    <FormControl isInvalid={form.errors.image && form.touched.image} my="1rem">
-      <FormLabel htmlFor="image" fontSize="sm" fontWeight="600" mb="0.25rem">
+    <div className="my-4">
+      <label className="mb-1 block text-sm font-semibold" htmlFor={name}>
         {`Image${isRequired ? '*' : ''}`}
-      </FormLabel>
-      <Text fontSize="sm" color="gray.600" mb="0.5rem">
+      </label>
+      <p className="mb-2 text-sm text-gray-600">
         Please ensure this is either a copyright-free image, you own the
         copyright of this image, or you have permission to use the image.
-      </Text>
-      {helperText && <FormHelperText mb="1.5rem">{helperText}</FormHelperText>}
-      <InputGroup display="flex" alignItems="center" justifyContent="center">
-        <VisuallyHidden>
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={(event) => void handleFileInputChange(event)}
-          />
-        </VisuallyHidden>
+      </p>
+      {helperText && <p className="mb-6 text-sm text-gray-600">{helperText}</p>}
+      <div className="relative flex items-center justify-center">
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          ref={(e) => {
+            register(name)
+            fileInputRef.current = e
+          }}
+          onChange={handleFileInputChange}
+        />
 
         {hasImageAlready || preview ? (
-          <div style={{ width: '200px', height: '200px' }}>
+          <div className="relative h-[200px] w-[200px]">
             <Image
               alt="Preview of image uploaded by user"
-              src={preview ?? field.value}
+              src={preview ?? currentValue}
               layout="fill"
               objectFit="contain"
               unoptimized
             />
           </div>
         ) : (
-          <Flex
-            width="100%"
-            mt={1}
-            justify="center"
-            p={6}
-            borderWidth={2}
-            borderColor="gray.300"
-            borderStyle="dashed"
-            rounded="md"
-            cursor="pointer"
+          <div
+            className="mt-1 w-full cursor-pointer rounded-md border-2 border-dashed border-gray-300 p-6 text-center"
             onClick={() => fileInputRef?.current?.click()}
           >
-            <Stack spacing={1} textAlign="center">
-              <Icon
-                mx="auto"
-                boxSize={12}
-                color="gray.400"
+            <div className="space-y-1">
+              <svg
+                className="mx-auto h-12 w-12 text-gray-400"
                 stroke="currentColor"
                 fill="none"
                 viewBox="0 0 48 48"
@@ -114,43 +101,33 @@ const ImageUpload = ({
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-              </Icon>
-              <Flex fontSize="sm" color="gray.600" alignItems="baseline">
-                <chakra.label
+              </svg>
+              <div className="flex items-baseline text-sm text-gray-600">
+                <label
                   htmlFor="file-upload"
-                  cursor="pointer"
-                  rounded="md"
-                  fontSize="md"
-                  color="brand.600"
-                  pos="relative"
-                  _hover={{
-                    color: 'brand.400',
-                  }}
+                  className="relative cursor-pointer text-blue-600 hover:text-blue-500"
                 >
                   <span>Upload an image</span>
-                  <VisuallyHidden>
-                    <input id="file-upload" name="file-upload" type="file" />
-                  </VisuallyHidden>
-                </chakra.label>
-              </Flex>
-            </Stack>
-          </Flex>
+                </label>
+              </div>
+            </div>
+          </div>
         )}
 
-        {(preview || field.value) && (
-          <Button
-            position="absolute"
-            colorScheme="blue"
-            size="sm"
-            opacity="0.8"
-            onClick={() => fileInputRef.current.click()}
+        {(preview || currentValue) && (
+          <button
+            type="button"
+            className="absolute rounded bg-blue-600 px-3 py-1 text-sm text-white opacity-80 hover:bg-blue-700"
+            onClick={() => fileInputRef.current?.click()}
           >
             Replace image
-          </Button>
+          </button>
         )}
-      </InputGroup>
-      <FormErrorMessage>Please upload an image</FormErrorMessage>
-    </FormControl>
+      </div>
+      {errors[name] && (
+        <p className="mt-2 text-sm text-red-600">Please upload an image</p>
+      )}
+    </div>
   )
 }
 

@@ -45,7 +45,7 @@ export default function Footer({ hideBorder = false }) {
         !hideBorder ? 'border-t border-t-gray-200' : ''
       }`}
     >
-      <div className="w-screen flex-1 px-4 py-10">
+      <div className="w-full max-w-[100vw] px-4 py-10">
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-[2fr_1fr_2fr]">
           <div className="stack-l">
             <div>

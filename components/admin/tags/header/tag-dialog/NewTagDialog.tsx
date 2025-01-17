@@ -1,12 +1,11 @@
 import { memo } from 'react'
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react'
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@components/ui/dialog'
 
 import TagForm from './tag-form'
 
@@ -18,21 +17,17 @@ type props = {
 
 const NewTagDialog: React.FC<props> = ({ onSubmit, isOpen, onClose }) => {
   return (
-    <Modal
-      isCentered
-      isOpen={isOpen}
-      onClose={onClose}
-      size={{ base: 'full', md: 'md' }}
-    >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Create new tag</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <TagForm onSubmit={onSubmit} />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Create new tag</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>
+          Use this form to create a new tag. This can easily be changed later.
+        </DialogDescription>
+        <TagForm onSubmit={onSubmit} />
+      </DialogContent>
+    </Dialog>
   )
 }
 

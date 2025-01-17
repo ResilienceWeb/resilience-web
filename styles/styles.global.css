@@ -39,6 +39,7 @@ p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
+/* stylelint-disable-next-line selector-id-pattern */
 #root, #__next {
   isolation: isolate;
 }
@@ -76,6 +77,10 @@ p > a, div[role="region"] > a {
 @layer base {
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold;
+  }
+
+  * {
+    max-width: unset;
   }
 
   :root {

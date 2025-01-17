@@ -1,17 +1,15 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  ModalFooter,
-  Stack,
-  Checkbox,
-  useCheckboxGroup,
-  Button,
-} from '@chakra-ui/react'
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@components/ui/dialog'
+import { Button } from '@components/ui/button'
+import { Checkbox } from '@components/ui/checkbox'
+import type { CheckedState } from '@radix-ui/react-checkbox'
 
 export default function AddTagToListingsDialog({
   tag,
@@ -22,12 +20,23 @@ export default function AddTagToListingsDialog({
   const linkedListingsIds = useMemo(() => {
     return tag.listings.map((listing) => listing.id)
   }, [tag.listings])
-  const { value, getCheckboxProps } = useCheckboxGroup({
-    defaultValue: linkedListingsIds,
-  })
+
+  const [selectedListings, setSelectedListings] = useState(
+    new Set(linkedListingsIds),
+  )
+
+  const handleCheckboxChange = (listingId: number, checked: CheckedState) => {
+    const newSelected = new Set(selectedListings)
+    if (checked) {
+      newSelected.add(listingId)
+    } else {
+      newSelected.delete(listingId)
+    }
+    setSelectedListings(newSelected)
+  }
 
   const handleSubmit = () => {
-    const addedListingIds = value.map((v) => Number(v))
+    const addedListingIds = Array.from(selectedListings).map(Number)
     const removedListingIds = linkedListingsIds.filter(
       (id) => !addedListingIds.includes(id),
     )
@@ -35,40 +44,39 @@ export default function AddTagToListingsDialog({
   }
 
   return (
-    <Modal
-      isCentered
-      isOpen
-      onClose={onClose}
-      size={{ base: 'full', md: 'md' }}
-    >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Add tag to listings</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Stack spacing={[1, 5]}>
-            {listings.map((listing) => (
+    <Dialog open onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Add tag to listings</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>
+          Add the tag to the selected listings
+        </DialogDescription>
+        <div className="space-y-4">
+          {listings.map((listing) => (
+            <div key={listing.id} className="flex items-center space-x-2">
               <Checkbox
-                key={listing.id}
-                {...getCheckboxProps({ value: listing.id })}
+                id={`listing-${listing.id}`}
+                checked={selectedListings.has(listing.id)}
+                onCheckedChange={(checked) =>
+                  handleCheckboxChange(listing.id, checked)
+                }
+              />
+              <label
+                htmlFor={`listing-${listing.id}`}
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 {listing.title}
-              </Checkbox>
-            ))}
-          </Stack>
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            mt={4}
-            ml={2}
-            variant="rw"
-            type="submit"
-            onClick={handleSubmit}
-          >
+              </label>
+            </div>
+          ))}
+        </div>
+        <DialogFooter>
+          <Button type="submit" onClick={handleSubmit}>
             Submit
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }

@@ -1,48 +1,51 @@
-import React, { memo, useMemo } from 'react'
+'use client'
+import React, { memo } from 'react'
 import { usePathname } from 'next/navigation'
-import { Flex, SlideFade, useBreakpointValue } from '@chakra-ui/react'
 import Nav from '@components/nav'
 import Footer from '@components/footer'
 import AlertBanner from '@components/alert-banner'
 import styles from './Layout.module.scss'
 
-const Layout = ({
-  applyPostStyling,
-  children,
-}: {
-  applyPostStyling?: boolean
+interface LayoutProps {
   children: React.ReactNode
-}) => {
+  applyPostStyling?: boolean
+  hideFooter?: boolean
+  hideNav?: boolean
+  hideBorder?: boolean
+}
+
+const Layout = memo(function Layout({
+  children,
+  applyPostStyling = false,
+  hideFooter = false,
+  hideNav = false,
+  hideBorder = false,
+}: LayoutProps) {
   const pathname = usePathname()
-  const isHomepage = useMemo(() => pathname === '/', [pathname])
 
   return (
     <>
-      <Nav />
-      <SlideFade in>
-        <Flex
-          className={applyPostStyling ? styles.root : undefined}
-          minHeight={useBreakpointValue({
-            base: 'calc(100vh - 186px)',
-            lg: 'calc(100vh - 140px)',
-          })}
-          alignItems="center"
-          flexDirection="column"
+      {!hideNav && <Nav />}
+      <main
+        className={`flex min-h-[calc(100vh-186px)] flex-col items-center md:min-h-[calc(100vh-328px)] ${!hideBorder ? 'border-t border-t-gray-200' : ''} `}
+      >
+        <div
+          className={`mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 ${applyPostStyling ? styles.root : ''} `}
         >
-          {isHomepage && (
-            <AlertBanner
-              content="Join our online monthly Assembly every first Wednesday of the month, at midday. Click here to read more."
-              type="info"
-              url="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219?aff=oddtdtcreator"
-            />
+          {pathname === '/' && (
+                        <AlertBanner
+                        content="Join our online monthly Assembly every first Wednesday of the month, at midday. Click here to read more."
+                        type="info"
+                        url="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219?aff=oddtdtcreator"
+                      />
           )}
-
+          
           {children}
-        </Flex>
-      </SlideFade>
-      <Footer />
+        </div>
+      </main>
+      {!hideFooter && <Footer />}
     </>
   )
-}
+})
 
-export default memo(Layout)
+export default Layout

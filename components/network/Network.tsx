@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import { memo, useState, useCallback, useEffect, useMemo } from 'react'
 import VisNetworkReactComponent from 'vis-network-react'
-import { useDisclosure } from '@chakra-ui/react'
 import Dialog from '@components/main-list/dialog'
 import styles from './Network.module.scss'
 
@@ -75,8 +74,11 @@ const options = {
 }
 
 const Network = ({ data, selectedId, setSelectedId }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isOpen, setIsOpen] = useState(false)
   const [network, setNetwork] = useState<any>()
+
+  const onOpen = useCallback(() => setIsOpen(true), [])
+  const onClose = useCallback(() => setIsOpen(false), [])
 
   useEffect(() => {
     if (selectedId) {

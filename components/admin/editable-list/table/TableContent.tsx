@@ -1,26 +1,16 @@
 import { memo } from 'react'
-import {
-  Flex,
-  Button,
-  Badge,
-  Tooltip,
-  TableContainer,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Stack,
-  Tag,
-  TagLeftIcon,
-  TagLabel,
-  IconButton,
-} from '@chakra-ui/react'
 import { PiWarningCircleBold } from 'react-icons/pi'
 import { FaStar, FaRegStar } from 'react-icons/fa'
 import useFeatureListing from '@hooks/listings/useFeatureListing'
-
+import { Button } from '@components/ui/button'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@components/ui/table'
 import CategoryTag from '@components/category-tag'
 
 const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
@@ -28,30 +18,46 @@ const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
   if (!items) return null
 
   return (
-    <TableContainer borderRadius="10px" borderStyle="solid" borderWidth="1px">
-      <Table fontSize="sm">
-        <Thead bg="gray.50">
-          <Tr>
-            {columns.map((column, index) => (
-              <Th whiteSpace="nowrap" scope="col" key={index}>
-                {column.Header}
-              </Th>
-            ))}
-            <Th>Info</Th>
-            <Th>Featured</Th>
-            <Th position="sticky" right={0} bg="gray.100"></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+    <div className="rounded-[10px] border border-solid">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Title</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead></TableHead>
+            <TableHead>Info</TableHead>
+            <TableHead>Featured</TableHead>
+            <TableHead></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {items.map((item, index) => (
-            <Tr key={index}>
-              {columns.map((column, index) => {
-                const cell = item[column.accessor]
-                const element = column.Cell?.(cell) ?? cell
-                return <Td key={index}>{element}</Td>
-              })}
+            <TableRow key={index}>
+              <TableCell>{item.title}</TableCell>
+              <TableCell>
+                {item.category && item.category.color ? (
+                  <CategoryTag
+                    className="text-xs"
+                    colorHex={item.category.color}
+                  >
+                    {item.category.label}
+                  </CategoryTag>
+                ) : null}
+              </TableCell>
+              <TableCell>
+                {item.pending ? (
+                  <div
+                    className="group relative cursor-default"
+                    title="This was submitted via the external form and needs to be reviewed. It is currently not published."
+                  >
+                    <span className="rounded-md bg-purple-100 px-2 py-1 text-base text-purple-800">
+                      Pending
+                    </span>
+                  </div>
+                ) : null}
+              </TableCell>
 
-              <Td>
+              <TableCell>
                 Created on{' '}
                 <b>
                   {Intl.DateTimeFormat('en-GB', {
@@ -66,36 +72,29 @@ const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
                   }).format(new Date(item.updatedAt))}
                 </b>
                 <br />
-                <Flex mt="0.5rem" flexWrap="wrap" gap="0.25rem">
+                <div className="mt-2 flex flex-wrap gap-1">
                   {!item.image && (
-                    <Tag>
-                      <TagLeftIcon boxSize="18px" as={PiWarningCircleBold} />
-                      <TagLabel>No image</TagLabel>
-                    </Tag>
+                    <div className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-1 text-sm">
+                      <PiWarningCircleBold className="h-[18px] w-[18px]" />
+                      <span>No image</span>
+                    </div>
                   )}
                   {item.description.length < 50 && (
-                    <Tag>
-                      <TagLeftIcon boxSize="18px" as={PiWarningCircleBold} />
-                      <TagLabel>Short description</TagLabel>
-                    </Tag>
+                    <div className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-1 text-sm">
+                      <PiWarningCircleBold className="h-[18px] w-[18px]" />
+                      <span>Short description</span>
+                    </div>
                   )}
-                </Flex>
-              </Td>
+                </div>
+              </TableCell>
 
-              <Td>
-                <Tooltip
-                  borderRadius="md"
-                  label="Display this listing at the top of the web page for 7 days."
+              <TableCell>
+                <div
+                  className="group relative"
+                  title="Display this listing at the top of the web page for 7 days."
                 >
-                  <IconButton
-                    aria-label="Toggle featured"
-                    icon={
-                      item.featured ? <FaStar color="green" /> : <FaRegStar />
-                    }
-                    colorScheme="gray"
-                    size="md"
-                    fontSize="20px"
-                    isRound={true}
+                  <button
+                    className="rounded-full bg-gray-100 p-2 text-xl hover:bg-gray-200"
                     onClick={() => {
                       if (item.featured) {
                         unfeatureListing(item.id)
@@ -103,80 +102,55 @@ const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
                         featureListing(item.id)
                       }
                     }}
-                  />
-                </Tooltip>
-              </Td>
+                  >
+                    {item.featured ? (
+                      <FaStar className="text-green-500" />
+                    ) : (
+                      <FaRegStar />
+                    )}
+                  </button>
+                </div>
+              </TableCell>
 
-              <Td position="sticky" right={0} background="gray.100">
-                <Stack direction="column" spacing={2}>
+              <TableCell className="sticky right-0 w-[120px] bg-gray-100">
+                <div className="flex flex-col gap-2">
                   {item.edits?.length > 0 && (
                     <Button
-                      colorScheme="purple"
+                      variant="default"
                       onClick={() => goToProposedEdits(item)}
                       size="sm"
+                      className="bg-purple-600 hover:bg-purple-700"
                     >
                       View suggested edit
                     </Button>
                   )}
                   <Button
-                    colorScheme={item.pending ? 'purple' : 'blue'}
+                    variant="default"
                     onClick={() => goToEdit(item)}
                     size="sm"
+                    className={
+                      item.pending
+                        ? 'bg-purple-600 hover:bg-purple-700'
+                        : 'bg-blue-600 hover:bg-blue-700'
+                    }
                   >
                     {item.pending ? 'Review' : 'Edit'}
                   </Button>
                   <Button
-                    colorScheme="red"
+                    variant="destructive"
                     onClick={() => removeItem(item.slug)}
                     size="sm"
                   >
                     Remove
                   </Button>
-                </Stack>
-              </Td>
-            </Tr>
+                </div>
+              </TableCell>
+            </TableRow>
           ))}
-        </Tbody>
+        </TableBody>
       </Table>
-    </TableContainer>
+    </div>
   )
 }
-
-export const columns = [
-  {
-    Header: 'Title',
-    accessor: 'title',
-  },
-  {
-    Header: 'Category',
-    accessor: 'category',
-    Cell: function CategoryCell(category) {
-      if (!category || !category.color) return null
-      return (
-        <CategoryTag fontSize="xs" colorHex={category.color}>
-          {category.label}
-        </CategoryTag>
-      )
-    },
-  },
-  {
-    Header: '',
-    accessor: 'pending',
-    Cell: function PendingCell(isPending) {
-      if (isPending) {
-        return (
-          <Tooltip
-            borderRadius="md"
-            label="This was submitted via the external form and needs to be reviewed. It is currently not published."
-          >
-            <Badge colorScheme="purple" fontSize="1.25rem" padding="0.25rem">
-              Pending
-            </Badge>
-          </Tooltip>
-        )
-      }
-    },
-  },
-]
 
 export default memo(TableContent)

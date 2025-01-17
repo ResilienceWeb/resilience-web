@@ -1,27 +1,24 @@
 'use client'
-import { Formik, Form, Field } from 'formik'
-import type { FormikHelpers } from 'formik'
+
 import { useCallback, useMemo } from 'react'
 import { useSession } from 'next-auth/react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { toast } from 'sonner'
+import { Spinner } from '@components/ui/spinner'
+import { Button } from '@components/ui/button'
 import {
-  chakra,
-  Box,
-  Button,
-  Heading,
-  Input,
+  Form,
   FormControl,
-  FormErrorMessage,
+  FormField,
+  FormItem,
   FormLabel,
-  FormHelperText,
-  useToast,
-  Stack,
-  StackDivider,
-  Center,
-  Spinner,
-  Text,
-} from '@chakra-ui/react'
+  FormMessage,
+  FormDescription,
+} from '@components/ui/form'
+import { Input } from '@components/ui/input'
 import PermissionsTable from '@components/admin/permissions-table'
-import { emailRequiredValidator } from '@helpers/formValidation'
 import { REMOTE_URL } from '@helpers/config'
 import usePermissions from '@hooks/permissions/usePermissions'
 import usePermissionsForCurrentWeb from '@hooks/permissions/usePermissionsForCurrentWeb'
@@ -39,13 +36,14 @@ const faqs = [
   },
 ]
 
-interface FormValues {
-  email: string
-  listings: string[]
-}
+const formSchema = z.object({
+  email: z.string().min(1, 'Email is required').email('Invalid email address'),
+  listings: z.array(z.string()),
+})
+
+type FormValues = z.infer<typeof formSchema>
 
 export default function TeamPage() {
-  const toast = useToast()
   const { data: session } = useSession()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
   const { isPending: isPermissionsPending } = usePermissions()
@@ -53,6 +51,14 @@ export default function TeamPage() {
   const { ownerships } = useOwnerships()
   const selectedWebName = useSelectedWebName()
   const { selectedWebId } = useAppContext()
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      listings: [],
+    },
+  })
 
   const decoratedOwnerships = useMemo(() => {
     if (!ownerships) {
@@ -78,140 +84,107 @@ export default function TeamPage() {
   }, [ownerships, permissionsForCurrentWeb])
 
   const sendInvite = useCallback(
-    async (data, actions: FormikHelpers<FormValues>) => {
-      const body: {
-        email: string
-        web?: string
-      } = {
-        email: data.email,
-        web: selectedWebId,
-      }
+    async (data: FormValues) => {
+      try {
+        const body = {
+          email: data.email,
+          web: selectedWebId,
+        }
 
-      const response = await fetch(`${REMOTE_URL}/api/users/invite`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-        },
-        body: JSON.stringify(body),
-      })
-
-      if (response.status === 200) {
-        toast({
-          title: 'Success',
-          description: `Invite sent to ${data.email}`,
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
+        const response = await fetch(`${REMOTE_URL}/api/users/invite`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+          },
+          body: JSON.stringify(body),
         })
-      } else {
-        toast({
-          title: 'Error',
-          description: `There was an error. Please try again or contact the developers.`,
-          status: 'error',
+
+        if (response.status === 200) {
+          toast.success('Success', {
+            description: `Invite sent to ${data.email}`,
+            duration: 5000,
+          })
+          form.reset()
+        } else {
+          throw new Error('Failed to send invite')
+        }
+      } catch (error) {
+        toast.error('Error', {
+          description: 'There was an error. Please try again or contact the developers.',
           duration: 5000,
-          isClosable: true,
         })
       }
-
-      actions.resetForm()
-      actions.setFieldValue('web', false)
     },
-    [selectedWebId, toast],
+    [selectedWebId, form],
   )
 
   if (isPermissionsPending) {
-    return (
-      <Center height="50vh">
-        <Spinner size="xl" />
-      </Center>
-    )
+    return <Spinner />
   }
 
   return (
-    <Stack spacing="2rem" divider={<StackDivider />}>
+    <div className="flex flex-col space-y-8 divide-y divide-gray-200">
       {(isOwnerOfCurrentWeb || session.user.admin) && (
-        <Box>
-          <Heading mb="1.5rem">Invite team member</Heading>
-          <Box
-            shadow="base"
-            rounded={[null, 'md']}
-            overflow={{ sm: 'hidden' }}
-            bg="white"
-            padding="1rem"
-          >
-            <Box maxW="450px">
-              <Formik
-                initialValues={{
-                  email: '',
-                  listings: [],
-                }}
-                onSubmit={sendInvite}
-                enableReinitialize
-              >
-                {(props) => (
-                  <Form>
-                    <chakra.div mb={3}>
-                      <Field
-                        name="email"
-                        type="email"
-                        validate={emailRequiredValidator}
-                      >
-                        {({ field, form }) => (
-                          <FormControl isInvalid={form.errors.email}>
-                            <FormLabel htmlFor="email">Email</FormLabel>
-                            <Input {...field} id="email" background="white" />
-                            <FormErrorMessage>
-                              {form.errors.email}
-                            </FormErrorMessage>
-                            <FormHelperText>
-                              The invited user will have the permission to
-                              add/edit listings, categories and tags.
-                            </FormHelperText>
-                          </FormControl>
-                        )}
-                      </Field>
-                    </chakra.div>
+        <div className="pb-8">
+          <h1 className="mb-6 text-2xl font-bold">Invite team member</h1>
+          <div className="overflow-hidden rounded-md bg-white p-4 shadow-sm">
+            <div className="max-w-[450px]">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(sendInvite)} className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="email" className="bg-white" />
+                        </FormControl>
+                        <FormDescription>
+                          The invited user will have the permission to add/edit listings,
+                          categories and tags.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                    <Button
-                      mt={4}
-                      variant="rw"
-                      isDisabled={!props.isValid}
-                      isLoading={props.isSubmitting}
-                      type="submit"
-                    >
-                      Send invite
-                    </Button>
-                  </Form>
-                )}
-              </Formik>
-            </Box>
-          </Box>
-        </Box>
+                  <Button
+                    type="submit"
+                    className="bg-[#2B8257] hover:bg-[#236c47]"
+                    disabled={!form.formState.isValid || form.formState.isSubmitting}
+                  >
+                    Send invite
+                  </Button>
+                </form>
+              </Form>
+            </div>
+          </div>
+        </div>
       )}
+
       {(permissionsForCurrentWeb?.length > 0 ||
         decoratedOwnerships?.length > 0 ||
         session.user.admin) && (
-        <Box>
-          <Heading>Team</Heading>
-          <Text mb="1rem">
+        <div className="pt-8">
+          <h2 className="text-2xl font-bold">Team</h2>
+          <p className="mb-4">
             List of people who have permissions to add and edit listings on the{' '}
-            <b>{selectedWebName}</b> web.
-          </Text>
+            <span className="font-semibold">{selectedWebName}</span> web.
+          </p>
           <PermissionsTable
             permissions={[
               ...decoratedOwnerships,
               ...permissionsForCurrentWebWithoutOwners,
             ]}
           />
-        </Box>
+        </div>
       )}
 
-      <Box mb="3rem">
-        <Heading as="h3" fontSize="1.5rem" mb="1rem">
-          FAQs
-        </Heading>
+      <div className="mb-12 pt-8">
+        <h3 className="mb-4 text-2xl font-bold">FAQs</h3>
         <Faq content={faqs} />
-      </Box>
-    </Stack>
+      </div>
+    </div>
   )
 }

@@ -1,161 +1,140 @@
 'use client'
 import { useCallback, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { Formik, Form, Field } from 'formik'
-import type { FieldProps } from 'formik'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { AiOutlineLoading } from 'react-icons/ai'
+import * as z from 'zod'
+import { toast } from 'sonner'
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card'
+import { Button } from '@components/ui/button'
 import {
-  Box,
-  Center,
-  Spinner,
-  Stack,
-  Heading,
-  chakra,
-  Button,
-  Checkbox,
+  Form,
   FormControl,
-  FormErrorMessage,
+  FormField,
+  FormItem,
   FormLabel,
-  Input,
-  Text,
-  useToast,
-} from '@chakra-ui/react'
-
+  FormMessage,
+} from '@components/ui/form'
+import { Input } from '@components/ui/input'
+import { Checkbox } from '@components/ui/checkbox'
+import { Spinner } from '@components/ui/spinner'
 import useUpdateUser from '@hooks/user/useUpdateUser'
 import useCurrentUser from '@hooks/user/useCurrentUser'
+
+const formSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  subscribed: z.boolean(),
+})
+
+type FormValues = z.infer<typeof formSchema>
 
 export default function UserSettingsPage() {
   const { updateUser, isPending, isSuccess } = useUpdateUser()
   const { status: sessionStatus } = useSession()
   const { user } = useCurrentUser()
 
-  const toast = useToast()
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: user?.name ?? '',
+      subscribed: user?.subscribed ?? false,
+    },
+  })
+
   useEffect(() => {
-    if (isSuccess) {
-      toast({
-        title: 'Success',
-        description: `User settings updated successfully`,
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+    if (user) {
+      form.reset({
+        name: user.name ?? '',
+        subscribed: user.subscribed ?? false,
       })
     }
-  }, [isSuccess, toast])
+  }, [user, form])
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('User settings updated successfully')
+    }
+  }, [isSuccess])
 
   const onSubmit = useCallback(
-    (data) => {
+    (data: FormValues) => {
       updateUser({ name: data.name, subscribed: data.subscribed })
     },
     [updateUser],
   )
 
   if (!user || sessionStatus === 'loading') {
-    return (
-      <Center height="100%">
-        <Spinner size="xl" />
-      </Center>
-    )
+    return <Spinner />
   }
 
   return (
-    <Stack spacing="1.5rem">
-      <Box>
-        <Heading>User settings</Heading>
-        <Box
-          shadow="base"
-          rounded={[null, 'md']}
-          overflow={{ sm: 'hidden' }}
-          bg="white"
-          padding="1rem"
-          mt="1rem"
-        >
-          <Box maxWidth="400px">
-            <Formik
-              initialValues={{
-                name: user.name ?? '',
-                subscribed: user.subscribed ?? false,
-              }}
-              enableReinitialize
-              onSubmit={onSubmit}
-            >
-              {(props) => {
-                return (
-                  <Form>
-                    <chakra.div mb="2rem">
-                      <Field name="name" type="text">
-                        {({ field, form }: FieldProps) => (
-                          <FormControl
-                            isInvalid={Boolean(
-                              form.errors.name && form.touched.name,
-                            )}
-                          >
-                            <FormLabel
-                              htmlFor="name"
-                              fontSize="sm"
-                              fontWeight="600"
-                            >
-                              Your name
-                            </FormLabel>
-                            <Input
-                              {...field}
-                              id="name"
-                              fontSize="sm"
-                              shadow="sm"
-                              size="sm"
-                              rounded="md"
-                            />
-                            <FormErrorMessage>
-                              {form.errors.name?.toString()}
-                            </FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                    </chakra.div>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>User settings</CardTitle>
+        </CardHeader>
+        <CardContent className="max-w-md">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold">
+                      Your name
+                    </FormLabel>
+                    <FormControl>
+                      <Input {...field} className="text-sm shadow-sm" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                    <chakra.div>
-                      <Field name="subscribed">
-                        {({ field, form }: FieldProps) => (
-                          <FormControl
-                            isInvalid={Boolean(
-                              form.errors.subscribed && form.touched.subscribed,
-                            )}
+              <FormField
+                control={form.control}
+                name="subscribed"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormControl>
+                      <div className="flex flex-col space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                          <label
+                            htmlFor={field.name}
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                           >
-                            <Checkbox
-                              isChecked={field.value}
-                              id="subscribed"
-                              onChange={field.onChange}
-                              colorScheme="green"
-                            >
-                              Subscribed to the Resilience Web mailing list
-                            </Checkbox>
-                            <Text color="gray.500" fontSize="sm">
-                              Check the box if you'd like to receive our
-                              newsletter with news, platform updates and more.
-                              You can unsubscribe anytime.
-                            </Text>
-                            <FormErrorMessage>
-                              {form.errors.subscribed?.toString()}
-                            </FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                    </chakra.div>
+                            Subscribed to the Resilience Web mailing list
+                          </label>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Check the box if you'd like to receive our newsletter
+                          with news, platform updates and more. You can
+                          unsubscribe anytime.
+                        </p>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                    <Button
-                      mt={4}
-                      variant="rw"
-                      isDisabled={!props.isValid || !props.dirty}
-                      isLoading={isPending}
-                      type="submit"
-                    >
-                      Update
-                    </Button>
-                  </Form>
-                )
-              }}
-            </Formik>
-          </Box>
-        </Box>
-      </Box>
-    </Stack>
+              <Button
+                type="submit"
+                disabled={!form.formState.isDirty || !form.formState.isValid}
+              >
+                {isPending && <AiOutlineLoading className="animate-spin" />}{' '}
+                Update
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

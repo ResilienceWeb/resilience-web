@@ -2,26 +2,13 @@ import { memo } from 'react'
 import NextLink from 'next/link'
 import Select from 'react-select'
 import Image from 'next/legacy/image'
-import {
-  Box,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  IconButton,
-  Flex,
-  Input,
-  Button,
-  VStack,
-  HStack,
-  Link,
-  Heading,
-  Text,
-  chakra,
-} from '@chakra-ui/react'
 import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
+import { Button } from '@components/ui/button'
+import { Input } from '@components/ui/input'
 import ModeSwitch from '@components/mode-switch'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import customMultiSelectStyles from '@styles/select-styles'
+import { cn } from '@components/lib/utils'
 
 const Header = ({
   categories,
@@ -41,24 +28,18 @@ const Header = ({
   if (isMobile) {
     return (
       <>
-        <Link as={NextLink} href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
+        <NextLink href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
           <Button
-            leftIcon={<HiHome />}
-            colorScheme="blue"
-            variant="solid"
+            variant="default"
             size="sm"
-            mt={2}
-            ml={2}
+            className="mt-2 ml-2 bg-blue-600 hover:bg-blue-700"
           >
+            <HiHome className="mr-2 h-4 w-4" />
             Homepage
           </Button>
-        </Link>
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-        >
-          <Box my={4}>
+        </NextLink>
+        <div className="flex flex-col items-center justify-center">
+          <div className="my-4">
             <Image
               alt="Resilience Web CIC logo"
               src="/logo.png"
@@ -66,59 +47,42 @@ const Header = ({
               height="104"
               unoptimized
             />
-          </Box>
-          <Heading as="h2" fontSize="2.25rem" position="relative">
-            <Text
-              as="span"
-              position="relative"
-              zIndex={1}
-              _after={{
-                content: "''",
-                width: 'full',
-                height: '23%',
-                position: 'absolute',
-                bottom: 1,
-                left: 0,
-                bg: 'rw.700',
-                zIndex: -1,
-              }}
-            >
+          </div>
+          <h2 className="relative text-4xl font-bold">
+            <span className="relative z-10 after:absolute after:bottom-0 after:left-0 after:z-[-1] after:h-[23%] after:w-full after:bg-[#2B8257]">
               {selectedWebName}
-            </Text>
-          </Heading>
-          <chakra.div paddingTop={4} width={'95%'}>
-            <VStack spacing={2}>
-              <InputGroup
-                maxW={isWebMode ? '250px' : isMobile ? '100%' : '300px'}
-              >
-                <InputLeftElement color="gray.500" fontSize="lg">
-                  <HiOutlineSearch />
-                </InputLeftElement>
-                <Input
-                  onChange={handleSearchTermChange}
-                  placeholder="Search"
-                  value={searchTerm}
-                  style={{
-                    backgroundColor: '#ffffff',
-                    height: '38px',
-                    width: '100%',
-                  }}
-                  _placeholder={{ color: '#718096', opacity: 1 }}
-                />
-                {searchTerm !== '' && (
-                  <InputRightElement>
-                    <IconButton
-                      aria-label="Clear search input"
-                      icon={<HiOutlineX />}
-                      onClick={() => handleClearSearchTermValue()}
-                      size="md"
-                      colorScheme="rw.900"
-                      variant="ghost"
+            </span>
+          </h2>
+          <div className="w-[95%] pt-4">
+            <div className="flex flex-col space-y-2">
+              <div className="relative">
+                <div className={cn(
+                  'w-full',
+                  isWebMode ? 'max-w-[250px]' : isMobile ? 'w-full' : 'max-w-[300px]'
+                )}>
+                  <div className="relative">
+                    <HiOutlineSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-500" />
+                    <Input
+                      onChange={handleSearchTermChange}
+                      placeholder="Search"
+                      value={searchTerm}
+                      className="h-[38px] w-full bg-white pl-10 placeholder:text-gray-500"
                     />
-                  </InputRightElement>
-                )}
-              </InputGroup>
-              <InputGroup>
+                    {searchTerm !== '' && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleClearSearchTermValue()}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 hover:bg-gray-100"
+                      >
+                        <HiOutlineX className="h-4 w-4" />
+                        <span className="sr-only">Clear search input</span>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="w-full">
                 <Select
                   isMulti
                   isSearchable={false}
@@ -129,9 +93,9 @@ const Header = ({
                   styles={customMultiSelectStyles}
                   value={selectedCategories}
                 />
-              </InputGroup>
+              </div>
               {tags.length > 0 && (
-                <InputGroup>
+                <div className="w-full">
                   <Select
                     isMulti
                     isSearchable={false}
@@ -142,34 +106,39 @@ const Header = ({
                     styles={customMultiSelectStyles}
                     value={selectedTags}
                   />
-                </InputGroup>
+                </div>
               )}
-            </VStack>
-          </chakra.div>
-        </Flex>
+            </div>
+          </div>
+        </div>
       </>
     )
   }
 
   return (
-    <Box transition=".3s ease">
-      <Flex as="header" align="center" w="full" px="4" bg="white" h="14">
-        <HStack spacing={2} width="100%">
-          <Heading as="h2" fontSize="1.75rem" px="10px">
+    <div className="transition-all duration-300 ease-in-out">
+      <header className="flex h-14 w-full items-center bg-white px-4">
+        <div className="flex w-full space-x-2">
+          <h2 className="px-[10px] text-[1.75rem] font-bold">
             {selectedWebName}
-          </Heading>
-        </HStack>
+          </h2>
+        </div>
         <ModeSwitch
           checked={isWebMode}
           handleSwitchChange={handleSwitchChange}
         />
-        <Link as={NextLink} href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
-          <Button leftIcon={<HiHome />} colorScheme="blue" size="sm" px={6}>
+        <NextLink href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
+          <Button
+            variant="default"
+            size="sm"
+            className="px-6 bg-blue-600 hover:bg-blue-700"
+          >
+            <HiHome className="mr-2 h-4 w-4" />
             Homepage
           </Button>
-        </Link>
-      </Flex>
-    </Box>
+        </NextLink>
+      </header>
+    </div>
   )
 }
 

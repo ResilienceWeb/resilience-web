@@ -3,6 +3,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query'
+import { Toaster } from '@components/ui/sonner'
 import Providers from './providers'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import '@fontsource/poppins/400.css'
@@ -43,6 +44,7 @@ export default async function RootLayout({
             {children}
           </HydrationBoundary>
         </Providers>
+        <Toaster />
       </body>
     </html>
   )

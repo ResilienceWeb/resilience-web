@@ -1,5 +1,5 @@
 import { HiHeart } from 'react-icons/hi'
-import { Link } from '@chakra-ui/react'
+import Link from 'next/link'
 
 import styles from './DonateButton.module.scss'
 

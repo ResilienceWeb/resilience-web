@@ -1,18 +1,14 @@
 import { memo } from 'react'
-import {
-  Badge,
-  Text,
-  Stack,
-  TableContainer,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  VStack,
-} from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@components/ui/table'
+import { Badge } from '@components/ui/badge'
 
 const columns = [
   {
@@ -29,76 +25,66 @@ const PermissionsTable = ({ permissions }) => {
   const { data: session } = useSession()
 
   return (
-    <TableContainer
-      borderRadius="10px"
-      borderStyle="solid"
-      borderWidth="1px"
-      mb="2rem"
-    >
-      <Table fontSize="sm" background="#ffffff">
-        <Thead bg="gray.50">
-          <Tr>
+    <div className="mb-8 rounded-lg border bg-card">
+      <Table>
+        <TableHeader className="bg-muted/50">
+          <TableRow>
             {columns.map((column, index) => (
-              <Th whiteSpace="nowrap" scope="col" key={`heading-${index}`}>
-                {column.Header}
-              </Th>
+              <TableHead key={`heading-${index}`}>{column.Header}</TableHead>
             ))}
-          </Tr>
-        </Thead>
-        <Tbody>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {permissions.map((permission) => {
             const permissionKey = permission.owner
               ? `owner-${permission.id}`
               : `permission-${permission.id}`
             return (
-              <Tr key={permissionKey}>
+              <TableRow key={permissionKey}>
                 {columns.map((column, index) => {
                   if (column.accessor === 'email') {
                     const emailAddress = permission.email
                     const name = permission.user.name
                     return (
-                      <Td key={`0-${index}`}>
-                        <VStack
-                          justifyContent="flex-start"
-                          alignItems="flex-start"
-                        >
-                          <Text fontWeight="600">{name}</Text>
-                          <Text>
+                      <TableCell key={`0-${index}`}>
+                        <div className="flex flex-col space-y-1">
+                          <span className="font-semibold">{name}</span>
+                          <span>
                             {emailAddress}
                             {session.user.email === emailAddress && ' (You)'}
-                          </Text>
-                        </VStack>
-                      </Td>
+                          </span>
+                        </div>
+                      </TableCell>
                     )
                   }
 
                   if (column.accessor === 'webs') {
                     if (permission.owner === true) {
                       return (
-                        <Td key={`1-${index}`}>
+                        <TableCell key={`1-${index}`}>
                           <Badge>Owner</Badge>
-                        </Td>
+                        </TableCell>
                       )
                     }
 
                     return (
-                      <Td key={`2-${index}`}>
-                        <Stack direction="row">
-                          <Badge>Editor</Badge>
+                      <TableCell key={`2-${index}`}>
+                        <div className="flex gap-2">
+                          <Badge variant="secondary">Editor</Badge>
                           {!permission.user.emailVerified && (
-                            <Badge colorScheme="yellow">Invite pending</Badge>
+                            <Badge variant="secondary">Invite pending</Badge>
                           )}
-                        </Stack>
-                      </Td>
+                        </div>
+                      </TableCell>
                     )
                   }
                 })}
-              </Tr>
+              </TableRow>
             )
           })}
-        </Tbody>
+        </TableBody>
       </Table>
-    </TableContainer>
+    </div>
   )
 }
 

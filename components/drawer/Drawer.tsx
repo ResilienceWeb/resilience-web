@@ -1,30 +1,35 @@
+'use client'
+
 import NextLink from 'next/link'
 import { memo } from 'react'
 import Select from 'react-select'
 import Image from 'next/legacy/image'
-import {
-  Box,
-  Flex,
-  Link,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  IconButton,
-  Heading,
-  Button,
-  Text,
-  chakra,
-  Divider,
-  useBreakpointValue,
-} from '@chakra-ui/react'
 import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
+import { Button } from '@components/ui/button'
+import { Input } from '@components/ui/input'
+import { Separator } from '@components/ui/separator'
 
 import VolunteerSwitch from '@components/volunteer-switch'
 import DonateButton from '@components/donate-button'
 import customMultiSelectStyles from '@styles/select-styles'
 import { REMOTE_URL } from '@helpers/config'
 import LogoImage from '../../public/logo.png'
+
+interface DrawerProps {
+  categories: any[]
+  selectedCategories: any[]
+  tags: any[]
+  selectedTags: any[]
+  handleTagSelection: (selected: any) => void
+  handleCategorySelection: (selected: any) => void
+  handleClearSearchTermValue: () => void
+  handleSearchTermChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleVolunteerSwitchChange: (checked: boolean) => void
+  isVolunteer: boolean
+  searchTerm: string
+  webDescription?: string
+  isTransitionMode?: boolean
+}
 
 const Drawer = ({
   categories,
@@ -40,23 +45,13 @@ const Drawer = ({
   searchTerm,
   webDescription,
   isTransitionMode = false,
-}) => {
-  const maxInputWidth = useBreakpointValue({ base: 'initial', md: '280px' })
-
+}: DrawerProps) => {
   return (
-    <chakra.div
-      position="fixed"
-      width="300px"
-      height="100vh"
-      overflowY="scroll"
-      backgroundColor="white"
-      zIndex="3"
-      boxShadow="xl"
-    >
-      <Flex height="100%" direction="column" justifyContent="space-between">
-        <Box>
-          <Link as={NextLink} href={REMOTE_URL}>
-            <Flex justifyContent="center" my={2} px={4} cursor="pointer">
+    <div className="fixed z-[3] h-screen w-[300px] overflow-y-scroll bg-white shadow-xl">
+      <div className="flex h-full flex-col justify-between">
+        <div>
+          <NextLink href={REMOTE_URL} className="block">
+            <div className="my-2 flex cursor-pointer justify-center px-4">
               <Image
                 alt="Resilience Web CIC logo"
                 src={LogoImage}
@@ -64,61 +59,55 @@ const Drawer = ({
                 height="104"
                 unoptimized
               />
-            </Flex>
-          </Link>
-          <Divider />
+            </div>
+          </NextLink>
+          <Separator />
           {!isTransitionMode && (
             <>
-              <Box p="1rem">
-                <Link href="/new-listing" target="_blank">
-                  <Button size="lg" variant="rw">
+              <div className="p-4">
+                <a
+                  href="/new-listing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    size="lg"
+                    variant="default"
+                    className="w-full bg-[#2B8257] hover:bg-[#236c47]"
+                  >
                     Propose new listing
                   </Button>
-                </Link>
-                <Text fontSize="0.875rem" color="gray.600" mt="0.25rem">
+                </a>
+                <p className="mt-1 text-sm text-gray-600">
                   Know something that isn't yet listed? Let us know! 🙏
-                </Text>
-              </Box>
-              <Divider />
+                </p>
+              </div>
+              <Separator />
             </>
           )}
-          <Flex
-            direction="column"
-            alignItems="center"
-            gap="1.25rem"
-            my="1.25rem"
-          >
-            <InputGroup
-              maxW={useBreakpointValue({ base: 'initial', md: '280px' })}
-            >
-              <InputLeftElement color="gray.500" fontSize="lg">
-                <HiOutlineSearch />
-              </InputLeftElement>
+          <div className="my-5 flex flex-col items-center gap-5">
+            <div className="relative w-full max-w-[280px]">
+              <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-500">
+                <HiOutlineSearch className="h-5 w-5" />
+              </div>
               <Input
+                type="text"
+                className="h-[38px] pl-10 pr-10"
                 onChange={handleSearchTermChange}
                 placeholder="Search"
                 value={searchTerm}
-                style={{
-                  backgroundColor: '#ffffff',
-                  height: '38px',
-                  width: '100%',
-                }}
-                _placeholder={{ color: '#718096', opacity: 1 }}
               />
               {searchTerm !== '' && (
-                <InputRightElement>
-                  <IconButton
-                    aria-label="Clear search input"
-                    icon={<HiOutlineX />}
-                    onClick={handleClearSearchTermValue}
-                    size="md"
-                    colorScheme="rw.900"
-                    variant="ghost"
-                  />
-                </InputRightElement>
+                <button
+                  onClick={handleClearSearchTermValue}
+                  className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+                  aria-label="Clear search input"
+                >
+                  <HiOutlineX className="h-5 w-5" />
+                </button>
               )}
-            </InputGroup>
-            <InputGroup maxW={maxInputWidth}>
+            </div>
+            <div className="w-full max-w-[280px]">
               <Select
                 isMulti
                 isSearchable={false}
@@ -129,9 +118,9 @@ const Drawer = ({
                 styles={customMultiSelectStyles}
                 value={selectedCategories}
               />
-            </InputGroup>
+            </div>
             {tags.length > 0 && (
-              <InputGroup maxW={maxInputWidth}>
+              <div className="w-full max-w-[280px]">
                 <Select
                   isMulti
                   isSearchable={false}
@@ -142,7 +131,7 @@ const Drawer = ({
                   styles={customMultiSelectStyles}
                   value={selectedTags}
                 />
-              </InputGroup>
+              </div>
             )}
             {!isTransitionMode && (
               <VolunteerSwitch
@@ -150,40 +139,36 @@ const Drawer = ({
                 handleSwitchChange={handleVolunteerSwitchChange}
               />
             )}
-          </Flex>
+          </div>
           {webDescription && (
             <>
-              <Divider />
-              <Box mt="1.25rem" mx="0.5rem">
-                <Heading as="h2" fontSize="1.25rem">
-                  About this web
-                </Heading>
-                <Text fontSize="0.9375rem" color="gray.600">
+              <Separator />
+              <div className="mx-2 mt-5">
+                <h2 className="text-xl font-semibold">About this web</h2>
+                <p className="text-[0.9375rem] text-gray-600">
                   {webDescription}
-                </Text>
-              </Box>
+                </p>
+              </div>
             </>
           )}
-        </Box>
-        <Box p="1rem">
-          <Heading as="h2" fontSize="1.25rem">
-            Like what you see?
-          </Heading>
+        </div>
+        <div className="p-4">
+          <h2 className="text-xl font-semibold">Like what you see?</h2>
           {isTransitionMode ? (
-            <Text mb="0.75rem" color="gray.600">
+            <p className="mb-3 text-gray-600">
               If you can, please support the technology behind this with a small
               donation.
-            </Text>
+            </p>
           ) : (
-            <Text mb="0.75rem" color="gray.600">
+            <p className="mb-3 text-gray-600">
               Consider making a donation to help us host and develop the
               Resilience Web platform 🙏🏼
-            </Text>
+            </p>
           )}
           <DonateButton />
-        </Box>
-      </Flex>
-    </chakra.div>
+        </div>
+      </div>
+    </div>
   )
 }
 

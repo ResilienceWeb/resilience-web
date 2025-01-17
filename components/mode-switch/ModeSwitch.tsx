@@ -1,30 +1,22 @@
-import { chakra, FormLabel, Switch, Flex } from '@chakra-ui/react'
+'use client'
 
-const ModeSwitch = ({ handleSwitchChange, checked }) => {
+import { Switch } from '@components/ui/switch'
+import { Label } from '@components/ui/label'
+
+interface ModeSwitchProps {
+  handleSwitchChange: (checked: boolean) => void
+  checked: boolean
+}
+
+const ModeSwitch = ({ handleSwitchChange, checked }: ModeSwitchProps) => {
   return (
-    <chakra.div ml={2} mr={2}>
-      <Flex
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        width="200px"
-      >
-        <FormLabel textAlign="center" fontSize="sm" mr={2} mb={0} ml={0}>
-          List view
-        </FormLabel>
-        <Switch
-          isChecked={Boolean(checked)}
-          onChange={handleSwitchChange}
-          colorScheme="teal"
-          size="lg"
-          value={checked}
-          height="28px"
-        />
-        <FormLabel fontSize="sm" ml={2} mb={0} mr={0}>
-          Web view
-        </FormLabel>
-      </Flex>
-    </chakra.div>
+    <div className="mx-2">
+      <div className="flex w-[200px] flex-row items-center justify-center">
+        <Label className="mb-0 ml-0 mr-2 text-center text-sm">List view</Label>
+        <Switch checked={checked} onCheckedChange={handleSwitchChange} />
+        <Label className="mb-0 ml-2 mr-0 text-sm">Web view</Label>
+      </div>
+    </div>
   )
 }
 

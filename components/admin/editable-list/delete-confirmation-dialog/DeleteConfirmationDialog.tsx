@@ -1,59 +1,50 @@
+'use client'
+
 import { memo } from 'react'
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ModalCloseButton,
-  Button,
-} from '@chakra-ui/react'
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog'
 
-type props = {
+interface DeleteConfirmationDialogProps {
   handleRemove: (id: any) => void
   isOpen: boolean
   onClose: () => void
 }
 
-const DeleteConfirmationialog: React.FC<props> = ({
+const DeleteConfirmationDialog = ({
   handleRemove,
   isOpen,
   onClose,
-}) => {
+}: DeleteConfirmationDialogProps) => {
   return (
-    <Modal
-      isCentered
-      isOpen={isOpen}
-      onClose={onClose}
-      size={{ base: 'full', md: 'md' }}
-    >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Delete</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
+    <AlertDialog open={isOpen} onOpenChange={onClose}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete</AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogDescription>
           Are you sure you want to delete this listing? It can't be recovered
           once deleted.
-          <ModalFooter pr="0">
-            <Button
-              bg="gray.500"
-              colorScheme="gray.500"
-              mt={4}
-              variant="solid"
-              onClick={handleRemove}
-              _hover={{ bg: 'gray.600' }}
-            >
-              Yes, delete
-            </Button>
-            <Button mt={4} ml={2} variant="rw" onClick={onClose}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </AlertDialogDescription>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={handleRemove}
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+          >
+            Yes, delete
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
 
-export default memo(DeleteConfirmationialog)
+export default memo(DeleteConfirmationDialog)

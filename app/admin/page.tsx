@@ -3,7 +3,7 @@ import { useSearchParams, useRouter, redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo } from 'react'
 import posthog from 'posthog-js'
-import { Center, Spinner } from '@chakra-ui/react'
+import { Spinner } from '@components/ui/spinner'
 import { driver } from 'driver.js'
 import 'driver.js/dist/driver.css'
 
@@ -135,11 +135,7 @@ export default function AdminPage() {
     isLoadingAllowedWebs ||
     allowedWebs === null
   ) {
-    return (
-      <Center height="50vh">
-        <Spinner size="xl" />
-      </Center>
-    )
+    return <Spinner />
   }
 
   if (allowedWebs?.length === 0) {
