@@ -127,9 +127,7 @@ const ListingFormSimplified = ({
   })
 
   const {
-    formState: { isDirty, isValid, isSubmitting },
-    watch,
-    setValue,
+    formState: { isDirty, isValid, isSubmitting }
   } = form
 
   const tagOptions: Options<TagOption> = useMemo(() => {
@@ -200,7 +198,7 @@ const ListingFormSimplified = ({
             control={form.control}
             name="description"
             rules={{ validate: fieldRequiredValidator }}
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel>Description*</FormLabel>
                 <FormControl>

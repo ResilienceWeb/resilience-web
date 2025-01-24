@@ -20,7 +20,6 @@ import useWebsPublic from '@hooks/webs/useWebsPublic'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 import LogoImage from '../../public/logo.png'
-import styles from './Nav.module.scss'
 
 interface NavItem {
   label: string
