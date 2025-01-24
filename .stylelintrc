@@ -14,11 +14,20 @@
         ]
       }
     ],
+    "at-rule-no-deprecated": [
+      true,
+      {
+        "ignoreAtRules": [
+          "apply"
+        ]
+      }
+    ],
     "scss/at-rule-no-unknown": [
       true,
       {
         "ignoreAtRules": [
-          "tailwind"
+          "tailwind",
+          "apply"
         ]
       }
     ],

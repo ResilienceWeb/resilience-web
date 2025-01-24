@@ -47,18 +47,22 @@ p, h1, h2, h3, h4, h5, h6 {
 a {
   color: inherit;
   text-decoration: none;
-
-  &:hover {
-    text-decoration: none !important;
-  }
 }
 
-p > a, div[role="region"] > a {
-  color: #3A8159 !important;
+p > a {
+  color: #09622f !important;
+}
 
-  &:hover {
-    color: #09622f !important;
-  }
+a:hover {
+  text-decoration: none !important;
+}
+
+div[role="region"] > a {
+  color: #09622f !important;
+}
+
+div[role="region"] > a:hover {
+  color: #09622f !important;
 }
 
 /* driver.js popover */
