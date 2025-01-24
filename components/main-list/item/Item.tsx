@@ -1,11 +1,11 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useCallback, useMemo, useRef, useEffect, useState, memo } from 'react'
-import { motion, useAnimation, useInView } from 'framer-motion'
+import { useCallback, useMemo, useEffect, useState, memo } from 'react'
 import chroma from 'chroma-js'
 import { HiUserGroup } from 'react-icons/hi'
 import { FaStar } from 'react-icons/fa'
+import { useInView } from 'react-intersection-observer'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
 import {
@@ -27,31 +27,13 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
   const router = useRouter()
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
-  const ref = useRef(null)
-  const isInView = useInView(ref)
-  const animation = useAnimation()
+  const { ref, inView } = useInView()
 
   useEffect(() => {
     setTimeout(() => {
       setIsWithinAFewSecondsOfRender(false)
     }, 3000)
   }, [])
-
-  useEffect(() => {
-    if (isInView) {
-      animation
-        .start({
-          opacity: 1,
-          y: 0,
-          transition: {
-            type: 'spring',
-            duration: 0.4,
-            bounce: 0.3,
-          },
-        })
-        .catch((e) => console.error('Animation error', e))
-    }
-  }, [animation, isInView])
 
   const onClick = useCallback(() => {
     router.push(`/${dataItem.slug}`)
@@ -68,12 +50,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
   )
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      exit={{ opacity: 0 }}
-      animate={animation}
-      whileHover={{ scale: simplified ? 1 : 1.05 }}
-    >
+    <div>
       <div
         className="relative h-fit cursor-pointer rounded-md bg-white shadow-md transition-all duration-300 ease-in-out hover:shadow-xl"
         onClick={onClick}
@@ -106,8 +83,8 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
               alt={`${dataItem.label} cover image`}
               src={dataItem.image}
               sizes="(max-width: 768px) 90vw, 300px"
-              isInView={isInView}
-              priority={isInView && isWithinAFewSecondsOfRender}
+              isInView={inView}
+              priority={inView && isWithinAFewSecondsOfRender}
             />
           </div>
         ) : (
@@ -146,7 +123,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 

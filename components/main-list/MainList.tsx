@@ -2,7 +2,6 @@
 
 import { memo, useMemo } from 'react'
 import NextLink from 'next/link'
-import { AnimatePresence } from 'framer-motion'
 import { Button } from '@components/ui/button'
 
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
@@ -30,15 +29,13 @@ const MainList = ({ filteredItems }: MainListProps) => {
         <div className="mt-4 w-full max-w-[1400px]">
           {filteredItems.length > 0 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <AnimatePresence>
-                {filteredItems.map((item) => (
-                  <Item
-                    categoriesIndexes={categoriesIndexes}
-                    dataItem={item}
-                    key={item.id}
-                  />
-                ))}
-              </AnimatePresence>
+              {filteredItems.map((item) => (
+                <Item
+                  categoriesIndexes={categoriesIndexes}
+                  dataItem={item}
+                  key={item.id}
+                />
+              ))}
             </div>
           ) : (
             <div className="mt-8 flex flex-col items-center gap-4">
@@ -47,7 +44,10 @@ const MainList = ({ filteredItems }: MainListProps) => {
                 the listing to the maintainers?
               </p>
               <NextLink href="/new-listing">
-                <Button variant="default" className="bg-[#2B8257] hover:bg-[#236c47]">
+                <Button
+                  variant="default"
+                  className="bg-[#2B8257] hover:bg-[#236c47]"
+                >
                   Propose new listing
                 </Button>
               </NextLink>
