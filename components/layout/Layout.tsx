@@ -29,17 +29,16 @@ const Layout = memo(function Layout({
       <main
         className={`flex min-h-[calc(100vh-186px)] flex-col items-center md:min-h-[calc(100vh-328px)] ${!hideBorder ? 'border-t border-t-gray-200' : ''} `}
       >
+        {pathname === '/' && (
+          <AlertBanner
+            content="Join our online monthly Assembly every first Wednesday of the month, at midday. Click here to read more."
+            type="info"
+            url="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219?aff=oddtdtcreator"
+          />
+        )}
         <div
           className={`mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 ${applyPostStyling ? styles.root : ''} `}
         >
-          {pathname === '/' && (
-                        <AlertBanner
-                        content="Join our online monthly Assembly every first Wednesday of the month, at midday. Click here to read more."
-                        type="info"
-                        url="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219?aff=oddtdtcreator"
-                      />
-          )}
-          
           {children}
         </div>
       </main>
