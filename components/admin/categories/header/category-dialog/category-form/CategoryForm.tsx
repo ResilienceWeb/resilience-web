@@ -93,7 +93,7 @@ const CategoryForm = ({
           {category && (
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                   <Button
                     variant="destructive"
                     className="opacity-85"

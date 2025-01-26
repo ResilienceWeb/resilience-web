@@ -15,6 +15,17 @@ import { useAppContext } from '@store/hooks'
 import { generateSlug } from '@helpers/utils'
 import EditorField from './RichTextEditor'
 import { Button } from '@components/ui/button'
+import { Input } from '@components/ui/input'
+import { Checkbox } from '@components/ui/checkbox'
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  FormDescription,
+} from '@components/ui/form'
 
 const Map = dynamic(() => import('./Map'), {
   ssr: false,
@@ -212,267 +223,283 @@ const ListingForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit(handleSubmitForm)}
-        encType="multipart/form-data"
-        className="px-4 py-4 sm:p-6"
-      >
-        <div className="mb-2">
-          <label htmlFor="title" className="mb-1 block text-sm font-semibold">
-            Title*
-          </label>
-          <input
-            {...register('title', { validate: fieldRequiredValidator })}
-            id="title"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
-          {errors.title && (
-            <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>
-          )}
-        </div>
-
-        <div className="mb-2">
-          <label
-            htmlFor="category"
-            className="mb-1 block text-sm font-semibold"
-          >
-            Category*
-          </label>
-          <select
-            {...register('category', { validate: fieldRequiredValidator })}
-            id="category"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          >
-            <option value="">Select a category</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.label}
-              </option>
-            ))}
-          </select>
-          <p className="mt-1 text-sm text-gray-600">
-            {categories.length === 0 ? (
-              <span>
-                Looks like you haven't created categories yet. You can add some{' '}
-                <NextLink
-                  href="/admin/categories"
-                  className="text-blue-600 hover:text-blue-700"
-                >
-                  on this page
-                </NextLink>
-                .
-              </span>
-            ) : (
-              'Categories can be easily changed later'
+      <Form {...methods}>
+        <form
+          onSubmit={handleSubmit(handleSubmitForm)}
+          encType="multipart/form-data"
+          className="px-4 py-4 sm:p-6"
+        >
+          <FormField
+            control={methods.control}
+            name="title"
+            rules={{ validate: fieldRequiredValidator }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-semibold">Title*</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </p>
-          {errors.category && (
-            <p className="mt-1 text-sm text-red-600">
-              Please select a category
-            </p>
-          )}
-        </div>
-
-        <div className="mb-2">
-          <label htmlFor="description" className="mb-1 text-sm font-semibold">
-            Description*
-          </label>
-          <EditorField name="description" />
-          {errors.description && (
-            <p className="mt-1 text-sm text-red-600">
-              Please add a description
-            </p>
-          )}
-        </div>
-
-        <ImageUpload name="image" />
-
-        <div className="mb-2">
-          <label htmlFor="email" className="mb-1 block text-sm font-semibold">
-            Contact email for organisation
-          </label>
-          <input
-            {...register('email')}
-            type="email"
-            id="email"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
-          {errors.email && (
-            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-          )}
-        </div>
 
-        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <label
-              htmlFor="website"
-              className="mb-1 block text-sm font-semibold"
-            >
-              Website
-            </label>
-            <input
-              {...register('website')}
-              id="website"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-            {errors.website && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.website.message}
-              </p>
+          <FormField
+            control={methods.control}
+            name="category"
+            rules={{ validate: fieldRequiredValidator }}
+            render={({ field }) => (
+              <FormItem className="mt-4">
+                <FormLabel className="font-semibold">Category*</FormLabel>
+                <FormControl>
+                  <select
+                    {...field}
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-green-500 focus:ring-green-500"
+                  >
+                    <option value="">Select a category</option>
+                    {categories.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.label}
+                      </option>
+                    ))}
+                  </select>
+                </FormControl>
+                <FormDescription>
+                  {categories.length === 0 ? (
+                    <span>
+                      Looks like you haven't created categories yet. You can add
+                      some{' '}
+                      <NextLink
+                        href="/admin/categories"
+                        className="text-blue-600 hover:text-blue-700"
+                      >
+                        on this page
+                      </NextLink>
+                      .
+                    </span>
+                  ) : (
+                    'Categories can be easily changed later'
+                  )}
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
             )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="facebook"
-              className="mb-1 block text-sm font-semibold"
-            >
-              Facebook
-            </label>
-            <input
-              {...register('facebook')}
-              id="facebook"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-            {errors.facebook && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.facebook.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="twitter"
-              className="mb-1 block text-sm font-semibold"
-            >
-              Twitter
-            </label>
-            <input
-              {...register('twitter')}
-              id="twitter"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-            {errors.twitter && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.twitter.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label
-              htmlFor="instagram"
-              className="mb-1 block text-sm font-semibold"
-            >
-              Instagram
-            </label>
-            <input
-              {...register('instagram')}
-              id="instagram"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-            {errors.instagram && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.instagram.message}
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-4">
-          <SlugField
-            isEditMode={Boolean(listing)}
-            register={register}
-            watch={watch}
-            setValue={setValue}
-            errors={errors}
           />
-        </div>
 
-        <div className="mt-4">
-          <label htmlFor="tags" className="mb-1 block text-sm font-semibold">
-            Tags
-          </label>
-          <ReactSelect
-            isMulti
-            name="tags"
-            options={tagOptions}
-            styles={customMultiSelectStyles}
-            value={watch('tags')}
-            onChange={(newValue) => setValue('tags', [...newValue])}
+          <FormField
+            control={methods.control}
+            name="description"
+            rules={{ validate: fieldRequiredValidator }}
+            render={() => (
+              <FormItem className="mt-4">
+                <FormLabel className="font-semibold">Description*</FormLabel>
+                <FormControl>
+                  <EditorField name="description" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
 
-        <div className="mt-4">
-          <label
-            htmlFor="relations"
-            className="mb-1 block text-sm font-semibold"
-          >
-            Related listings
-          </label>
-          <ReactSelect
-            isMulti
-            name="relations"
-            options={relationOptions}
-            styles={customMultiSelectStyles}
-            value={watch('relations')}
-            onChange={(newValue) => setValue('relations', [...newValue])}
-          />
-        </div>
-
-        <div className="mt-4">
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              {...register('seekingVolunteers')}
-              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <span className="text-sm">Currently seeking volunteers</span>
-          </label>
-        </div>
-
-        <div className="mt-4">
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              {...register('featured')}
-              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <span className="text-sm">Featured listing</span>
-          </label>
-        </div>
-
-        <div className="mt-4">
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              {...register('noPhysicalLocation')}
-              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <span className="text-sm">
-              This listing has no physical location
-            </span>
-          </label>
-        </div>
-
-        {!watch('noPhysicalLocation') && (
           <div className="mt-4">
-            <Map />
+            <ImageUpload name="image" />
           </div>
-        )}
 
-        <div className="mt-6 flex justify-end">
-          <Button
-            type="submit"
-            variant={listing?.pending ? 'purple' : 'default'}
-            disabled={isSubmitting}
-          >
-            {isSubmitting && <AiOutlineLoading className="animate-spin" />}{' '}
-            {listing ? (listing.pending ? 'Approve' : 'Update') : 'Create'}
-          </Button>
-        </div>
-      </form>
+          <FormField
+            control={methods.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="mt-4">
+                <FormLabel className="font-semibold">
+                  Contact email for organisation
+                </FormLabel>
+                <FormControl>
+                  <Input type="email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <FormField
+              control={methods.control}
+              name="website"
+              rules={{ validate: urlValidator }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Website</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={methods.control}
+              name="facebook"
+              rules={{ validate: urlValidator }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Facebook</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={methods.control}
+              name="twitter"
+              rules={{ validate: urlValidator }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Twitter</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={methods.control}
+              name="instagram"
+              rules={{ validate: urlValidator }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Instagram</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="mt-4">
+            <SlugField
+              isEditMode={Boolean(listing)}
+              register={register}
+              watch={watch}
+              setValue={setValue}
+              errors={errors}
+            />
+          </div>
+
+          <div className="mt-4">
+            <FormLabel className="font-semibold">Tags</FormLabel>
+            <ReactSelect
+              isMulti
+              name="tags"
+              options={tagOptions}
+              styles={customMultiSelectStyles}
+              value={watch('tags')}
+              onChange={(newValue) => setValue('tags', [...newValue])}
+            />
+          </div>
+
+          <div className="mt-4">
+            <FormLabel className="font-semibold">Related listings</FormLabel>
+            <ReactSelect
+              isMulti
+              name="relations"
+              options={relationOptions}
+              styles={customMultiSelectStyles}
+              value={watch('relations')}
+              onChange={(newValue) => setValue('relations', [...newValue])}
+            />
+          </div>
+
+          <FormField
+            control={methods.control}
+            name="seekingVolunteers"
+            render={({ field }) => (
+              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Currently seeking volunteers</FormLabel>
+                  <FormDescription>
+                    Check this if your group would benefit from having
+                    additional volunteers
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={methods.control}
+            name="featured"
+            render={({ field }) => (
+              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Featured listing</FormLabel>
+                  <FormDescription>
+                    Featured listings appear at the top of search results
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={methods.control}
+            name="noPhysicalLocation"
+            render={({ field }) => (
+              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>This listing has no physical location</FormLabel>
+                  <FormDescription>
+                    If this listing does not have a physical location, please
+                    check this box
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          {!watch('noPhysicalLocation') && (
+            <div className="mt-4">
+              <Map />
+            </div>
+          )}
+
+          <div className="mt-6 flex justify-end">
+            <Button
+              type="submit"
+              variant={listing?.pending ? 'purple' : 'default'}
+              disabled={isSubmitting}
+            >
+              {isSubmitting && <AiOutlineLoading className="animate-spin" />}{' '}
+              {listing ? (listing.pending ? 'Approve' : 'Update') : 'Create'}
+            </Button>
+          </div>
+        </form>
+      </Form>
     </FormProvider>
   )
 }

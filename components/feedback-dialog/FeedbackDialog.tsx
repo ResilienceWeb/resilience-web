@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@components/ui/dialog'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
@@ -87,6 +88,9 @@ const FeedbackDialog = ({ isOpen, onClose }: FeedbackDialogProps) => {
         <DialogHeader>
           <DialogTitle>Feedback</DialogTitle>
         </DialogHeader>
+        <DialogDescription>
+          Use this form to send us feedback or any questions you may have 😊
+        </DialogDescription>
 
         <Form {...form}>
           <form
@@ -98,12 +102,11 @@ const FeedbackDialog = ({ isOpen, onClose }: FeedbackDialogProps) => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="font-semibold">Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
-                      className="bg-white"
                       placeholder="Enter your email"
                     />
                   </FormControl>
@@ -122,11 +125,11 @@ const FeedbackDialog = ({ isOpen, onClose }: FeedbackDialogProps) => {
               name="feedback"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Feedback</FormLabel>
+                  <FormLabel className="font-semibold">Feedback</FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
-                      className="max-h-[200px] resize-none"
+                      className="h-[200px]"
                       placeholder="Enter your feedback"
                     />
                   </FormControl>

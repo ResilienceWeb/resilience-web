@@ -48,7 +48,7 @@ const SlugField = () => {
       rules={{ validate: urlValidator }}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Url</FormLabel>
+          <FormLabel className="font-semibold">Url</FormLabel>
           <div className="flex">
             <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
               {`${selectedWebSlug}.resilienceweb.org.uk/`}
@@ -154,14 +154,14 @@ const ListingFormSimplified = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmitForm)} className="bg-white">
-        <div className="flex flex-col gap-3 p-4 sm:p-6">
+        <div className="space-y-3 p-4 sm:p-6">
           <FormField
             control={form.control}
             name="title"
             rules={{ validate: fieldRequiredValidator }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-semibold">Title*</FormLabel>
+                <FormLabel className="font-semibold">Title*</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -176,9 +176,7 @@ const ListingFormSimplified = ({
             rules={{ validate: fieldRequiredValidator }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-semibold">
-                  Category*
-                </FormLabel>
+                <FormLabel className="font-semibold">Category*</FormLabel>
                 <FormControl>
                   <select
                     {...field}
@@ -219,7 +217,9 @@ const ListingFormSimplified = ({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Contact email for organisation</FormLabel>
+                <FormLabel className="font-semibold">
+                  Contact email for organisation
+                </FormLabel>
                 <FormControl>
                   <Input type="email" {...field} />
                 </FormControl>
@@ -234,7 +234,7 @@ const ListingFormSimplified = ({
               name="website"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Website</FormLabel>
+                  <FormLabel className="font-semibold">Website</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -248,7 +248,7 @@ const ListingFormSimplified = ({
               name="facebook"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Facebook</FormLabel>
+                  <FormLabel className="font-semibold">Facebook</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -264,7 +264,7 @@ const ListingFormSimplified = ({
               name="twitter"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Twitter</FormLabel>
+                  <FormLabel className="font-semibold">Twitter</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -278,7 +278,7 @@ const ListingFormSimplified = ({
               name="instagram"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Instagram</FormLabel>
+                  <FormLabel className="font-semibold">Instagram</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -296,7 +296,7 @@ const ListingFormSimplified = ({
               name="tags"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tags</FormLabel>
+                  <FormLabel className="font-semibold">Tags</FormLabel>
                   <FormControl>
                     <ReactSelect
                       isMulti
@@ -325,7 +325,9 @@ const ListingFormSimplified = ({
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>Seeking volunteers</FormLabel>
+                  <FormLabel className="font-semibold">
+                    Seeking volunteers
+                  </FormLabel>
                   <p className="text-sm text-gray-500">
                     Would this group benefit from having additional volunteers?
                   </p>
