@@ -137,6 +137,8 @@ interface DesktopNavProps {
 }
 
 const DesktopNav = memo(({ currentPathname, navItems }: DesktopNavProps) => {
+  console.log(navItems, currentPathname)
+
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -160,7 +162,10 @@ const DesktopNav = memo(({ currentPathname, navItems }: DesktopNavProps) => {
             ) : (
               <NavigationMenuLink
                 className={`${navigationMenuTriggerStyle()} ${
-                  navItem.href.includes(currentPathname) ? 'text-green-700' : ''
+                  currentPathname !== '/' &&
+                  navItem.href.includes(currentPathname)
+                    ? 'text-green-700'
+                    : ''
                 }`}
                 target={navItem.isExternal ? '_blank' : undefined}
                 rel={navItem.isExternal ? 'noopener noreferrer' : undefined}

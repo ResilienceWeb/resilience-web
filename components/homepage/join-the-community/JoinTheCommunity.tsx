@@ -19,14 +19,14 @@ const JoinTheCommunity = () => {
         <h3 className="mb-2 mt-6 text-2xl">1. Subscribe to our mailing list</h3>
         <SignupForm />
 
-        {/* <h3 className="mt-6 text-2xl">
-            2. Attend one of our monthly assemblies
-          </h3>
-          <Link href="https://www.eventbrite.co.uk/e/resilience-web-monthly-assembly-drop-in-tickets-966287189997">
-            <Button mt={2} variant="outline" size="md">
-              Book your place
-            </Button>
-          </Link> */}
+        <h3 className="mt-6 text-2xl">
+          2. Attend one of our monthly assemblies
+        </h3>
+        <Link href="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219">
+          <Button className="mt-2" variant="outline">
+            Book your place
+          </Button>
+        </Link>
 
         <h3 className="mt-6 text-2xl">2. Join our Discord community</h3>
         <Link href="https://discord.gg/SHj2wmRDwR" target="_blank">
