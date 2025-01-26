@@ -13,6 +13,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'resilienceweb.ams3.cdn.digitaloceanspaces.com'
+      },
+      {
+        protocol: 'https',
         hostname: 'media.graphcms.com',
       },
       {
