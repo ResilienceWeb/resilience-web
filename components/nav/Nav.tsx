@@ -137,8 +137,6 @@ interface DesktopNavProps {
 }
 
 const DesktopNav = memo(({ currentPathname, navItems }: DesktopNavProps) => {
-  console.log(navItems, currentPathname)
-
   return (
     <NavigationMenu>
       <NavigationMenuList>

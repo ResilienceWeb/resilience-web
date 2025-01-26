@@ -73,7 +73,7 @@ export default function NewListing() {
             </p>
             <div className="my-8 overflow-hidden rounded-md shadow-md">
               <div className="flex items-start gap-3 rounded-t-md bg-blue-50 p-4 text-blue-700">
-                <PiInfoBold className="shrink-0" />
+                <PiInfoBold className="h-5 w-5 shrink-0" />
                 <p className="leading-relaxed">
                   Before you submit this form, please ensure that a listing for
                   the same entity doesn't already exist, and note that the

@@ -5,6 +5,7 @@ import { useForm, useFormContext } from 'react-hook-form'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import type { Category } from '@prisma/client'
+import { AiOutlineLoading } from 'react-icons/ai'
 import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
 import ImageUpload from './ImageUpload'
 import useTags from '@hooks/tags/useTags'
@@ -12,6 +13,7 @@ import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import { generateSlug } from '@helpers/utils'
 import EditorField from './RichTextEditor'
 import { Input } from '@components/ui/input'
+import { Checkbox } from '@components/ui/checkbox'
 import {
   Form,
   FormField,
@@ -20,6 +22,7 @@ import {
   FormControl,
   FormMessage,
 } from '@components/ui/form'
+import { Button } from '@components/ui/button'
 
 const SlugField = () => {
   const selectedWebSlug = useSelectedWebSlug()
@@ -127,7 +130,7 @@ const ListingFormSimplified = ({
   })
 
   const {
-    formState: { isDirty, isValid, isSubmitting }
+    formState: { isDirty, isValid, isSubmitting },
   } = form
 
   const tagOptions: Options<TagOption> = useMemo(() => {
@@ -151,7 +154,7 @@ const ListingFormSimplified = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmitForm)} className="bg-white">
-        <div className="p-4 sm:p-6">
+        <div className="flex flex-col gap-3 p-4 sm:p-6">
           <FormField
             control={form.control}
             name="title"
@@ -179,7 +182,7 @@ const ListingFormSimplified = ({
                 <FormControl>
                   <select
                     {...field}
-                    className="w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-green-500 focus:ring-green-500"
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-green-500 focus:ring-green-500"
                   >
                     <option value="">Select a category</option>
                     {categories.map((c) => (
@@ -200,7 +203,7 @@ const ListingFormSimplified = ({
             rules={{ validate: fieldRequiredValidator }}
             render={() => (
               <FormItem>
-                <FormLabel>Description*</FormLabel>
+                <FormLabel className="font-semibold">Description*</FormLabel>
                 <FormControl>
                   <EditorField name="description" />
                 </FormControl>
@@ -225,7 +228,7 @@ const ListingFormSimplified = ({
             )}
           />
 
-          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
               control={form.control}
               name="website"
@@ -316,11 +319,9 @@ const ListingFormSimplified = ({
             render={({ field }) => (
               <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                 <FormControl>
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={field.value}
-                    onChange={field.onChange}
-                    className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                    onCheckedChange={field.onChange}
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
@@ -335,14 +336,10 @@ const ListingFormSimplified = ({
         </div>
 
         <div className="bg-gray-50 p-3 text-right">
-          <button
-            type="submit"
-            disabled={!isValid || !isDirty || isSubmitting}
-            className="inline-flex justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            title={!isDirty ? "You haven't made any changes yet" : undefined}
-          >
-            {isSubmitting ? 'Submitting...' : 'Submit'}
-          </button>
+          <Button type="submit" disabled={!isValid || !isDirty || isSubmitting}>
+            {isSubmitting && <AiOutlineLoading className="animate-spin" />}{' '}
+            Submit
+          </Button>
         </div>
       </form>
     </Form>

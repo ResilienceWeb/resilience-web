@@ -89,9 +89,6 @@ const CreateNewWebCard = () => {
           />
         </svg>
       </div>
-      <h3 className="mt-4 text-xl font-semibold text-gray-900">
-        Create a New Web
-      </h3>
       <p className="mb-2 text-gray-600">Start mapping your local community</p>
       <Button>Create new web</Button>
     </div>

@@ -182,8 +182,6 @@ const ListingForm = ({
   } = methods
 
   const handleSubmitForm = (data: any) => {
-    console.log(data)
-
     const isNewImage = data.image instanceof File
     if (!isNewImage && data.image) {
       delete data.image
@@ -276,10 +274,7 @@ const ListingForm = ({
         </div>
 
         <div className="mb-2">
-          <label
-            htmlFor="description"
-            className="mb-1 block text-sm font-semibold"
-          >
+          <label htmlFor="description" className="mb-1 text-sm font-semibold">
             Description*
           </label>
           <EditorField name="description" />
@@ -470,7 +465,7 @@ const ListingForm = ({
         <div className="mt-6 flex justify-end">
           <Button
             type="submit"
-            // variant={listing?.pending ? 'purple' : 'primary'} // TODO: change colour based on whether listing is pending
+            variant={listing?.pending ? 'purple' : 'default'}
             disabled={isSubmitting}
           >
             {isSubmitting && <AiOutlineLoading className="animate-spin" />}{' '}
