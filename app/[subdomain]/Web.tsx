@@ -9,10 +9,21 @@ import {
   BooleanParam,
   withDefault,
 } from 'use-query-params'
+import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2'
 import Header from '@components/header'
 import useIsMobile from '@hooks/application/useIsMobile'
 import MainList from '@components/main-list'
 import AlertBanner from '@components/alert-banner'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@components/ui/sheet'
+import { Button } from '@components/ui/button'
+import { Separator } from '@components/ui/separator'
+import DonateButton from '@components/donate-button'
 import {
   removeNonAlphaNumeric,
   sortStringsFunc,
@@ -23,6 +34,7 @@ import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import useTagsPublic from '@hooks/tags/useTagsPublic'
 import type { Category } from '@prisma/client'
+import Link from 'next/link'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
@@ -304,6 +316,70 @@ const Web = ({
         )}
 
         {!query.web && <MainList filteredItems={filteredItems} />}
+
+        {isMobile && (
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant="default"
+                className="fixed bottom-4 right-4 z-50 flex h-14 items-center gap-2 rounded-xl bg-[#2B8257] px-6 text-lg font-bold shadow-lg transition-all hover:bg-[#236c47] active:scale-95"
+              >
+                <HiOutlineAdjustmentsHorizontal className="h-5 w-5" />
+                <span className="font-medium">Filters</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
+              <SheetHeader>
+                <SheetTitle className="text-center">Options</SheetTitle>
+              </SheetHeader>
+              <div className="mt-6 space-y-6">
+                {!isTransitionMode && (
+                  <>
+                    <div className="px-1">
+                      <Link href="/new-listing">
+                        <Button
+                          size="lg"
+                          variant="default"
+                          className="w-full bg-[#2B8257] hover:bg-[#236c47]"
+                        >
+                          Propose new listing
+                        </Button>
+                      </Link>
+                      <p className="mt-1 text-sm text-gray-600">
+                        Know something that isn't yet listed? Let us know! 🙏
+                      </p>
+                    </div>
+                  </>
+                )}
+
+                {webDescription && (
+                  <>
+                    <Separator />
+                    <div className="px-1">
+                      <h2 className="mb-2 text-lg font-semibold">
+                        About this web
+                      </h2>
+                      <p className="text-sm text-gray-600">{webDescription}</p>
+                    </div>
+                  </>
+                )}
+
+                <Separator />
+                <div className="px-1">
+                  <h2 className="mb-2 text-lg font-semibold">
+                    Like what you see?
+                  </h2>
+                  <p className="mb-4 text-sm text-gray-600">
+                    {isTransitionMode
+                      ? 'If you can, please support the technology behind this with a small donation.'
+                      : 'Consider making a donation to help us host and develop the Resilience Web platform 🙏🏼'}
+                  </p>
+                  <DonateButton />
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+        )}
       </div>
     </>
   )
