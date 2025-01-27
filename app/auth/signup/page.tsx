@@ -14,8 +14,8 @@ export default function SignUp() {
 
   return (
     <div className={styles.root}>
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div className="bg-white p-12 rounded-xl mb-8 w-[500px]">
+      <div className="flex h-screen flex-col items-center justify-center">
+        <div className="mb-8 w-[500px] rounded-xl bg-white p-12">
           <div className="mb-4 flex justify-center">
             <Image
               alt="Resilience Web logo"
@@ -24,7 +24,7 @@ export default function SignUp() {
               height="104"
             />
           </div>
-          <div className="flex justify-center mb-8">
+          <div className="mb-8 flex justify-center">
             <p className="text-md">Welcome! Enter your email to get started:</p>
           </div>
           <form
@@ -42,7 +42,9 @@ export default function SignUp() {
                 router.push(response?.url ?? '/')
               } catch (error) {
                 setError(
-                  error instanceof Error ? error.message : 'An unknown error occurred.',
+                  error instanceof Error
+                    ? error.message
+                    : 'An unknown error occurred.',
                 )
               }
             }}
@@ -53,19 +55,16 @@ export default function SignUp() {
                 type="email"
                 id="email"
                 name="email"
-                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </label>
-            <Button
-              type="submit"
-              className="w-full mt-2"
-            >
+            <Button type="submit" className="mt-2 w-full">
               Sign up
             </Button>
             {error && <p className="mt-2 text-red-600">{error}</p>}
           </form>
         </div>
-        <div className="bg-white p-6 rounded-xl w-[500px]">
+        <div className="w-[500px] rounded-xl bg-white p-6">
           Not a member of Resilience Web?{' '}
           <Link
             href="/auth/signin"

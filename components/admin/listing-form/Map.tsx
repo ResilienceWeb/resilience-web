@@ -25,7 +25,11 @@ interface MapContentProps {
   locationDescription?: string
 }
 
-const MapContent = ({ latitude, longitude, locationDescription }: MapContentProps) => {
+const MapContent = ({
+  latitude,
+  longitude,
+  locationDescription,
+}: MapContentProps) => {
   const { setValue } = useFormContext()
   const map = useMap()
   const markerRef = useRef(null)
@@ -40,14 +44,18 @@ const MapContent = ({ latitude, longitude, locationDescription }: MapContentProp
       // @ts-ignore
       lng: event.location.x,
     })
-    setValue('location', {
-      // @ts-ignore
-      latitude: event.location.y,
-      // @ts-ignore
-      longitude: event.location.x,
-      // @ts-ignore
-      description: event.location.label,
-    }, { shouldValidate: true })
+    setValue(
+      'location',
+      {
+        // @ts-ignore
+        latitude: event.location.y,
+        // @ts-ignore
+        longitude: event.location.x,
+        // @ts-ignore
+        description: event.location.label,
+      },
+      { shouldValidate: true },
+    )
   })
 
   useEffect(() => {
@@ -75,9 +83,7 @@ const MapContent = ({ latitude, longitude, locationDescription }: MapContentProp
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {position && (
-        <Marker position={position} ref={markerRef} />
-      )}
+      {position && <Marker position={position} ref={markerRef} />}
     </>
   )
 }
@@ -99,7 +105,7 @@ const Map = ({
     <div
       className={cn(
         'mt-2',
-        noPhysicalLocation ? 'pointer-events-none opacity-50' : 'opacity-100'
+        noPhysicalLocation ? 'pointer-events-none opacity-50' : 'opacity-100',
       )}
     >
       <p className="p-2 text-sm font-normal italic text-gray-700">

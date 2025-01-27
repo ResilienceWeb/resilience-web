@@ -33,10 +33,10 @@ const TableActions = ({
   }, [fetchedCategories])
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 justify-start flex-1">
+    <div className="flex flex-1 flex-col justify-start gap-4 md:flex-row">
       {(hasPermissionForCurrentWeb || isOwnerOfCurrentWeb) && (
         <>
-          <div className="flex flex-col md:flex-row gap-4 flex-1">
+          <div className="flex flex-1 flex-col gap-4 md:flex-row">
             <div className="flex-1">
               <Select
                 isMulti
@@ -49,14 +49,14 @@ const TableActions = ({
               />
             </div>
             <div className="relative flex-1">
-              <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
+              <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xl text-gray-400">
                 <HiOutlineSearch />
               </div>
               <Input
                 placeholder="Search"
                 onChange={handleSearchTermChange}
                 value={searchTerm}
-                className="h-[38px] pl-10 bg-white rounded-[10px]"
+                className="h-[38px] rounded-[10px] bg-white pl-10"
               />
             </div>
           </div>

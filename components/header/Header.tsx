@@ -32,7 +32,7 @@ const Header = ({
           <Button
             variant="default"
             size="sm"
-            className="mt-2 ml-2 bg-blue-600 hover:bg-blue-700"
+            className="ml-2 mt-2 bg-blue-600 hover:bg-blue-700"
           >
             <HiHome className="mr-2 h-4 w-4" />
             Homepage
@@ -56,10 +56,16 @@ const Header = ({
           <div className="w-[95%] pt-4">
             <div className="flex flex-col space-y-2">
               <div className="relative">
-                <div className={cn(
-                  'w-full',
-                  isWebMode ? 'max-w-[250px]' : isMobile ? 'w-full' : 'max-w-[300px]'
-                )}>
+                <div
+                  className={cn(
+                    'w-full',
+                    isWebMode
+                      ? 'max-w-[250px]'
+                      : isMobile
+                        ? 'w-full'
+                        : 'max-w-[300px]',
+                  )}
+                >
                   <div className="relative">
                     <HiOutlineSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-500" />
                     <Input
@@ -73,7 +79,7 @@ const Header = ({
                         variant="ghost"
                         size="icon"
                         onClick={() => handleClearSearchTermValue()}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 hover:bg-gray-100"
+                        className="absolute right-2 top-1/2 h-8 w-8 -translate-y-1/2 hover:bg-gray-100"
                       >
                         <HiOutlineX className="h-4 w-4" />
                         <span className="sr-only">Clear search input</span>
@@ -131,7 +137,7 @@ const Header = ({
           <Button
             variant="default"
             size="sm"
-            className="px-6 bg-blue-600 hover:bg-blue-700"
+            className="bg-blue-600 px-6 hover:bg-blue-700"
           >
             <HiHome className="mr-2 h-4 w-4" />
             Homepage

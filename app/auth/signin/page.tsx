@@ -19,8 +19,8 @@ export default function SignIn() {
 
   return (
     <div className={styles.root}>
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div className="bg-white p-10 rounded-xl mb-8 w-[500px]">
+      <div className="flex h-screen flex-col items-center justify-center">
+        <div className="mb-8 w-[500px] rounded-xl bg-white p-10">
           <div className="mb-4 flex justify-center">
             <Image
               alt="Resilience Web logo"
@@ -30,10 +30,8 @@ export default function SignIn() {
             />
           </div>
           {!isUserAttemptingEdit && (
-            <div className="flex justify-center mb-12">
-              <h2 className="text-2xl font-bold mt-4">
-                Sign in
-              </h2>
+            <div className="mb-12 flex justify-center">
+              <h2 className="mt-4 text-2xl font-bold">Sign in</h2>
             </div>
           )}
 
@@ -61,7 +59,9 @@ export default function SignIn() {
                 router.push(response?.url ?? '/')
               } catch (error) {
                 setError(
-                  error instanceof Error ? error.message : 'An unknown error occurred.',
+                  error instanceof Error
+                    ? error.message
+                    : 'An unknown error occurred.',
                 )
               }
             }}
@@ -72,20 +72,17 @@ export default function SignIn() {
                 type="email"
                 id="email"
                 name="email"
-                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </label>
-            <Button
-              type="submit"
-              className="w-full mt-2"
-            >
+            <Button type="submit" className="mt-2 w-full">
               Sign in
             </Button>
             {error && <p className="mt-2 text-red-600">{error}</p>}
           </form>
         </div>
-        <div className="bg-white p-6 rounded-xl w-[500px]">
-          <span>Not a member of Resilience Web?{' '}</span>
+        <div className="w-[500px] rounded-xl bg-white p-6">
+          <span>Not a member of Resilience Web? </span>
           <Link
             href="/auth/signup"
             className="text-green-700 hover:text-green-600"

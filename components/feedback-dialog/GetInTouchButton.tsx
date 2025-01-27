@@ -41,10 +41,7 @@ const GetInTouchButton = () => {
                 <span className="sr-only">Send feedback</span>
               </Button>
             ) : (
-              <Button
-                variant="outline"
-                onClick={handleOpenFeedbackDialog}
-              >
+              <Button variant="outline" onClick={handleOpenFeedbackDialog}>
                 Get in touch
               </Button>
             )}

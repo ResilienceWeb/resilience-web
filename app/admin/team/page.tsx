@@ -110,7 +110,8 @@ export default function TeamPage() {
         }
       } catch (error) {
         toast.error('Error', {
-          description: 'There was an error. Please try again or contact the developers.',
+          description:
+            'There was an error. Please try again or contact the developers.',
           duration: 5000,
         })
       }
@@ -130,7 +131,10 @@ export default function TeamPage() {
           <div className="overflow-hidden rounded-md bg-white p-4 shadow-sm">
             <div className="max-w-[450px]">
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(sendInvite)} className="space-y-4">
+                <form
+                  onSubmit={form.handleSubmit(sendInvite)}
+                  className="space-y-4"
+                >
                   <FormField
                     control={form.control}
                     name="email"
@@ -141,8 +145,8 @@ export default function TeamPage() {
                           <Input {...field} type="email" className="bg-white" />
                         </FormControl>
                         <FormDescription>
-                          The invited user will have the permission to add/edit listings,
-                          categories and tags.
+                          The invited user will have the permission to add/edit
+                          listings, categories and tags.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -152,7 +156,9 @@ export default function TeamPage() {
                   <Button
                     type="submit"
                     className="bg-[#2B8257] hover:bg-[#236c47]"
-                    disabled={!form.formState.isValid || form.formState.isSubmitting}
+                    disabled={
+                      !form.formState.isValid || form.formState.isSubmitting
+                    }
                   >
                     Send invite
                   </Button>

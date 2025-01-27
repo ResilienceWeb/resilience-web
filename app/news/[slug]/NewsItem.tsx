@@ -26,8 +26,8 @@ export default function NewsItem({ post, contentHtml }: NewsItemProps) {
 
   return (
     <Layout applyPostStyling>
-      <h1 className="mt-4 text-center text-pretty md:mt-6">{post.title}</h1>
-      <div className="mx-auto mt-2 mb-6 flex w-[90%] justify-center md:w-[650px]">
+      <h1 className="mt-4 text-pretty text-center md:mt-6">{post.title}</h1>
+      <div className="mx-auto mb-6 mt-2 flex w-[90%] justify-center md:w-[650px]">
         {post.author?.name && (
           <p className="font-semibold">
             {post.author.name}
@@ -55,7 +55,7 @@ export default function NewsItem({ post, contentHtml }: NewsItemProps) {
       </div>
 
       <div className="mb-12">
-        <p className="mb-2 text-xl font-semibold text-rw-900">
+        <p className="text-rw-900 mb-2 text-xl font-semibold">
           Sign up to our mailing list to stay up to date
         </p>
         <SignupForm />

@@ -25,17 +25,17 @@ const Nav = ({ onOpen }) => {
   }, [])
 
   return (
-    <div className="flex-1 max-w-[100vw] bg-[#fafafa] px-4 border-b border-gray-200">
+    <div className="max-w-[100vw] flex-1 border-b border-gray-200 bg-[#fafafa] px-4">
       <div className="flex h-16 items-center justify-between">
         <button
           onClick={onOpen}
-          className="lg:hidden mr-4 p-2 rounded-md border border-gray-300 hover:bg-gray-100"
+          className="mr-4 rounded-md border border-gray-300 p-2 hover:bg-gray-100 lg:hidden"
           aria-label="open menu"
         >
           <RxHamburgerMenu className="h-5 w-5" />
         </button>
 
-        <div className="flex items-center justify-between w-full">
+        <div className="flex w-full items-center justify-between">
           <div className="mr-4">
             <WebSelector />
           </div>

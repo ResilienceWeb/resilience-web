@@ -73,16 +73,10 @@ const ListingEditReview = ({
       />
 
       <div className="flex justify-end gap-4">
-        <Button
-          variant="destructive"
-          onClick={handleReject}
-        >
+        <Button variant="destructive" onClick={handleReject}>
           Reject
         </Button>
-        <Button
-          variant="default"
-          onClick={handleSubmit}
-        >
+        <Button variant="default" onClick={handleSubmit}>
           Accept changes
         </Button>
       </div>
