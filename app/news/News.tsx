@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/legacy/image'
-import Link from 'next/link'
+import { Link } from 'next-view-transitions'
 import Layout from '@components/layout'
 
 interface NewsPost {

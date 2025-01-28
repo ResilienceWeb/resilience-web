@@ -70,6 +70,7 @@
     "next-auth": "5.0.0-beta.25",
     "next-query-params": "5.1.0",
     "next-recaptcha-v3": "1.5.2",
+    "next-view-transitions": "0.3.4",
     "nodemailer": "6.10.0",
     "posthog-js": "1.211.2",
     "react": "19.0.0",

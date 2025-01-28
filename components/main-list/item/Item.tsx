@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useTransitionRouter } from 'next-view-transitions'
 import { useCallback, useMemo, useEffect, useState, memo } from 'react'
 import chroma from 'chroma-js'
 import { HiUserGroup } from 'react-icons/hi'
@@ -24,7 +24,7 @@ type Props = {
 }
 
 const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
-  const router = useRouter()
+  const router = useTransitionRouter()
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
   const { ref, inView } = useInView()
