@@ -72,7 +72,7 @@ const Header = ({
                       onChange={handleSearchTermChange}
                       placeholder="Search"
                       value={searchTerm}
-                      className="h-[38px] w-full bg-white pl-10 placeholder:text-gray-500"
+                      className="size-sm h-[38px] w-full pl-10 text-sm"
                     />
                     {searchTerm !== '' && (
                       <Button

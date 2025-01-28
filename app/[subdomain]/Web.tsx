@@ -322,10 +322,10 @@ const Web = ({
             <SheetTrigger asChild>
               <Button
                 variant="default"
-                className="fixed bottom-4 right-4 z-50 flex h-14 items-center gap-2 rounded-xl bg-[#2B8257] px-6 text-lg font-bold shadow-lg transition-all hover:bg-[#236c47] active:scale-95"
+                className="fixed bottom-4 right-4 z-50 h-10 transition-all active:scale-95"
               >
-                <HiOutlineAdjustmentsHorizontal className="h-5 w-5" />
-                <span className="font-medium">Filters</span>
+                <HiOutlineAdjustmentsHorizontal />
+                <span className="font-semibold">Options</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">

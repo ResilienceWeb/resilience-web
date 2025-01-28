@@ -10,8 +10,8 @@ const orderOnHomepage = ['Cambridge', 'York', 'Norwich', 'Durham']
 
 const WebCards = ({ webs }) => {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16" id="web-cards">
-      <h2 className="mb-8 text-center text-4xl font-bold tracking-tight text-gray-900">
+    <div className="mx-auto max-w-7xl px-1 py-8" id="web-cards">
+      <h2 className="mb-6 text-center text-4xl font-bold tracking-tight text-gray-900">
         Find Resilience Webs near you in the UK
       </h2>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
