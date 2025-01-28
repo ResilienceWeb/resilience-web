@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable import/no-anonymous-default-export */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-const { tailwindLayouts } = require('tailwind-layouts')
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -94,7 +92,6 @@ export default {
   	}
   },
   plugins: [
-    tailwindLayouts,
     require("tailwindcss-animate")
   ],
 }

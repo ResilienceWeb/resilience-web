@@ -47,7 +47,7 @@ export default function Footer({ hideBorder = false }) {
     >
       <div className="w-full max-w-[100vw] px-4 py-10">
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-[2fr_1fr_2fr]">
-          <div className="stack-l">
+          <div className="flex flex-col gap-2">
             <div>
               <Image
                 alt="Resilience Web CIC logo"
@@ -100,7 +100,7 @@ export default function Footer({ hideBorder = false }) {
               Resilience Web CIC - Company number 15322382
             </p>
           </div>
-          <div className="stack-l stack-l_space-2">
+          <div className="flex flex-col gap-2">
             <ListHeader>Useful links</ListHeader>
             <Link href={`${REMOTE_URL}/admin`}>Admin login</Link>
             <Link href={`${REMOTE_URL}/about`}>About us</Link>
