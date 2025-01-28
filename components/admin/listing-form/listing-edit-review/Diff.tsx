@@ -1,4 +1,3 @@
-import { Box, Heading, Text } from '@chakra-ui/react'
 import * as diff from 'diff'
 
 const styles = {
@@ -46,18 +45,12 @@ export default function Diff({
   })
 
   return (
-    <Box>
-      {label && (
-        <Heading as="h3" size="md" mb="0.5rem">
-          {label}
-        </Heading>
-      )}
+    <div>
+      {label && <h3 className="mb-2 text-lg font-medium">{label}</h3>}
       <span>{mappedNodes}</span>
       {string1 !== '' && string2 === '' && (
-        <Text ml="0.25rem" display="inline" fontStyle="italic">
-          (deleted)
-        </Text>
+        <span className="ml-1 inline italic text-gray-600">(deleted)</span>
       )}
-    </Box>
+    </div>
   )
 }

@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { Text, chakra } from '@chakra-ui/react'
-import { useFormikContext } from 'formik'
+import { useFormContext } from 'react-hook-form'
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-geosearch/dist/geosearch.css'
 import { OpenStreetMapProvider, GeoSearchControl } from 'leaflet-geosearch'
+import { cn } from '@components/lib/utils'
 
 const provider = new OpenStreetMapProvider()
 
@@ -19,8 +19,18 @@ const DEFAULT_CENTER = {
   lng: -0.09,
 }
 
-const MapContent = ({ latitude, longitude, locationDescription }) => {
-  const { setFieldValue } = useFormikContext<any>()
+interface MapContentProps {
+  latitude?: number
+  longitude?: number
+  locationDescription?: string
+}
+
+const MapContent = ({
+  latitude,
+  longitude,
+  locationDescription,
+}: MapContentProps) => {
+  const { setValue } = useFormContext()
   const map = useMap()
   const markerRef = useRef(null)
   const initialCenter =
@@ -34,14 +44,18 @@ const MapContent = ({ latitude, longitude, locationDescription }) => {
       // @ts-ignore
       lng: event.location.x,
     })
-    setFieldValue('location', {
-      // @ts-ignore
-      latitude: event.location.y,
-      // @ts-ignore
-      longitude: event.location.x,
-      // @ts-ignore
-      description: event.location.label,
-    })
+    setValue(
+      'location',
+      {
+        // @ts-ignore
+        latitude: event.location.y,
+        // @ts-ignore
+        longitude: event.location.x,
+        // @ts-ignore
+        description: event.location.label,
+      },
+      { shouldValidate: true },
+    )
   })
 
   useEffect(() => {
@@ -69,15 +83,16 @@ const MapContent = ({ latitude, longitude, locationDescription }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {position && (
-        <Marker position={position} ref={markerRef}>
-          {/* <Popup>
-            A pretty popup.
-          </Popup> */}
-        </Marker>
-      )}
+      {position && <Marker position={position} ref={markerRef} />}
     </>
   )
+}
+
+interface MapProps {
+  latitude?: number
+  longitude?: number
+  locationDescription?: string
+  noPhysicalLocation?: boolean
 }
 
 const Map = ({
@@ -85,17 +100,18 @@ const Map = ({
   longitude,
   locationDescription,
   noPhysicalLocation,
-}) => {
+}: MapProps) => {
   return (
-    <chakra.div
-      mt="0.5rem"
-      pointerEvents={noPhysicalLocation ? 'none' : 'all'}
-      opacity={noPhysicalLocation ? 0.5 : 1}
+    <div
+      className={cn(
+        'mt-2',
+        noPhysicalLocation ? 'pointer-events-none opacity-50' : 'opacity-100',
+      )}
     >
-      <Text color="gray.700" fontStyle="italic" fontSize="sm" padding="0.5rem">
+      <p className="p-2 text-sm font-normal italic text-gray-700">
         The location can only be selected via adding an address via the search
         bar below. Selecting a location without an address is not supported.
-      </Text>
+      </p>
       <MapContainer
         center={[
           latitude ?? DEFAULT_CENTER.lat,
@@ -110,7 +126,7 @@ const Map = ({
           locationDescription={locationDescription}
         />
       </MapContainer>
-    </chakra.div>
+    </div>
   )
 }
 

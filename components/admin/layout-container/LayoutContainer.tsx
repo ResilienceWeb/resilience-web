@@ -1,39 +1,25 @@
 'use client'
-import {
-  Box,
-  Flex,
-  SlideFade,
-  useBreakpointValue,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { useToggle } from 'usehooks-ts'
 import Footer from '@components/footer'
 import Nav from '@components/admin/nav'
 import Sidebar from '@components/admin/sidebar'
 
 const LayoutContainer = ({ children }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isOpen, _toggle, setIsOpen] = useToggle()
+  const onOpen = () => setIsOpen(true)
+  const onClose = () => setIsOpen(false)
 
   return (
-    <Flex>
+    <div className="flex">
       <Sidebar isOpen={isOpen} onClose={onClose} />
-      <Box maxWidth={{ base: '100%', lg: 'calc(100% - 239px)' }} flex="1">
+      <div className="w-full flex-1 lg:max-w-[calc(100%-239px)]">
         <Nav onOpen={onOpen} />
-        <SlideFade in>
-          <Box
-            mt="1rem"
-            mx={4}
-            flex={1}
-            minHeight={useBreakpointValue({
-              base: 'calc(100vh - 186px)',
-              md: 'calc(100vh - 328px)',
-            })}
-          >
-            {children}
-          </Box>
-        </SlideFade>
+        <div className="mx-4 mt-4 min-h-[calc(100vh-186px)] flex-1 md:min-h-[calc(100vh-328px)]">
+          {children}
+        </div>
         <Footer />
-      </Box>
-    </Flex>
+      </div>
+    </div>
   )
 }
 

@@ -1,23 +1,32 @@
 import { memo } from 'react'
-import {
-  ModalFooter,
-  Button,
-  chakra,
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
-  FormHelperText,
-  Tooltip,
-} from '@chakra-ui/react'
-import { Formik, Form, Field } from 'formik'
+import { useForm } from 'react-hook-form'
 import { HexColorPicker } from 'react-colorful'
-
-import { fieldRequiredValidator } from '@helpers/formValidation'
+import { DialogFooter } from '@components/ui/dialog'
+import { Button } from '@components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@components/ui/form'
+import { Input } from '@components/ui/input'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip'
 
 const randomHexColorCode = () => {
   const n = (Math.random() * 0xfffff * 1000000).toString(16)
   return n.slice(0, 6)
+}
+
+interface FormValues {
+  label: string
+  color: string
 }
 
 const CategoryForm = ({
@@ -29,95 +38,86 @@ const CategoryForm = ({
   onDelete?: (data: any) => void
   onSubmit: (data: any) => void
 }) => {
+  const form = useForm<FormValues>({
+    defaultValues: {
+      label: category?.label ?? '',
+      color: category?.color ?? randomHexColorCode(),
+    },
+  })
+
+  const onSubmitForm = (values: FormValues) => {
+    onSubmit(values)
+  }
+
   return (
-    <Formik
-      initialValues={{
-        label: category?.label ?? '',
-        color: category?.color ?? randomHexColorCode(),
-      }}
-      onSubmit={(values, actions) => {
-        actions.setSubmitting(false)
-        onSubmit(values)
-      }}
-    >
-      {(props) => (
-        <Form>
-          <chakra.div mb={5}>
-            <Field name="label" type="label" validate={fieldRequiredValidator}>
-              {({ field, form }) => (
-                <FormControl isInvalid={form.errors.label}>
-                  <FormLabel htmlFor="label">Category label</FormLabel>
-                  <Input {...field} id="label" background="white" />
-                  <FormErrorMessage>{form.errors.label}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
-          </chakra.div>
-          <chakra.div mb={5}>
-            <Field name="color">
-              {({ _field, form }) => (
-                <FormControl isInvalid={form.errors.color}>
-                  <FormLabel htmlFor="color">Category color</FormLabel>
-                  <HexColorPicker
-                    color={form.values.color}
-                    onChange={(value) => {
-                      form.setFieldValue('color', value.substring(1))
-                    }}
-                  />
-                  <FormErrorMessage>{form.errors.color}</FormErrorMessage>
-                  <FormHelperText>
-                    Please avoid using white as the text on it will not be
-                    readable in certain parts of the website.
-                  </FormHelperText>
-                </FormControl>
-              )}
-            </Field>
-          </chakra.div>
-          <ModalFooter
-            pr="0"
-            pl="0"
-            display="flex"
-            justifyContent="flex-end"
-            alignItems="flex-end"
-          >
-            {category && (
-              <Tooltip
-                isDisabled={category?.listings?.length === 0}
-                borderRadius="md"
-                label="To delete this category, first ensure there are no listings associated with it"
-              >
-                <Button
-                  colorScheme="red"
-                  isDisabled={category?.listings?.length > 0}
-                  opacity="0.85"
-                  onClick={onDelete}
-                >
-                  Remove
-                </Button>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmitForm)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="label"
+          rules={{ required: 'Category label is required' }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category label</FormLabel>
+              <FormControl>
+                <Input {...field} className="bg-white" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="color"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category color</FormLabel>
+              <FormControl>
+                <HexColorPicker
+                  color={field.value}
+                  onChange={(value) => field.onChange(value.substring(1))}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <DialogFooter className="flex flex-col gap-2">
+          {category && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="destructive"
+                    className="opacity-85"
+                    onClick={onDelete}
+                    disabled={category?.listings?.length > 0}
+                    type="button"
+                  >
+                    Remove
+                  </Button>
+                </TooltipTrigger>
+                {category?.listings?.length > 0 && (
+                  <TooltipContent className="z-[200]">
+                    To delete this category, first ensure there are no listings
+                    associated with it
+                  </TooltipContent>
+                )}
               </Tooltip>
-            )}
+            </TooltipProvider>
+          )}
 
-            <Button
-              mt={4}
-              ml={2}
-              variant="rw"
-              isDisabled={!props.isValid}
-              isLoading={props.isSubmitting}
-              type="submit"
-            >
-              {category ? 'Update' : 'Create'}
-            </Button>
-
-            {/* {category?.listings.length > 0 && (
-              <Text>
-                To delete this category, first ensure there are no listings
-                associated with it
-              </Text>
-            )} */}
-          </ModalFooter>
-        </Form>
-      )}
-    </Formik>
+          <Button
+            type="submit"
+            disabled={!form.formState.isValid || form.formState.isSubmitting}
+          >
+            {category ? 'Update' : 'Create'}
+          </Button>
+        </DialogFooter>
+      </form>
+    </Form>
   )
 }
 

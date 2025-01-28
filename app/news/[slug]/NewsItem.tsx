@@ -1,10 +1,23 @@
 'use client'
 import Image from 'next/image'
-import { Flex, Text, Box, Heading } from '@chakra-ui/react'
 import Layout from '@components/layout'
 import SignupForm from '@components/signup-form'
 
-export default function NewsItem({ post, contentHtml }) {
+interface NewsItemProps {
+  post: {
+    title: string
+    date: string
+    author?: {
+      name: string
+    }
+    coverImage?: {
+      url: string
+    }
+  }
+  contentHtml: string
+}
+
+export default function NewsItem({ post, contentHtml }: NewsItemProps) {
   const postDateFormatted = Intl.DateTimeFormat('en-gb', {
     day: 'numeric',
     month: 'long',
@@ -13,73 +26,40 @@ export default function NewsItem({ post, contentHtml }) {
 
   return (
     <Layout applyPostStyling>
-      <Heading
-        as="h1"
-        textAlign="center"
-        /* @ts-ignore */
-        textwrap="pretty"
-        mt={{ base: '1rem', md: '1.5rem' }}
-      >
-        {post.title}
-      </Heading>
-      <Flex
-        justifyContent="center"
-        width={{
-          base: '90%',
-          md: '650px',
-        }}
-        mt="0.5rem"
-        mb={{ base: '1.5rem', md: '1.5rem' }}
-      >
+      <h1 className="text-pretty text-center">{post.title}</h1>
+      <div className="mx-auto mb-6 mt-2 flex w-[90%] justify-center md:w-[650px]">
         {post.author?.name && (
-          <Text fontWeight="600">{post.author.name}&nbsp;•&nbsp;</Text>
+          <p className="font-semibold">
+            {post.author.name}
+            <span className="mx-1">•</span>
+          </p>
         )}
-        <Text as="time">{postDateFormatted}</Text>
-      </Flex>
+        <time>{postDateFormatted}</time>
+      </div>
+
       {post.coverImage?.url && (
-        <Box
-          overflow="hidden"
-          position="relative"
-          mb="2rem"
-          width={{ base: '100vw', md: '850px' }}
-          height={{ base: '250px', md: '400px' }}
-          borderRadius={{ base: 'none', md: '12px' }}
-        >
+        <div className="relative -mx-4 mb-8 h-[250px] w-screen overflow-hidden md:h-[400px] md:w-[850px] md:rounded-xl">
           <Image
             alt={`Cover image for post: ${post.title}`}
-            src={post.coverImage?.url}
+            src={post.coverImage.url}
             fill
             priority
             sizes="(max-width: 768px) 100vw, 850px"
-            style={{
-              objectFit: 'cover',
-            }}
+            className="object-cover"
           />
-        </Box>
+        </div>
       )}
-      <Box
-        maxWidth={{
-          base: '90%',
-          md: '650px',
-        }}
-        mb="3rem"
-      >
-        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-      </Box>
 
-      <Box mb="3rem">
-        <Text
-          fontWeight={600}
-          mb={2}
-          style={{
-            color: 'var(--chakra-colors-rw-900)',
-            fontSize: 'var(--chakra-fontSizes-xl)',
-          }}
-        >
+      <div className="mx-auto mb-12 max-w-[650px]">
+        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+      </div>
+
+      <div className="mx-4 mb-8">
+        <p className="mb-2 font-semibold">
           Sign up to our mailing list to stay up to date
-        </Text>
+        </p>
         <SignupForm />
-      </Box>
+      </div>
     </Layout>
   )
 }

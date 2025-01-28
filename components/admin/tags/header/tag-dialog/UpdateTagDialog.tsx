@@ -1,12 +1,11 @@
 import { memo } from 'react'
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react'
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@components/ui/dialog'
 
 import TagForm from './tag-form'
 
@@ -26,21 +25,15 @@ const UpdateTagDialog: React.FC<props> = ({
   tag,
 }) => {
   return (
-    <Modal
-      isCentered
-      isOpen={isOpen}
-      onClose={onClose}
-      size={{ base: 'full', md: 'sm' }}
-    >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Update tag</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <TagForm onSubmit={onSubmit} onDelete={onDelete} tag={tag} />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Update tag</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>Update the selected tag label</DialogDescription>
+        <TagForm onSubmit={onSubmit} onDelete={onDelete} tag={tag} />
+      </DialogContent>
+    </Dialog>
   )
 }
 

@@ -1,16 +1,14 @@
-import {
-  TableContainer,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Stack,
-  Button,
-  useDisclosure,
-} from '@chakra-ui/react'
 import { memo, useCallback, useState } from 'react'
+import { useToggle } from 'usehooks-ts'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@components/ui/table'
+import { Button } from '@components/ui/button'
 
 import useUpdateTag from '@hooks/tags/useUpdateTag'
 import useDeleteTag from '@hooks/tags/useDeleteTag'
@@ -31,16 +29,11 @@ const columns = [
 ]
 
 const List = ({ tags }) => {
-  const {
-    isOpen: isUpdateTagDialogOpen,
-    onOpen: onUpdateTagDialogOpen,
-    onClose: onUpdateTagDialogClose,
-  } = useDisclosure()
-  const {
-    isOpen: isAddToListingsDialogOpen,
-    onOpen: onAddToListingsDialogOpen,
-    onClose: onAddToListingsDialogClose,
-  } = useDisclosure()
+  const [isUpdateTagDialogOpen, _toggleUpdate, setIsUpdateTagDialogOpen] =
+    useToggle()
+  const [isAddToListingsDialogOpen, _toggleAdd, setIsAddToListingsDialogOpen] =
+    useToggle()
+
   const { listings, isPending: isLoadingListings } = useListings()
   const { mutate: updateTag } = useUpdateTag()
   const { mutate: deleteTag } = useDeleteTag()
@@ -51,32 +44,32 @@ const List = ({ tags }) => {
 
   const handleOpenUpdateTagDialog = (tagId) => {
     setSelectedTagId(tagId)
-    onUpdateTagDialogOpen()
+    setIsUpdateTagDialogOpen(true)
   }
 
   const handleSubmit = useCallback(
     (data) => {
-      onUpdateTagDialogClose()
+      setIsUpdateTagDialogOpen(false)
       updateTag({
         ...data,
         id: selectedTagId,
       })
     },
-    [onUpdateTagDialogClose, updateTag, selectedTagId],
+    [setIsUpdateTagDialogOpen, updateTag, selectedTagId],
   )
 
   const handleDelete = useCallback(() => {
-    onUpdateTagDialogClose()
+    setIsUpdateTagDialogOpen(false)
     deleteTag({ id: selectedTagId })
-  }, [deleteTag, onUpdateTagDialogClose, selectedTagId])
+  }, [deleteTag, setIsUpdateTagDialogOpen, selectedTagId])
 
   const handleOpenAddTagToListingsDialog = (tagId) => {
     setSelectedTagId(tagId)
-    onAddToListingsDialogOpen()
+    setIsAddToListingsDialogOpen(true)
   }
 
   const handleAddTagToListingsSubmit = (addedListingIds, removedListingIds) => {
-    onAddToListingsDialogClose()
+    setIsAddToListingsDialogOpen(false)
     addTagToListings({
       tagId: selectedTagId,
       addedListingIds,
@@ -90,68 +83,68 @@ const List = ({ tags }) => {
 
   return (
     <>
-      <TableContainer borderRadius="10px" borderStyle="solid" borderWidth="1px">
-        <Table fontSize="sm" background="#ffffff">
-          <Thead bg="gray.50">
-            <Tr>
+      <div className="rounded-lg border">
+        <Table>
+          <TableHeader className="bg-muted">
+            <TableRow>
               {columns.map((column, index) => (
-                <Th whiteSpace="nowrap" scope="col" key={index}>
+                <TableHead key={index} className="whitespace-nowrap">
                   {column.Header}
-                </Th>
+                </TableHead>
               ))}
-              <Th />
-            </Tr>
-          </Thead>
-          <Tbody>
+              <TableHead />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {tags.map((row) => (
-              <Tr key={row.id}>
+              <TableRow key={row.id}>
                 {columns.map((column, index) => {
                   const cell = row[column.accessor]
 
                   if (column.accessor === 'listings') {
                     return (
-                      <Td key={index}>
-                        <strong>{cell.length}</strong>
+                      <TableCell key={index}>
+                        <span className="font-bold">{cell.length}</span>
                         <Button
                           onClick={() =>
                             handleOpenAddTagToListingsDialog(row.id)
                           }
                           variant="outline"
                           size="sm"
-                          ml="0.5rem"
+                          className="ml-2"
                         >
                           Add tag to listings
                         </Button>
-                      </Td>
+                      </TableCell>
                     )
                   }
 
                   return (
-                    <Td key={index} maxWidth="100px">
+                    <TableCell key={index} className="max-w-[100px]">
                       {cell}
-                    </Td>
+                    </TableCell>
                   )
                 })}
-                <Td textAlign="right" maxWidth="80px">
-                  <Stack direction="column" spacing={2}>
+                <TableCell className="max-w-[80px] text-right">
+                  <div className="flex flex-col space-y-2">
                     <Button
-                      colorScheme="blue"
+                      variant="outline"
                       onClick={() => handleOpenUpdateTagDialog(row.id)}
                       size="sm"
                     >
                       Edit
                     </Button>
-                  </Stack>
-                </Td>
-              </Tr>
+                  </div>
+                </TableCell>
+              </TableRow>
             ))}
-          </Tbody>
+          </TableBody>
         </Table>
-      </TableContainer>
+      </div>
       <UpdateTagDialog
         tag={selectedTag}
         isOpen={isUpdateTagDialogOpen}
-        onClose={onUpdateTagDialogClose}
+        onClose={() => setIsUpdateTagDialogOpen(false)}
         onDelete={handleDelete}
         onSubmit={handleSubmit}
       />
@@ -159,7 +152,7 @@ const List = ({ tags }) => {
         <AddTagToListingsDialog
           tag={selectedTag}
           listings={listings}
-          onClose={onAddToListingsDialogClose}
+          onClose={() => setIsAddToListingsDialogOpen(false)}
           onSubmit={handleAddTagToListingsSubmit}
         />
       )}

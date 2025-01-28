@@ -1,12 +1,19 @@
+'use client'
+
 import { useRouter } from 'next/navigation'
-import { useCallback, useMemo, useRef, useEffect, useState, memo } from 'react'
-import { motion, useAnimation, useInView } from 'framer-motion'
+import { useCallback, useMemo, useEffect, useState, memo } from 'react'
 import chroma from 'chroma-js'
-import { Box, Flex, Text, Icon, Tooltip, chakra } from '@chakra-ui/react'
 import { HiUserGroup } from 'react-icons/hi'
 import { FaStar } from 'react-icons/fa'
+import { useInView } from 'react-intersection-observer'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip'
 
 import ImagePlaceholder from './image-placeholder'
 
@@ -20,31 +27,13 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
   const router = useRouter()
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
-  const ref = useRef(null)
-  const isInView = useInView(ref)
-  const animation = useAnimation()
+  const { ref, inView } = useInView()
 
   useEffect(() => {
     setTimeout(() => {
       setIsWithinAFewSecondsOfRender(false)
     }, 3000)
   }, [])
-
-  useEffect(() => {
-    if (isInView) {
-      animation
-        .start({
-          opacity: 1,
-          y: 0,
-          transition: {
-            type: 'spring',
-            duration: 0.4,
-            bounce: 0.3,
-          },
-        })
-        .catch((e) => console.error('Animation error', e))
-    }
-  }, [animation, isInView])
 
   const onClick = useCallback(() => {
     router.push(`/${dataItem.slug}`)
@@ -61,71 +50,43 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
   )
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      exit={{ opacity: 0 }}
-      animate={animation}
-      whileHover={{ scale: simplified ? 1 : 1.05 }}
-    >
-      <chakra.div
-        height="fit-content"
-        cursor="pointer"
-        borderRadius="5px"
-        backgroundColor="#ffffff"
-        transition="transform 300ms ease-in-out, box-shadow 300ms ease-in-out"
+    <div>
+      <div
+        className="relative h-fit cursor-pointer rounded-md bg-white shadow-md transition-all duration-300 ease-in-out hover:shadow-xl"
         onClick={onClick}
-        boxShadow="md"
-        position="relative"
-        _hover={{ boxShadow: 'xl' }}
         ref={ref}
       >
         {dataItem.featured && (
-          <Tooltip
-            borderRadius="md"
-            label="Featured listing"
-            placement="right-end"
-          >
-            <span>
-              <Icon
-                as={FaStar}
-                position="absolute"
-                width="26px"
-                height="26px"
-                color="yellow.200"
-                top="4px"
-                left="4px"
-              />
-            </span>
-          </Tooltip>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
+                  <FaStar className="absolute left-1 top-1 h-[26px] w-[26px] text-yellow-200" />
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Featured listing</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )}
         <CategoryTag
+          className="absolute left-1 top-1 z-10 min-w-min shadow-md"
           alpha={1}
           colorHex={dataItem.category.color}
-          height="26px"
-          minWidth="fit-content"
-          boxShadow="lg"
-          position="absolute"
-          zIndex="2"
-          top="4px"
-          right="4px"
         >
           {dataItem.category.label}
         </CategoryTag>
         {dataItem.image ? (
-          <Box
-            width="100%"
-            height="170px"
-            overflow="hidden"
-            position="relative"
-          >
+          <div className="relative h-[170px] w-full overflow-hidden">
             <ListingImage
               alt={`${dataItem.label} cover image`}
               src={dataItem.image}
               sizes="(max-width: 768px) 90vw, 300px"
-              isInView={isInView}
-              priority={isInView && isWithinAFewSecondsOfRender}
+              isInView={inView}
+              priority={inView && isWithinAFewSecondsOfRender}
             />
-          </Box>
+          </div>
         ) : (
           categoryIndex !== null &&
           categoryIndex !== undefined && (
@@ -135,33 +96,34 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
             />
           )
         )}
-        <Box px={3} pb={3}>
-          <Flex justifyContent="space-between" mt={3}>
-            <chakra.h2
-              fontSize={15}
-              fontWeight={600}
-              color="#454545"
-              mb={0}
-              noOfLines={3}
-            >
+        <div className="px-3 pb-3">
+          <div className="mt-3 flex justify-between">
+            <h2 className="mb-0 line-clamp-3 text-[15px] font-semibold text-[#454545]">
               {dataItem.label ?? dataItem.title}
-            </chakra.h2>
-          </Flex>
+            </h2>
+          </div>
           {dataItem.seekingVolunteers && !simplified && (
-            <Flex>
-              <Tooltip
-                borderRadius="md"
-                label="This group is seeking volunteers or members. Get in touch with them if you'd like to help."
-              >
-                <Text color="rw.900" fontSize="sm">
-                  Seeking volunteers <Icon as={HiUserGroup} />
-                </Text>
-              </Tooltip>
-            </Flex>
+            <div className="flex">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <p className="text-sm text-[#2B8257]">
+                      Seeking volunteers <HiUserGroup className="inline" />
+                    </p>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      This group is seeking volunteers or members. Get in touch
+                      with them if you'd like to help.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           )}
-        </Box>
-      </chakra.div>
-    </motion.div>
+        </div>
+      </div>
+    </div>
   )
 }
 

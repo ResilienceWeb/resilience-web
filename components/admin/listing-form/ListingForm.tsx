@@ -1,101 +1,59 @@
-import { memo, useEffect, useMemo } from 'react'
-import { Formik, Form, Field, useFormikContext } from 'formik'
-import type { FieldProps } from 'formik'
+'use client'
+import { useEffect, useMemo } from 'react'
+import { useForm, FormProvider } from 'react-hook-form'
+import { AiOutlineLoading } from 'react-icons/ai'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import type { Category } from '@prisma/client'
 import NextLink from 'next/link'
 import dynamic from 'next/dynamic'
-import {
-  chakra,
-  Box,
-  Button,
-  Checkbox,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  FormHelperText,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  Select,
-  HStack,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react'
-import {
-  emailValidator,
-  fieldRequiredValidator,
-  urlValidator,
-} from '@helpers/formValidation'
+import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
 import ImageUpload from './ImageUpload'
 import useTags from '@hooks/tags/useTags'
 import useListings from '@hooks/listings/useListings'
 import { useAppContext } from '@store/hooks'
 import { generateSlug } from '@helpers/utils'
-
 import EditorField from './RichTextEditor'
+import { Button } from '@components/ui/button'
+import { Input } from '@components/ui/input'
+import { Checkbox } from '@components/ui/checkbox'
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  FormDescription,
+} from '@components/ui/form'
 
 const Map = dynamic(() => import('./Map'), {
   ssr: false,
-  loading: () => (
-    <div style={{ textAlign: 'center', paddingTop: 20 }}>Loading…</div>
-  ),
+  loading: () => <div className="pt-5 text-center">Loading…</div>,
 })
 
-const SlugField = ({ isEditMode }) => {
-  const { selectedWebSlug } = useAppContext()
-  const {
-    values: { title },
-    setFieldValue,
-  } = useFormikContext<any>()
-
-  useEffect(() => {
-    if (isEditMode) {
-      return
-    }
-
-    const generatedSlug = generateSlug(title)
-
-    if (title.trim() !== '') {
-      setFieldValue('slug', generatedSlug)
-    }
-  }, [setFieldValue, title, isEditMode])
-
-  return (
-    <Field name="slug" validate={urlValidator}>
-      {({ field, form }: FieldProps) => {
-        return (
-          <FormControl
-            isInvalid={Boolean(form.errors.slug && form.touched.slug)}
-          >
-            <FormLabel htmlFor="slug" fontSize="sm" fontWeight="600">
-              Link to listing page
-            </FormLabel>
-            <InputGroup size="sm">
-              <InputLeftAddon
-                bg="gray.50"
-                color="gray.500"
-                rounded="md"
-                userSelect="none"
-              >
-                {`${selectedWebSlug}.resilienceweb.org.uk/`}
-              </InputLeftAddon>
-              <Input
-                {...field}
-                id="slug"
-                fontSize="sm"
-                shadow="sm"
-                size="sm"
-                rounded="md"
-              />
-            </InputGroup>
-            <FormErrorMessage>{form.errors.slug?.toString()}</FormErrorMessage>
-          </FormControl>
-        )
-      }}
-    </Field>
-  )
+interface FormValues {
+  id: number | null
+  title: string
+  description: string
+  category: number | undefined
+  email: string
+  website: string
+  facebook: string
+  twitter: string
+  instagram: string
+  seekingVolunteers: boolean
+  featured: boolean
+  image: File | string | null
+  slug: string
+  tags: TagOption[]
+  relations: TagOption[]
+  noPhysicalLocation: boolean
+  location?: {
+    latitude: number
+    longitude: number
+    description: string
+  }
 }
 
 const customMultiSelectStyles = {
@@ -113,6 +71,7 @@ interface Props {
   categories: Category[]
   listing?: Listing
   handleSubmit: (data: any) => void
+  isSubmitting?: boolean
 }
 
 type TagOption = {
@@ -120,13 +79,52 @@ type TagOption = {
   label: string
 }
 
-const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
+const SlugField = ({ isEditMode, register, watch, setValue, errors }) => {
+  const { selectedWebSlug } = useAppContext()
+  const title = watch('title')
+
+  useEffect(() => {
+    if (isEditMode) return
+
+    const generatedSlug = generateSlug(title)
+    if (title.trim() !== '') {
+      setValue('slug', generatedSlug, { shouldValidate: true })
+    }
+  }, [setValue, title, isEditMode])
+
+  return (
+    <div>
+      <label htmlFor="slug" className="mb-1 block text-sm font-semibold">
+        Link to listing page
+      </label>
+      <div className="flex">
+        <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
+          {`${selectedWebSlug}.resilienceweb.org.uk/`}
+        </span>
+        <input
+          {...register('slug', { validate: urlValidator })}
+          id="slug"
+          className="w-full rounded-r-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        />
+      </div>
+      {errors.slug && (
+        <p className="mt-1 text-sm text-red-600">{errors.slug.message}</p>
+      )}
+    </div>
+  )
+}
+
+const ListingForm = ({
+  categories,
+  listing,
+  handleSubmit: onSubmit,
+  isSubmitting = false,
+}: Props) => {
   const { tags } = useTags()
   const { listings } = useListings()
 
   const tagOptions: Options<TagOption> = useMemo(() => {
     if (!tags) return []
-
     return tags.map((t) => ({
       value: t.id,
       label: t.label,
@@ -135,7 +133,6 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
 
   const relationOptions: Options<TagOption> = useMemo(() => {
     if (!listings) return []
-
     return listings
       .filter((l) => l.title !== listing?.title)
       .map((l) => ({
@@ -158,7 +155,44 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
     }))
   }, [listing?.relations])
 
-  const handleSubmitForm = (data) => {
+  const methods = useForm<FormValues>({
+    defaultValues: {
+      id: listing?.id || null,
+      title: listing?.title || '',
+      description: listing?.description || '',
+      category: listing?.categoryId || undefined,
+      email: listing?.email || '',
+      website: listing?.website || '',
+      facebook: listing?.facebook || '',
+      twitter: listing?.twitter || '',
+      instagram: listing?.instagram || '',
+      seekingVolunteers: listing?.seekingVolunteers || false,
+      featured: listing?.featured || false,
+      image: listing?.image,
+      slug: listing?.slug || '',
+      tags: initialTagsValues || [],
+      relations: initialRelationsValues || [],
+      noPhysicalLocation: listing?.location?.noPhysicalLocation || false,
+      location:
+        listing?.location?.latitude && listing?.location?.longitude
+          ? {
+              latitude: listing.location.latitude,
+              longitude: listing.location.longitude,
+              description: listing.location.description,
+            }
+          : undefined,
+    },
+  })
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = methods
+
+  const handleSubmitForm = (data: any) => {
     const isNewImage = data.image instanceof File
     if (!isNewImage && data.image) {
       delete data.image
@@ -184,577 +218,290 @@ const ListingForm = ({ categories, listing, handleSubmit }: Props) => {
       )
       data.removedRelations = removedRelations
     }
-    handleSubmit(data)
+    onSubmit(data)
   }
 
   return (
-    <Formik
-      initialValues={{
-        id: listing?.id || null,
-        title: listing?.title || '',
-        description: listing?.description || '',
-        category: listing?.categoryId || undefined,
-        email: listing?.email || '',
-        website: listing?.website || '',
-        facebook: listing?.facebook || '',
-        twitter: listing?.twitter || '',
-        instagram: listing?.instagram || '',
-        seekingVolunteers: listing?.seekingVolunteers || false,
-        featured: listing?.featured || false,
-        image: listing?.image,
-        slug: listing?.slug || '',
-        tags: initialTagsValues || [],
-        relations: initialRelationsValues || [],
-        noPhysicalLocation: listing?.location?.noPhysicalLocation || false,
-        location:
-          listing?.location?.latitude && listing?.location?.longitude
-            ? {
-                latitude: listing.location.latitude,
-                longitude: listing.location.longitude,
-                description: listing.location.description,
-              }
-            : undefined,
-      }}
-      enableReinitialize
-      onSubmit={handleSubmitForm}
-    >
-      {(props) => {
-        return (
-          <Form encType="multipart/form-data">
-            <chakra.div p={{ sm: 6 }} px="1rem" py="1rem">
-              <chakra.div mb="0.5rem">
-                <Field name="title" validate={fieldRequiredValidator}>
-                  {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.title && form.touched.title,
-                      )}
-                    >
-                      <FormLabel
-                        htmlFor="title"
-                        fontSize="sm"
-                        fontWeight="600"
-                        mb="0.25rem"
-                      >
-                        Title*
-                      </FormLabel>
-                      <Input
-                        {...field}
-                        id="title"
-                        fontSize="sm"
-                        shadow="sm"
-                        size="sm"
-                        rounded="md"
-                      />
-                      <FormErrorMessage>
-                        {form.errors.title?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
+    <FormProvider {...methods}>
+      <Form {...methods}>
+        <form
+          onSubmit={handleSubmit(handleSubmitForm)}
+          encType="multipart/form-data"
+          className="px-4 py-4 sm:p-6"
+        >
+          <FormField
+            control={methods.control}
+            name="title"
+            rules={{ validate: fieldRequiredValidator }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-semibold">Title*</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-              <chakra.div mb="0.5rem">
-                <Field name="category" validate={fieldRequiredValidator}>
-                  {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.category && form.touched.category,
-                      )}
-                    >
-                      <FormLabel
-                        htmlFor="category"
-                        fontSize="sm"
-                        fontWeight="600"
-                        mb="0.25rem"
-                      >
-                        Category*
-                      </FormLabel>
-                      <Select
-                        {...field}
-                        fontSize="sm"
-                        shadow="sm"
-                        size="sm"
-                        rounded="md"
-                        placeholder="Select a category"
-                      >
-                        {categories.map((c) => (
-                          <option key={c.id} value={c.id}>
-                            {c.label}
-                          </option>
-                        ))}
-                      </Select>
-                      <FormHelperText>
-                        {categories.length === 0 ? (
-                          <Text>
-                            Looks like you haven't created categories yet. You
-                            can add some{' '}
-                            <NextLink href="/admin/categories">
-                              on this page
-                            </NextLink>
-                            .
-                          </Text>
-                        ) : (
-                          'Categories can be easily changed later'
-                        )}
-                      </FormHelperText>
-                      <FormErrorMessage>
-                        Please select a category
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
-
-              <chakra.div mb="0.5rem">
-                <Field
-                  name="description"
-                  validate={fieldRequiredValidator}
-                  style={{
-                    maxHeight: '200px',
-                  }}
-                >
-                  {({ form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.description && form.touched.description,
-                      )}
-                    >
-                      <FormLabel
-                        htmlFor="description"
-                        fontSize="sm"
-                        fontWeight="600"
-                        mb="0.25rem"
-                      >
-                        Description*
-                      </FormLabel>
-                      <EditorField name="description" />
-                      <FormErrorMessage mb="1rem">
-                        Please add a description
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
-
-              <Field name="image">
-                {({ field, form }: FieldProps) => (
-                  <ImageUpload field={field} form={form} formProps={props} />
-                )}
-              </Field>
-
-              <chakra.div mb="0.5rem">
-                <Field name="email" type="email" validate={emailValidator}>
-                  {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.email && form.touched.email,
-                      )}
-                    >
-                      <FormLabel
-                        htmlFor="email"
-                        fontSize="sm"
-                        fontWeight="600"
-                        mb="0.25rem"
-                      >
-                        Contact email for organisation
-                      </FormLabel>
-                      <Input
-                        {...field}
-                        id="email"
-                        fontSize="sm"
-                        shadow="sm"
-                        size="sm"
-                        rounded="md"
-                      />
-                      <FormErrorMessage>
-                        {form.errors.email?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
-
-              <HStack align="stretch" spacing={2} mt={4}>
-                <chakra.div mb={3} flexGrow={1}>
-                  <Field name="website">
-                    {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={Boolean(
-                          form.errors.website && form.touched.website,
-                        )}
-                      >
-                        <FormLabel
-                          htmlFor="title"
-                          fontSize="sm"
-                          fontWeight="600"
-                          mb="0.25rem"
-                        >
-                          Website
-                        </FormLabel>
-                        <Input
-                          {...field}
-                          id="website"
-                          fontSize="sm"
-                          shadow="sm"
-                          size="sm"
-                          rounded="md"
-                        />
-                        <FormErrorMessage>
-                          {form.errors.website?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                </chakra.div>
-
-                <chakra.div mb={3} flexGrow={1}>
-                  <Field name="facebook">
-                    {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={Boolean(
-                          form.errors.facebook && form.touched.facebook,
-                        )}
-                      >
-                        <FormLabel
-                          htmlFor="facebook"
-                          fontSize="sm"
-                          fontWeight="600"
-                          mb="0.25rem"
-                        >
-                          Facebook
-                        </FormLabel>
-                        <Input
-                          {...field}
-                          id="facebook"
-                          fontSize="sm"
-                          shadow="sm"
-                          size="sm"
-                          rounded="md"
-                        />
-                        <FormErrorMessage>
-                          {form.errors.facebook?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                </chakra.div>
-              </HStack>
-
-              <HStack align="stretch" spacing={2}>
-                <chakra.div mb={3} flexGrow={1}>
-                  <Field name="twitter">
-                    {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={Boolean(
-                          form.errors.twitter && form.touched.twitter,
-                        )}
-                      >
-                        <FormLabel
-                          htmlFor="twitter"
-                          fontSize="sm"
-                          fontWeight="600"
-                          mb="0.25rem"
-                        >
-                          Twitter
-                        </FormLabel>
-                        <Input
-                          {...field}
-                          id="twitter"
-                          fontSize="sm"
-                          shadow="sm"
-                          size="sm"
-                          rounded="md"
-                        />
-                        <FormErrorMessage>
-                          {form.errors.twitter?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                </chakra.div>
-
-                <chakra.div mb={3} flexGrow={1}>
-                  <Field name="instagram">
-                    {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={Boolean(
-                          form.errors.instagram && form.touched.instagram,
-                        )}
-                      >
-                        <FormLabel
-                          htmlFor="instagram"
-                          fontSize="sm"
-                          fontWeight="600"
-                          mb="0.25rem"
-                        >
-                          Instagram
-                        </FormLabel>
-                        <Input
-                          {...field}
-                          id="instagram"
-                          fontSize="sm"
-                          shadow="sm"
-                          size="sm"
-                          rounded="md"
-                        />
-                        <FormErrorMessage>
-                          {form.errors.instagram?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                </chakra.div>
-              </HStack>
-
-              <chakra.div mb={3}>
-                <SlugField isEditMode={Boolean(listing)} />
-              </chakra.div>
-
-              <chakra.div mb={3}>
-                <Field name="tags">
-                  {({ field, form }: FieldProps) => {
-                    return (
-                      <FormControl
-                        isInvalid={Boolean(
-                          form.errors.tags && form.touched.tags,
-                        )}
-                      >
-                        <FormLabel
-                          htmlFor="tags"
-                          fontSize="sm"
-                          fontWeight="600"
-                          mb="0.25rem"
-                        >
-                          Tags
-                        </FormLabel>
-                        <InputGroup size="sm">
-                          <ReactSelect
-                            isMulti
-                            isSearchable={false}
-                            menuPortalTarget={document.body}
-                            onChange={(_option, changeData) => {
-                              let newValue
-                              if (changeData.action === 'select-option') {
-                                newValue = [...field.value, changeData.option]
-                              } else if (
-                                changeData.action === 'remove-value' ||
-                                changeData.action === 'pop-value'
-                              ) {
-                                newValue = field.value.filter(
-                                  (v) =>
-                                    v.value !== changeData.removedValue.value,
-                                )
-                              }
-                              form.setFieldValue(field.name, newValue)
-                            }}
-                            options={tagOptions.filter((t) => {
-                              return !field.value.includes(t)
-                            })}
-                            placeholder="Tags"
-                            value={field.value}
-                            isClearable={false}
-                            styles={customMultiSelectStyles}
-                          />
-                        </InputGroup>
-                        <FormErrorMessage>
-                          {form.errors.tags?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )
-                  }}
-                </Field>
-              </chakra.div>
-
-              <chakra.div mb={3}>
-                <Field name="relations">
-                  {({ field, form }: FieldProps) => {
-                    return (
-                      <FormControl
-                        isInvalid={Boolean(
-                          form.errors.relations && form.touched.relations,
-                        )}
-                      >
-                        <FormLabel
-                          htmlFor="relations"
-                          fontSize="sm"
-                          fontWeight="600"
-                          mb="0.25rem"
-                        >
-                          Related listings
-                        </FormLabel>
-                        <InputGroup size="sm">
-                          <ReactSelect
-                            isMulti
-                            isSearchable
-                            menuPortalTarget={document.body}
-                            onChange={(_option, changeData) => {
-                              let newValue
-                              if (changeData.action === 'select-option') {
-                                newValue = [...field.value, changeData.option]
-                              } else if (
-                                changeData.action === 'remove-value' ||
-                                changeData.action === 'pop-value'
-                              ) {
-                                newValue = field.value.filter(
-                                  (v) =>
-                                    v.value !== changeData.removedValue.value,
-                                )
-                              }
-                              form.setFieldValue(field.name, newValue)
-                            }}
-                            options={relationOptions.filter(
-                              (t) => !field?.value?.includes(t),
-                            )}
-                            placeholder="Related listings"
-                            value={field.value}
-                            isClearable={false}
-                            styles={customMultiSelectStyles}
-                          />
-                        </InputGroup>
-                        <FormErrorMessage>
-                          {form.errors.relations?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )
-                  }}
-                </Field>
-                <Text color="gray.500" fontSize="sm">
-                  Link to other listings that this relates to
-                </Text>
-              </chakra.div>
-
-              <chakra.div>
-                <Field name="seekingVolunteers">
-                  {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.seekingVolunteers &&
-                          form.touched.seekingVolunteers,
-                      )}
-                    >
-                      <Checkbox
-                        isChecked={field.value}
-                        id="seekingVolunteers"
-                        onChange={field.onChange}
-                        colorScheme="green"
-                      >
-                        Seeking volunteers
-                      </Checkbox>
-                      <Text color="gray.500" fontSize="sm">
-                        Would this group benefit from having additional
-                        volunteers?
-                      </Text>
-                      <FormErrorMessage>
-                        {form.errors.seekingVolunteers?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
-
-              <chakra.div mt="0.5rem">
-                <Field name="featured">
-                  {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.featured && form.touched.featured,
-                      )}
-                    >
-                      <Checkbox
-                        isChecked={field.value}
-                        id="featured"
-                        onChange={field.onChange}
-                        colorScheme="green"
-                      >
-                        Featured
-                      </Checkbox>
-                      <Text color="gray.500" fontSize="sm">
-                        Display this listing at the top of the page for 7 days.
-                      </Text>
-                      <FormErrorMessage>
-                        {form.errors.featured?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
-            </chakra.div>
-
-            <chakra.div px="1.5rem" mt="0.5rem">
-              <Field name="noPhysicalLocation">
-                {({ field, form }: FieldProps) => (
-                  <FormControl
-                    isInvalid={Boolean(
-                      form.errors.noPhysicalLocation &&
-                        form.touched.noPhysicalLocation,
-                    )}
+          <FormField
+            control={methods.control}
+            name="category"
+            rules={{ validate: fieldRequiredValidator }}
+            render={({ field }) => (
+              <FormItem className="mt-4">
+                <FormLabel className="font-semibold">Category*</FormLabel>
+                <FormControl>
+                  <select
+                    {...field}
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-green-500 focus:ring-green-500"
                   >
-                    <FormLabel
-                      htmlFor="relations"
-                      fontSize="sm"
-                      fontWeight="600"
-                      mb="0.25rem"
-                    >
-                      Location
-                    </FormLabel>
-                    <Checkbox
-                      isChecked={field.value}
-                      id="noPhysicalLocation"
-                      onChange={field.onChange}
-                      colorScheme="green"
-                    >
-                      No physical location
-                    </Checkbox>
-                    <FormErrorMessage>
-                      {form.errors.noPhysicalLocation?.toString()}
-                    </FormErrorMessage>
+                    <option value="">Select a category</option>
+                    {categories.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.label}
+                      </option>
+                    ))}
+                  </select>
+                </FormControl>
+                <FormDescription>
+                  {categories.length === 0 ? (
+                    <span>
+                      Looks like you haven't created categories yet. You can add
+                      some{' '}
+                      <NextLink
+                        href="/admin/categories"
+                        className="text-blue-600 hover:text-blue-700"
+                      >
+                        on this page
+                      </NextLink>
+                      .
+                    </span>
+                  ) : (
+                    'Categories can be easily changed later'
+                  )}
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={methods.control}
+            name="description"
+            rules={{ validate: fieldRequiredValidator }}
+            render={() => (
+              <FormItem className="mt-4">
+                <FormLabel className="font-semibold">Description*</FormLabel>
+                <FormControl>
+                  <EditorField name="description" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="mt-4">
+            <ImageUpload name="image" />
+          </div>
+
+          <FormField
+            control={methods.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="mt-4">
+                <FormLabel className="font-semibold">
+                  Contact email for organisation
+                </FormLabel>
+                <FormControl>
+                  <Input type="email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <FormField
+              control={methods.control}
+              name="website"
+              rules={{ validate: urlValidator }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Website</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
                   </FormControl>
-                )}
-              </Field>
-            </chakra.div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            <Field name="location">
-              {({ field, form }: FieldProps) => {
-                return (
-                  <Map
-                    latitude={field.value?.latitude}
-                    longitude={field.value?.longitude}
-                    locationDescription={field.value?.description}
-                    noPhysicalLocation={form.values.noPhysicalLocation}
+            <FormField
+              control={methods.control}
+              name="facebook"
+              rules={{ validate: urlValidator }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Facebook</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={methods.control}
+              name="twitter"
+              rules={{ validate: urlValidator }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Twitter</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={methods.control}
+              name="instagram"
+              rules={{ validate: urlValidator }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Instagram</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="mt-4">
+            <SlugField
+              isEditMode={Boolean(listing)}
+              register={register}
+              watch={watch}
+              setValue={setValue}
+              errors={errors}
+            />
+          </div>
+
+          <div className="mt-4">
+            <FormLabel className="font-semibold">Tags</FormLabel>
+            <ReactSelect
+              isMulti
+              name="tags"
+              options={tagOptions}
+              styles={customMultiSelectStyles}
+              value={watch('tags')}
+              onChange={(newValue) => setValue('tags', [...newValue])}
+            />
+          </div>
+
+          <div className="mt-4">
+            <FormLabel className="font-semibold">Related listings</FormLabel>
+            <ReactSelect
+              isMulti
+              name="relations"
+              options={relationOptions}
+              styles={customMultiSelectStyles}
+              value={watch('relations')}
+              onChange={(newValue) => setValue('relations', [...newValue])}
+            />
+          </div>
+
+          <FormField
+            control={methods.control}
+            name="seekingVolunteers"
+            render={({ field }) => (
+              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
                   />
-                )
-              }}
-            </Field>
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Currently seeking volunteers</FormLabel>
+                  <FormDescription>
+                    Check this if your group would benefit from having
+                    additional volunteers
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
 
-            <Box p="0.75rem" bg="gray.50" textAlign="right">
-              <Tooltip
-                isDisabled={props.dirty}
-                borderRadius="md"
-                label="You haven't made any changes yet"
-              >
-                <Button
-                  bg={listing?.pending ? 'purple.600' : 'rw.700'}
-                  colorScheme={listing?.pending ? 'purple' : 'rw.700'}
-                  isLoading={props.isSubmitting}
-                  isDisabled={!props.dirty}
-                  size="md"
-                  type="submit"
-                  _hover={{ bg: listing?.pending ? 'purple.700' : 'rw.900' }}
-                >
-                  {listing
-                    ? listing.pending
-                      ? 'Approve'
-                      : 'Update'
-                    : 'Create'}
-                </Button>
-              </Tooltip>
-            </Box>
-          </Form>
-        )
-      }}
-    </Formik>
+          <FormField
+            control={methods.control}
+            name="featured"
+            render={({ field }) => (
+              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Featured listing</FormLabel>
+                  <FormDescription>
+                    Featured listings appear at the top of search results
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={methods.control}
+            name="noPhysicalLocation"
+            render={({ field }) => (
+              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>This listing has no physical location</FormLabel>
+                  <FormDescription>
+                    If this listing does not have a physical location, please
+                    check this box
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          {!watch('noPhysicalLocation') && (
+            <div className="mt-4">
+              <Map />
+            </div>
+          )}
+
+          <div className="mt-6 flex justify-end">
+            <Button
+              type="submit"
+              variant={listing?.pending ? 'purple' : 'default'}
+              disabled={isSubmitting}
+            >
+              {isSubmitting && <AiOutlineLoading className="animate-spin" />}{' '}
+              {listing ? (listing.pending ? 'Approve' : 'Update') : 'Create'}
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </FormProvider>
   )
 }
 
-export default memo(ListingForm)
+export default ListingForm

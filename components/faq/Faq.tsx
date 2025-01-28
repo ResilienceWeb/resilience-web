@@ -1,30 +1,26 @@
+'use client'
+
+import * as React from 'react'
 import {
   Accordion,
+  AccordionContent,
   AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Box,
-} from '@chakra-ui/react'
+  AccordionTrigger,
+} from '@components/ui/accordion'
 
-const Faq = ({
-  content,
-}: {
+interface FaqProps {
   content: { question: string; answer: string | React.ReactNode }[]
-}) => {
+}
+
+const Faq = ({ content }: FaqProps) => {
   return (
-    <Accordion allowMultiple>
+    <Accordion type="multiple">
       {content.map((item) => (
-        <AccordionItem key={item.question}>
-          <h2>
-            <AccordionButton>
-              <Box as="span" flex="1" textAlign="left">
-                {item.question}
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>{item.answer}</AccordionPanel>
+        <AccordionItem key={item.question} value={item.question}>
+          <AccordionTrigger className="text-left">
+            {item.question}
+          </AccordionTrigger>
+          <AccordionContent>{item.answer}</AccordionContent>
         </AccordionItem>
       ))}
     </Accordion>

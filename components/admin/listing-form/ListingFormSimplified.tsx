@@ -1,85 +1,67 @@
+'use client'
+
 import { memo, useEffect, useMemo } from 'react'
-import { Formik, Form, Field, useFormikContext } from 'formik'
-import type { FieldProps } from 'formik'
+import { useForm, useFormContext } from 'react-hook-form'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import type { Category } from '@prisma/client'
-import {
-  chakra,
-  Box,
-  Button,
-  Checkbox,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  Select,
-  HStack,
-  Text,
-  Tooltip,
-} from '@chakra-ui/react'
-import {
-  emailValidator,
-  fieldRequiredValidator,
-  urlValidator,
-} from '@helpers/formValidation'
+import { AiOutlineLoading } from 'react-icons/ai'
+import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
 import ImageUpload from './ImageUpload'
 import useTags from '@hooks/tags/useTags'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import { generateSlug } from '@helpers/utils'
-
 import EditorField from './RichTextEditor'
+import { Input } from '@components/ui/input'
+import { Checkbox } from '@components/ui/checkbox'
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@components/ui/form'
+import { Button } from '@components/ui/button'
 
 const SlugField = () => {
   const selectedWebSlug = useSelectedWebSlug()
-  const {
-    values: { title },
-    setFieldValue,
-  } = useFormikContext<any>()
+  const { control, watch, setValue } = useFormContext()
+
+  const title = watch('title')
 
   useEffect(() => {
+    if (!title) {
+      return
+    }
     const generatedSlug = generateSlug(title)
 
-    if (title.trim() !== '') {
-      setFieldValue('slug', generatedSlug)
+    if (title?.trim() !== '') {
+      setValue('slug', generatedSlug)
     }
-  }, [setFieldValue, title])
+  }, [setValue, title])
 
   return (
-    <Field name="slug" validate={urlValidator}>
-      {({ field, form }: FieldProps) => {
-        return (
-          <FormControl
-            isInvalid={Boolean(form.errors.slug && form.touched.slug)}
-          >
-            <FormLabel htmlFor="slug" fontSize="sm" fontWeight="600">
-              Url
-            </FormLabel>
-            <InputGroup size="sm">
-              <InputLeftAddon
-                bg="gray.50"
-                color="gray.500"
-                rounded="md"
-                userSelect="none"
-              >
-                {`${selectedWebSlug}.resilienceweb.org.uk/`}
-              </InputLeftAddon>
-              <Input
-                {...field}
-                id="slug"
-                fontSize="sm"
-                shadow="sm"
-                size="sm"
-                rounded="md"
-              />
-            </InputGroup>
-            <FormErrorMessage>{form.errors.slug?.toString()}</FormErrorMessage>
-          </FormControl>
-        )
-      }}
-    </Field>
+    <FormField
+      control={control}
+      name="slug"
+      rules={{ validate: urlValidator }}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="font-semibold">Url</FormLabel>
+          <div className="flex">
+            <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
+              {`${selectedWebSlug}.resilienceweb.org.uk/`}
+            </span>
+            <Input
+              {...field}
+              className="flex-1 rounded-r-md border-gray-300 text-sm shadow-sm focus:border-green-500 focus:ring-green-500"
+            />
+          </div>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   )
 }
 
@@ -106,13 +88,50 @@ type TagOption = {
   label: string
 }
 
+type FormValues = {
+  id: number | null
+  title: string
+  description: string
+  category: number | undefined
+  email: string
+  website: string
+  facebook: string
+  twitter: string
+  instagram: string
+  seekingVolunteers: boolean
+  image: File | string | null
+  slug: string
+  tags: TagOption[]
+}
+
 const ListingFormSimplified = ({
   listing,
   categories,
-  handleSubmit,
+  handleSubmit: onSubmit,
   isEditMode = false,
 }: Props) => {
   const { tags } = useTags()
+  const form = useForm<FormValues>({
+    defaultValues: {
+      id: listing?.id || null,
+      title: listing?.title ?? '',
+      description: listing?.description || '',
+      category: listing?.categoryId || undefined,
+      email: listing?.email || '',
+      website: listing?.website || '',
+      facebook: listing?.facebook || '',
+      twitter: listing?.twitter || '',
+      instagram: listing?.instagram || '',
+      seekingVolunteers: listing?.seekingVolunteers || false,
+      image: listing?.image,
+      slug: listing?.slug || '',
+      tags: [],
+    },
+  })
+
+  const {
+    formState: { isDirty, isValid, isSubmitting },
+  } = form
 
   const tagOptions: Options<TagOption> = useMemo(() => {
     if (!tags) return []
@@ -123,411 +142,209 @@ const ListingFormSimplified = ({
     }))
   }, [tags])
 
-  const handleSubmitForm = (data) => {
-    data.tags = data.tags?.map((t) => t.value)
-    data.relations = data.relations?.map((l) => l.value)
-    handleSubmit(data)
+  const handleSubmitForm = (data: any) => {
+    const formData = {
+      ...data,
+      tags: data.tags?.map((t) => t.value),
+      relations: data.relations?.map((l) => l.value),
+    }
+    onSubmit(formData)
   }
 
   return (
-    <Formik
-      initialValues={{
-        id: listing?.id || null,
-        title: listing?.title ?? '',
-        description: listing?.description || '',
-        category: listing?.categoryId || undefined,
-        email: listing?.email || '',
-        website: listing?.website || '',
-        facebook: listing?.facebook || '',
-        twitter: listing?.twitter || '',
-        instagram: listing?.instagram || '',
-        seekingVolunteers: listing?.seekingVolunteers || false,
-        image: listing?.image,
-        slug: listing?.slug || '', // TODO: make this not editable?
-        tags: [],
-      }}
-      enableReinitialize
-      onSubmit={handleSubmitForm}
-    >
-      {(props) => {
-        return (
-          <Form encType="multipart/form-data">
-            <chakra.div p={{ sm: 6 }} px={4} py={5}>
-              <chakra.div mb={3}>
-                <Field name="title" validate={fieldRequiredValidator}>
-                  {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.title && form.touched.title,
-                      )}
-                    >
-                      <FormLabel htmlFor="title" fontSize="sm" fontWeight="600">
-                        Title*
-                      </FormLabel>
-                      <Input
-                        {...field}
-                        id="title"
-                        fontSize="sm"
-                        shadow="sm"
-                        size="sm"
-                        rounded="md"
-                      />
-                      <FormErrorMessage>
-                        {form.errors.title?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmitForm)} className="bg-white">
+        <div className="space-y-3 p-4 sm:p-6">
+          <FormField
+            control={form.control}
+            name="title"
+            rules={{ validate: fieldRequiredValidator }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-semibold">Title*</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-              <chakra.div mb={3}>
-                <Field name="category" validate={fieldRequiredValidator}>
-                  {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.category && form.touched.category,
-                      )}
-                    >
-                      <FormLabel
-                        htmlFor="category"
-                        fontSize="sm"
-                        fontWeight="600"
-                      >
-                        Category*
-                      </FormLabel>
-                      <Select
-                        {...field}
-                        fontSize="sm"
-                        shadow="sm"
-                        size="sm"
-                        rounded="md"
-                        placeholder="Select a category"
-                      >
-                        {categories.map((c) => (
-                          <option key={c.id} value={c.id}>
-                            {c.label}
-                          </option>
-                        ))}
-                      </Select>
-                      <FormErrorMessage>
-                        Please select a category
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
+          <FormField
+            control={form.control}
+            name="category"
+            rules={{ validate: fieldRequiredValidator }}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-semibold">Category*</FormLabel>
+                <FormControl>
+                  <select
+                    {...field}
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-green-500 focus:ring-green-500"
+                  >
+                    <option value="">Select a category</option>
+                    {categories.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.label}
+                      </option>
+                    ))}
+                  </select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-              <chakra.div mb={3}>
-                <Field
-                  name="description"
-                  validate={fieldRequiredValidator}
-                  style={{
-                    maxHeight: '200px',
-                  }}
-                >
-                  {({ form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.description && form.touched.description,
-                      )}
-                    >
-                      <FormLabel
-                        htmlFor="description"
-                        fontSize="sm"
-                        fontWeight="600"
-                      >
-                        Description*
-                      </FormLabel>
-                      <EditorField name="description" />
-                      <FormErrorMessage mb="1rem">
-                        Please add a description
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
+          <FormField
+            control={form.control}
+            name="description"
+            rules={{ validate: fieldRequiredValidator }}
+            render={() => (
+              <FormItem>
+                <FormLabel className="font-semibold">Description*</FormLabel>
+                <FormControl>
+                  <EditorField name="description" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-              {!isEditMode && (
-                <Field name="image">
-                  {({ field, form }: FieldProps) => (
-                    <ImageUpload
-                      field={field}
-                      form={form}
-                      formProps={props}
-                      isRequired={false}
+          {!isEditMode && <ImageUpload name="image" isRequired={false} />}
+
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-semibold">
+                  Contact email for organisation
+                </FormLabel>
+                <FormControl>
+                  <Input type="email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="website"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Website</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="facebook"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Facebook</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="twitter"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Twitter</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="instagram"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Instagram</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {!isEditMode && <SlugField />}
+
+          {tagOptions.length > 0 && (
+            <FormField
+              control={form.control}
+              name="tags"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Tags</FormLabel>
+                  <FormControl>
+                    <ReactSelect
+                      isMulti
+                      name="tags"
+                      options={tagOptions}
+                      styles={customMultiSelectStyles}
+                      value={field.value}
+                      onChange={(newValue) => field.onChange([...newValue])}
                     />
-                  )}
-                </Field>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
+            />
+          )}
 
-              <chakra.div mb={3}>
-                <Field name="email" type="email" validate={emailValidator}>
-                  {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.email && form.touched.email,
-                      )}
-                    >
-                      <FormLabel htmlFor="email" fontSize="sm" fontWeight="600">
-                        Contact email for organisation
-                      </FormLabel>
-                      <Input
-                        {...field}
-                        id="email"
-                        fontSize="sm"
-                        shadow="sm"
-                        size="sm"
-                        rounded="md"
-                      />
-                      <FormErrorMessage>
-                        {form.errors.email?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
+          <FormField
+            control={form.control}
+            name="seekingVolunteers"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel className="font-semibold">
+                    Seeking volunteers
+                  </FormLabel>
+                  <p className="text-sm text-gray-500">
+                    Would this group benefit from having additional volunteers?
+                  </p>
+                </div>
+              </FormItem>
+            )}
+          />
+        </div>
 
-              <HStack align="stretch" spacing={2} mt={4}>
-                <chakra.div mb={3} flexGrow={1}>
-                  <Field name="website">
-                    {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={Boolean(
-                          form.errors.website && form.touched.website,
-                        )}
-                      >
-                        <FormLabel
-                          htmlFor="title"
-                          fontSize="sm"
-                          fontWeight="600"
-                        >
-                          Website
-                        </FormLabel>
-                        <Input
-                          {...field}
-                          id="website"
-                          fontSize="sm"
-                          shadow="sm"
-                          size="sm"
-                          rounded="md"
-                        />
-                        <FormErrorMessage>
-                          {form.errors.website?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                </chakra.div>
-
-                <chakra.div mb={3} flexGrow={1}>
-                  <Field name="facebook">
-                    {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={Boolean(
-                          form.errors.facebook && form.touched.facebook,
-                        )}
-                      >
-                        <FormLabel
-                          htmlFor="facebook"
-                          fontSize="sm"
-                          fontWeight="600"
-                        >
-                          Facebook
-                        </FormLabel>
-                        <Input
-                          {...field}
-                          id="facebook"
-                          fontSize="sm"
-                          shadow="sm"
-                          size="sm"
-                          rounded="md"
-                        />
-                        <FormErrorMessage>
-                          {form.errors.facebook?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                </chakra.div>
-              </HStack>
-
-              <HStack align="stretch" spacing={2}>
-                <chakra.div mb={3} flexGrow={1}>
-                  <Field name="twitter">
-                    {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={Boolean(
-                          form.errors.twitter && form.touched.twitter,
-                        )}
-                      >
-                        <FormLabel
-                          htmlFor="twitter"
-                          fontSize="sm"
-                          fontWeight="600"
-                        >
-                          Twitter
-                        </FormLabel>
-                        <Input
-                          {...field}
-                          id="twitter"
-                          fontSize="sm"
-                          shadow="sm"
-                          size="sm"
-                          rounded="md"
-                        />
-                        <FormErrorMessage>
-                          {form.errors.twitter?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                </chakra.div>
-
-                <chakra.div mb={3} flexGrow={1}>
-                  <Field name="instagram">
-                    {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={Boolean(
-                          form.errors.instagram && form.touched.instagram,
-                        )}
-                      >
-                        <FormLabel
-                          htmlFor="instagram"
-                          fontSize="sm"
-                          fontWeight="600"
-                        >
-                          Instagram
-                        </FormLabel>
-                        <Input
-                          {...field}
-                          id="instagram"
-                          fontSize="sm"
-                          shadow="sm"
-                          size="sm"
-                          rounded="md"
-                        />
-                        <FormErrorMessage>
-                          {form.errors.instagram?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                </chakra.div>
-              </HStack>
-
-              {!isEditMode && (
-                <chakra.div mb={3}>
-                  <SlugField />
-                </chakra.div>
-              )}
-
-              {tagOptions.length > 0 && (
-                <chakra.div mb={3}>
-                  <Field name="tags">
-                    {({ field, form }: FieldProps) => {
-                      return (
-                        <FormControl
-                          isInvalid={Boolean(
-                            form.errors.tags && form.touched.tags,
-                          )}
-                        >
-                          <FormLabel
-                            htmlFor="tags"
-                            fontSize="sm"
-                            fontWeight="600"
-                          >
-                            Tags
-                          </FormLabel>
-                          <InputGroup size="sm">
-                            <ReactSelect
-                              isMulti
-                              isSearchable={false}
-                              menuPortalTarget={document.body}
-                              onChange={(_option, changeData) => {
-                                let newValue
-                                if (changeData.action === 'select-option') {
-                                  newValue = [...field.value, changeData.option]
-                                } else if (
-                                  changeData.action === 'remove-value' ||
-                                  changeData.action === 'pop-value'
-                                ) {
-                                  newValue = field.value.filter(
-                                    (v) =>
-                                      v.value !== changeData.removedValue.value,
-                                  )
-                                }
-                                form.setFieldValue(field.name, newValue)
-                              }}
-                              options={tagOptions.filter((t) => {
-                                return !field.value.includes(t)
-                              })}
-                              placeholder="Tags"
-                              value={field.value}
-                              isClearable={false}
-                              styles={customMultiSelectStyles}
-                            />
-                          </InputGroup>
-                          <FormErrorMessage>
-                            {form.errors.tags?.toString()}
-                          </FormErrorMessage>
-                        </FormControl>
-                      )
-                    }}
-                  </Field>
-                </chakra.div>
-              )}
-
-              <chakra.div>
-                <Field name="seekingVolunteers">
-                  {({ field, form }: FieldProps) => (
-                    <FormControl
-                      isInvalid={Boolean(
-                        form.errors.seekingVolunteers &&
-                          form.touched.seekingVolunteers,
-                      )}
-                    >
-                      <Checkbox
-                        isChecked={field.value}
-                        id="seekingVolunteers"
-                        onChange={field.onChange}
-                        colorScheme="green"
-                      >
-                        Seeking volunteers
-                      </Checkbox>
-                      <Text color="gray.500" fontSize="sm">
-                        Would this group benefit from having additional
-                        volunteers?
-                      </Text>
-                      <FormErrorMessage>
-                        {form.errors.seekingVolunteers?.toString()}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </chakra.div>
-            </chakra.div>
-
-            <Box p="0.75rem" bg="gray.50" textAlign="right">
-              <Tooltip
-                isDisabled={props.dirty}
-                borderRadius="md"
-                label="You haven't made any changes yet"
-              >
-                <Button
-                  isDisabled={!props.isValid || !props.dirty}
-                  isLoading={props.isSubmitting}
-                  size="md"
-                  type="submit"
-                  variant="rw"
-                >
-                  Submit
-                </Button>
-              </Tooltip>
-            </Box>
-          </Form>
-        )
-      }}
-    </Formik>
+        <div className="bg-gray-50 p-3 text-right">
+          <Button type="submit" disabled={!isValid || !isDirty || isSubmitting}>
+            {isSubmitting && <AiOutlineLoading className="animate-spin" />}{' '}
+            Submit
+          </Button>
+        </div>
+      </form>
+    </Form>
   )
 }
 

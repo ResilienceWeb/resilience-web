@@ -7,7 +7,7 @@ test('Titles are displayed', async ({ page }) => {
 
   await expect(
     page.getByRole('heading', {
-      name: 'Celebrating place-based community action',
+      name: 'Empowering place-based community action',
     }),
   ).toBeVisible()
 

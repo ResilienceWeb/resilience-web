@@ -1,26 +1,27 @@
+'use client'
 import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import posthog from 'posthog-js'
+import { AiOutlineLoading } from 'react-icons/ai'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { Card, CardContent } from '@components/ui/card'
+import { Button } from '@components/ui/button'
 import {
-  chakra,
-  Heading,
-  Text,
-  Button,
-  Box,
+  Form,
   FormControl,
-  FormErrorMessage,
+  FormDescription,
+  FormField,
+  FormItem,
   FormLabel,
-  FormHelperText,
-  Input,
-  InputGroup,
-  InputRightAddon,
-  Textarea,
-} from '@chakra-ui/react'
-import { Formik, Form, Field, useFormikContext } from 'formik'
-import type { FieldProps } from 'formik'
+  FormMessage,
+} from '@components/ui/form'
+import { Input } from '@components/ui/input'
+import { Textarea } from '@components/ui/textarea'
 import LogoImage from '../../../public/logo.png'
-import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
+import { urlValidator } from '@helpers/formValidation'
 import useCreateWeb from '@hooks/webs/useCreateWeb'
 import { generateSlug } from '@helpers/utils'
 import Faq from '@components/faq'
@@ -34,94 +35,75 @@ const faqs = [
   {
     question: '💵 How much does it cost to use the platform?',
     answer: (
-      <Text>
+      <p className="text-muted-foreground">
         It's completely free! However we rely on grants, the hard work of
         volunteers and donations from people like you. If you can support the
         project with as little as £3/month we would be hugely grateful. Go to{' '}
-        <a href="https://opencollective.com/resilience-web">
-          {' '}
+        <a
+          href="https://opencollective.com/resilience-web"
+          className="text-primary hover:underline"
+        >
           our Open Collective
         </a>{' '}
         to donate.
-      </Text>
+      </p>
     ),
   },
   {
     question: '❓ I have some questions',
     answer: (
-      <Text>
+      <p className="text-muted-foreground">
         Get in touch with us anytime via the button at the top right of the
         page. We are happy to set up a call to take you through what the
         platform can offer and listen to your feedback if you have any. You
         might also find the answer to your questions in{' '}
-        <a href="https://resilienceweb.gitbook.io/knowledgebase">
+        <a
+          href="https://resilienceweb.gitbook.io/knowledgebase"
+          className="text-primary hover:underline"
+        >
           our Knowledgebase
         </a>
         .
-      </Text>
+      </p>
     ),
   },
 ]
 
-const SlugField = () => {
-  const {
-    values: { title },
-    setFieldValue,
-  } = useFormikContext<any>()
+const formSchema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  slug: z.string().min(1, 'Slug is required').refine(urlValidator, {
+    message: 'Please only use letters, numbers and dashes',
+  }),
+  description: z.string().optional(),
+})
 
-  useEffect(() => {
-    const generatedSlug = generateSlug(title)
-
-    if (title.trim() !== '') {
-      setFieldValue('slug', generatedSlug)
-    }
-  }, [setFieldValue, title])
-
-  return (
-    <Field name="slug" validate={urlValidator}>
-      {({ field, form }: FieldProps) => {
-        return (
-          <FormControl
-            isInvalid={Boolean(form.errors.slug && form.touched.slug)}
-          >
-            <FormLabel htmlFor="slug" fontSize="sm" fontWeight="600">
-              Link to web
-            </FormLabel>
-            <InputGroup size="sm">
-              <Input
-                {...field}
-                id="slug"
-                fontSize="sm"
-                shadow="sm"
-                size="sm"
-                rounded="md"
-                placeholder="e.g. york"
-              />
-              <InputRightAddon
-                bg="gray.50"
-                color="gray.500"
-                rounded="md"
-                userSelect="none"
-              >
-                {`.resilienceweb.org.uk`}
-              </InputRightAddon>
-            </InputGroup>
-            <FormErrorMessage>{form.errors.slug?.toString()}</FormErrorMessage>
-            <FormHelperText>
-              This will form part of the link to your web, e.g.
-              york.resilienceweb.org.uk
-            </FormHelperText>
-          </FormControl>
-        )
-      }}
-    </Field>
-  )
-}
+type FormValues = z.infer<typeof formSchema>
 
 const WebCreation = () => {
   const { createWeb, isPending, isSuccess, isError, errorMessage } =
     useCreateWeb()
   const router = useRouter()
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: '',
+      slug: '',
+      description: '',
+    },
+  })
+
+  const { watch, setValue } = form
+
+  // Watch the title field to generate slug
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name === 'title' && value.title) {
+        setValue('slug', generateSlug(value.title))
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [watch, setValue])
 
   useEffect(() => {
     posthog.capture('web-creation-start')
@@ -131,139 +113,119 @@ const WebCreation = () => {
     if (isSuccess) {
       router.push('/admin?firstTime=true')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess])
+  }, [isSuccess, router])
 
   const onSubmit = useCallback(
-    (data) => {
-      createWeb({
-        ...data,
-      })
+    (data: FormValues) => {
+      createWeb(data)
     },
     [createWeb],
   )
 
   return (
-    <>
-      <Box display="flex" justifyContent="center" mb="2rem">
+    <div className="space-y-8">
+      <div className="flex justify-center">
         <Image alt="Resilience Web CIC logo" src={LogoImage} />
-      </Box>
-      <Heading as="h1">Welcome 👋</Heading>
-      <Text mt="1rem">
-        You are taking the first steps in setting up a Resilience Web for your
-        area, well done! Once you fill out the details below, you will be able
-        to start adding listings, inviting collaborators to your team and so
-        much more.
-      </Text>
-      <Box
-        shadow="base"
-        rounded={[null, 'md']}
-        overflow={{ sm: 'hidden' }}
-        bg="white"
-        padding="1rem"
-        mt="1rem"
-      >
-        <Formik
-          initialValues={{
-            title: '',
-            slug: '',
-            description: '',
-          }}
-          enableReinitialize
-          onSubmit={onSubmit}
-        >
-          {(_props) => {
-            return (
-              <Form>
-                <chakra.div mb={3}>
-                  <Field
-                    name="title"
-                    type="title"
-                    validate={fieldRequiredValidator}
-                  >
-                    {({ field, form }: FieldProps) => (
-                      <FormControl isInvalid={Boolean(form.errors.title)}>
-                        <FormLabel htmlFor="title" fontWeight="600">
-                          Web title
-                        </FormLabel>
+      </div>
+
+      <div className="space-y-4">
+        <h1 className="text-3xl font-bold tracking-tight">Welcome 👋</h1>
+        <p className="text-muted-foreground">
+          You are taking the first steps in setting up a Resilience Web for your
+          area, well done! Once you fill out the details below, you will be able
+          to start adding listings, inviting collaborators to your team and so
+          much more.
+        </p>
+      </div>
+
+      <Card>
+        <CardContent className="pt-6">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold">Web title</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="text-sm shadow-sm"
+                        placeholder="e.g. York"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="slug"
+                render={({ field }) => (
+                  <FormItem className="max-w-lg">
+                    <FormLabel className="text-sm font-semibold">
+                      Link to web
+                    </FormLabel>
+                    <FormControl>
+                      <div className="flex rounded-md shadow-sm">
                         <Input
                           {...field}
-                          id="title"
-                          background="white"
-                          fontSize="sm"
-                          shadow="sm"
-                          size="sm"
-                          rounded="md"
-                          placeholder="e.g. York"
+                          className="rounded-r-none text-sm"
+                          placeholder="e.g. york"
                         />
-                        <FormErrorMessage>
-                          {form.errors.title?.toString()}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                </chakra.div>
-
-                <chakra.div mb={3} maxW="500px">
-                  <SlugField />
-                </chakra.div>
-
-                <chakra.div mb="2rem">
-                  <Field name="description" type="text">
-                    {({ field, form }: FieldProps) => (
-                      <FormControl
-                        isInvalid={Boolean(
-                          form.errors.description && form.touched.description,
-                        )}
-                      >
-                        <FormLabel
-                          htmlFor="description"
-                          fontSize="sm"
-                          fontWeight="600"
-                        >
-                          Description (optional)
-                        </FormLabel>
-                        <Textarea
-                          {...field}
-                          id="description"
-                          fontSize="sm"
-                          shadow="sm"
-                          size="sm"
-                          rounded="md"
-                        />
-                        <FormErrorMessage>
-                          {form.errors.description?.toString()}
-                        </FormErrorMessage>
-                        <FormHelperText>
-                          This can also be edited later.
-                        </FormHelperText>
-                      </FormControl>
-                    )}
-                  </Field>
-                </chakra.div>
-
-                {isError && errorMessage && (
-                  <Text color="red.500" fontSize="0.875rem">
-                    {`${errorMessage}`}
-                  </Text>
+                        <span className="inline-flex items-center rounded-r-md border border-l-0 border-input bg-muted px-3 text-sm text-muted-foreground">
+                          .resilienceweb.org.uk
+                        </span>
+                      </div>
+                    </FormControl>
+                    <FormDescription>
+                      This will form part of the link to your web, e.g.
+                      york.resilienceweb.org.uk
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
                 )}
+              />
 
-                <Button mt={4} variant="rw" isLoading={isPending} type="submit">
-                  Get started
-                </Button>
-              </Form>
-            )
-          }}
-        </Formik>
-      </Box>
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold">
+                      Description (optional)
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea {...field} className="text-sm shadow-sm" />
+                    </FormControl>
+                    <FormDescription>
+                      This can also be edited later.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-      <Box mt="4rem" mb="2rem">
-        <Heading as="h3" fontSize="1.5rem" mb="1rem">
-          Need help?
-        </Heading>
+              {isError && errorMessage && (
+                <p className="text-sm text-destructive">{`${errorMessage}`}</p>
+              )}
+
+              <Button type="submit" disabled={isPending}>
+                {isPending && <AiOutlineLoading className="animate-spin" />} Get
+                started
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold">Need help?</h2>
         <Faq content={faqs} />
-      </Box>
-    </>
+      </div>
+    </div>
   )
 }
 

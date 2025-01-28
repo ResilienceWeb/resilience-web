@@ -1,7 +1,8 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
-import { Center, Box, Stack, Button, Spinner } from '@chakra-ui/react'
+import { Button } from '@components/ui/button'
+import { Spinner } from '@components/ui/spinner'
 import { HiArrowLeft } from 'react-icons/hi'
 import useCreateListing from '@hooks/listings/useCreateListing'
 import useCategories from '@hooks/categories/useCategories'
@@ -29,45 +30,25 @@ export default function NewListingPage() {
   )
 
   if (!categories || isCategoriesPending) {
-    return (
-      <Center height="50vh">
-        <Spinner size="xl" />
-      </Center>
-    )
+    return <Spinner />
   }
 
   return (
-    <Box
-      px={{
-        base: 0,
-        md: '10',
-      }}
-      py={4}
-      maxWidth="5xl"
-      mx="auto"
-    >
+    <div className="mx-auto max-w-5xl px-0 py-4 md:px-10">
       <Button
-        leftIcon={<HiArrowLeft />}
-        name="Back"
-        mb={2}
-        ml={2}
-        onClick={goBack}
         variant="link"
-        color="gray.700"
+        className="mb-2 ml-2 text-gray-700"
+        onClick={goBack}
       >
+        <HiArrowLeft className="mr-2 h-4 w-4" />
         Back
       </Button>
 
-      <Box
-        mt={4}
-        shadow="base"
-        rounded={[null, 'md']}
-        overflow={{ sm: 'hidden' }}
-      >
-        <Stack bg="white" spacing={6}>
+      <div className="mt-4 overflow-hidden rounded-md bg-white shadow-md sm:rounded-md">
+        <div className="space-y-6">
           <ListingForm categories={categories} handleSubmit={handleSubmit} />
-        </Stack>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }

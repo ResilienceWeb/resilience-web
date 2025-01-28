@@ -1,11 +1,9 @@
-'use client'
-import { Box } from '@chakra-ui/react'
 import WebCreation from '@components/admin/web-creation'
 
 export default function WelcomePage() {
   return (
-    <Box px={{ base: '4', md: '10' }} py={4} maxWidth="3xl" mx="auto">
+    <div className="mx-auto max-w-3xl px-4 py-4 md:px-10">
       <WebCreation />
-    </Box>
+    </div>
   )
 }

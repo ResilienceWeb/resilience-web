@@ -1,43 +1,37 @@
-import { useMemo, memo } from 'react'
+'use client'
+
+import { useMemo, memo, useState } from 'react'
 import Image from 'next/legacy/image'
-import NextLink from 'next/link'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import {
-  Box,
-  Flex,
-  Text,
-  Stack,
-  HStack,
-  Collapse,
-  Link,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Button,
-  IconButton,
-  useDisclosure,
-  Icon,
-} from '@chakra-ui/react'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import { HiChevronRight, HiOutlineX } from 'react-icons/hi'
-
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from '@components/ui/navigation-menu'
+import { Button } from '@components/ui/button'
 import useWebsPublic from '@hooks/webs/useWebsPublic'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 import LogoImage from '../../public/logo.png'
-import styles from './Nav.module.scss'
 
 interface NavItem {
   label: string
   subLabel?: string
   children?: Array<NavItem>
   href?: string
+  isExternal?: boolean
 }
 
 export default function MainNav() {
-  const { isOpen, onToggle } = useDisclosure()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
-
   const { webs } = useWebsPublic()
 
   const navItems = useMemo(() => {
@@ -84,218 +78,194 @@ export default function MainNav() {
 
   return (
     <>
-      <Flex
-        bg="white"
-        color="gray.600"
-        display="flex"
-        justifyContent="center"
-        borderBottom={1}
-        borderStyle="solid"
-        borderColor="gray.200"
-      >
-        <Flex
-          minH={'60px'}
-          py={{ base: 2 }}
-          px={{ base: 4 }}
-          alignItems="center"
-          justifyContent="space-between"
-          flex={{ base: 1 }}
-          maxW="7xl"
-        >
-          <Flex ml={{ base: -2 }} display={{ base: 'flex', md: 'none' }}>
-            <IconButton
-              onClick={onToggle}
-              icon={isOpen ? <HiOutlineX /> : <RxHamburgerMenu />}
-              variant={'ghost'}
-              aria-label={'Toggle Navigation'}
-              fontSize="1.5rem"
-            />
-          </Flex>
-          <Flex alignItems="center">
-            <Flex>
-              <Link as={NextLink} href="/">
-                <button>
-                  <Image
-                    alt="Resilience Web CIC logo"
-                    src={LogoImage}
-                    width="145"
-                    height="50"
-                    unoptimized
-                  />
-                </button>
+      <div className="flex justify-center border-b border-gray-200 bg-white text-gray-600">
+        <div className="flex min-h-[60px] w-full max-w-7xl flex-1 items-center justify-between px-4 py-2">
+          <div className="flex items-center md:hidden">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-2xl hover:bg-gray-100"
+              aria-label="Toggle Navigation"
+            >
+              {isMobileMenuOpen ? <HiOutlineX /> : <RxHamburgerMenu />}
+            </button>
+          </div>
+
+          <div className="flex items-center">
+            <div className="flex">
+              <Link href="/">
+                <Image
+                  alt="Resilience Web CIC logo"
+                  src={LogoImage}
+                  width="145"
+                  height="50"
+                  unoptimized
+                />
               </Link>
 
-              <Flex
-                display={{ base: 'none', md: 'flex' }}
-                alignItems="center"
-                ml="2.5rem"
-                mr="0.5rem"
-              >
+              <div className="ml-10 mr-2 hidden items-center md:flex">
                 <DesktopNav currentPathname={pathname} navItems={navItems} />
-              </Flex>
-            </Flex>
-          </Flex>
-          <HStack>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4">
             <GetInTouchButton />
-            <Link as={NextLink} href={`${REMOTE_URL}/admin`}>
-              <Button colorScheme="blue" variant="solid" size="md" mr={-2}>
+            <Link href={`${REMOTE_URL}/admin`}>
+              <Button variant="default" size="default">
                 Admin login
               </Button>
             </Link>
-          </HStack>
-        </Flex>
-      </Flex>
-      <Collapse in={isOpen} animateOpacity>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={`${
+          isMobileMenuOpen ? 'block' : 'hidden'
+        } border-b border-gray-200 bg-white md:hidden`}
+      >
         <MobileNav navItems={navItems} />
-      </Collapse>
+      </div>
     </>
   )
 }
 
-type DesktopNavProps = {
+interface DesktopNavProps {
   currentPathname: string
   navItems: Array<NavItem>
 }
 
-// eslint-disable-next-line react/display-name
 const DesktopNav = memo(({ currentPathname, navItems }: DesktopNavProps) => {
   return (
-    <Stack direction={'row'} spacing={8}>
-      {navItems.map((navItem) => (
-        <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
-            <PopoverTrigger>
-              <NextLink href={navItem.href} passHref>
-                <button
-                  className={`${styles.navLink} ${
-                    currentPathname === navItem.href ? styles.active : ''
-                  }`}
-                >
-                  {navItem.label}
-                </button>
-              </NextLink>
-            </PopoverTrigger>
-
-            {navItem.children && (
-              <PopoverContent
-                border={0}
-                boxShadow="2xl"
-                bg="white"
-                p={2}
-                rounded="xl"
+    <NavigationMenu>
+      <NavigationMenuList>
+        {navItems.map((navItem) => (
+          <NavigationMenuItem key={navItem.label}>
+            {navItem.children ? (
+              <>
+                <NavigationMenuTrigger>{navItem.label}</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
+                    {navItem.children.map((child) => (
+                      <ListItem
+                        key={child.label}
+                        title={child.label}
+                        href={child.href}
+                      />
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </>
+            ) : (
+              <NavigationMenuLink
+                className={`${navigationMenuTriggerStyle()} ${
+                  currentPathname !== '/' &&
+                  navItem.href.includes(currentPathname)
+                    ? 'text-green-700'
+                    : ''
+                }`}
+                target={navItem.isExternal ? '_blank' : undefined}
+                rel={navItem.isExternal ? 'noopener noreferrer' : undefined}
+                href={navItem.href}
               >
-                <Stack>
-                  {navItem.children.map((child) => (
-                    <DesktopSubNavItem key={child.label} {...child} />
-                  ))}
-                </Stack>
-              </PopoverContent>
+                {navItem.label}
+              </NavigationMenuLink>
             )}
-          </Popover>
-        </Box>
-      ))}
-    </Stack>
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
   )
 })
 
-type DesktopSubNavItemProps = {
-  label: string
+DesktopNav.displayName = 'DesktopNav'
+
+interface ListItemProps {
+  title: string
   href?: string
 }
 
-const DesktopSubNavItem = ({ label, href }: DesktopSubNavItemProps) => {
+const ListItem = ({ title, href }: ListItemProps) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <Link
+          href={href}
+          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+        >
+          <div className="text-md font-semibold leading-none">{title}</div>
+        </Link>
+      </NavigationMenuLink>
+    </li>
+  )
+}
+
+const MobileNav = ({ navItems }: { navItems: NavItem[] }) => {
+  const pathname = usePathname()
+
+  return (
+    <div className="p-4">
+      {navItems.map((navItem) => (
+        <MobileNavItem key={navItem.label} {...navItem} pathname={pathname} />
+      ))}
+    </div>
+  )
+}
+
+const MobileNavItem = ({
+  label,
+  children,
+  href,
+  isExternal,
+  pathname,
+}: NavItem & { pathname: string }) => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  if (children) {
+    return (
+      <div className="space-y-4">
+        <button
+          className="flex w-full items-center justify-between py-2"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span>{label}</span>
+          <HiChevronRight
+            className={`h-6 w-6 transform transition-transform duration-200 ${
+              isOpen ? 'rotate-90' : ''
+            }`}
+          />
+        </button>
+
+        <div
+          className={`${
+            isOpen ? 'block' : 'hidden'
+          } border-l border-gray-200 pl-4`}
+        >
+          {children.map((child) => (
+            <Link
+              key={child.label}
+              href={child.href}
+              className="block py-2"
+              target={child.isExternal ? '_blank' : undefined}
+              rel={child.isExternal ? 'noopener noreferrer' : undefined}
+            >
+              {child.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <Link
       href={href}
-      role="group"
-      display="block"
-      p={2}
-      rounded="md"
-      _hover={{ bg: 'green.50' }}
+      className={`block py-2 ${pathname !== '/' && href.includes(pathname) ? 'text-green-700' : ''}`}
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
     >
-      <Stack direction="row" align="center">
-        <Box>
-          <Text
-            transition={'all .3s ease'}
-            _groupHover={{ color: 'rw.700' }}
-            fontWeight={600}
-          >
-            {label}
-          </Text>
-        </Box>
-        <Flex
-          transition={'all .3s ease'}
-          transform={'translateX(-10px)'}
-          opacity={0}
-          _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
-          justify="flex-end"
-          align="center"
-          flex={1}
-        >
-          <Icon color={'rw.700'} w={5} h={5} as={HiChevronRight} />
-        </Flex>
-      </Stack>
+      {label}
     </Link>
-  )
-}
-
-const MobileNav = ({ navItems }) => {
-  return (
-    <Stack bg="white" p={4} display={{ md: 'none' }}>
-      {navItems.map((navItem) => (
-        <MobileNavItem key={navItem.label} {...navItem} />
-      ))}
-    </Stack>
-  )
-}
-
-const MobileNavItem = ({ label, children, href }: NavItem) => {
-  const { isOpen, onToggle } = useDisclosure()
-
-  return (
-    <Stack data-testid="stack" spacing={4} onClick={children && onToggle}>
-      <Flex
-        py={2}
-        as={children ? 'button' : Link}
-        // @ts-ignore
-        href={children ? null : href}
-        justify="space-between"
-        align="center"
-        _hover={{
-          textDecoration: 'none',
-        }}
-      >
-        <Text fontWeight={600} color="gray.600">
-          {label}
-        </Text>
-        {children && (
-          <Icon
-            as={HiChevronRight}
-            transition={'all .25s ease-in-out'}
-            transform={isOpen ? 'rotate(270deg)' : 'rotate(90deg)'}
-            w={6}
-            h={6}
-          />
-        )}
-      </Flex>
-
-      <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
-        <Stack
-          mt={2}
-          pl={4}
-          borderLeft={1}
-          borderStyle="solid"
-          borderColor="gray.200"
-          align="start"
-        >
-          {children &&
-            children.map((child) => (
-              <Link key={child.label} py={2} href={child.href}>
-                {child.label}
-              </Link>
-            ))}
-        </Stack>
-      </Collapse>
-    </Stack>
   )
 }

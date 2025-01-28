@@ -3,11 +3,12 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query'
+import { Toaster } from '@components/ui/sonner'
 import Providers from './providers'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/600.css'
-import '@styles/styles.global.scss'
+import '@styles/styles.global.css'
 
 export const metadata = {
   title: 'Resilience Web',
@@ -43,6 +44,7 @@ export default async function RootLayout({
             {children}
           </HydrationBoundary>
         </Providers>
+        <Toaster />
       </body>
     </html>
   )

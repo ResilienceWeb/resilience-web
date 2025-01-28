@@ -4,5 +4,6 @@ obj
 *.*
 !*.css
 !*.scss
+playwright-report/
 
 vis-network-simplified.css

@@ -8,3 +8,8 @@ obj
 !*.jsx
 !*.mts
 !*.mjs
+trigger.config.js
+tailwind.config.js
+postcss.config.js
+next.config.js
+eslint.config.js

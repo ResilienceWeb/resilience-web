@@ -1,44 +1,43 @@
-import { Button, Flex, useDisclosure } from '@chakra-ui/react'
 import { memo, useCallback } from 'react'
 import { HiPlus } from 'react-icons/hi'
-
+import { useToggle } from 'usehooks-ts'
+import { Button } from '@components/ui/button'
 import { useAppContext } from '@store/hooks'
 import useCreateCategory from '@hooks/categories/useCreateCategory'
 import { NewCategoryDialog } from './category-dialog'
 
 const Header = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isOpen, _toggle, setIsOpen] = useToggle()
   const { mutate: createCategory } = useCreateCategory()
-
   const { selectedWebId } = useAppContext()
 
   const handleSubmit = useCallback(
     (data) => {
-      onClose()
+      setIsOpen(false)
       createCategory({
         ...data,
         webId: selectedWebId,
       })
     },
-    [createCategory, onClose, selectedWebId],
+    [createCategory, setIsOpen, selectedWebId],
   )
 
   return (
     <>
-      <Flex justifyContent="flex-end" mb={8}>
+      <div className="mb-8 flex justify-end">
         <Button
-          iconSpacing="1"
-          leftIcon={<HiPlus fontSize="1.25em" />}
-          onClick={onOpen}
-          variant="rw"
-          size="md"
+          variant="default"
+          size="default"
+          onClick={() => setIsOpen(true)}
+          className="gap-2"
         >
+          <HiPlus className="h-5 w-5" />
           New category
         </Button>
-      </Flex>
+      </div>
       <NewCategoryDialog
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={() => setIsOpen(false)}
         onSubmit={handleSubmit}
       />
     </>

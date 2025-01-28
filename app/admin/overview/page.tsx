@@ -1,18 +1,15 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import {
-  Heading,
-  Badge,
-  Center,
-  Spinner,
-  TableContainer,
   Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react'
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@components/ui/table'
+import { Badge } from '@components/ui/badge'
+import { Spinner } from '@components/ui/spinner'
 import useWebs from '@hooks/webs/useWebs'
 
 const columns = [
@@ -33,33 +30,26 @@ export default function OverviewPage() {
   const { isPending: isLoadingWebs, webs } = useWebs({ withAdminInfo: true })
 
   if (isLoadingWebs) {
-    return (
-      <Center height="50vh">
-        <Spinner size="xl" />
-      </Center>
-    )
+    return <Spinner />
   }
 
   return (
-    <>
-      <Heading mb="1.5rem">Overview</Heading>
-      <TableContainer
-        borderRadius="10px"
-        borderStyle="solid"
-        borderWidth="1px"
-        mb="2rem"
-      >
-        <Table fontSize="sm" background="#ffffff">
-          <Thead bg="gray.50">
-            <Tr>
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight">Overview</h1>
+        <p className="text-muted-foreground">Manage Resilience Web instances</p>
+      </div>
+
+      <div className="rounded-lg border bg-card">
+        <Table>
+          <TableHeader className="bg-muted/50">
+            <TableRow>
               {columns.map((column, index) => (
-                <Th whiteSpace="nowrap" scope="col" key={index}>
-                  {column.Header}
-                </Th>
+                <TableHead key={index}>{column.Header}</TableHead>
               ))}
-            </Tr>
-          </Thead>
-          <Tbody>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {webs
               .sort(
                 (web1, web2) =>
@@ -71,41 +61,45 @@ export default function OverviewPage() {
                   web.ownerships.length + web.permissions.length
 
                 return (
-                  <Tr
+                  <TableRow
                     key={web.id}
+                    className="cursor-pointer hover:bg-muted/50"
                     onClick={() => {
                       router.push(`/admin/overview/${web.slug}`)
                     }}
-                    cursor="pointer"
-                    _hover={{
-                      bg: 'gray.100',
-                    }}
                   >
-                    <Td>{web.title}</Td>
-                    <Td>
+                    <TableCell className="font-medium">{web.title}</TableCell>
+                    <TableCell>
                       {web.published ? (
-                        <Badge colorScheme="green">Published</Badge>
+                        <Badge>Published</Badge>
                       ) : (
-                        <Badge>Private</Badge>
+                        <Badge variant="secondary">Private</Badge>
                       )}
-                    </Td>
-                    <Td>
-                      <p>
-                        <strong>{web.listings.length}</strong> listings
-                      </p>
-                      <p>
-                        <strong>{teamMembersCount}</strong>{' '}
-                        {teamMembersCount === 1
-                          ? 'team member'
-                          : 'team members'}
-                      </p>
-                    </Td>
-                  </Tr>
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-1 text-sm">
+                        <p>
+                          <span className="font-medium">
+                            {web.listings.length}
+                          </span>{' '}
+                          listings
+                        </p>
+                        <p>
+                          <span className="font-medium">
+                            {teamMembersCount}
+                          </span>{' '}
+                          {teamMembersCount === 1
+                            ? 'team member'
+                            : 'team members'}
+                        </p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
                 )
               })}
-          </Tbody>
+          </TableBody>
         </Table>
-      </TableContainer>
-    </>
+      </div>
+    </div>
   )
 }

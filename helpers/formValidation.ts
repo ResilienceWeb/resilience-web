@@ -14,9 +14,7 @@ export const emailRequiredValidator = (value: string) => {
 }
 
 export const urlValidator = (value: string) => {
-  return urlRegex.test(value)
-    ? ''
-    : 'Please only use letters, numbers and dashes'
+  return urlRegex.test(value) ? true : false
 }
 
 export const fieldRequiredValidator = (value) => {

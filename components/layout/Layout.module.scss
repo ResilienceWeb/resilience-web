@@ -13,6 +13,14 @@
     padding-inline-start: 1.25rem;
   }
 
+  ul {
+    @apply list-disc;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+
   h1 {
     font-size: 2rem;
     font-weight: 600;

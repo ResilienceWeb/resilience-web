@@ -1,17 +1,13 @@
-import {
-  TableContainer,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Button,
-  Stack,
-  useDisclosure,
-} from '@chakra-ui/react'
 import { memo, useCallback, useState } from 'react'
-
+import { Button } from '@components/ui/button'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@components/ui/table'
 import CategoryTag from '@components/category-tag'
 import useUpdateCategory from '@hooks/categories/useUpdateCategory'
 import useDeleteCategory from '@hooks/categories/useDeleteCategory'
@@ -33,7 +29,7 @@ const columns = [
 ]
 
 const List = ({ categories }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isOpen, setIsOpen] = useState(false)
   const { mutate: updateCategory } = useUpdateCategory()
   const { mutate: deleteCategory } = useDeleteCategory()
 
@@ -44,24 +40,26 @@ const List = ({ categories }) => {
 
   const handleOpen = (categoryId) => {
     setSelectedCategoryId(categoryId)
-    onOpen()
+    setIsOpen(true)
   }
+
+  const handleClose = useCallback(() => setIsOpen(false), [])
 
   const handleSubmit = useCallback(
     (data) => {
-      onClose()
+      handleClose()
       updateCategory({
         ...data,
         id: selectedCategoryId,
       })
     },
-    [onClose, updateCategory, selectedCategoryId],
+    [handleClose, updateCategory, selectedCategoryId],
   )
 
   const handleDelete = useCallback(() => {
-    onClose()
+    handleClose()
     deleteCategory({ id: selectedCategoryId })
-  }, [deleteCategory, onClose, selectedCategoryId])
+  }, [deleteCategory, handleClose, selectedCategoryId])
 
   if (!categories) {
     return null
@@ -69,71 +67,66 @@ const List = ({ categories }) => {
 
   return (
     <>
-      <TableContainer
-        borderRadius="10px"
-        borderStyle="solid"
-        borderWidth="1px"
-        mb="2rem"
-      >
-        <Table fontSize="sm" background="#ffffff">
-          <Thead bg={'gray.50'}>
-            <Tr>
+      <div className="mb-8 rounded-lg border bg-white">
+        <Table>
+          <TableHeader className="bg-gray-50">
+            <TableRow>
               {columns.map((column, index) => (
-                <Th whiteSpace="nowrap" scope="col" key={index}>
+                <TableHead key={index} className="whitespace-nowrap">
                   {column.Header}
-                </Th>
+                </TableHead>
               ))}
-              <Th />
-            </Tr>
-          </Thead>
-          <Tbody>
+              <TableHead />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {categories.map((row) => (
-              <Tr key={row.id}>
+              <TableRow key={row.id}>
                 {columns.map((column, index) => {
                   const cell = row[column.accessor]
 
                   if (column.accessor === 'listings') {
                     return (
-                      <Td key={index}>
+                      <TableCell key={index}>
                         <strong>{cell.length}</strong>
-                      </Td>
+                      </TableCell>
                     )
                   }
 
                   if (column.accessor === 'color') {
                     return (
-                      <Td key={index} width="100px">
+                      <TableCell key={index} className="w-[100px]">
                         <CategoryTag colorHex={cell}>{`#${cell}`}</CategoryTag>
-                      </Td>
+                      </TableCell>
                     )
                   }
 
                   return (
-                    <Td key={index} maxWidth="100px">
+                    <TableCell key={index} className="max-w-[100px]">
                       {cell}
-                    </Td>
+                    </TableCell>
                   )
                 })}
-                <Td textAlign="right" maxWidth="80px">
-                  <Stack direction="column" spacing={2}>
+                <TableCell className="max-w-[80px] text-right">
+                  <div className="flex flex-col space-y-2">
                     <Button
-                      colorScheme="blue"
-                      onClick={() => handleOpen(row.id)}
+                      variant="outline"
                       size="sm"
+                      onClick={() => handleOpen(row.id)}
                     >
                       Edit
                     </Button>
-                  </Stack>
-                </Td>
-              </Tr>
+                  </div>
+                </TableCell>
+              </TableRow>
             ))}
-          </Tbody>
+          </TableBody>
         </Table>
-      </TableContainer>
+      </div>
       <UpdateCategoryDialog
         category={selectedCategory}
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={handleClose}
         onDelete={handleDelete}
         onSubmit={handleSubmit}
       />

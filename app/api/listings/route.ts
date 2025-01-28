@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client'
-import { auth } from '@auth'
 import prisma from '@prisma-rw'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
@@ -76,12 +75,6 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
-    const session = await auth()
-
-    if (!session?.user) {
-      return new Response('Not authorized', { status: 401 })
-    }
-
     const formData = await request.formData()
     const tags = formData.get('tags')
     const relations = formData.get('relations')

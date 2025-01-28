@@ -1,7 +1,6 @@
 import { memo, useMemo, useCallback, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Select from 'react-select'
-import { Text } from '@chakra-ui/react'
 import type { Options } from 'react-select'
 
 import { useAppContext } from '@store/hooks'
@@ -77,9 +76,7 @@ const WebSelector = () => {
 
   if (webOptions.length === 1) {
     return (
-      <Text fontWeight={600} fontSize="lg" color="gray.700">
-        {webOptions[0].label}
-      </Text>
+      <p className="text-lg font-bold text-gray-700">{webOptions[0].label}</p>
     )
   }
 

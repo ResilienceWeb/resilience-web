@@ -1,24 +1,15 @@
 'use client'
-import { Box, Heading, useBreakpointValue, Flex } from '@chakra-ui/react'
 import Layout from '@components/layout'
 
 export default function About({ page, contentHtml }) {
   return (
     <Layout applyPostStyling>
-      <Flex justifyContent="center">
-        <Box
-          maxWidth={useBreakpointValue({
-            base: '90%',
-            md: '650px',
-          })}
-          mb={8}
-        >
-          <Heading as="h1" mb={8}>
-            {page.title}
-          </Heading>
+      <div className="flex justify-center">
+        <div className="mb-8 w-full max-w-[650px] px-4 sm:px-6 lg:px-8">
+          <h1 className="mb-8 text-2xl font-bold">{page.title}</h1>
           <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-        </Box>
-      </Flex>
+        </div>
+      </div>
     </Layout>
   )
 }

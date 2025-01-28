@@ -1,41 +1,45 @@
-import { Button, Flex, useDisclosure } from '@chakra-ui/react'
 import { memo, useCallback } from 'react'
 import { HiPlus } from 'react-icons/hi'
+import { useToggle } from 'usehooks-ts'
 import { useAppContext } from '@store/hooks'
-
+import { Button } from '@components/ui/button'
 import useCreateTag from '@hooks/tags/useCreateTag'
 import { NewTagDialog } from './tag-dialog'
 
 const Header = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isOpen, _toggle, setIsOpen] = useToggle()
   const { mutate: createTag } = useCreateTag()
   const { selectedWebId } = useAppContext()
 
   const handleSubmit = useCallback(
     (data) => {
-      onClose()
+      setIsOpen(false)
       createTag({
         ...data,
         webId: selectedWebId,
       })
     },
-    [createTag, onClose, selectedWebId],
+    [createTag, setIsOpen, selectedWebId],
   )
 
   return (
     <>
-      <Flex justifyContent="flex-end" mb={8}>
+      <div className="mb-8 flex justify-end">
         <Button
-          iconSpacing="1"
-          leftIcon={<HiPlus fontSize="1.25em" />}
-          onClick={onOpen}
-          variant="rw"
-          size="md"
+          variant="default"
+          size="default"
+          onClick={() => setIsOpen(true)}
+          className="gap-2"
         >
+          <HiPlus className="h-5 w-5" />
           New tag
         </Button>
-      </Flex>
-      <NewTagDialog isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} />
+      </div>
+      <NewTagDialog
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onSubmit={handleSubmit}
+      />
     </>
   )
 }

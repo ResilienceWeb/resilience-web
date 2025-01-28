@@ -1,21 +1,33 @@
 import { useCallback, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import {
-  Text,
-  InputGroup,
-  Input,
-  InputRightElement,
+  Form,
   FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  Button,
-} from '@chakra-ui/react'
-import { Formik, Form, Field } from 'formik'
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@components/ui/form'
+import { Input } from '@components/ui/input'
 import { useReCaptcha } from 'next-recaptcha-v3'
+import { Button } from '@components/ui/button'
 
-import { fieldRequiredValidator } from '@helpers/formValidation'
+const FormSchema = z.object({
+  email: z.string().min(2, {
+    message: 'You forgot to enter your email :)',
+  }),
+})
 
 const SignupForm = () => {
   const { executeRecaptcha } = useReCaptcha()
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: '',
+    },
+  })
+
   const [isSuccess, setIsSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState()
 
@@ -43,81 +55,50 @@ const SignupForm = () => {
   )
 
   return (
-    <Formik
-      initialValues={{
-        email: '',
-      }}
-      onSubmit={(values, actions) => {
-        actions.setSubmitting(false)
-        void onSubmit(values)
-      }}
-    >
-      {(props) => (
-        <Form>
-          <InputGroup size="md" width="26rem">
-            <Field name="email" validate={fieldRequiredValidator} flex={1}>
-              {({ field, form }) => (
-                <FormControl isInvalid={form.errors.email}>
-                  <Input
-                    {...field}
-                    type="email"
-                    id="email"
-                    placeholder="Your email address"
-                    background="white"
-                    textColor="gray.900"
-                    autoCapitalize="off"
-                    autoCorrect="off"
-                    _placeholder={{ color: 'gray.700' }}
-                  />
-                  <FormErrorMessage>
-                    You forgot to enter your email :)
-                  </FormErrorMessage>
-                  {isSuccess && (
-                    <FormHelperText fontWeight={600} textColor="rw.700">
-                      Thanks! You're now on our mailing list 🙌
-                    </FormHelperText>
-                  )}
-                  {errorMessage && (
-                    <FormHelperText fontWeight={600} textColor="red.600">
-                      {errorMessage}
-                    </FormHelperText>
-                  )}
-                </FormControl>
+    <Form {...form}>
+      <form
+        className="flex w-full items-start md:w-[450px]"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem className="w-full md:w-[250px]">
+              <FormControl>
+                <Input
+                  {...field}
+                  className="h-10 w-full rounded-r-none"
+                  type="email"
+                  id="email"
+                  placeholder="Your email address"
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                />
+              </FormControl>
+              <FormMessage />
+              {isSuccess && (
+                <p className="font-semibold text-green-700">
+                  Thanks! You're now on our mailing list 🙌
+                </p>
               )}
-            </Field>
-            <InputRightElement width="9rem" justifyContent="flex-end">
-              <Button
-                type="submit"
-                h="100%"
-                size="md"
-                color="white"
-                borderLeftRadius="none"
-                borderRightRadius="md"
-                border="none"
-                cursor="pointer"
-                fontWeight={600}
-                isDisabled={!props.isValid}
-                variant="rw"
-              >
-                Submit
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-          <Text
-            className="google-recaptcha-text"
-            mt="0.25rem"
-            style={{
-              fontSize: '10px',
-            }}
-          >
-            This site is protected by reCAPTCHA and the Google{' '}
-            <a href="https://policies.google.com/privacy">Privacy Policy</a> and{' '}
-            <a href="https://policies.google.com/terms">Terms of Service</a>{' '}
-            apply.
-          </Text>
-        </Form>
-      )}
-    </Formik>
+              {errorMessage && <p className="text-red-700">{errorMessage}</p>}
+            </FormItem>
+          )}
+        ></FormField>
+        <Button
+          type="submit"
+          className="h-10 cursor-pointer rounded-l-none rounded-r-md border-none text-white"
+        >
+          Submit
+        </Button>
+      </form>
+      <p className="google-recaptcha-text mt-1 !text-[10px]">
+        This site is protected by reCAPTCHA and the Google{' '}
+        <a href="https://policies.google.com/privacy">Privacy Policy</a> and{' '}
+        <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+      </p>
+    </Form>
   )
 }
 

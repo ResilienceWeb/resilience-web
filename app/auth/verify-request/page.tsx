@@ -1,31 +1,14 @@
-import { Flex, Box, Heading } from '@chakra-ui/react'
 import styles from '../auth.module.scss'
 
 export default function VerifyRequest() {
   return (
     <div className={styles.root}>
-      <Flex
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
-      >
-        <Box
-          bgColor="#ffffff"
-          p={12}
-          borderRadius={12}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-        >
-          <Heading as="h1" mb={4}>
-            Check your email
-          </Heading>
-
+      <div className="flex h-screen flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center rounded-xl bg-white p-12">
+          <h1 className="mb-4 text-2xl font-bold">Check your email</h1>
           <p>A sign in link has been sent to your email address.</p>
-        </Box>
-      </Flex>
+        </div>
+      </div>
     </div>
   )
 }

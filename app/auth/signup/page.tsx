@@ -2,36 +2,31 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
-import NextLink from 'next/link'
-import { Button, Input, Flex, Box, Text, Center, Link } from '@chakra-ui/react'
+import Link from 'next/link'
+import { Button } from '@components/ui/button'
+import { Input } from '@components/ui/input'
 import Image from 'next/legacy/image'
 import LogoImage from '../../../public/logo.png'
 import styles from '../auth.module.scss'
 
-export default function SignIn() {
+export default function SignUp() {
   const [error, setError] = useState('')
   const router = useRouter()
 
   return (
     <div className={styles.root}>
-      <Flex
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
-      >
-        <Box bgColor="#ffffff" p={12} borderRadius={12} mb="2rem" width="500px">
-          <Box mb="1rem" display="flex" justifyContent="center">
-            <Image
-              alt="Resilience Web logo"
-              src={LogoImage}
-              width="306"
-              height="104"
-            />
-          </Box>
-          <Center mb="2rem">
-            <Text fontSize="md">Welcome! Enter your email to get started:</Text>
-          </Center>
+      <div className="flex min-h-screen flex-col items-center justify-center px-4">
+        <div className="mb-6 w-full max-w-[500px] rounded-xl bg-white p-6 sm:mb-8 sm:p-10">
+          <div className="mb-4 flex justify-center">
+            <div className="relative h-[70px] w-[206px] sm:h-[104px] sm:w-[306px]">
+              <Image alt="Resilience Web logo" src={LogoImage} priority />
+            </div>
+          </div>
+          <div className="mb-6 flex justify-center sm:mb-8">
+            <p className="text-center text-sm text-gray-600 sm:text-base">
+              Welcome! Enter your email to get started:
+            </p>
+          </div>
           <form
             onSubmit={async (e) => {
               try {
@@ -47,33 +42,43 @@ export default function SignIn() {
                 router.push(response?.url ?? '/')
               } catch (error) {
                 setError(
-                  e instanceof Error ? e.message : 'An unknown error occurred.',
+                  error instanceof Error
+                    ? error.message
+                    : 'An unknown error occurred.',
                 )
               }
             }}
           >
-            <label htmlFor="email">
-              Email
-              <Input type="email" id="email" name="email" />
-            </label>
-            <Button type="submit" mt={2} width="100%" variant="rw">
+            <div className="space-y-1.5">
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-700 sm:text-base"
+              >
+                Email
+              </label>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email address"
+              />
+            </div>
+            <Button type="submit" className="mt-4 w-full">
               Sign up
             </Button>
-            {error}
+            {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
           </form>
-        </Box>
-        <Box bgColor="#ffffff" p={6} borderRadius={12} width="500px">
-          Not a member of Resilience Web?{' '}
+        </div>
+        <div className="w-full max-w-[500px] rounded-xl bg-white p-4 text-sm sm:p-6 sm:text-base">
+          <span>Already have an account? </span>
           <Link
-            as={NextLink}
             href="/auth/signin"
-            color="rw.900"
-            _hover={{ color: 'rw.700' }}
+            className="font-medium text-green-700 transition-colors hover:text-green-600"
           >
-            Sign up
+            Sign in
           </Link>
-        </Box>
-      </Flex>
+        </div>
+      </div>
     </div>
   )
 }

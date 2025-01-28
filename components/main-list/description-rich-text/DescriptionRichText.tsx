@@ -1,5 +1,4 @@
 import { memo } from 'react'
-import DOMPurify from 'dompurify'
 import styles from './DescriptionRichText.module.scss'
 
 const DescriptionRichText = ({ html }) => {
@@ -7,7 +6,7 @@ const DescriptionRichText = ({ html }) => {
     <div
       className={styles.description}
       dangerouslySetInnerHTML={{
-        __html: DOMPurify.sanitize(html),
+        __html: html,
       }}
     ></div>
   )

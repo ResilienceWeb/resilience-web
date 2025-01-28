@@ -1,15 +1,6 @@
-import {
-  Container,
-  Flex,
-  Heading,
-  Text,
-  Button,
-  Box,
-  Icon,
-  Link,
-} from '@chakra-ui/react'
+import Link from 'next/link'
 import { FaDiscord } from 'react-icons/fa'
-
+import { Button } from '@components/ui/button'
 import SignupForm from '@components/signup-form'
 import useIsMobile from '@hooks/application/useIsMobile'
 
@@ -17,52 +8,35 @@ const JoinTheCommunity = () => {
   const isMobile = useIsMobile()
 
   return (
-    <Container maxW="7xl">
-      <Flex justifyContent="flex-start" width="100%" my="3rem">
-        {!isMobile && <CommunityIcon />}
-        <Flex
-          direction="column"
-          px={{ base: '0', md: '1rem' }}
-          alignItems="flex-start"
-          justifyContent="flex-start"
-        >
-          <Text fontSize="2xl" color="blackAlpha.700" fontWeight="600">
-            Want to get involved?
-          </Text>
-          <Heading as="h2" fontSize="2xl">
-            Keep up to date with new features, and help us with feedback and
-            ideas:
-          </Heading>
-          <Heading as="h3" fontSize="2xl" mt="6">
-            1. Subscribe to our mailing list
-          </Heading>
-          <Box mt={2}>
-            <SignupForm />
-          </Box>
+    <div className="my-12 flex w-full max-w-7xl justify-start">
+      {!isMobile && <CommunityIcon />}
+      <div className="flex flex-col items-start justify-start px-0 md:px-4">
+        <h2 className="text-2xl text-gray-600">Want to get involved?</h2>
+        <h2 className="text-2xl">
+          Keep up to date with new features, and help us with feedback and
+          ideas:
+        </h2>
+        <h3 className="mb-2 mt-6 text-2xl">1. Subscribe to our mailing list</h3>
+        <SignupForm />
 
-          <Heading as="h3" fontSize="2xl" mt="6">
-            2. Attend one of our monthly assemblies
-          </Heading>
-          <Link
-            href="https://www.eventbrite.co.uk/e/resilience-web-monthly-assembly-drop-in-tickets-966287189997"
-            isExternal
-          >
-            <Button mt={2} variant="outline" size="md">
-              Book your place
-            </Button>
-          </Link>
+        <h3 className="mt-6 text-2xl">
+          2. Attend one of our monthly assemblies
+        </h3>
+        <Link href="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219">
+          <Button className="mt-2" variant="outline">
+            Book your place
+          </Button>
+        </Link>
 
-          <Heading as="h3" fontSize="2xl" mt="6">
-            3. Join our Discord community
-          </Heading>
-          <Link href="https://discord.gg/SHj2wmRDwR" isExternal>
-            <Button mt={2} variant="outline" size="md" leftIcon={<FaDiscord />}>
-              Join the Community
-            </Button>
-          </Link>
-        </Flex>
-      </Flex>
-    </Container>
+        <h3 className="mt-6 text-2xl">2. Join our Discord community</h3>
+        <Link href="https://discord.gg/SHj2wmRDwR" target="_blank">
+          <Button className="mt-2" variant="outline">
+            <FaDiscord />
+            Join the Community
+          </Button>
+        </Link>
+      </div>
+    </div>
   )
 }
 
@@ -70,13 +44,11 @@ export default JoinTheCommunity
 
 const CommunityIcon = () => {
   return (
-    <Icon
+    <svg
       xmlns="http://www.w3.org/2000/svg"
       width="809"
       height="429"
       viewBox="0 0 809 629"
-      backgroundColor="gray.200"
-      borderRadius="12px"
     >
       <path
         d="M363.34812,549.37208C326.75641,513.35019,311.30181,475.77031,319.83,443.556c10.94436-41.34026,59.56474-69.92355,133.39432-78.42081l.27268,2.37135c-72.8018,8.37841-120.68047,36.32021-131.35973,76.66007-8.29975,31.35084,6.93053,68.10978,42.88542,103.50533Z"
@@ -364,6 +336,6 @@ const CommunityIcon = () => {
         transform="translate(-195.32909 -135.0622)"
         fill="#2f2e41"
       />
-    </Icon>
+    </svg>
   )
 }

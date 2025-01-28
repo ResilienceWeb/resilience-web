@@ -2,17 +2,10 @@
 import { useRouter } from 'next/navigation'
 import { useCallback, use } from 'react'
 import NextLink from 'next/link'
-import {
-  Box,
-  Button,
-  Spinner,
-  Center,
-  Alert,
-  AlertIcon,
-  Link,
-  Text,
-} from '@chakra-ui/react'
+import { Spinner } from '@components/ui/spinner'
+import { Button } from '@components/ui/button'
 import { HiArrowLeft } from 'react-icons/hi'
+import { PiInfoBold } from 'react-icons/pi'
 import useListing from '@hooks/listings/useListing'
 import useApplyListingEdit from '@hooks/listings/useApplyListingEdit'
 import useListingEdits from '@hooks/listings/useListingEdits'
@@ -45,99 +38,74 @@ export default function ListingEditsPage({ params }) {
   }, [applyListingEdit, listing?.id, listingEdits, router, slug])
 
   if (!listing || isLoadingListing || isLoadingListingEdits) {
-    return (
-      <Center height="50vh">
-        <Spinner size="xl" />
-      </Center>
-    )
+    return <Spinner />
   }
 
   if (!listingEdits || listingEdits.length === 0) {
     return (
-      <Box
-        px={{
-          base: '4',
-          md: '10',
-        }}
-        maxWidth="3xl"
-        mx="auto"
-      >
-        <Button
-          leftIcon={<HiArrowLeft />}
-          name="Back"
-          mb={2}
-          ml={2}
+      <div className="mx-auto max-w-3xl px-4 md:px-10">
+        <button
+          className="mb-2 ml-2 flex items-center gap-2 text-gray-700 hover:text-gray-900"
           onClick={goBack}
-          variant="link"
-          color="gray.700"
         >
+          <HiArrowLeft className="h-4 w-4" />
           Back
-        </Button>
+        </button>
 
-        <Center flexDirection="column" gap={4}>
-          <Alert status="info" rounded="md">
-            <AlertIcon />
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex items-center gap-3 rounded-md bg-blue-50 p-4 text-blue-700">
+            <PiInfoBold className="h-5 w-5 shrink-0" />
             No pending edits found for this listing.
-          </Alert>
-          <Button onClick={goBack} variant="rw">
+          </div>
+          <Button onClick={goBack} variant="default">
             Go back to listings
           </Button>
-        </Center>
-      </Box>
+        </div>
+      </div>
     )
   }
 
   const editedListing = listingEdits[0]
 
   return (
-    <Box
-      px={{
-        base: '4',
-        md: '10',
-      }}
-      py={4}
-      maxWidth="3xl"
-      mx="auto"
-    >
-      <Button
-        leftIcon={<HiArrowLeft />}
-        name="Back"
-        mb={2}
-        ml={2}
+    <div className="mx-auto max-w-3xl px-4 py-4 md:px-10">
+      <button
+        className="mb-2 ml-2 flex items-center gap-2 text-gray-700 hover:text-gray-900"
         onClick={goBack}
-        variant="link"
-        color="gray.700"
       >
+        <HiArrowLeft className="h-4 w-4" />
         Back
-      </Button>
+      </button>
 
-      <Box mt={4}>
-        <Text mb="1rem" fontSize="0.875rem">
+      <div className="mt-4">
+        <p className="mb-4 text-sm">
           You can view this listing at{' '}
-          <Link
-            as={NextLink}
+          <NextLink
             href={`https://${selectedWebSlug}.resilienceweb.org.uk/${slug}`}
             target="_blank"
+            className="text-blue-600 hover:text-blue-800 hover:underline"
           >
             {selectedWebSlug}.resilienceweb.org.uk/{slug}
-          </Link>
-        </Text>
-        <Box overflow={{ sm: 'hidden' }}>
-          <Alert status="info" rounded="md" colorScheme="purple" mb="2rem">
-            <AlertIcon />
-            The changes highlighted below were submitted externally by{' '}
-            {editedListing.user?.name ?? editedListing.user?.email}. Review
-            them, and if everything looks okay click Accept changes. If the
-            changes are incorrect or low quality, click Reject changes.
-          </Alert>
+          </NextLink>
+        </p>
+        <div className="overflow-hidden">
+          <div className="mb-8 flex items-start gap-3 rounded-md bg-purple-50 p-4 text-purple-900">
+            <PiInfoBold className="mt-0.5 h-5 w-5 shrink-0" />
+            <p>
+              The changes highlighted below were submitted externally by{' '}
+              {editedListing.user?.name ?? editedListing.user?.email}. Review
+              them, and if everything looks okay click Accept changes. If the
+              changes are incorrect or low quality, click Reject changes.
+            </p>
+          </div>
           <ListingEditReview
             listing={listing}
             editedListing={editedListing}
             handleSubmit={handleSubmit}
             webSlug={selectedWebSlug}
           />
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }

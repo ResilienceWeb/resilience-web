@@ -1,27 +1,34 @@
 import { Editor } from '@tinymce/tinymce-react'
-import { useField } from 'formik'
+import { useFormContext } from 'react-hook-form'
 
-const RichTextEditor = (props) => {
-  const { label, name, ...otherProps } = props
-  const [field, _meta] = useField(name)
-  const type = 'text'
-  const handleEditorChange = (value) => {
-    field.onChange({ target: { type, name, value } })
-  }
+interface RichTextEditorProps {
+  name: string
+  label?: string
+}
 
-  const handleBlur = () => {
-    field.onBlur({ target: { name } })
+const RichTextEditor = ({
+  name,
+  label,
+  ...otherProps
+}: RichTextEditorProps) => {
+  const { register, setValue, getValues } = useFormContext()
+
+  register(name)
+
+  const handleEditorChange = (value: string) => {
+    setValue(name, value, { shouldValidate: true })
   }
 
   return (
     <>
-      {label && <label>{label}</label>}
+      {label && (
+        <label className="mb-1 block text-sm font-semibold">{label}</label>
+      )}
       <Editor
         {...otherProps}
         apiKey={process.env.NEXT_PUBLIC_TINY_MCE_APIKEY}
-        value={field.value}
+        value={getValues(name)}
         onEditorChange={handleEditorChange}
-        onBlur={handleBlur}
         init={{
           height: 300,
           menubar: 'edit view insert format tools table tc help',
@@ -31,9 +38,6 @@ const RichTextEditor = (props) => {
             'media advlist autolink lists anchor link image code fullscreen table code emoticons help',
         }}
       />
-      {/* {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
-      ) : null} */}
     </>
   )
 }

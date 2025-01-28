@@ -1,46 +1,41 @@
+'use client'
+
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import NextLink from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Box,
-  Icon,
-  HStack,
-  Link,
-  Flex,
-  Tooltip,
-  Text,
-  Button,
-  Tag,
-  useToast,
-} from '@chakra-ui/react'
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa'
 import { HiUserGroup, HiOutlineLink, HiExternalLink } from 'react-icons/hi'
+import { toast } from 'sonner'
 import { sanitizeLink } from '@helpers/utils'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
+import {
+  Dialog as DialogPrimitive,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog'
+import { Button } from '@components/ui/button'
+import { Badge } from '@components/ui/badge'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip'
+
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
 import styles from './Dialog.module.scss'
 
-const Dialog = ({
-  isOpen,
-  isMobile,
-  item,
-  onClose,
-}: {
+interface DialogProps {
   isOpen: boolean
   isMobile?: boolean
   item: any
   onClose: () => void
-}) => {
-  const toast = useToast()
+}
+
+const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
   const [subdomain, setSubdomain] = useState<string>()
 
   const websiteSanitized = useMemo(
@@ -49,14 +44,12 @@ const Dialog = ({
   )
 
   const showCopiedToClipboardToast = useCallback(() => {
-    toast({
-      title: 'Copied to clipboard',
+    toast.info('Copied to clipboard', {
       description:
         'The link to this listing is copied to your clipboard and ready to be shared.',
-      status: 'info',
       duration: 4000,
     })
-  }, [toast])
+  }, [])
 
   useEffect(() => {
     const hostname = window.location.hostname
@@ -75,59 +68,57 @@ const Dialog = ({
 
   const socialLinks = (
     <>
-      <HStack spacing={4}>
+      <div className="flex space-x-4">
         {item.facebook && (
-          <Link href={item.facebook} target="_blank">
-            <Icon
-              as={FaFacebook}
-              color="gray.600"
-              cursor="pointer"
-              w={8}
-              h={8}
-              transition="color 150ms"
-              _hover={{ color: 'gray.500' }}
-            />
-          </Link>
+          <a
+            href={item.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 transition-colors duration-150 hover:text-gray-500"
+          >
+            <FaFacebook className="h-8 w-8" />
+          </a>
         )}
         {item.twitter && (
-          <Link href={item.twitter} target="_blank">
-            <Icon
-              as={FaTwitter}
-              color="gray.600"
-              cursor="pointer"
-              w={8}
-              h={8}
-              transition="color 150ms"
-              _hover={{ color: 'gray.500' }}
-            />
-          </Link>
+          <a
+            href={item.twitter}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 transition-colors duration-150 hover:text-gray-500"
+          >
+            <FaTwitter className="h-8 w-8" />
+          </a>
         )}
         {item.instagram && (
-          <Link href={item.instagram} target="_blank">
-            <Icon
-              as={FaInstagram}
-              color="gray.600"
-              cursor="pointer"
-              w={8}
-              h={8}
-              transition="color 150ms"
-              _hover={{ color: 'gray.500' }}
-            />
-          </Link>
+          <a
+            href={item.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 transition-colors duration-150 hover:text-gray-500"
+          >
+            <FaInstagram className="h-8 w-8" />
+          </a>
         )}
         {item.seekingVolunteers && (
-          <Flex justifyContent="right">
-            <Tooltip
-              borderRadius="md"
-              label="This group is seeking volunteers or members. Get in touch with them if you'd like to help."
-            >
-              <Text color="rw.900">
-                Seeking volunteers <Icon as={HiUserGroup} />
-              </Text>
-            </Tooltip>
-          </Flex>
+          <div className="flex justify-end">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <p className="text-[#2B8257]">
+                    Seeking volunteers <HiUserGroup className="inline" />
+                  </p>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    This group is seeking volunteers or members. Get in touch
+                    with them if you'd like to help.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         )}
-      </HStack>
+      </div>
     </>
   )
 
@@ -147,92 +138,61 @@ const Dialog = ({
   const webSearchParam = searchParams.get('web')
 
   return (
-    <Modal
-      isCentered
-      isOpen={isOpen}
-      onClose={onClose}
-      size={{ base: 'full', md: '2xl' }}
-      scrollBehavior="inside"
-    >
-      <ModalOverlay />
-      <ModalContent>
+    <DialogPrimitive open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[672px]">
         {item.image && (
-          <Box
-            width="672px"
-            height="300px"
-            minHeight="300px"
-            overflow="hidden"
-            position="relative"
-          >
+          <div className="relative h-[300px] min-h-[300px] w-full overflow-hidden">
             <ListingImage
               alt={`${item.label} cover image`}
               sizes="(max-width: 768px) 100vw, 672px"
               src={item.image}
               imageObjectFit="contain"
             />
-          </Box>
+          </div>
         )}
 
-        <ModalHeader display="flex" alignItems="center" pb={0}>
-          {item.label}
-          <Icon
-            as={HiOutlineLink}
-            cursor="pointer"
-            fontSize="xl"
-            onClick={handleShareButtonClick}
-            ml={1}
-            transition="0.2s"
-            _hover={{
-              color: 'rw.900',
-            }}
-          />
-        </ModalHeader>
-        <ModalCloseButton size="lg" backgroundColor="rgba(160,174,192,0.4)" />
-        <ModalBody className={styles.modalContent}>
-          <Flex justifyContent="space-between">
-            <CategoryTag mb={4} colorHex={item.category.color}>
+        <DialogHeader className="flex items-center pb-0">
+          <DialogTitle className="flex items-center">
+            {item.label}
+            <HiOutlineLink
+              className="ml-1 cursor-pointer text-xl transition-colors duration-200 hover:text-[#2B8257]"
+              onClick={handleShareButtonClick}
+            />
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className={styles.modalContent}>
+          <div className="flex justify-between">
+            <CategoryTag colorHex={item.category.color}>
               {item.category.label}
             </CategoryTag>
-          </Flex>
+          </div>
           <br />
 
           {item.website && (
-            <HStack alignItems="flex-start">
-              <Text color="gray.700" fontWeight="600">
-                Website:
-              </Text>
-              <Link
-                color="blue.400"
+            <div className="flex items-start space-x-2">
+              <p className="font-semibold text-gray-700">Website:</p>
+              <a
                 href={listingWebsite}
-                rel="noreferrer"
                 target="_blank"
-                display="flex"
-                alignItems="center"
-                gap="0.125rem"
+                rel="noopener noreferrer"
+                className="flex items-center gap-0.5 text-blue-400 hover:text-blue-500"
               >
                 <span>{websiteSanitized}</span>
                 <HiExternalLink />
-              </Link>
-            </HStack>
+              </a>
+            </div>
           )}
 
           {isMobile && (
-            <HStack justifyContent="space-between" mt={4}>
-              {socialLinks}
-            </HStack>
+            <div className="mt-4 flex justify-between">{socialLinks}</div>
           )}
 
-          <Box mt={4} mb={8}>
+          <div className="my-4">
             <DescriptionRichText html={item.description} />
-          </Box>
+          </div>
 
-          <Box
-            mt={4}
-            display="flex"
-            justifyContent="flex-end"
-            flexWrap="wrap"
-            gap="0.25rem"
-          >
+          <div className="mt-4 flex flex-wrap justify-end gap-1">
             {item.tags?.map((tag) => {
               const urlEncodedTag = tag.label.replace(' ', '+')
               return (
@@ -241,32 +201,34 @@ const Dialog = ({
                   href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?web=${webSearchParam}&tags=${urlEncodedTag}`}
                   onClick={onClose}
                 >
-                  <Tag
-                    backgroundColor={tag.color ?? 'gray.300'}
-                    userSelect="none"
-                    _hover={{ opacity: 0.8 }}
+                  <Badge
+                    className="select-none transition-opacity hover:opacity-80"
+                    style={{ backgroundColor: tag.color ?? '#CBD5E0' }}
                   >
                     #{tag.label}
-                  </Tag>
+                  </Badge>
                 </NextLink>
               )
             })}
-          </Box>
-        </ModalBody>
+          </div>
+        </div>
 
         {!isMobile && (
-          <ModalFooter justifyContent="space-between" py={4}>
+          <div className="flex justify-between border-t pt-3">
             {socialLinks}
 
-            <Link as={NextLink} href={individualListingLink}>
-              <Button mt={2} variant="rw">
+            <NextLink href={individualListingLink}>
+              <Button
+                variant="default"
+                className="mt-2 bg-[#2B8257] hover:bg-[#236c47]"
+              >
                 Go to listing
               </Button>
-            </Link>
-          </ModalFooter>
+            </NextLink>
+          </div>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </DialogPrimitive>
   )
 }
 

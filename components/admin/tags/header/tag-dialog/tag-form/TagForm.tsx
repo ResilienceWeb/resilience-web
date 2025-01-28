@@ -1,84 +1,99 @@
+import { Button } from '@components/ui/button'
 import {
-  ModalFooter,
-  Button,
-  chakra,
+  Form,
   FormControl,
+  FormField,
+  FormItem,
   FormLabel,
-  Input,
-  FormErrorMessage,
+  FormMessage,
+} from '@components/ui/form'
+import { Input } from '@components/ui/input'
+import { DialogFooter } from '@components/ui/dialog'
+import {
   Tooltip,
-} from '@chakra-ui/react'
-import { Formik, Form, Field } from 'formik'
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
 
-import { fieldRequiredValidator } from '@helpers/formValidation'
+const formSchema = z.object({
+  label: z.string().min(1, 'Label is required'),
+})
+
+type FormValues = z.infer<typeof formSchema>
 
 const TagForm = ({
   onSubmit,
   onDelete,
   tag,
 }: {
-  onSubmit: (data: any) => void
+  onSubmit: (data: FormValues) => void
   onDelete?: (data: any) => void
   tag?: TagWithListings
 }) => {
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      label: tag?.label ?? '',
+    },
+  })
+
+  function handleSubmit(data: FormValues) {
+    onSubmit(data)
+  }
+
   return (
-    <Formik
-      initialValues={{ label: tag?.label ?? '' }}
-      onSubmit={(values, actions) => {
-        actions.setSubmitting(false)
-        onSubmit(values)
-      }}
-    >
-      {(props) => (
-        <Form>
-          <chakra.div mb={5}>
-            <Field name="label" type="label" validate={fieldRequiredValidator}>
-              {({ field, form }) => (
-                <FormControl isInvalid={form.errors.label}>
-                  <FormLabel htmlFor="label">Tag label</FormLabel>
-                  <Input {...field} id="label" background="white" />
-                  <FormErrorMessage>{form.errors.label}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
-          </chakra.div>
-          <ModalFooter
-            pr="0"
-            pl="0"
-            display="flex"
-            justifyContent="flex-end"
-            alignItems="flex-end"
-          >
-            {tag && (
-              <Tooltip
-                isDisabled={tag?.listings?.length === 0}
-                borderRadius="md"
-                label="To delete this tag, first ensure there are no listings associated with it"
-              >
-                <Button
-                  colorScheme="red"
-                  isDisabled={tag?.listings?.length > 0}
-                  opacity="0.85"
-                  onClick={onDelete}
-                >
-                  Remove
-                </Button>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="label"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Tag label</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <DialogFooter className="flex flex-col gap-2">
+          {tag && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    disabled={tag?.listings?.length > 0}
+                    className="opacity-85"
+                    onClick={onDelete}
+                  >
+                    Remove
+                  </Button>
+                </TooltipTrigger>
+                {tag?.listings?.length > 0 && (
+                  <TooltipContent>
+                    <p>
+                      To delete this tag, first ensure there are no listings
+                      associated with it
+                    </p>
+                  </TooltipContent>
+                )}
               </Tooltip>
-            )}
-            <Button
-              mt={4}
-              ml={2}
-              variant="rw"
-              isDisabled={!props.isValid}
-              isLoading={props.isSubmitting}
-              type="submit"
-            >
-              {tag ? 'Update' : 'Create'}
-            </Button>
-          </ModalFooter>
-        </Form>
-      )}
-    </Formik>
+            </TooltipProvider>
+          )}
+          <Button type="submit" disabled={!form.formState.isValid}>
+            {tag ? 'Update' : 'Create'}
+          </Button>
+        </DialogFooter>
+      </form>
+    </Form>
   )
 }
 
