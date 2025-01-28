@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { Button } from '@components/ui/button'
+import { Input } from '@components/ui/input'
 import Image from 'next/legacy/image'
 import LogoImage from '../../../public/logo.png'
 import styles from '../auth.module.scss'
@@ -18,14 +19,7 @@ export default function SignUp() {
         <div className="mb-6 w-full max-w-[500px] rounded-xl bg-white p-6 sm:mb-8 sm:p-10">
           <div className="mb-4 flex justify-center">
             <div className="relative h-[70px] w-[206px] sm:h-[104px] sm:w-[306px]">
-              <Image
-                alt="Resilience Web logo"
-                src={LogoImage}
-                width="306"
-                height="104"
-                className="object-contain"
-                priority
-              />
+              <Image alt="Resilience Web logo" src={LogoImage} priority />
             </div>
           </div>
           <div className="mb-6 flex justify-center sm:mb-8">
@@ -55,19 +49,20 @@ export default function SignUp() {
               }
             }}
           >
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 sm:text-base"
-            >
-              Email
-              <input
+            <div className="space-y-1.5">
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-700 sm:text-base"
+              >
+                Email
+              </label>
+              <Input
                 type="email"
                 id="email"
                 name="email"
                 placeholder="Enter your email address"
-                className="mt-1.5 w-full rounded-md border border-gray-300 px-3 py-2 text-base shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
-            </label>
+            </div>
             <Button type="submit" className="mt-4 w-full">
               Sign up
             </Button>
