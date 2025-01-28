@@ -76,10 +76,10 @@ function Listing({ listing }: ListingProps) {
 
   return (
     <>
-      <div className="mt-4 w-full md:min-w-[684px] md:max-w-[700px]">
+      <div className="mt-4 w-full max-w-[700px] px-4 sm:px-6 lg:px-8">
         <button
           onClick={goBack}
-          className="group mb-6 ml-2 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900"
+          className="group mb-6 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900"
         >
           <HiArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
           Back to main list
@@ -98,7 +98,7 @@ function Listing({ listing }: ListingProps) {
           </div>
         )}
 
-        <div className="px-2 md:px-0">
+        <div>
           <div className="mb-10 w-full space-y-6">
             <div className="flex w-full flex-col justify-between gap-6">
               <div className="space-y-4">
@@ -218,7 +218,7 @@ function Listing({ listing }: ListingProps) {
           </div>
 
           {listing.relations?.length > 0 && (
-            <div className="mb-12">
+            <div className="mb-12 overflow-hidden">
               <h2 className="mb-6 text-2xl font-bold tracking-tight text-gray-900">
                 Related listings
               </h2>

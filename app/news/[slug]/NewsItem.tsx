@@ -26,7 +26,7 @@ export default function NewsItem({ post, contentHtml }: NewsItemProps) {
 
   return (
     <Layout applyPostStyling>
-      <h1 className="mt-4 text-pretty text-center md:mt-6">{post.title}</h1>
+      <h1 className="text-pretty text-center">{post.title}</h1>
       <div className="mx-auto mb-6 mt-2 flex w-[90%] justify-center md:w-[650px]">
         {post.author?.name && (
           <p className="font-semibold">
@@ -38,7 +38,7 @@ export default function NewsItem({ post, contentHtml }: NewsItemProps) {
       </div>
 
       {post.coverImage?.url && (
-        <div className="relative mb-8 h-[250px] w-screen overflow-hidden md:h-[400px] md:w-[850px] md:rounded-xl">
+        <div className="relative -mx-4 mb-8 h-[250px] w-screen overflow-hidden md:h-[400px] md:w-[850px] md:rounded-xl">
           <Image
             alt={`Cover image for post: ${post.title}`}
             src={post.coverImage.url}
@@ -50,12 +50,12 @@ export default function NewsItem({ post, contentHtml }: NewsItemProps) {
         </div>
       )}
 
-      <div className="mx-auto mb-12 w-[90%] max-w-[650px]">
+      <div className="mx-auto mb-12 max-w-[650px]">
         <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
       </div>
 
-      <div className="mb-12">
-        <p className="text-rw-900 mb-2 text-xl font-semibold">
+      <div className="mx-4 mb-8">
+        <p className="mb-2 font-semibold">
           Sign up to our mailing list to stay up to date
         </p>
         <SignupForm />

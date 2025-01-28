@@ -56,12 +56,15 @@ const SignupForm = () => {
 
   return (
     <Form {...form}>
-      <form className="flex items-start" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="flex w-full items-start md:w-[450px]"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="w-40">
+            <FormItem className="w-full md:w-[250px]">
               <FormControl>
                 <Input
                   {...field}
@@ -90,7 +93,7 @@ const SignupForm = () => {
           Submit
         </Button>
       </form>
-      <p className="google-recaptcha-text mt-1 text-[10px]">
+      <p className="google-recaptcha-text mt-1 !text-[10px]">
         This site is protected by reCAPTCHA and the Google{' '}
         <a href="https://policies.google.com/privacy">Privacy Policy</a> and{' '}
         <a href="https://policies.google.com/terms">Terms of Service</a> apply.

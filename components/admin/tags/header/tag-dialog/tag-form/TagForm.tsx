@@ -62,22 +62,20 @@ const TagForm = ({
           )}
         />
 
-        <DialogFooter>
+        <DialogFooter className="flex flex-col gap-2">
           {tag && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div>
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      disabled={tag?.listings?.length > 0}
-                      className="opacity-85"
-                      onClick={onDelete}
-                    >
-                      Remove
-                    </Button>
-                  </div>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    disabled={tag?.listings?.length > 0}
+                    className="opacity-85"
+                    onClick={onDelete}
+                  >
+                    Remove
+                  </Button>
                 </TooltipTrigger>
                 {tag?.listings?.length > 0 && (
                   <TooltipContent>
@@ -90,11 +88,7 @@ const TagForm = ({
               </Tooltip>
             </TooltipProvider>
           )}
-          <Button
-            type="submit"
-            disabled={!form.formState.isValid}
-            className="ml-2"
-          >
+          <Button type="submit" disabled={!form.formState.isValid}>
             {tag ? 'Update' : 'Create'}
           </Button>
         </DialogFooter>

@@ -10,7 +10,6 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  FormDescription,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import {
@@ -80,16 +79,12 @@ const CategoryForm = ({
                   onChange={(value) => field.onChange(value.substring(1))}
                 />
               </FormControl>
-              <FormDescription>
-                Please avoid using white as the text on it will not be readable
-                in certain parts of the website.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <DialogFooter>
+        <DialogFooter className="flex flex-col gap-2">
           {category && (
             <TooltipProvider>
               <Tooltip>
@@ -116,7 +111,6 @@ const CategoryForm = ({
 
           <Button
             type="submit"
-            className="ml-2"
             disabled={!form.formState.isValid || form.formState.isSubmitting}
           >
             {category ? 'Update' : 'Create'}

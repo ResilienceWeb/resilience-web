@@ -23,7 +23,6 @@ body {
 * {
   margin: 0;
   font-family: Poppins, sans-serif;
-  font-display: swap;
 }
 
 img, picture, video, canvas, svg {

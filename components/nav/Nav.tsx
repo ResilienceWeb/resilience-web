@@ -261,7 +261,7 @@ const MobileNavItem = ({
   return (
     <Link
       href={href}
-      className={`block py-2 ${href.includes(pathname) ? 'text-green-700' : ''}`}
+      className={`block py-2 ${pathname !== '/' && href.includes(pathname) ? 'text-green-700' : ''}`}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
     >

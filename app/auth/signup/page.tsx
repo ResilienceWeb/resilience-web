@@ -14,18 +14,24 @@ export default function SignUp() {
 
   return (
     <div className={styles.root}>
-      <div className="flex h-screen flex-col items-center justify-center">
-        <div className="mb-8 w-[500px] rounded-xl bg-white p-12">
+      <div className="flex min-h-screen flex-col items-center justify-center px-4">
+        <div className="mb-6 w-full max-w-[500px] rounded-xl bg-white p-6 sm:mb-8 sm:p-10">
           <div className="mb-4 flex justify-center">
-            <Image
-              alt="Resilience Web logo"
-              src={LogoImage}
-              width="306"
-              height="104"
-            />
+            <div className="relative h-[70px] w-[206px] sm:h-[104px] sm:w-[306px]">
+              <Image
+                alt="Resilience Web logo"
+                src={LogoImage}
+                width="306"
+                height="104"
+                className="object-contain"
+                priority
+              />
+            </div>
           </div>
-          <div className="mb-8 flex justify-center">
-            <p className="text-md">Welcome! Enter your email to get started:</p>
+          <div className="mb-6 flex justify-center sm:mb-8">
+            <p className="text-center text-sm text-gray-600 sm:text-base">
+              Welcome! Enter your email to get started:
+            </p>
           </div>
           <form
             onSubmit={async (e) => {
@@ -49,26 +55,30 @@ export default function SignUp() {
               }
             }}
           >
-            <label htmlFor="email" className="block">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 sm:text-base"
+            >
               Email
               <input
                 type="email"
                 id="email"
                 name="email"
-                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter your email address"
+                className="mt-1.5 w-full rounded-md border border-gray-300 px-3 py-2 text-base shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
             </label>
-            <Button type="submit" className="mt-2 w-full">
+            <Button type="submit" className="mt-4 w-full">
               Sign up
             </Button>
-            {error && <p className="mt-2 text-red-600">{error}</p>}
+            {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
           </form>
         </div>
-        <div className="w-[500px] rounded-xl bg-white p-6">
-          Not a member of Resilience Web?{' '}
+        <div className="w-full max-w-[500px] rounded-xl bg-white p-4 text-sm sm:p-6 sm:text-base">
+          <span>Already have an account? </span>
           <Link
             href="/auth/signin"
-            className="text-green-700 hover:text-green-600"
+            className="font-medium text-green-700 transition-colors hover:text-green-600"
           >
             Sign in
           </Link>
