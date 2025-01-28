@@ -116,7 +116,7 @@ function Listing({ listing }: ListingProps) {
                     </CategoryTag>
                     {listing.seekingVolunteers && (
                       <TooltipProvider>
-                        <Tooltip delayDuration={50}>
+                        <Tooltip>
                           <TooltipTrigger asChild>
                             <div className="group flex items-center gap-1.5 rounded-full bg-green-50/80 px-3 py-1 text-sm font-medium text-green-700 ring-1 ring-green-100/80 transition-colors hover:bg-green-100">
                               <HiUserGroup className="h-3.5 w-3.5" />
