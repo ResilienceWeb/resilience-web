@@ -51,7 +51,7 @@ const PermissionsTable = ({ permissions }) => {
                           <span className="font-semibold">{name}</span>
                           <span>
                             {emailAddress}
-                            {session.user.email === emailAddress && ' (You)'}
+                            {session?.user?.email === emailAddress && ' (You)'}
                           </span>
                         </div>
                       </TableCell>

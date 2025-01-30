@@ -5,10 +5,8 @@ import { AiOutlineLoading } from 'react-icons/ai'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import type { Category } from '@prisma/client'
-import NextLink from 'next/link'
+import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
-import ImageUpload from './ImageUpload'
 import useTags from '@hooks/tags/useTags'
 import useListings from '@hooks/listings/useListings'
 import { useAppContext } from '@store/hooks'
@@ -26,34 +24,70 @@ import {
   FormMessage,
   FormDescription,
 } from '@components/ui/form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import ImageUpload from './ImageUpload'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@components/ui/select'
 
 const Map = dynamic(() => import('./Map'), {
   ssr: false,
   loading: () => <div className="pt-5 text-center">Loading…</div>,
 })
 
-interface FormValues {
-  id: number | null
-  title: string
-  description: string
-  category: number | undefined
-  email: string
-  website: string
-  facebook: string
-  twitter: string
-  instagram: string
-  seekingVolunteers: boolean
-  featured: boolean
-  image: File | string | null
-  slug: string
-  tags: TagOption[]
-  relations: TagOption[]
-  noPhysicalLocation: boolean
-  location?: {
-    latitude: number
-    longitude: number
-    description: string
-  }
+const listingFormSchema = z.object({
+  id: z.number().or(z.null()),
+  title: z.string().min(1, 'Title is required'),
+  description: z.string().min(1, 'Description is required'),
+  category: z.string().min(1, 'Category is required'),
+  email: z.string().email('Please enter a valid email').or(z.literal('')),
+  website: z
+    .string()
+    .url('Please enter a valid URL (https://...)')
+    .or(z.literal('')),
+  facebook: z
+    .string()
+    .url('Please enter a valid URL (https://...)')
+    .or(z.literal('')),
+  twitter: z
+    .string()
+    .url('Please enter a valid URL (https://...)')
+    .or(z.literal('')),
+  instagram: z
+    .string()
+    .url('Please enter a valid URL (https://...)')
+    .or(z.literal('')),
+  seekingVolunteers: z.boolean(),
+  featured: z.boolean(),
+  image: z.any(),
+  slug: z.string().min(1, 'Slug is required'),
+  tags: z.array(z.object({ value: z.number(), label: z.string() })),
+  relations: z.array(z.object({ value: z.number(), label: z.string() })),
+  noPhysicalLocation: z.boolean(),
+  location: z
+    .object({
+      latitude: z.number(),
+      longitude: z.number(),
+      description: z.string(),
+    })
+    .optional(),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
+  locationDescription: z.string().optional(),
+})
+
+type FormValues = z.infer<typeof listingFormSchema>
+
+interface Props {
+  categories: Category[]
+  listing?: Listing
+  handleSubmit: (data: any) => void
+  isSubmitting?: boolean
 }
 
 const customMultiSelectStyles = {
@@ -65,13 +99,6 @@ const customMultiSelectStyles = {
     ...baseStyles,
     zIndex: 10,
   }),
-}
-
-interface Props {
-  categories: Category[]
-  listing?: Listing
-  handleSubmit: (data: any) => void
-  isSubmitting?: boolean
 }
 
 type TagOption = {
@@ -102,7 +129,7 @@ const SlugField = ({ isEditMode, register, watch, setValue, errors }) => {
           {`${selectedWebSlug}.resilienceweb.org.uk/`}
         </span>
         <input
-          {...register('slug', { validate: urlValidator })}
+          {...register('slug')}
           id="slug"
           className="w-full rounded-r-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
@@ -156,11 +183,12 @@ const ListingForm = ({
   }, [listing?.relations])
 
   const methods = useForm<FormValues>({
+    resolver: zodResolver(listingFormSchema),
     defaultValues: {
       id: listing?.id || null,
       title: listing?.title || '',
       description: listing?.description || '',
-      category: listing?.categoryId || undefined,
+      category: listing?.categoryId ? String(listing?.categoryId) : undefined,
       email: listing?.email || '',
       website: listing?.website || '',
       facebook: listing?.facebook || '',
@@ -189,10 +217,15 @@ const ListingForm = ({
     handleSubmit,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
   } = methods
 
-  const handleSubmitForm = (data: any) => {
+  const handleSubmitForm = (submittedData: any) => {
+    const data = {
+      ...submittedData,
+      category: Number(submittedData.category),
+    }
+
     const isNewImage = data.image instanceof File
     if (!isNewImage && data.image) {
       delete data.image
@@ -232,7 +265,6 @@ const ListingForm = ({
           <FormField
             control={methods.control}
             name="title"
-            rules={{ validate: fieldRequiredValidator }}
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-semibold">Title*</FormLabel>
@@ -247,49 +279,53 @@ const ListingForm = ({
           <FormField
             control={methods.control}
             name="category"
-            rules={{ validate: fieldRequiredValidator }}
-            render={({ field }) => (
-              <FormItem className="mt-4">
-                <FormLabel className="font-semibold">Category*</FormLabel>
-                <FormControl>
-                  <select
-                    {...field}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-green-500 focus:ring-green-500"
+            render={({ field }) => {
+              return (
+                <FormItem className="mt-4">
+                  <FormLabel className="font-semibold">Category*</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={String(field.value)}
                   >
-                    <option value="">Select a category</option>
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.label}
-                      </option>
-                    ))}
-                  </select>
-                </FormControl>
-                <FormDescription>
-                  {categories.length === 0 ? (
-                    <span>
-                      Looks like you haven't created categories yet. You can add
-                      some{' '}
-                      <NextLink
-                        href="/admin/categories"
-                        className="text-blue-600 hover:text-blue-700"
-                      >
-                        on this page
-                      </NextLink>
-                      .
-                    </span>
-                  ) : (
-                    'Categories can be easily changed later'
-                  )}
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <FormDescription>
+                      {categories.length === 0 ? (
+                        <span>
+                          Looks like you haven't created categories yet. You can
+                          add some{' '}
+                          <Link
+                            href="/admin/categories"
+                            className="text-green-700 hover:text-green-800"
+                          >
+                            on this page
+                          </Link>
+                          .
+                        </span>
+                      ) : (
+                        'Categories can be easily changed later'
+                      )}
+                    </FormDescription>
+                    <SelectContent>
+                      {categories.map((c) => (
+                        <SelectItem key={c.id} value={String(c.id)}>
+                          {c.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
           />
 
           <FormField
             control={methods.control}
             name="description"
-            rules={{ validate: fieldRequiredValidator }}
             render={() => (
               <FormItem className="mt-4">
                 <FormLabel className="font-semibold">Description*</FormLabel>
@@ -325,7 +361,6 @@ const ListingForm = ({
             <FormField
               control={methods.control}
               name="website"
-              rules={{ validate: urlValidator }}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold">Website</FormLabel>
@@ -340,7 +375,6 @@ const ListingForm = ({
             <FormField
               control={methods.control}
               name="facebook"
-              rules={{ validate: urlValidator }}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold">Facebook</FormLabel>
@@ -355,7 +389,6 @@ const ListingForm = ({
             <FormField
               control={methods.control}
               name="twitter"
-              rules={{ validate: urlValidator }}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold">Twitter</FormLabel>
@@ -370,7 +403,6 @@ const ListingForm = ({
             <FormField
               control={methods.control}
               name="instagram"
-              rules={{ validate: urlValidator }}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold">Instagram</FormLabel>
@@ -497,6 +529,15 @@ const ListingForm = ({
               {isSubmitting && <AiOutlineLoading className="animate-spin" />}{' '}
               {listing ? (listing.pending ? 'Approve' : 'Update') : 'Create'}
             </Button>
+          </div>
+
+          <div className="mt-2 flex justify-end">
+            <FormMessage className="text-sm">
+              {!isValid &&
+                isDirty &&
+                'There are some errors, please scroll up and check them.'}
+              {/* {JSON.stringify(errors)} */}
+            </FormMessage>
           </div>
         </form>
       </Form>
