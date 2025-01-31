@@ -144,7 +144,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
             No listings yet. Why not{' '}
             <Link
               href="/admin/new-listing"
-              className="text-[#2B6CB0] hover:underline"
+              className="text-green-800 hover:underline"
             >
               start adding
             </Link>

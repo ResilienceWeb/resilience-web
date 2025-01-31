@@ -2,6 +2,7 @@ import { GraphQLClient } from 'graphql-request'
 import { remark } from 'remark'
 import html from 'remark-html'
 import NewsItem from './NewsItem'
+import { notFound } from 'next/navigation'
 
 export default async function NewsItemPage(props) {
   const params = await props.params
@@ -77,6 +78,10 @@ async function getNewsItem({ slug }): Promise<any> {
       slug: slug,
     },
   )
+
+  if (!page) {
+    return notFound()
+  }
 
   const processedContent = await remark()
     .use(html)
