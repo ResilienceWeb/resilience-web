@@ -6,7 +6,7 @@ import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import type { Category } from '@prisma/client'
 import { AiOutlineLoading } from 'react-icons/ai'
-import { fieldRequiredValidator, urlValidator } from '@helpers/formValidation'
+import { urlValidator } from '@helpers/formValidation'
 import ImageUpload from './ImageUpload'
 import useTags from '@hooks/tags/useTags'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
@@ -23,6 +23,15 @@ import {
   FormMessage,
 } from '@components/ui/form'
 import { Button } from '@components/ui/button'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@components/ui/select'
 
 const SlugField = () => {
   const selectedWebSlug = useSelectedWebSlug()
@@ -88,21 +97,38 @@ type TagOption = {
   label: string
 }
 
-type FormValues = {
-  id: number | null
-  title: string
-  description: string
-  category: number | undefined
-  email: string
-  website: string
-  facebook: string
-  twitter: string
-  instagram: string
-  seekingVolunteers: boolean
-  image: File | string | null
-  slug: string
-  tags: TagOption[]
-}
+const listingFormSchema = z.object({
+  id: z.number().nullable(),
+  title: z.string().min(1, 'Title is required'),
+  description: z.string().min(1, 'Description is required'),
+  category: z
+    .number()
+    .or(z.string())
+    .transform((val) => Number(val)),
+  email: z.string().email('Please enter a valid email').or(z.literal('')),
+  website: z
+    .string()
+    .url('Please enter a valid URL (https://...)')
+    .or(z.literal('')),
+  facebook: z
+    .string()
+    .url('Please enter a valid URL (https://...)')
+    .or(z.literal('')),
+  twitter: z
+    .string()
+    .url('Please enter a valid URL (https://...)')
+    .or(z.literal('')),
+  instagram: z
+    .string()
+    .url('Please enter a valid URL (https://...)')
+    .or(z.literal('')),
+  seekingVolunteers: z.boolean(),
+  image: z.any(),
+  slug: z.string(),
+  tags: z.array(z.object({ value: z.number(), label: z.string() })),
+})
+
+type FormValues = z.infer<typeof listingFormSchema>
 
 const ListingFormSimplified = ({
   listing,
@@ -112,6 +138,7 @@ const ListingFormSimplified = ({
 }: Props) => {
   const { tags } = useTags()
   const form = useForm<FormValues>({
+    resolver: zodResolver(listingFormSchema),
     defaultValues: {
       id: listing?.id || null,
       title: listing?.title ?? '',
@@ -130,7 +157,7 @@ const ListingFormSimplified = ({
   })
 
   const {
-    formState: { isDirty, isValid, isSubmitting },
+    formState: { isDirty, isSubmitting },
   } = form
 
   const tagOptions: Options<TagOption> = useMemo(() => {
@@ -143,6 +170,8 @@ const ListingFormSimplified = ({
   }, [tags])
 
   const handleSubmitForm = (data: any) => {
+    console.log(data)
+
     const formData = {
       ...data,
       tags: data.tags?.map((t) => t.value),
@@ -158,7 +187,6 @@ const ListingFormSimplified = ({
           <FormField
             control={form.control}
             name="title"
-            rules={{ validate: fieldRequiredValidator }}
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-semibold">Title*</FormLabel>
@@ -173,23 +201,26 @@ const ListingFormSimplified = ({
           <FormField
             control={form.control}
             name="category"
-            rules={{ validate: fieldRequiredValidator }}
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-semibold">Category*</FormLabel>
-                <FormControl>
-                  <select
-                    {...field}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-green-500 focus:ring-green-500"
-                  >
-                    <option value="">Select a category</option>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value?.toString()}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
                     {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
+                      <SelectItem key={c.id} value={c.id.toString()}>
                         {c.label}
-                      </option>
+                      </SelectItem>
                     ))}
-                  </select>
-                </FormControl>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -198,7 +229,6 @@ const ListingFormSimplified = ({
           <FormField
             control={form.control}
             name="description"
-            rules={{ validate: fieldRequiredValidator }}
             render={() => (
               <FormItem>
                 <FormLabel className="font-semibold">Description*</FormLabel>
@@ -338,7 +368,7 @@ const ListingFormSimplified = ({
         </div>
 
         <div className="bg-gray-50 p-3 text-right">
-          <Button type="submit" disabled={!isValid || !isDirty || isSubmitting}>
+          <Button type="submit" disabled={!isDirty || isSubmitting}>
             {isSubmitting && <AiOutlineLoading className="animate-spin" />}{' '}
             Submit
           </Button>

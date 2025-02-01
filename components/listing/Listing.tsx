@@ -76,7 +76,7 @@ function Listing({ listing }: ListingProps) {
 
   return (
     <>
-      <div className="mt-4 max-w-[700px] sm:px-6 lg:px-8">
+      <div className="mt-4 w-full sm:px-6 md:w-[700px] lg:px-8">
         <button
           onClick={goBack}
           className="group mb-6 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900"

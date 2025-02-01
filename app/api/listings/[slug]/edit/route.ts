@@ -63,6 +63,7 @@ export async function POST(request) {
     const formData = await request.formData()
     const listingId = Number(formData.get('listingId'))
     const title = formData.get('title')
+    const category = Number(formData.get('category'))
     const website = formData.get('website')
     const description = formData.get('description')
     const facebook = formData.get('facebook')
@@ -83,6 +84,11 @@ export async function POST(request) {
           },
         },
         title,
+        category: {
+          connect: {
+            id: category,
+          },
+        },
         description,
         email,
         website,

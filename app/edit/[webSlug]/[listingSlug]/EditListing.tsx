@@ -70,7 +70,7 @@ export default function EditListing({ listing, webSlug }) {
             </div>
             <Link
               href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}/${listing.slug}`}
-              className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              className="rounded-md bg-green-700 px-4 py-2 text-white hover:bg-green-800"
             >
               Go back to listing
             </Link>
@@ -93,7 +93,7 @@ export default function EditListing({ listing, webSlug }) {
             </p>
             <Link
               href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`}
-              className="mt-8 inline-block rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              className="mt-8 inline-block rounded-md bg-green-700 px-4 py-2 text-white hover:bg-green-800"
             >
               Go back to {web?.title} Resilience Web
             </Link>

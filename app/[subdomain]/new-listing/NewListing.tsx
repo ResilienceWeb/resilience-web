@@ -59,7 +59,7 @@ export default function NewListing() {
               <strong>{web?.title}</strong> web.
             </p>
             <Link href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}>
-              <Button className="mt-8" size="default">
+              <Button className="mt-8" variant="default">
                 Go back to {web?.title} Resilience Web
               </Button>
             </Link>

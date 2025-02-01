@@ -8,6 +8,7 @@ const styles = {
   removed: {
     color: 'red',
     backgroundColor: '#fec4c0',
+    textDecoration: 'line-through',
   },
 }
 
@@ -22,7 +23,7 @@ export default function Diff({
   label,
   string1 = '',
   string2 = '',
-  mode = 'characters',
+  mode = 'words',
 }: Props) {
   if (!string1 && !string2) return null
   if (string1 === string2) return null

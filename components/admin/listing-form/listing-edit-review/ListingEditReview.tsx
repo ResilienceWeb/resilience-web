@@ -29,11 +29,17 @@ const ListingEditReview = ({
   }
 
   return (
-    <div className="space-y-6 bg-white">
+    <div className="space-y-6">
       <Diff
         label="Title"
         string1={listing.title}
         string2={editedListing.title}
+      />
+
+      <Diff
+        label="Category"
+        string1={listing.category.label}
+        string2={editedListing.category.label}
       />
 
       <Diff

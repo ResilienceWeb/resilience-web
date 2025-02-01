@@ -37,7 +37,7 @@ const Layout = memo(function Layout({
           />
         )}
         <div
-          className={`mx-auto max-w-7xl px-4 py-8 ${applyPostStyling ? styles.root : ''} `}
+          className={`flex w-full max-w-7xl justify-center px-4 py-8 ${applyPostStyling ? styles.root : ''} `}
         >
           {children}
         </div>
