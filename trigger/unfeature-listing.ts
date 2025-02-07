@@ -10,7 +10,7 @@ export const unfeatureListingTask = task({
     })
     const { listingId } = payload
 
-    await wait.for({ minutes: 1 })
+    await wait.for({ days: 7 })
     await fetch(`${REMOTE_URL}/api/listing/${listingId}/unfeature`, {
       method: 'PATCH',
     })
