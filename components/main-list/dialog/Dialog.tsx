@@ -146,7 +146,6 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
               alt={`${item.label} cover image`}
               sizes="(max-width: 768px) 100vw, 672px"
               src={item.image}
-              imageObjectFit="contain"
             />
           </div>
         )}

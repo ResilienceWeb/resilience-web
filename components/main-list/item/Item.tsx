@@ -76,18 +76,15 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
           {dataItem.category.label}
         </CategoryTag>
         {dataItem.image ? (
-          <div className="relative h-[170px] w-full overflow-hidden">
-            <ListingImage
-              alt={`${dataItem.label} cover image`}
-              src={dataItem.image}
-              sizes="(max-width: 768px) 90vw, 300px"
-              isInView={inView}
-              priority={inView && isWithinAFewSecondsOfRender}
-            />
-          </div>
+          <ListingImage
+            alt={`${dataItem.label} cover image`}
+            src={dataItem.image}
+            sizes="(max-width: 768px) 90vw, 300px"
+            isInView={inView}
+            priority={inView && isWithinAFewSecondsOfRender}
+          />
         ) : (
-          categoryIndex !== null &&
-          categoryIndex !== undefined && (
+          categoryIndex && (
             <ImagePlaceholder
               backgroundColor={categoryBackgroundColor}
               categoryIndex={categoryIndex}
