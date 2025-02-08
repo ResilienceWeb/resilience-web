@@ -2,6 +2,7 @@
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
+import L from 'leaflet'
 
 interface ListingMapProps {
   latitude: number
@@ -27,7 +28,12 @@ export default function ListingMap({
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={{ lat: latitude, lng: longitude }}>
+          <Marker
+            position={{ lat: latitude, lng: longitude }}
+            icon={L.icon({
+              iconUrl: `${window.location.origin}/marker-icon.png`,
+            })}
+          >
             <Popup>{locationDescription}</Popup>
           </Marker>
         </MapContainer>

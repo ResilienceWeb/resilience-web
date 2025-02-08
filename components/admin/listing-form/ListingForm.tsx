@@ -217,7 +217,7 @@ const ListingForm = ({
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isValid, isDirty },
+    formState: { errors },
   } = methods
 
   const handleSubmitForm = (submittedData: any) => {
