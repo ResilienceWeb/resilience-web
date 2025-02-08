@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 import Nav from '@components/nav'
 import Footer from '@components/footer'
 import AlertBanner from '@components/alert-banner'
-import styles from './Layout.module.scss'
+import styles from './Layout.module.css'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -14,13 +14,13 @@ interface LayoutProps {
   hideBorder?: boolean
 }
 
-const Layout = memo(function Layout({
+const Layout = ({
   children,
   applyPostStyling = false,
   hideFooter = false,
   hideNav = false,
   hideBorder = false,
-}: LayoutProps) {
+}: LayoutProps) => {
   const pathname = usePathname()
 
   return (
@@ -45,6 +45,6 @@ const Layout = memo(function Layout({
       {!hideFooter && <Footer />}
     </>
   )
-})
+}
 
-export default Layout
+export default memo(Layout)

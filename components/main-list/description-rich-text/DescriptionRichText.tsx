@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import styles from './DescriptionRichText.module.scss'
+import styles from './DescriptionRichText.module.css'
 
 const DescriptionRichText = ({ html }) => {
   return (

@@ -1,7 +1,7 @@
 import { HiHeart } from 'react-icons/hi'
 import Link from 'next/link'
 
-import styles from './DonateButton.module.scss'
+import styles from './DonateButton.module.css'
 
 const DonateButton = () => {
   return (

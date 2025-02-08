@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { memo, useState, useCallback, useEffect, useMemo } from 'react'
 import VisNetworkReactComponent from 'vis-network-react'
 import Dialog from '@components/main-list/dialog'
-import styles from './Network.module.scss'
+import styles from './Network.module.css'
 
 const options = {
   autoResize: true,

@@ -26,7 +26,7 @@ import {
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
-import styles from './Dialog.module.scss'
+import styles from './Dialog.module.css'
 
 interface DialogProps {
   isOpen: boolean

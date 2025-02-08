@@ -1,0 +1,54 @@
+.description {
+  color: rgb(0 0 0 / 70%);
+  font-size: 1.0625rem;
+}
+
+.description h1 {
+  font-size: 2.25rem;
+}
+
+.description h2 {
+  font-size: 1.5rem;
+}
+
+.description h3 {
+  font-size: 1.25rem;
+}
+
+.description h4,
+.description h5,
+.description h6 {
+  font-size: 1rem;
+}
+
+.description p,
+.description ol,
+.description ul {
+  font-size: 1.0625rem;
+  color: rgb(0 0 0 / 70%);
+  line-height: 1.6;
+}
+
+.description p {
+  margin-bottom: 1rem;
+}
+
+.description p a {
+  color: #597eba;
+}
+
+.description ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+}
+
+.description ul,
+.description ol {
+  list-style-position: inside;
+  margin-bottom: 1rem;
+}
+
+.description ul > li,
+.description ol > li {
+  line-height: 1.6;
+}

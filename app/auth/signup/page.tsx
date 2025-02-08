@@ -7,7 +7,7 @@ import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import Image from 'next/legacy/image'
 import LogoImage from '../../../public/logo.png'
-import styles from '../auth.module.scss'
+import styles from '../auth.module.css'
 
 export default function SignUp() {
   const [error, setError] = useState('')
