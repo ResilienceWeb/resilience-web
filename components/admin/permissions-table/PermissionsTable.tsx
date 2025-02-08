@@ -63,6 +63,9 @@ const PermissionsTable = ({ permissions }) => {
                       return (
                         <TableCell key={`1-${index}`}>
                           <Badge>Owner</Badge>
+                          {!permission.user.emailVerified && (
+                            <Badge variant="secondary">Invite pending</Badge>
+                          )}
                         </TableCell>
                       )
                     }

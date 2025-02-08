@@ -54,7 +54,6 @@ export default function WebSettingsPage() {
 
   const onSubmit = useCallback(
     (data: WebSettingsForm) => {
-      console.log({ data })
       const dataToSubmit: any = {
         description: data.description,
         published: data.published,

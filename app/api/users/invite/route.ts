@@ -21,7 +21,7 @@ export async function POST(request) {
       )
     }
 
-    const { email: emailAddress, web: webId } = await request.json()
+    const { email: emailAddress, web: webId, asOwner } = await request.json()
     const email = emailAddress.trim()
 
     if (!email) {
@@ -50,33 +50,63 @@ export async function POST(request) {
     const user = await prisma.user.upsert(newUserData)
     const webIdToConnect = webId ? { id: webId } : []
 
-    const newData: Prisma.PermissionUpsertArgs = {
-      where: {
-        email,
-      },
-      create: {
-        user: {
-          connect: {
-            id: user.id,
+    if (asOwner) {
+      const newData: Prisma.OwnershipUpsertArgs = {
+        where: {
+          email,
+        },
+        create: {
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
+          webs: {
+            connect: webIdToConnect,
           },
         },
-        webs: {
-          connect: webIdToConnect,
-        },
-      },
-      update: {
-        user: {
-          connect: {
-            id: user.id,
+        update: {
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
+          webs: {
+            connect: webIdToConnect,
           },
         },
-        webs: {
-          connect: webIdToConnect,
-        },
-      },
-    }
+      }
 
-    await prisma.permission.upsert(newData)
+      await prisma.ownership.upsert(newData)
+    } else {
+      const newData: Prisma.PermissionUpsertArgs = {
+        where: {
+          email,
+        },
+        create: {
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
+          webs: {
+            connect: webIdToConnect,
+          },
+        },
+        update: {
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
+          webs: {
+            connect: webIdToConnect,
+          },
+        },
+      }
+
+      await prisma.permission.upsert(newData)
+    }
 
     const emailEncoded = encodeURIComponent(email)
     const callToActionButtonUrl = `${REMOTE_URL}/activate?email=${emailEncoded}`
@@ -101,7 +131,7 @@ export async function POST(request) {
     const msg = {
       from: `Resilience Web <info@resilienceweb.org.uk>`,
       to: email,
-      subject: `Your invite to the ${selectedWeb.title} Resilience Web`,
+      subject: `Your invite to ${selectedWeb.title} Resilience Web`,
       text: inviteEmailText,
       html: inviteEmailHtml,
     }

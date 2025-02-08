@@ -170,8 +170,6 @@ const ListingFormSimplified = ({
   }, [tags])
 
   const handleSubmitForm = (data: any) => {
-    console.log(data)
-
     const formData = {
       ...data,
       tags: data.tags?.map((t) => t.value),

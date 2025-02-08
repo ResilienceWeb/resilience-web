@@ -17,6 +17,7 @@ import { useAppContext } from '@store/hooks'
 
 const driverObj = driver({
   showProgress: true,
+  allowClose: false,
   steps: [
     {
       element: '[data-tourid=new-listing]',
@@ -52,7 +53,7 @@ const driverObj = driver({
       popover: {
         title: 'Edit web settings ⚙️',
         description:
-          'Upload a cover image for your web and publish it when it is ready.',
+          'If you are an owner, you can also edit web settings on the left hand side. As an editor, you can only edit listings and categories.',
         side: 'bottom',
         align: 'center',
       },
@@ -61,7 +62,7 @@ const driverObj = driver({
       popover: {
         title: 'We will let you crack on now 😊',
         description:
-          "If you need any support along the way, don't hesitate to get in touch at info@resilienceweb.org.uk",
+          "If you need any support along the way, don't hesitate to get in touch via the Get in touch button at the top",
       },
     },
   ],
@@ -124,7 +125,7 @@ export default function AdminPage() {
       setTimeout(() => {
         driverObj.drive()
         clearSearchParams()
-      }, 3000)
+      }, 2000)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstTime])

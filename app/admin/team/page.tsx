@@ -8,6 +8,9 @@ import * as z from 'zod'
 import { toast } from 'sonner'
 import { Spinner } from '@components/ui/spinner'
 import { Button } from '@components/ui/button'
+import { Checkbox } from '@components/ui/checkbox'
+import { useQueryClient } from '@tanstack/react-query'
+import { AiOutlineLoading } from 'react-icons/ai'
 import {
   Form,
   FormControl,
@@ -20,7 +23,6 @@ import {
 import { Input } from '@components/ui/input'
 import PermissionsTable from '@components/admin/permissions-table'
 import { REMOTE_URL } from '@helpers/config'
-import usePermissions from '@hooks/permissions/usePermissions'
 import usePermissionsForCurrentWeb from '@hooks/permissions/usePermissionsForCurrentWeb'
 import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
 import useOwnerships from '@hooks/ownership/useOwnerships'
@@ -39,24 +41,28 @@ const faqs = [
 const formSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
   listings: z.array(z.string()),
+  asOwner: z.boolean().default(false),
 })
 
 type FormValues = z.infer<typeof formSchema>
 
 export default function TeamPage() {
+  const queryClient = useQueryClient()
   const { data: session } = useSession()
   const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
-  const { isPending: isPermissionsPending } = usePermissions()
-  const { data: permissionsForCurrentWeb } = usePermissionsForCurrentWeb()
+  const { data: permissionsForCurrentWeb, isPending: isPermissionsPending } =
+    usePermissionsForCurrentWeb()
   const { ownerships } = useOwnerships()
   const selectedWebName = useSelectedWebName()
   const { selectedWebId } = useAppContext()
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    mode: 'onSubmit',
     defaultValues: {
       email: '',
       listings: [],
+      asOwner: false,
     },
   })
 
@@ -89,6 +95,7 @@ export default function TeamPage() {
         const body = {
           email: data.email,
           web: selectedWebId,
+          asOwner: data.asOwner,
         }
 
         const response = await fetch(`${REMOTE_URL}/api/users/invite`, {
@@ -105,6 +112,10 @@ export default function TeamPage() {
             duration: 5000,
           })
           form.reset()
+          queryClient.invalidateQueries({ queryKey: ['ownerships'] })
+          queryClient.invalidateQueries({
+            queryKey: ['current-web-permissions'],
+          })
         } else {
           throw new Error('Failed to send invite')
         }
@@ -116,16 +127,16 @@ export default function TeamPage() {
         })
       }
     },
-    [selectedWebId, form],
+    [selectedWebId, form, queryClient],
   )
 
-  if (isPermissionsPending) {
+  if (isPermissionsPending || !selectedWebId) {
     return <Spinner />
   }
 
   return (
     <div className="flex flex-col space-y-8 divide-y divide-gray-200">
-      {(isOwnerOfCurrentWeb || session.user.admin) && (
+      {isOwnerOfCurrentWeb && (
         <div className="pb-8">
           <h1 className="mb-6 text-2xl font-bold">Invite team member</h1>
           <div className="overflow-hidden rounded-md bg-white p-4 shadow-sm">
@@ -153,6 +164,24 @@ export default function TeamPage() {
                     )}
                   />
 
+                  <FormField
+                    control={form.control}
+                    name="asOwner"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Invite as an owner
+                        </FormLabel>
+                      </FormItem>
+                    )}
+                  />
+
                   <Button
                     type="submit"
                     className="bg-[#2B8257] hover:bg-[#236c47]"
@@ -160,6 +189,9 @@ export default function TeamPage() {
                       !form.formState.isValid || form.formState.isSubmitting
                     }
                   >
+                    {form.formState.isSubmitting && (
+                      <AiOutlineLoading className="animate-spin" />
+                    )}{' '}
                     Send invite
                   </Button>
                 </form>
@@ -187,7 +219,7 @@ export default function TeamPage() {
         </div>
       )}
 
-      <div className="mb-12 pt-8">
+      <div className="!mb-8 pt-8">
         <h3 className="mb-4 text-2xl font-bold">FAQs</h3>
         <Faq content={faqs} />
       </div>
