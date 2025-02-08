@@ -531,14 +531,13 @@ const ListingForm = ({
             </Button>
           </div>
 
-          <div className="mt-2 flex justify-end">
+          {/* <div className="mt-2 flex justify-end">
             <FormMessage className="text-sm">
               {!isValid &&
                 isDirty &&
                 'There are some errors, please scroll up and check them.'}
-              {/* {JSON.stringify(errors)} */}
             </FormMessage>
-          </div>
+          </div> */}
         </form>
       </Form>
     </FormProvider>
