@@ -2,6 +2,7 @@ import truncate from 'lodash/truncate'
 import prisma from '@prisma-rw'
 import getListing from './getListing'
 import Listing from './Listing'
+import { notFound } from 'next/navigation'
 
 export default async function ListingPage(props) {
   const params = await props.params
@@ -11,10 +12,7 @@ export default async function ListingPage(props) {
   })
 
   if (!listing) {
-    console.log(
-      `[RW] Listing not found for slugs ${params.subdomain}, ${params.slug}`,
-    )
-    return null
+    return notFound()
   }
 
   return <Listing listing={listing} />

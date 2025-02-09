@@ -1,5 +1,6 @@
 import prisma from '@prisma-rw'
 import Web, { CENTRAL_NODE_ID } from './Web'
+import { notFound } from 'next/navigation'
 
 export default async function WebPage(props) {
   const params = await props.params
@@ -12,8 +13,7 @@ export default async function WebPage(props) {
   }
 
   if (!data) {
-    console.log(`[RW] Web or listings not found for webSlug ${webSlug}`)
-    return null
+    return notFound()
   }
 
   const { transformedData, webData } = data

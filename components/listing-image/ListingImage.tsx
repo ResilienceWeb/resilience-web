@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useEffect, useRef, useState, memo } from 'react'
+import { useLayoutEffect, useRef, useState, memo } from 'react'
 import { useExtractColors } from 'react-extract-colors'
 import { hasAlpha } from '@helpers/colors'
 
@@ -16,7 +16,7 @@ const ListingImage = ({ alt, src, sizes, isInView, priority }: Props) => {
   const [isImageTransparent, setIsImageTransparent] = useState<boolean>(false)
   const { dominantColor } = useExtractColors(src)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (imageRef.current && (isInView === true || isInView === undefined)) {
       const isTransparent = hasAlpha(imageRef.current)
 
@@ -29,6 +29,8 @@ const ListingImage = ({ alt, src, sizes, isInView, priority }: Props) => {
       className="relative h-[170px] w-full overflow-hidden"
       style={{
         backgroundColor: isImageTransparent ? '#ffffff' : dominantColor,
+        borderTopLeftRadius: '0.375rem',
+        borderTopRightRadius: '0.375rem',
       }}
     >
       <Image
