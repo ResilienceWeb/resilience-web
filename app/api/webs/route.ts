@@ -49,6 +49,7 @@ export async function GET(request) {
         select: {
           id: true,
           webId: true,
+          updatedAt: true,
         },
       }
     }

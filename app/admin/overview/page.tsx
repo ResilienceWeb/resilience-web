@@ -25,6 +25,48 @@ const columns = [
   },
 ]
 
+const getLatestListingUpdate = (listings) => {
+  if (!listings?.length) return null
+
+  let latestDate = null
+  for (const listing of listings) {
+    if (!listing.updatedAt) continue
+    const date = new Date(listing.updatedAt)
+    if (!latestDate || date > latestDate) {
+      latestDate = date
+    }
+  }
+  return latestDate
+}
+
+const getLastActivityDate = (web) => {
+  const webLastUpdated = web.updatedAt ? new Date(web.updatedAt) : null
+  const listingsLastUpdated = getLatestListingUpdate(web.listings)
+
+  if (!webLastUpdated) return listingsLastUpdated
+  if (!listingsLastUpdated) return webLastUpdated
+
+  return new Date(
+    Math.max(webLastUpdated.getTime(), listingsLastUpdated.getTime()),
+  )
+}
+
+const isWebActive = (web) => {
+  const threeMonthsAgo = new Date()
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3)
+
+  const lastActivity = getLastActivityDate(web)
+  if (!lastActivity) return false
+
+  return lastActivity > threeMonthsAgo
+}
+
+const formatDate = (date) => {
+  return Intl.DateTimeFormat('en-GB', {
+    dateStyle: 'long',
+  }).format(date)
+}
+
 export default function OverviewPage() {
   const router = useRouter()
   const { isPending: isLoadingWebs, webs } = useWebs({ withAdminInfo: true })
@@ -51,11 +93,22 @@ export default function OverviewPage() {
           </TableHeader>
           <TableBody>
             {webs
-              .sort(
-                (web1, web2) =>
-                  new Date(web2.createdAt).valueOf() -
-                  new Date(web1.createdAt).valueOf(),
-              )
+              .sort((web1, web2) => {
+                // First sort by published status
+                if (web1.published !== web2.published) {
+                  return web2.published ? 1 : -1 // Published webs go first
+                }
+
+                // Then sort by last activity date
+                const date1 = getLastActivityDate(web1)
+                const date2 = getLastActivityDate(web2)
+
+                if (!date1 && !date2) return 0
+                if (!date1) return 1
+                if (!date2) return -1
+
+                return date2.getTime() - date1.getTime()
+              })
               .map((web) => {
                 const teamMembersCount =
                   web.ownerships.length + web.permissions.length
@@ -92,6 +145,12 @@ export default function OverviewPage() {
                             ? 'team member'
                             : 'team members'}
                         </p>
+                        {!isWebActive(web) && (
+                          <Badge variant="secondary" className="mt-2">
+                            Last activity:{' '}
+                            {formatDate(getLastActivityDate(web))}
+                          </Badge>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
