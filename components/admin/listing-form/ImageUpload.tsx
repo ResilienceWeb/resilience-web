@@ -74,7 +74,7 @@ const ImageUpload = ({
           <FormDescription>
             Please ensure this is either a copyright-free image, you own the
             copyright of this image, or you have permission to use the image.
-            {helperText && <p className="mt-2">{helperText}</p>}
+            {helperText && <span className="mt-2">{helperText}</span>}
           </FormDescription>
           <div className="mt-2">
             <input

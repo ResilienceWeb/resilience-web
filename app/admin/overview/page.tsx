@@ -1,5 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
+import { PiWarningCircleBold } from 'react-icons/pi'
 import {
   Table,
   TableBody,
@@ -21,7 +22,10 @@ const columns = [
     Header: 'Status',
   },
   {
-    Header: 'Details',
+    Header: 'Activity',
+  },
+  {
+    Header: 'Team & Content',
   },
 ]
 
@@ -75,11 +79,36 @@ export default function OverviewPage() {
     return <Spinner />
   }
 
+  const totalWebs = webs.length
+  const publishedWebs = webs.filter((web) => web.published).length
+  const inactiveWebs = webs.filter((web) => !isWebActive(web)).length
+
   return (
-    <div className="space-y-6">
+    <div className="mb-6 space-y-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Overview</h1>
         <p className="text-muted-foreground">Manage Resilience Web instances</p>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4">
+        <div className="rounded-lg border bg-card p-4">
+          <div className="text-sm font-medium text-muted-foreground">
+            Total Webs
+          </div>
+          <div className="mt-2 text-2xl font-bold">{totalWebs}</div>
+        </div>
+        <div className="rounded-lg border bg-card p-4">
+          <div className="text-sm font-medium text-muted-foreground">
+            Published
+          </div>
+          <div className="mt-2 text-2xl font-bold">{publishedWebs}</div>
+        </div>
+        <div className="rounded-lg border bg-card p-4">
+          <div className="text-sm font-medium text-muted-foreground">
+            Inactive Webs
+          </div>
+          <div className="mt-2 text-2xl font-bold">{inactiveWebs}</div>
+        </div>
       </div>
 
       <div className="rounded-lg border bg-card">
@@ -113,6 +142,9 @@ export default function OverviewPage() {
                 const teamMembersCount =
                   web.ownerships.length + web.permissions.length
 
+                const hasNoImage = !web.image
+                const noDescription = !web.description
+
                 return (
                   <TableRow
                     key={web.id}
@@ -121,7 +153,27 @@ export default function OverviewPage() {
                       router.push(`/admin/overview/${web.slug}`)
                     }}
                   >
-                    <TableCell className="font-medium">{web.title}</TableCell>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="font-medium">{web.title}</div>
+                        {(hasNoImage || noDescription) && (
+                          <div className="flex flex-wrap gap-1">
+                            {hasNoImage && (
+                              <div className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-1 text-xs">
+                                <PiWarningCircleBold className="h-4 w-4" />
+                                <span>No image</span>
+                              </div>
+                            )}
+                            {noDescription && (
+                              <div className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-1 text-xs">
+                                <PiWarningCircleBold className="h-4 w-4" />
+                                <span>No description</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell>
                       {web.published ? (
                         <Badge>Published</Badge>
@@ -130,27 +182,40 @@ export default function OverviewPage() {
                       )}
                     </TableCell>
                     <TableCell>
-                      <div className="space-y-1 text-sm">
-                        <p>
-                          <span className="font-medium">
-                            {web.listings.length}
-                          </span>{' '}
-                          listings
-                        </p>
-                        <p>
-                          <span className="font-medium">
-                            {teamMembersCount}
-                          </span>{' '}
-                          {teamMembersCount === 1
-                            ? 'team member'
-                            : 'team members'}
-                        </p>
-                        {!isWebActive(web) && (
-                          <Badge variant="secondary" className="mt-2">
+                      {!isWebActive(web) ? (
+                        <div className="space-y-1">
+                          <Badge variant="secondary">Inactive</Badge>
+                          <div className="text-xs text-muted-foreground">
                             Last activity:{' '}
                             {formatDate(getLastActivityDate(web))}
-                          </Badge>
-                        )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-sm text-muted-foreground">
+                          Last active {formatDate(getLastActivityDate(web))}
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-1 text-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">
+                            {web.listings.length}
+                          </span>
+                          <span className="text-muted-foreground">
+                            listings
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">
+                            {teamMembersCount}
+                          </span>
+                          <span className="text-muted-foreground">
+                            {teamMembersCount === 1
+                              ? 'team member'
+                              : 'team members'}
+                          </span>
+                        </div>
                       </div>
                     </TableCell>
                   </TableRow>
