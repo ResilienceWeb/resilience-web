@@ -79,6 +79,12 @@ const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
                       <span>No image</span>
                     </div>
                   )}
+                  {!item.location && (
+                    <div className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-1 text-sm">
+                      <PiWarningCircleBold className="h-[18px] w-[18px]" />
+                      <span>No location</span>
+                    </div>
+                  )}
                   {item.description.length < 50 && (
                     <div className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-1 text-sm">
                       <PiWarningCircleBold className="h-[18px] w-[18px]" />
