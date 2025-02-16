@@ -11,7 +11,9 @@ import {
   HiOutlineCog,
   HiExternalLink,
   HiX,
+  HiBookOpen,
 } from 'react-icons/hi'
+import { GrAnnounce } from 'react-icons/gr'
 import { BiCategory } from 'react-icons/bi'
 import { GrOverview } from 'react-icons/gr'
 import { LuBook } from 'react-icons/lu'
@@ -62,6 +64,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
 
   const navLinks = useMemo(() => {
     const links: any[] = []
+
     if (selectedWebId) {
       links.push({
         label: 'Listings',
@@ -95,6 +98,13 @@ export default function SidebarContent({ closeMenu, ...rest }) {
         tourId: 'nav-websettings',
       })
     }
+
+    links.push({
+      label: 'Resources',
+      href: '/admin/resources',
+      icon: <GrAnnounce />,
+      tourId: 'nav-resources',
+    })
 
     links.push({
       label: (
