@@ -59,6 +59,8 @@ export default function Providers({ children }) {
         capture_pageview: false,
         capture_pageleave: true,
         persistence: 'localStorage',
+        capture_exceptions: true,
+        capture_performance: true,
       })
     }
   }, [])
