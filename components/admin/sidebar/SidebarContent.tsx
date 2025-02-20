@@ -11,7 +11,6 @@ import {
   HiOutlineCog,
   HiExternalLink,
   HiX,
-  HiBookOpen,
 } from 'react-icons/hi'
 import { GrAnnounce } from 'react-icons/gr'
 import { BiCategory } from 'react-icons/bi'
