@@ -22,9 +22,6 @@ const columns = [
     Header: 'Status',
   },
   {
-    Header: 'Activity',
-  },
-  {
     Header: 'Team & Content',
   },
 ]
@@ -175,26 +172,26 @@ export default function OverviewPage() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {web.published ? (
-                        <Badge>Published</Badge>
-                      ) : (
-                        <Badge variant="secondary">Private</Badge>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {!isWebActive(web) ? (
-                        <div className="space-y-1">
-                          <Badge variant="secondary">Inactive</Badge>
-                          <div className="text-xs text-muted-foreground">
-                            Last activity:{' '}
-                            {formatDate(getLastActivityDate(web))}
+                      <div className="flex flex-col items-start gap-1">
+                        {web.published ? (
+                          <Badge>Published</Badge>
+                        ) : (
+                          <Badge variant="secondary">Private</Badge>
+                        )}
+                        {!isWebActive(web) ? (
+                          <div className="space-y-1">
+                            <Badge variant="secondary">Inactive</Badge>
+                            <div className="text-xs text-muted-foreground">
+                              Last activity:{' '}
+                              {formatDate(getLastActivityDate(web))}
+                            </div>
                           </div>
-                        </div>
-                      ) : (
-                        <div className="text-sm text-muted-foreground">
-                          Last active {formatDate(getLastActivityDate(web))}
-                        </div>
-                      )}
+                        ) : (
+                          <div className="text-xs text-muted-foreground">
+                            Last activity {formatDate(getLastActivityDate(web))}
+                          </div>
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <div className="space-y-1 text-sm">
