@@ -6,7 +6,7 @@ async function updateWebRequest(webData) {
   Object.keys(webData).forEach((key) => formData.append(key, webData[key]))
 
   const response = await fetch(`/api/webs/${webData.slug}`, {
-    method: 'POST',
+    method: 'PUT',
     body: formData,
   })
 

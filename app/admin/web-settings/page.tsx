@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useForm, FormProvider, useFormContext } from 'react-hook-form'
 import { toast } from 'sonner'
 import { Spinner } from '@components/ui/spinner'
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
@@ -9,6 +9,14 @@ import useWeb from '@hooks/webs/useWeb'
 import useUpdateWeb from '@hooks/webs/useUpdateWeb'
 import { useAppContext } from '@store/hooks'
 import { Button } from '@components/ui/button'
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormDescription,
+  FormMessage,
+} from '@components/ui/form'
+import { Textarea } from '@components/ui/textarea'
 
 interface WebSettingsForm {
   published: boolean
@@ -116,25 +124,22 @@ export default function WebSettingsPage() {
                 )}
               </div>
 
-              <div className="mb-8">
-                <label
-                  htmlFor="description"
-                  className="mb-1 block text-sm font-semibold"
-                >
-                  Description
-                </label>
-                <textarea
-                  {...register('description')}
-                  id="description"
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  rows={4}
-                />
-                {errors.description && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.description.message}
-                  </p>
+              <FormField
+                control={methods.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold">Description</FormLabel>
+                    <FormDescription>
+                      A brief description of your web and its purpose. If you
+                      represent a local group, feel free to include information
+                      about it.
+                    </FormDescription>
+                    <Textarea {...field} rows={4} />
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
+              />
 
               <ImageUpload
                 name="image"

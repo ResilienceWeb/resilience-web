@@ -63,7 +63,7 @@ export async function GET(request, props) {
   })
 }
 
-export async function POST(request, props) {
+export async function PUT(request, props) {
   const params = await props.params
   const session = await auth()
 
@@ -81,7 +81,7 @@ export async function POST(request, props) {
 
     const image = formData.get('image')
     let imageUrl: string | null = null
-    if (image && image !== 'undefined') {
+    if (image && image !== 'undefined' && image !== 'null') {
       const { image: oldImageKey } = await prisma.web.findUnique({
         where: { slug },
       })

@@ -49,7 +49,7 @@ const ImageUpload = ({
         setPreview(reader.result as string)
       }
 
-      setValue(name, optimizedFile, { shouldValidate: true })
+      setValue(name, optimizedFile, { shouldValidate: true, shouldDirty: true })
     } else {
       setPreview(null)
     }
@@ -57,7 +57,7 @@ const ImageUpload = ({
 
   const handleRemoveImage = () => {
     setPreview(null)
-    setValue(name, null, { shouldValidate: true })
+    setValue(name, null, { shouldValidate: true, shouldDirty: true })
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
     }
