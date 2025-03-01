@@ -38,9 +38,6 @@ yarn-error.log*
 
 .aws
 
-# Sentry Auth Token
-.sentryclirc
-
 # Playwright
 /test-results/
 /playwright-report/
