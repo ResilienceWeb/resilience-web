@@ -31,7 +31,7 @@ const Layout = ({
       >
         {pathname === '/' && (
           <AlertBanner
-            content="Join our online monthly Assembly every first Wednesday of the month, at midday. Click here to read more."
+            content="Join our online monthly Assembly. Click here to read more."
             type="info"
             url="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219?aff=oddtdtcreator"
           />

@@ -54,7 +54,7 @@ export async function generateStaticParams() {
   const { body: listings } = await response.json()
 
   return listings.map((l) => ({
-    slug: l.slug,
+    slug: generateSlug(l.title),
   }))
 }
 
