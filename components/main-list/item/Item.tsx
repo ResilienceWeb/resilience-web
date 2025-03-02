@@ -83,7 +83,8 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
           priority={inView && isWithinAFewSecondsOfRender}
         />
       ) : (
-        categoryIndex && (
+        categoryIndex !== null &&
+        categoryIndex !== undefined && (
           <ImagePlaceholder
             backgroundColor={categoryBackgroundColor}
             categoryIndex={categoryIndex}

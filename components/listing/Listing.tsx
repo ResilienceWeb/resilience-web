@@ -5,10 +5,10 @@ import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa'
+import { FaFacebook, FaInstagram } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi'
-import { SlGlobe } from 'react-icons/sl'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
+import { SlGlobe } from 'react-icons/sl'
 import { Badge } from '@components/ui/badge'
 import {
   Tooltip,
@@ -22,17 +22,14 @@ import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import Item from '@components/main-list/item'
+import ShareButton from '@components/share-button'
 
 const ListingMap = dynamic(() => import('./listing-map'), {
   ssr: false,
   loading: () => <div className="pt-5 text-center">Loading…</div>,
 })
 
-interface ListingProps {
-  listing: any // TODO: Add proper type
-}
-
-function Listing({ listing }: ListingProps) {
+function Listing({ listing }) {
   const router = useRouter()
   const [subdomain, setSubdomain] = useState<string>()
 
@@ -140,14 +137,19 @@ function Listing({ listing }: ListingProps) {
               </div>
 
               <div className="flex items-center justify-end gap-2">
+                <ShareButton
+                  url={window.location.href}
+                  title="Check out this listing on Resilience Web"
+                  description="Resilience Web is a place-based visualisation of environmental and social justice groups working to make the world a better place."
+                />
                 {listing.website && (
                   <a
                     href={listingWebsite}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-50 text-gray-500 ring-1 ring-gray-200/50 transition-all hover:bg-gray-100 hover:text-gray-700 hover:ring-gray-300"
+                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 text-gray-500 ring-1 ring-gray-200/50 transition-all hover:bg-gray-100 hover:text-gray-700 hover:ring-gray-300"
                   >
-                    <SlGlobe className="h-4 w-4 transition-transform group-hover:scale-110" />
+                    <SlGlobe className="h-5 w-5 transition-transform group-hover:scale-110" />
                   </a>
                 )}
                 {listing.facebook && (
@@ -155,19 +157,9 @@ function Listing({ listing }: ListingProps) {
                     href={listing.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-[#1877F2]/70 ring-1 ring-blue-100/50 transition-all hover:bg-blue-100 hover:text-[#1877F2] hover:ring-blue-200"
+                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-[#1877F2]/70 ring-1 ring-blue-100/50 transition-all hover:bg-blue-100 hover:text-[#1877F2] hover:ring-blue-200"
                   >
-                    <FaFacebook className="h-4 w-4 transition-transform group-hover:scale-110" />
-                  </a>
-                )}
-                {listing.twitter && (
-                  <a
-                    href={listing.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex h-8 w-8 items-center justify-center rounded-full bg-sky-50 text-[#1DA1F2]/70 ring-1 ring-sky-100/50 transition-all hover:bg-sky-100 hover:text-[#1DA1F2] hover:ring-sky-200"
-                  >
-                    <FaTwitter className="h-4 w-4 transition-transform group-hover:scale-110" />
+                    <FaFacebook className="h-5 w-5 transition-transform group-hover:scale-110" />
                   </a>
                 )}
                 {listing.instagram && (
@@ -175,9 +167,9 @@ function Listing({ listing }: ListingProps) {
                     href={listing.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex h-8 w-8 items-center justify-center rounded-full bg-pink-50 text-[#E4405F]/70 ring-1 ring-pink-100/50 transition-all hover:bg-pink-100 hover:text-[#E4405F] hover:ring-pink-200"
+                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full bg-pink-50 text-[#E4405F]/70 ring-1 ring-pink-100/50 transition-all hover:bg-pink-100 hover:text-[#E4405F] hover:ring-pink-200"
                   >
-                    <FaInstagram className="h-4 w-4 transition-transform group-hover:scale-110" />
+                    <FaInstagram className="h-5 w-5 transition-transform group-hover:scale-110" />
                   </a>
                 )}
               </div>
