@@ -139,8 +139,8 @@ function Listing({ listing }) {
               <div className="flex items-center justify-end gap-2">
                 <ShareButton
                   url={window.location.href}
-                  title="Check out this listing on Resilience Web"
-                  description="Resilience Web is a place-based visualisation of environmental and social justice groups working to make the world a better place."
+                  title="Resilience Web"
+                  description="Check out this listing on Resilience Web, a place-based visualisation of environmental and social justice groups making the world a better place."
                 />
                 {listing.website && (
                   <a
