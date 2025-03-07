@@ -453,14 +453,14 @@ const ListingForm = ({
             control={methods.control}
             name="seekingVolunteers"
             render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start gap-2 space-y-0 space-x-3">
+              <FormItem className="mt-4 flex flex-row items-start gap-2">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <div className="space-y-1 leading-none">
+                <div className="flex flex-col gap-1">
                   <FormLabel>Currently seeking volunteers</FormLabel>
                   <FormDescription>
                     Check this if your group would benefit from having
@@ -482,7 +482,7 @@ const ListingForm = ({
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <div className="space-y-1 leading-none">
+                <div className="flex flex-col gap-1">
                   <FormLabel>Featured listing</FormLabel>
                   <FormDescription>
                     Featured listings appear at the top of search results
@@ -503,7 +503,7 @@ const ListingForm = ({
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <div className="space-y-1 leading-none">
+                <div className="flex flex-col gap-1">
                   <FormLabel>This listing has no physical location</FormLabel>
                   <FormDescription>
                     If this listing does not have a physical location, please
