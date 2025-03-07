@@ -47,7 +47,7 @@ const Drawer = ({
   isTransitionMode = false,
 }: DrawerProps) => {
   return (
-    <div className="fixed z-[3] h-screen w-[300px] overflow-y-scroll bg-white shadow-xl">
+    <div className="fixed z-3 h-screen w-[300px] overflow-y-scroll bg-white shadow-xl">
       <div className="flex h-full flex-col justify-between">
         <div>
           <NextLink href={REMOTE_URL} className="block">

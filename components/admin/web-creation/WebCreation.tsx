@@ -151,7 +151,7 @@ const WebCreation = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        className="text-sm shadow-sm"
+                        className="text-sm shadow-xs"
                         placeholder="e.g. York"
                       />
                     </FormControl>
@@ -169,7 +169,7 @@ const WebCreation = () => {
                       Link to web
                     </FormLabel>
                     <FormControl>
-                      <div className="flex rounded-md shadow-sm">
+                      <div className="flex rounded-md shadow-xs">
                         <Input
                           {...field}
                           className="rounded-r-none text-sm"
@@ -198,7 +198,7 @@ const WebCreation = () => {
                       Description (optional)
                     </FormLabel>
                     <FormControl>
-                      <Textarea {...field} className="text-sm shadow-sm" />
+                      <Textarea {...field} className="text-sm shadow-xs" />
                     </FormControl>
                     <FormDescription>
                       This can also be edited later.

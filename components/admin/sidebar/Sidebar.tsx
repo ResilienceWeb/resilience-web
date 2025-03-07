@@ -6,7 +6,7 @@ const SidebarContent = dynamic(() => import('./SidebarContent'), {
 
 export default function Sidebar({ isOpen, onClose }) {
   return (
-    <div className="relative h-screen w-0 flex-shrink-0 lg:w-60">
+    <div className="relative h-screen w-0 shrink-0 lg:w-60">
       <div className="hidden lg:block">
         <SidebarContent closeMenu={onClose} />
       </div>

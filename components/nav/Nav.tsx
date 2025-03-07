@@ -102,13 +102,13 @@ export default function MainNav() {
                 />
               </Link>
 
-              <div className="ml-10 mr-2 hidden items-center md:flex">
+              <div className="mr-2 ml-10 hidden items-center md:flex">
                 <DesktopNav currentPathname={pathname} navItems={navItems} />
               </div>
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-2">
             <GetInTouchButton />
             <Link href={`${REMOTE_URL}/admin`}>
               <Button variant="default" size="default">
@@ -192,9 +192,9 @@ const ListItem = ({ title, href }: ListItemProps) => {
       <NavigationMenuLink asChild>
         <Link
           href={href}
-          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+          className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors select-none"
         >
-          <div className="text-md font-semibold leading-none">{title}</div>
+          <div className="text-md leading-none font-semibold">{title}</div>
         </Link>
       </NavigationMenuLink>
     </li>

@@ -139,12 +139,12 @@ export default function TeamPage() {
       {isOwnerOfCurrentWeb && (
         <div className="pb-8">
           <h1 className="mb-6 text-2xl font-bold">Invite team member</h1>
-          <div className="overflow-hidden rounded-md bg-white p-4 shadow-sm">
+          <div className="overflow-hidden rounded-md bg-white p-4 shadow-xs">
             <div className="max-w-[450px]">
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(sendInvite)}
-                  className="space-y-4"
+                  className="flex flex-col items-start gap-4"
                 >
                   <FormField
                     control={form.control}
@@ -168,7 +168,7 @@ export default function TeamPage() {
                     control={form.control}
                     name="asOwner"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                      <FormItem className="flex flex-row items-center gap-2">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
@@ -219,7 +219,7 @@ export default function TeamPage() {
         </div>
       )}
 
-      <div className="!mb-8 pt-8">
+      <div className="mb-8! pt-8">
         <h3 className="mb-4 text-2xl font-bold">FAQs</h3>
         <Faq content={faqs} />
       </div>

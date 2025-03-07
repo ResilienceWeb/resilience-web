@@ -131,7 +131,7 @@ const SlugField = ({ isEditMode, register, watch, setValue, errors }) => {
         <input
           {...register('slug')}
           id="slug"
-          className="w-full rounded-r-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full rounded-r-md border border-gray-300 px-3 py-2 text-sm shadow-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-hidden"
         />
       </div>
       {errors.slug && (
@@ -453,14 +453,14 @@ const ListingForm = ({
             control={methods.control}
             name="seekingVolunteers"
             render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="mt-4 flex flex-row items-start gap-2">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <div className="space-y-1 leading-none">
+                <div className="flex flex-col gap-1">
                   <FormLabel>Currently seeking volunteers</FormLabel>
                   <FormDescription>
                     Check this if your group would benefit from having
@@ -475,14 +475,14 @@ const ListingForm = ({
             control={methods.control}
             name="featured"
             render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="mt-4 flex flex-row items-start gap-2 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <div className="space-y-1 leading-none">
+                <div className="flex flex-col gap-1">
                   <FormLabel>Featured listing</FormLabel>
                   <FormDescription>
                     Featured listings appear at the top of search results
@@ -496,14 +496,14 @@ const ListingForm = ({
             control={methods.control}
             name="noPhysicalLocation"
             render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="mt-4 flex flex-row items-start gap-2 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <div className="space-y-1 leading-none">
+                <div className="flex flex-col gap-1">
                   <FormLabel>This listing has no physical location</FormLabel>
                   <FormDescription>
                     If this listing does not have a physical location, please

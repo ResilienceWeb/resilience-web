@@ -15,8 +15,10 @@ import {
   FormLabel,
   FormDescription,
   FormMessage,
+  FormControl,
 } from '@components/ui/form'
 import { Textarea } from '@components/ui/textarea'
+import { Checkbox } from '@components/ui/checkbox'
 
 interface WebSettingsForm {
   published: boolean
@@ -92,15 +94,22 @@ export default function WebSettingsPage() {
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-8">
-                <label className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    {...register('published')}
-                    disabled
-                    className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
-                  />
-                  <span>Published</span>
-                </label>
+                <FormField
+                  control={methods.control}
+                  name="published"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start gap-2 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          disabled
+                        />
+                      </FormControl>
+                      <FormLabel className="text-sm font-medium leading-none">Published</FormLabel>
+                    </FormItem>
+                  )}
+                />
                 {errors.published && (
                   <p className="mt-1 text-sm text-red-600">
                     {errors.published.message}

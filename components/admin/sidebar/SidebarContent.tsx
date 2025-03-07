@@ -133,7 +133,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
 
   return (
     <div
-      className="fixed z-[100] h-full w-full max-w-full border-r border-r-gray-200 bg-[#fafafa] lg:max-w-[240px]"
+      className="fixed z-100 h-full w-full max-w-full border-r border-r-gray-200 bg-[#fafafa] lg:max-w-[240px]"
       {...rest}
     >
       <div className="flex h-full flex-col justify-between">

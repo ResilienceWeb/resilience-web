@@ -14,7 +14,7 @@ const VolunteerSwitch = ({
 }: VolunteerSwitchProps) => {
   return (
     <div className="w-full px-2.5">
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <Checkbox
           id="volunteer"
           checked={Boolean(checked)}
@@ -23,7 +23,7 @@ const VolunteerSwitch = ({
         />
         <label
           htmlFor="volunteer"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           Seeking volunteers
         </label>
