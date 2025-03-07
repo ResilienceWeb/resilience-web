@@ -1,7 +1,8 @@
 'use client'
 
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
-import NextLink from 'next/link'
+import Link from 'next/link'
+import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa'
 import { HiUserGroup, HiOutlineLink, HiExternalLink } from 'react-icons/hi'
@@ -25,8 +26,6 @@ import {
 
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import CategoryTag from '@components/category-tag'
-import ListingImage from '@components/listing-image'
-import styles from './Dialog.module.css'
 
 interface DialogProps {
   isOpen: boolean
@@ -141,11 +140,15 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
     <DialogPrimitive open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[672px]">
         {item.image && (
-          <div className="relative h-[300px] min-h-[300px] w-full overflow-hidden">
-            <ListingImage
+          <div className="relative -mx-6 -mt-6 h-[300px] min-h-[300px] w-full overflow-hidden sm:w-[calc(100%+48px)]">
+            <Image
               alt={`${item.label} cover image`}
-              sizes="(max-width: 768px) 100vw, 672px"
               src={item.image}
+              fill
+              sizes="(max-width: 768px) 100vw, 672px"
+              style={{
+                objectFit: 'cover',
+              }}
             />
           </div>
         )}
@@ -160,7 +163,7 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <div className={styles.modalContent}>
+        <div>
           <div className="flex justify-between">
             <CategoryTag colorHex={item.category.color}>
               {item.category.label}
@@ -195,18 +198,19 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
             {item.tags?.map((tag) => {
               const urlEncodedTag = tag.label.replace(' ', '+')
               return (
-                <NextLink
+                <Link
                   key={tag.id}
                   href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?web=${webSearchParam}&tags=${urlEncodedTag}`}
                   onClick={onClose}
                 >
                   <Badge
                     className="select-none transition-opacity hover:opacity-80"
-                    style={{ backgroundColor: tag.color ?? '#CBD5E0' }}
+                    style={{ backgroundColor: tag.color ?? '#797d7a' }}
+                    clickable
                   >
                     #{tag.label}
                   </Badge>
-                </NextLink>
+                </Link>
               )
             })}
           </div>
@@ -216,14 +220,14 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
           <div className="flex justify-between border-t pt-3">
             {socialLinks}
 
-            <NextLink href={individualListingLink}>
+            <Link href={individualListingLink}>
               <Button
                 variant="default"
                 className="mt-2 bg-[#2B8257] hover:bg-[#236c47]"
               >
                 Go to listing
               </Button>
-            </NextLink>
+            </Link>
           </div>
         )}
       </DialogContent>

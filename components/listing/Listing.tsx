@@ -83,7 +83,7 @@ function Listing({ listing }) {
         </button>
 
         {listing.image && (
-          <div className="group relative mb-8 h-[300px] w-full overflow-hidden rounded-xl bg-gray-50 md:h-[450px]">
+          <div className="group relative mb-8 h-[200px] w-full overflow-hidden rounded-xl bg-gray-50 md:h-[350px]">
             <Image
               src={listing.image}
               alt={`Image for ${listing.title}`}
