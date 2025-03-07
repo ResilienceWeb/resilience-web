@@ -99,6 +99,16 @@ export default function Footer({ hideBorder = false }) {
             <p className="text-sm">
               Resilience Web CIC - Company number 15322382
             </p>
+            <p className="text-sm">
+              Content on this site is in the public domain under a{' '}
+              <a
+                href="https://creativecommons.org/licenses/by/4.0"
+                target="_blank"
+              >
+                Creative Commons CC BY 4.0 license
+              </a>
+              .
+            </p>
           </div>
           <div className="flex flex-col gap-2">
             <ListHeader>Useful links</ListHeader>
