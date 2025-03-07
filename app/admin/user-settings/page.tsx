@@ -76,17 +76,20 @@ export default function UserSettingsPage() {
         </CardHeader>
         <CardContent className="max-w-md">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col items-start gap-6"
+            >
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-full">
                     <FormLabel className="text-sm font-semibold">
                       Your name
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} className="text-sm shadow-sm" />
+                      <Input {...field} className="text-sm shadow-xs" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -97,22 +100,22 @@ export default function UserSettingsPage() {
                 control={form.control}
                 name="subscribed"
                 render={({ field }) => (
-                  <FormItem className="space-y-2">
+                  <FormItem>
                     <FormControl>
-                      <div className="flex flex-col space-y-2">
-                        <div className="flex items-center space-x-2">
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                           <label
                             htmlFor={field.name}
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                           >
                             Subscribed to the Resilience Web mailing list
                           </label>
                         </div>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-muted-foreground text-sm">
                           Check the box if you'd like to receive our newsletter
                           with news, platform updates and more. You can
                           unsubscribe anytime.

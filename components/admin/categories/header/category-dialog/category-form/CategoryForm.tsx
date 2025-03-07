@@ -100,7 +100,7 @@ const CategoryForm = ({
                   </Button>
                 </TooltipTrigger>
                 {category?.listings?.length > 0 && (
-                  <TooltipContent className="z-[200]">
+                  <TooltipContent className="z-200">
                     To delete this category, first ensure there are no listings
                     associated with it
                   </TooltipContent>

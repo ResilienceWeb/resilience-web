@@ -59,7 +59,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <FaStar className="absolute right-1 top-1 z-[100] h-[26px] w-[26px] text-yellow-200" />
+              <FaStar className="absolute right-1 top-1 z-100 h-[26px] w-[26px] text-yellow-200" />
             </TooltipTrigger>
             <TooltipContent>
               <p>Featured listing</p>

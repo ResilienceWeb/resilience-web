@@ -1,80 +1,201 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin 'tailwindcss-animate';
+@custom-variant dark (&:is(.dark *));
 
-:root {
-  --primary-green: #09622f;
+@theme {
+  --animate-fade-in: fade-in 0.8s ease-out forwards;
+  --animate-slide-in: slide-in 0.6s ease-out forwards;
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+
+    to {
+      height: 0;
+    }
+  }
 }
 
-html,
-body {
-  background: #fcfcfc;
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
+  @layer base {
+    button:not(:disabled),
+    [role="button"]:not(:disabled) {
+      cursor: pointer;
+    }
+  }
 }
 
-body {
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
+@layer utilities {
+  :root {
+    --primary-green: #09622f;
+  }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+  html,
+  body {
+    background: #fcfcfc;
+  }
 
-* {
-  margin: 0;
-  font-family: Poppins, sans-serif;
-}
+  body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
 
-img, picture, video, canvas, svg {
-  display: block;
-  max-width: 100%;
-}
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-input, button, textarea, select {
-  font: inherit;
-}
+  * {
+    margin: 0;
+    font-family: Poppins, sans-serif;
+  }
 
-p, h1, h2, h3, h4, h5, h6 {
-  overflow-wrap: break-word;
-}
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
 
-/* stylelint-disable-next-line selector-id-pattern */
-#root, #__next {
-  isolation: isolate;
-}
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
 
-p > a {
-  color: #09622f !important;
-}
+  /* stylelint-disable-next-line selector-id-pattern */
+  #root,
+  #__next {
+    isolation: isolate;
+  }
 
-a:hover {
-  text-decoration: none !important;
-}
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-div[role="region"] > a {
-  color: #09622f !important;
-}
+  p > a {
+    color: #09622f !important;
+  }
 
-div[role="region"] > a:hover {
-  color: #09622f !important;
-}
+  a:hover {
+    text-decoration: none !important;
+  }
 
-/* driver.js popover */
-.driver-popover {
-  max-width: 360px;
-}
+  div[role='region'] > a {
+    color: #09622f !important;
+  }
 
-.leaflet-container {
-  height: 300px;
-}
+  div[role='region'] > a:hover {
+    color: #09622f !important;
+  }
 
-.grecaptcha-badge {
-  visibility: hidden !important;
+  /* driver.js popover */
+  .driver-popover {
+    max-width: 360px;
+  }
+
+  .leaflet-container {
+    height: 300px;
+  }
+
+  .grecaptcha-badge {
+    visibility: hidden !important;
+  }
 }
 
 @layer base {

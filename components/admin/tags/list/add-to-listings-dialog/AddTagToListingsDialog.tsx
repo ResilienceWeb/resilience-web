@@ -52,9 +52,9 @@ export default function AddTagToListingsDialog({
         <DialogDescription>
           Add the tag to the selected listings
         </DialogDescription>
-        <div className="space-y-4">
+        <div className="flex flex-col gap-4">
           {listings.map((listing) => (
-            <div key={listing.id} className="flex items-center space-x-2">
+            <div key={listing.id} className="flex items-center">
               <Checkbox
                 id={`listing-${listing.id}`}
                 checked={selectedListings.has(listing.id)}
@@ -64,7 +64,7 @@ export default function AddTagToListingsDialog({
               />
               <label
                 htmlFor={`listing-${listing.id}`}
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                className="ml-2 text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 {listing.title}
               </label>

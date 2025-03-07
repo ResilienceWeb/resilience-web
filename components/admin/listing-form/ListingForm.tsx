@@ -131,7 +131,7 @@ const SlugField = ({ isEditMode, register, watch, setValue, errors }) => {
         <input
           {...register('slug')}
           id="slug"
-          className="w-full rounded-r-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full rounded-r-md border border-gray-300 px-3 py-2 text-sm shadow-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-hidden"
         />
       </div>
       {errors.slug && (
@@ -453,7 +453,7 @@ const ListingForm = ({
             control={methods.control}
             name="seekingVolunteers"
             render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="mt-4 flex flex-row items-start gap-2 space-y-0 space-x-3">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -475,7 +475,7 @@ const ListingForm = ({
             control={methods.control}
             name="featured"
             render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="mt-4 flex flex-row items-start gap-2 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -496,7 +496,7 @@ const ListingForm = ({
             control={methods.control}
             name="noPhysicalLocation"
             render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="mt-4 flex flex-row items-start gap-2 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}

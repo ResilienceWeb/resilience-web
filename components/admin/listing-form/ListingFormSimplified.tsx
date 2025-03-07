@@ -64,7 +64,7 @@ const SlugField = () => {
             </span>
             <Input
               {...field}
-              className="flex-1 rounded-r-md border-gray-300 text-sm shadow-sm focus:border-green-500 focus:ring-green-500"
+              className="flex-1 rounded-r-md border-gray-300 text-sm shadow-xs focus:border-green-500 focus:ring-green-500"
             />
           </div>
           <FormMessage />
@@ -345,7 +345,7 @@ const ListingFormSimplified = ({
             control={form.control}
             name="seekingVolunteers"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="flex flex-row items-start gap-2 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}

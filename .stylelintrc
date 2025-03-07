@@ -1,7 +1,6 @@
 {
   "extends": [
-    "stylelint-config-recommended",
-    "stylelint-config-standard-scss"
+    "stylelint-config-recommended"
   ],
   "rules": {
     "at-rule-no-unknown": [
@@ -10,7 +9,10 @@
         "ignoreAtRules": [
           "extends",
           "apply",
-          "tailwind"
+          "tailwind",
+          "plugin",
+          "custom-variant",
+          "theme"
         ]
       }
     ],
@@ -18,15 +20,6 @@
       true,
       {
         "ignoreAtRules": [
-          "apply"
-        ]
-      }
-    ],
-    "scss/at-rule-no-unknown": [
-      true,
-      {
-        "ignoreAtRules": [
-          "tailwind",
           "apply"
         ]
       }
