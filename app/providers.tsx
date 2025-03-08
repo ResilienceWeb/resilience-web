@@ -70,7 +70,7 @@ export default function Providers({ children }) {
       <QueryClientProvider client={queryClient}>
         <PostHogPageView />
         <ReCaptchaProvider>{children}</ReCaptchaProvider>
-        <ReactQueryDevtools buttonPosition="bottom-left" />
+        <ReactQueryDevtools buttonPosition="bottom-right" />
       </QueryClientProvider>
     </PostHogProvider>
   )

@@ -42,7 +42,7 @@ const Map = dynamic(() => import('./Map'), {
   loading: () => <div className="pt-5 text-center">Loading…</div>,
 })
 
-const socialMediaItemSchema = z.object({
+const socialItemSchema = z.object({
   platform: z.string(),
   url: z
     .string()
@@ -60,7 +60,7 @@ const listingFormSchema = z.object({
     .string()
     .url('Please enter a valid URL (https://...)')
     .or(z.literal('')),
-  socialMedia: z.array(socialMediaItemSchema),
+  socials: z.array(socialItemSchema),
   seekingVolunteers: z.boolean(),
   featured: z.boolean(),
   image: z.any(),
@@ -190,18 +190,7 @@ const ListingForm = ({
       category: listing?.categoryId ? String(listing?.categoryId) : undefined,
       email: listing?.email || '',
       website: listing?.website || '',
-      socialMedia: listing?.socialMedia || [
-        // Convert existing social media links to the new format if they exist
-        ...(listing?.facebook
-          ? [{ platform: 'facebook', url: listing.facebook }]
-          : []),
-        ...(listing?.twitter
-          ? [{ platform: 'twitter', url: listing.twitter }]
-          : []),
-        ...(listing?.instagram
-          ? [{ platform: 'instagram', url: listing.instagram }]
-          : []),
-      ],
+      socials: listing?.socials || [],
       seekingVolunteers: listing?.seekingVolunteers || false,
       featured: listing?.featured || false,
       image: listing?.image,
@@ -235,9 +224,9 @@ const ListingForm = ({
     }
 
     // Extract individual social media fields from the socialMedia array
-    if (data.socialMedia && Array.isArray(data.socialMedia)) {
+    if (data.socials && Array.isArray(data.socials)) {
       // Convert the socialMedia array to individual fields for backward compatibility
-      data.socialMedia.forEach((item) => {
+      data.socials.forEach((item) => {
         if (item.platform && item.url) {
           data[item.platform] = item.url
         }
@@ -379,7 +368,7 @@ const ListingForm = ({
             control={methods.control}
             name="website"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="mt-4">
                 <FormLabel className="font-semibold">Website</FormLabel>
                 <FormControl>
                   <Input {...field} />
@@ -389,36 +378,33 @@ const ListingForm = ({
             )}
           />
 
-          <div className="mt-6 space-y-6">
+          <div className="mt-6">
             <div className="flex items-center justify-between pb-2">
-              <FormLabel className="text-lg font-semibold">
-                Social Media
-              </FormLabel>
+              <FormLabel className="font-semibold">Social Media</FormLabel>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 className="flex items-center gap-1"
                 onClick={() => {
-                  const currentSocialMedia =
-                    methods.getValues('socialMedia') || []
+                  const currentSocials = methods.getValues('socials') || []
                   // Find a platform that hasn't been used yet
                   const unusedPlatforms = socialMediaPlatforms.filter(
                     (platform) =>
-                      !currentSocialMedia.some(
+                      !currentSocials.some(
                         (item) => item.platform === platform.id,
                       ),
                   )
 
                   if (unusedPlatforms.length > 0) {
-                    methods.setValue('socialMedia', [
-                      ...currentSocialMedia,
+                    methods.setValue('socials', [
+                      ...currentSocials,
                       { platform: unusedPlatforms[0].id, url: '' },
                     ])
                   }
                 }}
                 disabled={
-                  methods.getValues('socialMedia')?.length >=
+                  methods.getValues('socials')?.length >=
                   socialMediaPlatforms.length
                 }
               >
@@ -428,7 +414,7 @@ const ListingForm = ({
             </div>
 
             <div className="flex flex-col gap-1">
-              {methods.watch('socialMedia')?.map((item, index) => {
+              {methods.watch('socials')?.map((item, index) => {
                 const platform = socialMediaPlatforms.find(
                   (p) => p.id === item.platform,
                 )
@@ -441,7 +427,7 @@ const ListingForm = ({
                       <div className="w-1/3">
                         <FormField
                           control={methods.control}
-                          name={`socialMedia.${index}.platform`}
+                          name={`socials.${index}.platform`}
                           render={({ field }) => (
                             <FormItem className="space-y-1">
                               <FormLabel className="text-sm text-gray-600">
@@ -488,7 +474,7 @@ const ListingForm = ({
                                     .filter((platform) => {
                                       // Allow the current platform or platforms not already selected
                                       const currentPlatforms = methods
-                                        .getValues('socialMedia')
+                                        .getValues('socials')
                                         .map((item) => item.platform)
                                       return (
                                         platform.id === field.value ||
@@ -526,7 +512,7 @@ const ListingForm = ({
                       <div className="flex-1">
                         <FormField
                           control={methods.control}
-                          name={`socialMedia.${index}.url`}
+                          name={`socials.${index}.url`}
                           render={({ field }) => (
                             <FormItem className="space-y-1">
                               <FormLabel className="text-sm text-gray-600">
@@ -553,11 +539,11 @@ const ListingForm = ({
                           size="icon"
                           className="h-10 w-10 rounded-full opacity-70 hover:bg-red-50 hover:text-red-600 hover:opacity-100"
                           onClick={() => {
-                            const currentSocialMedia = [
-                              ...methods.getValues('socialMedia'),
+                            const currentSocials = [
+                              ...methods.getValues('socials'),
                             ]
-                            currentSocialMedia.splice(index, 1)
-                            methods.setValue('socialMedia', currentSocialMedia)
+                            currentSocials.splice(index, 1)
+                            methods.setValue('socials', currentSocials)
                           }}
                         >
                           <FaTrash />
@@ -568,8 +554,8 @@ const ListingForm = ({
                 )
               })}
 
-              {(!methods.watch('socialMedia') ||
-                methods.watch('socialMedia').length === 0) && (
+              {(!methods.watch('socials') ||
+                methods.watch('socials').length === 0) && (
                 <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-50 p-8 text-center">
                   <div className="mb-2 rounded-full bg-gray-100 p-3">
                     <FaShareAlt className="text-2xl text-gray-400" />
@@ -583,7 +569,7 @@ const ListingForm = ({
                     size="sm"
                     className="mt-2"
                     onClick={() => {
-                      methods.setValue('socialMedia', [
+                      methods.setValue('socials', [
                         { platform: socialMediaPlatforms[0].id, url: '' },
                       ])
                     }}

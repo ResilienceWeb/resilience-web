@@ -31,6 +31,7 @@ export async function GET(request, props) {
           : {}),
       },
       include: {
+        socials: true,
         location: {
           select: {
             latitude: true,
@@ -109,6 +110,10 @@ export async function PUT(request) {
       formData.get('noPhysicalLocation'),
     )
     const slug = formData.get('slug')
+    const socials = formData.get('socials')
+
+    // Parse socials data if it exists
+    const socialsData = socials ? JSON.parse(socials) : []
 
     // Prepare tags
     const tagsArray = tags !== '' ? tags.split(',') : []
@@ -187,6 +192,13 @@ export async function PUT(request) {
       featured: stringToBoolean(featured),
       slug: slug,
       location: locationData,
+      socials: {
+        deleteMany: {}, // Remove all existing social media entries
+        create: socialsData.map((social) => ({
+          platform: social.platform,
+          url: social.url,
+        })),
+      },
       tags: {
         connect: tagsToConnect,
         disconnect: tagsToDisconnect,
@@ -220,6 +232,7 @@ export async function PUT(request) {
     const listing = await prisma.listing.update({
       where: { id: Number(listingId) },
       include: {
+        socials: true,
         location: {
           select: {
             latitude: true,
