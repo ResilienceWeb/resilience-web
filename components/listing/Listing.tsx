@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { FaFacebook, FaInstagram } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 import { SlGlobe } from 'react-icons/sl'
@@ -19,6 +18,7 @@ import {
 
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
+import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import CategoryTag from '@components/category-tag'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import Item from '@components/main-list/item'
@@ -101,7 +101,7 @@ function Listing({ listing }) {
               <div className="space-y-4">
                 <h1
                   data-testid="Title"
-                  className="text-3xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl"
+                  className="text-3xl leading-tight font-bold tracking-tight text-gray-900 md:text-4xl"
                 >
                   {listing.title}
                 </h1>
@@ -152,26 +152,31 @@ function Listing({ listing }) {
                     <SlGlobe className="h-5 w-5 transition-transform group-hover:scale-110" />
                   </a>
                 )}
-                {listing.facebook && (
-                  <a
-                    href={listing.facebook}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-[#1877F2]/70 ring-1 ring-blue-100/50 transition-all hover:bg-blue-100 hover:text-[#1877F2] hover:ring-blue-200"
-                  >
-                    <FaFacebook className="h-5 w-5 transition-transform group-hover:scale-110" />
-                  </a>
-                )}
-                {listing.instagram && (
-                  <a
-                    href={listing.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full bg-pink-50 text-[#E4405F]/70 ring-1 ring-pink-100/50 transition-all hover:bg-pink-100 hover:text-[#E4405F] hover:ring-pink-200"
-                  >
-                    <FaInstagram className="h-5 w-5 transition-transform group-hover:scale-110" />
-                  </a>
-                )}
+                {listing.socials &&
+                  listing.socials.map((social, index) => {
+                    const config =
+                      socialIconStyles[social.platform.toLowerCase()]
+
+                    const Icon = socialMediaPlatforms.find(
+                      (p) => p.id === social.platform.toLowerCase(),
+                    )?.icon
+
+                    if (!Icon) {
+                      return null
+                    }
+
+                    return (
+                      <a
+                        key={`social-${index}`}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`group inline-flex h-10 w-10 items-center justify-center rounded-full ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} transition-all ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
+                      >
+                        <Icon className="h-5 w-5 transition-transform group-hover:scale-110" />
+                      </a>
+                    )
+                  })}
               </div>
             </div>
           </div>
@@ -199,7 +204,7 @@ function Listing({ listing }) {
                   href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
                 >
                   <Badge
-                    className="cursor-pointer select-none px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all hover:opacity-90"
+                    className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
                     style={{ backgroundColor: tag.color ?? '#718096' }}
                   >
                     #{tag.label}
@@ -237,7 +242,7 @@ function Listing({ listing }) {
         </button>
       </div>
 
-      <div className="fixed bottom-8 right-8 z-10">
+      <div className="fixed right-8 bottom-8 z-10">
         <a
           href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}
           className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-lg text-white shadow-lg ring-1 ring-blue-900/10 transition-all hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl hover:ring-blue-900/20"

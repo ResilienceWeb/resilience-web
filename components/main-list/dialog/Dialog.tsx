@@ -24,6 +24,7 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip'
 
+import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import CategoryTag from '@components/category-tag'
 
@@ -65,41 +66,37 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
     showCopiedToClipboardToast()
   }, [showCopiedToClipboardToast, individualListingLink])
 
+  console.log(item)
+
   const socialLinks = (
     <>
-      <div className="flex space-x-4">
-        {item.facebook && (
-          <a
-            href={item.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-600 transition-colors duration-150 hover:text-gray-500"
-          >
-            <FaFacebook className="h-8 w-8" />
-          </a>
-        )}
-        {item.twitter && (
-          <a
-            href={item.twitter}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-600 transition-colors duration-150 hover:text-gray-500"
-          >
-            <FaTwitter className="h-8 w-8" />
-          </a>
-        )}
-        {item.instagram && (
-          <a
-            href={item.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-600 transition-colors duration-150 hover:text-gray-500"
-          >
-            <FaInstagram className="h-8 w-8" />
-          </a>
-        )}
+      <div className="mt-2 flex items-center gap-2">
+        {item.socials &&
+          item.socials.map((social, index) => {
+            const config = socialIconStyles[social.platform.toLowerCase()]
+
+            const Icon = socialMediaPlatforms.find(
+              (p) => p.id === social.platform.toLowerCase(),
+            )?.icon
+
+            if (!Icon) {
+              return null
+            }
+
+            return (
+              <a
+                key={`social-${index}`}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group inline-flex h-10 w-10 items-center justify-center rounded-full ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} transition-all ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
+              >
+                <Icon className="h-5 w-5 transition-transform group-hover:scale-110" />
+              </a>
+            )
+          })}
         {item.seekingVolunteers && (
-          <div className="flex justify-end">
+          <div className="ml-2 flex justify-end">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -172,7 +169,7 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
           <br />
 
           {item.website && (
-            <div className="flex items-start space-x-2">
+            <div className="flex items-start gap-1">
               <p className="font-semibold text-gray-700">Website:</p>
               <a
                 href={listingWebsite}
@@ -204,7 +201,7 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
                   onClick={onClose}
                 >
                   <Badge
-                    className="select-none transition-opacity hover:opacity-80"
+                    className="transition-opacity select-none hover:opacity-80"
                     style={{ backgroundColor: tag.color ?? '#797d7a' }}
                     clickable
                   >
