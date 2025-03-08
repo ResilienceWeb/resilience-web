@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useMemo } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
-import { AiOutlineLoading } from 'react-icons/ai'
+import { AiOutlineLoading, AiOutlinePlus } from 'react-icons/ai'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import type { Category } from '@prisma/client'
@@ -15,6 +15,7 @@ import EditorField from './RichTextEditor'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import { Checkbox } from '@components/ui/checkbox'
+import { socialMediaPlatforms } from '@helpers/form'
 import {
   Form,
   FormField,
@@ -34,10 +35,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select'
+import { FaShareAlt, FaTrash } from 'react-icons/fa'
 
 const Map = dynamic(() => import('./Map'), {
   ssr: false,
   loading: () => <div className="pt-5 text-center">Loading…</div>,
+})
+
+const socialMediaItemSchema = z.object({
+  platform: z.string(),
+  url: z
+    .string()
+    .url('Please enter a valid URL (https://...)')
+    .or(z.literal('')),
 })
 
 const listingFormSchema = z.object({
@@ -50,18 +60,7 @@ const listingFormSchema = z.object({
     .string()
     .url('Please enter a valid URL (https://...)')
     .or(z.literal('')),
-  facebook: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
-    .or(z.literal('')),
-  twitter: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
-    .or(z.literal('')),
-  instagram: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
-    .or(z.literal('')),
+  socialMedia: z.array(socialMediaItemSchema),
   seekingVolunteers: z.boolean(),
   featured: z.boolean(),
   image: z.any(),
@@ -191,9 +190,18 @@ const ListingForm = ({
       category: listing?.categoryId ? String(listing?.categoryId) : undefined,
       email: listing?.email || '',
       website: listing?.website || '',
-      facebook: listing?.facebook || '',
-      twitter: listing?.twitter || '',
-      instagram: listing?.instagram || '',
+      socialMedia: listing?.socialMedia || [
+        // Convert existing social media links to the new format if they exist
+        ...(listing?.facebook
+          ? [{ platform: 'facebook', url: listing.facebook }]
+          : []),
+        ...(listing?.twitter
+          ? [{ platform: 'twitter', url: listing.twitter }]
+          : []),
+        ...(listing?.instagram
+          ? [{ platform: 'instagram', url: listing.instagram }]
+          : []),
+      ],
       seekingVolunteers: listing?.seekingVolunteers || false,
       featured: listing?.featured || false,
       image: listing?.image,
@@ -224,6 +232,16 @@ const ListingForm = ({
     const data = {
       ...submittedData,
       category: Number(submittedData.category),
+    }
+
+    // Extract individual social media fields from the socialMedia array
+    if (data.socialMedia && Array.isArray(data.socialMedia)) {
+      // Convert the socialMedia array to individual fields for backward compatibility
+      data.socialMedia.forEach((item) => {
+        if (item.platform && item.url) {
+          data[item.platform] = item.url
+        }
+      })
     }
 
     const isNewImage = data.image instanceof File
@@ -357,62 +375,225 @@ const ListingForm = ({
             )}
           />
 
-          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <FormField
-              control={methods.control}
-              name="website"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Website</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={methods.control}
+            name="website"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-semibold">Website</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={methods.control}
-              name="facebook"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Facebook</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <div className="mt-6 space-y-6">
+            <div className="flex items-center justify-between pb-2">
+              <FormLabel className="text-lg font-semibold">
+                Social Media
+              </FormLabel>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-1"
+                onClick={() => {
+                  const currentSocialMedia =
+                    methods.getValues('socialMedia') || []
+                  // Find a platform that hasn't been used yet
+                  const unusedPlatforms = socialMediaPlatforms.filter(
+                    (platform) =>
+                      !currentSocialMedia.some(
+                        (item) => item.platform === platform.id,
+                      ),
+                  )
 
-            <FormField
-              control={methods.control}
-              name="twitter"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Twitter</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                  if (unusedPlatforms.length > 0) {
+                    methods.setValue('socialMedia', [
+                      ...currentSocialMedia,
+                      { platform: unusedPlatforms[0].id, url: '' },
+                    ])
+                  }
+                }}
+                disabled={
+                  methods.getValues('socialMedia')?.length >=
+                  socialMediaPlatforms.length
+                }
+              >
+                <AiOutlinePlus className="mr-1" />
+                Add Social Media
+              </Button>
+            </div>
 
-            <FormField
-              control={methods.control}
-              name="instagram"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Instagram</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+            <div className="flex flex-col gap-1">
+              {methods.watch('socialMedia')?.map((item, index) => {
+                const platform = socialMediaPlatforms.find(
+                  (p) => p.id === item.platform,
+                )
+                return (
+                  <div
+                    key={index}
+                    className="group relative rounded-md border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md"
+                  >
+                    <div className="flex items-end gap-4">
+                      <div className="w-1/3">
+                        <FormField
+                          control={methods.control}
+                          name={`socialMedia.${index}.platform`}
+                          render={({ field }) => (
+                            <FormItem className="space-y-1">
+                              <FormLabel className="text-sm text-gray-600">
+                                Platform
+                              </FormLabel>
+                              <Select
+                                value={field.value}
+                                onValueChange={(value) => {
+                                  field.onChange(value)
+                                }}
+                              >
+                                <SelectTrigger className="bg-white">
+                                  <SelectValue placeholder="Select platform">
+                                    {field.value && (
+                                      <div className="flex items-center gap-2">
+                                        {(() => {
+                                          const platform =
+                                            socialMediaPlatforms.find(
+                                              (p) => p.id === field.value,
+                                            )
+                                          if (platform) {
+                                            const Icon = platform.icon
+                                            return (
+                                              <Icon
+                                                style={{
+                                                  color: platform.color,
+                                                }}
+                                              />
+                                            )
+                                          }
+                                          return null
+                                        })()}
+                                        {
+                                          socialMediaPlatforms.find(
+                                            (p) => p.id === field.value,
+                                          )?.label
+                                        }
+                                      </div>
+                                    )}
+                                  </SelectValue>
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {socialMediaPlatforms
+                                    .filter((platform) => {
+                                      // Allow the current platform or platforms not already selected
+                                      const currentPlatforms = methods
+                                        .getValues('socialMedia')
+                                        .map((item) => item.platform)
+                                      return (
+                                        platform.id === field.value ||
+                                        !currentPlatforms.includes(platform.id)
+                                      )
+                                    })
+                                    .map((platform) => (
+                                      <SelectItem
+                                        key={platform.id}
+                                        value={platform.id}
+                                      >
+                                        <div className="flex items-center gap-2">
+                                          {(() => {
+                                            const Icon = platform.icon
+                                            return (
+                                              <Icon
+                                                style={{
+                                                  color: platform.color,
+                                                }}
+                                              />
+                                            )
+                                          })()}
+                                          {platform.label}
+                                        </div>
+                                      </SelectItem>
+                                    ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="flex-1">
+                        <FormField
+                          control={methods.control}
+                          name={`socialMedia.${index}.url`}
+                          render={({ field }) => (
+                            <FormItem className="space-y-1">
+                              <FormLabel className="text-sm text-gray-600">
+                                URL
+                              </FormLabel>
+                              <div className="relative">
+                                <FormControl>
+                                  <Input
+                                    {...field}
+                                    placeholder={platform?.prefix || 'https://'}
+                                  />
+                                </FormControl>
+                              </div>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="ml-2 flex-shrink-0 self-end">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="h-10 w-10 rounded-full opacity-70 hover:bg-red-50 hover:text-red-600 hover:opacity-100"
+                          onClick={() => {
+                            const currentSocialMedia = [
+                              ...methods.getValues('socialMedia'),
+                            ]
+                            currentSocialMedia.splice(index, 1)
+                            methods.setValue('socialMedia', currentSocialMedia)
+                          }}
+                        >
+                          <FaTrash />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+
+              {(!methods.watch('socialMedia') ||
+                methods.watch('socialMedia').length === 0) && (
+                <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-50 p-8 text-center">
+                  <div className="mb-2 rounded-full bg-gray-100 p-3">
+                    <FaShareAlt className="text-2xl text-gray-400" />
+                  </div>
+                  <p className="text-muted-foreground mb-2">
+                    No social media links added
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => {
+                      methods.setValue('socialMedia', [
+                        { platform: socialMediaPlatforms[0].id, url: '' },
+                      ])
+                    }}
+                  >
+                    <AiOutlinePlus className="mr-1" />
+                    Add Social Media
+                  </Button>
+                </div>
               )}
-            />
+            </div>
           </div>
 
           <div className="mt-4">
