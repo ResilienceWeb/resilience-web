@@ -41,7 +41,6 @@ export default function WebSettingsPage() {
   })
 
   const {
-    register,
     handleSubmit,
     formState: { errors, isDirty },
     watch,
@@ -106,7 +105,9 @@ export default function WebSettingsPage() {
                           disabled
                         />
                       </FormControl>
-                      <FormLabel className="text-sm font-medium leading-none">Published</FormLabel>
+                      <FormLabel className="text-sm leading-none font-medium">
+                        Published
+                      </FormLabel>
                     </FormItem>
                   )}
                 />
