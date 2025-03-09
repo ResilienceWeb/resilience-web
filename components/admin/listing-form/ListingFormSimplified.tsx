@@ -181,7 +181,7 @@ const ListingFormSimplified = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmitForm)} className="bg-white">
-        <div className="space-y-3 p-4 sm:p-6">
+        <div className="flex flex-col gap-2 p-4 sm:p-6">
           <FormField
             control={form.control}
             name="title"

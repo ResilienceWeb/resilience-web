@@ -84,9 +84,6 @@ export async function POST(request) {
     const title = formData.get('title')
     const website = formData.get('website')
     const description = formData.get('description')
-    const facebook = formData.get('facebook')
-    const instagram = formData.get('instagram')
-    const twitter = formData.get('twitter')
     const email = formData.get('email')
     const seekingVolunteers = formData.get('seekingVolunteers')
     const featured = formData.get('featured')
@@ -127,9 +124,6 @@ export async function POST(request) {
       website: website,
       description: description,
       email: email,
-      facebook: facebook,
-      instagram: instagram,
-      twitter: twitter,
       socials: {
         create: socialsData.map((social) => ({
           platform: social.platform,

@@ -97,9 +97,6 @@ export async function PUT(request) {
     const title = formData.get('title')
     const website = formData.get('website')
     const description = formData.get('description')
-    const facebook = formData.get('facebook')
-    const instagram = formData.get('instagram')
-    const twitter = formData.get('twitter')
     const email = formData.get('email')
     const seekingVolunteers = formData.get('seekingVolunteers')
     const featured = formData.get('featured')
@@ -184,9 +181,6 @@ export async function PUT(request) {
       website: website,
       description: description,
       email: email,
-      facebook: facebook,
-      instagram: instagram,
-      twitter: twitter,
       pending: false,
       seekingVolunteers: stringToBoolean(seekingVolunteers),
       featured: stringToBoolean(featured),
