@@ -24,7 +24,7 @@ const SocialMedia = () => {
   const methods = useFormContext()
   const { fields, append } = useFieldArray({
     control: methods.control,
-    name: 'socials'
+    name: 'socials',
   })
 
   return (
@@ -54,7 +54,7 @@ const SocialMedia = () => {
           }
         >
           <AiOutlinePlus className="mr-1" />
-          Add Social Media
+          Add Social Media link
         </Button>
       </div>
 
@@ -202,7 +202,7 @@ const SocialMedia = () => {
 
         {(!methods.watch('socials') ||
           methods.watch('socials').length === 0) && (
-          <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-50 p-8 text-center">
+          <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-50 p-4 text-center">
             <div className="mb-2 rounded-full bg-gray-100 p-3">
               <FaShareAlt className="text-2xl text-gray-400" />
             </div>
@@ -219,7 +219,7 @@ const SocialMedia = () => {
               }}
             >
               <AiOutlinePlus className="mr-1" />
-              Add Social Media
+              Add Social Media link
             </Button>
           </div>
         )}

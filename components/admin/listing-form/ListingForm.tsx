@@ -126,11 +126,7 @@ const SlugField = ({ isEditMode, register, watch, setValue, errors }) => {
         <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
           {`${selectedWebSlug}.resilienceweb.org.uk/`}
         </span>
-        <input
-          {...register('slug')}
-          id="slug"
-          className="w-full rounded-r-md border border-gray-300 px-3 py-2 text-sm shadow-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-hidden"
-        />
+        <Input {...register('slug')} id="slug" className="rounded-l-none" />
       </div>
       {errors.slug && (
         <p className="mt-1 text-sm text-red-600">{errors.slug.message}</p>
