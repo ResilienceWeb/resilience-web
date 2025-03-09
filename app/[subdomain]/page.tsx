@@ -107,6 +107,7 @@ async function getData({ webSlug }): Promise<DataType> {
           },
         ],
         include: {
+          socials: true,
           location: {
             select: {
               latitude: true,
@@ -179,6 +180,7 @@ async function getData({ webSlug }): Promise<DataType> {
         facebook,
         twitter,
         instagram,
+        socials,
         seekingVolunteers,
         featured,
         slug,
@@ -194,6 +196,7 @@ async function getData({ webSlug }): Promise<DataType> {
           facebook,
           twitter,
           instagram,
+          socials,
           seekingVolunteers,
           featured,
           category: {

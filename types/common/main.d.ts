@@ -14,6 +14,7 @@ declare global {
     facebook?: string
     instagram?: string
     twitter?: string
+    socials?: ListingSocialMedia[]
     notes?: string
     seekingVolunteers: boolean
     featured: boolean

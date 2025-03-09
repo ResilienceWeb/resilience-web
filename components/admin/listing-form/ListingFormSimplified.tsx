@@ -6,12 +6,13 @@ import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import type { Category } from '@prisma/client'
 import { AiOutlineLoading } from 'react-icons/ai'
-import { urlValidator } from '@helpers/formValidation'
+import { urlValidator } from '@helpers/form'
 import ImageUpload from './ImageUpload'
 import useTags from '@hooks/tags/useTags'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import { generateSlug } from '@helpers/utils'
 import EditorField from './RichTextEditor'
+import SocialMedia from './SocialMedia'
 import { Input } from '@components/ui/input'
 import { Checkbox } from '@components/ui/checkbox'
 import {
@@ -57,15 +58,12 @@ const SlugField = () => {
       rules={{ validate: urlValidator }}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="font-semibold">Url</FormLabel>
+          <FormLabel className="font-semibold">Link to listing page</FormLabel>
           <div className="flex">
             <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
               {`${selectedWebSlug}.resilienceweb.org.uk/`}
             </span>
-            <Input
-              {...field}
-              className="flex-1 rounded-r-md border-gray-300 text-sm shadow-xs focus:border-green-500 focus:ring-green-500"
-            />
+            <Input {...field} className="rounded-l-none" />
           </div>
           <FormMessage />
         </FormItem>
@@ -110,18 +108,14 @@ const listingFormSchema = z.object({
     .string()
     .url('Please enter a valid URL (https://...)')
     .or(z.literal('')),
-  facebook: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
-    .or(z.literal('')),
-  twitter: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
-    .or(z.literal('')),
-  instagram: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
-    .or(z.literal('')),
+  socials: z
+    .array(
+      z.object({
+        platform: z.string(),
+        url: z.string().url('Please enter a valid URL').or(z.literal('')),
+      }),
+    )
+    .default([]),
   seekingVolunteers: z.boolean(),
   image: z.any(),
   slug: z.string(),
@@ -146,9 +140,17 @@ const ListingFormSimplified = ({
       category: listing?.categoryId || undefined,
       email: listing?.email || '',
       website: listing?.website || '',
-      facebook: listing?.facebook || '',
-      twitter: listing?.twitter || '',
-      instagram: listing?.instagram || '',
+      socials: [
+        ...(listing?.facebook
+          ? [{ platform: 'facebook', url: listing.facebook }]
+          : []),
+        ...(listing?.twitter
+          ? [{ platform: 'twitter', url: listing.twitter }]
+          : []),
+        ...(listing?.instagram
+          ? [{ platform: 'instagram', url: listing.instagram }]
+          : []),
+      ],
       seekingVolunteers: listing?.seekingVolunteers || false,
       image: listing?.image,
       slug: listing?.slug || '',
@@ -170,8 +172,19 @@ const ListingFormSimplified = ({
   }, [tags])
 
   const handleSubmitForm = (data: any) => {
+    // Extract social media values for backward compatibility
+    const facebook =
+      data.socials?.find((s) => s.platform === 'facebook')?.url || ''
+    const twitter =
+      data.socials?.find((s) => s.platform === 'twitter')?.url || ''
+    const instagram =
+      data.socials?.find((s) => s.platform === 'instagram')?.url || ''
+
     const formData = {
       ...data,
+      facebook,
+      twitter,
+      instagram,
       tags: data.tags?.map((t) => t.value),
       relations: data.relations?.map((l) => l.value),
     }
@@ -181,7 +194,7 @@ const ListingFormSimplified = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmitForm)} className="bg-white">
-        <div className="space-y-3 p-4 sm:p-6">
+        <div className="flex flex-col gap-2 p-4 sm:p-6">
           <FormField
             control={form.control}
             name="title"
@@ -256,7 +269,7 @@ const ListingFormSimplified = ({
             )}
           />
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4">
             <FormField
               control={form.control}
               name="website"
@@ -270,51 +283,9 @@ const ListingFormSimplified = ({
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="facebook"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Facebook</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="twitter"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Twitter</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="instagram"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Instagram</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          {!isEditMode && <SocialMedia />}
 
           {!isEditMode && <SlugField />}
 
@@ -345,7 +316,7 @@ const ListingFormSimplified = ({
             control={form.control}
             name="seekingVolunteers"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start gap-2 space-y-0">
+              <FormItem className="mt-2 flex flex-row items-start gap-2">
                 <FormControl>
                   <Checkbox
                     checked={field.value}

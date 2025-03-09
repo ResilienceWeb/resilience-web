@@ -21,7 +21,7 @@ import {
 import { Input } from '@components/ui/input'
 import { Textarea } from '@components/ui/textarea'
 import LogoImage from '../../../public/logo.png'
-import { urlValidator } from '@helpers/formValidation'
+import { urlValidator } from '@helpers/form'
 import useCreateWeb from '@hooks/webs/useCreateWeb'
 import { generateSlug } from '@helpers/utils'
 import Faq from '@components/faq'
@@ -175,7 +175,7 @@ const WebCreation = () => {
                           className="rounded-r-none text-sm"
                           placeholder="e.g. york"
                         />
-                        <span className="inline-flex items-center rounded-r-md border border-l-0 border-input bg-muted px-3 text-sm text-muted-foreground">
+                        <span className="border-input bg-muted text-muted-foreground inline-flex items-center rounded-r-md border border-l-0 px-3 text-sm">
                           .resilienceweb.org.uk
                         </span>
                       </div>
@@ -209,7 +209,7 @@ const WebCreation = () => {
               />
 
               {isError && errorMessage && (
-                <p className="text-sm text-destructive">{`${errorMessage}`}</p>
+                <p className="text-destructive text-sm">{`${errorMessage}`}</p>
               )}
 
               <Button type="submit" disabled={isPending}>

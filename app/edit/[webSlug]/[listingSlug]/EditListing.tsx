@@ -9,6 +9,7 @@ import useCreateListingEdit from '@hooks/listings/useCreateListingEdit'
 import useListingEdits from '@hooks/listings/useListingEdits'
 import useWeb from '@hooks/webs/useWeb'
 import Link from 'next/link'
+import { Button } from '@components/ui/button'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 export default function EditListing({ listing, webSlug }) {
@@ -91,11 +92,10 @@ export default function EditListing({ listing, webSlug }) {
               for your contribution. It will be checked and hopefully approved
               by the admins of the <strong>{web?.title}</strong> web.
             </p>
-            <Link
-              href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`}
-              className="mt-8 inline-block rounded-md bg-green-700 px-4 py-2 text-white hover:bg-green-800"
-            >
-              Go back to {web?.title} Resilience Web
+            <Link href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`}>
+              <Button className="mt-2">
+                Go back to {web?.title} Resilience Web
+              </Button>
             </Link>
           </>
         ) : (

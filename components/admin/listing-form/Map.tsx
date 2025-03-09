@@ -108,8 +108,8 @@ const Map = ({
         noPhysicalLocation ? 'pointer-events-none opacity-50' : 'opacity-100',
       )}
     >
-      <p className="p-2 text-sm font-normal italic text-gray-700">
-        The location can only be selected via adding an address via the search
+      <p className="p-2 text-sm font-normal text-gray-700 italic">
+        The location can only be selected by adding an address via the search
         bar below. Selecting a location without an address is not supported.
       </p>
       <MapContainer

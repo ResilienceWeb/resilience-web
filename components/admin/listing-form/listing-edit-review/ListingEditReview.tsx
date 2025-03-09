@@ -60,7 +60,7 @@ const ListingEditReview = ({
         string2={editedListing.website}
       />
 
-      <Diff
+      {/* <Diff
         label="Facebook"
         string1={listing.facebook}
         string2={editedListing.facebook}
@@ -76,7 +76,7 @@ const ListingEditReview = ({
         label="Instagram"
         string1={listing.instagram}
         string2={editedListing.instagram}
-      />
+      /> */}
 
       <div className="flex justify-end gap-4">
         <Button variant="destructive" onClick={handleReject}>

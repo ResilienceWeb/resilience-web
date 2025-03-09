@@ -31,6 +31,7 @@ export async function GET(request, props) {
           : {}),
       },
       include: {
+        socials: true,
         location: {
           select: {
             latitude: true,
@@ -96,9 +97,6 @@ export async function PUT(request) {
     const title = formData.get('title')
     const website = formData.get('website')
     const description = formData.get('description')
-    const facebook = formData.get('facebook')
-    const instagram = formData.get('instagram')
-    const twitter = formData.get('twitter')
     const email = formData.get('email')
     const seekingVolunteers = formData.get('seekingVolunteers')
     const featured = formData.get('featured')
@@ -109,6 +107,10 @@ export async function PUT(request) {
       formData.get('noPhysicalLocation'),
     )
     const slug = formData.get('slug')
+    const socials = formData.get('socials')
+
+    // Parse socials data if it exists
+    const socialsData = socials ? JSON.parse(socials) : []
 
     // Prepare tags
     const tagsArray = tags !== '' ? tags.split(',') : []
@@ -179,14 +181,18 @@ export async function PUT(request) {
       website: website,
       description: description,
       email: email,
-      facebook: facebook,
-      instagram: instagram,
-      twitter: twitter,
       pending: false,
       seekingVolunteers: stringToBoolean(seekingVolunteers),
       featured: stringToBoolean(featured),
       slug: slug,
       location: locationData,
+      socials: {
+        deleteMany: {}, // Remove all existing social media entries
+        create: socialsData.map((social) => ({
+          platform: social.platform,
+          url: social.url,
+        })),
+      },
       tags: {
         connect: tagsToConnect,
         disconnect: tagsToDisconnect,
@@ -220,6 +226,7 @@ export async function PUT(request) {
     const listing = await prisma.listing.update({
       where: { id: Number(listingId) },
       include: {
+        socials: true,
         location: {
           select: {
             latitude: true,

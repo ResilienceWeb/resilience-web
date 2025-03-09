@@ -16,6 +16,7 @@ export default async function getListing({ webSlug, listingSlug }) {
         : {}),
     },
     include: {
+      socials: true,
       location: {
         select: {
           latitude: true,

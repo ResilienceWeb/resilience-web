@@ -3,9 +3,13 @@ import { useAppContext } from '@store/hooks'
 
 async function updateListingRequest(listingData) {
   const formData = new FormData()
-  Object.keys(listingData).forEach((key) =>
-    formData.append(key, listingData[key]),
-  )
+  Object.keys(listingData).forEach((key) => {
+    if (key === 'socials') {
+      formData.append(key, JSON.stringify(listingData[key]))
+    } else {
+      formData.append(key, listingData[key])
+    }
+  })
 
   const response = await fetch(`/api/listings/${listingData.slug}`, {
     method: 'PUT',

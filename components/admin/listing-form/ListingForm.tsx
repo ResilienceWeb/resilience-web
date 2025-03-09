@@ -15,6 +15,7 @@ import EditorField from './RichTextEditor'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import { Checkbox } from '@components/ui/checkbox'
+import SocialMedia from './SocialMedia'
 import {
   Form,
   FormField,
@@ -40,6 +41,14 @@ const Map = dynamic(() => import('./Map'), {
   loading: () => <div className="pt-5 text-center">Loading…</div>,
 })
 
+const socialItemSchema = z.object({
+  platform: z.string(),
+  url: z
+    .string()
+    .url('Please enter a valid URL (https://...)')
+    .or(z.literal('')),
+})
+
 const listingFormSchema = z.object({
   id: z.number().or(z.null()),
   title: z.string().min(1, 'Title is required'),
@@ -50,18 +59,7 @@ const listingFormSchema = z.object({
     .string()
     .url('Please enter a valid URL (https://...)')
     .or(z.literal('')),
-  facebook: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
-    .or(z.literal('')),
-  twitter: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
-    .or(z.literal('')),
-  instagram: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
-    .or(z.literal('')),
+  socials: z.array(socialItemSchema),
   seekingVolunteers: z.boolean(),
   featured: z.boolean(),
   image: z.any(),
@@ -128,11 +126,7 @@ const SlugField = ({ isEditMode, register, watch, setValue, errors }) => {
         <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
           {`${selectedWebSlug}.resilienceweb.org.uk/`}
         </span>
-        <input
-          {...register('slug')}
-          id="slug"
-          className="w-full rounded-r-md border border-gray-300 px-3 py-2 text-sm shadow-xs focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-hidden"
-        />
+        <Input {...register('slug')} id="slug" className="rounded-l-none" />
       </div>
       {errors.slug && (
         <p className="mt-1 text-sm text-red-600">{errors.slug.message}</p>
@@ -191,9 +185,7 @@ const ListingForm = ({
       category: listing?.categoryId ? String(listing?.categoryId) : undefined,
       email: listing?.email || '',
       website: listing?.website || '',
-      facebook: listing?.facebook || '',
-      twitter: listing?.twitter || '',
-      instagram: listing?.instagram || '',
+      socials: listing?.socials || [],
       seekingVolunteers: listing?.seekingVolunteers || false,
       featured: listing?.featured || false,
       image: listing?.image,
@@ -357,63 +349,21 @@ const ListingForm = ({
             )}
           />
 
-          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <FormField
-              control={methods.control}
-              name="website"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Website</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={methods.control}
+            name="website"
+            render={({ field }) => (
+              <FormItem className="mt-4">
+                <FormLabel className="font-semibold">Website</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={methods.control}
-              name="facebook"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Facebook</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={methods.control}
-              name="twitter"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Twitter</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={methods.control}
-              name="instagram"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Instagram</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <SocialMedia />
 
           <div className="mt-4">
             <SlugField
