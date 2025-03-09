@@ -1,5 +1,5 @@
 'use client'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, useFieldArray } from 'react-hook-form'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { FaShareAlt, FaTrash } from 'react-icons/fa'
 import { Button } from '@components/ui/button'
@@ -20,8 +20,12 @@ import {
   SelectValue,
 } from '@components/ui/select'
 
-const SocialMediaSection = () => {
+const SocialMedia = () => {
   const methods = useFormContext()
+  const { fields, append } = useFieldArray({
+    control: methods.control,
+    name: 'socials'
+  })
 
   return (
     <div className="mt-6">
@@ -37,21 +41,16 @@ const SocialMediaSection = () => {
             // Find a platform that hasn't been used yet
             const unusedPlatforms = socialMediaPlatforms.filter(
               (platform) =>
-                !currentSocials.some(
-                  (item) => item.platform === platform.id,
-                ),
+                !currentSocials.some((item) => item.platform === platform.id),
             )
 
             if (unusedPlatforms.length > 0) {
-              methods.setValue('socials', [
-                ...currentSocials,
-                { platform: unusedPlatforms[0].id, url: '' },
-              ])
+              // Use append from useFieldArray instead of setValue
+              append({ platform: unusedPlatforms[0].id, url: '' })
             }
           }}
           disabled={
-            methods.getValues('socials')?.length >=
-            socialMediaPlatforms.length
+            methods.getValues('socials')?.length >= socialMediaPlatforms.length
           }
         >
           <AiOutlinePlus className="mr-1" />
@@ -60,13 +59,15 @@ const SocialMediaSection = () => {
       </div>
 
       <div className="flex flex-col gap-1">
-        {methods.watch('socials')?.map((item, index) => {
+        {fields.map((field, index) => {
+          // Get the current value from the form to ensure we have the latest data
+          const currentValue = methods.getValues(`socials.${index}`)
           const platform = socialMediaPlatforms.find(
-            (p) => p.id === item.platform,
+            (p) => p.id === currentValue?.platform,
           )
           return (
             <div
-              key={index}
+              key={field.id}
               className="group relative rounded-md border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md"
             >
               <div className="flex items-end gap-4">
@@ -90,10 +91,9 @@ const SocialMediaSection = () => {
                               {field.value && (
                                 <div className="flex items-center gap-2">
                                   {(() => {
-                                    const platform =
-                                      socialMediaPlatforms.find(
-                                        (p) => p.id === field.value,
-                                      )
+                                    const platform = socialMediaPlatforms.find(
+                                      (p) => p.id === field.value,
+                                    )
                                     if (platform) {
                                       const Icon = platform.icon
                                       return (
@@ -185,9 +185,9 @@ const SocialMediaSection = () => {
                     size="icon"
                     className="h-10 w-10 rounded-full opacity-70 hover:bg-red-50 hover:text-red-600 hover:opacity-100"
                     onClick={() => {
-                      const currentSocials = [
-                        ...methods.getValues('socials'),
-                      ]
+                      // Instead of using the index from the mapping function,
+                      // directly use the methods.setValue approach which is more reliable
+                      const currentSocials = [...methods.getValues('socials')]
                       currentSocials.splice(index, 1)
                       methods.setValue('socials', currentSocials)
                     }}
@@ -215,9 +215,7 @@ const SocialMediaSection = () => {
               size="sm"
               className="mt-2"
               onClick={() => {
-                methods.setValue('socials', [
-                  { platform: socialMediaPlatforms[0].id, url: '' },
-                ])
+                append({ platform: socialMediaPlatforms[0].id, url: '' })
               }}
             >
               <AiOutlinePlus className="mr-1" />
@@ -230,4 +228,4 @@ const SocialMediaSection = () => {
   )
 }
 
-export default SocialMediaSection
+export default SocialMedia
