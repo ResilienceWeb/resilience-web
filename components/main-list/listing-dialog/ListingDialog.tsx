@@ -9,7 +9,7 @@ import { toast } from 'sonner'
 import { sanitizeLink } from '@helpers/utils'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import {
-  Dialog as DialogPrimitive,
+  Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -34,7 +34,7 @@ interface DialogProps {
   onClose: () => void
 }
 
-const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
+const ListingDialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
   const [subdomain, setSubdomain] = useState<string>()
 
   const websiteSanitized = useMemo(
@@ -64,8 +64,6 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
     void navigator.clipboard.writeText(individualListingLink)
     showCopiedToClipboardToast()
   }, [showCopiedToClipboardToast, individualListingLink])
-
-  console.log(item)
 
   const socialLinks = (
     <>
@@ -133,7 +131,7 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
   const webSearchParam = searchParams.get('web')
 
   return (
-    <DialogPrimitive open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[672px]">
         {item.image && (
           <div className="relative -mx-6 -mt-6 h-[300px] min-h-[300px] w-full overflow-hidden sm:w-[calc(100%+48px)]">
@@ -227,8 +225,8 @@ const Dialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
           </div>
         )}
       </DialogContent>
-    </DialogPrimitive>
+    </Dialog>
   )
 }
 
-export default memo(Dialog)
+export default memo(ListingDialog)

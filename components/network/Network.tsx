@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { memo, useState, useCallback, useEffect, useMemo } from 'react'
 import VisNetworkReactComponent from 'vis-network-react'
-import Dialog from '@components/main-list/dialog'
+import ListingDialog from '@components/main-list/listing-dialog'
 import styles from './Network.module.css'
 
 const options = {
@@ -92,6 +92,12 @@ const Network = ({ data, selectedId, setSelectedId }) => {
         const { nodes } = event
         setSelectedId(nodes[0])
       },
+      click: function (event) {
+        const { nodes } = event
+        if (nodes[0]) {
+          setSelectedId(nodes[0])
+        }
+      },
       hoverNode: function () {
         if (network) {
           network.canvas.body.container.style.cursor = 'pointer'
@@ -136,7 +142,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
         {Boolean(selectedId) &&
           selectedItem?.group !== 'category' &&
           selectedItem?.group !== 'central-node' && (
-            <Dialog
+            <ListingDialog
               isOpen={isOpen}
               item={selectedItem}
               onClose={onCloseDialog}
