@@ -1,12 +1,6 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import {
-  FaGithub,
-  FaFacebook,
-  FaTwitter,
-  FaInstagram,
-  FaLinkedin,
-} from 'react-icons/fa'
+import { FaGithub, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa'
 import Image from 'next/legacy/image'
 
 import { REMOTE_URL } from '@helpers/config'
@@ -70,12 +64,6 @@ export default function Footer({ hideBorder = false }) {
                 href="https://www.facebook.com/resilienceweb"
               >
                 <FaFacebook />
-              </SocialButton>
-              <SocialButton
-                label="Twitter"
-                href="https://twitter.com/ResilienceWeb"
-              >
-                <FaTwitter />
               </SocialButton>
               <SocialButton
                 label="Instagram"
