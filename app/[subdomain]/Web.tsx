@@ -31,6 +31,9 @@ const NetworkComponent = dynamic(() => import('@components/network'), {
 const Drawer = dynamic(() => import('@components/drawer'), {
   ssr: false,
 })
+const Map = dynamic(() => import('@components/map'), {
+  ssr: false,
+})
 
 export const CENTRAL_NODE_ID = 999
 
@@ -93,6 +96,7 @@ const Web = ({
   }, [tags, query.tags])
 
   const [selectedId, setSelectedId] = useState()
+  const [activeTab, setActiveTab] = useState('map')
 
   const { categories: fetchedCategories } = useCategoriesPublic({
     webSlug: selectedWebSlug,
@@ -139,6 +143,19 @@ const Web = ({
     },
     [setQuery],
   )
+
+  const handleVolunteerSwitchChange = useCallback(
+    (value) => {
+      setSelectedId(null)
+      setIsVolunteer(value)
+    },
+    [setIsVolunteer],
+  )
+
+  const handleTabChange = useCallback((value) => {
+    setActiveTab(value)
+    // You can add additional logic here based on tab changes
+  }, [])
 
   const descriptiveNodes = useMemo(
     () =>
@@ -238,20 +255,14 @@ const Web = ({
     [data?.edges, filteredItems, filteredDescriptiveNodes],
   )
 
+  console.log(filteredItems)
+
   const handleSwitchChange = useCallback(
     (value) => {
       setSelectedId(null)
       setQuery({ web: value })
     },
     [setQuery],
-  )
-
-  const handleVolunteerSwitchChange = useCallback(
-    (value) => {
-      setSelectedId(null)
-      setIsVolunteer(value)
-    },
-    [setIsVolunteer],
   )
 
   return (
@@ -295,6 +306,8 @@ const Web = ({
           isWebMode={query.web}
           searchTerm={searchTerm}
           selectedWebName={webName}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
         />
         {query.web && (
           <NetworkComponent
@@ -304,7 +317,21 @@ const Web = ({
           />
         )}
 
-        {!query.web && <MainList filteredItems={filteredItems} />}
+        {!query.web && (
+          <>
+            {activeTab === 'list' && <MainList filteredItems={filteredItems} />}
+            {activeTab === 'map' && <Map items={filteredItems} />}
+            {activeTab === 'web' && (
+              <div className="p-6">
+                <h2 className="mb-4 text-2xl font-bold">Web</h2>
+                <p className="text-gray-600">
+                  This section will contain resources and helpful materials.
+                  Currently under development.
+                </p>
+              </div>
+            )}
+          </>
+        )}
 
         {isMobile && (
           <MobileOptionsSheet
