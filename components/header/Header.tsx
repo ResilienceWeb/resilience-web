@@ -32,7 +32,7 @@ const Header = ({
           <Button
             variant="default"
             size="sm"
-            className="ml-2 mt-2 bg-blue-600 hover:bg-blue-700"
+            className="mt-2 ml-2 bg-blue-600 hover:bg-blue-700"
           >
             <HiHome className="mr-2 h-4 w-4" />
             Homepage
@@ -54,7 +54,7 @@ const Header = ({
             </span>
           </h2>
           <div className="w-[95%] pt-4">
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col gap-2">
               <div className="relative">
                 <div
                   className={cn(
@@ -67,7 +67,7 @@ const Header = ({
                   )}
                 >
                   <div className="relative">
-                    <HiOutlineSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-lg text-gray-500" />
+                    <HiOutlineSearch className="absolute top-1/2 left-3 -translate-y-1/2 text-lg text-gray-500" />
                     <Input
                       onChange={handleSearchTermChange}
                       placeholder="Search"
@@ -79,7 +79,7 @@ const Header = ({
                         variant="ghost"
                         size="icon"
                         onClick={() => handleClearSearchTermValue()}
-                        className="absolute right-2 top-1/2 h-8 w-8 -translate-y-1/2 hover:bg-gray-100"
+                        className="absolute top-1/2 right-2 h-8 w-8 -translate-y-1/2 hover:bg-gray-100"
                       >
                         <HiOutlineX className="h-4 w-4" />
                         <span className="sr-only">Clear search input</span>
