@@ -19,7 +19,7 @@ type HeaderProps = {
   handleSearchTermChange: any
   handleTagSelection: any
   handleClearSearchTermValue: any
-  isGeoMappingEnabled: boolean
+  isGeomappingEnabled: boolean
   isMobile: boolean
   isWebMode: boolean
   searchTerm: string
@@ -37,7 +37,7 @@ const Header = ({
   handleSearchTermChange,
   handleTagSelection,
   handleClearSearchTermValue,
-  isGeoMappingEnabled,
+  isGeomappingEnabled,
   isMobile,
   isWebMode,
   searchTerm,
@@ -160,12 +160,12 @@ const Header = ({
                       'grid',
                       'w-full',
                       'bg-gray-100',
-                      isGeoMappingEnabled ? 'grid-cols-3' : 'grid-cols-2',
+                      isGeomappingEnabled ? 'grid-cols-3' : 'grid-cols-2',
                     )}
                   >
                     <TabsTrigger value="list">List</TabsTrigger>
                     <TabsTrigger value="web">Web</TabsTrigger>
-                    {isGeoMappingEnabled && (
+                    {isGeomappingEnabled && (
                       <TabsTrigger value="map">Map</TabsTrigger>
                     )}
                   </TabsList>
@@ -206,19 +206,10 @@ const Header = ({
             onValueChange={handleTabChange}
             className="w-full"
           >
-            <TabsList
-              className={cn(
-                'grid',
-                'w-full',
-                'bg-gray-100',
-                isGeoMappingEnabled ? 'grid-cols-3' : 'grid-cols-2',
-              )}
-            >
+            <TabsList className="grid w-full grid-cols-3 bg-gray-100">
               <TabsTrigger value="list">List</TabsTrigger>
               <TabsTrigger value="web">Web</TabsTrigger>
-              {isGeoMappingEnabled && (
-                <TabsTrigger value="map">Map</TabsTrigger>
-              )}
+              <TabsTrigger value="map">Map</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
