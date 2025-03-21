@@ -16,12 +16,12 @@ export default async function WebPage(props) {
     return notFound()
   }
 
-  const { transformedData, webData } = data
+  const { transformedData, webData, isGeoMappingEnabled } = data
 
   return (
     <Web
       data={transformedData}
-      features={webData.features}
+      isGeoMappingEnabled={isGeoMappingEnabled}
       webName={webData.title}
       webDescription={webData.description}
       webIsPublished={webData.published}
@@ -91,16 +91,9 @@ async function getData({ webSlug }): Promise<DataType> {
     },
   })
 
+  let isGeoMappingEnabled = false
   if (webData.slug === 'ely') {
-    // @ts-ignore
-    webData.features = {
-      geoMapping: {
-        enabled: true,
-      },
-    }
-  } else {
-    // @ts-ignore
-    webData.features = {}
+    isGeoMappingEnabled = true
   }
 
   const categories = await prisma.category.findMany({
@@ -306,6 +299,7 @@ async function getData({ webSlug }): Promise<DataType> {
     transformedData,
     // @ts-ignore
     webData,
+    isGeoMappingEnabled,
   }
 }
 

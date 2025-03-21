@@ -42,7 +42,7 @@ type Props = {
     nodes: ListingNodeType[]
     edges: any[]
   }
-  features: any
+  isGeoMappingEnabled: boolean
   webName: string
   webDescription?: string
   webIsPublished: boolean
@@ -51,7 +51,7 @@ type Props = {
 
 const Web = ({
   data,
-  features,
+  isGeoMappingEnabled,
   webName,
   webDescription = null,
   webIsPublished,
@@ -61,8 +61,6 @@ const Web = ({
   const [isWebModeDefault] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
   const selectedWebSlug = useSelectedWebSlug()
-
-  const isGeomappingEnabled = features.geoMapping?.enabled
 
   const [query, setQuery] = useQueryParams({
     categories: withDefault(ArrayParam, []),
@@ -295,7 +293,7 @@ const Web = ({
           handleClearSearchTermValue={handleClearSearchTermValue}
           handleSearchTermChange={handleSearchTermChange}
           handleTagSelection={handleTagSelection}
-          isGeomappingEnabled={isGeomappingEnabled}
+          isGeoMappingEnabled={isGeoMappingEnabled}
           isMobile={isMobile}
           isWebMode={query.web}
           searchTerm={searchTerm}
