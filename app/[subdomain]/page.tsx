@@ -21,6 +21,7 @@ export default async function WebPage(props) {
   return (
     <Web
       data={transformedData}
+      features={webData.features}
       webName={webData.title}
       webDescription={webData.description}
       webIsPublished={webData.published}
@@ -74,6 +75,7 @@ type DataType = {
     published: boolean
     image: string
     slug: string
+    features: Record<string, any>
   }
 }
 
@@ -88,6 +90,18 @@ async function getData({ webSlug }): Promise<DataType> {
       slug: webSlug,
     },
   })
+
+  if (webData.slug === 'ely') {
+    // @ts-ignore
+    webData.features = {
+      geoMapping: {
+        enabled: true,
+      },
+    }
+  } else {
+    // @ts-ignore
+    webData.features = {}
+  }
 
   const categories = await prisma.category.findMany({
     where: {
@@ -179,6 +193,7 @@ async function getData({ webSlug }): Promise<DataType> {
         website,
         socials,
         seekingVolunteers,
+        location,
         featured,
         slug,
         tags,
@@ -190,6 +205,7 @@ async function getData({ webSlug }): Promise<DataType> {
           description,
           image: image ?? '',
           website,
+          location,
           socials,
           seekingVolunteers,
           featured,
@@ -288,6 +304,7 @@ async function getData({ webSlug }): Promise<DataType> {
 
   return {
     transformedData,
+    // @ts-ignore
     webData,
   }
 }

@@ -31,6 +31,9 @@ const NetworkComponent = dynamic(() => import('@components/network'), {
 const Drawer = dynamic(() => import('@components/drawer'), {
   ssr: false,
 })
+const Map = dynamic(() => import('@components/map'), {
+  ssr: false,
+})
 
 export const CENTRAL_NODE_ID = 999
 
@@ -39,6 +42,7 @@ type Props = {
     nodes: ListingNodeType[]
     edges: any[]
   }
+  features: any
   webName: string
   webDescription?: string
   webIsPublished: boolean
@@ -47,6 +51,7 @@ type Props = {
 
 const Web = ({
   data,
+  features,
   webName,
   webDescription = null,
   webIsPublished,
@@ -56,6 +61,8 @@ const Web = ({
   const [isWebModeDefault] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
   const selectedWebSlug = useSelectedWebSlug()
+
+  const isGeoMappingEnabled = features.geoMapping?.enabled
 
   const [query, setQuery] = useQueryParams({
     categories: withDefault(ArrayParam, []),
@@ -93,6 +100,7 @@ const Web = ({
   }, [tags, query.tags])
 
   const [selectedId, setSelectedId] = useState()
+  const [activeTab, setActiveTab] = useState('list')
 
   const { categories: fetchedCategories } = useCategoriesPublic({
     webSlug: selectedWebSlug,
@@ -139,6 +147,19 @@ const Web = ({
     },
     [setQuery],
   )
+
+  const handleVolunteerSwitchChange = useCallback(
+    (value) => {
+      setSelectedId(null)
+      setIsVolunteer(value)
+    },
+    [setIsVolunteer],
+  )
+
+  const handleTabChange = useCallback((value) => {
+    setActiveTab(value)
+    // You can add additional logic here based on tab changes
+  }, [])
 
   const descriptiveNodes = useMemo(
     () =>
@@ -238,22 +259,6 @@ const Web = ({
     [data?.edges, filteredItems, filteredDescriptiveNodes],
   )
 
-  const handleSwitchChange = useCallback(
-    (value) => {
-      setSelectedId(null)
-      setQuery({ web: value })
-    },
-    [setQuery],
-  )
-
-  const handleVolunteerSwitchChange = useCallback(
-    (value) => {
-      setSelectedId(null)
-      setIsVolunteer(value)
-    },
-    [setIsVolunteer],
-  )
-
   return (
     <>
       {!isMobile && (
@@ -289,14 +294,16 @@ const Web = ({
           handleCategorySelection={handleCategorySelection}
           handleClearSearchTermValue={handleClearSearchTermValue}
           handleSearchTermChange={handleSearchTermChange}
-          handleSwitchChange={handleSwitchChange}
           handleTagSelection={handleTagSelection}
+          isGeoMappingEnabled={isGeoMappingEnabled}
           isMobile={isMobile}
           isWebMode={query.web}
           searchTerm={searchTerm}
           selectedWebName={webName}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
         />
-        {query.web && (
+        {activeTab === 'web' && (
           <NetworkComponent
             data={filteredNetworkData}
             selectedId={selectedId}
@@ -304,7 +311,12 @@ const Web = ({
           />
         )}
 
-        {!query.web && <MainList filteredItems={filteredItems} />}
+        {!query.web && (
+          <>
+            {activeTab === 'list' && <MainList filteredItems={filteredItems} />}
+            {activeTab === 'map' && <Map items={filteredItems} />}
+          </>
+        )}
 
         {isMobile && (
           <MobileOptionsSheet

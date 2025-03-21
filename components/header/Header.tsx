@@ -1,14 +1,32 @@
-import { memo } from 'react'
+import { memo, useState, useEffect } from 'react'
 import NextLink from 'next/link'
 import Select from 'react-select'
 import Image from 'next/legacy/image'
 import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
-import ModeSwitch from '@components/mode-switch'
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import customMultiSelectStyles from '@styles/select-styles'
 import { cn } from '@components/lib/utils'
+
+type HeaderProps = {
+  categories: any
+  selectedCategories: any
+  tags: any
+  selectedTags: any
+  handleCategorySelection: any
+  handleSearchTermChange: any
+  handleTagSelection: any
+  handleClearSearchTermValue: any
+  isGeoMappingEnabled: boolean
+  isMobile: boolean
+  isWebMode: boolean
+  searchTerm: string
+  selectedWebName: string
+  activeTab?: string
+  onTabChange?: (value: string) => void
+}
 
 const Header = ({
   categories,
@@ -17,14 +35,29 @@ const Header = ({
   selectedTags,
   handleCategorySelection,
   handleSearchTermChange,
-  handleSwitchChange,
   handleTagSelection,
   handleClearSearchTermValue,
+  isGeoMappingEnabled,
   isMobile,
   isWebMode,
   searchTerm,
   selectedWebName,
-}) => {
+  activeTab = 'overview',
+  onTabChange,
+}: HeaderProps) => {
+  const [currentTab, setCurrentTab] = useState(activeTab)
+
+  useEffect(() => {
+    setCurrentTab(activeTab)
+  }, [activeTab])
+
+  const handleTabChange = (value) => {
+    setCurrentTab(value)
+    if (onTabChange) {
+      onTabChange(value)
+    }
+  }
+
   if (isMobile) {
     return (
       <>
@@ -34,7 +67,7 @@ const Header = ({
             size="sm"
             className="mt-2 ml-2 bg-blue-600 hover:bg-blue-700"
           >
-            <HiHome className="mr-2 h-4 w-4" />
+            <HiHome />
             Homepage
           </Button>
         </NextLink>
@@ -53,7 +86,8 @@ const Header = ({
               {selectedWebName}
             </span>
           </h2>
-          <div className="w-[95%] pt-4">
+
+          <div className="mt-6 w-[95%] pt-2">
             <div className="flex flex-col gap-2">
               <div className="relative">
                 <div
@@ -114,6 +148,29 @@ const Header = ({
                   />
                 </div>
               )}
+              <div className="w-full pb-2">
+                <Tabs
+                  defaultValue="list"
+                  value={currentTab}
+                  onValueChange={handleTabChange}
+                  className="w-full"
+                >
+                  <TabsList
+                    className={cn(
+                      'grid',
+                      'w-full',
+                      'bg-gray-100',
+                      isGeoMappingEnabled ? 'grid-cols-3' : 'grid-cols-2',
+                    )}
+                  >
+                    <TabsTrigger value="list">List</TabsTrigger>
+                    <TabsTrigger value="web">Web</TabsTrigger>
+                    {isGeoMappingEnabled && (
+                      <TabsTrigger value="map">Map</TabsTrigger>
+                    )}
+                  </TabsList>
+                </Tabs>
+              </div>
             </div>
           </div>
         </div>
@@ -123,26 +180,48 @@ const Header = ({
 
   return (
     <div className="transition-all duration-300 ease-in-out">
-      <header className="flex h-14 w-full items-center bg-white px-4">
-        <div className="flex w-full space-x-2">
-          <h2 className="px-[10px] text-[1.75rem] font-bold">
-            {selectedWebName}
-          </h2>
+      <header className="flex w-full flex-col bg-white">
+        <div className="flex h-14 w-full items-center px-4">
+          <div className="flex w-full space-x-2">
+            <h2 className="px-[10px] text-[1.75rem] font-bold">
+              {selectedWebName}
+            </h2>
+          </div>
+
+          <NextLink href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
+            <Button
+              variant="default"
+              size="sm"
+              className="bg-blue-600 px-6 hover:bg-blue-700"
+            >
+              <HiHome />
+              Homepage
+            </Button>
+          </NextLink>
         </div>
-        <ModeSwitch
-          checked={isWebMode}
-          handleSwitchChange={handleSwitchChange}
-        />
-        <NextLink href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
-          <Button
-            variant="default"
-            size="sm"
-            className="bg-blue-600 px-6 hover:bg-blue-700"
+        <div className="w-full px-4 pb-2">
+          <Tabs
+            defaultValue="list"
+            value={currentTab}
+            onValueChange={handleTabChange}
+            className="w-full"
           >
-            <HiHome className="mr-2 h-4 w-4" />
-            Homepage
-          </Button>
-        </NextLink>
+            <TabsList
+              className={cn(
+                'grid',
+                'w-full',
+                'bg-gray-100',
+                isGeoMappingEnabled ? 'grid-cols-3' : 'grid-cols-2',
+              )}
+            >
+              <TabsTrigger value="list">List</TabsTrigger>
+              <TabsTrigger value="web">Web</TabsTrigger>
+              {isGeoMappingEnabled && (
+                <TabsTrigger value="map">Map</TabsTrigger>
+              )}
+            </TabsList>
+          </Tabs>
+        </div>
       </header>
     </div>
   )
