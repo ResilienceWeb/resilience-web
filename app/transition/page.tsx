@@ -46,6 +46,7 @@ export default async function TransitionPage() {
         webName="Transition UK"
         webIsPublished
         isTransitionMode
+        features={data.features}
       />
     </HydrationBoundary>
   )
@@ -206,6 +207,11 @@ async function getData() {
     edges,
     categories,
     tags,
+    features: {
+      geoMapping: {
+        enabled: false,
+      },
+    },
   }
 
   return structuredData

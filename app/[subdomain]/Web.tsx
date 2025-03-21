@@ -62,7 +62,7 @@ const Web = ({
   const [isVolunteer, setIsVolunteer] = useState(false)
   const selectedWebSlug = useSelectedWebSlug()
 
-  const isGeomappingEnabled = features.geoMapping?.enabled
+  const isGeoMappingEnabled = features.geoMapping?.enabled
 
   const [query, setQuery] = useQueryParams({
     categories: withDefault(ArrayParam, []),
@@ -295,7 +295,7 @@ const Web = ({
           handleClearSearchTermValue={handleClearSearchTermValue}
           handleSearchTermChange={handleSearchTermChange}
           handleTagSelection={handleTagSelection}
-          isGeomappingEnabled={isGeomappingEnabled}
+          isGeoMappingEnabled={isGeoMappingEnabled}
           isMobile={isMobile}
           isWebMode={query.web}
           searchTerm={searchTerm}
