@@ -259,14 +259,6 @@ const Web = ({
     [data?.edges, filteredItems, filteredDescriptiveNodes],
   )
 
-  // const handleSwitchChange = useCallback(
-  //   (value) => {
-  //     setSelectedId(null)
-  //     setQuery({ web: value })
-  //   },
-  //   [setQuery],
-  // )
-
   return (
     <>
       {!isMobile && (
