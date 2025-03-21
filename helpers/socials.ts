@@ -6,6 +6,7 @@ import {
   FaYoutube,
   FaMastodon,
 } from 'react-icons/fa'
+import { FaBluesky } from 'react-icons/fa6'
 
 export const socialMediaPlatforms = [
   {
@@ -29,6 +30,13 @@ export const socialMediaPlatforms = [
     prefix: 'https://instagram.com/',
     icon: FaInstagram,
     color: '#E4405F',
+  },
+  {
+    id: 'bluesky',
+    label: 'Bluesky',
+    prefix: 'https://bluesky.app/',
+    icon: FaBluesky,
+    color: '#208BFE',
   },
   {
     id: 'twitter',
@@ -70,6 +78,14 @@ export const socialIconStyles = {
     hoverBgClass: 'hover:bg-pink-100',
     hoverTextClass: 'hover:text-[#E4405F]',
     hoverRingClass: 'hover:ring-pink-200',
+  },
+  bluesky: {
+    bgClass: 'bg-blue-50',
+    textClass: 'text-[#208BFE]/70',
+    ringClass: 'ring-blue-100/50',
+    hoverBgClass: 'hover:bg-blue-100',
+    hoverTextClass: 'hover:text-[#208BFE]',
+    hoverRingClass: 'hover:ring-blue-200',
   },
   twitter: {
     bgClass: 'bg-blue-50',
