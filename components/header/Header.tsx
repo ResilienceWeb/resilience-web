@@ -5,7 +5,6 @@ import Image from 'next/legacy/image'
 import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
-import ModeSwitch from '@components/mode-switch'
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import customMultiSelectStyles from '@styles/select-styles'
@@ -18,9 +17,9 @@ type HeaderProps = {
   selectedTags: any
   handleCategorySelection: any
   handleSearchTermChange: any
-  handleSwitchChange: any
   handleTagSelection: any
   handleClearSearchTermValue: any
+  isGeomappingEnabled: boolean
   isMobile: boolean
   isWebMode: boolean
   searchTerm: string
@@ -36,9 +35,9 @@ const Header = ({
   selectedTags,
   handleCategorySelection,
   handleSearchTermChange,
-  handleSwitchChange,
   handleTagSelection,
   handleClearSearchTermValue,
+  isGeomappingEnabled,
   isMobile,
   isWebMode,
   searchTerm,
@@ -87,21 +86,8 @@ const Header = ({
               {selectedWebName}
             </span>
           </h2>
-          <div className="my-4 flex w-full justify-center">
-            <Tabs
-              defaultValue="list"
-              value={currentTab}
-              onValueChange={handleTabChange}
-              className="w-[95%]"
-            >
-              <TabsList className="grid w-full grid-cols-3 bg-gray-100">
-                <TabsTrigger value="list">List</TabsTrigger>
-                <TabsTrigger value="map">Map</TabsTrigger>
-                <TabsTrigger value="web">Web</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-          <div className="w-[95%] pt-2">
+
+          <div className="mt-6 w-[95%] pt-2">
             <div className="flex flex-col gap-2">
               <div className="relative">
                 <div
@@ -162,6 +148,29 @@ const Header = ({
                   />
                 </div>
               )}
+              <div className="w-full pb-2">
+                <Tabs
+                  defaultValue="list"
+                  value={currentTab}
+                  onValueChange={handleTabChange}
+                  className="w-full"
+                >
+                  <TabsList
+                    className={cn(
+                      'grid',
+                      'w-full',
+                      'bg-gray-100',
+                      isGeomappingEnabled ? 'grid-cols-3' : 'grid-cols-2',
+                    )}
+                  >
+                    <TabsTrigger value="list">List</TabsTrigger>
+                    <TabsTrigger value="web">Web</TabsTrigger>
+                    {isGeomappingEnabled && (
+                      <TabsTrigger value="map">Map</TabsTrigger>
+                    )}
+                  </TabsList>
+                </Tabs>
+              </div>
             </div>
           </div>
         </div>
@@ -178,10 +187,7 @@ const Header = ({
               {selectedWebName}
             </h2>
           </div>
-          <ModeSwitch
-            checked={isWebMode}
-            handleSwitchChange={handleSwitchChange}
-          />
+
           <NextLink href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
             <Button
               variant="default"
@@ -195,15 +201,15 @@ const Header = ({
         </div>
         <div className="w-full px-4 pb-2">
           <Tabs
-            defaultValue="map"
+            defaultValue="list"
             value={currentTab}
             onValueChange={handleTabChange}
             className="w-full"
           >
             <TabsList className="grid w-full grid-cols-3 bg-gray-100">
               <TabsTrigger value="list">List</TabsTrigger>
-              <TabsTrigger value="map">Map</TabsTrigger>
               <TabsTrigger value="web">Web</TabsTrigger>
+              <TabsTrigger value="map">Map</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>

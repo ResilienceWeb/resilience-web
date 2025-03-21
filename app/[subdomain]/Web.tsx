@@ -42,6 +42,7 @@ type Props = {
     nodes: ListingNodeType[]
     edges: any[]
   }
+  features: any
   webName: string
   webDescription?: string
   webIsPublished: boolean
@@ -50,6 +51,7 @@ type Props = {
 
 const Web = ({
   data,
+  features,
   webName,
   webDescription = null,
   webIsPublished,
@@ -59,6 +61,8 @@ const Web = ({
   const [isWebModeDefault] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
   const selectedWebSlug = useSelectedWebSlug()
+
+  const isGeomappingEnabled = features.geoMapping?.enabled
 
   const [query, setQuery] = useQueryParams({
     categories: withDefault(ArrayParam, []),
@@ -96,7 +100,7 @@ const Web = ({
   }, [tags, query.tags])
 
   const [selectedId, setSelectedId] = useState()
-  const [activeTab, setActiveTab] = useState('map')
+  const [activeTab, setActiveTab] = useState('list')
 
   const { categories: fetchedCategories } = useCategoriesPublic({
     webSlug: selectedWebSlug,
@@ -255,15 +259,13 @@ const Web = ({
     [data?.edges, filteredItems, filteredDescriptiveNodes],
   )
 
-  console.log(filteredItems)
-
-  const handleSwitchChange = useCallback(
-    (value) => {
-      setSelectedId(null)
-      setQuery({ web: value })
-    },
-    [setQuery],
-  )
+  // const handleSwitchChange = useCallback(
+  //   (value) => {
+  //     setSelectedId(null)
+  //     setQuery({ web: value })
+  //   },
+  //   [setQuery],
+  // )
 
   return (
     <>
@@ -300,8 +302,8 @@ const Web = ({
           handleCategorySelection={handleCategorySelection}
           handleClearSearchTermValue={handleClearSearchTermValue}
           handleSearchTermChange={handleSearchTermChange}
-          handleSwitchChange={handleSwitchChange}
           handleTagSelection={handleTagSelection}
+          isGeomappingEnabled={isGeomappingEnabled}
           isMobile={isMobile}
           isWebMode={query.web}
           searchTerm={searchTerm}
@@ -309,7 +311,7 @@ const Web = ({
           activeTab={activeTab}
           onTabChange={handleTabChange}
         />
-        {query.web && (
+        {activeTab === 'web' && (
           <NetworkComponent
             data={filteredNetworkData}
             selectedId={selectedId}
@@ -321,15 +323,6 @@ const Web = ({
           <>
             {activeTab === 'list' && <MainList filteredItems={filteredItems} />}
             {activeTab === 'map' && <Map items={filteredItems} />}
-            {activeTab === 'web' && (
-              <div className="p-6">
-                <h2 className="mb-4 text-2xl font-bold">Web</h2>
-                <p className="text-gray-600">
-                  This section will contain resources and helpful materials.
-                  Currently under development.
-                </p>
-              </div>
-            )}
           </>
         )}
 
