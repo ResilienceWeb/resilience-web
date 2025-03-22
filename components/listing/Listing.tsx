@@ -137,11 +137,13 @@ function Listing({ listing }) {
               </div>
 
               <div className="flex items-center justify-end gap-2">
-                <ShareButton
-                  url={window.location.href}
-                  title="Resilience Web"
-                  description="Check out this listing on Resilience Web, a place-based visualisation of environmental and social justice groups making the world a better place."
-                />
+                {typeof window !== 'undefined' && (
+                  <ShareButton
+                    url={window.location.href}
+                    title="Resilience Web"
+                    description="Check out this listing on Resilience Web, a place-based visualisation of environmental and social justice groups making the world a better place."
+                  />
+                )}
                 {listing.website && (
                   <a
                     href={listingWebsite}

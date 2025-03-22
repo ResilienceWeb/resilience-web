@@ -2,14 +2,7 @@
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import dynamic from 'next/dynamic'
 import { useDebounce } from 'use-debounce'
-import useLocalStorage from 'use-local-storage'
-import {
-  useQueryState,
-  parseAsArrayOf,
-  parseAsBoolean,
-  parseAsString,
-} from 'nuqs'
-
+import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
 import Header from '@components/header'
 import useIsMobile from '@hooks/application/useIsMobile'
 import MainList from '@components/main-list'
@@ -59,7 +52,6 @@ const Web = ({
   isTransitionMode = false,
 }: Props) => {
   const isMobile = useIsMobile()
-  const [isWebModeDefault] = useLocalStorage('is-web-mode', undefined)
   const [isVolunteer, setIsVolunteer] = useState(false)
   const selectedWebSlug = useSelectedWebSlug()
 
@@ -73,12 +65,8 @@ const Web = ({
     'tags',
     parseAsArrayOf(parseAsString).withDefault([]),
   )
-  const [webParam, setWebParam] = useQueryState(
-    'web',
-    parseAsBoolean.withDefault(isWebModeDefault || false),
-  )
-  const [tabParam, setTabParam] = useQueryState(
-    'tab',
+  const [viewParam, setViewParam] = useQueryState(
+    'view',
     parseAsString.withDefault('list'),
   )
 
@@ -113,12 +101,11 @@ const Web = ({
   }, [tags, tagsParam])
 
   const [selectedId, setSelectedId] = useState()
-  const [activeTab, setActiveTab] = useState(tabParam)
+  const [activeTab, setActiveTab] = useState(viewParam)
 
-  // Update local state when URL query param changes
   useEffect(() => {
-    setActiveTab(tabParam)
-  }, [tabParam])
+    setActiveTab(viewParam)
+  }, [viewParam])
 
   const { categories: fetchedCategories } = useCategoriesPublic({
     webSlug: selectedWebSlug,
@@ -177,16 +164,10 @@ const Web = ({
   const handleTabChange = useCallback(
     (value: string) => {
       setActiveTab(value)
-      setTabParam(value)
+      setViewParam(value)
     },
-    [setTabParam],
+    [setViewParam],
   )
-
-  // Handle the web mode toggle properly
-  useEffect(() => {
-    // This is a no-op effect to satisfy the linter about setWebParam being used
-    // In a real implementation, you would have proper UI elements that call setWebParam
-  }, [setWebParam])
 
   const descriptiveNodes = useMemo(
     () =>
@@ -324,12 +305,13 @@ const Web = ({
           handleTagSelection={handleTagSelection}
           isGeoMappingEnabled={isGeoMappingEnabled}
           isMobile={isMobile}
-          isWebMode={webParam}
+          isWebMode={false}
           searchTerm={searchTerm}
           selectedWebName={webName}
           activeTab={activeTab}
           onTabChange={handleTabChange}
         />
+
         {activeTab === 'web' && (
           <NetworkComponent
             data={filteredNetworkData}
@@ -338,12 +320,8 @@ const Web = ({
           />
         )}
 
-        {!webParam && (
-          <>
-            {activeTab === 'list' && <MainList filteredItems={filteredItems} />}
-            {activeTab === 'map' && <Map items={filteredItems} />}
-          </>
-        )}
+        {activeTab === 'list' && <MainList filteredItems={filteredItems} />}
+        {activeTab === 'map' && <Map items={filteredItems} />}
 
         {isMobile && (
           <MobileOptionsSheet
