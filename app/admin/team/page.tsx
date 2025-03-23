@@ -135,7 +135,7 @@ export default function TeamPage() {
   }
 
   return (
-    <div className="flex flex-col space-y-8 divide-y divide-gray-200">
+    <div className="flex flex-col divide-y divide-gray-200">
       {isOwnerOfCurrentWeb && (
         <div className="pb-8">
           <h1 className="mb-6 text-2xl font-bold">Invite team member</h1>
@@ -204,7 +204,7 @@ export default function TeamPage() {
       {(permissionsForCurrentWeb?.length > 0 ||
         decoratedOwnerships?.length > 0 ||
         session.user.admin) && (
-        <div className="pt-8">
+        <div className="pt-4">
           <h2 className="text-2xl font-bold">Team</h2>
           <p className="mb-4">
             List of people who have permissions to add and edit listings on the{' '}

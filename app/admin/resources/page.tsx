@@ -43,7 +43,7 @@ const CodeSnippet = () => {
       <Button
         size="sm"
         variant="ghost"
-        className="absolute right-2 top-2 h-8 w-8 p-0"
+        className="absolute top-2 right-2 h-8 w-8 p-0"
         onClick={copyToClipboard}
       >
         {copied ? (
@@ -58,12 +58,12 @@ const CodeSnippet = () => {
 
 export default function ResourcesPage() {
   return (
-    <div className="mb-6 space-y-6">
+    <div className="mb-6 flex flex-col gap-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">Resources</h1>
         <p className="text-muted-foreground">
-          Download resources and materials to help promote your connection to the
-          Resilience Web community.
+          Download resources and materials to help promote your connection to
+          the Resilience Web community.
         </p>
       </div>
 
@@ -75,7 +75,7 @@ export default function ResourcesPage() {
               A wide format badge suitable for website headers and footers
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="flex flex-col gap-4">
             <div className="overflow-hidden rounded-lg border">
               <Image
                 src="/proud-member.png"
@@ -85,7 +85,10 @@ export default function ResourcesPage() {
                 className="h-auto w-full"
               />
             </div>
-            <Button onClick={() => downloadImage('proud-member.png')} className="w-full">
+            <Button
+              onClick={() => downloadImage('proud-member.png')}
+              className="w-full"
+            >
               <HiDownload className="mr-2 h-4 w-4" />
               Download Rectangular Badge
             </Button>
@@ -96,10 +99,11 @@ export default function ResourcesPage() {
           <CardHeader>
             <CardTitle>Square Badge</CardTitle>
             <CardDescription>
-              A square format badge perfect for social media and profile pictures
+              A square format badge perfect for social media and profile
+              pictures
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="flex flex-col gap-4">
             <div className="overflow-hidden rounded-lg border">
               <Image
                 src="/proud-member-square.png"
@@ -109,7 +113,10 @@ export default function ResourcesPage() {
                 className="h-auto w-full"
               />
             </div>
-            <Button onClick={() => downloadImage('proud-member-square.png')} className="w-full">
+            <Button
+              onClick={() => downloadImage('proud-member-square.png')}
+              className="w-full"
+            >
               <HiDownload className="mr-2 h-4 w-4" />
               Download Square Badge
             </Button>
@@ -124,9 +131,9 @@ export default function ResourcesPage() {
               Resilience Web community
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="flex flex-col gap-4">
             <CodeSnippet />
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Copy and paste this code into your website&apos;s HTML where
               you&apos;d like the badge to appear.
             </p>

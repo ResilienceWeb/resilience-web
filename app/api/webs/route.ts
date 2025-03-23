@@ -159,7 +159,7 @@ export async function POST(request) {
       to: REMOTE_HOSTNAME.includes('localhost')
         ? 'ismail.diner+rw@gmail.com'
         : 'info@resilienceweb.org.uk',
-      subject: `Someone just created a new resilience web 🎉`,
+      subject: `New resilience web created 🎉: ${web.title}`,
       email: webCreatedAdminEmailComponent,
     })
 

@@ -193,7 +193,7 @@ export async function POST(request) {
       emails.forEach((email) => {
         sendEmail({
           to: email,
-          subject: `Someone proposed a new listing for the ${selectedWeb.title} Resilience Web 🎉`,
+          subject: `New listing proposed for ${selectedWeb.title} Resilience Web: ${listing.title}`,
           email: webCreatedEmailComponent,
         })
       })

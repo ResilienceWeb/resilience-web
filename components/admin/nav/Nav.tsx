@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { useSession, signOut } from 'next-auth/react'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import { BsPersonCircle } from 'react-icons/bs'
+import { FiChevronDown } from 'react-icons/fi'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,8 +46,9 @@ const Nav = ({ onOpen }) => {
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="rounded-full text-gray-600 hover:text-gray-900">
+                <button className="flex items-center gap-1 rounded-full text-gray-600 hover:text-gray-900">
                   <BsPersonCircle className="h-8 w-8" />
+                  <FiChevronDown className="h-4 w-4" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
