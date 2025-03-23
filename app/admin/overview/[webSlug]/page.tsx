@@ -69,7 +69,7 @@ export default function WebOverviewPage({ params }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-2">
       <button
         className="mb-2 ml-2 flex items-center gap-2 text-gray-700 hover:text-gray-900"
         onClick={goBack}
@@ -99,20 +99,20 @@ export default function WebOverviewPage({ params }) {
         href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-primary hover:underline"
+        className="text-primary font-semibold hover:underline"
       >
         {`${web.slug}.${REMOTE_HOSTNAME}`}
       </a>
 
       <p className="text-muted-foreground">
-        <span className="font-medium text-foreground">
+        <span className="text-foreground font-semibold">
           {web.listings.length}
         </span>{' '}
         listings
       </p>
 
       {(web.permissions?.length > 0 || decoratedOwnerships?.length > 0) && (
-        <div className="space-y-4">
+        <div className="mt-4 flex flex-col gap-2">
           <h2 className="text-2xl font-bold">Team</h2>
           <PermissionsTable
             permissions={[
@@ -120,7 +120,7 @@ export default function WebOverviewPage({ params }) {
               ...permissionsForCurrentWebWithoutOwners,
             ]}
           />
-          <Button asChild className="mb-8">
+          <Button asChild className="mb-8 self-start">
             <a href={`mailto:${mailToEmails}`}>
               Send email to owners and editors
             </a>

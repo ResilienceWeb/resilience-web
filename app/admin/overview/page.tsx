@@ -15,14 +15,14 @@ import useWebs from '@hooks/webs/useWebs'
 
 const columns = [
   {
-    Header: 'Web title',
+    Header: 'Web',
     accessor: 'title',
   },
   {
     Header: 'Status',
   },
   {
-    Header: 'Team & Content',
+    Header: '',
   },
 ]
 
@@ -81,34 +81,34 @@ export default function OverviewPage() {
   const inactiveWebs = webs.filter((web) => !isWebActive(web)).length
 
   return (
-    <div className="mb-6 space-y-6">
-      <div className="space-y-2">
+    <div className="mb-6 flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">Overview</h1>
         <p className="text-muted-foreground">Manage Resilience Web instances</p>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="rounded-lg border bg-card p-4">
-          <div className="text-sm font-medium text-muted-foreground">
+        <div className="bg-card rounded-lg border p-4">
+          <div className="text-muted-foreground text-sm font-medium">
             Total Webs
           </div>
           <div className="mt-2 text-2xl font-bold">{totalWebs}</div>
         </div>
-        <div className="rounded-lg border bg-card p-4">
-          <div className="text-sm font-medium text-muted-foreground">
+        <div className="bg-card rounded-lg border p-4">
+          <div className="text-muted-foreground text-sm font-medium">
             Published
           </div>
           <div className="mt-2 text-2xl font-bold">{publishedWebs}</div>
         </div>
-        <div className="rounded-lg border bg-card p-4">
-          <div className="text-sm font-medium text-muted-foreground">
+        <div className="bg-card rounded-lg border p-4">
+          <div className="text-muted-foreground text-sm font-medium">
             Inactive Webs
           </div>
           <div className="mt-2 text-2xl font-bold">{inactiveWebs}</div>
         </div>
       </div>
 
-      <div className="rounded-lg border bg-card">
+      <div className="bg-card rounded-lg border">
         <Table>
           <TableHeader className="bg-muted/50">
             <TableRow>
@@ -145,7 +145,7 @@ export default function OverviewPage() {
                 return (
                   <TableRow
                     key={web.id}
-                    className="cursor-pointer hover:bg-muted/50"
+                    className="hover:bg-muted/50 cursor-pointer"
                     onClick={() => {
                       router.push(`/admin/overview/${web.slug}`)
                     }}
@@ -181,13 +181,13 @@ export default function OverviewPage() {
                         {!isWebActive(web) ? (
                           <div className="space-y-1">
                             <Badge variant="secondary">Inactive</Badge>
-                            <div className="text-xs text-muted-foreground">
+                            <div className="text-muted-foreground text-xs">
                               Last activity:{' '}
                               {formatDate(getLastActivityDate(web))}
                             </div>
                           </div>
                         ) : (
-                          <div className="text-xs text-muted-foreground">
+                          <div className="text-muted-foreground text-xs">
                             Last activity {formatDate(getLastActivityDate(web))}
                           </div>
                         )}
@@ -195,16 +195,16 @@ export default function OverviewPage() {
                     </TableCell>
                     <TableCell>
                       <div className="space-y-1 text-sm">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">
+                        <div className="flex items-center gap-1">
+                          <span className="font-semibold">
                             {web.listings.length}
                           </span>
                           <span className="text-muted-foreground">
                             listings
                           </span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">
+                        <div className="flex items-center gap-1">
+                          <span className="font-semibold">
                             {teamMembersCount}
                           </span>
                           <span className="text-muted-foreground">

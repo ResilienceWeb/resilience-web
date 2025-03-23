@@ -6,7 +6,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { AiOutlineLoading } from 'react-icons/ai'
 import * as z from 'zod'
 import { toast } from 'sonner'
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@components/ui/card'
 import { Button } from '@components/ui/button'
 import {
   Form,
@@ -16,11 +22,15 @@ import {
   FormLabel,
   FormMessage,
 } from '@components/ui/form'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { Input } from '@components/ui/input'
 import { Checkbox } from '@components/ui/checkbox'
 import { Spinner } from '@components/ui/spinner'
 import useUpdateUser from '@hooks/user/useUpdateUser'
 import useCurrentUser from '@hooks/user/useCurrentUser'
+import useMyOwnerships from '@hooks/ownership/useMyOwnerships'
+import usePermissions from '@hooks/permissions/usePermissions'
+import Link from 'next/link'
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -33,6 +43,8 @@ export default function UserSettingsPage() {
   const { updateUser, isPending, isSuccess } = useUpdateUser()
   const { status: sessionStatus } = useSession()
   const { user } = useCurrentUser()
+  const { ownerships, isPending: isLoadingOwnerships } = useMyOwnerships()
+  const { permissions, isPending: isLoadingPermissions } = usePermissions()
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -69,7 +81,7 @@ export default function UserSettingsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-4">
       <Card>
         <CardHeader>
           <CardTitle>User settings</CardTitle>
@@ -136,6 +148,79 @@ export default function UserSettingsPage() {
               </Button>
             </form>
           </Form>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Your Webs</CardTitle>
+          <CardDescription>Webs you can access and manage</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoadingOwnerships || isLoadingPermissions ? (
+            <Spinner />
+          ) : (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-md mb-3 font-semibold">Owner of</h3>
+                {ownerships && ownerships.length > 0 ? (
+                  <ul className="flex flex-col gap-2">
+                    {ownerships.map((web) => (
+                      <li
+                        key={web.id}
+                        className="flex items-center justify-between pb-2"
+                      >
+                        <div className="flex-1">
+                          <p>{web.title}</p>
+                        </div>
+                        <Link
+                          href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
+                          className="text-sm text-blue-600 hover:underline"
+                          target="_blank"
+                        >
+                          View
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted-foreground">
+                    You are not an owner of any webs yet.
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <h3 className="text-md mt-4 mb-3 font-semibold">Editor of</h3>
+                {permissions?.fullPermissionData?.webs &&
+                permissions.fullPermissionData.webs.length > 0 ? (
+                  <ul className="flex flex-col gap-2">
+                    {permissions.fullPermissionData.webs.map((web) => (
+                      <li
+                        key={web.id}
+                        className="flex items-center justify-between pb-2"
+                      >
+                        <div className="flex-1">
+                          <p>{web.title}</p>
+                        </div>
+                        <Link
+                          href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
+                          className="text-sm text-blue-600 hover:underline"
+                          target="_blank"
+                        >
+                          View
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted-foreground">
+                    You don't have edit permissions for any webs.
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
