@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useMemo, use } from 'react'
+import { useCallback, useMemo, use, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@components/ui/button'
 import { Badge } from '@components/ui/badge'
@@ -8,7 +8,14 @@ import PermissionsTable from '@components/admin/permissions-table'
 import useWeb from '@hooks/webs/useWeb'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { HiArrowLeft } from 'react-icons/hi'
+import { HiOutlineClipboard, HiOutlineClipboardCheck } from 'react-icons/hi'
 import usePublishWeb from '@hooks/webs/usePublishWeb'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@components/ui/accordion'
 
 export default function WebOverviewPage({ params }) {
   // @ts-ignore
@@ -20,6 +27,7 @@ export default function WebOverviewPage({ params }) {
   })
   const { mutate: publishWeb, isPending: isPublishingWeb } =
     usePublishWeb(webSlug)
+  const [copied, setCopied] = useState(false)
 
   const goBack = useCallback(() => {
     router.back()
@@ -64,6 +72,36 @@ export default function WebOverviewPage({ params }) {
     return [...ownershipsEmails, ...permissionsEmails].join(',')
   }, [web])
 
+  const listingEmails = useMemo(() => {
+    if (!web || !web.listings) {
+      return []
+    }
+
+    // Extract unique emails from listings
+    const emails = web.listings
+      .map((listing) => listing.email)
+      .filter(Boolean) // Remove null/undefined values
+      .filter((email, index, self) => self.indexOf(email) === index) // Remove duplicates
+      .sort() // Sort alphabetically
+
+    return emails
+  }, [web])
+
+  const handleCopyEmails = useCallback(() => {
+    const emailsText = listingEmails.join(';')
+    navigator.clipboard
+      .writeText(emailsText)
+      .then(() => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+        return true
+      })
+      .catch((error) => {
+        console.error('Failed to copy emails:', error)
+        return false
+      })
+  }, [listingEmails])
+
   if (isLoadingWeb) {
     return <Spinner />
   }
@@ -79,7 +117,9 @@ export default function WebOverviewPage({ params }) {
       </button>
 
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">{web.title}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">
+          {web.title} Resilience Web
+        </h1>
         {web.published ? (
           <Badge className="text-lg">Published</Badge>
         ) : (
@@ -89,7 +129,7 @@ export default function WebOverviewPage({ params }) {
             </Badge>
             <Button onClick={() => publishWeb()} disabled={isPublishingWeb}>
               {isPublishingWeb ? <Spinner /> : null}
-              Publish
+              Publish now 🚀
             </Button>
           </div>
         )}
@@ -110,6 +150,54 @@ export default function WebOverviewPage({ params }) {
         </span>{' '}
         listings
       </p>
+
+      {listingEmails.length > 0 && (
+        <div className="mt-4 flex flex-col gap-2">
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="contact-emails">
+              <AccordionTrigger className="py-2">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl font-bold">Contact emails</h2>
+                  <Badge variant="outline" className="ml-2">
+                    {listingEmails.length}
+                  </Badge>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="mt-2 rounded-lg bg-gray-50 p-3">
+                  <div className="mb-3 flex items-center justify-between">
+                    <div className="text-muted-foreground text-sm">
+                      In case we want to send an email to all the contact emails
+                      from a particular web
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCopyEmails}
+                      className="flex items-center gap-1"
+                    >
+                      {copied ? (
+                        <>
+                          <HiOutlineClipboardCheck className="h-4 w-4" />
+                          <span>Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <HiOutlineClipboard className="h-4 w-4" />
+                          <span>Copy to clipboard</span>
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  <div className="rounded border border-gray-200 bg-white p-2 text-sm break-all">
+                    {listingEmails.join('; ')}
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      )}
 
       {(web.permissions?.length > 0 || decoratedOwnerships?.length > 0) && (
         <div className="mt-4 flex flex-col gap-2">
