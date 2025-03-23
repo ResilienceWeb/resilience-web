@@ -58,7 +58,7 @@ function MapComponent({ items = [] }: MapProps) {
   )
 
   return (
-    <div className="h-full w-full">
+    <div className="w-full">
       {isLoading ? (
         <div className="flex h-[calc(100vh-150px)] w-full flex-col items-center justify-center bg-gray-50">
           <div className="text-center">
@@ -96,7 +96,7 @@ function MapComponent({ items = [] }: MapProps) {
             center={defaultCenter as [number, number]}
             zoom={defaultZoom}
             scrollWheelZoom={true}
-            style={{ height: 'calc(100vh - 180px)', width: '100%' }}
+            style={{ height: 'calc(100vh - 135px)', width: '100%' }}
           >
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

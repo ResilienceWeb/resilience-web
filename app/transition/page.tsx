@@ -107,6 +107,11 @@ async function getData() {
         color: CATEGORY_COLOR_MAPPING[categoryLabel],
         label: categoryLabel,
       },
+      location: {
+        latitude: item.location.lat,
+        longitude: item.location.lng,
+        description: item.location.label,
+      },
       tags: itemTags,
       label: item.title.replace(/&amp;/g, '&'),
       color: CATEGORY_COLOR_MAPPING[categoryLabel],

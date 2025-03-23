@@ -55,7 +55,7 @@ const Web = ({
   const [isVolunteer, setIsVolunteer] = useState(false)
   const selectedWebSlug = useSelectedWebSlug()
 
-  const isGeoMappingEnabled = features.geoMapping?.enabled
+  const isGeoMappingEnabled = features.geoMapping?.enabled || isTransitionMode
 
   const [categoriesParam, setCategoriesParam] = useQueryState(
     'categories',
