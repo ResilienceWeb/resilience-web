@@ -92,7 +92,7 @@ async function getListing({ listingSlug }): Promise<any> {
       instagram: item.contact.instagram,
       twitter: item.contact.twitter,
       category: {
-        color: CATEGORY_COLOR_MAPPING[categoryLabel],
+        color: CATEGORY_COLOR_MAPPING[categoryLabel] ?? '#000000',
         label: categoryLabel,
       },
       location: {
@@ -102,7 +102,7 @@ async function getListing({ listingSlug }): Promise<any> {
       },
       tags: itemTags,
       label: item.title,
-      color: CATEGORY_COLOR_MAPPING[categoryLabel],
+      color: CATEGORY_COLOR_MAPPING[categoryLabel] ?? '#000000',
     }
   })
 

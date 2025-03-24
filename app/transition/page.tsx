@@ -72,7 +72,7 @@ async function getData() {
     if (!categories.some((c) => c.label === categoryLabel)) {
       categories.push({
         label: categoryLabel,
-        color: CATEGORY_COLOR_MAPPING[categoryLabel].substring(1),
+        color: CATEGORY_COLOR_MAPPING[categoryLabel]?.substring(1) ?? '#000000',
       })
     }
 
