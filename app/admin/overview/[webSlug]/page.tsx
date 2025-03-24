@@ -87,6 +87,26 @@ export default function WebOverviewPage({ params }) {
     return emails
   }, [web])
 
+  const listingStats = useMemo(() => {
+    if (!web || !web.listings || web.listings.length === 0) {
+      return null
+    }
+
+    const totalListings = web.listings.length
+    const withImages = web.listings.filter((listing) => listing.image).length
+    const withLocation = web.listings.filter(
+      (listing) => listing.location?.latitude && listing.location?.longitude,
+    ).length
+
+    return {
+      totalListings,
+      withImages,
+      withLocation,
+      withImagesPercent: Math.round((withImages / totalListings) * 100),
+      withLocationPercent: Math.round((withLocation / totalListings) * 100),
+    }
+  }, [web])
+
   const handleCopyEmails = useCallback(() => {
     const emailsText = listingEmails.join(';')
     navigator.clipboard
@@ -151,6 +171,47 @@ export default function WebOverviewPage({ params }) {
         listings
       </p>
 
+      {listingStats && (
+        <div className="mt-4 flex flex-col gap-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="rounded border border-gray-200 bg-white p-3">
+              <div className="text-lg font-medium">Listings with images</div>
+              <div className="flex items-end gap-2">
+                <span className="text-2xl font-bold">
+                  {listingStats.withImagesPercent}%
+                </span>
+                <span className="text-muted-foreground text-sm">
+                  ({listingStats.withImages} of {listingStats.totalListings})
+                </span>
+              </div>
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
+                <div
+                  className="bg-primary h-full"
+                  style={{ width: `${listingStats.withImagesPercent}%` }}
+                ></div>
+              </div>
+            </div>
+            <div className="rounded border border-gray-200 bg-white p-3">
+              <div className="text-lg font-medium">Listings with locations</div>
+              <div className="flex items-end gap-2">
+                <span className="text-2xl font-bold">
+                  {listingStats.withLocationPercent}%
+                </span>
+                <span className="text-muted-foreground text-sm">
+                  ({listingStats.withLocation} of {listingStats.totalListings})
+                </span>
+              </div>
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
+                <div
+                  className="bg-primary h-full"
+                  style={{ width: `${listingStats.withLocationPercent}%` }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {listingEmails.length > 0 && (
         <div className="mt-4 flex flex-col gap-2">
           <Accordion type="single" collapsible className="w-full">
@@ -208,7 +269,7 @@ export default function WebOverviewPage({ params }) {
               ...permissionsForCurrentWebWithoutOwners,
             ]}
           />
-          <Button asChild className="mb-8 self-start">
+          <Button variant="outline" asChild className="mb-8 self-start">
             <a href={`mailto:${mailToEmails}`}>
               Send email to owners and editors
             </a>
