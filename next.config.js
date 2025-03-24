@@ -5,7 +5,6 @@
  */
 const nextConfig = {
   reactStrictMode: false,
-  allowedDevOrigins: ['durham.localhost', 'ely.localhost', 'transition.localhost', 'cambridge-city.localhost'],
   images: {
     remotePatterns: [
       {
