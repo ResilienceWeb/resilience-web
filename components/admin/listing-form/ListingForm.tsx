@@ -425,7 +425,7 @@ const ListingForm = ({
             control={methods.control}
             name="featured"
             render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start gap-2 space-y-0">
+              <FormItem className="mt-4 flex flex-row items-start gap-2">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -446,7 +446,7 @@ const ListingForm = ({
             control={methods.control}
             name="noPhysicalLocation"
             render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start gap-2 space-y-0">
+              <FormItem className="mt-4 flex flex-row items-start gap-2">
                 <FormControl>
                   <Checkbox
                     checked={field.value}

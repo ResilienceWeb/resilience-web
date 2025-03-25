@@ -69,7 +69,7 @@ export default function ListingPage({ params }) {
               looks okay click Approve.
             </div>
           )}
-          <div className="space-y-6 bg-white">
+          <div className="bg-white">
             <ListingForm
               categories={categories}
               listing={listing}

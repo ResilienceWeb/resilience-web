@@ -45,9 +45,7 @@ export default function NewListingPage() {
       </Button>
 
       <div className="mt-4 overflow-hidden rounded-md bg-white shadow-md sm:rounded-md">
-        <div className="space-y-6">
-          <ListingForm categories={categories} handleSubmit={handleSubmit} />
-        </div>
+        <ListingForm categories={categories} handleSubmit={handleSubmit} />
       </div>
     </div>
   )

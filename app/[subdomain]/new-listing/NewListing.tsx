@@ -81,7 +81,7 @@ export default function NewListing() {
                   a positive contribution to the local community.
                 </p>
               </div>
-              <div className="space-y-6 bg-white">
+              <div className="bg-white">
                 <ListingFormSimplified
                   categories={categories}
                   handleSubmit={handleSubmit}

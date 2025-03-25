@@ -123,12 +123,12 @@ const WebCreation = () => {
   )
 
   return (
-    <div className="space-y-8">
+    <div className="flex flex-col gap-4">
       <div className="flex justify-center">
         <Image alt="Resilience Web CIC logo" src={LogoImage} />
       </div>
 
-      <div className="space-y-4">
+      <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">Welcome 👋</h1>
         <p className="text-muted-foreground">
           You are taking the first steps in setting up a Resilience Web for your
@@ -141,7 +141,10 @@ const WebCreation = () => {
       <Card>
         <CardContent className="pt-6">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-2"
+            >
               <FormField
                 control={form.control}
                 name="title"
@@ -212,7 +215,7 @@ const WebCreation = () => {
                 <p className="text-destructive text-sm">{`${errorMessage}`}</p>
               )}
 
-              <Button type="submit" disabled={isPending}>
+              <Button type="submit" disabled={isPending} className="self-start">
                 {isPending && <AiOutlineLoading className="animate-spin" />} Get
                 started
               </Button>
@@ -221,7 +224,7 @@ const WebCreation = () => {
         </CardContent>
       </Card>
 
-      <div className="space-y-4">
+      <div className="mt-2 flex flex-col gap-1">
         <h2 className="text-2xl font-bold">Need help?</h2>
         <Faq content={faqs} />
       </div>

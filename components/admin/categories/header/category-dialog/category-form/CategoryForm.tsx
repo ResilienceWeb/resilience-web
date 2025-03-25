@@ -51,7 +51,10 @@ const CategoryForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmitForm)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmitForm)}
+        className="flex flex-col gap-4"
+      >
         <FormField
           control={form.control}
           name="label"

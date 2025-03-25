@@ -7,11 +7,6 @@ export default async function WebPage(props) {
   const { subdomain: webSlug } = params
   const data = await getData({ webSlug })
 
-  if (webSlug === 'marker-shadow.png') {
-    // Prevent errors from leaflet fetching marker icon
-    return null
-  }
-
   if (!data) {
     return notFound()
   }
@@ -80,11 +75,6 @@ type DataType = {
 }
 
 async function getData({ webSlug }): Promise<DataType> {
-  if (webSlug === 'marker-shadow.png') {
-    // Prevent errors from leaflet fetching marker icon
-    return null
-  }
-
   const webData = await prisma.web.findUnique({
     where: {
       slug: webSlug,

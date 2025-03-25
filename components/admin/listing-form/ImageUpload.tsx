@@ -130,11 +130,11 @@ const ImageUpload = ({
                 onClick={() => fileInputRef?.current?.click()}
                 className="group relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white p-12 text-center transition-all hover:border-blue-500 hover:bg-blue-50"
               >
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 group-hover:bg-blue-100">
                     <FiUploadCloud className="h-6 w-6 text-gray-600 group-hover:text-blue-600" />
                   </div>
-                  <div className="space-y-1">
+                  <div>
                     <p className="text-sm font-medium text-gray-700">
                       Click to upload an image
                     </p>

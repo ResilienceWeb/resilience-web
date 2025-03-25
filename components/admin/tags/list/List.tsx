@@ -126,7 +126,7 @@ const List = ({ tags }) => {
                   )
                 })}
                 <TableCell className="max-w-[80px] text-right">
-                  <div className="flex flex-col space-y-2">
+                  <div className="flex flex-col gap-2">
                     <Button
                       variant="outline"
                       onClick={() => handleOpenUpdateTagDialog(row.id)}
