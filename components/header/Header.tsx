@@ -122,31 +122,27 @@ const Header = ({
                   </div>
                 </div>
               </div>
-              <div className="w-full">
+              <Select
+                isMulti
+                isSearchable={false}
+                menuPortalTarget={document.body}
+                onChange={handleCategorySelection}
+                options={categories}
+                placeholder="Filter by category"
+                styles={customMultiSelectStyles}
+                value={selectedCategories}
+              />
+              {tags.length > 0 && (
                 <Select
                   isMulti
                   isSearchable={false}
                   menuPortalTarget={document.body}
-                  onChange={handleCategorySelection}
-                  options={categories}
-                  placeholder="Filter by category"
+                  onChange={handleTagSelection}
+                  options={tags}
+                  placeholder="Filter by tag"
                   styles={customMultiSelectStyles}
-                  value={selectedCategories}
+                  value={selectedTags}
                 />
-              </div>
-              {tags.length > 0 && (
-                <div className="w-full">
-                  <Select
-                    isMulti
-                    isSearchable={false}
-                    menuPortalTarget={document.body}
-                    onChange={handleTagSelection}
-                    options={tags}
-                    placeholder="Filter by tag"
-                    styles={customMultiSelectStyles}
-                    value={selectedTags}
-                  />
-                </div>
               )}
               <div className="w-full pb-2">
                 <Tabs

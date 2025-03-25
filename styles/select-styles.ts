@@ -40,7 +40,7 @@ const customMultiSelectStyles = {
   }),
   menuPortal: (provided) => ({
     ...provided,
-    zIndex: 10,
+    zIndex: 400,
   }),
 }
 
