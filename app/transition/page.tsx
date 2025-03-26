@@ -72,7 +72,7 @@ async function getData() {
     if (!categories.some((c) => c.label === categoryLabel)) {
       categories.push({
         label: categoryLabel,
-        color: CATEGORY_COLOR_MAPPING[categoryLabel]?.substring(1) ?? '#000000',
+        color: CATEGORY_COLOR_MAPPING[categoryLabel]?.substring(1) ?? '000000',
       })
     }
 
@@ -104,7 +104,7 @@ async function getData() {
       instagram: item.contact.instagram,
       twitter: item.contact.twitter,
       category: {
-        color: CATEGORY_COLOR_MAPPING[categoryLabel],
+        color: CATEGORY_COLOR_MAPPING[categoryLabel] ?? '#000000',
         label: categoryLabel,
       },
       location: {
@@ -114,7 +114,7 @@ async function getData() {
       },
       tags: itemTags,
       label: item.title.replace(/&amp;/g, '&'),
-      color: CATEGORY_COLOR_MAPPING[categoryLabel],
+      color: CATEGORY_COLOR_MAPPING[categoryLabel] ?? '#000000',
     })
   })
 
