@@ -14,7 +14,7 @@ export async function POST(request) {
   const recaptchaRes = await fetch(verifyUrl, { method: 'POST' })
   const recaptchaInfo = await recaptchaRes.json()
 
-  if (recaptchaInfo.score > 0.5) {
+  if (recaptchaInfo.score < 0.5) {
     return Response.json(
       {
         error:
