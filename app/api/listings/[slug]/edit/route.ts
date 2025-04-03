@@ -66,10 +66,8 @@ export async function POST(request) {
     const category = Number(formData.get('category'))
     const website = formData.get('website')
     const description = formData.get('description')
-    const facebook = formData.get('facebook')
-    const instagram = formData.get('instagram')
-    const twitter = formData.get('twitter')
     const email = formData.get('email')
+    const socials = formData.get('socials')
 
     const listingEdit = await prisma.listingEdit.create({
       data: {
@@ -92,9 +90,6 @@ export async function POST(request) {
         description,
         email,
         website,
-        facebook,
-        instagram,
-        twitter,
       },
       include: {
         listing: {
