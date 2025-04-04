@@ -42,4 +42,4 @@ async function getData(): Promise<any> {
 }
 
 export const dynamicParams = true
-export const revalidate = 3600
+export const revalidate = 600

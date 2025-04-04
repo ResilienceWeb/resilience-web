@@ -29,7 +29,7 @@ export default function News({ posts }: NewsProps) {
             News & updates from the Resilience Web team
           </p>
           <hr className="mb-10" />
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-16">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-12">
             {posts.map((post) => {
               const postDateFormatted = Intl.DateTimeFormat('en-gb', {
                 day: 'numeric',
@@ -38,9 +38,9 @@ export default function News({ posts }: NewsProps) {
               }).format(new Date(post.date))
 
               return (
-                <Link href={`news/${post.slug}`} key={post.slug}>
-                  <div className="w-full max-w-[445px] cursor-pointer overflow-hidden rounded-md bg-white p-6 shadow-xl transition-shadow duration-300 hover:shadow-2xl">
-                    <div className="relative -mx-6 -mt-6 mb-6 h-[210px] bg-gray-100">
+                <Link href={`/news/${post.slug}`} key={post.slug}>
+                  <div className="w-full max-w-[445px] cursor-pointer overflow-hidden rounded-md bg-white p-4 shadow-xl transition-shadow duration-300 hover:shadow-2xl">
+                    <div className="relative -mx-6 -mt-6 mb-4 h-[210px] bg-gray-100">
                       <Image
                         src={post.coverImage?.url}
                         layout="fill"

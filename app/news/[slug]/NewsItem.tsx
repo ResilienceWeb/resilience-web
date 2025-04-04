@@ -26,8 +26,8 @@ export default function NewsItem({ post, contentHtml }: NewsItemProps) {
 
   return (
     <Layout applyPostStyling>
-      <h1 className="text-pretty text-center">{post.title}</h1>
-      <div className="mx-auto mb-6 mt-2 flex w-[90%] justify-center md:w-[650px]">
+      <h1 className="text-center text-pretty">{post.title}</h1>
+      <div className="mx-auto mt-2 mb-6 flex w-[90%] justify-center md:w-[650px]">
         {post.author?.name && (
           <p className="font-semibold">
             {post.author.name}
@@ -50,7 +50,7 @@ export default function NewsItem({ post, contentHtml }: NewsItemProps) {
         </div>
       )}
 
-      <div className="mx-auto mb-12 max-w-[650px]">
+      <div className="mx-auto mb-12 max-w-[100%] md:max-w-[650px]">
         <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
       </div>
 
