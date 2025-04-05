@@ -140,17 +140,7 @@ const ListingFormSimplified = ({
       category: listing?.categoryId || undefined,
       email: listing?.email || '',
       website: listing?.website || '',
-      socials: [
-        ...(listing?.facebook
-          ? [{ platform: 'facebook', url: listing.facebook }]
-          : []),
-        ...(listing?.twitter
-          ? [{ platform: 'twitter', url: listing.twitter }]
-          : []),
-        ...(listing?.instagram
-          ? [{ platform: 'instagram', url: listing.instagram }]
-          : []),
-      ],
+      socials: listing?.socials || [],
       seekingVolunteers: listing?.seekingVolunteers || false,
       image: listing?.image,
       slug: listing?.slug || '',
@@ -172,19 +162,8 @@ const ListingFormSimplified = ({
   }, [tags])
 
   const handleSubmitForm = (data: any) => {
-    // Extract social media values for backward compatibility
-    const facebook =
-      data.socials?.find((s) => s.platform === 'facebook')?.url || ''
-    const twitter =
-      data.socials?.find((s) => s.platform === 'twitter')?.url || ''
-    const instagram =
-      data.socials?.find((s) => s.platform === 'instagram')?.url || ''
-
     const formData = {
       ...data,
-      facebook,
-      twitter,
-      instagram,
       tags: data.tags?.map((t) => t.value),
       relations: data.relations?.map((l) => l.value),
     }
@@ -285,7 +264,7 @@ const ListingFormSimplified = ({
             />
           </div>
 
-          {!isEditMode && <SocialMedia />}
+          <SocialMedia />
 
           {!isEditMode && <SlugField />}
 

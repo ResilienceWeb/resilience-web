@@ -31,6 +31,7 @@ export async function GET(request, props) {
         },
       },
       include: {
+        socials: true,
         category: {
           select: {
             id: true,
@@ -66,13 +67,14 @@ export async function POST(request) {
     const category = Number(formData.get('category'))
     const website = formData.get('website')
     const description = formData.get('description')
-    const facebook = formData.get('facebook')
-    const instagram = formData.get('instagram')
-    const twitter = formData.get('twitter')
     const email = formData.get('email')
+    const socials = formData.get('socials')
+
+    const socialsData = socials ? JSON.parse(socials) : []
 
     const listingEdit = await prisma.listingEdit.create({
       data: {
+        title,
         listing: {
           connect: {
             id: listingId,
@@ -83,7 +85,6 @@ export async function POST(request) {
             id: session.user.id,
           },
         },
-        title,
         category: {
           connect: {
             id: category,
@@ -92,9 +93,12 @@ export async function POST(request) {
         description,
         email,
         website,
-        facebook,
-        instagram,
-        twitter,
+        socials: {
+          create: socialsData.map((social) => ({
+            platform: social.platform,
+            url: social.url,
+          })),
+        },
       },
       include: {
         listing: {

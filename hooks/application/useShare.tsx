@@ -21,8 +21,6 @@ const useShare = () => {
         })
         console.log('Successfully shared')
       } catch (error) {
-        console.error('Error sharing:', error)
-        toast.error('Error sharing')
         copy(url)
       }
     } else {

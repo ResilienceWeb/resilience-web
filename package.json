@@ -22,7 +22,7 @@
     "types:dry": "tsc --noEmit",
     "quality:dry": "npm run stylelint:dry && npm run eslint:dry && npm run format:dry && npm run types:dry",
     "quality:fix": "npm run stylelint:fix && npm run eslint:fix && npm run format:fix",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test --ui"
   },
   "prisma": {
     "seed": "node --loader ts-node/esm prisma/seed.mts"
@@ -96,7 +96,7 @@
     "zod": "3.24.2"
   },
   "devDependencies": {
-    "@playwright/test": "1.47.2",
+    "@playwright/test": "1.51.1",
     "@tailwindcss/postcss": "4.0.15",
     "@tanstack/eslint-plugin-query": "5.66.1",
     "@tanstack/react-query-devtools": "5.67.1",

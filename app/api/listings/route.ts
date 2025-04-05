@@ -121,9 +121,9 @@ export async function POST(request) {
           id: webId,
         },
       },
-      website: website,
       description: description,
       email: email,
+      website: website,
       socials: {
         create: socialsData.map((social) => ({
           platform: social.platform,

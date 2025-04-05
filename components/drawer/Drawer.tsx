@@ -47,7 +47,7 @@ const Drawer = ({
   isTransitionMode = false,
 }: DrawerProps) => {
   return (
-    <div className="fixed z-3 h-screen w-[300px] overflow-y-scroll bg-white shadow-xl">
+    <div className="fixed z-3 h-screen w-[300px] bg-white shadow-xl">
       <div className="flex h-full flex-col justify-between">
         <div>
           <NextLink href={REMOTE_URL} className="block">
@@ -92,7 +92,7 @@ const Drawer = ({
               </div>
               <Input
                 type="text"
-                className="h-[38px] pl-10 pr-10"
+                className="h-[38px] pr-10 pl-10"
                 onChange={handleSearchTermChange}
                 placeholder="Search"
                 value={searchTerm}
