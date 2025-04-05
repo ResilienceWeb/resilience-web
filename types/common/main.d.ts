@@ -11,9 +11,6 @@ declare global {
     website?: string
     description: string
     email?: string
-    facebook?: string
-    instagram?: string
-    twitter?: string
     socials?: ListingSocialMedia[]
     notes?: string
     seekingVolunteers: boolean
@@ -49,9 +46,6 @@ declare global {
     description: string
     image: string
     website: string
-    facebook: string
-    twitter: string
-    instagram: string
     seekingVolunteers: boolean
     featured: boolean
     category: {

@@ -125,9 +125,6 @@ model Listing {
   title             String
   website           String?
   description       String?
-  facebook          String?
-  twitter           String?
-  instagram         String?
   socials           ListingSocialMedia[]
   email             String?
   notes             String?
