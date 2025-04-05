@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function applyListingEditRequest({ listingId, listingEditId }) {
   const response = await fetch(`/api/listing/${listingId}/apply-edit`, {
@@ -13,8 +13,14 @@ async function applyListingEditRequest({ listingId, listingEditId }) {
   return listing
 }
 
-export default function useApplyListingEdit() {
+export default function useApplyListingEdit({ webSlug, listingSlug }) {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: applyListingEditRequest,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['listings', 'detail', { webSlug, listingSlug }],
+      })
+    },
   })
 }

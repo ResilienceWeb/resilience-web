@@ -16,10 +16,13 @@ export default function ListingEditsPage({ params }) {
   // @ts-ignore
   const { slug } = use(params)
   const router = useRouter()
-  const { mutate: applyListingEdit } = useApplyListingEdit()
   const { selectedWebSlug } = useAppContext()
 
   const { listing, isPending: isLoadingListing } = useListing(slug)
+  const { mutate: applyListingEdit } = useApplyListingEdit({
+    webSlug: selectedWebSlug,
+    listingSlug: slug,
+  })
   const { listingEdits, isPending: isLoadingListingEdits } = useListingEdits(
     slug,
     selectedWebSlug,

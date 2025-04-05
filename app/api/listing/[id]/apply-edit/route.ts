@@ -21,6 +21,7 @@ export async function POST(request, props) {
       },
       include: {
         user: true,
+        socials: true,
         listing: {
           include: {
             web: true,
@@ -42,10 +43,14 @@ export async function POST(request, props) {
         title: listingEdit.title,
         description: listingEdit.description,
         website: listingEdit.website,
-        facebook: listingEdit.facebook,
-        twitter: listingEdit.twitter,
-        instagram: listingEdit.instagram,
         email: listingEdit.email,
+        socials: {
+          deleteMany: {},
+          create: listingEdit.socials.map((social) => ({
+            platform: social.platform,
+            url: social.url,
+          })),
+        },
       },
     })
 
