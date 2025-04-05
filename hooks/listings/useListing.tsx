@@ -19,11 +19,6 @@ export default function useListing(listingSlug) {
   } = useQuery({
     queryKey: ['listings', 'detail', { webSlug, listingSlug }],
     queryFn: fetchListingRequest,
-    enabled:
-      listingSlug !== undefined &&
-      listingSlug !== '' &&
-      webSlug !== undefined &&
-      webSlug !== '',
   })
 
   return {

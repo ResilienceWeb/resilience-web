@@ -154,39 +154,39 @@ model Listing {
 }
 
 model ListingSocialMedia {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
-  listingId Int
-  listing   Listing  @relation(fields: [listingId], references: [id])
-  platform  String
-  url       String
+  id            Int          @id @default(autoincrement())
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @default(now()) @updatedAt @map("updated_at")
+  listingId     Int?
+  listing       Listing?     @relation(fields: [listingId], references: [id])
+  platform      String
+  url           String
+  listingEdit   ListingEdit? @relation(fields: [listingEditId], references: [id])
+  listingEditId Int?
 
   @@map("listing_social_media")
 }
 
 model ListingEdit {
-  id          Int              @id @default(autoincrement())
-  createdAt   DateTime         @default(now()) @map("created_at")
-  updatedAt   DateTime         @default(now()) @updatedAt @map("updated_at")
-  listing     Listing          @relation(fields: [listingId], references: [id])
+  id          Int                  @id @default(autoincrement())
+  createdAt   DateTime             @default(now()) @map("created_at")
+  updatedAt   DateTime             @default(now()) @updatedAt @map("updated_at")
+  listing     Listing              @relation(fields: [listingId], references: [id])
   listingId   Int
   title       String?
   website     String?
   description String?
-  facebook    String?
-  twitter     String?
-  instagram   String?
   email       String?
   categoryId  Int?
   image       String?
   slug        String?
-  category    Category?        @relation(fields: [categoryId], references: [id])
+  category    Category?            @relation(fields: [categoryId], references: [id])
   tags        Tag[]
-  location    ListingLocation? @relation(fields: [locationId], references: [id])
+  location    ListingLocation?     @relation(fields: [locationId], references: [id])
   locationId  Int?
-  user        User             @relation(fields: [userId], references: [id])
+  user        User                 @relation(fields: [userId], references: [id])
   userId      String
+  socials     ListingSocialMedia[]
 
   @@map("listing_edits")
 }

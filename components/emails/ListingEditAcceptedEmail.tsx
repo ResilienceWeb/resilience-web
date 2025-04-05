@@ -53,8 +53,9 @@ const ListingEditAcceptedEmail = ({
           />
           <Text style={paragraph}>Hello 👋</Text>
           <Text style={paragraph}>
-            Great news! Your suggested edit to <strong>{listingTitle}</strong>{' '}
-            on <strong>{webTitle}</strong> Resilience Web has been accepted.
+            Great news! 🥳 Your suggested edit to{' '}
+            <strong>{listingTitle}</strong> on{' '}
+            <strong>{webTitle} Resilience Web</strong> has been accepted.
           </Text>
           <Text style={paragraph}>
             Thank you for helping to keep the Resilience Web up to date. Your
