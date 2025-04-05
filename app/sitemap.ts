@@ -1,9 +1,8 @@
 import type { MetadataRoute } from 'next'
+import { REMOTE_URL } from '@helpers/config'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const response = await fetch(
-    `https://resilienceweb.org.uk/api/listings/for-sitemap`,
-  )
+  const response = await fetch(`${REMOTE_URL}/api/listings/for-sitemap`)
   const data = await response.json()
   const { listings } = data
   const pathItems = listings.map((l) => ({
