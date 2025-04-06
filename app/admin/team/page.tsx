@@ -71,9 +71,7 @@ export default function TeamPage() {
       return []
     }
 
-    return ownerships
-      .filter((ownership) => !ownership.user.admin)
-      .map((ownership) => ({ ...ownership, owner: true }))
+    return ownerships.map((ownership) => ({ ...ownership, owner: true }))
   }, [ownerships])
 
   const permissionsForCurrentWebWithoutOwners = useMemo(() => {

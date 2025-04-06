@@ -90,7 +90,7 @@ const ImageUpload = ({
 
             {hasImageAlready || preview ? (
               <div className="relative rounded-lg border border-gray-200 bg-white p-4">
-                <div className="relative mx-auto h-[250px] w-[250px]">
+                <div className="relative mx-auto h-[250px]">
                   <Image
                     alt="Preview of image uploaded by user"
                     src={preview ?? currentValue}

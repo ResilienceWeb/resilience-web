@@ -17,7 +17,7 @@ const columns = [
   },
   {
     Header: 'Permissions',
-    accessor: 'webs',
+    accessor: 'permissions',
   },
 ]
 
@@ -25,7 +25,7 @@ const PermissionsTable = ({ permissions }) => {
   const { data: session } = useSession()
 
   return (
-    <div className="mb-8 rounded-lg border bg-card">
+    <div className="bg-card mb-8 rounded-lg border">
       <Table>
         <TableHeader className="bg-muted/50">
           <TableRow>
@@ -47,7 +47,7 @@ const PermissionsTable = ({ permissions }) => {
                     const name = permission.user.name
                     return (
                       <TableCell key={`0-${index}`}>
-                        <div className="flex flex-col space-y-1">
+                        <div className="flex flex-col">
                           <span className="font-semibold">{name}</span>
                           <span>
                             {emailAddress}
@@ -58,14 +58,19 @@ const PermissionsTable = ({ permissions }) => {
                     )
                   }
 
-                  if (column.accessor === 'webs') {
+                  if (column.accessor === 'permissions') {
                     if (permission.owner === true) {
                       return (
                         <TableCell key={`1-${index}`}>
-                          <Badge>Owner</Badge>
-                          {!permission.user.emailVerified && (
-                            <Badge variant="secondary">Invite pending</Badge>
-                          )}
+                          <div className="flex gap-2">
+                            <Badge>Owner</Badge>
+                            {!permission.user.emailVerified && (
+                              <Badge variant="secondary">Invite pending</Badge>
+                            )}
+                            {!permission.user.admin && (
+                              <Badge variant="secondary">Admin</Badge>
+                            )}
+                          </div>
                         </TableCell>
                       )
                     }
@@ -76,6 +81,9 @@ const PermissionsTable = ({ permissions }) => {
                           <Badge variant="secondary">Editor</Badge>
                           {!permission.user.emailVerified && (
                             <Badge variant="secondary">Invite pending</Badge>
+                          )}
+                          {!permission.user.admin && (
+                            <Badge variant="secondary">Admin</Badge>
                           )}
                         </div>
                       </TableCell>
