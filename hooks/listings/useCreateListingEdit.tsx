@@ -5,6 +5,12 @@ async function createListingEditRequest(listingData) {
   Object.keys(listingData).forEach((key) => {
     if (key === 'socials') {
       formData.append(key, JSON.stringify(listingData[key]))
+    } else if (key === 'image') {
+      if (listingData[key] === null) {
+        formData.append(key, 'null')
+      } else {
+        formData.append(key, listingData[key])
+      }
     } else {
       formData.append(key, listingData[key])
     }

@@ -17,7 +17,7 @@ export default function useApplyListingEdit({ webSlug, listingSlug }) {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: applyListingEditRequest,
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ['listings', 'detail', { webSlug, listingSlug }],
       })

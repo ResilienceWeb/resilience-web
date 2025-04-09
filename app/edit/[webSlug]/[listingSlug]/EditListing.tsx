@@ -101,11 +101,11 @@ export default function EditListing({ listing, webSlug }) {
         ) : (
           <div className="my-8 overflow-hidden rounded-md shadow-md">
             <div className="flex items-center gap-3 bg-blue-50 p-4 text-blue-700">
-              <PiInfoBold className="shrink-0" />
+              <PiInfoBold className="h-5 w-5 shrink-0" />
               You are now editing a listing. Note that your changes will be
               submitted to the maintainers of the {web?.title} Resilience Web,
-              who will review your suggested changes. Thank you for taking the
-              keep information up to date. You're a ⭐!
+              who will review your suggested changes. Thank you for helping keep
+              information up to date. You're a ⭐!
             </div>
             <ListingFormSimplified
               listing={listing}

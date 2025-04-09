@@ -166,6 +166,7 @@ const ListingFormSimplified = ({
       ...data,
       tags: data.tags?.map((t) => t.value),
       relations: data.relations?.map((l) => l.value),
+      image: data.image === null ? null : data.image,
     }
     onSubmit(formData)
   }
@@ -230,7 +231,11 @@ const ListingFormSimplified = ({
             )}
           />
 
-          {!isEditMode && <ImageUpload name="image" isRequired={false} />}
+          <ImageUpload
+            name="image"
+            isRequired={false}
+            isEditMode={isEditMode}
+          />
 
           <FormField
             control={form.control}

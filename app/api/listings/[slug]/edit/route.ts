@@ -1,6 +1,9 @@
+import { Prisma } from '@prisma/client'
 import { auth } from '@auth'
 import prisma from '@prisma-rw'
 import { sendEmail } from '@helpers/email'
+import uploadImage from '@helpers/uploadImage'
+import deleteImage from '@helpers/deleteImage'
 import ListingEditProposedAdminEmail from '@components/emails/ListingEditProposedAdminEmail'
 
 export async function GET(request, props) {
@@ -69,37 +72,58 @@ export async function POST(request) {
     const description = formData.get('description')
     const email = formData.get('email')
     const socials = formData.get('socials')
-
     const socialsData = socials ? JSON.parse(socials) : []
 
-    const listingEdit = await prisma.listingEdit.create({
-      data: {
-        title,
-        listing: {
-          connect: {
-            id: listingId,
-          },
-        },
-        user: {
-          connect: {
-            id: session.user.id,
-          },
-        },
-        category: {
-          connect: {
-            id: category,
-          },
-        },
-        description,
-        email,
-        website,
-        socials: {
-          create: socialsData.map((social) => ({
-            platform: social.platform,
-            url: social.url,
-          })),
+    const listingEditData: Prisma.ListingEditCreateInput = {
+      title,
+      listing: {
+        connect: {
+          id: listingId,
         },
       },
+      user: {
+        connect: {
+          id: session.user.id,
+        },
+      },
+      category: {
+        connect: {
+          id: category,
+        },
+      },
+      description,
+      email,
+      website,
+      socials: {
+        create: socialsData.map((social) => ({
+          platform: social.platform,
+          url: social.url,
+        })),
+      },
+    }
+
+    const currentListing = await prisma.listing.findUnique({
+      where: {
+        id: listingId,
+      },
+    })
+
+    const image = formData.get('image')
+    let imageUrl: string | null = null
+    if (
+      image &&
+      image !== 'undefined' &&
+      image !== 'null' &&
+      image !== currentListing.image
+    ) {
+      imageUrl = await uploadImage(image)
+      if (imageUrl) {
+        listingEditData.image = imageUrl
+      }
+    }
+
+    const listingEdit = await prisma.listingEdit.create({
+      data: listingEditData,
       include: {
         listing: {
           include: {
@@ -130,18 +154,18 @@ export async function POST(request) {
     )
     const allEmails = [...ownerEmails, ...editorEmails]
 
-    const emailPromises = allEmails.map(async (emailAddress) => {
-      await sendEmail({
-        to: emailAddress,
-        subject: `New listing edit proposed for ${web.title} Resilience Web`,
-        email: ListingEditProposedAdminEmail({
-          webTitle: web.title,
-          listingTitle: listingEdit.title || listingEdit.listing.title,
-        }),
-      })
-    })
+    // const emailPromises = allEmails.map(async (emailAddress) => {
+    //   await sendEmail({
+    //     to: emailAddress,
+    //     subject: `New listing edit proposed for ${web.title} Resilience Web`,
+    //     email: ListingEditProposedAdminEmail({
+    //       webTitle: web.title,
+    //       listingTitle: listingEdit.title || listingEdit.listing.title,
+    //     }),
+    //   })
+    // })
 
-    await Promise.all(emailPromises)
+    // await Promise.all(emailPromises)
 
     return Response.json(
       {
@@ -197,6 +221,10 @@ export async function DELETE(request, props) {
         id: listingEdit.id,
       },
     })
+
+    if (listingEdit.image) {
+      await deleteImage(listingEdit.image)
+    }
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
