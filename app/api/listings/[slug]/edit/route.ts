@@ -154,18 +154,18 @@ export async function POST(request) {
     )
     const allEmails = [...ownerEmails, ...editorEmails]
 
-    // const emailPromises = allEmails.map(async (emailAddress) => {
-    //   await sendEmail({
-    //     to: emailAddress,
-    //     subject: `New listing edit proposed for ${web.title} Resilience Web`,
-    //     email: ListingEditProposedAdminEmail({
-    //       webTitle: web.title,
-    //       listingTitle: listingEdit.title || listingEdit.listing.title,
-    //     }),
-    //   })
-    // })
+    const emailPromises = allEmails.map(async (emailAddress) => {
+      await sendEmail({
+        to: emailAddress,
+        subject: `New listing edit proposed for ${web.title} Resilience Web`,
+        email: ListingEditProposedAdminEmail({
+          webTitle: web.title,
+          listingTitle: listingEdit.title || listingEdit.listing.title,
+        }),
+      })
+    })
 
-    // await Promise.all(emailPromises)
+    await Promise.all(emailPromises)
 
     return Response.json(
       {

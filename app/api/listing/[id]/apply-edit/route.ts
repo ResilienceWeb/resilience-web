@@ -70,18 +70,18 @@ export async function POST(request, props) {
     })
 
     // Send email to the user who proposed the edit
-    // if (listingEdit.user?.email) {
-    //   await sendEmail({
-    //     to: listingEdit.user.email,
-    //     subject: `Your edit to ${listingEdit.title || updatedListing.title} has been accepted`,
-    //     email: ListingEditAcceptedEmail({
-    //       webTitle: listingEdit.listing.web.title,
-    //       listingTitle: listingEdit.title || updatedListing.title,
-    //       listingSlug: listingEdit.listing.slug,
-    //       webSlug: listingEdit.listing.web.slug,
-    //     }),
-    //   })
-    // }
+    if (listingEdit.user?.email) {
+      await sendEmail({
+        to: listingEdit.user.email,
+        subject: `Your edit to ${listingEdit.title || updatedListing.title} has been accepted`,
+        email: ListingEditAcceptedEmail({
+          webTitle: listingEdit.listing.web.title,
+          listingTitle: listingEdit.title || updatedListing.title,
+          listingSlug: listingEdit.listing.slug,
+          webSlug: listingEdit.listing.web.slug,
+        }),
+      })
+    }
 
     // Delete the listing edit since it's been applied
     await prisma.listingEdit.delete({
