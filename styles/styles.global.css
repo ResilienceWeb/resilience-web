@@ -193,6 +193,16 @@
     height: 300px;
   }
 
+  .leaflet-popup-content p {
+    margin: 0 !important;
+  }
+
+  .leaflet-popup-close-button {
+    font: 24px Tahoma, Verdana, sans-serif !important;
+    width: 32px !important;
+    height: 32px !important;
+  }
+
   .grecaptcha-badge {
     visibility: hidden !important;
   }

@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import NextLink from 'next/link'
 import L from 'leaflet'
+import CategoryTag from '@components/category-tag'
 
 interface MapProps {
   items?: any[]
@@ -121,21 +122,20 @@ function MapComponent({ items = [] }: MapProps) {
                   <div className="flex flex-col gap-2">
                     <h3 className="text-lg font-bold">{item.label}</h3>
                     {item.description && (
-                      <p className="text-sm text-gray-600">
-                        {item.description.length > 100
-                          ? `${item.description.substring(0, 100)}...`
-                          : item.description}
-                      </p>
+                      <p
+                        className="m-0 text-sm text-gray-600"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            item.description.length > 100
+                              ? `${item.description.substring(0, 100)}...`
+                              : item.description,
+                        }}
+                      ></p>
                     )}
                     {item.category && (
-                      <div
-                        className="inline-block w-fit rounded-full px-2 py-1 text-xs"
-                        style={{
-                          backgroundColor: item.category.color || '#b4fdbd',
-                        }}
-                      >
+                      <CategoryTag colorHex={item.category.color}>
                         {item.category.label}
-                      </div>
+                      </CategoryTag>
                     )}
                     <NextLink
                       href={`/${item.slug}`}

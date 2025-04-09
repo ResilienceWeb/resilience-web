@@ -39,7 +39,7 @@ export default function Footer({ hideBorder = false }) {
         !hideBorder ? 'border-t border-t-gray-200' : ''
       }`}
     >
-      <div className="w-full max-w-[100vw] px-4 py-10">
+      <div className="w-full max-w-[100vw] px-4 pt-10 pb-6">
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-[2fr_1fr_2fr]">
           <div className="flex flex-col gap-2">
             <div>
@@ -86,16 +86,6 @@ export default function Footer({ hideBorder = false }) {
             </div>
             <p className="text-sm">
               Resilience Web CIC - Company number 15322382
-            </p>
-            <p className="text-sm">
-              Content on this site is in the public domain under a{' '}
-              <a
-                href="https://creativecommons.org/licenses/by/4.0"
-                target="_blank"
-              >
-                Creative Commons CC BY 4.0 license
-              </a>
-              .
             </p>
           </div>
           <div className="flex flex-col gap-2">
