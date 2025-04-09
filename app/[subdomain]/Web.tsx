@@ -18,6 +18,7 @@ import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import useTagsPublic from '@hooks/tags/useTagsPublic'
 import type { Category } from '@prisma/client'
 import MobileOptionsSheet from '@components/mobile-options-sheet'
+import { License, LicenseTransition } from '@components/license'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
@@ -329,6 +330,9 @@ const Web = ({
             isTransitionMode={isTransitionMode}
           />
         )}
+
+        {isTransitionMode && <LicenseTransition />}
+        {!isTransitionMode && <License />}
       </div>
     </>
   )

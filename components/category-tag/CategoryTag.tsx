@@ -28,7 +28,7 @@ const CategoryTag = ({
   return (
     <Badge
       className={cn(
-        'shrink-0 select-none text-xs font-semibold',
+        'w-fit shrink-0 text-xs font-semibold select-none',
         className,
       )}
       style={{

@@ -115,7 +115,8 @@ const ListingEditReview = ({
 
       {/* Display social media differences */}
       {(listing.socials?.length > 0 || editedListing.socials?.length > 0) && (
-        <div>
+        <div className="mt-4">
+          <h3 className="mt-2 text-lg">Social media links</h3>
           <div className="flex flex-col gap-4">
             {/* Get all unique platforms from both listings */}
             {[
@@ -136,7 +137,7 @@ const ListingEditReview = ({
                 return (
                   <div key={platform} className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium first-letter:capitalize">
+                      <span className="first-letter:capitalize">
                         {platform}:
                       </span>
                       <div>
@@ -171,9 +172,7 @@ const ListingEditReview = ({
               if (oldSocial && !newSocial) {
                 return (
                   <div key={platform} className="flex items-center gap-2">
-                    <span className="font-medium first-letter:capitalize">
-                      {platform}:
-                    </span>
+                    <span className="first-letter:capitalize">{platform}:</span>
                     <span
                       style={{
                         color: 'red',
@@ -192,9 +191,7 @@ const ListingEditReview = ({
               if (!oldSocial && newSocial) {
                 return (
                   <div key={platform} className="flex items-center gap-2">
-                    <span className="font-medium first-letter:capitalize">
-                      {platform}:
-                    </span>
+                    <span className="first-letter:capitalize">{platform}:</span>
                     <span
                       style={{ color: 'green', backgroundColor: '#b5efdb' }}
                     >

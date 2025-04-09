@@ -47,7 +47,7 @@ export default function Diff({
 
   return (
     <div>
-      {label && <h3 className="mb-2 text-lg font-semibold">{label}</h3>}
+      {label && <h3 className="mt-2 text-lg font-semibold">{label}</h3>}
       <span>{mappedNodes}</span>
       {string1 !== '' && string2 === '' && (
         <span className="ml-1 inline text-gray-600 italic">(deleted)</span>
