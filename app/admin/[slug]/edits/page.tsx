@@ -29,7 +29,7 @@ export default function ListingEditsPage({ params }) {
   )
 
   const goBack = useCallback(() => {
-    router.back()
+    router.push('/admin/')
   }, [router])
 
   const handleSubmit = useCallback(() => {
@@ -96,9 +96,12 @@ export default function ListingEditsPage({ params }) {
             <PiInfoBold className="mt-0.5 h-5 w-5 shrink-0" />
             <p>
               The changes highlighted below were submitted externally by{' '}
-              {editedListing.user?.name ?? editedListing.user?.email}. Review
-              them, and if everything looks okay click Accept changes. If the
-              changes are incorrect or low quality, click Reject changes.
+              <strong>
+                {editedListing.user?.name && `${editedListing.user?.name} - `}
+                {editedListing.user?.email && editedListing.user?.email}
+              </strong>
+              . Review them, and if everything looks okay click Accept changes.
+              If the changes are incorrect or low quality, click Reject changes.
             </p>
           </div>
           <ListingEditReview

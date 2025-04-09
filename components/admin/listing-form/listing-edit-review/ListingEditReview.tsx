@@ -3,6 +3,7 @@ import { Button } from '@components/ui/button'
 import Diff from './Diff'
 import useDeleteListingEdit from '@hooks/listings/useDeleteListingEdit'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 interface Props {
   listing: Listing
@@ -27,6 +28,8 @@ const ListingEditReview = ({
     })
     router.back()
   }
+
+  console.log(listing.image)
 
   return (
     <div className="space-y-6">
@@ -59,6 +62,56 @@ const ListingEditReview = ({
         string1={listing.website}
         string2={editedListing.website}
       />
+
+      {/* Display image differences */}
+      {listing.image && editedListing.image && (
+        <div>
+          <h3 className="mb-2 text-lg font-medium">Image</h3>
+          <div className="flex flex-col gap-4 md:flex-row">
+            {listing.image && (
+              <div className="flex flex-col items-center">
+                <div className="relative h-[200px] w-[300px] overflow-hidden rounded-md border">
+                  <Image
+                    src={listing.image}
+                    alt="Current listing image"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                {(!editedListing.image ||
+                  listing.image !== editedListing.image) && (
+                  <span
+                    className="mt-2 text-red-600 italic"
+                    style={{
+                      textDecoration: !editedListing.image
+                        ? 'line-through'
+                        : 'none',
+                    }}
+                  >
+                    {!editedListing.image ? 'Image removed' : 'Current image'}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {editedListing.image && listing.image !== editedListing.image && (
+              <div className="flex flex-col items-center">
+                <div className="relative h-[200px] w-[300px] overflow-hidden rounded-md border">
+                  <Image
+                    src={editedListing.image}
+                    alt="New listing image"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <span className="mt-2 text-green-600 italic">
+                  {!listing.image ? 'New image added' : 'New image'}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Display social media differences */}
       {(listing.socials?.length > 0 || editedListing.socials?.length > 0) && (

@@ -29,7 +29,13 @@ export default function useDeleteListingEdit() {
     onSuccess: (_, variables) => {
       // Invalidate the listing edits query to trigger a refetch
       queryClient.invalidateQueries({
-        queryKey: ['listingEdits', { webSlug: variables.webSlug, listingSlug: variables.listingSlug }],
+        queryKey: [
+          'listingEdits',
+          { webSlug: variables.webSlug, listingSlug: variables.listingSlug },
+        ],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['listings', 'list', { webSlug: variables.webSlug }],
       })
     },
   })

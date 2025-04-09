@@ -17,12 +17,14 @@ interface ImageUploadProps {
   name: string
   helperText?: string
   isRequired?: boolean
+  isEditMode?: boolean
 }
 
 const ImageUpload = ({
   name,
   helperText,
   isRequired = false,
+  isEditMode = false,
 }: ImageUploadProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [preview, setPreview] = useState<string | null>(null)
@@ -111,7 +113,7 @@ const ImageUpload = ({
                     <FiImage className="h-4 w-4" />
                     Change Image
                   </Button>
-                  {preview && (
+                  {(preview || hasImageAlready) && !isEditMode && (
                     <Button
                       type="button"
                       variant="destructive"
