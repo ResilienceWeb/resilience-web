@@ -116,7 +116,6 @@ const ListingEditReview = ({
       {/* Display social media differences */}
       {(listing.socials?.length > 0 || editedListing.socials?.length > 0) && (
         <div className="mt-4">
-          <h3 className="mt-2 text-lg">Social media links</h3>
           <div className="flex flex-col gap-4">
             {/* Get all unique platforms from both listings */}
             {[
