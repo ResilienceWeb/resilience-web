@@ -155,14 +155,22 @@ const Header = ({
                     className={cn(
                       'grid',
                       'w-full',
-                      'bg-gray-100',
-                      isGeoMappingEnabled ? 'grid-cols-3' : 'grid-cols-2',
+                      isGeoMappingEnabled ? 'grid-cols-2' : 'grid-cols-1',
                     )}
                   >
-                    <TabsTrigger value="web">Web</TabsTrigger>
-                    <TabsTrigger value="list">List</TabsTrigger>
+                    <TabsTrigger
+                      value="list"
+                      className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                    >
+                      List
+                    </TabsTrigger>
                     {isGeoMappingEnabled && (
-                      <TabsTrigger value="map">Map</TabsTrigger>
+                      <TabsTrigger
+                        value="map"
+                        className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                      >
+                        Map
+                      </TabsTrigger>
                     )}
                   </TabsList>
                 </Tabs>
@@ -206,14 +214,28 @@ const Header = ({
               className={cn(
                 'grid',
                 'w-full',
-                'bg-gray-100',
                 isGeoMappingEnabled ? 'grid-cols-3' : 'grid-cols-2',
               )}
             >
-              <TabsTrigger value="web">Web</TabsTrigger>
-              <TabsTrigger value="list">List</TabsTrigger>
+              <TabsTrigger
+                value="web"
+                className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+              >
+                Web
+              </TabsTrigger>
+              <TabsTrigger
+                value="list"
+                className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+              >
+                List
+              </TabsTrigger>
               {isGeoMappingEnabled && (
-                <TabsTrigger value="map">Map</TabsTrigger>
+                <TabsTrigger
+                  value="map"
+                  className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                >
+                  Map
+                </TabsTrigger>
               )}
             </TabsList>
           </Tabs>

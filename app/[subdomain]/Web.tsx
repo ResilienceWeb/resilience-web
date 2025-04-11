@@ -55,6 +55,7 @@ const Web = ({
   const isMobile = useIsMobile()
   const [isVolunteer, setIsVolunteer] = useState(false)
   const selectedWebSlug = useSelectedWebSlug()
+  const defaultTab = isMobile ? 'list' : 'web'
 
   const isGeoMappingEnabled = features.geoMapping?.enabled || isTransitionMode
 
@@ -68,7 +69,7 @@ const Web = ({
   )
   const [viewParam, setViewParam] = useQueryState(
     'view',
-    parseAsString.withDefault('web'),
+    parseAsString.withDefault(defaultTab),
   )
 
   const [searchTerm, setSearchTerm] = useState('')
