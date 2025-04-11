@@ -159,8 +159,8 @@ const Header = ({
                       isGeoMappingEnabled ? 'grid-cols-3' : 'grid-cols-2',
                     )}
                   >
-                    <TabsTrigger value="list">List</TabsTrigger>
                     <TabsTrigger value="web">Web</TabsTrigger>
+                    <TabsTrigger value="list">List</TabsTrigger>
                     {isGeoMappingEnabled && (
                       <TabsTrigger value="map">Map</TabsTrigger>
                     )}
@@ -210,8 +210,8 @@ const Header = ({
                 isGeoMappingEnabled ? 'grid-cols-3' : 'grid-cols-2',
               )}
             >
-              <TabsTrigger value="list">List</TabsTrigger>
               <TabsTrigger value="web">Web</TabsTrigger>
+              <TabsTrigger value="list">List</TabsTrigger>
               {isGeoMappingEnabled && (
                 <TabsTrigger value="map">Map</TabsTrigger>
               )}

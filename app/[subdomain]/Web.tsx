@@ -68,7 +68,7 @@ const Web = ({
   )
   const [viewParam, setViewParam] = useQueryState(
     'view',
-    parseAsString.withDefault('list'),
+    parseAsString.withDefault('web'),
   )
 
   const [searchTerm, setSearchTerm] = useState('')
