@@ -48,8 +48,8 @@ const Drawer = ({
 }: DrawerProps) => {
   return (
     <div className="fixed z-3 h-screen w-[300px] bg-white shadow-xl">
-      <div className="flex h-full flex-col justify-between">
-        <div>
+      <div className="flex h-full flex-col overflow-hidden">
+        <div className="flex-1 overflow-y-auto pb-4">
           <NextLink href={REMOTE_URL} className="block">
             <div className="my-2 flex cursor-pointer justify-center px-4">
               <Image
@@ -152,7 +152,7 @@ const Drawer = ({
             </>
           )}
         </div>
-        <div className="p-4">
+        <div className="shrink-0 border-t bg-white p-4">
           <h2 className="text-xl font-semibold">Like what you see?</h2>
           {isTransitionMode ? (
             <p className="mb-3 text-gray-600">
