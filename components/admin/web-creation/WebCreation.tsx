@@ -71,9 +71,15 @@ const faqs = [
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  slug: z.string().min(1, 'Slug is required').refine(urlValidator, {
-    message: 'Please only use letters, numbers and dashes',
-  }),
+  slug: z
+    .string()
+    .min(1, 'Slug is required')
+    .refine(urlValidator, {
+      message: 'Please only use letters, numbers and dashes',
+    })
+    .refine((value) => value === value.toLowerCase(), {
+      message: 'Slug must be lowercase',
+    }),
   description: z.string().optional(),
 })
 
@@ -177,6 +183,10 @@ const WebCreation = () => {
                           {...field}
                           className="rounded-r-none text-sm"
                           placeholder="e.g. york"
+                          onChange={(e) => {
+                            // Convert input to lowercase
+                            field.onChange(e.target.value.toLowerCase())
+                          }}
                         />
                         <span className="border-input bg-muted text-muted-foreground inline-flex items-center rounded-r-md border border-l-0 px-3 text-sm">
                           .resilienceweb.org.uk
