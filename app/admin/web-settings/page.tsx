@@ -19,8 +19,10 @@ import {
 } from '@components/ui/form'
 import { Textarea } from '@components/ui/textarea'
 import { Checkbox } from '@components/ui/checkbox'
+import { Input } from '@components/ui/input'
 
 interface WebSettingsForm {
+  title: string
   published: boolean
   description: string
   image: File | string | null
@@ -34,9 +36,10 @@ export default function WebSettingsPage() {
 
   const methods = useForm<WebSettingsForm>({
     defaultValues: {
-      published: Boolean(webData?.published),
-      description: webData?.description ?? '',
-      image: webData?.image ?? null,
+      title: '',
+      published: false,
+      description: '',
+      image: null,
     },
   })
 
@@ -45,14 +48,24 @@ export default function WebSettingsPage() {
     formState: { errors, isDirty },
     watch,
     reset,
+    setValue,
   } = methods
 
+  // Watch title for debugging
+  const watchedTitle = watch('title')
   useEffect(() => {
-    reset({
-      published: Boolean(webData?.published),
-      description: webData?.description ?? '',
-      image: webData?.image ?? null,
-    })
+    console.log('Title changed to:', watchedTitle)
+  }, [watchedTitle])
+
+  useEffect(() => {
+    if (webData) {
+      reset({
+        title: webData.title || '',
+        published: Boolean(webData.published),
+        description: webData.description || '',
+        image: webData.image || null,
+      })
+    }
   }, [webData, reset])
 
   useEffect(() => {
@@ -63,11 +76,17 @@ export default function WebSettingsPage() {
 
   const onSubmit = useCallback(
     (data: WebSettingsForm) => {
+      console.log('Form submitted with data:', data)
+
       const dataToSubmit: any = {
+        title: data.title,
         description: data.description,
         published: data.published,
         slug: webData?.slug,
       }
+
+      console.log('Submitting to API:', dataToSubmit)
+
       if (typeof data.image !== 'string') {
         dataToSubmit.image = data.image
       }
@@ -130,6 +149,27 @@ export default function WebSettingsPage() {
                     your web has at least 10 listings with complete information
                     and images, and that your web has a cover image uploaded
                     below.
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-6">
+                <FormLabel className="font-semibold">Web Title</FormLabel>
+                <FormDescription className="mb-2">
+                  The title of your web (e.g. "York" or "Brighton & Hove")
+                </FormDescription>
+                <Input
+                  name="title"
+                  value={watch('title') || ''}
+                  onChange={(e) =>
+                    setValue('title', e.target.value, { shouldDirty: true })
+                  }
+                  placeholder="Enter web title"
+                  className="max-w-md"
+                />
+                {errors.title && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.title.message}
                   </p>
                 )}
               </div>

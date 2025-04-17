@@ -75,6 +75,7 @@ export async function PUT(request, props) {
     const slug = params.slug
     const formData = await request.formData()
     const newData: Prisma.WebUncheckedUpdateInput = {
+      title: formData.get('title'),
       published: stringToBoolean(formData.get('published')),
       description: formData.get('description'),
     }
