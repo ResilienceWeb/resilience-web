@@ -78,7 +78,7 @@ async function populateSeedData() {
       slug: 'cambridge',
       published: true,
       image:
-        'https://resilienceweb.ams3.digitaloceanspaces.com/d395de3529d0bb86b05ee6501.jpg',
+        'https://resilienceweb.ams3.digitaloceanspaces.com/d395de3529d0bb86b05ee6503.jpg',
     },
   })
 
