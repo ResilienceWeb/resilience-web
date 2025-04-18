@@ -1,5 +1,6 @@
 import { auth } from '@auth'
 import prisma from '@prisma-rw'
+import { revalidatePath } from 'next/cache'
 
 export async function POST(_request, props) {
   const params = await props.params
@@ -20,6 +21,7 @@ export async function POST(_request, props) {
         published: true,
       },
     })
+    revalidatePath('/')
 
     return new Response('Web published', {
       status: 200,
