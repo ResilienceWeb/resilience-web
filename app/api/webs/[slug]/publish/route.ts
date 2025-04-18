@@ -1,6 +1,7 @@
+import { revalidatePath } from 'next/cache'
 import { auth } from '@auth'
 import prisma from '@prisma-rw'
-import { revalidatePath } from 'next/cache'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 export async function POST(_request, props) {
   const params = await props.params
@@ -22,6 +23,7 @@ export async function POST(_request, props) {
       },
     })
     revalidatePath('/')
+    revalidatePath(`${PROTOCOL}://${params.slug}.${REMOTE_HOSTNAME}`)
 
     return new Response('Web published', {
       status: 200,
