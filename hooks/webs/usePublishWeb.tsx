@@ -4,9 +4,12 @@ async function publishWebRequest(webSlug) {
   const response = await fetch(`/api/webs/${webSlug}/publish`, {
     method: 'POST',
   })
-  const data = await response.json()
-  const { tag } = data
-  return tag
+
+  if (!response.ok) {
+    throw new Error('Failed to publish web')
+  }
+
+  return response.json()
 }
 
 export default function usePublishWeb(webSlug) {

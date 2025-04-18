@@ -10,6 +10,7 @@ import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { HiArrowLeft } from 'react-icons/hi'
 import { HiOutlineClipboard, HiOutlineClipboardCheck } from 'react-icons/hi'
 import usePublishWeb from '@hooks/webs/usePublishWeb'
+import useUnpublishWeb from '@hooks/webs/useUnpublishWeb'
 import {
   Accordion,
   AccordionContent,
@@ -27,6 +28,8 @@ export default function WebOverviewPage({ params }) {
   })
   const { mutate: publishWeb, isPending: isPublishingWeb } =
     usePublishWeb(webSlug)
+  const { mutate: unpublishWeb, isPending: isUnpublishingWeb } =
+    useUnpublishWeb(webSlug)
   const [copied, setCopied] = useState(false)
 
   const goBack = useCallback(() => {
@@ -141,7 +144,15 @@ export default function WebOverviewPage({ params }) {
           {web.title} Resilience Web
         </h1>
         {web.published ? (
-          <Badge className="text-lg">Published</Badge>
+          <div className="flex flex-col items-center gap-4">
+            <Badge variant="secondary" className="text-lg">
+              Published
+            </Badge>
+            <Button onClick={() => unpublishWeb()} disabled={isUnpublishingWeb}>
+              {isUnpublishingWeb ? <Spinner /> : null}
+              Unpublish
+            </Button>
+          </div>
         ) : (
           <div className="flex flex-col items-center gap-4">
             <Badge variant="secondary" className="text-lg">
@@ -159,7 +170,7 @@ export default function WebOverviewPage({ params }) {
         href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-primary font-semibold hover:underline"
+        className="text-primary w-fit font-semibold hover:underline"
       >
         {`${web.slug}.${REMOTE_HOSTNAME}`}
       </a>
