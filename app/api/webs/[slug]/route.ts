@@ -31,9 +31,8 @@ export async function GET(request, props) {
 
   if (withListings) {
     include.listings = {
-      select: {
-        id: true,
-        webId: true,
+      include: {
+        location: true,
       },
     }
   }
