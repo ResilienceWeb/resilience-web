@@ -38,6 +38,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'maps.transitionnetwork.org'
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com'
       }
     ],
     formats: ['image/avif', 'image/webp'],
