@@ -12,7 +12,7 @@ jobs:
       DATABASE_URL: postgresql://postgres:password@localhost:5432/postgres # postgresql://postgres:postgres@localhost:5432/grading-app
     services:
       postgres:
-        image: postgres:latest
+        image: postgres:17
         env:
           POSTGRES_PASSWORD: password
         options: >-
@@ -39,4 +39,4 @@ jobs:
       with:
         name: playwright-report
         path: playwright-report/
-        retention-days: 30
+        retention-days: 7

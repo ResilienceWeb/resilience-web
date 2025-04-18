@@ -109,6 +109,7 @@ const Drawer = ({
             </div>
             <div className="w-full max-w-[280px]">
               <Select
+                id="category-select"
                 isMulti
                 isSearchable={false}
                 menuPortalTarget={document.body}
@@ -122,6 +123,7 @@ const Drawer = ({
             {tags.length > 0 && (
               <div className="w-full max-w-[280px]">
                 <Select
+                  id="tag-select"
                   isMulti
                   isSearchable={false}
                   menuPortalTarget={document.body}
