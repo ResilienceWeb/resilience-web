@@ -60,7 +60,6 @@ const options = {
       enabled: true,
       iterations: 500, // More iterations for better initial positioning
       updateInterval: 1,
-      fit: true,
     },
   },
   interaction: {
@@ -81,6 +80,7 @@ const options = {
 const Network = ({ data, selectedId, setSelectedId }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [network, setNetwork] = useState<any>()
+  const [isLoading, setIsLoading] = useState(true)
 
   const onOpen = useCallback(() => setIsOpen(true), [])
   const onClose = useCallback(() => setIsOpen(false), [])
@@ -113,6 +113,9 @@ const Network = ({ data, selectedId, setSelectedId }) => {
           network.canvas.body.container.style.cursor = 'default'
         }
       },
+      stabilizationIterationsDone: function () {
+        setIsLoading(false)
+      },
     }),
     [network, setSelectedId],
   )
@@ -127,7 +130,14 @@ const Network = ({ data, selectedId, setSelectedId }) => {
     onClose()
   }, [onClose, setSelectedId])
 
-  const getNetwork = useCallback((network) => setNetwork(network), [setNetwork])
+  const getNetwork = useCallback(
+    (network) => {
+      setNetwork(network)
+      // Reset loading state when network is reinitialized
+      setIsLoading(true)
+    },
+    [setNetwork],
+  )
 
   return (
     <>
@@ -144,6 +154,11 @@ const Network = ({ data, selectedId, setSelectedId }) => {
           options={options}
           getNetwork={getNetwork}
         />
+        {isLoading && (
+          <div className={styles.loadingOverlay}>
+            <div className={styles.spinner}></div>
+          </div>
+        )}
         {Boolean(selectedId) &&
           selectedItem?.group !== 'category' &&
           selectedItem?.group !== 'central-node' && (
