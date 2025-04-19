@@ -2,7 +2,6 @@
 
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { HiUserGroup, HiOutlineLink, HiExternalLink } from 'react-icons/hi'
 import { toast } from 'sonner'
@@ -26,6 +25,7 @@ import {
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import DescriptionRichText from '@components/main-list/description-rich-text'
 import CategoryTag from '@components/category-tag'
+import ListingImage from '@components/listing-image'
 
 interface DialogProps {
   isOpen: boolean
@@ -134,17 +134,13 @@ const ListingDialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[672px]">
         {item.image && (
-          <div className="relative -mx-6 -mt-6 h-[300px] min-h-[300px] w-full overflow-hidden sm:w-[calc(100%+48px)]">
-            <Image
-              alt={`${item.label} cover image`}
-              src={item.image}
-              fill
-              sizes="(max-width: 768px) 100vw, 672px"
-              style={{
-                objectFit: 'cover',
-              }}
-            />
-          </div>
+          <ListingImage
+            alt={`${item.label} cover image`}
+            src={item.image}
+            sizes="(max-width: 768px) 90vw, 300px"
+            isInView
+            priority
+          />
         )}
 
         <DialogHeader className="flex items-center pb-0">

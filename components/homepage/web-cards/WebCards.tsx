@@ -2,11 +2,26 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Button } from '@components/ui/button'
+import { Badge } from '@components/ui/badge'
 
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
-// Hardcoded array to determine which webs are displayed first
-const orderOnHomepage = ['Cambridge', 'York', 'Norwich', 'Durham']
+// Hardcoded array to determine which webs are displayed last
+const lastOnesOnHomepage = [
+  'Anglia Ruskin University',
+  'University of Cambridge',
+]
+
+// Function to check if a web was created less than 4 months ago
+const isNewWeb = (createdAt) => {
+  if (!createdAt) return false
+
+  const creationDate = new Date(createdAt)
+  const oneMonthAgo = new Date()
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 4)
+
+  return creationDate > oneMonthAgo
+}
 
 const WebCards = ({ webs }) => {
   return (
@@ -24,9 +39,16 @@ const WebCards = ({ webs }) => {
           )
           .sort((a, b) => {
             if (
-              orderOnHomepage.includes(a.title) >
-              orderOnHomepage.includes(b.title)
+              lastOnesOnHomepage.includes(a.title) >
+              lastOnesOnHomepage.includes(b.title)
             ) {
+              return 1
+            } else {
+              return -1
+            }
+          })
+          .sort((a, b) => {
+            if (isNewWeb(a.createdAt) > isNewWeb(b.createdAt)) {
               return -1
             } else {
               return 1
@@ -43,9 +65,18 @@ const WebCards = ({ webs }) => {
 export default WebCards
 
 const Card = ({ web }) => {
+  const isNew = isNewWeb(web.createdAt)
+
+  console.log(web, isNew)
+
   return (
     <Link href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}>
-      <div className="group h-full overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+      <div className="group relative h-full overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+        {isNew && (
+          <Badge className="absolute top-2 right-2 z-10 bg-green-500 hover:bg-green-600">
+            New
+          </Badge>
+        )}
         <div className="relative h-48 overflow-hidden">
           <Image
             alt={`Image representing ${web.title} web`}
