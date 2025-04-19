@@ -56,7 +56,12 @@ const options = {
     },
     minVelocity: 0.85,
     solver: 'forceAtlas2Based',
-    stabilization: false,
+    stabilization: {
+      enabled: true,
+      iterations: 500, // More iterations for better initial positioning
+      updateInterval: 1,
+      fit: true,
+    },
   },
   interaction: {
     zoomView: true,
