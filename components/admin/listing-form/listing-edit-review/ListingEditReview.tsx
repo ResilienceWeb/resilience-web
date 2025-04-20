@@ -29,8 +29,6 @@ const ListingEditReview = ({
     router.back()
   }
 
-  console.log(listing.image)
-
   return (
     <div className="space-y-6">
       <Diff

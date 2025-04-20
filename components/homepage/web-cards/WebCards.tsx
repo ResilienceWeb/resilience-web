@@ -67,8 +67,6 @@ export default WebCards
 const Card = ({ web }) => {
   const isNew = isNewWeb(web.createdAt)
 
-  console.log(web, isNew)
-
   return (
     <Link href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}>
       <div className="group relative h-full overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">

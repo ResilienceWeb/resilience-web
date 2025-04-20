@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import NextLink from 'next/link'
 import L from 'leaflet'
 import CategoryTag from '@components/category-tag'
+import { Spinner } from '@components/ui/spinner'
 
 interface MapProps {
   items?: any[]
@@ -45,12 +46,12 @@ function MapComponent({ items = [] }: MapProps) {
   const defaultCenter = [52.401, 0.263]
   const defaultZoom = 14
 
-  const itemsWithCoordinates = items.filter(
+  const listingsWithCoordinates = items.filter(
     (item) => item.location?.latitude && item.location?.longitude,
   )
 
   // Create array of marker positions for the FitBoundsToMarkers component
-  const markerPositions = itemsWithCoordinates.map(
+  const markerPositions = listingsWithCoordinates.map(
     (item) =>
       [
         parseFloat(item.location.latitude),
@@ -61,35 +62,33 @@ function MapComponent({ items = [] }: MapProps) {
   return (
     <div className="w-full">
       {isLoading ? (
-        <div className="flex h-[calc(100vh-150px)] w-full flex-col items-center justify-center bg-gray-50">
-          <div className="text-center">
-            <div className="mx-auto mb-2 h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
-            <p className="text-gray-600">Loading map...</p>
-          </div>
+        <div className="flex h-[calc(100vh-150px)] w-full flex-col items-center justify-center bg-white">
+          <Spinner />
         </div>
-      ) : itemsWithCoordinates.length === 0 ? (
-        <div className="flex h-[calc(100vh-150px)] w-full flex-col items-center justify-center bg-gray-50">
+      ) : listingsWithCoordinates.length === 0 ? (
+        <div className="flex h-[calc(100vh-150px)] w-full flex-col items-center justify-center bg-white">
           <div className="max-w-md text-center">
             <h3 className="mb-2 text-xl font-semibold">
               No locations to display
             </h3>
             <p className="text-gray-600">
-              None of the current items have location data available. Try
+              None of the current listings have location data available. Try
               adjusting your filters or switching to the List view.
             </p>
           </div>
         </div>
       ) : (
         <>
-          <div className="border-b bg-white p-2 shadow-sm">
+          <div className="border-b bg-white p-2">
             <p className="text-sm text-gray-600">
               Displaying{' '}
               <span className="font-semibold">
-                {itemsWithCoordinates.length}
+                {listingsWithCoordinates.length}
               </span>{' '}
-              location{itemsWithCoordinates.length !== 1 ? 's' : ''} on the map
-              {items.length > itemsWithCoordinates.length && (
-                <> (out of {items.length} total items)</>
+              location{listingsWithCoordinates.length !== 1 ? 's' : ''} on the
+              map
+              {items.length > listingsWithCoordinates.length && (
+                <> (out of {items.length} total listings)</>
               )}
             </p>
           </div>
@@ -110,7 +109,7 @@ function MapComponent({ items = [] }: MapProps) {
             )}
 
             {/* Display markers for items with coordinates */}
-            {itemsWithCoordinates.map((item) => (
+            {listingsWithCoordinates.map((item) => (
               <Marker
                 key={item.id}
                 position={[

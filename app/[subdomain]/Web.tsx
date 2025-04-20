@@ -19,9 +19,11 @@ import useTagsPublic from '@hooks/tags/useTagsPublic'
 import type { Category } from '@prisma/client'
 import MobileOptionsSheet from '@components/mobile-options-sheet'
 import { License, LicenseTransition } from '@components/license'
+import { Spinner } from '@components/ui/spinner'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
+  loading: () => <Spinner />,
 })
 const Drawer = dynamic(() => import('@components/drawer'), {
   ssr: false,

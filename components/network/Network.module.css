@@ -6,6 +6,7 @@
 
 .graph * {
   outline: none;
+  background-color: white;
 }
 
 .loadingOverlay {

@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { memo, useState, useCallback, useEffect, useMemo } from 'react'
 import VisNetworkReactComponent from 'vis-network-react'
 import ListingDialog from '@components/main-list/listing-dialog'
+import { Spinner } from '@components/ui/spinner'
 import styles from './Network.module.css'
 
 const options = {
@@ -154,11 +155,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
           options={options}
           getNetwork={getNetwork}
         />
-        {isLoading && (
-          <div className={styles.loadingOverlay}>
-            <div className={styles.spinner}></div>
-          </div>
-        )}
+        {isLoading && <Spinner />}
         {Boolean(selectedId) &&
           selectedItem?.group !== 'category' &&
           selectedItem?.group !== 'central-node' && (
