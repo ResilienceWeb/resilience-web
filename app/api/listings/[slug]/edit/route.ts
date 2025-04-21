@@ -74,8 +74,15 @@ export async function POST(request) {
     const socials = formData.get('socials')
     const socialsData = socials ? JSON.parse(socials) : []
 
+    const currentListing = await prisma.listing.findUnique({
+      where: {
+        id: listingId,
+      },
+    })
+
     const listingEditData: Prisma.ListingEditCreateInput = {
       title,
+      slug: currentListing.slug,
       listing: {
         connect: {
           id: listingId,
@@ -101,12 +108,6 @@ export async function POST(request) {
         })),
       },
     }
-
-    const currentListing = await prisma.listing.findUnique({
-      where: {
-        id: listingId,
-      },
-    })
 
     const image = formData.get('image')
     let imageUrl: string | null = null

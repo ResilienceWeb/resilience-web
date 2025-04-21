@@ -51,12 +51,6 @@ export default function WebSettingsPage() {
     setValue,
   } = methods
 
-  // Watch title for debugging
-  const watchedTitle = watch('title')
-  useEffect(() => {
-    console.log('Title changed to:', watchedTitle)
-  }, [watchedTitle])
-
   useEffect(() => {
     if (webData) {
       reset({
@@ -76,16 +70,12 @@ export default function WebSettingsPage() {
 
   const onSubmit = useCallback(
     (data: WebSettingsForm) => {
-      console.log('Form submitted with data:', data)
-
       const dataToSubmit: any = {
         title: data.title,
         description: data.description,
         published: data.published,
         slug: webData?.slug,
       }
-
-      console.log('Submitting to API:', dataToSubmit)
 
       if (typeof data.image !== 'string') {
         dataToSubmit.image = data.image

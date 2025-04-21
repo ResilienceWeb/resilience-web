@@ -296,28 +296,31 @@ const ListingFormSimplified = ({
             />
           )}
 
-          <FormField
-            control={form.control}
-            name="seekingVolunteers"
-            render={({ field }) => (
-              <FormItem className="mt-2 flex flex-row items-start gap-2">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="font-semibold">
-                    Seeking volunteers
-                  </FormLabel>
-                  <p className="text-sm text-gray-500">
-                    Would this group benefit from having additional volunteers?
-                  </p>
-                </div>
-              </FormItem>
-            )}
-          />
+          {!isEditMode && (
+            <FormField
+              control={form.control}
+              name="seekingVolunteers"
+              render={({ field }) => (
+                <FormItem className="mt-2 flex flex-row items-start gap-2">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel className="font-semibold">
+                      Seeking volunteers
+                    </FormLabel>
+                    <p className="text-sm text-gray-500">
+                      Would this group benefit from having additional
+                      volunteers?
+                    </p>
+                  </div>
+                </FormItem>
+              )}
+            />
+          )}
         </div>
 
         <div className="bg-gray-50 p-3 text-right">

@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { useCallback, use } from 'react'
+import { useCallback, use, useEffect } from 'react'
 import NextLink from 'next/link'
 import { Spinner } from '@components/ui/spinner'
 import { Button } from '@components/ui/button'
@@ -11,6 +11,7 @@ import useApplyListingEdit from '@hooks/listings/useApplyListingEdit'
 import useListingEdits from '@hooks/listings/useListingEdits'
 import { useAppContext } from '@store/hooks'
 import ListingEditReview from '@components/admin/listing-form/listing-edit-review'
+import { toast } from 'sonner'
 
 export default function ListingEditsPage({ params }) {
   // @ts-ignore
@@ -19,7 +20,11 @@ export default function ListingEditsPage({ params }) {
   const { selectedWebSlug } = useAppContext()
 
   const { listing, isPending: isLoadingListing } = useListing(slug)
-  const { mutate: applyListingEdit } = useApplyListingEdit({
+  const {
+    mutate: applyListingEdit,
+    isSuccess,
+    isError,
+  } = useApplyListingEdit({
     webSlug: selectedWebSlug,
     listingSlug: slug,
   })
@@ -37,8 +42,16 @@ export default function ListingEditsPage({ params }) {
       listingId: listing?.id,
       listingEditId: listingEdits[0]?.id,
     })
-    router.push(`/admin/${slug}`)
-  }, [applyListingEdit, listing?.id, listingEdits, router, slug])
+  }, [applyListingEdit, listing?.id, listingEdits])
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push(`/admin/${slug}`)
+    }
+    if (isError) {
+      toast.error('Failed to apply listing edit')
+    }
+  }, [isSuccess, isError, router, slug])
 
   if (!listing || isLoadingListing || isLoadingListingEdits) {
     return <Spinner />

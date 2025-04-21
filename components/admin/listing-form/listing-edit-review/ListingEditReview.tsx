@@ -62,9 +62,27 @@ const ListingEditReview = ({
       />
 
       {/* Display image differences */}
+      {!listing.image && editedListing.image && (
+        <>
+          <h3 className="my-2 text-lg font-semibold">Image (new)</h3>
+          <div className="flex flex-col gap-4 md:flex-row">
+            <div className="flex flex-col items-center">
+              <div className="relative h-[200px] w-[300px] overflow-hidden rounded-md border">
+                <Image
+                  src={editedListing.image}
+                  alt="New listing image"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       {listing.image && editedListing.image && (
         <div>
-          <h3 className="mb-2 text-lg font-medium">Image</h3>
+          <h3 className="my-2 text-lg font-semibold">Image</h3>
           <div className="flex flex-col gap-4 md:flex-row">
             {listing.image && (
               <div className="flex flex-col items-center">

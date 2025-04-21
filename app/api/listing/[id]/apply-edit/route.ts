@@ -1,9 +1,11 @@
+import { revalidatePath } from 'next/cache'
 import { auth } from '@auth'
 import prisma from '@prisma-rw'
 import { sendEmail } from '@helpers/email'
 import deleteImage from '@helpers/deleteImage'
 import ListingEditAcceptedEmail from '@components/emails/ListingEditAcceptedEmail'
 import type { Prisma } from '@prisma/client'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 export async function POST(request, props) {
   const params = await props.params
@@ -24,6 +26,7 @@ export async function POST(request, props) {
       include: {
         user: true,
         socials: true,
+        category: true,
         listing: {
           include: {
             web: true,
@@ -40,6 +43,9 @@ export async function POST(request, props) {
       where: {
         id: parseInt(listingId),
       },
+      include: {
+        category: true,
+      },
     })
 
     const newData: Prisma.ListingUpdateInput = {
@@ -47,6 +53,11 @@ export async function POST(request, props) {
       description: listingEdit.description,
       website: listingEdit.website,
       email: listingEdit.email,
+      category: {
+        connect: {
+          id: listingEdit.category.id,
+        },
+      },
       socials: {
         deleteMany: {},
         create: listingEdit.socials.map((social) => ({
@@ -58,7 +69,9 @@ export async function POST(request, props) {
 
     if (listingEdit.image && listingEdit.image !== currentListing.image) {
       newData.image = listingEdit.image
-      await deleteImage(currentListing.image)
+      if (currentListing.image) {
+        await deleteImage(currentListing.image)
+      }
     }
 
     // Update the listing with the edited values
@@ -90,6 +103,9 @@ export async function POST(request, props) {
       },
     })
 
+    revalidatePath(
+      `${PROTOCOL}://${listingEdit.listing.web.slug}.${REMOTE_HOSTNAME}/${listingEdit.slug}`,
+    )
     return Response.json({
       listing: updatedListing,
     })

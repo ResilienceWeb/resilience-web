@@ -16,7 +16,7 @@ const RichTextEditor = ({
   register(name)
 
   const handleEditorChange = (value: string) => {
-    setValue(name, value, { shouldValidate: true })
+    setValue(name, value, { shouldDirty: true })
   }
 
   return (
