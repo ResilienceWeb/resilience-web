@@ -80,6 +80,9 @@ export async function POST(request, props) {
         id: parseInt(listingId),
       },
       data: newData,
+      include: {
+        web: true,
+      },
     })
 
     // Send email to the user who proposed the edit
@@ -104,7 +107,7 @@ export async function POST(request, props) {
     })
 
     revalidatePath(
-      `${PROTOCOL}://${listingEdit.listing.web.slug}.${REMOTE_HOSTNAME}/${listingEdit.slug}`,
+      `${PROTOCOL}://${updatedListing.web.slug}.${REMOTE_HOSTNAME}/${updatedListing.slug}`,
     )
     return Response.json({
       listing: updatedListing,
