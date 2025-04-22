@@ -27,49 +27,29 @@ import {
   FaTools,
   FaGraduationCap,
 } from 'react-icons/fa'
-import {
-  MdWaterDrop,
-  MdForest,
-  MdApartment,
-  MdElectricCar,
-  MdOutlineEnergySavingsLeaf,
-} from 'react-icons/md'
-import { IoFlower, IoHomeSharp, IoPeople } from 'react-icons/io5'
 
 // Define our available icons
 const icons = [
   // Environment
   { icon: FaLeaf, name: 'Leaf', category: 'Environment' },
   { icon: FaTree, name: 'Tree', category: 'Environment' },
-  { icon: MdWaterDrop, name: 'Water', category: 'Environment' },
-  { icon: MdForest, name: 'Forest', category: 'Environment' },
-  { icon: IoFlower, name: 'Flower', category: 'Environment' },
 
   // Housing
   { icon: FaHome, name: 'Home', category: 'Housing' },
   { icon: FaBuilding, name: 'Building', category: 'Housing' },
-  { icon: MdApartment, name: 'Apartment', category: 'Housing' },
-  { icon: IoHomeSharp, name: 'HomeSharp', category: 'Housing' },
 
   // Transportation
   { icon: FaCar, name: 'Car', category: 'Transportation' },
   { icon: FaBus, name: 'Bus', category: 'Transportation' },
   { icon: FaBicycle, name: 'Bicycle', category: 'Transportation' },
-  { icon: MdElectricCar, name: 'ElectricCar', category: 'Transportation' },
 
   // Energy
   { icon: FaWind, name: 'Wind', category: 'Energy' },
   { icon: FaSolarPanel, name: 'SolarPanel', category: 'Energy' },
-  {
-    icon: MdOutlineEnergySavingsLeaf,
-    name: 'EnergySavings',
-    category: 'Energy',
-  },
 
   // Social Justice
   { icon: FaHandsHelping, name: 'HandsHelping', category: 'Social Justice' },
   { icon: FaBalanceScale, name: 'Balance', category: 'Social Justice' },
-  { icon: IoPeople, name: 'Community', category: 'Social Justice' },
 
   // Food
   { icon: FaAppleAlt, name: 'Apple', category: 'Food' },
@@ -89,7 +69,7 @@ interface IconSelectorProps {
   onChange: (value: string) => void
 }
 
-export function IconSelector({ value, onChange }: IconSelectorProps) {
+export default function IconSelector({ value, onChange }: IconSelectorProps) {
   const [open, setOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 

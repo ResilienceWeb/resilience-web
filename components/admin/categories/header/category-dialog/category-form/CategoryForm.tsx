@@ -18,7 +18,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip'
-import { IconSelector } from './IconSelector'
+import IconSelector from './IconSelector'
 
 const randomHexColorCode = () => {
   const n = (Math.random() * 0xfffff * 1000000).toString(16)
