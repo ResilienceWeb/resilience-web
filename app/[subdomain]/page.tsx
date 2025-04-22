@@ -81,7 +81,10 @@ async function getData({ webSlug }): Promise<DataType> {
     },
   })
 
-  if (webData.slug === 'ely') {
+  if (
+    webData.slug === 'ely' ||
+    process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production'
+  ) {
     // @ts-ignore
     webData.features = {
       geoMapping: {
