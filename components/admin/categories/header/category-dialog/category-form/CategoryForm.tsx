@@ -18,6 +18,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip'
+import { IconSelector } from './IconSelector'
 
 const randomHexColorCode = () => {
   const n = (Math.random() * 0xfffff * 1000000).toString(16)
@@ -27,6 +28,7 @@ const randomHexColorCode = () => {
 interface FormValues {
   label: string
   color: string
+  icon: string
 }
 
 const CategoryForm = ({
@@ -42,6 +44,7 @@ const CategoryForm = ({
     defaultValues: {
       label: category?.label ?? '',
       color: category?.color ?? randomHexColorCode(),
+      icon: category?.icon,
     },
   })
 
@@ -64,6 +67,23 @@ const CategoryForm = ({
               <FormLabel>Category label</FormLabel>
               <FormControl>
                 <Input {...field} className="bg-white" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="icon"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category icon</FormLabel>
+              <FormControl>
+                <IconSelector
+                  value={field.value}
+                  onChange={(icon) => field.onChange(icon)}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

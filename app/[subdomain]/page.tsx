@@ -124,6 +124,7 @@ async function getData({ webSlug }): Promise<DataType> {
               id: true,
               color: true,
               label: true,
+              icon: true,
             },
           },
           web: true,
@@ -202,6 +203,7 @@ async function getData({ webSlug }): Promise<DataType> {
           category: {
             color: `#${category.color}`,
             label: category.label,
+            icon: category.icon,
           },
           slug,
           tags,
@@ -269,11 +271,13 @@ async function getData({ webSlug }): Promise<DataType> {
 
   for (const category of categories) {
     const categoryId = category.id * 1000
+
     transformedData.nodes.push({
       id: categoryId,
       label: category.label,
       color: '#c3c4c7',
       group: 'category',
+      icon: category.icon,
       mass: 1,
     })
 
