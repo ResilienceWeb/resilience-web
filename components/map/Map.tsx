@@ -50,18 +50,16 @@ const iconUnicodes = {
   Education: '\uf19d',
 }
 
-// Function to create custom icon based on category icon name
 function createCustomIcon(iconName: string, color: string) {
   const iconUnicode = iconUnicodes[iconName] || '\uf3c5' // Default to map-marker if not found
 
-  // Create a custom HTML element for the icon
   const iconHtml = `
     <div style="
       background-color: white;
       border-radius: 50%;
       height: 32px;
       width: 32px;
-      line-height: 32px;
+      line-height: 26px;
       text-align: center;
       box-shadow: 0 1px 5px rgba(0,0,0,0.2);
       border: 2px solid ${color || '#3388ff'};
@@ -105,7 +103,6 @@ function FitBoundsToMarkers({ markers }: { markers: [number, number][] }) {
 
 function MapComponent({ items = [] }: MapProps) {
   const [isLoading, setIsLoading] = useState(true)
-  const [hasLoadedIcons, setHasLoadedIcons] = useState(false)
 
   useEffect(() => {
     import('./leaflet-icon-fix')
@@ -202,10 +199,7 @@ function MapComponent({ items = [] }: MapProps) {
                 item.category.icon !== 'default'
 
               const markerIcon = useCustomIcon
-                ? createCustomIcon(
-                    item.category.icon,
-                    `#${item.category.color}`,
-                  )
+                ? createCustomIcon(item.category.icon, item.category.color)
                 : new L.Icon.Default()
 
               return (
