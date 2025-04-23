@@ -107,10 +107,17 @@ const List = ({ categories }) => {
                   }
 
                   if (column.accessor === 'icon') {
-                    const DisplayIcon =
-                      cell && cell !== 'default'
-                        ? icons.find((icon) => icon.name === cell)?.icon
-                        : null
+                    const DisplayIcon = icons.find(
+                      (icon) => icon.name === cell,
+                    )?.icon
+
+                    if (!DisplayIcon) {
+                      return (
+                        <TableCell key={index}>
+                          <p>no icon</p>
+                        </TableCell>
+                      )
+                    }
 
                     return (
                       <TableCell key={index}>
