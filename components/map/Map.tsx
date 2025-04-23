@@ -8,50 +8,10 @@ import NextLink from 'next/link'
 import L from 'leaflet'
 import CategoryTag from '@components/category-tag'
 import { Spinner } from '@components/ui/spinner'
-
-// Map of icon names to FontAwesome Unicode characters
-const iconUnicodes = {
-  // Environment
-  Leaf: '\uf06c',
-  Tree: '\uf1bb',
-  Water: '\uf043',
-  Forest: '\uf6da',
-  Flower: '\uf698',
-
-  // Housing
-  Home: '\uf015',
-  Building: '\uf1ad',
-  Apartment: '\uf6dd',
-  HomeSharp: '\uf80a',
-
-  // Transportation
-  Car: '\uf1b9',
-  Bus: '\uf207',
-  Bicycle: '\uf206',
-  ElectricCar: '\uf5e1',
-
-  // Energy
-  Wind: '\uf72e',
-  SolarPanel: '\uf5ba',
-  EnergySavings: '\uf5d0',
-
-  // Social Justice
-  HandsHelping: '\uf4c4',
-  Balance: '\uf643',
-  Community: '\uf500',
-
-  // Food
-  Apple: '\uf5d1',
-  Carrot: '\uf787',
-  Seedling: '\uf4d8',
-
-  // Other
-  Tools: '\uf7d9',
-  Education: '\uf19d',
-}
+import { getIconUnicode } from '@helpers/icons'
 
 function createCustomIcon(iconName: string, color: string) {
-  const iconUnicode = iconUnicodes[iconName] || '\uf3c5' // Default to map-marker if not found
+  const iconUnicode = getIconUnicode(iconName) ?? '\uf3c5' // Default to map-marker if not found
 
   const iconHtml = `
     <div style="

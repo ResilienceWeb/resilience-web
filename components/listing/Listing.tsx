@@ -47,7 +47,7 @@ function Listing({ listing }) {
     if (referrer.includes('google') || referrer.includes('bing')) {
       router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
     } else {
-      router.push('/')
+      router.back()
     }
   }, [router, subdomain])
 

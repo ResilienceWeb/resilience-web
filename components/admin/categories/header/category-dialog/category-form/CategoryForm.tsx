@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HexColorPicker } from 'react-colorful'
 import { DialogFooter } from '@components/ui/dialog'
@@ -40,6 +40,8 @@ const CategoryForm = ({
   onDelete?: (data: any) => void
   onSubmit: (data: any) => void
 }) => {
+  const [color, setColor] = useState(category?.color)
+
   const form = useForm<FormValues>({
     defaultValues: {
       label: category?.label ?? '',
@@ -83,6 +85,7 @@ const CategoryForm = ({
                 <IconSelector
                   value={field.value}
                   onChange={(icon) => field.onChange(icon)}
+                  color={color}
                 />
               </FormControl>
               <FormMessage />
@@ -99,7 +102,10 @@ const CategoryForm = ({
               <FormControl>
                 <HexColorPicker
                   color={field.value}
-                  onChange={(value) => field.onChange(value.substring(1))}
+                  onChange={(value) => {
+                    setColor(value.substring(1))
+                    field.onChange(value.substring(1))
+                  }}
                 />
               </FormControl>
               <FormMessage />
