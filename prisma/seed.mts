@@ -2,6 +2,33 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+// Add type for listing.location
+interface ListingLocation {
+  latitude: number
+  longitude: number
+  description: string
+}
+
+interface CambridgeListing {
+  title: string
+  slug: string
+  description: string
+  website: string
+  image?: string
+  categoryLabel: string
+  location?: ListingLocation
+}
+
+interface DurhamListing {
+  title: string
+  slug: string
+  description: string
+  website: string
+  image?: string
+  categoryLabel: string
+  location?: ListingLocation
+}
+
 const categoriesCambridge = [
   {
     label: 'Environment',
@@ -44,7 +71,7 @@ const categoriesDurham = [
   },
 ]
 
-const listingsCambridge = [
+const listingsCambridge: CambridgeListing[] = [
   {
     title: 'Cambridge Community Kitchen',
     slug: 'cambridge-community-kitchen',
@@ -54,6 +81,11 @@ const listingsCambridge = [
     image:
       'https://images.unsplash.com/photo-1530174883092-c2a7aa3f1cfe?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200',
     categoryLabel: 'Community',
+    location: {
+      latitude: 52.201257,
+      longitude: 0.131836,
+      description: 'Arbury Community Centre, Cambridge',
+    },
   },
   {
     title: 'Cambridge Carbon Footprint',
@@ -62,6 +94,11 @@ const listingsCambridge = [
       'Cambridge Carbon Footprint works to raise awareness of climate change issues and to support people in moving to low-carbon living. We engage with individuals and communities to help them understand their carbon footprints and take action to reduce them.',
     website: 'https://cambridgecarbonfootprint.org',
     categoryLabel: 'Environment',
+    location: {
+      latitude: 52.189323,
+      longitude: 0.139163,
+      description: 'The Bike Depot, 140 Cowley Road, Cambridge',
+    },
   },
   {
     title: 'Cambridge Sustainable Food',
@@ -72,6 +109,11 @@ const listingsCambridge = [
     image:
       'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200',
     categoryLabel: 'Environment',
+    location: {
+      latitude: 52.199813,
+      longitude: 0.124178,
+      description: 'The Guildhall, Market Square, Cambridge',
+    },
   },
   {
     title: 'Cambridge Cycling Campaign',
@@ -82,6 +124,11 @@ const listingsCambridge = [
     image:
       'https://images.unsplash.com/photo-1485965120184-e220f721d03e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200',
     categoryLabel: 'Transportation',
+    location: {
+      latitude: 52.207123,
+      longitude: 0.131803,
+      description: 'Llandaff Chambers, 2 Regent Street, Cambridge',
+    },
   },
   {
     title: 'Cambridge Cohousing',
@@ -90,6 +137,11 @@ const listingsCambridge = [
       'Cambridge Cohousing is a community-led housing development that combines the autonomy of private dwellings with the advantages of community living. We aim to create affordable, sustainable housing with shared resources and strong community bonds.',
     website: 'https://cambridgecohousing.org.uk',
     categoryLabel: 'Housing',
+    location: {
+      latitude: 52.232102,
+      longitude: 0.153275,
+      description: 'K1 Cohousing, Orchard Park, Cambridge',
+    },
   },
   {
     title: 'Cambridge Repair Cafe',
@@ -100,6 +152,11 @@ const listingsCambridge = [
     image:
       'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200',
     categoryLabel: 'Community',
+    location: {
+      latitude: 52.200742,
+      longitude: 0.128491,
+      description: 'Cambridge Central Library, 7 Lion Yard, Cambridge',
+    },
   },
   {
     title: 'Cambridge Dog Rescue',
@@ -110,6 +167,11 @@ const listingsCambridge = [
     image:
       'https://images.unsplash.com/photo-1561037404-61cd46aa615b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200',
     categoryLabel: 'Animal rights',
+    location: {
+      latitude: 52.212631,
+      longitude: 0.11685,
+      description: 'Milton Country Park, Cambridge Road, Milton, Cambridge',
+    },
   },
   {
     title: 'Cambridge Social Ventures',
@@ -121,16 +183,23 @@ const listingsCambridge = [
     image:
       'https://images.unsplash.com/photo-1526948531399-320e7e40f0ca?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200',
     categoryLabel: 'Social business',
+    location: {
+      latitude: 52.206438,
+      longitude: 0.114525,
+      description:
+        'Cambridge Judge Business School, Trumpington Street, Cambridge',
+    },
   },
 ]
 
-const listingsDurham = [
+const listingsDurham: DurhamListing[] = [
   {
     title: 'Conservation Research Institute',
     slug: 'conservation-research-institute',
     description: `<p>The institute fosters productive interdisciplinary dialogue, bringing together colleagues from various intellectual backgrounds and traditions. It conducts ambitious research that bridges natural sciences, technology, arts, humanities, and social sciences. Additionally, it plays a crucial role in the MPhil in Conservation Leadership program, a masters course at the University of Cambridge, and contributes to the broader University-wide sustainability education agenda.
       The University of Cambridge Conservation Research Institute are founding members of the Cambridge Conservation Initiative (CCI), a unique collaboration with ten leading biodiversity conservation organisations. Established in October 2013, (See article HERE) the Institute has expanded its role, supporting the University's presence, along with other CCI organisations in the David Attenborough Building, which was designed to enhance collaboration and the sharing of perspectives across organisational and disciplinary boundaries. As an Interdisciplinary Research Centre (IRC) since October 2016, it promotes collaboration and breaks down disciplinary silos by integrating conservation-related research from all six core University Schools.
       In the 21st century, understanding and managing human impacts on organisms and ecosystems amid population growth, socio-economic development, and climate change is a major challenge. Biodiversity faces threats from over-consumption, over-exploitation, and unsustainable use of natural resources. Addressing these challenges requires a better understanding of nature's value and practical steps for equitable and effective planet stewardship. All of which is our mission to address and help to foster positive change.`,
+    website: 'https://www.conservation.cam.ac.uk',
     image:
       'https://images.unsplash.com/photo-1530469525856-cf37954301f9?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=1200',
     categoryLabel: 'Policy',
@@ -194,6 +263,19 @@ async function populateSeedData() {
       },
     })
 
+    // Create location first if available
+    let locationId: number | undefined = undefined
+    if (listing.location) {
+      const location = await prisma.listingLocation.create({
+        data: {
+          latitude: listing.location.latitude,
+          longitude: listing.location.longitude,
+          description: listing.location.description,
+        },
+      })
+      locationId = location.id
+    }
+
     await prisma.listing.create({
       data: {
         title: listing.title,
@@ -203,6 +285,7 @@ async function populateSeedData() {
         image: listing.image,
         webId: newWebCambridge.id,
         categoryId: category.id,
+        locationId: locationId,
       },
     })
   }
@@ -217,6 +300,18 @@ async function populateSeedData() {
         },
       })
 
+      let locationId: number | undefined = undefined
+      if (listing.location) {
+        const location = await prisma.listingLocation.create({
+          data: {
+            latitude: listing.location.latitude,
+            longitude: listing.location.longitude,
+            description: listing.location.description,
+          },
+        })
+        locationId = location.id
+      }
+
       await prisma.listing.create({
         data: {
           title: listing.title,
@@ -226,6 +321,7 @@ async function populateSeedData() {
           image: listing.image,
           webId: newWebDurham.id,
           categoryId: category.id,
+          locationId: locationId,
         },
       })
     }

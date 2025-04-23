@@ -8,6 +8,39 @@ import NextLink from 'next/link'
 import L from 'leaflet'
 import CategoryTag from '@components/category-tag'
 import { Spinner } from '@components/ui/spinner'
+import { getIconUnicode } from '@helpers/icons'
+
+function createCustomIcon(iconName: string, color: string) {
+  const iconUnicode = getIconUnicode(iconName) ?? '\uf3c5' // Default to map-marker if not found
+
+  const iconHtml = `
+    <div style="
+      background-color: white;
+      border-radius: 50%;
+      height: 32px;
+      width: 32px;
+      line-height: 26px;
+      text-align: center;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+      border: 2px solid ${color || '#3388ff'};
+    ">
+      <span style="
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        font-size: 16px;
+        color: ${color || '#3388ff'};
+      ">${iconUnicode}</span>
+    </div>
+  `
+
+  return L.divIcon({
+    html: iconHtml,
+    className: 'custom-icon',
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+    popupAnchor: [0, -16],
+  })
+}
 
 interface MapProps {
   items?: any[]
@@ -32,15 +65,24 @@ function MapComponent({ items = [] }: MapProps) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Import the icon fix only on the client side
     import('./leaflet-icon-fix')
+
+    // Load Font Awesome for icons (if using FontAwesome in custom markers)
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href =
+      'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'
+    document.head.appendChild(link)
 
     // Simulate loading time for map initialization
     const timer = setTimeout(() => {
       setIsLoading(false)
     }, 500)
 
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      document.head.removeChild(link)
+    }
   }, [])
 
   const defaultCenter = [52.401, 0.263]
@@ -109,43 +151,50 @@ function MapComponent({ items = [] }: MapProps) {
             )}
 
             {/* Display markers for items with coordinates */}
-            {listingsWithCoordinates.map((item) => (
-              <Marker
-                key={item.id}
-                position={[
-                  parseFloat(item.location.latitude),
-                  parseFloat(item.location.longitude),
-                ]}
-              >
-                <Popup>
-                  <div className="flex flex-col gap-2">
-                    <h3 className="text-lg font-bold">{item.label}</h3>
-                    {item.description && (
-                      <p
-                        className="m-0 text-sm text-gray-600"
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            item.description.length > 100
-                              ? `${item.description.substring(0, 100)}...`
-                              : item.description,
-                        }}
-                      ></p>
-                    )}
-                    {item.category && (
-                      <CategoryTag colorHex={item.category.color}>
-                        {item.category.label}
-                      </CategoryTag>
-                    )}
-                    <NextLink
-                      href={`/${item.slug}`}
-                      className="text-sm text-blue-600 hover:underline"
-                    >
-                      View details
-                    </NextLink>
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
+            {listingsWithCoordinates.map((item) => {
+              const markerIcon = item.category?.icon
+                ? createCustomIcon(item.category.icon, item.category.color)
+                : new L.Icon.Default()
+
+              return (
+                <Marker
+                  key={item.id}
+                  position={[
+                    parseFloat(item.location.latitude),
+                    parseFloat(item.location.longitude),
+                  ]}
+                  icon={markerIcon}
+                >
+                  <Popup>
+                    <div className="flex flex-col gap-2">
+                      <h3 className="text-lg font-bold">{item.label}</h3>
+                      {item.description && (
+                        <p
+                          className="m-0 text-sm text-gray-600"
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              item.description.length > 100
+                                ? `${item.description.substring(0, 100)}...`
+                                : item.description,
+                          }}
+                        ></p>
+                      )}
+                      {item.category && (
+                        <CategoryTag colorHex={item.category.color}>
+                          {item.category.label}
+                        </CategoryTag>
+                      )}
+                      <NextLink
+                        href={`/${item.slug}`}
+                        className="text-sm text-blue-600 hover:underline"
+                      >
+                        View details
+                      </NextLink>
+                    </div>
+                  </Popup>
+                </Marker>
+              )
+            })}
           </MapContainer>
         </>
       )}

@@ -12,6 +12,7 @@ import CategoryTag from '@components/category-tag'
 import useUpdateCategory from '@hooks/categories/useUpdateCategory'
 import useDeleteCategory from '@hooks/categories/useDeleteCategory'
 import { UpdateCategoryDialog } from '../header/category-dialog'
+import { icons } from '@helpers/icons'
 
 const columns = [
   {
@@ -21,6 +22,10 @@ const columns = [
   {
     Header: 'Number of listings',
     accessor: 'listings',
+  },
+  {
+    Header: 'Icon',
+    accessor: 'icon',
   },
   {
     Header: 'Color',
@@ -97,6 +102,29 @@ const List = ({ categories }) => {
                     return (
                       <TableCell key={index} className="w-[100px]">
                         <CategoryTag colorHex={cell}>{`#${cell}`}</CategoryTag>
+                      </TableCell>
+                    )
+                  }
+
+                  if (column.accessor === 'icon') {
+                    const DisplayIcon = icons.find(
+                      (icon) => icon.name === cell,
+                    )?.icon
+
+                    if (!DisplayIcon) {
+                      return (
+                        <TableCell key={index}>
+                          <p>no icon</p>
+                        </TableCell>
+                      )
+                    }
+
+                    return (
+                      <TableCell key={index}>
+                        <DisplayIcon
+                          className="!h-6 !w-6"
+                          style={{ color: `#${row.color}` }}
+                        />
                       </TableCell>
                     )
                   }

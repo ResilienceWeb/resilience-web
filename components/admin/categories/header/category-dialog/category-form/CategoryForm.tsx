@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HexColorPicker } from 'react-colorful'
 import { DialogFooter } from '@components/ui/dialog'
@@ -18,6 +18,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip'
+import IconSelector from './IconSelector'
 
 const randomHexColorCode = () => {
   const n = (Math.random() * 0xfffff * 1000000).toString(16)
@@ -27,6 +28,7 @@ const randomHexColorCode = () => {
 interface FormValues {
   label: string
   color: string
+  icon: string
 }
 
 const CategoryForm = ({
@@ -38,10 +40,13 @@ const CategoryForm = ({
   onDelete?: (data: any) => void
   onSubmit: (data: any) => void
 }) => {
+  const [color, setColor] = useState(category?.color)
+
   const form = useForm<FormValues>({
     defaultValues: {
       label: category?.label ?? '',
       color: category?.color ?? randomHexColorCode(),
+      icon: category?.icon,
     },
   })
 
@@ -72,6 +77,24 @@ const CategoryForm = ({
 
         <FormField
           control={form.control}
+          name="icon"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category icon</FormLabel>
+              <FormControl>
+                <IconSelector
+                  value={field.value}
+                  onChange={(icon) => field.onChange(icon)}
+                  color={color}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="color"
           render={({ field }) => (
             <FormItem>
@@ -79,7 +102,10 @@ const CategoryForm = ({
               <FormControl>
                 <HexColorPicker
                   color={field.value}
-                  onChange={(value) => field.onChange(value.substring(1))}
+                  onChange={(value) => {
+                    setColor(value.substring(1))
+                    field.onChange(value.substring(1))
+                  }}
                 />
               </FormControl>
               <FormMessage />
