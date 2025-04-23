@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from '@components/ui/dialog'
@@ -26,6 +27,20 @@ import {
   FaSeedling,
   FaTools,
   FaGraduationCap,
+  FaHandHoldingHeart,
+  FaFistRaised,
+  FaFire,
+  FaFlask,
+  FaBacteria,
+  FaBabyCarriage,
+  FaBlind,
+  FaCapsules,
+  FaCity,
+  FaCoffee,
+  FaDrum,
+  FaFish,
+  FaPaw,
+  FaPalette,
 } from 'react-icons/fa'
 
 // Define our available icons
@@ -37,6 +52,7 @@ const icons = [
   // Housing
   { icon: FaHome, name: 'Home', category: 'Housing' },
   { icon: FaBuilding, name: 'Building', category: 'Housing' },
+  { icon: FaCity, name: 'City', category: 'Other' },
 
   // Transportation
   { icon: FaCar, name: 'Car', category: 'Transportation' },
@@ -46,10 +62,17 @@ const icons = [
   // Energy
   { icon: FaWind, name: 'Wind', category: 'Energy' },
   { icon: FaSolarPanel, name: 'SolarPanel', category: 'Energy' },
+  { icon: FaFire, name: 'Fire', category: 'Energy' },
 
   // Social Justice
   { icon: FaHandsHelping, name: 'HandsHelping', category: 'Social Justice' },
   { icon: FaBalanceScale, name: 'Balance', category: 'Social Justice' },
+  {
+    icon: FaHandHoldingHeart,
+    name: 'HandHoldingHeart',
+    category: 'Social Justice',
+  },
+  { icon: FaFistRaised, name: 'FistRaised', category: 'Social Justice' },
 
   // Food
   { icon: FaAppleAlt, name: 'Apple', category: 'Food' },
@@ -59,6 +82,16 @@ const icons = [
   // Other
   { icon: FaTools, name: 'Tools', category: 'Other' },
   { icon: FaGraduationCap, name: 'Education', category: 'Other' },
+  { icon: FaDrum, name: 'Drum', category: 'Other' },
+  { icon: FaFish, name: 'Fish', category: 'Other' },
+  { icon: FaPaw, name: 'Paw', category: 'Other' },
+  { icon: FaBlind, name: 'Blind', category: 'Other' },
+  { icon: FaCapsules, name: 'Capsules', category: 'Other' },
+  { icon: FaBabyCarriage, name: 'BabyCarriage', category: 'Other' },
+  { icon: FaBacteria, name: 'Bacteria', category: 'Other' },
+  { icon: FaCoffee, name: 'Coffee', category: 'Other' },
+  { icon: FaFlask, name: 'Flask', category: 'Other' },
+  { icon: FaPalette, name: 'Palette', category: 'Other' },
 ]
 
 // Group icons by category
@@ -77,15 +110,16 @@ export default function IconSelector({ value, onChange }: IconSelectorProps) {
     ? icons.filter((icon) => icon.category === selectedCategory)
     : icons
 
+  console.log(value, icons)
   const DisplayIcon =
     value && value !== 'default'
-      ? icons.find((icon) => icon.name === value).icon
+      ? icons.find((icon) => icon.name === value)?.icon
       : null
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full justify-start gap-2">
+        <Button variant="outline" className="justify-start gap-2">
           {value && value !== 'default' ? (
             <DisplayIcon className="h-5 w-5" />
           ) : (
@@ -97,6 +131,7 @@ export default function IconSelector({ value, onChange }: IconSelectorProps) {
         <DialogHeader>
           <DialogTitle>Select an Icon</DialogTitle>
         </DialogHeader>
+        <DialogDescription>Select an icon for th</DialogDescription>
 
         <div className="mb-4 flex flex-wrap gap-1">
           <Button
