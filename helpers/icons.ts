@@ -30,6 +30,7 @@ import {
   FaPaw,
   FaPalette,
   FaMapMarkerAlt,
+  FaHeart,
 } from 'react-icons/fa'
 
 export const icons = [
@@ -91,6 +92,12 @@ export const icons = [
     name: 'FistRaised',
     category: 'Social Justice',
     unicode: '\uf6de',
+  },
+  {
+    icon: FaHeart,
+    name: 'Heart',
+    category: 'Social Justice',
+    unicode: '\uf004',
   },
 
   // Food

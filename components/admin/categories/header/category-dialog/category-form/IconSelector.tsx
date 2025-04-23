@@ -26,7 +26,7 @@ export default function IconSelector({
 
   const filteredIcons = selectedCategory
     ? icons.filter((icon) => icon.category === selectedCategory)
-    : icons
+    : icons.filter((icon) => icon.name !== 'default')
 
   const DisplayIcon =
     value && value !== 'default'
