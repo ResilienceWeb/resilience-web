@@ -152,13 +152,7 @@ function MapComponent({ items = [] }: MapProps) {
 
             {/* Display markers for items with coordinates */}
             {listingsWithCoordinates.map((item) => {
-              // Use custom icon if category has a non-default icon, otherwise use default marker
-              const useCustomIcon =
-                item.category &&
-                item.category.icon &&
-                item.category.icon !== 'default'
-
-              const markerIcon = useCustomIcon
+              const markerIcon = item.category?.icon
                 ? createCustomIcon(item.category.icon, item.category.color)
                 : new L.Icon.Default()
 
