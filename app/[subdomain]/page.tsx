@@ -1,6 +1,7 @@
 import prisma from '@prisma-rw'
 import Web, { CENTRAL_NODE_ID } from './Web'
 import { notFound } from 'next/navigation'
+import { getIconUnicode } from '@helpers/icons'
 
 export default async function WebPage(props) {
   const params = await props.params
@@ -213,6 +214,15 @@ async function getData({ webSlug }): Promise<DataType> {
           // below are for vis-network node styling and data
           label: title,
           color: `#${category.color}`,
+          icon: {
+            face: '"Font Awesome 5 Free"',
+            code:
+              category.icon !== 'default'
+                ? getIconUnicode(category.icon)
+                : undefined,
+            color: 'white',
+            weight: 700,
+          },
         })
 
         relations.map((relation) => {

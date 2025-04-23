@@ -83,14 +83,14 @@ const Network = ({ data, selectedId, setSelectedId }) => {
   const [network, setNetwork] = useState<any>()
   const [isLoading, setIsLoading] = useState(true)
 
-  const onOpen = useCallback(() => setIsOpen(true), [])
-  const onClose = useCallback(() => setIsOpen(false), [])
+  const onOpen = () => setIsOpen(true)
+  const onClose = () => setIsOpen(false)
 
   useEffect(() => {
     if (selectedId) {
       onOpen()
     }
-  }, [onOpen, selectedId])
+  }, [selectedId])
 
   const events = useMemo(
     () => ({
@@ -116,6 +116,12 @@ const Network = ({ data, selectedId, setSelectedId }) => {
       },
       stabilizationIterationsDone: function () {
         setIsLoading(false)
+        // Force redraw once stabilization is done to help with icon rendering
+        setTimeout(() => {
+          if (network) {
+            network.redraw()
+          }
+        }, 100)
       },
     }),
     [network, setSelectedId],
@@ -129,7 +135,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
   const onCloseDialog = useCallback(() => {
     setSelectedId(null)
     onClose()
-  }, [onClose, setSelectedId])
+  }, [setSelectedId])
 
   const getNetwork = useCallback(
     (network) => {

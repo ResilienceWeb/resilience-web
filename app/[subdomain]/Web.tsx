@@ -20,6 +20,7 @@ import type { Category } from '@prisma/client'
 import MobileOptionsSheet from '@components/mobile-options-sheet'
 import { License, LicenseTransition } from '@components/license'
 import { Spinner } from '@components/ui/spinner'
+import '@styles/font-awesome.css'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
