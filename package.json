@@ -28,7 +28,7 @@
     "seed": "node --loader ts-node/esm prisma/seed.mts"
   },
   "dependencies": {
-    "@auth/prisma-adapter": "2.7.2",
+    "@auth/prisma-adapter": "2.9.0",
     "@aws-sdk/client-s3": "3.662.0",
     "@fontsource/poppins": "5.2.5",
     "@hookform/resolvers": "3.10.0",
@@ -67,7 +67,7 @@
     "lodash-es": "4.17.21",
     "lucide-react": "0.487.0",
     "next": "15.3.1",
-    "next-auth": "5.0.0-beta.25",
+    "next-auth": "5.0.0-beta.27",
     "next-recaptcha-v3": "1.5.2",
     "next-view-transitions": "0.3.4",
     "nodemailer": "6.10.1",
