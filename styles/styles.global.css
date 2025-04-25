@@ -168,8 +168,10 @@
     text-decoration: none;
   }
 
-  p > a {
+  p > a, li > a {
     color: #09622f !important;
+    font-weight: 600;
+    text-decoration: underline;
   }
 
   a:hover {

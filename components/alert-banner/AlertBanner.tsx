@@ -46,7 +46,7 @@ const AlertBanner: React.FC<IAlertProps> = ({
 
     switch (type) {
       case 'info':
-        return 'bg-blue-600 text-white'
+        return 'bg-blue-500 text-white'
       case 'warning':
         return 'bg-yellow-500 text-white'
       case 'success':

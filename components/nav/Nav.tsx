@@ -78,7 +78,7 @@ export default function MainNav() {
 
   return (
     <>
-      <div className="flex justify-center border-b border-gray-200 bg-white text-gray-600">
+      <div className="flex justify-center bg-white text-gray-600">
         <div className="flex min-h-[60px] w-full max-w-7xl flex-1 items-center justify-between px-4 py-2">
           <div className="flex items-center md:hidden">
             <button

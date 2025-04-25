@@ -31,6 +31,7 @@ import {
   FaPalette,
   FaMapMarkerAlt,
   FaHeart,
+  FaGlobe,
 } from 'react-icons/fa'
 
 export const icons = [
@@ -128,6 +129,7 @@ export const icons = [
   { icon: FaCoffee, name: 'Coffee', category: 'Other', unicode: '\uf0f4' },
   { icon: FaFlask, name: 'Flask', category: 'Other', unicode: '\uf0c3' },
   { icon: FaPalette, name: 'Palette', category: 'Other', unicode: '\uf53f' },
+  { icon: FaGlobe, name: 'Globe', category: 'Other', unicode: '\uf0ac' },
 
   // Default
   {

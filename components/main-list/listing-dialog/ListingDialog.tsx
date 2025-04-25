@@ -132,7 +132,7 @@ const ListingDialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[672px]">
+      <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[672px] md:max-w-[760px]">
         {item.image && (
           <ListingImage
             alt={`${item.label} cover image`}

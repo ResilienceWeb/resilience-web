@@ -45,14 +45,14 @@ export default function AddTagToListingsDialog({
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="flex max-h-[90vh] flex-col sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Add tag to listings</DialogTitle>
         </DialogHeader>
         <DialogDescription>
           Add the tag to the selected listings
         </DialogDescription>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 overflow-y-auto py-4 pr-2">
           {listings.map((listing) => (
             <div key={listing.id} className="flex items-center">
               <Checkbox
