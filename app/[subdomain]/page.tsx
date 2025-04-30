@@ -195,7 +195,7 @@ async function getData({ webSlug }): Promise<DataType> {
         relations,
       }) => {
         transformedData.nodes.push({
-          id: listingId,
+          id: `listing-${listingId}`,
           title,
           description,
           image: image ?? '',
@@ -248,7 +248,7 @@ async function getData({ webSlug }): Promise<DataType> {
 
         transformedData.edges.push({
           from: category.id * 1000,
-          to: listingId,
+          to: `listing-${listingId}`,
           length: category.listings.length * 15,
           smooth: {
             enabled: true,
