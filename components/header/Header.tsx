@@ -183,7 +183,7 @@ const Header = ({
   }
 
   return (
-    <div className="transition-all duration-300 ease-in-out">
+    <div>
       <header className="flex w-full flex-col bg-white">
         <div className="flex h-14 w-full items-center px-4">
           <div className="flex w-full space-x-2">

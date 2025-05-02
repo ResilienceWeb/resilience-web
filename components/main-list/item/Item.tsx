@@ -51,7 +51,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
 
   return (
     <div
-      className="relative h-fit cursor-pointer rounded-md bg-white shadow-md transition-all duration-300 ease-in-out animate-in fade-in slide-in-from-bottom hover:shadow-xl"
+      className="animate-in fade-in slide-in-from-bottom relative h-fit cursor-pointer rounded-md bg-white shadow-md transition-all duration-200 ease-in-out hover:shadow-xl"
       onClick={onClick}
       ref={ref}
     >
@@ -59,7 +59,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <FaStar className="absolute right-1 top-1 z-100 h-[26px] w-[26px] text-yellow-200" />
+              <FaStar className="absolute top-1 right-1 z-100 h-[26px] w-[26px] text-yellow-200" />
             </TooltipTrigger>
             <TooltipContent>
               <p>Featured listing</p>
@@ -68,7 +68,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
         </TooltipProvider>
       )}
       <CategoryTag
-        className="absolute left-1 top-1 z-10 min-w-min shadow-md"
+        className="absolute top-1 left-1 z-10 min-w-min shadow-md"
         alpha={1}
         colorHex={dataItem.category.color}
       >

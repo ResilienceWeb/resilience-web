@@ -69,7 +69,7 @@ const Card = ({ web }) => {
 
   return (
     <Link href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}>
-      <div className="group relative h-full overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+      <div className="group relative h-full overflow-hidden rounded-xl bg-white shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
         {isNew && (
           <Badge className="absolute top-2 right-2 z-10 bg-green-700">
             New
@@ -80,7 +80,7 @@ const Card = ({ web }) => {
             alt={`Image representing ${web.title} web`}
             src={web.image}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-transform duration-200 group-hover:scale-105"
           />
         </div>
         <div className="p-4">
@@ -101,7 +101,7 @@ const CreateNewWebCard = () => {
   return (
     <div
       onClick={handleClick}
-      className="group flex h-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-white p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-[#3A8159] hover:shadow-xl"
+      className="group flex h-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-white p-6 text-center transition-all duration-200 hover:-translate-y-1 hover:border-[#3A8159] hover:shadow-xl"
     >
       <div className="rounded-full bg-green-50 p-4">
         <svg

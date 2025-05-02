@@ -39,7 +39,7 @@ export default function News({ posts }: NewsProps) {
 
               return (
                 <Link href={`/news/${post.slug}`} key={post.slug}>
-                  <div className="w-full max-w-[445px] cursor-pointer overflow-hidden rounded-md bg-white p-4 shadow-xl transition-shadow duration-300 hover:shadow-2xl">
+                  <div className="w-full max-w-[445px] cursor-pointer overflow-hidden rounded-md bg-white p-4 shadow-xl transition-shadow duration-200 hover:shadow-2xl">
                     <div className="relative -mx-6 -mt-6 mb-4 h-[210px] bg-gray-100">
                       <Image
                         src={post.coverImage?.url}
