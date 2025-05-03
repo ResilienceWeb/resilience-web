@@ -1,5 +1,7 @@
 // @ts-check
 
+import { withSentryConfig } from '@sentry/nextjs'
+
 /**
  * @type {import('next').NextConfig}
  */
@@ -82,7 +84,7 @@ const nextConfig = {
           {
             key: 'Access-Control-Allow-Headers',
             value:
-              'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, baggage',
+              'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, baggage, sentry-trace',
           },
         ],
       },
@@ -90,4 +92,22 @@ const nextConfig = {
   }
 }
 
-export default nextConfig
+export default withSentryConfig(
+  nextConfig,
+  {
+    org: 'resilience-web',
+    project: 'resilience-web',
+    telemetry: false,
+    authToken: process.env.SENTRY_AUTH_TOKEN,
+    // Suppresses source map uploading logs during build
+    silent: true,
+    // Upload a larger set of source maps for prettier stack traces (increases build time)
+    widenClientFileUpload: false,
+    // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
+    // tunnelRoute: '/monitoring',
+    // Hides source maps from generated client bundles
+    hideSourceMaps: true,
+    // Automatically tree-shake Sentry logger statements to reduce bundle size
+    disableLogger: true,
+  },
+)
