@@ -19,3 +19,5 @@ Sentry.init({
 
   integrations: [],
 })
+
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart
