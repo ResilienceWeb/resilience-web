@@ -82,6 +82,11 @@ async function getData({ webSlug }): Promise<DataType> {
     },
   })
 
+  if (!webData) {
+    console.log(`[RW] Web not found for webSlug ${webSlug}`)
+    return null
+  }
+
   if (
     webData.slug === 'ely' ||
     process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production'
@@ -97,7 +102,7 @@ async function getData({ webSlug }): Promise<DataType> {
     webData.features = {}
   }
 
-  console.log(`[rw-debug]`, webSlug, webData)
+  console.log(`[rw-debug]`, webSlug)
   const categories = await prisma.category.findMany({
     where: {
       web: {
@@ -155,7 +160,7 @@ async function getData({ webSlug }): Promise<DataType> {
     },
   })
 
-  if (!webData || !categories) {
+  if (!categories) {
     console.log(`[RW] Web or listings not found for webSlug ${webSlug}`)
     return null
   }
