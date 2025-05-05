@@ -97,6 +97,7 @@ async function getData({ webSlug }): Promise<DataType> {
     webData.features = {}
   }
 
+  console.log(`[rw-debug]`, webSlug, webData)
   const categories = await prisma.category.findMany({
     where: {
       web: {
