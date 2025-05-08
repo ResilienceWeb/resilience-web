@@ -1,8 +1,9 @@
-import sgMail from '@sendgrid/mail'
-import { render } from '@react-email/render'
 import { Prisma } from '@prisma/client'
-import { auth } from '@auth'
+import { render } from '@react-email/render'
+import sgMail from '@sendgrid/mail'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { auth } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
 import InviteEmail from '@components/emails/InviteEmail'
 
@@ -143,6 +144,7 @@ export async function POST(request) {
     })
   } catch (e) {
     console.error(`[RW] Unable to invite user - ${e}`)
+    Sentry.captureException(e)
     return Response.json(
       {
         error: `Unable to invite user - ${e}`,

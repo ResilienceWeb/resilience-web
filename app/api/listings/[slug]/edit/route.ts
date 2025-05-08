@@ -1,9 +1,10 @@
 import { Prisma } from '@prisma/client'
-import { auth } from '@auth'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { auth } from '@auth'
+import deleteImage from '@helpers/deleteImage'
 import { sendEmail } from '@helpers/email'
 import uploadImage from '@helpers/uploadImage'
-import deleteImage from '@helpers/deleteImage'
 import ListingEditProposedAdminEmail from '@components/emails/ListingEditProposedAdminEmail'
 
 export async function GET(request, props) {
@@ -51,6 +52,7 @@ export async function GET(request, props) {
     })
   } catch (e) {
     console.error(`[RW] Unable to get listing edits - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to get listing edits - ${e}`, {
       status: 500,
     })
@@ -178,6 +180,7 @@ export async function POST(request) {
     )
   } catch (e) {
     console.error(`[RW] Unable to create listing edit - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to create listing edit - ${e}`, {
       status: 500,
     })
@@ -235,6 +238,7 @@ export async function DELETE(request, props) {
     })
   } catch (error) {
     console.error('[RW] Error deleting listing edit:', error)
+    Sentry.captureException(error)
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: {

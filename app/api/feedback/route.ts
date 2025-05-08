@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import nodemailer, { type TransportOptions } from 'nodemailer'
 import appConfig from '@helpers/config'
 
@@ -30,6 +31,7 @@ export async function POST(request) {
       { status: 201 },
     )
   } catch (e) {
+    Sentry.captureException(e)
     return new Response(`Unable to send feedback - ${e}`, {
       status: 500,
     })

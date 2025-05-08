@@ -1,11 +1,12 @@
 import { Prisma } from '@prisma/client'
-import { auth } from '@auth'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
-import WebCreatedEmail from '@components/emails/WebCreatedEmail'
-import WebCreatedAdminEmail from '@components/emails/WebCreatedAdminEmail'
+import { auth } from '@auth'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
-import { stringToBoolean } from '@helpers/utils'
 import { sendEmail } from '@helpers/email'
+import { stringToBoolean } from '@helpers/utils'
+import WebCreatedAdminEmail from '@components/emails/WebCreatedAdminEmail'
+import WebCreatedEmail from '@components/emails/WebCreatedEmail'
 
 const defaultCategories = [
   {
@@ -73,6 +74,7 @@ export async function GET(request) {
     return Response.json({ data: webs })
   } catch (e) {
     console.error(`[RW] Unable to fetch webs - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to fetch webs - ${e}`, {
       status: 500,
     })
@@ -176,6 +178,7 @@ export async function POST(request) {
       )
     } else {
       console.error(`[RW] Unable to create web - ${error}`)
+      Sentry.captureException(error)
       return new Response(`Unable to create web - ${error}`, {
         status: 500,
       })

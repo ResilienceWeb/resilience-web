@@ -1,6 +1,7 @@
+import { revalidatePath } from 'next/cache'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
-import { revalidatePath } from 'next/cache'
 
 export async function POST(_request, props) {
   const params = await props.params
@@ -52,6 +53,7 @@ export async function POST(_request, props) {
     })
   } catch (e) {
     console.error(`[RW] Unable to unpublish web - ${e}`)
+    Sentry.captureException(e)
     return Response.json(
       { message: `Unable to unpublish web - ${e.message}` },
       { status: 500 },

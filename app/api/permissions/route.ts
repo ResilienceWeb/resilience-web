@@ -1,5 +1,6 @@
-import { auth } from '@auth'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { auth } from '@auth'
 
 export async function GET(request) {
   try {
@@ -29,6 +30,7 @@ export async function GET(request) {
     return Response.json({ permission })
   } catch (e) {
     console.error(`[RW] Unable to fetch permissions - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to fetch permissions - ${e}`, {
       status: 500,
     })

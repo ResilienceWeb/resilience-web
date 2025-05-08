@@ -1,5 +1,6 @@
-import prisma from '@prisma-rw'
+import * as Sentry from '@sentry/nextjs'
 import { unfeatureListingTask } from '@trigger/unfeature-listing'
+import prisma from '@prisma-rw'
 
 export async function PATCH(_request, props) {
   const params = await props.params
@@ -23,6 +24,7 @@ export async function PATCH(_request, props) {
     })
   } catch (e) {
     console.error(`[RW] Unable to feature listing - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to feature listing - ${e}`, {
       status: 500,
     })

@@ -1,8 +1,9 @@
 import { Prisma } from '@prisma/client'
-import uploadImage from '@helpers/uploadImage'
-import deleteImage from '@helpers/deleteImage'
-import { stringToBoolean } from '@helpers/utils'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import deleteImage from '@helpers/deleteImage'
+import uploadImage from '@helpers/uploadImage'
+import { stringToBoolean } from '@helpers/utils'
 
 function exclude(data, keys) {
   return Object.fromEntries(
@@ -79,6 +80,7 @@ export async function GET(request, props) {
     })
   } catch (e) {
     console.error(`[RW] Unable to fetch listing - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to fetch listing - ${e}`, {
       status: 500,
     })
@@ -260,6 +262,7 @@ export async function PUT(request) {
     })
   } catch (e) {
     console.error(`[RW] Unable to update listing - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to update listing - ${e}`, {
       status: 500,
     })
@@ -291,6 +294,7 @@ export async function DELETE(request, props) {
     })
   } catch (e) {
     console.error(`[RW] Unable to delete listing - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to delete listing - ${e}`, {
       status: 500,
     })

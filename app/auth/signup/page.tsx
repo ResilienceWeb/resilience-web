@@ -1,11 +1,13 @@
 'use client'
+
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { signIn } from 'next-auth/react'
+import Image from 'next/legacy/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import * as Sentry from '@sentry/nextjs'
+import { signIn } from 'next-auth/react'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
-import Image from 'next/legacy/image'
 import LogoImage from '../../../public/logo.png'
 import styles from '../auth.module.css'
 
@@ -41,6 +43,8 @@ export default function SignUp() {
                 if (response?.error) throw new Error(response.error)
                 router.push(response?.url ?? '/')
               } catch (error) {
+                console.error('[RW] Error signing up:', error)
+                Sentry.captureException(error)
                 setError(
                   error instanceof Error
                     ? error.message

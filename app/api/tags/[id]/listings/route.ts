@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
 export async function PUT(request: Request, props) {
@@ -24,6 +25,7 @@ export async function PUT(request: Request, props) {
     return Response.json({ data: tag })
   } catch (e) {
     console.error(`[RW] Unable to add tag to listings - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to add tag to listings - ${e}`, {
       status: 500,
     })

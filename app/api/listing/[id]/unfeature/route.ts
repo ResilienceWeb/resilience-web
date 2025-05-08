@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
 export async function PATCH(_request, props) {
@@ -19,6 +20,7 @@ export async function PATCH(_request, props) {
     })
   } catch (e) {
     console.error(`[RW] Unable to unfeature listing - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to unfeature listing - ${e}`, {
       status: 500,
     })

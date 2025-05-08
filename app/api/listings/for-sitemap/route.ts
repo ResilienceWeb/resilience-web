@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
 export async function GET() {
@@ -60,6 +61,7 @@ export async function GET() {
     })
   } catch (e) {
     console.error(`[RW] Unable to fetch listings - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to fetch listings - ${e}`, {
       status: 500,
     })

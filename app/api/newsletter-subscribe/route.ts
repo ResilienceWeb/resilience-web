@@ -1,4 +1,5 @@
 import client from '@sendgrid/client'
+import * as Sentry from '@sentry/nextjs'
 
 client.setApiKey(process.env.SENDGRID_API_KEY)
 const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY
@@ -43,6 +44,7 @@ export async function POST(request) {
     return Response.json({ error: null }, { status: 201 })
   } catch (error) {
     console.error(`[RW] Failed to sign up user to newsletter - ${error}`)
+    Sentry.captureException(error)
     return Response.json(
       {
         error:

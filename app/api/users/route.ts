@@ -1,6 +1,7 @@
 import client from '@sendgrid/client'
-import { auth } from '@auth'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { auth } from '@auth'
 
 client.setApiKey(process.env.SENDGRID_API_KEY)
 
@@ -46,6 +47,7 @@ export async function GET() {
     })
   } catch (e) {
     console.error(`[RW] Unable to get user - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to get user - ${e}`, {
       status: 500,
     })
@@ -122,6 +124,7 @@ export async function PATCH(request) {
     })
   } catch (e) {
     console.error(`[RW] Unable to update user - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to update user - ${e}`, {
       status: 500,
     })

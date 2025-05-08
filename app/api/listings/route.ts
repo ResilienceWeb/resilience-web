@@ -1,10 +1,11 @@
 import { Prisma } from '@prisma/client'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { sendEmail } from '@helpers/email'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingProposedEmail from '@components/emails/ListingProposedEmail'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
-import { sendEmail } from '@helpers/email'
 
 export async function GET(request) {
   const searchParams = request.nextUrl.searchParams
@@ -67,6 +68,7 @@ export async function GET(request) {
     })
   } catch (e) {
     console.error(`[RW] Unable to fetch listings - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to fetch listings - ${e}`, {
       status: 500,
     })
@@ -209,6 +211,7 @@ export async function POST(request) {
     )
   } catch (e) {
     console.error(`[RW] Unable to create listing - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to create listing - ${e}`, {
       status: 500,
     })

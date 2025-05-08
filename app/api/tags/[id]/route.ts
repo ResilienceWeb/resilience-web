@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
 export async function DELETE(_request: Request, props) {
@@ -14,6 +15,7 @@ export async function DELETE(_request: Request, props) {
     return Response.json({ data: tag })
   } catch (e) {
     console.error(`[RW] Unable to delete tag - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to delete tag - ${e}`, {
       status: 500,
     })

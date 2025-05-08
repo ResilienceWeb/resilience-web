@@ -1,9 +1,10 @@
 import { Prisma } from '@prisma/client'
 import type { Web } from '@prisma/client'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { auth } from '@auth'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
-import { auth } from '@auth'
 
 type Data = {
   web: Web
@@ -103,6 +104,7 @@ export async function PUT(request, props) {
     })
   } catch (e) {
     console.error(`[RW] Unable to update web - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to update web - ${e}`, {
       status: 500,
     })

@@ -1,4 +1,5 @@
 import type { Tag } from '@prisma/client'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
 export async function GET(request) {
@@ -27,6 +28,7 @@ export async function GET(request) {
     return Response.json({ data: tags })
   } catch (e) {
     console.error(`[RW] Unable to fetch tags - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to fetch tags - ${e}`, {
       status: 500,
     })
@@ -43,6 +45,7 @@ export async function POST(request: Request) {
     return Response.json({ data: tag })
   } catch (e) {
     console.error(`[RW] Unable to create tag - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to create tag - ${e}`, {
       status: 500,
     })
@@ -63,6 +66,7 @@ export async function PATCH(request: Request) {
     return Response.json({ data: tag })
   } catch (e) {
     console.error(`[RW] Unable to update tag - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to update tag - ${e}`, {
       status: 500,
     })

@@ -1,6 +1,7 @@
 import { revalidatePath } from 'next/cache'
-import { auth } from '@auth'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { auth } from '@auth'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 export async function POST(_request, props) {
@@ -30,6 +31,7 @@ export async function POST(_request, props) {
     })
   } catch (e) {
     console.error(`[RW] Unable to publish web - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to publish web - ${e}`, {
       status: 500,
     })

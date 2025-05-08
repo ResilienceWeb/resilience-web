@@ -1,5 +1,6 @@
-import { auth } from '@auth'
+import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { auth } from '@auth'
 
 export async function GET(request) {
   try {
@@ -47,6 +48,7 @@ export async function GET(request) {
     return Response.json({ ownerships })
   } catch (e) {
     console.error(`[RW] Unable to fetch ownerships - ${e}`)
+    Sentry.captureException(e)
     return new Response(`Unable to fetch ownerships - ${e}`, {
       status: 500,
     })
