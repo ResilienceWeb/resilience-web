@@ -1,5 +1,3 @@
-/* eslint-disable promise/catch-or-return */
-/* eslint-disable promise/always-return */
 import * as Sentry from '@sentry/nextjs'
 
 export const onRequestError = Sentry.captureRequestError
@@ -17,11 +15,7 @@ export function register() {
       debug: false,
     })
 
-    Sentry.lazyLoadIntegration('captureConsoleIntegration').then(
-      (integration) => {
-        Sentry.addIntegration(integration())
-      },
-    )
+    Sentry.addIntegration(Sentry.captureConsoleIntegration())
   }
 
   if (process.env.NEXT_RUNTIME === 'edge') {
