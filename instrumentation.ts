@@ -15,7 +15,7 @@ export function register() {
       debug: false,
     })
 
-    Sentry.addIntegration(Sentry.captureConsoleIntegration())
+    // Sentry.addIntegration(Sentry.captureConsoleIntegration())
   }
 
   if (process.env.NEXT_RUNTIME === 'edge') {
