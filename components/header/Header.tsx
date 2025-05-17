@@ -1,14 +1,14 @@
 import { memo, useState, useEffect } from 'react'
-import NextLink from 'next/link'
+import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import Select from 'react-select'
 import Image from 'next/legacy/image'
-import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
+import NextLink from 'next/link'
+import customMultiSelectStyles from '@styles/select-styles'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { cn } from '@components/lib/utils'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
-import customMultiSelectStyles from '@styles/select-styles'
-import { cn } from '@components/lib/utils'
 
 type HeaderProps = {
   categories: any
@@ -144,37 +144,39 @@ const Header = ({
                   value={selectedTags}
                 />
               )}
-              <div className="w-full pb-2">
-                <Tabs
-                  defaultValue="list"
-                  value={currentTab}
-                  onValueChange={handleTabChange}
-                  className="w-full"
-                >
-                  <TabsList
-                    className={cn(
-                      'grid',
-                      'w-full',
-                      isGeoMappingEnabled ? 'grid-cols-2' : 'grid-cols-1',
-                    )}
+              {isGeoMappingEnabled && (
+                <div className="w-full pb-2">
+                  <Tabs
+                    defaultValue="list"
+                    value={currentTab}
+                    onValueChange={handleTabChange}
+                    className="w-full"
                   >
-                    <TabsTrigger
-                      value="list"
-                      className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                    <TabsList
+                      className={cn(
+                        'grid',
+                        'w-full',
+                        isGeoMappingEnabled ? 'grid-cols-2' : 'grid-cols-1',
+                      )}
                     >
-                      List
-                    </TabsTrigger>
-                    {isGeoMappingEnabled && (
                       <TabsTrigger
-                        value="map"
+                        value="list"
                         className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
                       >
-                        Map
+                        List
                       </TabsTrigger>
-                    )}
-                  </TabsList>
-                </Tabs>
-              </div>
+                      {isGeoMappingEnabled && (
+                        <TabsTrigger
+                          value="map"
+                          className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                        >
+                          Map
+                        </TabsTrigger>
+                      )}
+                    </TabsList>
+                  </Tabs>
+                </div>
+              )}
             </div>
           </div>
         </div>

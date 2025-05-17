@@ -1,10 +1,10 @@
 'use client'
+
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { FaShareAlt, FaTrash } from 'react-icons/fa'
-import { Button } from '@components/ui/button'
-import { Input } from '@components/ui/input'
 import { socialMediaPlatforms } from '@helpers/socials'
+import { Button } from '@components/ui/button'
 import {
   FormField,
   FormItem,
@@ -12,6 +12,7 @@ import {
   FormControl,
   FormMessage,
 } from '@components/ui/form'
+import { Input } from '@components/ui/input'
 import {
   Select,
   SelectContent,
@@ -222,6 +223,31 @@ const SocialMedia = () => {
               Add Social Media link
             </Button>
           </div>
+        )}
+
+        {methods.watch('socials').length > 0 && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="mt-2 w-fit"
+            onClick={() => {
+              const currentSocials = methods.getValues('socials') || []
+              // Find a platform that hasn't been used yet
+              const unusedPlatforms = socialMediaPlatforms.filter(
+                (platform) =>
+                  !currentSocials.some((item) => item.platform === platform.id),
+              )
+
+              if (unusedPlatforms.length > 0) {
+                // Use append from useFieldArray instead of setValue
+                append({ platform: unusedPlatforms[0].id, url: '' })
+              }
+            }}
+          >
+            <AiOutlinePlus className="mr-1" />
+            Add Social Media link
+          </Button>
         )}
       </div>
     </div>
