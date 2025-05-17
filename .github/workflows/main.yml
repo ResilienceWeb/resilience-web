@@ -12,5 +12,3 @@ jobs:
       uses: wei/curl@master
       with:
         args: ${{ vars.DEPLOY_HOOK_URL }}
-
-        
