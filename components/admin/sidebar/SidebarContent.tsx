@@ -1,10 +1,10 @@
 'use client'
+
 import { useMemo } from 'react'
 import type { ReactElement } from 'react'
-import Link from 'next/link'
-import Image from 'next/legacy/image'
-import { usePathname } from 'next/navigation'
-import { useSession } from 'next-auth/react'
+import { BiCategory } from 'react-icons/bi'
+import { GrAnnounce } from 'react-icons/gr'
+import { GrOverview } from 'react-icons/gr'
 import {
   HiViewList,
   HiUserGroup,
@@ -12,14 +12,15 @@ import {
   HiExternalLink,
   HiX,
 } from 'react-icons/hi'
-import { GrAnnounce } from 'react-icons/gr'
-import { BiCategory } from 'react-icons/bi'
-import { GrOverview } from 'react-icons/gr'
 import { LuBook } from 'react-icons/lu'
-import useHasPermissionForCurrentWeb from '@hooks/permissions/useHasPermissionForCurrentWeb'
-import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
+import Image from 'next/legacy/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useAppContext } from '@store/hooks'
+import { useSession } from 'next-auth/react'
 import DonateButton from '@components/donate-button'
+import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
+import useHasPermissionForCurrentWeb from '@hooks/permissions/useHasPermissionForCurrentWeb'
 import LogoImage from '../../../public/logo.png'
 
 interface NavItemProps {
@@ -111,7 +112,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
           Knowledgebase <HiExternalLink className="text-sm" />
         </span>
       ),
-      href: 'https://resilienceweb.gitbook.io/knowledgebase',
+      href: 'https://knowledgebase.resilienceweb.org.uk',
       icon: <LuBook />,
     })
 

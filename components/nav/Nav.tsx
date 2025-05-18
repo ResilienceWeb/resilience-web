@@ -1,11 +1,14 @@
 'use client'
 
 import { useMemo, memo, useState } from 'react'
+import { HiChevronRight, HiOutlineX } from 'react-icons/hi'
+import { RxHamburgerMenu } from 'react-icons/rx'
 import Image from 'next/legacy/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { RxHamburgerMenu } from 'react-icons/rx'
-import { HiChevronRight, HiOutlineX } from 'react-icons/hi'
+import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
+import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
+import { Button } from '@components/ui/button'
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -15,10 +18,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@components/ui/navigation-menu'
-import { Button } from '@components/ui/button'
 import useWebsPublic from '@hooks/webs/useWebsPublic'
-import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
-import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 import LogoImage from '../../public/logo.png'
 
 interface NavItem {
@@ -65,7 +65,7 @@ export default function MainNav() {
       },
       {
         label: 'Knowledgebase',
-        href: 'https://resilienceweb.gitbook.io',
+        href: 'https://knowledgebase.resilienceweb.org.uk',
         isExternal: true,
       },
       {

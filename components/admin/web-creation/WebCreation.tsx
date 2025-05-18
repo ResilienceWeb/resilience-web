@@ -1,14 +1,18 @@
 'use client'
+
 import { useCallback, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import posthog from 'posthog-js'
-import { AiOutlineLoading } from 'react-icons/ai'
 import { useForm } from 'react-hook-form'
+import { AiOutlineLoading } from 'react-icons/ai'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
+import posthog from 'posthog-js'
 import * as z from 'zod'
-import { Card, CardContent } from '@components/ui/card'
+import { urlValidator } from '@helpers/form'
+import { generateSlug } from '@helpers/utils'
+import Faq from '@components/faq'
 import { Button } from '@components/ui/button'
+import { Card, CardContent } from '@components/ui/card'
 import {
   Form,
   FormControl,
@@ -20,11 +24,8 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { Textarea } from '@components/ui/textarea'
-import LogoImage from '../../../public/logo.png'
-import { urlValidator } from '@helpers/form'
 import useCreateWeb from '@hooks/webs/useCreateWeb'
-import { generateSlug } from '@helpers/utils'
-import Faq from '@components/faq'
+import LogoImage from '../../../public/logo.png'
 
 const faqs = [
   {
@@ -58,7 +59,7 @@ const faqs = [
         platform can offer and listen to your feedback if you have any. You
         might also find the answer to your questions in{' '}
         <a
-          href="https://resilienceweb.gitbook.io/knowledgebase"
+          href="https://knowledgebase.resilienceweb.org.uk"
           className="text-primary hover:underline"
         >
           our Knowledgebase

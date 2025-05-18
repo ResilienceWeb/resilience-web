@@ -1,8 +1,7 @@
-import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { FaGithub, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa'
 import Image from 'next/legacy/image'
-
+import Link from 'next/link'
 import { REMOTE_URL } from '@helpers/config'
 import SignupForm from '@components/signup-form'
 import LogoImage from '../../public/logo.png'
@@ -92,7 +91,10 @@ export default function Footer({ hideBorder = false }) {
             <ListHeader>Useful links</ListHeader>
             <Link href={`${REMOTE_URL}/admin`}>Admin login</Link>
             <Link href={`${REMOTE_URL}/about`}>About us</Link>
-            <Link href="https://resilienceweb.gitbook.io" target="_blank">
+            <Link
+              href="https://knowledgebase.resilienceweb.org.uk"
+              target="_blank"
+            >
               Knowledgebase
             </Link>
             <Link
