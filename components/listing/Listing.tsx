@@ -1,28 +1,28 @@
 'use client'
 
 import { memo, useCallback, useEffect, useState, useMemo } from 'react'
-import dynamic from 'next/dynamic'
-import NextLink from 'next/link'
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { FiEdit } from 'react-icons/fi'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 import { SlGlobe } from 'react-icons/sl'
+import dynamic from 'next/dynamic'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
+import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
+import CategoryTag from '@components/category-tag'
+import DescriptionRichText from '@components/main-list/description-rich-text'
+import Item from '@components/main-list/item'
+import ShareButton from '@components/share-button'
 import { Badge } from '@components/ui/badge'
+import { Button } from '@components/ui/button'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip'
-
-import DescriptionRichText from '@components/main-list/description-rich-text'
-import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
-import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
-import CategoryTag from '@components/category-tag'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
-import Item from '@components/main-list/item'
-import ShareButton from '@components/share-button'
 
 const ListingMap = dynamic(() => import('./listing-map'), {
   ssr: false,
@@ -201,7 +201,7 @@ function Listing({ listing }) {
             {listing.tags?.map((tag) => {
               const urlEncodedTag = tag.label.replace(' ', '+')
               return (
-                <NextLink
+                <Link
                   key={tag.id}
                   href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
                 >
@@ -211,7 +211,7 @@ function Listing({ listing }) {
                   >
                     #{tag.label}
                   </Badge>
-                </NextLink>
+                </Link>
               )
             })}
           </div>
@@ -235,22 +235,22 @@ function Listing({ listing }) {
           )}
         </div>
 
-        <button
-          onClick={goBack}
-          className="group mb-8 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900"
-        >
-          <HiArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
-          Back to main list
-        </button>
-      </div>
+        <div className="w-full mb-8 flex justify-between">
+          <button
+            onClick={goBack}
+            className="group mb-8 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900"
+          >
+            <HiArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+            Back to main list
+          </button>
 
-      <div className="fixed right-8 bottom-8 z-10">
-        <a
-          href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-lg text-white shadow-lg ring-1 ring-blue-900/10 transition-all hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl hover:ring-blue-900/20"
-        >
-          <FiEdit className="transition-transform group-hover:scale-110" />
-        </a>
+          <Link href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}>
+            <Button variant="purple">
+              <FiEdit className="h-5 w-5" />
+              Edit Listing
+            </Button>
+          </Link>
+        </div>
       </div>
     </>
   )

@@ -1,6 +1,6 @@
+import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import path from 'path'
 import sharp from 'sharp'
-import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import doSpace from '../lib/digitalocean'
 import config from './config'
 
@@ -16,7 +16,11 @@ export default async function uploadImage(
 ): Promise<string> {
   const imageBuffer = Buffer.from(await image.arrayBuffer())
   const uniqueFileId = generateUniqueId()
-  const fileName = `${uniqueFileId}-${image.name}`
+  let fileName = `${uniqueFileId}-${image.name}`
+
+  if (process.env.NODE_ENV === 'development') {
+    fileName = `dev-${fileName}`
+  }
 
   const compressedImage = await sharp(imageBuffer)
     .webp({ quality: 80 })
