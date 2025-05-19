@@ -60,3 +60,9 @@
   font-size: 1.125rem;
   font-weight: 600;
 }
+
+.root li > a {
+  color: #09622f !important;
+  font-weight: 600;
+  text-decoration: underline;
+}

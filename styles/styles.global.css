@@ -168,7 +168,7 @@
     text-decoration: none;
   }
 
-  p > a, li > a {
+  p > a {
     color: #09622f !important;
     font-weight: 600;
     text-decoration: underline;
