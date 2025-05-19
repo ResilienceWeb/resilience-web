@@ -43,6 +43,7 @@ export async function GET(request) {
       listings: {},
       permissions: {},
       ownerships: {},
+      features: {},
     })
 
     if (withListings) {
@@ -58,6 +59,7 @@ export async function GET(request) {
     if (withAdminInfo) {
       include.permissions = true
       include.ownerships = true
+      include.features = true
     }
 
     const webs = await prisma.web.findMany({

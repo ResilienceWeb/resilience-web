@@ -86,6 +86,7 @@ model Web {
   image       String?
   permissions Permission[]
   ownerships  Ownership[]
+  features    WebFeature[]
 
   @@map("Location")
 }
@@ -222,4 +223,17 @@ model Ownership {
   webs      Web[]
 
   @@map("ownership")
+}
+
+model WebFeature {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  webId     Int
+  web       Web      @relation(fields: [webId], references: [id])
+  feature   String   @unique
+  enabled   Boolean  @default(false)
+
+  @@unique([webId, feature])
+  @@map("web_features")
 }

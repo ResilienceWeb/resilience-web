@@ -1,6 +1,11 @@
 'use client'
-import { useRouter } from 'next/navigation'
+
 import { PiWarningCircleBold } from 'react-icons/pi'
+import { SlGlobe } from 'react-icons/sl'
+import { useRouter } from 'next/navigation'
+import { isFeatureEnabled, FEATURES } from '@helpers/features'
+import { Badge } from '@components/ui/badge'
+import { Spinner } from '@components/ui/spinner'
 import {
   Table,
   TableBody,
@@ -9,8 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table'
-import { Badge } from '@components/ui/badge'
-import { Spinner } from '@components/ui/spinner'
 import useWebs from '@hooks/webs/useWebs'
 
 const columns = [
@@ -71,6 +74,8 @@ const formatDate = (date) => {
 export default function OverviewPage() {
   const router = useRouter()
   const { isPending: isLoadingWebs, webs } = useWebs({ withAdminInfo: true })
+
+  console.log(webs)
 
   if (isLoadingWebs) {
     return <Spinner />
@@ -178,6 +183,13 @@ export default function OverviewPage() {
                         ) : (
                           <Badge variant="secondary">Private</Badge>
                         )}
+
+                        {isFeatureEnabled(FEATURES.showMap, web.features) && (
+                          <Badge className="flex gap-1" variant="secondary">
+                            <SlGlobe /> Geomapping enabled
+                          </Badge>
+                        )}
+
                         {!isWebActive(web) ? (
                           <div className="space-y-1">
                             <Badge variant="secondary">Inactive</Badge>

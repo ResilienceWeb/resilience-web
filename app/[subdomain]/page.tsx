@@ -1,7 +1,7 @@
-import prisma from '@prisma-rw'
-import Web, { CENTRAL_NODE_ID } from './Web'
 import { notFound } from 'next/navigation'
+import prisma from '@prisma-rw'
 import { getIconUnicode } from '@helpers/icons'
+import Web, { CENTRAL_NODE_ID } from './Web'
 
 export default async function WebPage(props) {
   const params = await props.params
@@ -80,26 +80,19 @@ async function getData({ webSlug }): Promise<DataType> {
     where: {
       slug: webSlug,
     },
+    include: {
+      features: {
+        select: {
+          feature: true,
+          enabled: true,
+        },
+      },
+    },
   })
 
   if (!webData) {
     console.log(`[RW] Web not found for webSlug ${webSlug}`)
     return null
-  }
-
-  if (
-    webData.slug === 'ely' ||
-    process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production'
-  ) {
-    // @ts-ignore
-    webData.features = {
-      geoMapping: {
-        enabled: true,
-      },
-    }
-  } else {
-    // @ts-ignore
-    webData.features = {}
   }
 
   console.log(`[rw-debug]`, webSlug)
