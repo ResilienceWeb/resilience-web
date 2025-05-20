@@ -1,26 +1,28 @@
 'use client'
+
 import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import dynamic from 'next/dynamic'
-import { useDebounce } from 'use-debounce'
+import type { Category } from '@prisma/client'
+import '@styles/font-awesome.css'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
-import Header from '@components/header'
-import useIsMobile from '@hooks/application/useIsMobile'
-import MainList from '@components/main-list'
-import AlertBanner from '@components/alert-banner'
+import { useDebounce } from 'use-debounce'
+import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import {
   removeNonAlphaNumeric,
   sortStringsFunc,
   intersection,
   htmlTitle,
 } from '@helpers/utils'
-import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
-import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
-import useTagsPublic from '@hooks/tags/useTagsPublic'
-import type { Category } from '@prisma/client'
-import MobileOptionsSheet from '@components/mobile-options-sheet'
+import AlertBanner from '@components/alert-banner'
+import Header from '@components/header'
 import { License, LicenseTransition } from '@components/license'
+import MainList from '@components/main-list'
+import MobileOptionsSheet from '@components/mobile-options-sheet'
 import { Spinner } from '@components/ui/spinner'
-import '@styles/font-awesome.css'
+import useIsMobile from '@hooks/application/useIsMobile'
+import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
+import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
+import useTagsPublic from '@hooks/tags/useTagsPublic'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
@@ -60,7 +62,8 @@ const Web = ({
   const selectedWebSlug = useSelectedWebSlug()
   const defaultTab = isMobile ? 'list' : 'web'
 
-  const isGeoMappingEnabled = features.geoMapping?.enabled || isTransitionMode
+  const isGeoMappingEnabled =
+    isFeatureEnabled(FEATURES.showMap, features) || isTransitionMode
 
   const [categoriesParam, setCategoriesParam] = useQueryState(
     'categories',

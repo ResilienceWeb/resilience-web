@@ -1,22 +1,24 @@
 'use client'
+
 import { useCallback, useMemo, use, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@components/ui/button'
-import { Badge } from '@components/ui/badge'
-import { Spinner } from '@components/ui/spinner'
-import PermissionsTable from '@components/admin/permissions-table'
-import useWeb from '@hooks/webs/useWeb'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { HiArrowLeft } from 'react-icons/hi'
 import { HiOutlineClipboard, HiOutlineClipboardCheck } from 'react-icons/hi'
-import usePublishWeb from '@hooks/webs/usePublishWeb'
-import useUnpublishWeb from '@hooks/webs/useUnpublishWeb'
+import { useRouter } from 'next/navigation'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import PermissionsTable from '@components/admin/permissions-table'
+import WebFeatures from '@components/admin/web-features'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@components/ui/accordion'
+import { Badge } from '@components/ui/badge'
+import { Button } from '@components/ui/button'
+import { Spinner } from '@components/ui/spinner'
+import usePublishWeb from '@hooks/webs/usePublishWeb'
+import useUnpublishWeb from '@hooks/webs/useUnpublishWeb'
+import useWeb from '@hooks/webs/useWeb'
 
 export default function WebOverviewPage({ params }) {
   // @ts-ignore
@@ -140,9 +142,25 @@ export default function WebOverviewPage({ params }) {
       </button>
 
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">
-          {web.title} Resilience Web
-        </h1>
+        <div className="self-start">
+          <h1 className="text-3xl font-bold tracking-tight">
+            {web.title} Resilience Web
+          </h1>
+          <a
+            href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary w-fit font-semibold hover:underline"
+          >
+            {`${web.slug}.${REMOTE_HOSTNAME}`}
+          </a>
+          <p className="text-muted-foreground">
+            <span className="text-foreground font-semibold">
+              {web.listings.length}
+            </span>{' '}
+            listings
+          </p>
+        </div>
         {web.published ? (
           <div className="flex flex-col items-center gap-4">
             <Badge variant="secondary" className="text-lg">
@@ -166,24 +184,8 @@ export default function WebOverviewPage({ params }) {
         )}
       </div>
 
-      <a
-        href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-primary w-fit font-semibold hover:underline"
-      >
-        {`${web.slug}.${REMOTE_HOSTNAME}`}
-      </a>
-
-      <p className="text-muted-foreground">
-        <span className="text-foreground font-semibold">
-          {web.listings.length}
-        </span>{' '}
-        listings
-      </p>
-
       {listingStats && (
-        <div className="mt-4 flex flex-col gap-2">
+        <div className="mt-6 flex flex-col gap-2">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="rounded border border-gray-200 bg-white p-3">
               <div className="text-lg font-medium">Listings with images</div>
@@ -270,6 +272,10 @@ export default function WebOverviewPage({ params }) {
           </Accordion>
         </div>
       )}
+
+      <div className="mt-6">
+        <WebFeatures web={web} />
+      </div>
 
       {(web.permissions?.length > 0 || decoratedOwnerships?.length > 0) && (
         <div className="mt-4 flex flex-col gap-2">
