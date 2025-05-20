@@ -28,6 +28,7 @@ export async function GET(request, props) {
     listings: {},
     permissions: {},
     ownerships: {},
+    features: {},
   })
 
   if (withListings) {
@@ -49,6 +50,7 @@ export async function GET(request, props) {
         user: true,
       },
     }
+    include.features = true
   }
 
   const web: Data['web'] = await prisma.web.findUnique({
@@ -97,6 +99,57 @@ export async function PUT(request, props) {
         slug,
       },
       data: newData,
+    })
+
+    return Response.json({
+      web: updatedWeb,
+    })
+  } catch (e) {
+    console.error(`[RW] Unable to update web - ${e}`)
+    Sentry.captureException(e)
+    return new Response(`Unable to update web - ${e}`, {
+      status: 500,
+    })
+  }
+}
+
+export async function PATCH(request, props) {
+  const params = await props.params
+  const session = await auth()
+
+  if (!session?.user.admin) {
+    return new Response('Unauthorized', {
+      status: 403,
+    })
+  }
+
+  try {
+    const slug = params.slug
+    const { feature, enabled, webId } = await request.json()
+
+    const updatedWeb: Data['web'] = await prisma.web.update({
+      where: {
+        slug,
+      },
+      data: {
+        features: {
+          upsert: {
+            where: {
+              webId_feature: {
+                webId,
+                feature,
+              },
+            },
+            update: {
+              enabled,
+            },
+            create: {
+              feature,
+              enabled,
+            },
+          },
+        },
+      },
     })
 
     return Response.json({

@@ -231,7 +231,7 @@ model WebFeature {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   webId     Int
   web       Web      @relation(fields: [webId], references: [id])
-  feature   String   @unique
+  feature   String
   enabled   Boolean  @default(false)
 
   @@unique([webId, feature])
