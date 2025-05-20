@@ -1,8 +1,10 @@
+import { revalidatePath } from 'next/cache'
 import { Prisma } from '@prisma/client'
 import type { Web } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 
@@ -151,6 +153,8 @@ export async function PATCH(request, props) {
         },
       },
     })
+
+    revalidatePath(`${PROTOCOL}://${params.slug}.${REMOTE_HOSTNAME}`)
 
     return Response.json({
       web: updatedWeb,
