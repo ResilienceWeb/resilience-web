@@ -62,8 +62,7 @@ const Web = ({
   const selectedWebSlug = useSelectedWebSlug()
   const defaultTab = isMobile ? 'list' : 'web'
 
-  const isGeoMappingEnabled =
-    isFeatureEnabled(FEATURES.showMap, features) || isTransitionMode
+  const isGeoMappingEnabled = isFeatureEnabled(FEATURES.showMap, features)
 
   const [categoriesParam, setCategoriesParam] = useQueryState(
     'categories',

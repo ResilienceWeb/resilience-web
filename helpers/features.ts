@@ -12,5 +12,8 @@ export const isFeatureEnabled = (
   featureName: Feature,
   features: FeatureConfig[],
 ) => {
+  if (!features) {
+    return false
+  }
   return features.find((f) => f.feature === featureName)?.enabled ?? false
 }

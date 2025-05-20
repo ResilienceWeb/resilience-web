@@ -1,9 +1,10 @@
-import groupBy from 'lodash/groupBy'
 import {
   QueryClient,
   dehydrate,
   HydrationBoundary,
 } from '@tanstack/react-query'
+import groupBy from 'lodash/groupBy'
+import { FEATURES } from '@helpers/features'
 import { generateSlug } from '@helpers/utils'
 import Web, { CENTRAL_NODE_ID } from '../[subdomain]/Web'
 import { CATEGORY_COLOR_MAPPING, TAG_COLOR_MAPPING } from './utils'
@@ -212,11 +213,12 @@ async function getData() {
     edges,
     categories,
     tags,
-    features: {
-      geoMapping: {
-        enabled: false,
+    features: [
+      {
+        feature: FEATURES.showMap,
+        enabled: true,
       },
-    },
+    ],
   }
 
   return structuredData
