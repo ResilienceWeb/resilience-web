@@ -1,11 +1,12 @@
 'use client'
 
-import { useCallback, useEffect, useState, useMemo, memo } from 'react'
+import { useCallback, useEffect, useMemo, memo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import type { Category } from '@prisma/client'
 import '@styles/font-awesome.css'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
 import { useDebounce } from 'use-debounce'
+import useLocalStorage from 'use-local-storage'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import {
   removeNonAlphaNumeric,
@@ -108,11 +109,13 @@ const Web = ({
   }, [tags, tagsParam])
 
   const [selectedId, setSelectedId] = useState()
-  const [activeTab, setActiveTab] = useState(viewParam)
+  const [activeTab, setActiveTab] = useLocalStorage('activeTab', viewParam)
 
   useEffect(() => {
-    setActiveTab(viewParam)
-  }, [viewParam])
+    if (viewParam !== activeTab) {
+      setActiveTab(viewParam)
+    }
+  }, [viewParam, activeTab, setActiveTab])
 
   const { categories: fetchedCategories } = useCategoriesPublic({
     webSlug: selectedWebSlug,
@@ -173,7 +176,7 @@ const Web = ({
       setActiveTab(value)
       setViewParam(value)
     },
-    [setViewParam],
+    [setActiveTab, setViewParam],
   )
 
   const descriptiveNodes = useMemo(
