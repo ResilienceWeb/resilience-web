@@ -1,5 +1,5 @@
-import { memo, useState, useCallback, useEffect, useMemo } from 'react'
 import Head from 'next/head'
+import { memo, useState, useCallback, useEffect, useMemo } from 'react'
 import VisNetworkReactComponent from 'vis-network-react'
 import ListingDialog from '@components/main-list/listing-dialog'
 import { Spinner } from '@components/ui/spinner'
@@ -155,13 +155,13 @@ const Network = ({ data, selectedId, setSelectedId }) => {
         />
       </Head>
       <div className={styles.graph}>
-        {isLoading && <Spinner />}
         <VisNetworkReactComponent
           events={events}
           data={data}
           options={options}
           getNetwork={getNetwork}
         />
+        {isLoading && <Spinner />}
         {Boolean(selectedId) &&
           selectedItem?.group !== 'category' &&
           selectedItem?.group !== 'central-node' && (
