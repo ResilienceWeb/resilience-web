@@ -20,7 +20,7 @@ import usePublishWeb from '@hooks/webs/usePublishWeb'
 import useUnpublishWeb from '@hooks/webs/useUnpublishWeb'
 import useWeb from '@hooks/webs/useWeb'
 
-export default function WebOverviewPage({ params }) {
+export default function WebDashboardPage({ params }) {
   // @ts-ignore
   const { webSlug } = use(params)
   const router = useRouter()

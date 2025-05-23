@@ -71,7 +71,7 @@ const formatDate = (date) => {
   }).format(date)
 }
 
-export default function OverviewPage() {
+export default function DashboardPage() {
   const router = useRouter()
   const { isPending: isLoadingWebs, webs } = useWebs({ withAdminInfo: true })
 
@@ -88,7 +88,7 @@ export default function OverviewPage() {
   return (
     <div className="mb-6 flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Overview</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground">Manage Resilience Web instances</p>
       </div>
 
