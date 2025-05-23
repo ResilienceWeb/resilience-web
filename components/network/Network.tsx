@@ -1,7 +1,9 @@
+import { memo, useState, useCallback, useEffect, useMemo, useRef } from 'react'
+import { BsArrowsFullscreen } from 'react-icons/bs'
 import Head from 'next/head'
-import { memo, useState, useCallback, useEffect, useMemo } from 'react'
 import VisNetworkReactComponent from 'vis-network-react'
 import ListingDialog from '@components/main-list/listing-dialog'
+import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
 import styles from './Network.module.css'
 
@@ -80,8 +82,10 @@ const options = {
 
 const Network = ({ data, selectedId, setSelectedId }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [network, setNetwork] = useState<any>()
+  const [network, setNetwork] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isFullScreen, setIsFullScreen] = useState(false)
+  const graphRef = useRef<HTMLDivElement>(null)
 
   const onOpen = () => setIsOpen(true)
   const onClose = () => setIsOpen(false)
@@ -146,6 +150,38 @@ const Network = ({ data, selectedId, setSelectedId }) => {
     [setNetwork],
   )
 
+  const toggleFullScreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      graphRef.current
+        ?.requestFullscreen()
+        .then(() => setIsFullScreen(true))
+        .catch((err) => {
+          console.error(
+            `Error attempting to enable full-screen mode: ${err.message} (${err.name})`,
+          )
+        })
+    } else {
+      document
+        .exitFullscreen()
+        .then(() => setIsFullScreen(false))
+        .catch((err) => {
+          console.error(
+            `Error attempting to exit full-screen mode: ${err.message} (${err.name})`,
+          )
+        })
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement)
+    }
+    document.addEventListener('fullscreenchange', handleFullScreenChange)
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullScreenChange)
+    }
+  }, [])
+
   return (
     <>
       <Head>
@@ -154,7 +190,20 @@ const Network = ({ data, selectedId, setSelectedId }) => {
           content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      <div className={styles.graph}>
+      <div className={styles.graph} ref={graphRef}>
+        <Button
+          variant="outline"
+          onClick={toggleFullScreen}
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            zIndex: 1000, // Ensure button is above the graph
+          }}
+        >
+          <BsArrowsFullscreen />
+          {isFullScreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+        </Button>
         <VisNetworkReactComponent
           events={events}
           data={data}
