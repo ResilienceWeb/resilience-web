@@ -42,7 +42,7 @@ const Header = ({
   isWebMode,
   searchTerm,
   selectedWebName,
-  activeTab = 'overview',
+  activeTab,
   onTabChange,
 }: HeaderProps) => {
   const [currentTab, setCurrentTab] = useState(activeTab)

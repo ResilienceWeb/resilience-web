@@ -123,8 +123,8 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     const links: any[] = []
     if (session?.user.admin) {
       links.push({
-        label: 'Overview',
-        href: '/admin/overview',
+        label: 'Dashboard',
+        href: '/admin/dashboard',
         icon: <GrOverview />,
       })
     }

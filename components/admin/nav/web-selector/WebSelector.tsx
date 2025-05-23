@@ -1,11 +1,10 @@
 import { memo, useMemo, useCallback, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
 import Select from 'react-select'
 import type { Options } from 'react-select'
-
+import { usePathname } from 'next/navigation'
 import { useAppContext } from '@store/hooks'
-import useAllowedWebs from '@hooks/webs/useAllowedWebs'
 import usePermissions from '@hooks/permissions/usePermissions'
+import useAllowedWebs from '@hooks/webs/useAllowedWebs'
 
 type WebOption = {
   value: string
@@ -70,7 +69,7 @@ const WebSelector = () => {
 
   const hideWebSelector = useMemo(
     () =>
-      pathname?.includes('/admin/overview') ||
+      pathname?.includes('/admin/dashboard') ||
       pathname?.includes('/admin/user-settings'),
     [pathname],
   )
