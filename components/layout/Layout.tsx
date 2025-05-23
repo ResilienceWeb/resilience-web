@@ -1,9 +1,10 @@
 'use client'
+
 import React, { memo } from 'react'
 import { usePathname } from 'next/navigation'
-import Nav from '@components/nav'
-import Footer from '@components/footer'
 import AlertBanner from '@components/alert-banner'
+import Footer from '@components/footer'
+import Nav from '@components/nav'
 import styles from './Layout.module.css'
 
 interface LayoutProps {
@@ -37,7 +38,7 @@ const Layout = ({
           />
         )}
         <div
-          className={`flex w-full max-w-7xl flex-col items-center justify-center px-4 py-8 ${applyPostStyling ? styles.root : ''} `}
+          className={`flex w-full max-w-7xl flex-col items-center justify-center px-4 pt-6 pb-8 ${applyPostStyling ? styles.root : ''} `}
         >
           {children}
         </div>

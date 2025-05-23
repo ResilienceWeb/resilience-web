@@ -73,7 +73,7 @@ function Listing({ listing }) {
 
   return (
     <>
-      <div className="mt-4 w-full sm:px-6 md:w-[700px] lg:px-8">
+      <div className="w-full sm:px-6 md:w-[700px] lg:px-8">
         <button
           onClick={goBack}
           className="group mb-6 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900"
@@ -83,14 +83,14 @@ function Listing({ listing }) {
         </button>
 
         {listing.image && (
-          <div className="group relative mb-8 h-[200px] w-full overflow-hidden rounded-xl bg-gray-50 md:h-[350px]">
+          <div className="group relative mb-4 h-[200px] w-full overflow-hidden rounded-xl bg-gray-100 md:h-[350px]">
             <Image
               src={listing.image}
               alt={`Image for ${listing.title}`}
               sizes="(max-width: 768px) 100vw, 700px"
               fill
               priority
-              className="object-cover"
+              className="object-contain"
             />
           </div>
         )}

@@ -1,6 +1,6 @@
-import Image from 'next/image'
 import { useLayoutEffect, useRef, useState, memo } from 'react'
 import { useExtractColors } from 'react-extract-colors'
+import Image from 'next/image'
 import { hasAlpha } from '@helpers/colors'
 
 type Props = {
