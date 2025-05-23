@@ -1,31 +1,30 @@
 'use client'
 
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { HiUserGroup, HiOutlineLink, HiExternalLink } from 'react-icons/hi'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { HiUserGroup, HiOutlineLink, HiExternalLink } from 'react-icons/hi'
 import { toast } from 'sonner'
-import { sanitizeLink } from '@helpers/utils'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
+import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
+import { sanitizeLink } from '@helpers/utils'
+import CategoryTag from '@components/category-tag'
+import ListingImage from '@components/listing-image'
+import DescriptionRichText from '@components/main-list/description-rich-text'
+import { Badge } from '@components/ui/badge'
+import { Button } from '@components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog'
-import { Button } from '@components/ui/button'
-import { Badge } from '@components/ui/badge'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip'
-
-import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
-import DescriptionRichText from '@components/main-list/description-rich-text'
-import CategoryTag from '@components/category-tag'
-import ListingImage from '@components/listing-image'
 
 interface DialogProps {
   isOpen: boolean
@@ -132,7 +131,7 @@ const ListingDialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-h-screen overflow-y-auto sm:max-w-[672px] md:max-w-[760px]">
+      <DialogContent className="max-h-screen sm:max-w-[672px] md:max-w-[760px] flex flex-col">
         {item.image && (
           <ListingImage
             alt={`${item.label} cover image`}
@@ -153,7 +152,7 @@ const ListingDialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <div>
+        <div className="overflow-y-auto flex-1 pr-2">
           <div className="flex justify-between">
             <CategoryTag colorHex={item.category.color}>
               {item.category.label}
@@ -207,7 +206,7 @@ const ListingDialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
         </div>
 
         {!isMobile && (
-          <div className="flex justify-between border-t pt-3">
+          <div className="flex justify-between border-t pt-3 mt-2 bg-background">
             {socialLinks}
 
             <Link href={individualListingLink}>
@@ -215,7 +214,7 @@ const ListingDialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
                 variant="default"
                 className="mt-2 bg-[#2B8257] hover:bg-[#236c47]"
               >
-                Go to listing
+                Go to listing page
               </Button>
             </Link>
           </div>
