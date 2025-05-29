@@ -116,6 +116,7 @@ export async function PUT(request, props) {
       data: newData,
     })
 
+    revalidatePath(`${PROTOCOL}://${params.slug}.${REMOTE_HOSTNAME}`)
     return Response.json({
       web: updatedWeb,
     })
