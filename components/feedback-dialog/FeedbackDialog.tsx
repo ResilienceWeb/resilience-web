@@ -3,8 +3,10 @@
 import { memo, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 import { toast } from 'sonner'
+import * as z from 'zod'
+import { REMOTE_URL } from '@helpers/config'
+import { Button } from '@components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -12,9 +14,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@components/ui/dialog'
-import { Button } from '@components/ui/button'
-import { Input } from '@components/ui/input'
-import { Textarea } from '@components/ui/textarea'
 import {
   Form,
   FormControl,
@@ -24,8 +23,8 @@ import {
   FormMessage,
   FormDescription,
 } from '@components/ui/form'
-
-import { REMOTE_URL } from '@helpers/config'
+import { Input } from '@components/ui/input'
+import { Textarea } from '@components/ui/textarea'
 
 const formSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
@@ -95,7 +94,7 @@ const FeedbackDialog = ({ isOpen, onClose }: FeedbackDialogProps) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onFormSubmit)}
-            className="space-y-4"
+            className="flex flex-col gap-4"
           >
             <FormField
               control={form.control}

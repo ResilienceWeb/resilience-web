@@ -1,11 +1,11 @@
 'use client'
 
-import { useTransitionRouter } from 'next-view-transitions'
 import { useCallback, useMemo, useEffect, useState, memo } from 'react'
-import chroma from 'chroma-js'
-import { HiUserGroup } from 'react-icons/hi'
 import { FaStar } from 'react-icons/fa'
+import { HiUserGroup } from 'react-icons/hi'
 import { useInView } from 'react-intersection-observer'
+import chroma from 'chroma-js'
+import { useTransitionRouter } from 'next-view-transitions'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
 import {
@@ -14,7 +14,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip'
-
 import ImagePlaceholder from './image-placeholder'
 
 type Props = {
@@ -51,7 +50,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
 
   return (
     <div
-      className="animate-in fade-in slide-in-from-bottom relative h-fit cursor-pointer rounded-md bg-white shadow-md transition-all duration-200 ease-in-out hover:shadow-xl"
+      className="content-visibility-auto animate-in fade-in slide-in-from-bottom relative h-fit cursor-pointer rounded-md bg-white shadow-md transition-all duration-200 ease-in-out hover:shadow-xl"
       onClick={onClick}
       ref={ref}
     >

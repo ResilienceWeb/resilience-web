@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @plugin 'tailwindcss-animate';
+@plugin 'tailwindcss-content-visibility';
 @custom-variant dark (&:is(.dark *));
 
 @theme {
