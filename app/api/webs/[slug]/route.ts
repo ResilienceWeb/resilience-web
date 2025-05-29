@@ -92,6 +92,9 @@ export async function PUT(request, props) {
       relations: {
         set: relationsToConnect,
       },
+      relationOf: {
+        set: relationsToConnect,
+      },
     }
 
     const image = formData.get('image')
