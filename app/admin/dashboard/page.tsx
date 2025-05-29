@@ -75,8 +75,6 @@ export default function DashboardPage() {
   const router = useRouter()
   const { isPending: isLoadingWebs, webs } = useWebs({ withAdminInfo: true })
 
-  console.log(webs)
-
   if (isLoadingWebs) {
     return <Spinner />
   }

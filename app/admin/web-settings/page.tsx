@@ -1,10 +1,9 @@
 'use client'
 
 import { useCallback, useEffect } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useForm, FormProvider, useFormContext } from 'react-hook-form'
 import type { MultiValue, ActionMeta } from 'react-select'
 import dynamic from 'next/dynamic'
-import type { Web } from '@prisma/client'
 import { useAppContext } from '@store/hooks'
 import { toast } from 'sonner'
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
@@ -33,6 +32,7 @@ interface WebSettingsForm {
   published: boolean
   description: string
   image: File | string | null
+  relatedWebs: WebOption[]
 }
 
 type WebOption = {
@@ -40,40 +40,47 @@ type WebOption = {
   label: string
 }
 
-function WebsSelect({ relations }: { relations?: Web[] }) {
+function WebsSelect() {
   const { webs, isPending } = useWebs()
+  const { control, setValue, watch } = useFormContext<WebSettingsForm>()
 
+  const currentWebs = watch('relatedWebs') || []
+
+  const currentWebIds = currentWebs.map((web) => web.value)
   const options: WebOption[] =
-    webs?.map((web) => ({
-      value: web.slug,
-      label: web.title,
-    })) || []
-
-  const selectedValues: WebOption[] =
-    relations?.map((relation) => ({
-      value: relation.slug,
-      label: relation.title,
-    })) || []
+    webs
+      ?.filter((web) => !currentWebIds.includes(web.id))
+      .map((web) => ({
+        value: web.id,
+        label: web.title,
+      })) || []
 
   const handleChange = (
     newValue: MultiValue<WebOption>,
     _actionMeta: ActionMeta<WebOption>,
   ) => {
-    console.log('Selected:', newValue)
-    // Here you would handle the selection, perhaps updating state or form values
+    setValue('relatedWebs', newValue as WebOption[], { shouldDirty: true })
   }
 
   if (isPending) return <Spinner />
 
   return (
-    <Select
-      isMulti
+    <FormField
+      control={control}
       name="relatedWebs"
-      options={options}
-      value={selectedValues}
-      placeholder="Select related webs..."
-      isSearchable
-      onChange={handleChange}
+      render={({ field: _field }) => (
+        <FormItem>
+          <Select
+            isMulti
+            options={options}
+            value={currentWebs}
+            placeholder="Select related webs..."
+            isSearchable
+            onChange={handleChange}
+            menuPlacement="auto"
+          />
+        </FormItem>
+      )}
     />
   )
 }
@@ -84,14 +91,13 @@ export default function WebSettingsPage() {
   const { web: webData } = useWeb({ webSlug: selectedWebSlug })
   const { updateWeb, isPending, isSuccess } = useUpdateWeb()
 
-  console.log(webData)
-
   const methods = useForm<WebSettingsForm>({
     defaultValues: {
       title: '',
       published: false,
       description: '',
       image: null,
+      relatedWebs: [],
     },
   })
 
@@ -105,11 +111,18 @@ export default function WebSettingsPage() {
 
   useEffect(() => {
     if (webData) {
+      const relatedWebs =
+        webData.relations?.map((relation) => ({
+          value: relation.id,
+          label: relation.title,
+        })) || []
+
       reset({
         title: webData.title || '',
         published: Boolean(webData.published),
         description: webData.description || '',
         image: webData.image || null,
+        relatedWebs,
       })
     }
   }, [webData, reset])
@@ -127,6 +140,7 @@ export default function WebSettingsPage() {
         description: data.description,
         published: data.published,
         slug: webData?.slug,
+        relatedWebIds: data.relatedWebs?.map((web) => web.value) || [],
       }
 
       if (typeof data.image !== 'string') {
@@ -247,7 +261,7 @@ export default function WebSettingsPage() {
               </FormDescription>
 
               <div className="mb-6 max-w-md">
-                <WebsSelect relations={webData?.relations} />
+                <WebsSelect />
               </div>
 
               <div className="mt-6 flex justify-end">
