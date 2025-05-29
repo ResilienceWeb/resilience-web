@@ -87,6 +87,7 @@ async function getData({ webSlug }): Promise<DataType> {
           enabled: true,
         },
       },
+      relations: true,
     },
   })
 
@@ -95,7 +96,6 @@ async function getData({ webSlug }): Promise<DataType> {
     return null
   }
 
-  console.log(`[rw-debug]`, webSlug)
   const categories = await prisma.category.findMany({
     where: {
       web: {
@@ -287,10 +287,8 @@ async function getData({ webSlug }): Promise<DataType> {
     transformedData.nodes.push({
       id: categoryId,
       label: category.label,
-      color: '#c3c4c7',
       group: 'category',
       icon: category.icon,
-      mass: 1,
     })
 
     // From main node to category node
@@ -300,6 +298,29 @@ async function getData({ webSlug }): Promise<DataType> {
       width: 2,
       selectedWidth: 3,
       // length: categoriesCount * 75,
+      smooth: {
+        enabled: true,
+        type: 'continuous',
+        roundness: 0,
+      },
+    })
+  }
+
+  const relatedWebs = webData.relations
+  for (const relatedWeb of relatedWebs) {
+    const relatedWebId = `related-web-${relatedWeb.slug}`
+    transformedData.nodes.push({
+      id: relatedWebId,
+      label: relatedWeb.title,
+      group: 'related-web',
+    })
+
+    transformedData.edges.push({
+      from: CENTRAL_NODE_ID,
+      to: relatedWebId,
+      width: 2,
+      selectedWidth: 3,
+      length: 200,
       smooth: {
         enabled: true,
         type: 'continuous',
