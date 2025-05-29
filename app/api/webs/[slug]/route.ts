@@ -116,7 +116,7 @@ export async function PUT(request, props) {
       data: newData,
     })
 
-    revalidatePath(`${PROTOCOL}://${params.slug}.${REMOTE_HOSTNAME}`)
+    revalidatePath(`/${params.slug}`)
     return Response.json({
       web: updatedWeb,
     })
@@ -168,7 +168,7 @@ export async function PATCH(request, props) {
       },
     })
 
-    revalidatePath(`${PROTOCOL}://${params.slug}.${REMOTE_HOSTNAME}`)
+    revalidatePath(`/${params.slug}`)
 
     return Response.json({
       web: updatedWeb,
