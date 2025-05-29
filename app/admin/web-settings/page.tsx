@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
-import Select from 'react-select'
 import type { MultiValue, ActionMeta } from 'react-select'
+import dynamic from 'next/dynamic'
+import type { Web } from '@prisma/client'
 import { useAppContext } from '@store/hooks'
 import { toast } from 'sonner'
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
@@ -25,6 +26,8 @@ import useUpdateWeb from '@hooks/webs/useUpdateWeb'
 import useWeb from '@hooks/webs/useWeb'
 import useWebs from '@hooks/webs/useWebs'
 
+const Select = dynamic(() => import('react-select'), { ssr: false })
+
 interface WebSettingsForm {
   title: string
   published: boolean
@@ -37,13 +40,19 @@ type WebOption = {
   label: string
 }
 
-function WebsSelect() {
+function WebsSelect({ relations }: { relations?: Web[] }) {
   const { webs, isPending } = useWebs()
 
   const options: WebOption[] =
     webs?.map((web) => ({
       value: web.slug,
       label: web.title,
+    })) || []
+
+  const selectedValues: WebOption[] =
+    relations?.map((relation) => ({
+      value: relation.slug,
+      label: relation.title,
     })) || []
 
   const handleChange = (
@@ -57,10 +66,11 @@ function WebsSelect() {
   if (isPending) return <Spinner />
 
   return (
-    <Select<WebOption, true>
+    <Select
       isMulti
       name="relatedWebs"
       options={options}
+      value={selectedValues}
       placeholder="Select related webs..."
       isSearchable
       onChange={handleChange}
@@ -73,6 +83,8 @@ export default function WebSettingsPage() {
   const { selectedWebSlug } = useAppContext()
   const { web: webData } = useWeb({ webSlug: selectedWebSlug })
   const { updateWeb, isPending, isSuccess } = useUpdateWeb()
+
+  console.log(webData)
 
   const methods = useForm<WebSettingsForm>({
     defaultValues: {
@@ -235,7 +247,7 @@ export default function WebSettingsPage() {
               </FormDescription>
 
               <div className="mb-6 max-w-md">
-                <WebsSelect />
+                <WebsSelect relations={webData?.relations} />
               </div>
 
               <div className="mt-6 flex justify-end">

@@ -31,6 +31,7 @@ export async function GET(request, props) {
     permissions: {},
     ownerships: {},
     features: {},
+    relations: {},
   })
 
   if (withListings) {
@@ -53,6 +54,7 @@ export async function GET(request, props) {
       },
     }
     include.features = true
+    include.relations = true
   }
 
   const web: Data['web'] = await prisma.web.findUnique({
