@@ -1,7 +1,9 @@
 import { memo, useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { BsArrowsFullscreen } from 'react-icons/bs'
 import Head from 'next/head'
+import { useRouter } from 'next/navigation'
 import VisNetworkReactComponent from 'vis-network-react'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import ListingDialog from '@components/main-list/listing-dialog'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
@@ -40,6 +42,7 @@ const options = {
       shapeProperties: {
         borderRadius: 3,
       },
+      color: '#c3c4c7',
       size: 32,
       font: {
         size: 26,
@@ -49,6 +52,25 @@ const options = {
       widthConstraint: {
         maximum: 160,
       },
+      mass: 1,
+    },
+    'related-web': {
+      shape: 'circularImage',
+      shapeProperties: {
+        borderRadius: 3,
+      },
+      color: '#fff',
+      image: '/logo-circle.png',
+      size: 26,
+      font: {
+        size: 20,
+      },
+      margin: 10,
+      borderWidthSelected: 2,
+      widthConstraint: {
+        maximum: 160,
+      },
+      mass: 1,
     },
   },
   physics: {
@@ -81,6 +103,7 @@ const options = {
 }
 
 const Network = ({ data, selectedId, setSelectedId }) => {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [network, setNetwork] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -100,7 +123,12 @@ const Network = ({ data, selectedId, setSelectedId }) => {
     () => ({
       select: function (event) {
         const { nodes } = event
-        setSelectedId(nodes[0])
+        if (nodes[0].includes('related-web')) {
+          const webSlug = nodes[0].split('-')[2]
+          router.push(`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`)
+        } else {
+          setSelectedId(nodes[0])
+        }
       },
       click: function (event) {
         const { nodes } = event
@@ -128,7 +156,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
         }, 100)
       },
     }),
-    [network, setSelectedId],
+    [network, router, setSelectedId],
   )
 
   const selectedItem = useMemo(
@@ -213,6 +241,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
         {isLoading && <Spinner />}
         {Boolean(selectedId) &&
           selectedItem?.group !== 'category' &&
+          selectedItem?.group !== 'related-web' &&
           selectedItem?.group !== 'central-node' && (
             <ListingDialog
               isOpen={isOpen}

@@ -1,14 +1,14 @@
 'use client'
+
 import { useCallback, useEffect } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
-import { toast } from 'sonner'
-import { Spinner } from '@components/ui/spinner'
-import ImageUpload from '@components/admin/listing-form/ImageUpload'
-import usePermissions from '@hooks/permissions/usePermissions'
-import useWeb from '@hooks/webs/useWeb'
-import useUpdateWeb from '@hooks/webs/useUpdateWeb'
+import { useForm, FormProvider, useFormContext } from 'react-hook-form'
+import type { MultiValue, ActionMeta } from 'react-select'
+import dynamic from 'next/dynamic'
 import { useAppContext } from '@store/hooks'
+import { toast } from 'sonner'
+import ImageUpload from '@components/admin/listing-form/ImageUpload'
 import { Button } from '@components/ui/button'
+import { Checkbox } from '@components/ui/checkbox'
 import {
   FormField,
   FormItem,
@@ -17,15 +17,72 @@ import {
   FormMessage,
   FormControl,
 } from '@components/ui/form'
-import { Textarea } from '@components/ui/textarea'
-import { Checkbox } from '@components/ui/checkbox'
 import { Input } from '@components/ui/input'
+import { Spinner } from '@components/ui/spinner'
+import { Textarea } from '@components/ui/textarea'
+import usePermissions from '@hooks/permissions/usePermissions'
+import useUpdateWeb from '@hooks/webs/useUpdateWeb'
+import useWeb from '@hooks/webs/useWeb'
+import useWebs from '@hooks/webs/useWebs'
+
+const Select = dynamic(() => import('react-select'), { ssr: false })
 
 interface WebSettingsForm {
   title: string
   published: boolean
   description: string
   image: File | string | null
+  relatedWebs: WebOption[]
+}
+
+type WebOption = {
+  value: string
+  label: string
+}
+
+function WebsSelect() {
+  const { webs, isPending } = useWebs()
+  const { control, setValue, watch } = useFormContext<WebSettingsForm>()
+
+  const currentWebs = watch('relatedWebs') || []
+
+  const currentWebIds = currentWebs.map((web) => web.value)
+  const options: WebOption[] =
+    webs
+      ?.filter((web) => !currentWebIds.includes(web.id))
+      .map((web) => ({
+        value: web.id,
+        label: web.title,
+      })) || []
+
+  const handleChange = (
+    newValue: MultiValue<WebOption>,
+    _actionMeta: ActionMeta<WebOption>,
+  ) => {
+    setValue('relatedWebs', newValue as WebOption[], { shouldDirty: true })
+  }
+
+  if (isPending) return <Spinner />
+
+  return (
+    <FormField
+      control={control}
+      name="relatedWebs"
+      render={({ field: _field }) => (
+        <FormItem>
+          <Select
+            isMulti
+            options={options}
+            value={currentWebs}
+            placeholder="Select related webs..."
+            isSearchable
+            onChange={handleChange}
+            menuPlacement="auto"
+          />
+        </FormItem>
+      )}
+    />
+  )
 }
 
 export default function WebSettingsPage() {
@@ -40,6 +97,7 @@ export default function WebSettingsPage() {
       published: false,
       description: '',
       image: null,
+      relatedWebs: [],
     },
   })
 
@@ -53,11 +111,18 @@ export default function WebSettingsPage() {
 
   useEffect(() => {
     if (webData) {
+      const relatedWebs =
+        webData.relations?.map((relation) => ({
+          value: relation.id,
+          label: relation.title,
+        })) || []
+
       reset({
         title: webData.title || '',
         published: Boolean(webData.published),
         description: webData.description || '',
         image: webData.image || null,
+        relatedWebs,
       })
     }
   }, [webData, reset])
@@ -75,6 +140,7 @@ export default function WebSettingsPage() {
         description: data.description,
         published: data.published,
         slug: webData?.slug,
+        relatedWebIds: data.relatedWebs?.map((web) => web.value) || [],
       }
 
       if (typeof data.image !== 'string') {
@@ -92,7 +158,7 @@ export default function WebSettingsPage() {
   const isPublished = watch('published')
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-4">
       <div>
         <h1 className="text-2xl font-bold">Web settings</h1>
         <p className="text-gray-600">
@@ -101,12 +167,12 @@ export default function WebSettingsPage() {
         <div className="my-4 rounded-md bg-white p-4 shadow-md">
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-8">
+              <div className="mb-6">
                 <FormField
                   control={methods.control}
                   name="published"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start gap-2 space-y-0">
+                    <FormItem className="flex flex-row items-start gap-2">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
@@ -175,7 +241,7 @@ export default function WebSettingsPage() {
                       represent a local group, feel free to include information
                       about it.
                     </FormDescription>
-                    <Textarea {...field} rows={4} />
+                    <Textarea {...field} rows={3} />
                     <FormMessage />
                   </FormItem>
                 )}
@@ -185,6 +251,18 @@ export default function WebSettingsPage() {
                 name="image"
                 helperText={`This should be a picture that best represents ${webData?.title}`}
               />
+
+              <FormLabel className="font-semibold">
+                Related/neighbouring webs
+              </FormLabel>
+              <FormDescription className="mb-2">
+                You can link to other webs that are related to this one. These
+                will appear on the Network view as clickable items.
+              </FormDescription>
+
+              <div className="mb-6 max-w-md">
+                <WebsSelect />
+              </div>
 
               <div className="mt-6 flex justify-end">
                 <Button type="submit" disabled={!isDirty || isPending}>

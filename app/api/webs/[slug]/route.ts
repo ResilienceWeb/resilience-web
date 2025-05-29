@@ -31,6 +31,7 @@ export async function GET(request, props) {
     permissions: {},
     ownerships: {},
     features: {},
+    relations: {},
   })
 
   if (withListings) {
@@ -53,6 +54,7 @@ export async function GET(request, props) {
       },
     }
     include.features = true
+    include.relations = true
   }
 
   const web: Data['web'] = await prisma.web.findUnique({
@@ -78,10 +80,18 @@ export async function PUT(request, props) {
   try {
     const slug = params.slug
     const formData = await request.formData()
+    const relatedWebIds = formData.get('relatedWebIds')
+    const relationsArray = relatedWebIds !== '' ? relatedWebIds.split(',') : []
+    const relationsToConnect = relationsArray.map((relationId) => ({
+      id: Number(relationId),
+    }))
     const newData: Prisma.WebUncheckedUpdateInput = {
       title: formData.get('title'),
       published: stringToBoolean(formData.get('published')),
       description: formData.get('description'),
+      relations: {
+        set: relationsToConnect,
+      },
     }
 
     const image = formData.get('image')

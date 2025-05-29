@@ -185,7 +185,9 @@ const Web = ({
         ? data.nodes
             .filter(
               (item) =>
-                item.group === 'category' || item.group === 'central-node',
+                item.group === 'category' ||
+                item.group === 'related-web' ||
+                item.group === 'central-node',
             )
             .filter(
               (item) =>
@@ -201,7 +203,10 @@ const Web = ({
     if (!data) return []
     let results: any[] = data?.nodes
       .filter(
-        (item) => item.group !== 'category' && item.group !== 'central-node',
+        (item) =>
+          item.group !== 'category' &&
+          item.group !== 'central-node' &&
+          item.group !== 'related-web',
       )
       .sort(sortStringsFunc)
       .sort((item) => {
@@ -255,7 +260,8 @@ const Web = ({
         results.some(
           (item) =>
             item.category.label === descriptiveNode.label ||
-            descriptiveNode.group === 'central-node',
+            descriptiveNode.group === 'central-node' ||
+            descriptiveNode.group === 'related-web',
         ),
     )
 

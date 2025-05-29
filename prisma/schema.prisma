@@ -87,6 +87,8 @@ model Web {
   permissions Permission[]
   ownerships  Ownership[]
   features    WebFeature[]
+  relations   Web[]        @relation("related")
+  relationOf  Web[]        @relation("related")
 
   @@map("Location")
 }
