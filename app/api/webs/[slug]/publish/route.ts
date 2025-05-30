@@ -24,7 +24,7 @@ export async function POST(_request, props) {
       },
     })
     revalidatePath('/')
-    revalidatePath(`${PROTOCOL}://${params.slug}.${REMOTE_HOSTNAME}`)
+    revalidatePath(`/${params.slug}`)
 
     return new Response('Web published', {
       status: 200,

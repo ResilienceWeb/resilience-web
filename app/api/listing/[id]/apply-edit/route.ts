@@ -107,9 +107,7 @@ export async function POST(request, props) {
       },
     })
 
-    revalidatePath(
-      `${PROTOCOL}://${updatedListing.web.slug}.${REMOTE_HOSTNAME}/${updatedListing.slug}`,
-    )
+    revalidatePath(`/${updatedListing.web.slug}/${updatedListing.slug}`)
     return Response.json({
       listing: updatedListing,
     })
