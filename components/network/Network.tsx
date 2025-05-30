@@ -247,6 +247,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
               isOpen={isOpen}
               item={selectedItem}
               onClose={onCloseDialog}
+              isFullScreen={isFullScreen}
             />
           )}
       </div>

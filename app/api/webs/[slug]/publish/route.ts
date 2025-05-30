@@ -2,7 +2,6 @@ import { revalidatePath } from 'next/cache'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 export async function POST(_request, props) {
   const params = await props.params

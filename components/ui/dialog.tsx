@@ -31,10 +31,9 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & { forceMount?: boolean }
+>(({ className, children, forceMount = false, ...props }, ref) => {
+  const content = (
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
@@ -49,8 +48,24 @@ const DialogContent = React.forwardRef<
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
-  </DialogPortal>
-))
+  );
+  
+  if (forceMount) {
+    return (
+      <>
+        <DialogOverlay />
+        {content}
+      </>
+    );
+  }
+  
+  return (
+    <DialogPortal>
+      <DialogOverlay />
+      {content}
+    </DialogPortal>
+  );
+})
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
 const DialogHeader = ({

@@ -4,7 +4,6 @@ import type { Web } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 

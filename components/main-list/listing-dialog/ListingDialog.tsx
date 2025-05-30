@@ -31,9 +31,16 @@ interface DialogProps {
   isMobile?: boolean
   item: any
   onClose: () => void
+  isFullScreen?: boolean
 }
 
-const ListingDialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
+const ListingDialog = ({
+  isOpen,
+  isMobile,
+  item,
+  onClose,
+  isFullScreen = false,
+}: DialogProps) => {
   const [subdomain, setSubdomain] = useState<string>()
 
   const websiteSanitized = useMemo(
@@ -131,7 +138,10 @@ const ListingDialog = ({ isOpen, isMobile, item, onClose }: DialogProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-h-screen sm:max-w-[672px] md:max-w-[760px] flex flex-col">
+      <DialogContent
+        className="max-h-screen sm:max-w-[672px] md:max-w-[760px] flex flex-col"
+        forceMount={isFullScreen ? true : undefined}
+      >
         {item.image && (
           <ListingImage
             alt={`${item.label} cover image`}
