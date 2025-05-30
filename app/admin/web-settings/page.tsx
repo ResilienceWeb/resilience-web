@@ -40,7 +40,7 @@ type WebOption = {
   label: string
 }
 
-function WebsSelect() {
+function WebsSelect({ selectedWebSlug }: { selectedWebSlug: string }) {
   const { webs, isPending } = useWebs()
   const { control, setValue, watch } = useFormContext<WebSettingsForm>()
 
@@ -49,6 +49,7 @@ function WebsSelect() {
   const currentWebIds = currentWebs.map((web) => web.value)
   const options: WebOption[] =
     webs
+      ?.filter((web) => web.slug !== selectedWebSlug)
       ?.filter((web) => !currentWebIds.includes(web.id))
       .map((web) => ({
         value: web.id,
@@ -261,7 +262,7 @@ export default function WebSettingsPage() {
               </FormDescription>
 
               <div className="mb-6 max-w-md">
-                <WebsSelect />
+                <WebsSelect selectedWebSlug={selectedWebSlug} />
               </div>
 
               <div className="mt-6 flex justify-end">
