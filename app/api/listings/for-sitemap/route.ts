@@ -15,55 +15,18 @@ export async function GET() {
           published: true,
         },
       },
-      include: {
-        location: {
-          select: {
-            latitude: true,
-            longitude: true,
-            description: true,
-            noPhysicalLocation: true,
-          },
-        },
-        category: {
-          select: {
-            id: true,
-            color: true,
-            label: true,
-          },
-        },
-        web: true,
-        tags: {
-          select: {
-            label: true,
-          },
-        },
-        relations: {
-          include: {
-            category: {
-              select: {
-                id: true,
-                color: true,
-                label: true,
-              },
-            },
-          },
-        },
-        edits: true,
-      },
-      orderBy: [
-        {
-          id: 'asc',
-        },
-      ],
     })
     return Response.json({
       listings,
     })
   } catch (e) {
-    console.error(`[RW] Unable to fetch listings - ${e}`)
+    console.error(`[RW] Unable to fetch listings for generating sitemap - ${e}`)
     Sentry.captureException(e)
-    return new Response(`Unable to fetch listings - ${e}`, {
-      status: 500,
-    })
+    return new Response(
+      `Unable to fetch listings for generating sitemap - ${e}`,
+      {
+        status: 500,
+      },
+    )
   }
 }
