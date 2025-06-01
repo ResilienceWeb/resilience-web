@@ -15,6 +15,14 @@ export async function GET() {
           published: true,
         },
       },
+      select: {
+        slug: true,
+        web: {
+          select: {
+            slug: true,
+          },
+        },
+      },
     })
     return Response.json({
       listings,
