@@ -9,11 +9,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip'
-
 import useIsMobile from '@hooks/application/useIsMobile'
 import FeedbackDialog from './FeedbackDialog'
 
-const GetInTouchButton = () => {
+const GetInTouchButton = ({ userEmail }: { userEmail?: string }) => {
   const isMobile = useIsMobile()
   const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = useState(false)
 
@@ -55,6 +54,7 @@ const GetInTouchButton = () => {
       <FeedbackDialog
         isOpen={isFeedbackDialogOpen}
         onClose={handleCloseFeedbackDialog}
+        userEmail={userEmail}
       />
     </>
   )

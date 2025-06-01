@@ -3,7 +3,6 @@
 import { memo, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 import { REMOTE_URL } from '@helpers/config'
@@ -38,15 +37,18 @@ const formSchema = z.object({
 interface FeedbackDialogProps {
   isOpen: boolean
   onClose: () => void
+  userEmail?: string
 }
 
-const FeedbackDialog = ({ isOpen, onClose }: FeedbackDialogProps) => {
-  const { data: session } = useSession()
-
+const FeedbackDialog = ({
+  isOpen,
+  onClose,
+  userEmail,
+}: FeedbackDialogProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: session?.user?.email || '',
+      email: userEmail || '',
       feedback: '',
     },
   })

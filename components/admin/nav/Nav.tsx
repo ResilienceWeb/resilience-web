@@ -1,11 +1,13 @@
 'use client'
+
 import { useCallback } from 'react'
-import Link from 'next/link'
-import dynamic from 'next/dynamic'
-import { useSession, signOut } from 'next-auth/react'
-import { RxHamburgerMenu } from 'react-icons/rx'
 import { BsPersonCircle } from 'react-icons/bs'
 import { FiChevronDown } from 'react-icons/fi'
+import { RxHamburgerMenu } from 'react-icons/rx'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
+import { useSession, signOut } from 'next-auth/react'
+import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +16,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu'
-import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 
 const WebSelector = dynamic(() => import('./web-selector'))
 
@@ -42,7 +43,7 @@ const Nav = ({ onOpen }) => {
           </div>
 
           <div className="flex gap-4">
-            <GetInTouchButton />
+            <GetInTouchButton userEmail={session?.user?.email} />
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
