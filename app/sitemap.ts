@@ -5,10 +5,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const response = await fetch(`${REMOTE_URL}/api/listings/for-sitemap`)
   const data = await response.json()
   const { listings } = data
-  // const pathItems = listings.map((l) => ({
-  //   url: `https://${l.web.slug}.resilienceweb.org.uk/${l.slug}`,
-  //   lastModified: l.updatedAt,
-  // }))
+  const pathItems = listings.map((l) => ({
+    url: `https://${l.web.slug}.resilienceweb.org.uk/${l.slug}`,
+    lastModified: l.updatedAt,
+  }))
 
   return [
     {
@@ -20,6 +20,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: 'https://resilienceweb.org.uk/news',
     },
-    // ...pathItems,
+    ...pathItems,
   ]
 }
