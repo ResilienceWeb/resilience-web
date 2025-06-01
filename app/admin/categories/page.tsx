@@ -27,7 +27,8 @@ export default function CategoriesPage() {
       <div>
         <h1 className="text-2xl font-bold">Categories & Tags</h1>
         <p className="text-gray-600">
-          Add, edit or remove categories and tags.
+          Add, edit or remove categories and tags. You can also customise the
+          icon and colour for each category.
         </p>
       </div>
 
