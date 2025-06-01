@@ -21,6 +21,22 @@ const defaultCategories = [
     label: 'Social justice',
     color: 'ff5757',
   },
+  {
+    label: 'Food',
+    color: 'a4791b',
+  },
+  {
+    label: 'Health',
+    color: 'd195e9',
+  },
+  {
+    label: 'Education',
+    color: 'c9e265',
+  },
+  {
+    label: 'Human rights',
+    color: 'a2b342',
+  },
 ]
 
 export async function GET(request) {
