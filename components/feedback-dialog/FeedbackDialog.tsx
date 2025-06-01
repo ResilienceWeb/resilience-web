@@ -3,6 +3,7 @@
 import { memo, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 import { REMOTE_URL } from '@helpers/config'
@@ -40,10 +41,12 @@ interface FeedbackDialogProps {
 }
 
 const FeedbackDialog = ({ isOpen, onClose }: FeedbackDialogProps) => {
+  const { data: session } = useSession()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      email: session?.user?.email || '',
       feedback: '',
     },
   })
@@ -85,7 +88,7 @@ const FeedbackDialog = ({ isOpen, onClose }: FeedbackDialogProps) => {
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle>Feedback</DialogTitle>
+          <DialogTitle>Get in touch</DialogTitle>
         </DialogHeader>
         <DialogDescription>
           Use this form to send us feedback or any questions you may have 😊
@@ -124,12 +127,12 @@ const FeedbackDialog = ({ isOpen, onClose }: FeedbackDialogProps) => {
               name="feedback"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold">Feedback</FormLabel>
+                  <FormLabel className="font-semibold">Message</FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
                       className="h-[200px]"
-                      placeholder="Enter your feedback"
+                      placeholder="Enter your message"
                     />
                   </FormControl>
                   <FormMessage>
@@ -145,7 +148,7 @@ const FeedbackDialog = ({ isOpen, onClose }: FeedbackDialogProps) => {
                 disabled={form.formState.isSubmitting}
                 className="bg-[#2B8257] hover:bg-[#236c47]"
               >
-                Send feedback
+                Send message
               </Button>
             </div>
           </form>
