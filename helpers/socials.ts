@@ -61,7 +61,6 @@ export const socialMediaPlatforms = [
   },
 ]
 
-// icon styles: h-5 w-5 transition-transform group-hover:scale-110
 export const socialIconStyles = {
   facebook: {
     bgClass: 'bg-blue-50',
