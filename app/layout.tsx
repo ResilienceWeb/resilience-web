@@ -1,17 +1,19 @@
+import '@fontsource/poppins/400.css'
+import '@fontsource/poppins/600.css'
+import '@styles/styles.global.css'
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query'
 import { ViewTransitions } from 'next-view-transitions'
+import { REMOTE_URL } from '@helpers/config'
 import { Toaster } from '@components/ui/sonner'
-import Providers from './providers'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
-import '@fontsource/poppins/400.css'
-import '@fontsource/poppins/600.css'
-import '@styles/styles.global.css'
+import Providers from './providers'
 
 export const metadata = {
+  metadataBase: new URL(REMOTE_URL),
   title: 'Resilience Web',
   description:
     'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
