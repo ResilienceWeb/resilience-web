@@ -1,4 +1,5 @@
 'use client'
+
 import Image from 'next/image'
 import Layout from '@components/layout'
 import SignupForm from '@components/signup-form'

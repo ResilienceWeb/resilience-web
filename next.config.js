@@ -51,7 +51,6 @@ const nextConfig = {
   experimental: {
     scrollRestoration: process.env.NODE_ENV === 'development' ? false : true,
   },
-  // eslint-disable-next-line @typescript-eslint/require-await
   async rewrites() {
     return [
       {
@@ -69,7 +68,6 @@ const nextConfig = {
     ]
   },
   skipTrailingSlashRedirect: true,
-  // eslint-disable-next-line @typescript-eslint/require-await
   async headers() {
     return [
       {

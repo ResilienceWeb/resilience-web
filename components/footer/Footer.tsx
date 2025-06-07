@@ -20,6 +20,7 @@ const SocialButton = ({
       className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black/10 transition-colors duration-300 hover:bg-black/20"
       href={href}
       target="_blank"
+      rel="noopener noreferrer"
     >
       <span className="sr-only">{label}</span>
       {children}

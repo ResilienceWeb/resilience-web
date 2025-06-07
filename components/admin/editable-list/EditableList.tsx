@@ -1,15 +1,14 @@
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { useCallback, useState, useMemo, memo } from 'react'
-
-import DeleteConfirmationDialog from './delete-confirmation-dialog'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useAppContext } from '@store/hooks'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { removeNonAlphaNumeric } from '@helpers/utils'
+import usePermissions from '@hooks/permissions/usePermissions'
+import useWebs from '@hooks/webs/useWebs'
+import DeleteConfirmationDialog from './delete-confirmation-dialog'
 import Table from './table/Table'
 import TableActions from './table/TableActions'
-import usePermissions from '@hooks/permissions/usePermissions'
-import { useAppContext } from '@store/hooks'
-import useWebs from '@hooks/webs/useWebs'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 const EditableList = ({ deleteListing, isAdmin, items }) => {
   const router = useRouter()
@@ -120,6 +119,7 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
             href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
             target="_blank"
             className="font-semibold text-[#2B6CB0] hover:underline"
+            rel="noopener noreferrer"
           >
             {`${selectedWebSlug}.${REMOTE_HOSTNAME}`}
           </a>

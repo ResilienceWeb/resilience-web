@@ -1,39 +1,30 @@
-import { FlatCompat } from '@eslint/eslintrc'
-import js from '@eslint/js'
+import eslint from '@eslint/js'
 import tanstackQueryPlugin from '@tanstack/eslint-plugin-query'
 import promisePlugin from 'eslint-plugin-promise'
 import reactPlugin from 'eslint-plugin-react'
+import reactHooksPlugin from 'eslint-plugin-react-hooks'
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
 import globals from 'globals'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import tseslint from 'typescript-eslint'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-})
+import nextPlugin from '@next/eslint-plugin-next'
 
 export default tseslint.config([
-  js.configs.recommended,
+  eslint.configs.recommended,
   reactPlugin.configs.flat.recommended,
   reactPlugin.configs.flat['jsx-runtime'],
   promisePlugin.configs['flat/recommended'],
-  tseslint.configs.recommendedTypeChecked,
-  {
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
   ...tanstackQueryPlugin.configs['flat/recommended'],
-  ...compat.extends('plugin:react-hooks/recommended'),
-  ...compat.config({ extends: ['next', 'next/core-web-vitals', 'next/typescript'] }),
+  reactHooksPlugin.configs['recommended-latest'],
   {
     plugins: {
       react: reactPlugin,
+      '@next/next': nextPlugin,
+      'jsx-a11y': jsxA11yPlugin,
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      }
     },
     languageOptions: {
       globals: {
@@ -80,10 +71,13 @@ export default tseslint.config([
           "allowFinally": true
         }
       ],
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
     }
   },
   {
     files: ['**/*.ts', '**/*.tsx'],
+    extends: [tseslint.configs.recommendedTypeChecked],
     ignores: ['**/*.js'],
     plugins: {
       '@typescript-eslint': tseslint.plugin,
@@ -123,6 +117,6 @@ export default tseslint.config([
     }
   },
   {
-    ignores: ['package-lock.json', 'eslint.config.js', 'postcss.config.js', 'tailwind.config.js', 'node_modules', '.next', 'playwright-report'],
+    ignores: ['package-lock.json', 'postcss.config.js', 'tailwind.config.js', 'node_modules', '.next', 'playwright-report'],
   },
 ])
