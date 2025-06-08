@@ -61,7 +61,7 @@ const options = {
       },
       color: '#fff',
       image: '/logo-circle.png',
-      size: 26,
+      size: 40,
       font: {
         size: 20,
       },
@@ -83,7 +83,7 @@ const options = {
     solver: 'forceAtlas2Based',
     stabilization: {
       enabled: true,
-      iterations: 500, // More iterations for better initial positioning
+      iterations: 300, // More iterations for better initial positioning
       updateInterval: 1,
     },
   },
