@@ -27,6 +27,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'eu-central-1.graphassets.com'
+      },
+      {
+        protocol: 'https',
         hostname: 'via.placeholder.com',
       },
       {
