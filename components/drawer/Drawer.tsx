@@ -1,18 +1,18 @@
 'use client'
 
-import NextLink from 'next/link'
 import { memo } from 'react'
+import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
 import Select from 'react-select'
 import Image from 'next/legacy/image'
-import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
+import NextLink from 'next/link'
+import customMultiSelectStyles from '@styles/select-styles'
+import { REMOTE_URL } from '@helpers/config'
+import DonateButton from '@components/donate-button'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import { Separator } from '@components/ui/separator'
-
 import VolunteerSwitch from '@components/volunteer-switch'
-import DonateButton from '@components/donate-button'
-import customMultiSelectStyles from '@styles/select-styles'
-import { REMOTE_URL } from '@helpers/config'
+import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import LogoImage from '../../public/logo.png'
 
 interface DrawerProps {
@@ -46,6 +46,7 @@ const Drawer = ({
   webDescription,
   isTransitionMode = false,
 }: DrawerProps) => {
+  const selectedWebSlug = useSelectedWebSlug()
   return (
     <div className="fixed z-3 h-screen w-[300px] bg-white shadow-xl">
       <div className="flex h-full flex-col overflow-hidden">
@@ -66,7 +67,7 @@ const Drawer = ({
             <>
               <div className="p-4">
                 <a
-                  href="/new-listing"
+                  href={`${REMOTE_URL}/new-listing/${selectedWebSlug}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

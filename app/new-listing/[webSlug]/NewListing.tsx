@@ -1,25 +1,24 @@
 'use client'
+
 import { useCallback, useState } from 'react'
-import Link from 'next/link'
-import { Spinner } from '@components/ui/spinner'
-import { Button } from '@components/ui/button'
 import { PiInfoBold } from 'react-icons/pi'
+import Link from 'next/link'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
+import Layout from '@components/layout'
+import { Button } from '@components/ui/button'
+import { Spinner } from '@components/ui/spinner'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import useCreateListing from '@hooks/listings/useCreateListing'
-import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import useWeb from '@hooks/webs/useWeb'
-import Layout from '@components/layout'
-import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
-export default function NewListing() {
-  const selectedWebSlug = useSelectedWebSlug()
+export default function NewListing({ webSlug }: { webSlug: string }) {
   const { categories, isPending: isCategoriesLoading } = useCategoriesPublic({
-    webSlug: selectedWebSlug,
+    webSlug,
   })
   const { mutate: createListing } = useCreateListing()
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const { web } = useWeb({ webSlug: selectedWebSlug })
+  const { web } = useWeb({ webSlug })
 
   const handleSubmit = useCallback(
     (data) => {
@@ -58,7 +57,7 @@ export default function NewListing() {
               hopefully approved by the admins of the{' '}
               <strong>{web?.title}</strong> web.
             </p>
-            <Link href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}>
+            <Link href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`}>
               <Button className="mt-8" variant="default">
                 Go back to {web?.title} Resilience Web
               </Button>
