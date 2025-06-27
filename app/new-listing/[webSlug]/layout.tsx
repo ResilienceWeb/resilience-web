@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { auth } from '@auth'
-import { REMOTE_URL, REMOTE_HOSTNAME } from '@helpers/config'
+import { REMOTE_URL } from '@helpers/config'
 import SessionProvider from '../../admin/SessionProvider'
 
 export const metadata = {
@@ -18,7 +18,7 @@ export default async function Layout(props) {
   const session = await auth()
   if (!session) {
     redirect(
-      `${REMOTE_URL}/auth/signin?redirectTo=${`${params.webSlug}.${REMOTE_HOSTNAME}/new-listing`}`,
+      `${REMOTE_URL}/auth/signin?redirectTo=${`/new-listing/${params.webSlug}`}`,
     )
   }
 

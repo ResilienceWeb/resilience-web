@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react'
 import { PiInfoBold } from 'react-icons/pi'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
 import Layout from '@components/layout'
@@ -13,12 +14,13 @@ import useCreateListing from '@hooks/listings/useCreateListing'
 import useWeb from '@hooks/webs/useWeb'
 
 export default function NewListing({ webSlug }: { webSlug: string }) {
+  const { data: session } = useSession()
+  const { web } = useWeb({ webSlug })
   const { categories, isPending: isCategoriesLoading } = useCategoriesPublic({
     webSlug,
   })
   const { mutate: createListing } = useCreateListing()
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const { web } = useWeb({ webSlug })
 
   const handleSubmit = useCallback(
     (data) => {
@@ -26,6 +28,7 @@ export default function NewListing({ webSlug }: { webSlug: string }) {
       data.pending = true
       data.inactive = false
       data.relations = []
+      data.proposerId = session?.user.id
       createListing(data)
       setTimeout(() => {
         setIsSubmitted(true)
@@ -34,7 +37,7 @@ export default function NewListing({ webSlug }: { webSlug: string }) {
         }
       }, 1000)
     },
-    [createListing, web?.id],
+    [createListing, web?.id, session?.user.id],
   )
 
   if (isCategoriesLoading) {

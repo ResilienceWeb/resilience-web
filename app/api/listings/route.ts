@@ -81,6 +81,7 @@ export async function POST(request) {
     const tags = formData.get('tags')
     const relations = formData.get('relations')
     const pending = formData.get('pending')
+    const proposerId = formData.get('proposerId')
     const webId = parseInt(formData.get('webId'))
     const category = parseInt(formData.get('category'))
     const title = formData.get('title')
@@ -133,6 +134,11 @@ export async function POST(request) {
         })),
       },
       pending: isProposedListing,
+      proposer: {
+        connect: {
+          id: proposerId,
+        },
+      },
       seekingVolunteers: stringToBoolean(seekingVolunteers),
       featured: isProposedListing ? false : stringToBoolean(featured),
       slug: slug,

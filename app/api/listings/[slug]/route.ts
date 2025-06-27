@@ -33,6 +33,7 @@ export async function GET(request, props) {
       },
       include: {
         socials: true,
+        proposer: true,
         location: {
           select: {
             latitude: true,
