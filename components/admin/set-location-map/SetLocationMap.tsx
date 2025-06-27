@@ -119,7 +119,7 @@ const Map = ({
       )}
     >
       <FormLabel className="font-semibold">Location</FormLabel>
-      <p className="p-2 text-sm font-normal text-gray-700 italic">
+      <p className="py-2 text-sm font-normal text-gray-700 italic">
         The location can only be selected by adding an address via the search
         bar below. Selecting a location without an address is not supported.
       </p>

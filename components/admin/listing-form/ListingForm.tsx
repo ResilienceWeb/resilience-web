@@ -470,7 +470,11 @@ const ListingForm = ({
 
           {!watch('noPhysicalLocation') && (
             <div className="mt-4">
-              <SetLocationMap />
+              <SetLocationMap
+                latitude={listing?.location?.latitude}
+                longitude={listing?.location?.longitude}
+                locationDescription={listing?.location?.description}
+              />
             </div>
           )}
 

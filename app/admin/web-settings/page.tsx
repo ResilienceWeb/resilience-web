@@ -180,10 +180,10 @@ export default function WebSettingsPage() {
   const isPublished = watch('published')
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mb-8">
       <div>
         <h1 className="text-2xl font-bold">Web settings</h1>
-        <p className="text-gray-600">
+        <p className="text-sm text-gray-600">
           This page is only accessible to web owners.
         </p>
         <div className="my-4 rounded-md bg-white p-4 shadow-md">
@@ -275,7 +275,11 @@ export default function WebSettingsPage() {
               />
 
               <div>
-                <SetLocationMap />
+                <SetLocationMap
+                  latitude={webData?.location?.latitude}
+                  longitude={webData?.location?.longitude}
+                  locationDescription={webData?.location?.description}
+                />
               </div>
 
               <div className="mt-8">
