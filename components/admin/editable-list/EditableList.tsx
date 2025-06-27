@@ -46,14 +46,14 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
 
   const goToEdit = useCallback(
     (dataItem) => {
-      router.push(`/admin/${dataItem.slug}`)
+      router.push(`/admin/listings/${dataItem.slug}`)
     },
     [router],
   )
 
   const goToProposedEdits = useCallback(
     (dataItem) => {
-      router.push(`/admin/${dataItem.slug}/edits`)
+      router.push(`/admin/listings/${dataItem.slug}/edits`)
     },
     [router],
   )

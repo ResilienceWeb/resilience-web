@@ -39,7 +39,10 @@ const NavLink = ({ children, href }) => (
 
 const NavItem = ({ label, icon, href, tourId, closeMenu }: NavItemProps) => {
   const pathname = usePathname()
-  const isActive = pathname === href
+  let isActive = pathname === href
+  if (href === '/admin' && pathname.includes('/admin/listings/')) {
+    isActive = true
+  }
 
   return (
     <NavLink href={href}>
