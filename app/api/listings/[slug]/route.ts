@@ -2,8 +2,10 @@ import { Prisma } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import deleteImage from '@helpers/deleteImage'
+import { sendEmail } from '@helpers/email'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
+import ListingProposedAcceptedEmail from '@components/emails/ListingProposedAcceptedEmail'
 
 function exclude(data, keys) {
   return Object.fromEntries(
@@ -230,6 +232,8 @@ export async function PUT(request) {
       where: { id: Number(listingId) },
       include: {
         socials: true,
+        proposer: true,
+        web: true,
         location: {
           select: {
             latitude: true,
@@ -257,6 +261,22 @@ export async function PUT(request) {
       },
       data: newData,
     })
+
+    const isApprovingProposedListing = formData.get(
+      'isApprovingProposedListing',
+    )
+    if (isApprovingProposedListing) {
+      await sendEmail({
+        to: listing.proposer.email,
+        subject: `Your proposed listing ${listing.title} has been accepted`,
+        email: ListingProposedAcceptedEmail({
+          webTitle: listing.web.title,
+          listingTitle: listing.title,
+          listingSlug: listing.slug,
+          webSlug: listing.web.slug,
+        }),
+      })
+    }
 
     return Response.json({
       listing,

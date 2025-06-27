@@ -88,6 +88,7 @@ export default function NewListing({ webSlug }: { webSlug: string }) {
                   categories={categories}
                   handleSubmit={handleSubmit}
                   isEditMode={false}
+                  webSlug={webSlug}
                 />
               </div>
             </div>

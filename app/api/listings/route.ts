@@ -135,9 +135,13 @@ export async function POST(request) {
       },
       pending: isProposedListing,
       proposer: {
-        connect: {
-          id: proposerId,
-        },
+        ...(proposerId
+          ? {
+              connect: {
+                id: proposerId,
+              },
+            }
+          : {}),
       },
       seekingVolunteers: stringToBoolean(seekingVolunteers),
       featured: isProposedListing ? false : stringToBoolean(featured),
@@ -191,8 +195,15 @@ export async function POST(request) {
         },
       })
 
+      const proposer = await prisma.user.findUnique({
+        where: {
+          id: proposerId,
+        },
+      })
+
       const webCreatedEmailComponent = ListingProposedEmail({
         proposedListingTitle: listing.title,
+        proposerEmail: proposer?.email,
         webTitle: `${selectedWeb.title}`,
         url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin`,
       })

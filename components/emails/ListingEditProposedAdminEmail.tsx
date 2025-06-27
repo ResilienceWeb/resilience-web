@@ -58,7 +58,7 @@ const ListingEditProposedAdminEmail = ({ webTitle, listingTitle }: Props) => {
           </div>
           <Hr style={hr} />
           <Text style={footer}>
-            Resilience Web - Local discovery, collaboration and networking
+            Resilience Web CIC - Local discovery, collaboration and networking
             between activists and organisations
           </Text>
         </Container>

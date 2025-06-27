@@ -27,7 +27,7 @@ type Props = {
   webSlug: string
 }
 
-const ListingEditAcceptedEmail = ({
+const ListingProposedAcceptedEmail = ({
   webTitle,
   listingTitle,
   listingSlug,
@@ -39,8 +39,8 @@ const ListingEditAcceptedEmail = ({
     <Html lang="en" dir="ltr">
       <Head />
       <Preview>
-        Your edit to {listingTitle} on {webTitle} Resilience Web has been
-        accepted
+        Your proposed listing {listingTitle} on {webTitle} Resilience Web has
+        been accepted
       </Preview>
       <Body style={main}>
         <Container style={container}>
@@ -53,7 +53,7 @@ const ListingEditAcceptedEmail = ({
           />
           <Text style={paragraph}>Hello 👋</Text>
           <Text style={paragraph}>
-            Great news! 🥳 Your suggested edit to{' '}
+            Great news! 🥳 Your proposed listing for{' '}
             <strong>{listingTitle}</strong> on{' '}
             <strong>{webTitle} Resilience Web</strong> has been accepted.
           </Text>
@@ -78,4 +78,4 @@ const ListingEditAcceptedEmail = ({
   )
 }
 
-export default ListingEditAcceptedEmail
+export default ListingProposedAcceptedEmail

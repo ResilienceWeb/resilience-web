@@ -2,18 +2,15 @@
 
 import { memo, useEffect, useMemo } from 'react'
 import { useForm, useFormContext } from 'react-hook-form'
+import { AiOutlineLoading } from 'react-icons/ai'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
+import { zodResolver } from '@hookform/resolvers/zod'
 import type { Category } from '@prisma/client'
-import { AiOutlineLoading } from 'react-icons/ai'
+import { z } from 'zod'
 import { urlValidator } from '@helpers/form'
-import ImageUpload from './ImageUpload'
-import useTags from '@hooks/tags/useTags'
-import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import { generateSlug } from '@helpers/utils'
-import EditorField from './RichTextEditor'
-import SocialMedia from './SocialMedia'
-import { Input } from '@components/ui/input'
+import { Button } from '@components/ui/button'
 import { Checkbox } from '@components/ui/checkbox'
 import {
   Form,
@@ -23,9 +20,7 @@ import {
   FormControl,
   FormMessage,
 } from '@components/ui/form'
-import { Button } from '@components/ui/button'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { Input } from '@components/ui/input'
 import {
   Select,
   SelectContent,
@@ -33,9 +28,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select'
+import useTags from '@hooks/tags/useTags'
+import ImageUpload from './ImageUpload'
+import EditorField from './RichTextEditor'
+import SocialMedia from './SocialMedia'
 
-const SlugField = () => {
-  const selectedWebSlug = useSelectedWebSlug()
+const SlugField = ({ webSlug }) => {
   const { control, watch, setValue } = useFormContext()
 
   const title = watch('title')
@@ -61,7 +59,7 @@ const SlugField = () => {
           <FormLabel className="font-semibold">Link to listing page</FormLabel>
           <div className="flex">
             <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-              {`${selectedWebSlug}.resilienceweb.org.uk/`}
+              {`${webSlug}.resilienceweb.org.uk/`}
             </span>
             <Input {...field} className="rounded-l-none" />
           </div>
@@ -88,6 +86,7 @@ interface Props {
   categories: Category[]
   handleSubmit: (data: any) => void
   isEditMode: boolean
+  webSlug: string
 }
 
 type TagOption = {
@@ -129,6 +128,7 @@ const ListingFormSimplified = ({
   categories,
   handleSubmit: onSubmit,
   isEditMode = false,
+  webSlug,
 }: Props) => {
   const { tags } = useTags()
   const form = useForm<FormValues>({
@@ -271,7 +271,7 @@ const ListingFormSimplified = ({
 
           <SocialMedia />
 
-          {!isEditMode && <SlugField />}
+          {!isEditMode && <SlugField webSlug={webSlug} />}
 
           {tagOptions.length > 0 && (
             <FormField

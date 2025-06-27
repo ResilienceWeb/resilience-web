@@ -66,11 +66,7 @@ const Drawer = ({
           {!isTransitionMode && (
             <>
               <div className="p-4">
-                <a
-                  href={`${REMOTE_URL}/new-listing/${selectedWebSlug}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={`${REMOTE_URL}/new-listing/${selectedWebSlug}`}>
                   <Button
                     size="lg"
                     variant="default"

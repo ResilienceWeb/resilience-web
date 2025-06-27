@@ -64,7 +64,6 @@ export default function WebFeatures({ web }: WebFeaturesProps) {
       <div className="rounded-md border">
         {Object.entries(FEATURES).map(([_key, featureKey]) => {
           const feature = features?.find((f) => f.feature === featureKey)
-          console.log(feature)
           return (
             <div
               key={featureKey}
