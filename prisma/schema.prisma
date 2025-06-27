@@ -32,20 +32,21 @@ model Account {
 }
 
 model User {
-  id            String       @id @default(cuid())
-  name          String?
-  email         String?      @unique(map: "users.email_unique")
-  emailVerified DateTime?    @map("email_verified")
-  image         String?
-  admin         Boolean      @default(false)
-  accounts      Account[]
-  sessions      Session[]
-  permission    Permission[]
-  ownerships    Ownership[]
+  id               String        @id @default(cuid())
+  name             String?
+  email            String?       @unique(map: "users.email_unique")
+  emailVerified    DateTime?     @map("email_verified")
+  image            String?
+  admin            Boolean       @default(false)
+  accounts         Account[]
+  sessions         Session[]
+  permission       Permission[]
+  ownerships       Ownership[]
+  ListingEdit      ListingEdit[]
+  proposedListings Listing[]
 
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
-  ListingEdit ListingEdit[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
 }
@@ -145,6 +146,8 @@ model Listing {
   relations         Listing[]            @relation("related")
   relationOf        Listing[]            @relation("related")
   pending           Boolean              @default(false)
+  proposer          User?                @relation(fields: [proposerId], references: [id])
+  proposerId        String?
   featured          Boolean              @default(false)
   location          ListingLocation?     @relation(fields: [locationId], references: [id])
   locationId        Int?                 @unique

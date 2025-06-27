@@ -81,6 +81,7 @@ export async function POST(request) {
     const tags = formData.get('tags')
     const relations = formData.get('relations')
     const pending = formData.get('pending')
+    const proposerId = formData.get('proposerId')
     const webId = parseInt(formData.get('webId'))
     const category = parseInt(formData.get('category'))
     const title = formData.get('title')
@@ -133,6 +134,15 @@ export async function POST(request) {
         })),
       },
       pending: isProposedListing,
+      proposer: {
+        ...(proposerId
+          ? {
+              connect: {
+                id: proposerId,
+              },
+            }
+          : {}),
+      },
       seekingVolunteers: stringToBoolean(seekingVolunteers),
       featured: isProposedListing ? false : stringToBoolean(featured),
       slug: slug,
@@ -185,8 +195,15 @@ export async function POST(request) {
         },
       })
 
+      const proposer = await prisma.user.findUnique({
+        where: {
+          id: proposerId,
+        },
+      })
+
       const webCreatedEmailComponent = ListingProposedEmail({
         proposedListingTitle: listing.title,
+        proposerEmail: proposer?.email,
         webTitle: `${selectedWeb.title}`,
         url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin`,
       })

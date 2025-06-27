@@ -2,11 +2,11 @@
 
 import { memo, useMemo } from 'react'
 import NextLink from 'next/link'
-import { Button } from '@components/ui/button'
-
-import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
-import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
+import { REMOTE_URL } from '@helpers/config'
 import Footer from '@components/footer'
+import { Button } from '@components/ui/button'
+import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
+import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import Item from './item'
 
 interface MainListProps {
@@ -43,7 +43,7 @@ const MainList = ({ filteredItems }: MainListProps) => {
                 No listings were found that match your search 🤔 Maybe propose
                 the listing to the maintainers?
               </p>
-              <NextLink href="/new-listing">
+              <NextLink href={`${REMOTE_URL}/new-listing/${selectedWebSlug}`}>
                 <Button
                   variant="default"
                   className="bg-[#2B8257] hover:bg-[#236c47]"

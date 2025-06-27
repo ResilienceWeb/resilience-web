@@ -19,6 +19,7 @@ export default function SignIn() {
   const redirectTo = searchParams.get('redirectTo')
 
   const isUserAttemptingEdit = redirectTo?.includes('/edit')
+  const isUserAttemptingPropose = redirectTo?.includes('/new-listing')
 
   return (
     <div className={styles.root}>
@@ -29,20 +30,21 @@ export default function SignIn() {
               <Image alt="Resilience Web logo" src={LogoImage} priority />
             </div>
           </div>
-          {!isUserAttemptingEdit && (
+          {!isUserAttemptingEdit && !isUserAttemptingPropose && (
             <div className="mb-8 flex justify-center sm:mb-12">
               <h2 className="mt-4 text-xl font-bold sm:text-2xl">Sign in</h2>
             </div>
           )}
 
-          {isUserAttemptingEdit && (
-            <p className="my-6 text-sm sm:my-8 sm:text-base">
-              <span className="font-bold">
-                Everyone can edit listings on Resilience Web.
-              </span>{' '}
-              Just enter your email to start contributing.
-            </p>
-          )}
+          {isUserAttemptingEdit ||
+            (isUserAttemptingPropose && (
+              <p className="my-6 text-sm sm:my-8 sm:text-base">
+                <span className="font-bold">
+                  Everyone can contribute to Resilience Web.
+                </span>{' '}
+                Enter your email to get started.
+              </p>
+            ))}
           <form
             onSubmit={async (e) => {
               try {

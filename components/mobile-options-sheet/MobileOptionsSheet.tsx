@@ -1,3 +1,9 @@
+import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2'
+import Link from 'next/link'
+import { REMOTE_URL } from '@helpers/config'
+import DonateButton from '@components/donate-button'
+import { Button } from '@components/ui/button'
+import { Separator } from '@components/ui/separator'
 import {
   Sheet,
   SheetContent,
@@ -5,18 +11,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@components/ui/sheet'
-import { Button } from '@components/ui/button'
-import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2'
-import Link from 'next/link'
-import { Separator } from '@components/ui/separator'
-import DonateButton from '@components/donate-button'
 
 const MobileOptionsSheet = ({
   webDescription,
   isTransitionMode,
+  selectedWebSlug,
 }: {
   webDescription?: string
   isTransitionMode: boolean
+  selectedWebSlug: string
 }) => {
   return (
     <Sheet>
@@ -37,7 +40,7 @@ const MobileOptionsSheet = ({
           {!isTransitionMode && (
             <>
               <div className="px-1">
-                <Link href="/new-listing">
+                <Link href={`${REMOTE_URL}/new-listing/${selectedWebSlug}`}>
                   <Button
                     size="lg"
                     variant="default"

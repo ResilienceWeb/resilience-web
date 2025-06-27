@@ -1,12 +1,12 @@
 import { redirect } from 'next/navigation'
 import { auth } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
-import SessionProvider from '../../../admin/SessionProvider'
+import SessionProvider from '../../admin/SessionProvider'
 
 export const metadata = {
-  title: 'Edit Listing | Resilience Web',
+  title: 'Propose Listing | Resilience Web',
   openGraph: {
-    title: 'Edit Listing | Resilience Web',
+    title: 'Propose Listing | Resilience Web',
   },
 }
 
@@ -18,7 +18,7 @@ export default async function Layout(props) {
   const session = await auth()
   if (!session) {
     redirect(
-      `${REMOTE_URL}/auth/signin?redirectTo=${`/edit/${params.webSlug}/${params.listingSlug}`}`,
+      `${REMOTE_URL}/auth/signin?redirectTo=${`/new-listing/${params.webSlug}`}`,
     )
   }
 

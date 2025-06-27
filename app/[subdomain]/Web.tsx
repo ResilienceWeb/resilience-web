@@ -343,6 +343,7 @@ const Web = ({
           <MobileOptionsSheet
             webDescription={webDescription}
             isTransitionMode={isTransitionMode}
+            selectedWebSlug={selectedWebSlug}
           />
         )}
 

@@ -1,16 +1,17 @@
 'use client'
+
 import { useCallback, useState } from 'react'
 import { PiInfoBold } from 'react-icons/pi'
-import { Spinner } from '@components/ui/spinner'
-import Layout from '@components/layout'
+import Link from 'next/link'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
+import Layout from '@components/layout'
+import { Button } from '@components/ui/button'
+import { Spinner } from '@components/ui/spinner'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import useCreateListingEdit from '@hooks/listings/useCreateListingEdit'
 import useListingEdits from '@hooks/listings/useListingEdits'
 import useWeb from '@hooks/webs/useWeb'
-import Link from 'next/link'
-import { Button } from '@components/ui/button'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 
 export default function EditListing({ listing, webSlug }) {
   const { categories, isPending: isCategoriesLoading } = useCategoriesPublic({
@@ -112,6 +113,7 @@ export default function EditListing({ listing, webSlug }) {
               categories={categories}
               handleSubmit={handleSubmit}
               isEditMode
+              webSlug={webSlug}
             />
           </div>
         )}

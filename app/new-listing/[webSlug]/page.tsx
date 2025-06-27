@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   },
 }
 
-export default function NewListingPage() {
-  return <NewListing />
+export default async function NewListingPage(props) {
+  const { webSlug } = await props.params
+
+  return <NewListing webSlug={webSlug} />
 }

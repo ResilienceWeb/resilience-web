@@ -21,12 +21,14 @@ import {
 
 type props = {
   proposedListingTitle: string
+  proposerEmail: string
   webTitle: string
   url: string
 }
 
 const ListingProposedEmail = ({
   proposedListingTitle,
+  proposerEmail,
   webTitle,
   url,
 }: props) => {
@@ -54,6 +56,7 @@ const ListingProposedEmail = ({
           </Text>
           <Text style={paragraph}>Here are the details:</Text>
           <Text style={listItem}>Listing title: {proposedListingTitle}</Text>
+          <Text style={listItem}>Proposed by: {proposerEmail}</Text>
           <Hr style={hr} />
           <Text style={footer}>Resilience Web CIC</Text>
         </Container>
