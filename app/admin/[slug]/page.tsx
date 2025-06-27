@@ -27,7 +27,9 @@ export default function ListingPage({ params }) {
   const handleSubmit = useCallback(
     (data) => {
       if (data.id) {
-        data.isApprovingProposedListing = true
+        if (data.pending) {
+          data.isApprovingProposedListing = true
+        }
         updateListing(data)
       }
       goBack()
