@@ -1,10 +1,10 @@
-import NextAuth from 'next-auth'
 import { PrismaAdapter } from '@auth/prisma-adapter'
+import NextAuth from 'next-auth'
 import Sendgrid from 'next-auth/providers/sendgrid'
 import nodemailer from 'nodemailer'
 import prisma from '@prisma-rw'
-import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates'
 import config from '@helpers/config'
+import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates'
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
@@ -62,6 +62,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         ...session.user,
         id: user.id,
         admin: user.admin,
+        ownerships: user.ownerships,
       }
       return session
     },

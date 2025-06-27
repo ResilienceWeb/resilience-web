@@ -253,6 +253,6 @@ const MapWithNoSSR = dynamic(() => Promise.resolve(MapComponent), {
   ssr: false,
 })
 
-export default function Map(props: MapProps) {
+export default function ListingsMap(props: MapProps) {
   return <MapWithNoSSR {...props} />
 }

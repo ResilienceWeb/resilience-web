@@ -73,7 +73,27 @@ export async function PUT(request, props) {
   const session = await auth()
 
   if (!session?.user) {
-    // TODO: Improve security
+    return new Response('Unauthorized', {
+      status: 403,
+    })
+  }
+
+  const userOwnerships = await prisma.ownership.findUnique({
+    where: {
+      email: session.user.email,
+    },
+    include: {
+      webs: true,
+    },
+  })
+
+  const isWebOwner = userOwnerships?.webs.some(
+    (web) => web.slug === params.slug,
+  )
+  if (!isWebOwner) {
+    return new Response('Unauthorized', {
+      status: 403,
+    })
   }
 
   try {
@@ -84,13 +104,37 @@ export async function PUT(request, props) {
     const relationsToConnect = relationsArray.map((relationId) => ({
       id: Number(relationId),
     }))
-    const newData: Prisma.WebUncheckedUpdateInput = {
+    const latitude = formData.get('latitude')
+    const longitude = formData.get('longitude')
+    const locationDescription = formData.get('locationDescription')
+
+    const locationData = {
+      ...(latitude && longitude && locationDescription
+        ? {
+            upsert: {
+              create: {
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude),
+                description: locationDescription,
+              },
+              update: {
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude),
+                description: locationDescription,
+              },
+            },
+          }
+        : {}),
+    }
+
+    const newData: Prisma.WebUpdateInput = {
       title: formData.get('title'),
       published: stringToBoolean(formData.get('published')),
       description: formData.get('description'),
       relations: {
         set: relationsToConnect,
       },
+      location: locationData,
     }
 
     const image = formData.get('image')
