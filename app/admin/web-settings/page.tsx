@@ -27,12 +27,25 @@ import useWebs from '@hooks/webs/useWebs'
 
 const Select = dynamic(() => import('react-select'), { ssr: false })
 
+const SetLocationMap = dynamic(
+  () => import('@components/admin/set-location-map'),
+  {
+    ssr: false,
+    loading: () => <div className="pt-5 text-center">Loading…</div>,
+  },
+)
+
 interface WebSettingsForm {
   title: string
   published: boolean
   description: string
   image: File | string | null
   relatedWebs: WebOption[]
+  location: {
+    latitude: number
+    longitude: number
+    description: string
+  } | null
 }
 
 type WebOption = {
@@ -99,6 +112,7 @@ export default function WebSettingsPage() {
       description: '',
       image: null,
       relatedWebs: [],
+      location: null,
     },
   })
 
@@ -147,6 +161,13 @@ export default function WebSettingsPage() {
       if (typeof data.image !== 'string') {
         dataToSubmit.image = data.image
       }
+
+      if (data.location) {
+        dataToSubmit.latitude = data.location.latitude
+        dataToSubmit.longitude = data.location.longitude
+        dataToSubmit.locationDescription = data.location.description
+      }
+
       updateWeb(dataToSubmit)
     },
     [updateWeb, webData?.slug],
@@ -159,10 +180,10 @@ export default function WebSettingsPage() {
   const isPublished = watch('published')
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mb-8">
       <div>
         <h1 className="text-2xl font-bold">Web settings</h1>
-        <p className="text-gray-600">
+        <p className="text-sm text-gray-600">
           This page is only accessible to web owners.
         </p>
         <div className="my-4 rounded-md bg-white p-4 shadow-md">
@@ -253,16 +274,26 @@ export default function WebSettingsPage() {
                 helperText={`This should be a picture that best represents ${webData?.title}`}
               />
 
-              <FormLabel className="font-semibold">
-                Related/neighbouring webs
-              </FormLabel>
-              <FormDescription className="mb-2">
-                You can link to other webs that are related to this one. These
-                will appear on the Network view as clickable items.
-              </FormDescription>
+              <div>
+                <SetLocationMap
+                  latitude={webData?.location?.latitude}
+                  longitude={webData?.location?.longitude}
+                  locationDescription={webData?.location?.description}
+                />
+              </div>
 
-              <div className="mb-6 max-w-md">
-                <WebsSelect selectedWebSlug={selectedWebSlug} />
+              <div className="mt-8">
+                <FormLabel className="font-semibold">
+                  Related/neighbouring webs
+                </FormLabel>
+                <FormDescription className="mb-2">
+                  You can link to other webs that are related to this one. These
+                  will appear on the Network view as clickable items.
+                </FormDescription>
+
+                <div className="mb-6 max-w-md">
+                  <WebsSelect selectedWebSlug={selectedWebSlug} />
+                </div>
               </div>
 
               <div className="mt-6 flex justify-end">

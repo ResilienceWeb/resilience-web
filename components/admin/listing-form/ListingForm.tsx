@@ -1,21 +1,19 @@
 'use client'
+
 import { useEffect, useMemo } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
-import type { Category } from '@prisma/client'
-import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import useTags from '@hooks/tags/useTags'
-import useListings from '@hooks/listings/useListings'
+import Link from 'next/link'
+import { zodResolver } from '@hookform/resolvers/zod'
+import type { Category } from '@prisma/client'
 import { useAppContext } from '@store/hooks'
+import { z } from 'zod'
 import { generateSlug } from '@helpers/utils'
-import EditorField from './RichTextEditor'
 import { Button } from '@components/ui/button'
-import { Input } from '@components/ui/input'
 import { Checkbox } from '@components/ui/checkbox'
-import SocialMedia from './SocialMedia'
 import {
   Form,
   FormField,
@@ -25,9 +23,7 @@ import {
   FormMessage,
   FormDescription,
 } from '@components/ui/form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import ImageUpload from './ImageUpload'
+import { Input } from '@components/ui/input'
 import {
   Select,
   SelectContent,
@@ -35,11 +31,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select'
+import useListings from '@hooks/listings/useListings'
+import useTags from '@hooks/tags/useTags'
+import ImageUpload from './ImageUpload'
+import EditorField from './RichTextEditor'
+import SocialMedia from './SocialMedia'
 
-const Map = dynamic(() => import('./Map'), {
-  ssr: false,
-  loading: () => <div className="pt-5 text-center">Loading…</div>,
-})
+const SetLocationMap = dynamic(
+  () => import('@components/admin/set-location-map'),
+  {
+    ssr: false,
+    loading: () => <div className="pt-5 text-center">Loading…</div>,
+  },
+)
 
 const socialItemSchema = z.object({
   platform: z.string(),
@@ -466,7 +470,11 @@ const ListingForm = ({
 
           {!watch('noPhysicalLocation') && (
             <div className="mt-4">
-              <Map />
+              <SetLocationMap
+                latitude={listing?.location?.latitude}
+                longitude={listing?.location?.longitude}
+                locationDescription={listing?.location?.description}
+              />
             </div>
           )}
 

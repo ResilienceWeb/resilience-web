@@ -32,7 +32,7 @@ const NetworkComponent = dynamic(() => import('@components/network'), {
 const Drawer = dynamic(() => import('@components/drawer'), {
   ssr: false,
 })
-const Map = dynamic(() => import('@components/map'), {
+const ListingsMap = dynamic(() => import('@components/listings-map'), {
   ssr: false,
 })
 
@@ -337,7 +337,7 @@ const Web = ({
         )}
 
         {activeTab === 'list' && <MainList filteredItems={filteredItems} />}
-        {activeTab === 'map' && <Map items={filteredItems} />}
+        {activeTab === 'map' && <ListingsMap items={filteredItems} />}
 
         {isMobile && (
           <MobileOptionsSheet

@@ -44,7 +44,7 @@ export default function ListingPage({ params }) {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-0 py-4 md:px-10">
+    <div className="mx-auto max-w-5xl px-0 py-4 pb-16 md:px-10">
       <button
         className="mb-2 ml-2 flex items-center gap-2 text-gray-700 hover:text-gray-900"
         onClick={goBack}

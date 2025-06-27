@@ -90,6 +90,8 @@ model Web {
   features    WebFeature[]
   relations   Web[]        @relation("related_webs")
   relationOf  Web[]        @relation("related_webs")
+  location    WebLocation? @relation(fields: [locationId], references: [id])
+  locationId  Int?         @unique
 
   @@map("Location")
 }
@@ -207,6 +209,18 @@ model ListingLocation {
   ListingEdit        ListingEdit[]
 
   @@map("listing_locations")
+}
+
+model WebLocation {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+  latitude    Float?
+  longitude   Float?
+  description String?
+  web         Web?
+
+  @@map("web_locations")
 }
 
 model Permission {
