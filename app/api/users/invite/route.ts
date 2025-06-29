@@ -1,13 +1,10 @@
 import { Prisma } from '@prisma/client'
-import { render } from '@react-email/render'
-import sgMail from '@sendgrid/mail'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
+import { sendEmail } from '@helpers/email'
 import InviteEmail from '@components/emails/InviteEmail'
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 export async function POST(request) {
   try {
@@ -124,20 +121,11 @@ export async function POST(request) {
       url: callToActionButtonUrl,
     })
 
-    const inviteEmailHtml = await render(inviteEmailComponent)
-    const inviteEmailText = await render(inviteEmailComponent, {
-      plainText: true,
-    })
-
-    const msg = {
-      from: `Resilience Web <info@resilienceweb.org.uk>`,
+    await sendEmail({
       to: email,
       subject: `Your invite to ${selectedWeb.title} Resilience Web`,
-      text: inviteEmailText,
-      html: inviteEmailHtml,
-    }
-
-    await sgMail.send(msg)
+      email: inviteEmailComponent,
+    })
 
     return Response.json({
       message: 'Invite sent successfully',

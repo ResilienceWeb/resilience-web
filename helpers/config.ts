@@ -18,14 +18,6 @@ export const PROTOCOL =
 const config = {
   digitalOceanSpaces: 'https://resilienceweb.ams3.digitaloceanspaces.com/',
   bucketName: 'resilienceweb',
-  emailServer: {
-    host: process.env.EMAIL_SERVER_HOST,
-    port: process.env.EMAIL_SERVER_PORT,
-    auth: {
-      user: process.env.EMAIL_SERVER_USER,
-      pass: process.env.EMAIL_SERVER_PASSWORD,
-    },
-  },
 }
 
 export default config

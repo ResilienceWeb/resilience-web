@@ -1,4 +1,5 @@
 'use client'
+
 import { useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useSession, signIn } from 'next-auth/react'
@@ -13,7 +14,10 @@ export default function ActivatePage() {
   useEffect(() => {
     if (!session?.data) {
       if (email) {
-        signIn('email', { email: email, redirectTo: '/admin?firstTime=true' })
+        signIn('nodemailer', {
+          email: email,
+          redirectTo: '/admin?firstTime=true',
+        })
       }
     }
   }, [session?.data, email])

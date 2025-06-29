@@ -179,7 +179,9 @@ export async function POST(request) {
       },
     )
   } catch (e) {
-    console.error(`[RW] Unable to create listing edit - ${e}`)
+    console.error(
+      `[RW] Unable to create listing edit - ${JSON.stringify(e, ['message', 'arguments', 'type', 'name'])}`,
+    )
     Sentry.captureException(e)
     return new Response(`Unable to create listing edit - ${e}`, {
       status: 500,

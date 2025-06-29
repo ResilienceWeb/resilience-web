@@ -34,7 +34,7 @@ export default function SignUp() {
               try {
                 e.preventDefault()
                 const formData = new FormData(e.currentTarget)
-                const response = await signIn('email', {
+                const response = await signIn('nodemailer', {
                   email: formData.get('email'),
                   redirect: false,
                   callbackUrl: window.location.origin,
