@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import { useSession } from 'next-auth/react'
+import { Badge } from '@components/ui/badge'
 import {
   Table,
   TableBody,
@@ -8,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table'
-import { Badge } from '@components/ui/badge'
 
 const columns = [
   {
@@ -67,7 +67,7 @@ const PermissionsTable = ({ permissions }) => {
                             {!permission.user.emailVerified && (
                               <Badge variant="secondary">Invite pending</Badge>
                             )}
-                            {!permission.user.admin && (
+                            {permission.user.admin && (
                               <Badge variant="secondary">Admin</Badge>
                             )}
                           </div>
@@ -82,7 +82,7 @@ const PermissionsTable = ({ permissions }) => {
                           {!permission.user.emailVerified && (
                             <Badge variant="secondary">Invite pending</Badge>
                           )}
-                          {!permission.user.admin && (
+                          {permission.user.admin && (
                             <Badge variant="secondary">Admin</Badge>
                           )}
                         </div>

@@ -1,26 +1,30 @@
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import NextAuth from 'next-auth'
-import Sendgrid from 'next-auth/providers/sendgrid'
+import Nodemailer from 'next-auth/providers/nodemailer'
 import nodemailer from 'nodemailer'
 import prisma from '@prisma-rw'
-import config from '@helpers/config'
 import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates'
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
-    Sendgrid({
-      id: 'email',
-      // @ts-ignore
-      server: config.emailServer,
+    Nodemailer({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: Number(process.env.EMAIL_SERVER_PORT),
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
+      },
       from: `Resilience Web <${process.env.EMAIL_FROM}>`,
       maxAge: 604800, // 7 days
-      async sendVerificationRequest({ identifier: email, url, provider }) {
+      sendVerificationRequest({ identifier: email, url, provider }) {
         return new Promise((resolve, reject) => {
-          const { server, from } = provider
-          nodemailer.createTransport(server).sendMail(
+          // const transport = createTransport(provider.server)
+          nodemailer.createTransport(provider.server).sendMail(
             {
               to: email,
-              from,
+              from: provider.from,
               subject: `Sign in to the Resilience Web`,
               text: textTemplate({ url }),
               html: simpleHtmlTemplate({

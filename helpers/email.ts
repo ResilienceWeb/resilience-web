@@ -1,7 +1,11 @@
 import { render } from '@react-email/render'
-import sgMail from '@sendgrid/mail'
+import { MailerSend, EmailParams, Sender, Recipient } from 'mailersend'
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+const mailerSend = new MailerSend({
+  apiKey: process.env.MAILERSEND_API_KEY,
+})
+
+const sentFrom = new Sender('info@resilienceweb.org.uk', 'Resilience Web')
 
 export const sendEmail = async ({ to, subject, email }) => {
   const emailHtml = await render(email)
@@ -9,11 +13,15 @@ export const sendEmail = async ({ to, subject, email }) => {
     plainText: true,
   })
 
-  await sgMail.send({
-    from: `Resilience Web <info@resilienceweb.org.uk>`,
-    to,
-    subject,
-    html: emailHtml,
-    text: emailText,
-  })
+  const recipients = [new Recipient(to)]
+
+  const emailParams = new EmailParams()
+    .setFrom(sentFrom)
+    .setTo(recipients)
+    .setReplyTo(sentFrom)
+    .setSubject(subject)
+    .setHtml(emailHtml)
+    .setText(emailText)
+
+  await mailerSend.email.send(emailParams)
 }

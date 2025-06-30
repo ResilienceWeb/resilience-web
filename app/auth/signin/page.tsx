@@ -50,7 +50,7 @@ export default function SignIn() {
               try {
                 e.preventDefault()
                 const formData = new FormData(e.currentTarget)
-                const response = await signIn('email', {
+                const response = await signIn('nodemailer', {
                   email: formData.get('email'),
                   redirect: false,
                   redirectTo: redirectTo ?? '/admin',

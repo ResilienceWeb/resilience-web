@@ -1,28 +1,15 @@
 import * as Sentry from '@sentry/nextjs'
-import nodemailer, { type TransportOptions } from 'nodemailer'
-import appConfig from '@helpers/config'
+import { sendEmail } from '@helpers/email'
 
 export async function POST(request) {
   const { email, feedback } = await request.json()
 
   try {
-    const transporter = nodemailer.createTransport(
-      appConfig.emailServer as TransportOptions,
-    )
-    transporter.sendMail(
-      {
-        to: 'cambridgeresilienceweb@gmail.com',
-        from: `${process.env.EMAIL_FROM}`,
-        replyTo: email,
-        subject: `Message from ${email}`,
-        text: `${feedback}`,
-      },
-      (error) => {
-        if (error) {
-          console.error('[RW] Error sending feedback email', email, error)
-        }
-      },
-    )
+    await sendEmail({
+      email: feedback,
+      subject: `Message from ${email}`,
+      to: 'cambridgeresilienceweb@gmail.com',
+    })
 
     return Response.json(
       {

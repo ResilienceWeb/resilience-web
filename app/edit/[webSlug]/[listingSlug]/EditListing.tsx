@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react'
 import { PiInfoBold } from 'react-icons/pi'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
 import Layout from '@components/layout'
@@ -14,6 +15,7 @@ import useListingEdits from '@hooks/listings/useListingEdits'
 import useWeb from '@hooks/webs/useWeb'
 
 export default function EditListing({ listing, webSlug }) {
+  const router = useRouter()
   const { categories, isPending: isCategoriesLoading } = useCategoriesPublic({
     webSlug,
   })
@@ -70,12 +72,7 @@ export default function EditListing({ listing, webSlug }) {
               This listing cannot be edited as there is already a suggested edit
               under review for it.
             </div>
-            <Link
-              href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}/${listing.slug}`}
-              className="rounded-md bg-green-700 px-4 py-2 text-white hover:bg-green-800"
-            >
-              Go back to listing
-            </Link>
+            <Button onClick={() => router.back()}>Go back to listing</Button>
           </div>
         </div>
       </Layout>
@@ -93,11 +90,15 @@ export default function EditListing({ listing, webSlug }) {
               for your contribution. It will be checked and hopefully approved
               by the admins of the <strong>{web?.title}</strong> web.
             </p>
-            <Link href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`}>
-              <Button className="mt-2">
-                Go back to {web?.title} Resilience Web
-              </Button>
-            </Link>
+            <Button
+              onClick={() => {
+                router.back()
+                router.back()
+              }}
+              className="mt-2"
+            >
+              Go back to {web?.title} Resilience Web
+            </Button>
           </>
         ) : (
           <div className="my-8 overflow-hidden rounded-md shadow-md">
