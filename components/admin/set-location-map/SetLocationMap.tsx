@@ -8,7 +8,11 @@ import 'leaflet/dist/leaflet.css'
 import { cn } from '@components/lib/utils'
 import { FormLabel } from '@components/ui/form'
 
-const provider = new OpenStreetMapProvider()
+const provider = new OpenStreetMapProvider({
+  params: {
+    countrycodes: 'gb',
+  },
+})
 
 const geoSearchControl = GeoSearchControl({
   provider,

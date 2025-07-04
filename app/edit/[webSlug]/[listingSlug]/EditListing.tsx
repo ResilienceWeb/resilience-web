@@ -2,9 +2,7 @@
 
 import { useCallback, useState } from 'react'
 import { PiInfoBold } from 'react-icons/pi'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
 import Layout from '@components/layout'
 import { Button } from '@components/ui/button'
