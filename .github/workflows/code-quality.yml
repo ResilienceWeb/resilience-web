@@ -18,4 +18,4 @@ jobs:
       - name: Run Eslint
         run: npm run eslint:dry
       - name: Run Typescript
-        run: npm run types:dry
+        run: npm run tsc
