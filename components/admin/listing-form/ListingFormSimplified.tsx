@@ -98,10 +98,7 @@ const listingFormSchema = z.object({
   id: z.number().nullable(),
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(1, 'Description is required'),
-  category: z
-    .number()
-    .or(z.string())
-    .transform((val) => Number(val)),
+  category: z.number().nullable().or(z.coerce.number()),
   email: z.string().email('Please enter a valid email').or(z.literal('')),
   website: z
     .string()
