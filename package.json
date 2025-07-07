@@ -36,8 +36,6 @@
     "@prisma/client": "6.10.1",
     "@react-email/components": "0.1.1",
     "@react-email/render": "1.1.3",
-    "@sendgrid/client": "8.1.5",
-    "@sendgrid/mail": "8.1.5",
     "@sentry/nextjs": "9.35.0",
     "@tanstack/react-query": "5.81.2",
     "@tinymce/tinymce-react": "6.2.1",

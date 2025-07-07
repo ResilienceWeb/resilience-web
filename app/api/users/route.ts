@@ -1,9 +1,6 @@
-import client from '@sendgrid/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
-
-client.setApiKey(process.env.SENDGRID_API_KEY)
 
 export async function GET() {
   try {
@@ -20,21 +17,18 @@ export async function GET() {
     }
 
     let subscribedToMailingList = false
-    try {
-      const request = {
-        url: `/v3/marketing/contacts/search/emails`,
-        method: 'POST',
-        body: {
-          emails: [session?.user.email],
+    const response = await fetch(
+      `https://connect.mailerlite.com/api/subscribers/${session?.user.email}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}`,
         },
-      }
-      // @ts-ignore
-      const response = await client.request(request)
-      if (response[0].statusCode === 200) {
-        subscribedToMailingList = true
-      }
-    } catch (e) {
-      // User is not currently subscribed. It shouldn't be an error, but for some reason the Sendgrid API throws an error.
+      },
+    )
+    const responseJson = await response.json()
+
+    if (responseJson.data?.status === 'active') {
+      subscribedToMailingList = true
     }
 
     const user = await prisma.user.findUnique({
@@ -78,50 +72,70 @@ export async function PATCH(request) {
     })
 
     if (requestBody.subscribed) {
-      const request = {
-        url: `/v3/marketing/contacts`,
-        method: 'PUT',
-        body: {
-          contacts: [
-            {
-              email: session.user.email,
-            },
-          ],
-        },
-      }
-      // @ts-ignore
-      await client.request(request)
-    } else {
-      try {
-        const request = {
-          url: `/v3/marketing/contacts/search/emails`,
+      const response = await fetch(
+        'https://connect.mailerlite.com/api/subscribers',
+        {
           method: 'POST',
-          body: {
-            emails: [session?.user.email],
+          body: JSON.stringify({
+            email: session.user.email,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}`,
           },
-        }
-        // @ts-ignore
-        const response = await client.request(request)
-        const contactId = // @ts-ignore
-          response[0].body.result[session?.user.email].contact.id
-
-        const deleteRequest = {
-          url: `/v3/marketing/contacts`,
-          method: 'DELETE',
-          qs: {
-            ids: `${contactId}`,
-          },
-        }
-        // @ts-ignore
-        await client.request(deleteRequest)
-      } catch (e) {
-        // User is not currently subscribed. It shouldn't be an error, but for some reason the Sendgrid API throws an error.
+        },
+      )
+      const data = await response.json()
+      if (data.error) {
+        return Response.json({ error: data.error }, { status: 400 })
       }
-    }
 
-    return Response.json({
-      data: updatedUser,
-    })
+      return Response.json({
+        data: {
+          ...updatedUser,
+          subscribed: true,
+        },
+      })
+    } else {
+      const response = await fetch(
+        `https://connect.mailerlite.com/api/subscribers/${session?.user.email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}`,
+          },
+        },
+      )
+      const responseJson = await response.json()
+      const subscriberId = responseJson.data.id
+      if (responseJson.error) {
+        return Response.json({ error: responseJson.error }, { status: 400 })
+      }
+
+      const unsubscribeResponse = await fetch(
+        `https://connect.mailerlite.com/api/subscribers/${subscriberId}/forget`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}`,
+          },
+        },
+      )
+      const unsubscribeResponseJson = await unsubscribeResponse.json()
+
+      if (unsubscribeResponseJson.error) {
+        return Response.json(
+          { error: unsubscribeResponseJson.error },
+          { status: 400 },
+        )
+      }
+
+      return Response.json({
+        data: {
+          ...updatedUser,
+          subscribed: false,
+        },
+      })
+    }
   } catch (e) {
     console.error(`[RW] Unable to update user - ${e}`)
     Sentry.captureException(e)

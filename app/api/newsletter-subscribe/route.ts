@@ -1,7 +1,5 @@
-import client from '@sendgrid/client'
 import * as Sentry from '@sentry/nextjs'
 
-client.setApiKey(process.env.SENDGRID_API_KEY)
 const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY
 
 export async function POST(request) {
@@ -25,21 +23,25 @@ export async function POST(request) {
     )
   }
 
-  const subscriptionRequest = {
-    url: `/v3/marketing/contacts`,
-    method: 'PUT',
-    body: {
-      contacts: [
-        {
-          email,
-        },
-      ],
-    },
-  }
-
   try {
-    // @ts-ignore
-    await client.request(subscriptionRequest)
+    const response = await fetch(
+      'https://connect.mailerlite.com/api/subscribers',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          email,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}`,
+        },
+      },
+    )
+    const data = await response.json()
+
+    if (data.error) {
+      return Response.json({ error: data.error }, { status: 400 })
+    }
 
     return Response.json({ error: null }, { status: 201 })
   } catch (error) {
