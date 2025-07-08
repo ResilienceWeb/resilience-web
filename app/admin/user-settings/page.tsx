@@ -1,11 +1,15 @@
 'use client'
+
 import { useCallback, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { AiOutlineLoading } from 'react-icons/ai'
-import * as z from 'zod'
+import Link from 'next/link'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
+import * as z from 'zod'
+import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { Button } from '@components/ui/button'
 import {
   Card,
   CardContent,
@@ -13,7 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@components/ui/card'
-import { Button } from '@components/ui/button'
+import { Checkbox } from '@components/ui/checkbox'
 import {
   Form,
   FormControl,
@@ -22,15 +26,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@components/ui/form'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { Input } from '@components/ui/input'
-import { Checkbox } from '@components/ui/checkbox'
 import { Spinner } from '@components/ui/spinner'
-import useUpdateUser from '@hooks/user/useUpdateUser'
-import useCurrentUser from '@hooks/user/useCurrentUser'
 import useMyOwnerships from '@hooks/ownership/useMyOwnerships'
 import usePermissions from '@hooks/permissions/usePermissions'
-import Link from 'next/link'
+import useCurrentUser from '@hooks/user/useCurrentUser'
+import useUpdateUser from '@hooks/user/useUpdateUser'
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -81,7 +82,7 @@ export default function UserSettingsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mb-8">
       <Card>
         <CardHeader>
           <CardTitle>User settings</CardTitle>
@@ -116,16 +117,19 @@ export default function UserSettingsPage() {
                     <FormControl>
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                          <label
-                            htmlFor={field.name}
-                            className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Subscribed to the Resilience Web mailing list
-                          </label>
+                          <div className="flex items-center gap-2">
+                            <Checkbox
+                              id="subscribed-checkbox"
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                            <label
+                              htmlFor="subscribed-checkbox"
+                              className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                            >
+                              Subscribed to the Resilience Web mailing list
+                            </label>
+                          </div>
                         </div>
                         <p className="text-muted-foreground text-sm">
                           Check the box if you'd like to receive our newsletter
@@ -141,7 +145,9 @@ export default function UserSettingsPage() {
 
               <Button
                 type="submit"
-                disabled={!form.formState.isDirty || !form.formState.isValid}
+                disabled={
+                  !form.formState.isDirty || form.formState.isSubmitting
+                }
               >
                 {isPending && <AiOutlineLoading className="animate-spin" />}{' '}
                 Update
@@ -175,10 +181,9 @@ export default function UserSettingsPage() {
                         </div>
                         <Link
                           href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
-                          className="text-sm text-blue-600 hover:underline"
                           target="_blank"
                         >
-                          View
+                          <Button variant="outline">View</Button>
                         </Link>
                       </li>
                     ))}
