@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic'
 import { useAppContext } from '@store/hooks'
 import { toast } from 'sonner'
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
+import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
 import { Checkbox } from '@components/ui/checkbox'
 import {
@@ -19,7 +20,6 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { Spinner } from '@components/ui/spinner'
-import { Textarea } from '@components/ui/textarea'
 import usePermissions from '@hooks/permissions/usePermissions'
 import useUpdateWeb from '@hooks/webs/useUpdateWeb'
 import useWeb from '@hooks/webs/useWeb'
@@ -255,7 +255,7 @@ export default function WebSettingsPage() {
               <FormField
                 control={methods.control}
                 name="description"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel className="font-semibold">Description</FormLabel>
                     <FormDescription>
@@ -263,7 +263,9 @@ export default function WebSettingsPage() {
                       represent a local group, feel free to include information
                       about it.
                     </FormDescription>
-                    <Textarea {...field} rows={3} />
+                    <FormControl>
+                      <RichTextEditor name="description" />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

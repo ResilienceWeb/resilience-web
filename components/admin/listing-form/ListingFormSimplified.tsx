@@ -10,6 +10,7 @@ import type { Category } from '@prisma/client'
 import { z } from 'zod'
 import { urlValidator } from '@helpers/form'
 import { generateSlug } from '@helpers/utils'
+import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
 import { Checkbox } from '@components/ui/checkbox'
 import {
@@ -30,7 +31,6 @@ import {
 } from '@components/ui/select'
 import useTags from '@hooks/tags/useTags'
 import ImageUpload from './ImageUpload'
-import EditorField from './RichTextEditor'
 import SocialMedia from './SocialMedia'
 
 const SlugField = ({ webSlug }) => {
@@ -221,7 +221,7 @@ const ListingFormSimplified = ({
               <FormItem>
                 <FormLabel className="font-semibold">Description*</FormLabel>
                 <FormControl>
-                  <EditorField name="description" />
+                  <RichTextEditor name="description" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

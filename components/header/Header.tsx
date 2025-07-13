@@ -62,11 +62,7 @@ const Header = ({
     return (
       <>
         <NextLink href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
-          <Button
-            variant="default"
-            size="sm"
-            className="mt-2 ml-2 bg-blue-600 hover:bg-blue-700"
-          >
+          <Button variant="outline" size="sm" className="mt-2 ml-2">
             <HiHome />
             Homepage
           </Button>
@@ -195,11 +191,7 @@ const Header = ({
           </div>
 
           <NextLink href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
-            <Button
-              variant="default"
-              size="sm"
-              className="bg-blue-600 px-6 hover:bg-blue-700"
-            >
+            <Button variant="outline" size="sm">
               <HiHome />
               Homepage
             </Button>

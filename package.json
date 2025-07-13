@@ -87,6 +87,7 @@
     "@next/eslint-plugin-next": "15.3.5",
     "@playwright/test": "1.52.0",
     "@tailwindcss/postcss": "4.1.11",
+    "@tailwindcss/typography": "0.5.16",
     "@tanstack/eslint-plugin-query": "5.81.2",
     "@tanstack/react-query-devtools": "5.81.2",
     "@trigger.dev/build": "3.3.17",

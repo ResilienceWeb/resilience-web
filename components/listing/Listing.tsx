@@ -11,8 +11,8 @@ import { useRouter } from 'next/navigation'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import CategoryTag from '@components/category-tag'
-import DescriptionRichText from '@components/main-list/description-rich-text'
 import Item from '@components/main-list/item'
+import RichText from '@components/rich-text'
 import ShareButton from '@components/share-button'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
@@ -184,7 +184,7 @@ function Listing({ listing }) {
           </div>
 
           <div className="prose prose-lg prose-headings:font-semibold prose-a:text-blue-600 mb-12 max-w-none">
-            <DescriptionRichText html={listing.description} />
+            <RichText html={listing.description} />
           </div>
 
           {listing.location?.latitude &&

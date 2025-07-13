@@ -1,7 +1,7 @@
 import { memo } from 'react'
-import styles from './DescriptionRichText.module.css'
+import styles from './RichText.module.css'
 
-const DescriptionRichText = ({ html }) => {
+const RichText = ({ html }) => {
   return (
     <div
       className={styles.description}
@@ -12,4 +12,4 @@ const DescriptionRichText = ({ html }) => {
   )
 }
 
-export default memo(DescriptionRichText)
+export default memo(RichText)

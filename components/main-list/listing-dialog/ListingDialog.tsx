@@ -10,7 +10,7 @@ import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import { sanitizeLink } from '@helpers/utils'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
-import DescriptionRichText from '@components/main-list/description-rich-text'
+import RichText from '@components/rich-text'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import {
@@ -190,7 +190,7 @@ const ListingDialog = ({
           )}
 
           <div className="my-4">
-            <DescriptionRichText html={item.description} />
+            <RichText html={item.description} />
           </div>
 
           <div className="mt-4 flex flex-wrap justify-end gap-1">

@@ -2,6 +2,7 @@ import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2'
 import Link from 'next/link'
 import { REMOTE_URL } from '@helpers/config'
 import DonateButton from '@components/donate-button'
+import RichText from '@components/rich-text'
 import { Button } from '@components/ui/button'
 import { Separator } from '@components/ui/separator'
 import {
@@ -61,7 +62,8 @@ const MobileOptionsSheet = ({
               <Separator />
               <div className="px-1">
                 <h2 className="mb-2 text-lg font-semibold">About this web</h2>
-                <p className="text-sm text-gray-600">{webDescription}</p>
+                {/* <p className="text-sm text-gray-600">{webDescription}</p> */}
+                <RichText html={webDescription} />
               </div>
             </>
           )}

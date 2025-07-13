@@ -8,6 +8,7 @@ import NextLink from 'next/link'
 import customMultiSelectStyles from '@styles/select-styles'
 import { REMOTE_URL } from '@helpers/config'
 import DonateButton from '@components/donate-button'
+import RichText from '@components/rich-text'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import { Separator } from '@components/ui/separator'
@@ -46,6 +47,8 @@ const Drawer = ({
   webDescription,
   isTransitionMode = false,
 }: DrawerProps) => {
+  console.log(webDescription)
+
   const selectedWebSlug = useSelectedWebSlug()
   return (
     <div className="fixed z-3 h-screen w-[300px] bg-white shadow-xl">
@@ -144,9 +147,7 @@ const Drawer = ({
               <Separator />
               <div className="mx-2 mt-5">
                 <h2 className="text-xl font-semibold">About this web</h2>
-                <p className="text-[0.9375rem] text-gray-600">
-                  {webDescription}
-                </p>
+                <RichText html={webDescription} />
               </div>
             </>
           )}
