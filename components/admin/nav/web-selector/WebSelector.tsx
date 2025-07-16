@@ -20,10 +20,12 @@ const WebSelector = () => {
   const webOptions: Options<WebOption> = useMemo(() => {
     if (!permissions || !allowedWebs) return []
 
-    return allowedWebs?.map((s) => ({
-      value: s.slug,
-      label: s.title,
-    }))
+    return allowedWebs
+      ?.sort((a, b) => a.title.localeCompare(b.title))
+      .map((s) => ({
+        value: s.slug,
+        label: s.title,
+      }))
   }, [allowedWebs, permissions])
 
   const selectedOption = useMemo(
