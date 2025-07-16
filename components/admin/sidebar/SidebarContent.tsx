@@ -93,14 +93,14 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       })
     }
 
-    // if (isOwnerOfCurrentWeb) {
-    links.push({
-      label: 'Web Settings',
-      href: '/admin/web-settings',
-      icon: <HiOutlineCog className="text-xl" />,
-      tourId: 'nav-websettings',
-    })
-    // }
+    if (isOwnerOfCurrentWeb) {
+      links.push({
+        label: 'Web Settings',
+        href: '/admin/web-settings',
+        icon: <HiOutlineCog className="text-xl" />,
+        tourId: 'nav-websettings',
+      })
+    }
 
     links.push({
       label: 'Resources',
