@@ -12,12 +12,10 @@ declare module 'next-auth' {
       name?: string
       email?: string
       image?: string
-      ownerships: Ownership[]
     }
   }
 
   interface User {
     admin: boolean
-    ownerships: Ownership[]
   }
 }

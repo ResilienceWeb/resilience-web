@@ -1,14 +1,14 @@
+import { Suspense } from 'react'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 import {
   QueryClient,
   dehydrate,
   HydrationBoundary,
 } from '@tanstack/react-query'
-import { Suspense } from 'react'
-import { headers } from 'next/headers'
-import { redirect } from 'next/navigation'
-import LayoutContainer from '@components/admin/layout-container'
 import { auth } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
+import LayoutContainer from '@components/admin/layout-container'
 import SessionProvider from './SessionProvider'
 import Providers from './providers'
 
