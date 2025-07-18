@@ -46,7 +46,9 @@ const PermissionsTable = ({ permissions, isOwner, webId }) => {
               {columns.map((column, index) => (
                 <TableHead key={`heading-${index}`}>{column.Header}</TableHead>
               ))}
-              {isOwner && <TableHead>Actions</TableHead>}
+              {isOwner && permissions.some((p) => !p.owner) && (
+                <TableHead>Actions</TableHead>
+              )}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -110,21 +112,23 @@ const PermissionsTable = ({ permissions, isOwner, webId }) => {
                     }
                   })}
 
-                  {isOwner && session?.user?.email !== permission.email && (
-                    <TableCell>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() =>
-                          setIsRemoveConfirmationDialogOpenWithUserEmail({
-                            userEmail: permission.email,
-                          })
-                        }
-                      >
-                        Remove
-                      </Button>
-                    </TableCell>
-                  )}
+                  {isOwner &&
+                    session?.user?.email !== permission.email &&
+                    !permission.owner && (
+                      <TableCell>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() =>
+                            setIsRemoveConfirmationDialogOpenWithUserEmail({
+                              userEmail: permission.email,
+                            })
+                          }
+                        >
+                          Remove
+                        </Button>
+                      </TableCell>
+                    )}
                 </TableRow>
               )
             })}

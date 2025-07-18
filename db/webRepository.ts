@@ -24,3 +24,11 @@ export const isOwnerOfWeb = async (userId: string, webId: number) => {
 
   return !!web
 }
+
+export const getWebById = async (webId: number) => {
+  return await prisma.web.findUnique({
+    where: {
+      id: webId,
+    },
+  })
+}

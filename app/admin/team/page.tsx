@@ -36,6 +36,11 @@ const faqs = [
     answer:
       'An editor can add and edit listings, categories and tags. An owner can do that but also invite new editors to the web.',
   },
+  {
+    question: 'Why can I not remove someone from my team?',
+    answer:
+      'It is not possible to remove an owner from your team. If however they would like to leave the team, please get in touch with us and we will remove them for you.',
+  },
 ]
 
 const formSchema = z.object({

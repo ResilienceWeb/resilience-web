@@ -1,8 +1,10 @@
 import { removeUserPermission } from '@db/permissionRepository'
-import { isOwnerOfWeb } from '@db/webRepository'
+import { isOwnerOfWeb, getWebById } from '@db/webRepository'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
+import { sendEmail } from '@helpers/email'
+import WebPermissionsRevokedEmail from '@components/emails/WebPermissionsRevokedEmail'
 
 export async function GET(request) {
   try {
@@ -43,7 +45,6 @@ export async function PUT(request: Request) {
   const session = await auth()
   const body = await request.json()
   const { webId, userEmail } = body
-  console.log('session', session)
   const isOwner = await isOwnerOfWeb(session.user.id, webId)
 
   if (!session?.user || !isOwner) {
@@ -58,8 +59,19 @@ export async function PUT(request: Request) {
   }
 
   try {
-    console.log('PUT', userEmail, webId)
     await removeUserPermission(userEmail, Number(webId))
+
+    const selectedWeb = await getWebById(Number(webId))
+    const webPermissionsRevokedEmail = WebPermissionsRevokedEmail({
+      webTitle: `${selectedWeb.title}`,
+      webOwnerEmail: session?.user.email,
+    })
+
+    sendEmail({
+      to: userEmail,
+      subject: `You have been removed from the ${selectedWeb.title} Resilience Web team`,
+      email: webPermissionsRevokedEmail,
+    })
 
     return Response.json({
       success: true,

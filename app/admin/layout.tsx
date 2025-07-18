@@ -1,18 +1,19 @@
+import { Suspense } from 'react'
+import type { Metadata } from 'next'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 import {
   QueryClient,
   dehydrate,
   HydrationBoundary,
 } from '@tanstack/react-query'
-import { Suspense } from 'react'
-import { headers } from 'next/headers'
-import { redirect } from 'next/navigation'
-import LayoutContainer from '@components/admin/layout-container'
 import { auth } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
+import LayoutContainer from '@components/admin/layout-container'
 import SessionProvider from './SessionProvider'
 import Providers from './providers'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Admin | Resilience Web',
   description:
     'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
