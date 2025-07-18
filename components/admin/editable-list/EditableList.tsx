@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation'
 import { useAppContext } from '@store/hooks'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { removeNonAlphaNumeric } from '@helpers/utils'
+import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
 import usePermissions from '@hooks/permissions/usePermissions'
 import useWebs from '@hooks/webs/useWebs'
-import DeleteConfirmationDialog from './delete-confirmation-dialog'
 import Table from './table/Table'
 import TableActions from './table/TableActions'
 
@@ -156,6 +156,8 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
         isOpen={isDeleteConfirmationOpenWithSlug}
         onClose={closeRemoveDialog}
         handleRemove={handleRemove}
+        description="Are you sure you want to delete this listing? It can't be recovered once deleted."
+        buttonLabel="Yes, delete"
       />
     </>
   )

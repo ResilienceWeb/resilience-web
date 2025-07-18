@@ -134,7 +134,7 @@ export default function WebDashboardPage({ params }) {
   return (
     <div className="flex flex-col gap-2">
       <button
-        className="mb-2 ml-2 flex items-center gap-2 text-gray-700 hover:text-gray-900"
+        className="mb-2 ml-2 flex w-fit items-center gap-2 text-gray-700 hover:text-gray-900"
         onClick={goBack}
       >
         <HiArrowLeft className="h-4 w-4" />
