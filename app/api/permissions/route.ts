@@ -1,6 +1,10 @@
+import { removeUserPermission } from '@db/permissionRepository'
+import { isOwnerOfWeb, getWebById } from '@db/webRepository'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
+import { sendEmail } from '@helpers/email'
+import WebPermissionsRevokedEmail from '@components/emails/WebPermissionsRevokedEmail'
 
 export async function GET(request) {
   try {
@@ -32,6 +36,50 @@ export async function GET(request) {
     console.error(`[RW] Unable to fetch permissions - ${e}`)
     Sentry.captureException(e)
     return new Response(`Unable to fetch permissions - ${e}`, {
+      status: 500,
+    })
+  }
+}
+
+export async function PUT(request: Request) {
+  const session = await auth()
+  const body = await request.json()
+  const { webId, userEmail } = body
+  const isOwner = await isOwnerOfWeb(session.user.id, webId)
+
+  if (!session?.user || !isOwner) {
+    return Response.json(
+      {
+        error: `You don't have enough permissions to perform this action.`,
+      },
+      {
+        status: 403,
+      },
+    )
+  }
+
+  try {
+    await removeUserPermission(userEmail, Number(webId))
+
+    const selectedWeb = await getWebById(Number(webId))
+    const webPermissionsRevokedEmail = WebPermissionsRevokedEmail({
+      webTitle: `${selectedWeb.title}`,
+      webOwnerEmail: session?.user.email,
+    })
+
+    sendEmail({
+      to: userEmail,
+      subject: `You have been removed from the ${selectedWeb.title} Resilience Web team`,
+      email: webPermissionsRevokedEmail,
+    })
+
+    return Response.json({
+      success: true,
+    })
+  } catch (e) {
+    console.error(`[RW] Unable to update permission - ${e}`)
+    Sentry.captureException(e)
+    return new Response(`Unable to update permission - ${e}`, {
       status: 500,
     })
   }

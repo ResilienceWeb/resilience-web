@@ -1,16 +1,19 @@
 'use client'
 
 import { useCallback, useMemo } from 'react'
-import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
+import { AiOutlineLoading } from 'react-icons/ai'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
+import { useAppContext } from '@store/hooks'
+import { useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
-import { Spinner } from '@components/ui/spinner'
+import * as z from 'zod'
+import { REMOTE_URL } from '@helpers/config'
+import PermissionsTable from '@components/admin/permissions-table'
+import Faq from '@components/faq'
 import { Button } from '@components/ui/button'
 import { Checkbox } from '@components/ui/checkbox'
-import { useQueryClient } from '@tanstack/react-query'
-import { AiOutlineLoading } from 'react-icons/ai'
 import {
   Form,
   FormControl,
@@ -21,20 +24,22 @@ import {
   FormDescription,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
-import PermissionsTable from '@components/admin/permissions-table'
-import { REMOTE_URL } from '@helpers/config'
-import usePermissionsForCurrentWeb from '@hooks/permissions/usePermissionsForCurrentWeb'
+import { Spinner } from '@components/ui/spinner'
 import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
 import useOwnerships from '@hooks/ownership/useOwnerships'
+import usePermissionsForCurrentWeb from '@hooks/permissions/usePermissionsForCurrentWeb'
 import useSelectedWebName from '@hooks/webs/useSelectedWebName'
-import { useAppContext } from '@store/hooks'
-import Faq from '@components/faq'
 
 const faqs = [
   {
     question: 'What is the difference between an editor and an owner?',
     answer:
-      'An editor can add and edit listings, categories and tags. An owner can also invite new editors to the web.',
+      'An editor can add and edit listings, categories and tags. An owner can do that but also invite new editors to the web.',
+  },
+  {
+    question: 'Why can I not remove someone from my team?',
+    answer:
+      'It is not possible to remove an owner from your team. If however they would like to leave the team, please get in touch with us and we will remove them for you.',
   },
 ]
 
@@ -205,7 +210,7 @@ export default function TeamPage() {
         <div className="pt-4">
           <h2 className="text-2xl font-bold">Team</h2>
           <p className="mb-4">
-            List of people who have permissions to add and edit listings on the{' '}
+            People who can add and edit listings on the{' '}
             <span className="font-semibold">{selectedWebName}</span> web.
           </p>
           <PermissionsTable
@@ -213,6 +218,8 @@ export default function TeamPage() {
               ...decoratedOwnerships,
               ...permissionsForCurrentWebWithoutOwners,
             ]}
+            isOwner={isOwnerOfCurrentWeb}
+            webId={selectedWebId}
           />
         </div>
       )}

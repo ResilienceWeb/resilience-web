@@ -16,12 +16,16 @@ interface DeleteConfirmationDialogProps {
   handleRemove: (id: any) => void
   isOpen: boolean
   onClose: () => void
+  description: string
+  buttonLabel: string
 }
 
 const DeleteConfirmationDialog = ({
   handleRemove,
   isOpen,
   onClose,
+  description,
+  buttonLabel,
 }: DeleteConfirmationDialogProps) => {
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
@@ -29,17 +33,14 @@ const DeleteConfirmationDialog = ({
         <AlertDialogHeader>
           <AlertDialogTitle>Delete</AlertDialogTitle>
         </AlertDialogHeader>
-        <AlertDialogDescription>
-          Are you sure you want to delete this listing? It can't be recovered
-          once deleted.
-        </AlertDialogDescription>
+        <AlertDialogDescription>{description}</AlertDialogDescription>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleRemove}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            Yes, delete
+            {buttonLabel}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
