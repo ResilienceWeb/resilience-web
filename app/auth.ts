@@ -20,7 +20,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       maxAge: 604800, // 7 days
       sendVerificationRequest({ identifier: email, url, provider }) {
         return new Promise((resolve, reject) => {
-          // const transport = createTransport(provider.server)
           nodemailer.createTransport(provider.server).sendMail(
             {
               to: email,

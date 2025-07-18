@@ -1,5 +1,6 @@
 import { render } from '@react-email/render'
 import { MailerSend, EmailParams, Sender, Recipient } from 'mailersend'
+import nodemailer, { createTransport } from 'nodemailer'
 
 const mailerSend = new MailerSend({
   apiKey: process.env.MAILERSEND_API_KEY,
@@ -12,6 +13,27 @@ export const sendEmail = async ({ to, subject, email }) => {
   const emailText = await render(email, {
     plainText: true,
   })
+
+  if (process.env.NODE_ENV === 'development') {
+    const transport = createTransport({
+      host: process.env.EMAIL_SERVER_HOST,
+      port: Number(process.env.EMAIL_SERVER_PORT),
+      auth: {
+        user: process.env.EMAIL_SERVER_USER,
+        pass: process.env.EMAIL_SERVER_PASSWORD,
+      },
+    })
+
+    await transport.sendMail({
+      to,
+      from: process.env.EMAIL_FROM,
+      subject,
+      text: emailText,
+      html: emailHtml,
+    })
+
+    return
+  }
 
   const recipients = [new Recipient(to)]
 
