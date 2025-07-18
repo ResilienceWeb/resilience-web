@@ -24,7 +24,13 @@ const columns = [
   },
 ]
 
-const PermissionsTable = ({ permissions, isOwner, webId }) => {
+type Props = {
+  permissions: any[]
+  isOwner?: boolean
+  webId?: number
+}
+
+const PermissionsTable = ({ permissions, isOwner, webId }: Props) => {
   const { data: session } = useSession()
   const [
     isRemoveConfirmationDialogOpenWithUserEmail,
