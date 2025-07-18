@@ -63,10 +63,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   callbacks: {
     session({ session, user }) {
       session.user = {
-        ...session.user,
+        email: session.user.email,
+        emailVerified: session.user.emailVerified,
+        name: session.user.name,
         id: user.id,
         admin: user.admin,
-        ownerships: user.ownerships,
       }
       return session
     },
