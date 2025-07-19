@@ -1,4 +1,5 @@
 import { revalidatePath } from 'next/cache'
+import { markListingEditAsAccepted } from '@db/listingEditRepository'
 import type { Prisma } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -99,12 +100,7 @@ export async function POST(request, props) {
       })
     }
 
-    // Delete the listing edit since it's been applied
-    await prisma.listingEdit.delete({
-      where: {
-        id: listingEditId,
-      },
-    })
+    await markListingEditAsAccepted(listingEditId)
 
     revalidatePath(`/${updatedListing.web.slug}/${updatedListing.slug}`)
     return Response.json({

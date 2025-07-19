@@ -55,7 +55,11 @@ export async function GET(request) {
             },
           },
         },
-        edits: true,
+        edits: {
+          where: {
+            accepted: false,
+          },
+        },
       },
       orderBy: [
         {

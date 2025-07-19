@@ -1,3 +1,4 @@
+import { getListingEdits } from '@db/listingEditRepository'
 import { Prisma } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -19,33 +20,7 @@ export async function GET(request, props) {
     const searchParams = request.nextUrl.searchParams
     const webSlug = searchParams.get('web')
 
-    const listingEdits = await prisma.listingEdit.findMany({
-      where: {
-        listing: {
-          slug,
-          ...(webSlug
-            ? {
-                web: {
-                  slug: {
-                    contains: webSlug,
-                  },
-                },
-              }
-            : {}),
-        },
-      },
-      include: {
-        socials: true,
-        category: {
-          select: {
-            id: true,
-            color: true,
-            label: true,
-          },
-        },
-        user: true,
-      },
-    })
+    const listingEdits = await getListingEdits(slug, webSlug)
 
     return Response.json({
       listingEdits,

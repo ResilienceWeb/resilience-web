@@ -1,17 +1,18 @@
 'use client'
-import { useRouter } from 'next/navigation'
+
 import { useCallback, use, useEffect } from 'react'
-import NextLink from 'next/link'
-import { Spinner } from '@components/ui/spinner'
-import { Button } from '@components/ui/button'
 import { HiArrowLeft } from 'react-icons/hi'
 import { PiInfoBold } from 'react-icons/pi'
-import useListing from '@hooks/listings/useListing'
-import useApplyListingEdit from '@hooks/listings/useApplyListingEdit'
-import useListingEdits from '@hooks/listings/useListingEdits'
+import NextLink from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useAppContext } from '@store/hooks'
-import ListingEditReview from '@components/admin/listing-form/listing-edit-review'
 import { toast } from 'sonner'
+import ListingEditReview from '@components/admin/listing-form/listing-edit-review'
+import { Button } from '@components/ui/button'
+import { Spinner } from '@components/ui/spinner'
+import useApplyListingEdit from '@hooks/listings/useApplyListingEdit'
+import useListing from '@hooks/listings/useListing'
+import useListingEdits from '@hooks/listings/useListingEdits'
 
 export default function ListingEditsPage({ params }) {
   // @ts-ignore
@@ -46,7 +47,7 @@ export default function ListingEditsPage({ params }) {
 
   useEffect(() => {
     if (isSuccess) {
-      router.push(`/admin/${slug}`)
+      router.push(`/admin/listings/${slug}`)
     }
     if (isError) {
       toast.error('Failed to apply listing edit')

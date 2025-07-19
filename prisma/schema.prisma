@@ -193,6 +193,7 @@ model ListingEdit {
   user        User                 @relation(fields: [userId], references: [id])
   userId      String
   socials     ListingSocialMedia[]
+  accepted    Boolean              @default(false)
 
   @@map("listing_edits")
 }
