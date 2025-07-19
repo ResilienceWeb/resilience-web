@@ -1,6 +1,6 @@
 import { render } from '@react-email/render'
 import { MailerSend, EmailParams, Sender, Recipient } from 'mailersend'
-import nodemailer, { createTransport } from 'nodemailer'
+import { createTransport } from 'nodemailer'
 
 const mailerSend = new MailerSend({
   apiKey: process.env.MAILERSEND_API_KEY,
