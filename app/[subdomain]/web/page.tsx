@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import type { Web } from '@prisma/client'
+import type { Web, WebLocation } from '@prisma/client'
 import prisma from '@prisma-rw'
 import WebHome from './WebHome'
 
@@ -16,7 +16,9 @@ export default async function WebHomePage(props) {
 }
 
 type Data = {
-  webData: Web
+  webData: Web & {
+    location?: WebLocation | null
+  }
 }
 
 async function getData({ webSlug }): Promise<Data> {
@@ -26,6 +28,7 @@ async function getData({ webSlug }): Promise<Data> {
     },
     include: {
       relations: true,
+      location: true,
     },
   })
 

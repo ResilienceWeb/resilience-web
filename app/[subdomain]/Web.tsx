@@ -47,6 +47,7 @@ type Props = {
   webName: string
   webDescription?: string
   webIsPublished: boolean
+  webContactEmail?: string
   isTransitionMode?: boolean
 }
 
@@ -57,6 +58,7 @@ const Web = ({
   webDescription = null,
   webIsPublished,
   isTransitionMode = false,
+  webContactEmail,
 }: Props) => {
   const isMobile = useIsMobile()
   const [isVolunteer, setIsVolunteer] = useState(false)
@@ -299,6 +301,7 @@ const Web = ({
           isVolunteer={isVolunteer}
           searchTerm={searchTerm}
           webDescription={webDescription}
+          webContactEmail={webContactEmail}
           isTransitionMode={isTransitionMode}
         />
       )}

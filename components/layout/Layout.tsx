@@ -38,7 +38,7 @@ const Layout = ({
           />
         )}
         <div
-          className={`flex w-full max-w-7xl flex-col items-center justify-center px-4 pt-6 pb-8 ${applyPostStyling ? styles.root : ''} `}
+          className={`flex w-full max-w-6xl flex-col items-center justify-center px-4 pt-6 pb-8 ${applyPostStyling ? styles.root : ''} `}
         >
           {children}
         </div>
