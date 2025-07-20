@@ -35,6 +35,7 @@ const RichTextEditor = ({
           toolbar:
             'undo redo | link image | styles | bold italic underline | align | bullist numlist',
           contextmenu: false,
+          paste_as_text: true,
           plugins:
             'media autolink lists link image preview fullscreen emoticons help',
         }}

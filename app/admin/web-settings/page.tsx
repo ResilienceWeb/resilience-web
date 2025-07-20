@@ -101,9 +101,11 @@ function WebsSelect({ selectedWebSlug }: { selectedWebSlug: string }) {
 }
 
 export default function WebSettingsPage() {
-  const { isPending: isPendingPermissions } = usePermissions()
+  const { isPending: isLoadingPermissions } = usePermissions()
   const { selectedWebSlug } = useAppContext()
-  const { web: webData } = useWeb({ webSlug: selectedWebSlug })
+  const { web: webData, isPending: isLoadingWeb } = useWeb({
+    webSlug: selectedWebSlug,
+  })
   const { updateWeb, isPending, isSuccess } = useUpdateWeb()
 
   const methods = useForm<WebSettingsForm>({
@@ -177,7 +179,7 @@ export default function WebSettingsPage() {
     [updateWeb, webData?.slug],
   )
 
-  if (isPendingPermissions) {
+  if (isLoadingPermissions || isLoadingWeb) {
     return <Spinner />
   }
 

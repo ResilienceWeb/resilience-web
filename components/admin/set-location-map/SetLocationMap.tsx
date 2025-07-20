@@ -95,6 +95,7 @@ const MapContent = ({
           ref={markerRef}
           icon={L.icon({
             iconUrl: `${window.location.origin}/marker-icon.png`,
+            iconSize: [25, 41],
           })}
         />
       )}
@@ -109,7 +110,7 @@ interface MapProps {
   noPhysicalLocation?: boolean
 }
 
-const Map = ({
+const SetLocationMap = ({
   latitude,
   longitude,
   locationDescription,
@@ -143,4 +144,4 @@ const Map = ({
   )
 }
 
-export default Map
+export default SetLocationMap

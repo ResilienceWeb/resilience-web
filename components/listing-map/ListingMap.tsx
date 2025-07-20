@@ -36,6 +36,7 @@ export default function ListingMap({
             position={{ lat: latitude, lng: longitude }}
             icon={L.icon({
               iconUrl: `${window.location.origin}/marker-icon.png`,
+              iconSize: [25, 41],
             })}
           >
             <Popup>{locationDescription}</Popup>

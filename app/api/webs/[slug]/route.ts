@@ -92,7 +92,7 @@ export async function PUT(request, props) {
   const isWebOwner = userOwnerships?.webs.some(
     (web) => web.slug === params.slug,
   )
-  if (!isWebOwner) {
+  if (!isWebOwner && !session?.user.admin) {
     return new Response('Unauthorized', {
       status: 403,
     })

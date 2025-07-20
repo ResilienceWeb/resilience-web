@@ -93,7 +93,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       })
     }
 
-    if (isOwnerOfCurrentWeb) {
+    if (isOwnerOfCurrentWeb || session?.user.admin) {
       links.push({
         label: 'Web Settings',
         href: '/admin/web-settings',
@@ -122,7 +122,12 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     })
 
     return links
-  }, [hasPermissionForCurrentWeb, isOwnerOfCurrentWeb, selectedWebId])
+  }, [
+    hasPermissionForCurrentWeb,
+    isOwnerOfCurrentWeb,
+    selectedWebId,
+    session?.user.admin,
+  ])
 
   const adminNavLinks = useMemo(() => {
     const links: any[] = []
