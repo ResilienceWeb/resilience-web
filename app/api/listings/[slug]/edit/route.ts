@@ -6,6 +6,7 @@ import { auth } from '@auth'
 import deleteImage from '@helpers/deleteImage'
 import { sendEmail } from '@helpers/email'
 import uploadImage from '@helpers/uploadImage'
+import { stringToBoolean } from '@helpers/utils'
 import ListingEditProposedAdminEmail from '@components/emails/ListingEditProposedAdminEmail'
 
 export async function GET(request, props) {
@@ -50,12 +51,40 @@ export async function POST(request) {
     const email = formData.get('email')
     const socials = formData.get('socials')
     const socialsData = socials ? JSON.parse(socials) : []
+    const latitude = formData.get('latitude')
+    const longitude = formData.get('longitude')
+    const locationDescription = formData.get('locationDescription')
+    const noPhysicalLocation = stringToBoolean(
+      formData.get('noPhysicalLocation'),
+    )
 
     const currentListing = await prisma.listing.findUnique({
       where: {
         id: listingId,
       },
     })
+
+    let locationData
+    if (noPhysicalLocation) {
+      locationData = {
+        create: {
+          noPhysicalLocation: true,
+        },
+      }
+    } else {
+      locationData = {
+        ...(latitude && longitude && locationDescription
+          ? {
+              create: {
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude),
+                description: locationDescription,
+                noPhysicalLocation: false,
+              },
+            }
+          : {}),
+      }
+    }
 
     const listingEditData: Prisma.ListingEditCreateInput = {
       title,
@@ -84,6 +113,7 @@ export async function POST(request) {
           url: social.url,
         })),
       },
+      location: locationData,
     }
 
     const image = formData.get('image')

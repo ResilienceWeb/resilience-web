@@ -407,7 +407,7 @@ const ListingForm = ({
             control={methods.control}
             name="seekingVolunteers"
             render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start gap-2">
+              <FormItem className="mt-8 flex flex-row items-start gap-2">
                 <FormControl>
                   <Checkbox
                     checked={field.value}

@@ -5,6 +5,7 @@ import { useForm, useFormContext } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
+import dynamic from 'next/dynamic'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Category } from '@prisma/client'
 import { z } from 'zod'
@@ -20,6 +21,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
+  FormDescription,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import {
@@ -29,9 +31,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select'
+import { Separator } from '@components/ui/separator'
 import useTags from '@hooks/tags/useTags'
 import ImageUpload from './ImageUpload'
 import SocialMedia from './SocialMedia'
+
+const SetLocationMap = dynamic(
+  () => import('@components/admin/set-location-map'),
+  {
+    ssr: false,
+    loading: () => <div className="pt-5 text-center">Loading…</div>,
+  },
+)
 
 const SlugField = ({ webSlug }) => {
   const { control, watch, setValue } = useFormContext()
@@ -116,6 +127,17 @@ const listingFormSchema = z.object({
   image: z.any(),
   slug: z.string(),
   tags: z.array(z.object({ value: z.number(), label: z.string() })),
+  noPhysicalLocation: z.boolean(),
+  location: z
+    .object({
+      latitude: z.number(),
+      longitude: z.number(),
+      description: z.string(),
+    })
+    .optional(),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
+  locationDescription: z.string().optional(),
 })
 
 type FormValues = z.infer<typeof listingFormSchema>
@@ -142,11 +164,21 @@ const ListingFormSimplified = ({
       image: listing?.image,
       slug: listing?.slug || '',
       tags: [],
+      noPhysicalLocation: listing?.location?.noPhysicalLocation || false,
+      location:
+        listing?.location?.latitude && listing?.location?.longitude
+          ? {
+              latitude: listing.location.latitude,
+              longitude: listing.location.longitude,
+              description: listing.location.description,
+            }
+          : undefined,
     },
   })
 
   const {
     formState: { isDirty, isSubmitting },
+    watch,
   } = form
 
   const tagOptions: Options<TagOption> = useMemo(() => {
@@ -159,6 +191,13 @@ const ListingFormSimplified = ({
   }, [tags])
 
   const handleSubmitForm = (data: any) => {
+    if (!data.noPhysicalLocation && data.location) {
+      data.latitude = data.location.latitude
+      data.longitude = data.location.longitude
+      data.locationDescription = data.location.description
+      delete data.location
+    }
+
     const formData = {
       ...data,
       tags: data.tags?.map((t) => t.value),
@@ -298,7 +337,7 @@ const ListingFormSimplified = ({
               control={form.control}
               name="seekingVolunteers"
               render={({ field }) => (
-                <FormItem className="mt-2 flex flex-row items-start gap-2">
+                <FormItem className="mt-6 flex flex-row items-start gap-2">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -306,9 +345,7 @@ const ListingFormSimplified = ({
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel className="font-semibold">
-                      Seeking volunteers
-                    </FormLabel>
+                    <FormLabel>Currently seeking volunteers</FormLabel>
                     <p className="text-sm text-gray-500">
                       Would this group benefit from having additional
                       volunteers?
@@ -316,6 +353,38 @@ const ListingFormSimplified = ({
                   </div>
                 </FormItem>
               )}
+            />
+          )}
+
+          <Separator className="mt-4" />
+
+          <FormField
+            control={form.control}
+            name="noPhysicalLocation"
+            render={({ field }) => (
+              <FormItem className="mt-4 flex flex-row items-start gap-2">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="flex flex-col gap-1">
+                  <FormLabel>This listing has no physical location</FormLabel>
+                  <FormDescription>
+                    If this listing does not have a physical location, please
+                    check this box
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          {!watch('noPhysicalLocation') && (
+            <SetLocationMap
+              latitude={listing?.location?.latitude}
+              longitude={listing?.location?.longitude}
+              locationDescription={listing?.location?.description}
             />
           )}
         </div>

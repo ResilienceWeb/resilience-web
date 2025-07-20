@@ -24,7 +24,7 @@ import {
 } from '@components/ui/tooltip'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 
-const ListingMap = dynamic(() => import('./listing-map'), {
+const ListingMap = dynamic(() => import('@components/listing-map'), {
   ssr: false,
   loading: () => <div className="pt-5 text-center">Loading…</div>,
 })

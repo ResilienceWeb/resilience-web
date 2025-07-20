@@ -1,9 +1,15 @@
 import { memo } from 'react'
-import { Button } from '@components/ui/button'
-import Diff from './Diff'
-import useDeleteListingEdit from '@hooks/listings/useDeleteListingEdit'
-import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { Button } from '@components/ui/button'
+import useDeleteListingEdit from '@hooks/listings/useDeleteListingEdit'
+import Diff from './Diff'
+
+const ListingMap = dynamic(() => import('@components/listing-map'), {
+  ssr: false,
+  loading: () => <div className="pt-5 text-center">Loading…</div>,
+})
 
 interface Props {
   listing: Listing
@@ -28,6 +34,7 @@ const ListingEditReview = ({
     })
     router.back()
   }
+  console.log(listing, editedListing)
 
   return (
     <div className="space-y-6">
@@ -222,6 +229,27 @@ const ListingEditReview = ({
           </div>
         </div>
       )}
+
+      {listing.location &&
+        editedListing.location &&
+        listing.location.description !== editedListing.location.description && (
+          <>
+            <h3 className="mt-2 text-lg font-semibold">Location</h3>
+            <p className="bg-[#fec4c0] w-fit text-[red]">
+              {listing.location?.description}
+            </p>
+            <p className="my-2 bg-[#b5efdb] w-fit text-[green]">
+              {editedListing.location?.description}
+            </p>
+
+            <ListingMap
+              latitude={editedListing.location?.latitude}
+              longitude={editedListing.location?.longitude}
+              locationDescription={editedListing.location?.description}
+              hideDescription
+            />
+          </>
+        )}
 
       <div className="mt-8 flex justify-end gap-4">
         <Button variant="destructive" onClick={handleReject}>
