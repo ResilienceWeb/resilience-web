@@ -1,8 +1,8 @@
 import { useRef, useState, memo } from 'react'
-import Image from 'next/legacy/image'
 import { useFormContext } from 'react-hook-form'
 import { FiUploadCloud, FiImage } from 'react-icons/fi'
 import { RiDeleteBin6Line } from 'react-icons/ri'
+import Image from 'next/legacy/image'
 import optimizeImage from '@helpers/optimizeImage'
 import { Button } from '@components/ui/button'
 import {
@@ -75,7 +75,7 @@ const ImageUpload = ({
           </FormLabel>
           <FormDescription>
             Please ensure this is either a copyright-free image, you own the
-            copyright of this image, or you have permission to use the image.
+            copyright of this image, or you have permission to use it.{' '}
             {helperText && <span className="mt-2">{helperText}</span>}
           </FormDescription>
           <div className="mt-2">

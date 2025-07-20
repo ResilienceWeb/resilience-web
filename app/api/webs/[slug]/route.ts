@@ -132,6 +132,7 @@ export async function PUT(request, props) {
     const newData: Prisma.WebUpdateInput = {
       title: formData.get('title'),
       published: stringToBoolean(formData.get('published')),
+      contactEmail: formData.get('contactEmail'),
       description: formData.get('description'),
       relations: {
         set: relationsToConnect,

@@ -74,24 +74,25 @@ model VerificationToken {
 }
 
 model Web {
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
-  id          Int          @id @default(autoincrement())
-  title       String       @unique
-  slug        String       @unique
-  description String?
-  categories  Category[]
-  listings    Listing[]
-  tags        Tag[]
-  published   Boolean      @default(false)
-  image       String?
-  permissions Permission[]
-  ownerships  Ownership[]
-  features    WebFeature[]
-  relations   Web[]        @relation("related_webs")
-  relationOf  Web[]        @relation("related_webs")
-  location    WebLocation? @relation(fields: [locationId], references: [id])
-  locationId  Int?         @unique
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @default(now()) @updatedAt @map("updated_at")
+  id           Int          @id @default(autoincrement())
+  title        String       @unique
+  slug         String       @unique
+  description  String?
+  contactEmail String?      @map("contact_email")
+  categories   Category[]
+  listings     Listing[]
+  tags         Tag[]
+  published    Boolean      @default(false)
+  image        String?
+  permissions  Permission[]
+  ownerships   Ownership[]
+  features     WebFeature[]
+  relations    Web[]        @relation("related_webs")
+  relationOf   Web[]        @relation("related_webs")
+  location     WebLocation? @relation(fields: [locationId], references: [id])
+  locationId   Int?         @unique
 
   @@map("Location")
 }

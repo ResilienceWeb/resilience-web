@@ -3,9 +3,11 @@
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useSession } from 'next-auth/react'
 import posthog from 'posthog-js'
 import * as z from 'zod'
 import { urlValidator } from '@helpers/form'
@@ -26,6 +28,14 @@ import {
 import { Input } from '@components/ui/input'
 import useCreateWeb from '@hooks/webs/useCreateWeb'
 import LogoImage from '../../../public/logo.png'
+
+const SetLocationMap = dynamic(
+  () => import('@components/admin/set-location-map'),
+  {
+    ssr: false,
+    loading: () => <div className="pt-5 text-center">Loading…</div>,
+  },
+)
 
 const faqs = [
   {
@@ -83,12 +93,22 @@ const formSchema = z.object({
     .refine((value) => value === value.toLowerCase(), {
       message: 'Slug must be lowercase',
     }),
+  contactEmail: z.string().email('Please enter a valid email').optional(),
   description: z.string().optional(),
+  location: z
+    .object({
+      latitude: z.number(),
+      longitude: z.number(),
+      description: z.string(),
+    })
+    .nullable()
+    .optional(),
 })
 
 type FormValues = z.infer<typeof formSchema>
 
 const WebCreation = () => {
+  const session = useSession()
   const { createWeb, isPending, isSuccess, isError, errorMessage } =
     useCreateWeb()
   const router = useRouter()
@@ -98,7 +118,9 @@ const WebCreation = () => {
     defaultValues: {
       title: '',
       slug: '',
+      contactEmail: session?.data?.user?.email || '',
       description: '',
+      location: null,
     },
   })
 
@@ -207,6 +229,32 @@ const WebCreation = () => {
 
               <FormField
                 control={form.control}
+                name="contactEmail"
+                render={({ field }) => (
+                  <FormItem className="max-w-lg">
+                    <FormLabel className="text-sm font-semibold">
+                      Contact email
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="text-sm shadow-xs"
+                        placeholder="e.g. contact@example.com"
+                        type="email"
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      This should be an email address where people can reach you
+                      with questions or feedback. We've prefilled it with your
+                      email address but you can change it.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name="description"
                 render={() => (
                   <FormItem>
@@ -225,6 +273,21 @@ const WebCreation = () => {
                   </FormItem>
                 )}
               />
+
+              <div>
+                <FormLabel className="text-sm font-semibold">
+                  Location
+                </FormLabel>
+                <FormDescription>
+                  Add a location for your web. Start by writing your
+                  city/village name in the Enter address field below.
+                </FormDescription>
+                <SetLocationMap
+                  latitude={undefined}
+                  longitude={undefined}
+                  locationDescription={undefined}
+                />
+              </div>
 
               {isError && errorMessage && (
                 <p className="text-destructive text-sm">{`${errorMessage}`}</p>
