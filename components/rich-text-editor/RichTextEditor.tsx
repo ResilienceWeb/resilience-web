@@ -1,5 +1,5 @@
-import { Editor } from '@tinymce/tinymce-react'
 import { useFormContext } from 'react-hook-form'
+import { Editor } from '@tinymce/tinymce-react'
 
 interface RichTextEditorProps {
   name: string
@@ -31,11 +31,12 @@ const RichTextEditor = ({
         onEditorChange={handleEditorChange}
         init={{
           height: 300,
-          menubar: 'edit view insert format tools table tc help',
-          toolbar: true,
+          menubar: 'edit view insert format tc help',
+          toolbar:
+            'undo redo | link image | styles | bold italic underline | align | bullist numlist',
           contextmenu: false,
           plugins:
-            'media advlist autolink lists anchor link image code fullscreen table code emoticons help',
+            'media autolink lists link image preview fullscreen emoticons help',
         }}
       />
     </>

@@ -277,6 +277,7 @@ export default function WebSettingsPage() {
               />
 
               <div>
+                <FormLabel className="font-semibold">Location</FormLabel>
                 <SetLocationMap
                   latitude={webData?.location?.latitude}
                   longitude={webData?.location?.longitude}

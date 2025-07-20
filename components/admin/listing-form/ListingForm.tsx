@@ -97,6 +97,7 @@ const customMultiSelectStyles = {
   container: (baseStyles) => ({
     ...baseStyles,
     width: '100%',
+    zIndex: 1001,
   }),
   menuPortal: (baseStyles) => ({
     ...baseStyles,

@@ -11,6 +11,7 @@ import * as z from 'zod'
 import { urlValidator } from '@helpers/form'
 import { generateSlug } from '@helpers/utils'
 import Faq from '@components/faq'
+import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
 import { Card, CardContent } from '@components/ui/card'
 import {
@@ -23,7 +24,6 @@ import {
   FormMessage,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
-import { Textarea } from '@components/ui/textarea'
 import useCreateWeb from '@hooks/webs/useCreateWeb'
 import LogoImage from '../../../public/logo.png'
 
@@ -43,6 +43,8 @@ const faqs = [
         <a
           href="https://opencollective.com/resilience-web"
           className="text-primary hover:underline"
+          target="_blank"
+          rel="noreferrer"
         >
           our Open Collective
         </a>{' '}
@@ -130,7 +132,7 @@ const WebCreation = () => {
   )
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       <div className="flex justify-center">
         <Image alt="Resilience Web CIC logo" src={LogoImage} />
       </div>
@@ -150,7 +152,7 @@ const WebCreation = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-2"
+              className="flex flex-col gap-4"
             >
               <FormField
                 control={form.control}
@@ -206,17 +208,19 @@ const WebCreation = () => {
               <FormField
                 control={form.control}
                 name="description"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel className="text-sm font-semibold">
-                      Description (optional)
+                      Description
                     </FormLabel>
-                    <FormControl>
-                      <Textarea {...field} className="text-sm shadow-xs" />
-                    </FormControl>
                     <FormDescription>
-                      This can also be edited later.
+                      This can be edited later. You can format the text in any
+                      way you'd like, and you can even add images or embed
+                      videos.
                     </FormDescription>
+                    <FormControl>
+                      <RichTextEditor name="description" />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -235,7 +239,7 @@ const WebCreation = () => {
         </CardContent>
       </Card>
 
-      <div className="mt-2 flex flex-col gap-1">
+      <div className="mt-6 flex flex-col gap-1">
         <h2 className="text-2xl font-bold">Need help?</h2>
         <Faq content={faqs} />
       </div>

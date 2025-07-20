@@ -118,7 +118,6 @@ const Map = ({
   return (
     <div
       className={cn(
-        'mt-2',
         noPhysicalLocation ? 'pointer-events-none opacity-50' : 'opacity-100',
       )}
     >
