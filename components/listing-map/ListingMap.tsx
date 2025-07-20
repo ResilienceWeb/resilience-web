@@ -1,23 +1,27 @@
 'use client'
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 
 interface ListingMapProps {
   latitude: number
   longitude: number
   locationDescription: string
+  hideDescription?: boolean
 }
 
 export default function ListingMap({
   latitude,
   longitude,
   locationDescription,
+  hideDescription = false,
 }: ListingMapProps) {
   return (
     <div>
-      <p className="font-semibold">{locationDescription}</p>
+      {!hideDescription && (
+        <p className="font-semibold">{locationDescription}</p>
+      )}
       <div className="h-[300px] overflow-hidden rounded-lg">
         <MapContainer
           center={[latitude, longitude]}

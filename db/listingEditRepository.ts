@@ -38,6 +38,7 @@ export const getListingEdits = async (listingSlug, webSlug) => {
         },
       },
       user: true,
+      location: true,
     },
   })
 

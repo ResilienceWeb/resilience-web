@@ -75,6 +75,7 @@ const MapContent = ({
   }, [locationDescription])
 
   useEffect(() => {
+    geoSearchControl.searchElement.input.setAttribute('data-1p-ignore', 'true')
     map.addControl(geoSearchControl)
 
     return () => {
@@ -133,7 +134,7 @@ const Map = ({
           longitude ?? DEFAULT_CENTER.lng,
         ]}
         zoom={14}
-        style={{ height: '300px' }}
+        style={{ height: '300px', borderRadius: '8px' }}
       >
         <MapContent
           latitude={latitude}

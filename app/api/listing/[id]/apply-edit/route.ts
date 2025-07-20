@@ -28,6 +28,7 @@ export async function POST(request, props) {
         user: true,
         socials: true,
         category: true,
+        location: true,
         listing: {
           include: {
             web: true,
@@ -46,6 +47,7 @@ export async function POST(request, props) {
       },
       include: {
         category: true,
+        location: true,
       },
     })
 
@@ -72,6 +74,39 @@ export async function POST(request, props) {
       newData.image = listingEdit.image
       if (currentListing.image) {
         await deleteImage(currentListing.image)
+      }
+    }
+
+    // Handle location data if present in the edit
+    if (listingEdit.location) {
+      if (currentListing.locationId) {
+        // Update existing location
+        await prisma.listingLocation.update({
+          where: {
+            id: currentListing.locationId,
+          },
+          data: {
+            latitude: listingEdit.location.latitude,
+            longitude: listingEdit.location.longitude,
+            description: listingEdit.location.description,
+            noPhysicalLocation: listingEdit.location.noPhysicalLocation,
+          },
+        })
+      } else {
+        // Create new location and connect it to the listing
+        const newLocation = await prisma.listingLocation.create({
+          data: {
+            latitude: listingEdit.location.latitude,
+            longitude: listingEdit.location.longitude,
+            description: listingEdit.location.description,
+            noPhysicalLocation: listingEdit.location.noPhysicalLocation,
+          },
+        })
+        newData.location = {
+          connect: {
+            id: newLocation.id,
+          },
+        }
       }
     }
 
