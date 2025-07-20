@@ -5,6 +5,7 @@ import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
 import Select from 'react-select'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
+import Link from 'next/link'
 import customMultiSelectStyles from '@styles/select-styles'
 import { REMOTE_URL } from '@helpers/config'
 import DonateButton from '@components/donate-button'
@@ -29,6 +30,7 @@ interface DrawerProps {
   isVolunteer: boolean
   searchTerm: string
   webDescription?: string
+  webContactEmail?: string
   isTransitionMode?: boolean
 }
 
@@ -45,10 +47,9 @@ const Drawer = ({
   isVolunteer,
   searchTerm,
   webDescription,
+  webContactEmail,
   isTransitionMode = false,
 }: DrawerProps) => {
-  console.log(webDescription)
-
   const selectedWebSlug = useSelectedWebSlug()
   return (
     <div className="fixed z-3 h-screen w-[300px] bg-white shadow-xl">
@@ -142,16 +143,35 @@ const Drawer = ({
               />
             )}
           </div>
-          {webDescription && (
+          {webDescription && webDescription.length < 100 && (
             <>
               <Separator />
-              <div className="mx-2 mt-5">
+              <div className="mx-2 mt-4">
                 <h2 className="text-xl font-semibold">About this web</h2>
                 <RichText html={webDescription} />
               </div>
             </>
           )}
+          {webDescription && webDescription.length >= 100 && (
+            <>
+              <Separator />
+              <div className="mx-2 mt-4">
+                <Link href="/web">
+                  <Button variant="outline">About this web</Button>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
+        {webContactEmail && (
+          <div className="m-2">
+            <p className="text-sm">
+              If you have any questions or feedback about this web, please email{' '}
+              <a href={`mailto:${webContactEmail}`}>{webContactEmail}</a>
+            </p>
+          </div>
+        )}
+
         <div className="shrink-0 border-t bg-white p-4">
           <h2 className="text-xl font-semibold">Like what you see?</h2>
           {isTransitionMode ? (

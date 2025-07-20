@@ -93,7 +93,11 @@ export default function SignIn() {
         <div className="w-full max-w-[500px] rounded-xl bg-white p-4 text-sm sm:p-6 sm:text-base">
           <span>Not a member of Resilience Web? </span>
           <Link
-            href="/auth/signup"
+            href={
+              redirectTo
+                ? `/auth/signup?redirectTo=${redirectTo}`
+                : '/auth/signup'
+            }
             className="font-medium text-green-700 transition-colors hover:text-green-600"
           >
             Sign up

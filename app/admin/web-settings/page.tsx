@@ -39,6 +39,7 @@ interface WebSettingsForm {
   title: string
   published: boolean
   description: string
+  contactEmail: string
   image: File | string | null
   relatedWebs: WebOption[]
   location: {
@@ -110,6 +111,7 @@ export default function WebSettingsPage() {
       title: '',
       published: false,
       description: '',
+      contactEmail: '',
       image: null,
       relatedWebs: [],
       location: null,
@@ -136,6 +138,7 @@ export default function WebSettingsPage() {
         title: webData.title || '',
         published: Boolean(webData.published),
         description: webData.description || '',
+        contactEmail: webData.contactEmail || '',
         image: webData.image || null,
         relatedWebs,
       })
@@ -153,6 +156,7 @@ export default function WebSettingsPage() {
       const dataToSubmit: any = {
         title: data.title,
         description: data.description,
+        contactEmail: data.contactEmail,
         published: data.published,
         slug: webData?.slug,
         relatedWebIds: data.relatedWebs?.map((web) => web.value) || [],
@@ -252,6 +256,31 @@ export default function WebSettingsPage() {
                 )}
               </div>
 
+              <div className="mb-6">
+                <FormLabel className="font-semibold">Contact Email</FormLabel>
+                <FormDescription className="mb-2">
+                  This should be an email address where people can reach you
+                  with questions or feedback.
+                </FormDescription>
+                <Input
+                  name="contactEmail"
+                  type="email"
+                  value={watch('contactEmail') || ''}
+                  onChange={(e) =>
+                    setValue('contactEmail', e.target.value, {
+                      shouldDirty: true,
+                    })
+                  }
+                  placeholder="e.g. contact@example.com"
+                  className="max-w-md"
+                />
+                {errors.contactEmail && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.contactEmail.message}
+                  </p>
+                )}
+              </div>
+
               <FormField
                 control={methods.control}
                 name="description"
@@ -277,6 +306,7 @@ export default function WebSettingsPage() {
               />
 
               <div>
+                <FormLabel className="font-semibold">Location</FormLabel>
                 <SetLocationMap
                   latitude={webData?.location?.latitude}
                   longitude={webData?.location?.longitude}

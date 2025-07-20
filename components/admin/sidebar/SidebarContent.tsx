@@ -102,12 +102,14 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       })
     }
 
-    links.push({
-      label: 'Resources',
-      href: '/admin/resources',
-      icon: <GrAnnounce />,
-      tourId: 'nav-resources',
-    })
+    if (selectedWebId) {
+      links.push({
+        label: 'Resources',
+        href: '/admin/resources',
+        icon: <GrAnnounce />,
+        tourId: 'nav-resources',
+      })
+    }
 
     links.push({
       label: (

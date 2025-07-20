@@ -113,7 +113,8 @@ export async function POST(request) {
       )
     }
 
-    const { title, slug, description } = await request.json()
+    const { title, slug, description, contactEmail, location } =
+      await request.json()
 
     const currentOwnerships = await prisma.ownership.findUnique({
       where: {
@@ -141,6 +142,7 @@ export async function POST(request) {
         title,
         slug,
         description,
+        contactEmail,
         published: false,
         categories: {
           create: defaultCategories,
@@ -155,6 +157,17 @@ export async function POST(request) {
             },
           },
         },
+        ...(location
+          ? {
+              location: {
+                create: {
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                  description: location.description,
+                },
+              },
+            }
+          : {}),
       },
     })
 

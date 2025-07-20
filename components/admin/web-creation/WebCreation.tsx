@@ -3,14 +3,17 @@
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useSession } from 'next-auth/react'
 import posthog from 'posthog-js'
 import * as z from 'zod'
 import { urlValidator } from '@helpers/form'
 import { generateSlug } from '@helpers/utils'
 import Faq from '@components/faq'
+import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
 import { Card, CardContent } from '@components/ui/card'
 import {
@@ -23,9 +26,16 @@ import {
   FormMessage,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
-import { Textarea } from '@components/ui/textarea'
 import useCreateWeb from '@hooks/webs/useCreateWeb'
 import LogoImage from '../../../public/logo.png'
+
+const SetLocationMap = dynamic(
+  () => import('@components/admin/set-location-map'),
+  {
+    ssr: false,
+    loading: () => <div className="pt-5 text-center">Loading…</div>,
+  },
+)
 
 const faqs = [
   {
@@ -43,6 +53,8 @@ const faqs = [
         <a
           href="https://opencollective.com/resilience-web"
           className="text-primary hover:underline"
+          target="_blank"
+          rel="noreferrer"
         >
           our Open Collective
         </a>{' '}
@@ -81,12 +93,22 @@ const formSchema = z.object({
     .refine((value) => value === value.toLowerCase(), {
       message: 'Slug must be lowercase',
     }),
+  contactEmail: z.string().email('Please enter a valid email').optional(),
   description: z.string().optional(),
+  location: z
+    .object({
+      latitude: z.number(),
+      longitude: z.number(),
+      description: z.string(),
+    })
+    .nullable()
+    .optional(),
 })
 
 type FormValues = z.infer<typeof formSchema>
 
 const WebCreation = () => {
+  const session = useSession()
   const { createWeb, isPending, isSuccess, isError, errorMessage } =
     useCreateWeb()
   const router = useRouter()
@@ -96,7 +118,9 @@ const WebCreation = () => {
     defaultValues: {
       title: '',
       slug: '',
+      contactEmail: session?.data?.user?.email || '',
       description: '',
+      location: null,
     },
   })
 
@@ -130,7 +154,7 @@ const WebCreation = () => {
   )
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       <div className="flex justify-center">
         <Image alt="Resilience Web CIC logo" src={LogoImage} />
       </div>
@@ -150,7 +174,7 @@ const WebCreation = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-2"
+              className="flex flex-col gap-4"
             >
               <FormField
                 control={form.control}
@@ -205,22 +229,65 @@ const WebCreation = () => {
 
               <FormField
                 control={form.control}
-                name="description"
+                name="contactEmail"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="max-w-lg">
                     <FormLabel className="text-sm font-semibold">
-                      Description (optional)
+                      Contact email
                     </FormLabel>
                     <FormControl>
-                      <Textarea {...field} className="text-sm shadow-xs" />
+                      <Input
+                        {...field}
+                        className="text-sm shadow-xs"
+                        placeholder="e.g. contact@example.com"
+                        type="email"
+                      />
                     </FormControl>
                     <FormDescription>
-                      This can also be edited later.
+                      This should be an email address where people can reach you
+                      with questions or feedback. We've prefilled it with your
+                      email address but you can change it.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="description"
+                render={() => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold">
+                      Description
+                    </FormLabel>
+                    <FormDescription>
+                      This can be edited later. You can format the text in any
+                      way you'd like, and you can even add images or embed
+                      videos.
+                    </FormDescription>
+                    <FormControl>
+                      <RichTextEditor name="description" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div>
+                <FormLabel className="text-sm font-semibold">
+                  Location
+                </FormLabel>
+                <FormDescription>
+                  Add a location for your web. Start by writing your
+                  city/village name in the Enter address field below.
+                </FormDescription>
+                <SetLocationMap
+                  latitude={undefined}
+                  longitude={undefined}
+                  locationDescription={undefined}
+                />
+              </div>
 
               {isError && errorMessage && (
                 <p className="text-destructive text-sm">{`${errorMessage}`}</p>
@@ -235,7 +302,7 @@ const WebCreation = () => {
         </CardContent>
       </Card>
 
-      <div className="mt-2 flex flex-col gap-1">
+      <div className="mt-6 flex flex-col gap-1">
         <h2 className="text-2xl font-bold">Need help?</h2>
         <Faq content={faqs} />
       </div>

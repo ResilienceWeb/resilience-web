@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import prisma from '@prisma-rw'
 import { getIconUnicode } from '@helpers/icons'
@@ -21,11 +22,12 @@ export default async function WebPage(props) {
       webName={webData.title}
       webDescription={webData.description}
       webIsPublished={webData.published}
+      webContactEmail={webData.contactEmail}
     />
   )
 }
 
-export async function generateMetadata(props) {
+export async function generateMetadata(props): Promise<Metadata> {
   const params = await props.params
   const { subdomain: webSlug } = params
   const webData = await prisma.web.findUnique({
@@ -72,6 +74,7 @@ type DataType = {
     image: string
     slug: string
     features: Record<string, any>
+    contactEmail: string
   }
 }
 

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/legacy/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import * as Sentry from '@sentry/nextjs'
 import { signIn } from 'next-auth/react'
 import { Button } from '@components/ui/button'
@@ -14,6 +14,11 @@ import styles from '../auth.module.css'
 export default function SignUp() {
   const [error, setError] = useState('')
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirectTo')
+
+  const isUserAttemptingEdit = redirectTo?.includes('/edit')
+  const isUserAttemptingPropose = redirectTo?.includes('/new-listing')
 
   return (
     <div className={styles.root}>
@@ -24,11 +29,23 @@ export default function SignUp() {
               <Image alt="Resilience Web logo" src={LogoImage} priority />
             </div>
           </div>
-          <div className="mb-6 flex justify-center sm:mb-8">
-            <p className="text-center text-sm text-gray-600 sm:text-base">
-              Welcome! Enter your email to get started:
-            </p>
-          </div>
+          {!isUserAttemptingEdit && !isUserAttemptingPropose && (
+            <div className="mb-6 flex justify-center sm:mb-8">
+              <p className="text-center text-sm text-gray-600 sm:text-base">
+                Welcome! Enter your email to get started:
+              </p>
+            </div>
+          )}
+
+          {isUserAttemptingEdit ||
+            (isUserAttemptingPropose && (
+              <p className="my-6 text-sm sm:my-8 sm:text-base">
+                <span className="font-bold">
+                  Everyone can contribute to Resilience Web.
+                </span>{' '}
+                Enter your email to get started.
+              </p>
+            ))}
           <form
             onSubmit={async (e) => {
               try {
@@ -37,6 +54,7 @@ export default function SignUp() {
                 const response = await signIn('nodemailer', {
                   email: formData.get('email'),
                   redirect: false,
+                  redirectTo: redirectTo ?? '/admin',
                   callbackUrl: window.location.origin,
                 })
 
@@ -76,7 +94,11 @@ export default function SignUp() {
         <div className="w-full max-w-[500px] rounded-xl bg-white p-4 text-sm sm:p-6 sm:text-base">
           <span>Already have an account? </span>
           <Link
-            href="/auth/signin"
+            href={
+              redirectTo
+                ? `/auth/signin?redirectTo=${redirectTo}`
+                : '/auth/signin'
+            }
             className="font-medium text-green-700 transition-colors hover:text-green-600"
           >
             Sign in
