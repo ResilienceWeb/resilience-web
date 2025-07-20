@@ -6,7 +6,6 @@ import { OpenStreetMapProvider, GeoSearchControl } from 'leaflet-geosearch'
 import 'leaflet-geosearch/dist/geosearch.css'
 import 'leaflet/dist/leaflet.css'
 import { cn } from '@components/lib/utils'
-import { FormLabel } from '@components/ui/form'
 
 const provider = new OpenStreetMapProvider({
   params: {
@@ -123,7 +122,6 @@ const Map = ({
         noPhysicalLocation ? 'pointer-events-none opacity-50' : 'opacity-100',
       )}
     >
-      <FormLabel className="font-semibold">Location</FormLabel>
       <p className="py-2 text-sm font-normal text-gray-700 italic">
         The location can only be selected by adding an address via the search
         bar below. Selecting a location without an address is not supported.

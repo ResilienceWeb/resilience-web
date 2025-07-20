@@ -32,6 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select'
+import { Separator } from '@components/ui/separator'
 import useListings from '@hooks/listings/useListings'
 import useTags from '@hooks/tags/useTags'
 import ImageUpload from './ImageUpload'
@@ -417,54 +418,36 @@ const ListingForm = ({
                 <div className="flex flex-col gap-1">
                   <FormLabel>Currently seeking volunteers</FormLabel>
                   <FormDescription>
-                    Check this if your group would benefit from having
-                    additional volunteers
+                    Would this group benefit from having more volunteers?
                   </FormDescription>
                 </div>
               </FormItem>
             )}
           />
 
-          <FormField
-            control={methods.control}
-            name="featured"
-            render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start gap-2">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="flex flex-col gap-1">
-                  <FormLabel>Featured listing</FormLabel>
-                  <FormDescription>
-                    Featured listings appear at the top of search results
-                  </FormDescription>
-                </div>
-              </FormItem>
-            )}
-          />
-
+          <Separator className="my-4" />
           <FormField
             control={methods.control}
             name="noPhysicalLocation"
             render={({ field }) => (
-              <FormItem className="mt-4 flex flex-row items-start gap-2">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="flex flex-col gap-1">
-                  <FormLabel>This listing has no physical location</FormLabel>
-                  <FormDescription>
-                    If this listing does not have a physical location, please
-                    check this box
-                  </FormDescription>
-                </div>
-              </FormItem>
+              <>
+                <FormLabel className="font-semibold">Location</FormLabel>
+                <FormItem className="mt-4 flex flex-row items-start gap-2">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="flex flex-col gap-1">
+                    <FormLabel>No physical location</FormLabel>
+                    <FormDescription>
+                      If this listing does not have a physical location, please
+                      check this box
+                    </FormDescription>
+                  </div>
+                </FormItem>
+              </>
             )}
           />
 
