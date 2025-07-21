@@ -33,9 +33,11 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# Mailpit
+data
+
 # vercel
 .vercel
-
 .aws
 
 # Sentry Auth Token
