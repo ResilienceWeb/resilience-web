@@ -17,6 +17,7 @@ export async function GET() {
       },
       select: {
         slug: true,
+        updatedAt: true,
         web: {
           select: {
             slug: true,
