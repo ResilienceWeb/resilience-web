@@ -123,11 +123,19 @@ const Network = ({ data, selectedId, setSelectedId }) => {
     () => ({
       select: function (event) {
         const { nodes } = event
-        if (nodes[0].includes('related-web')) {
-          const webSlug = nodes[0].match(/related-web-(.*)/)?.[1] || ''
+        if (nodes.length === 0) {
+          return
+        }
+        const selectedNodeId = nodes[0]
+
+        if (
+          typeof selectedNodeId === 'string' &&
+          selectedNodeId.includes('related-web')
+        ) {
+          const webSlug = selectedNodeId.match(/related-web-(.*)/)?.[1] || ''
           router.push(`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`)
         } else {
-          setSelectedId(nodes[0])
+          setSelectedId(selectedNodeId)
         }
       },
       click: function (event) {
