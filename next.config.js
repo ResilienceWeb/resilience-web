@@ -1,6 +1,11 @@
 // @ts-check
 
 import { withSentryConfig } from '@sentry/nextjs'
+import bundleAnalyzer from '@next/bundle-analyzer'
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 /**
  * @type {import('next').NextConfig}
@@ -94,23 +99,25 @@ const nextConfig = {
   }
 }
 
-export default withSentryConfig(
-  nextConfig,
-  {
-    org: 'resilience-web',
-    project: 'resilience-web',
-    telemetry: false,
-    authToken: process.env.SENTRY_AUTH_TOKEN,
-    // Suppresses source map uploading logs during build
-    silent: true,
-    // Upload a larger set of source maps for prettier stack traces (increases build time)
-    widenClientFileUpload: false,
-    // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
-    // tunnelRoute: '/monitoring',
-    // Automatically tree-shake Sentry logger statements to reduce bundle size
-    disableLogger: true,
-    reactComponentAnnotation: {
-      enabled: true,
+export default withBundleAnalyzer(
+  withSentryConfig(
+    nextConfig,
+    {
+      org: 'resilience-web',
+      project: 'resilience-web',
+      telemetry: false,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      // Suppresses source map uploading logs during build
+      silent: true,
+      // Upload a larger set of source maps for prettier stack traces (increases build time)
+      widenClientFileUpload: false,
+      // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
+      // tunnelRoute: '/monitoring',
+      // Automatically tree-shake Sentry logger statements to reduce bundle size
+      disableLogger: true,
+      reactComponentAnnotation: {
+        enabled: true,
+      },
     },
-  },
+  )
 )

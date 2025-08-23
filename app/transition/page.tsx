@@ -1,15 +1,16 @@
+import type { Metadata } from 'next'
 import {
   QueryClient,
   dehydrate,
   HydrationBoundary,
 } from '@tanstack/react-query'
-import groupBy from 'lodash/groupBy'
+import { groupBy } from 'es-toolkit'
 import { FEATURES } from '@helpers/features'
 import { generateSlug } from '@helpers/utils'
 import Web, { CENTRAL_NODE_ID } from '../[subdomain]/Web'
 import { CATEGORY_COLOR_MAPPING, TAG_COLOR_MAPPING } from './utils'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Transition UK',
   description:
     'A movement of communities coming together to reimagine and rebuild our world.',

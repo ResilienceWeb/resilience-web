@@ -1,8 +1,9 @@
-import truncate from 'lodash/truncate'
-import prisma from '@prisma-rw'
-import getListing from './getListing'
-import Listing from './Listing'
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import truncate from 'lodash.truncate'
+import prisma from '@prisma-rw'
+import Listing from './Listing'
+import getListing from './getListing'
 
 export default async function ListingPage(props) {
   const params = await props.params
@@ -18,7 +19,7 @@ export default async function ListingPage(props) {
   return <Listing listing={listing} />
 }
 
-export async function generateMetadata(props) {
+export async function generateMetadata(props): Promise<Metadata> {
   const params = await props.params
   const listing = await getListing({
     webSlug: params.subdomain,

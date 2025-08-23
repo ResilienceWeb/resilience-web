@@ -1,7 +1,8 @@
-import truncate from 'lodash/truncate'
+import type { Metadata } from 'next'
+import truncate from 'lodash.truncate'
+import { generateSlug } from '@helpers/utils'
 import Listing from '../../[subdomain]/[slug]/Listing'
 import { CATEGORY_COLOR_MAPPING, TAG_COLOR_MAPPING } from '../utils'
-import { generateSlug } from '@helpers/utils'
 
 export default async function TransitionListingPage(props) {
   const params = await props.params
@@ -17,7 +18,7 @@ export default async function TransitionListingPage(props) {
   return <Listing listing={listing} />
 }
 
-export async function generateMetadata(props) {
+export async function generateMetadata(props): Promise<Metadata> {
   const params = await props.params
   const listing = await getListing({
     listingSlug: params.slug,
