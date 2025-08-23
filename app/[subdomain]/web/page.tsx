@@ -1,5 +1,7 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import type { Web, WebLocation } from '@prisma/client'
+import truncate from 'lodash.truncate'
 import prisma from '@prisma-rw'
 import WebHome from './WebHome'
 
@@ -13,6 +15,39 @@ export default async function WebHomePage(props) {
   }
 
   return <WebHome webData={data.webData} />
+}
+
+export async function generateMetadata(props): Promise<Metadata> {
+  const params = await props.params
+  const { subdomain: webSlug } = params
+  const webData = await prisma.web.findUnique({
+    where: {
+      slug: webSlug,
+    },
+  })
+
+  if (!webData) {
+    return null
+  }
+
+  const descriptionStrippedOfHtml = webData.description?.replace(
+    /<[^>]*>?/gm,
+    '',
+  )
+  const truncatedDescription = truncate(descriptionStrippedOfHtml, {
+    length: 160,
+    separator: /,.? +/,
+  })
+
+  return {
+    title: `${webData.title} Resilience Web`,
+    description: truncatedDescription,
+    openGraph: {
+      title: `${webData.title} Resilience Web`,
+      description: truncatedDescription,
+      images: [{ url: webData.image }],
+    },
+  }
 }
 
 type Data = {
