@@ -237,10 +237,14 @@ const Web = ({
     }
 
     if (searchTermValue) {
-      results = results.filter((item) =>
-        removeNonAlphaNumeric(item.label)
-          .toLowerCase()
-          .includes(searchTermValue.toLowerCase()),
+      results = results.filter(
+        (item) =>
+          removeNonAlphaNumeric(item.label)
+            .toLowerCase()
+            .includes(searchTermValue.toLowerCase()) ||
+          removeNonAlphaNumeric(item.description)
+            .toLowerCase()
+            .includes(searchTermValue.toLowerCase()),
       )
     }
 
