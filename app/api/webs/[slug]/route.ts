@@ -94,11 +94,11 @@ export async function PUT(request, props) {
   const isWebOwner = userOwnerships?.webs.some(
     (web) => web.slug === params.slug,
   )
-  // if (!isWebOwner && !session?.user.admin) {
-  //   return new Response('Unauthorized', {
-  //     status: 403,
-  //   })
-  // }
+  if (!isWebOwner && session?.user.role !== 'admin') {
+    return new Response('Unauthorized', {
+      status: 403,
+    })
+  }
 
   try {
     const slug = params.slug
@@ -180,11 +180,11 @@ export async function PATCH(request, props) {
     headers: request.headers,
   })
 
-  // if (!session?.user.admin) {
-  //   return new Response('Unauthorized', {
-  //     status: 403,
-  //   })
-  // }
+  if (session?.user.role !== 'admin') {
+    return new Response('Unauthorized', {
+      status: 403,
+    })
+  }
 
   try {
     const slug = params.slug
