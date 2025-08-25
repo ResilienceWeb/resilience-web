@@ -1,10 +1,9 @@
-import * as Sentry from '@sentry/nextjs'
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { magicLink, admin } from 'better-auth/plugins'
-import nodemailer from 'nodemailer'
 import prisma from '@prisma-rw'
-import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates'
+import { sendEmail } from '@helpers/email'
+import SignInEmail from '@components/emails/SignInEmail'
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -15,36 +14,19 @@ export const auth = betterAuth({
     magicLink({
       expiresIn: 60 * 60 * 24 * 7, // one week
       sendMagicLink: ({ email, url }) => {
-        const transporter = nodemailer.createTransport({
-          host: process.env.EMAIL_SERVER_HOST,
-          port: Number(process.env.EMAIL_SERVER_PORT),
-          auth: {
-            user: process.env.EMAIL_SERVER_USER,
-            pass: process.env.EMAIL_SERVER_PASSWORD,
-          },
+        const signInEmail = SignInEmail({
+          url,
+          email,
+          mainText: '',
+          buttonText: 'Sign in',
+          footerText: `If you did not request this email you can safely ignore it.`,
         })
 
-        transporter.sendMail(
-          {
-            to: email,
-            from: process.env.EMAIL_FROM,
-            subject: `Sign in to the Resilience Web`,
-            text: textTemplate({ url }),
-            html: simpleHtmlTemplate({
-              url,
-              email,
-              mainText: '',
-              buttonText: 'Sign in',
-              footerText: `If you did not request this email you can safely ignore it.`,
-            }),
-          },
-          (error) => {
-            if (error) {
-              console.error('[RW] SEND_VERIFICATION_EMAIL_ERROR', email, error)
-              Sentry.captureException(error)
-            }
-          },
-        )
+        return sendEmail({
+          to: email,
+          subject: `Sign in to the Resilience Web`,
+          email: signInEmail,
+        })
       },
     }),
   ],
