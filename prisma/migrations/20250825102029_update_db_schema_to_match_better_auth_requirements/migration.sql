@@ -13,10 +13,15 @@ DROP COLUMN "session_state",
 DROP COLUMN "token_type";
 
 -- AlterTable
-ALTER TABLE "sessions" ADD COLUMN     "ipAddress" TEXT;
+ALTER TABLE "sessions" ADD COLUMN     "ipAddress" TEXT,
+ADD COLUMN     "userAgent" TEXT;
 
 -- AlterTable
-ALTER TABLE "users" DROP COLUMN "email_verified",
+ALTER TABLE "users" ADD COLUMN     "banExpires" TIMESTAMP(3),
+ADD COLUMN     "banReason" TEXT,
+ADD COLUMN     "banned" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "role" TEXT NOT NULL DEFAULT 'user',
+DROP COLUMN "email_verified",
 ADD COLUMN     "email_verified" BOOLEAN NOT NULL DEFAULT true;
 
 -- CreateTable
