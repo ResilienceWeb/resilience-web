@@ -15,7 +15,7 @@ test('Search filtering works correctly', async ({ page }) => {
   await expect(page.getByText('Cambridge Cycling Campaign')).toBeVisible()
 
   // Type in search box
-  await page.getByPlaceholder('Search').fill('Food')
+  await page.getByPlaceholder('Search').fill('Something else')
 
   // Only listings with "food" in the name should be visible
   await expect(page.getByText('Cambridge Sustainable Food')).toBeVisible()
