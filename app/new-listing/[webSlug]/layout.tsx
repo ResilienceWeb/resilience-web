@@ -25,5 +25,5 @@ export default async function Layout(props) {
     )
   }
 
-  return { children }
+  return children
 }
