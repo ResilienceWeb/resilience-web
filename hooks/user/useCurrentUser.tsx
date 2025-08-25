@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
+import { useSession } from '@auth-client'
 
 async function getUserRequest() {
   const response = await fetch(`/api/users`)
@@ -10,7 +10,7 @@ async function getUserRequest() {
 }
 
 export default function useCurrentUser() {
-  const { status: sessionStatus } = useSession()
+  const { data: session } = useSession()
   const {
     data: user,
     isPending,
@@ -18,7 +18,7 @@ export default function useCurrentUser() {
   } = useQuery({
     queryKey: ['user'],
     queryFn: getUserRequest,
-    enabled: sessionStatus === 'authenticated',
+    enabled: Boolean(session),
   })
 
   return {

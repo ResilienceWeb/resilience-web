@@ -4,7 +4,9 @@ import { auth } from '@auth'
 
 export async function GET(request) {
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    })
 
     if (!session || !session?.user) {
       return new Response(`You don't have permission to perform this action.`, {

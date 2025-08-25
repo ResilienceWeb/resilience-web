@@ -1,7 +1,8 @@
+import type { Metadata } from 'next'
 import prisma from '@prisma-rw'
 import Homepage from './Homepage'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Resilience Web',
   openGraph: {
     type: 'website',

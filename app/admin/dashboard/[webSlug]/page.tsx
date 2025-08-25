@@ -44,7 +44,7 @@ export default function WebDashboardPage({ params }) {
     }
 
     return web.ownerships
-      .filter((ownership) => !ownership.user?.admin)
+      .filter((ownership) => ownership.user?.role !== 'admin')
       .map((ownership) => ({ ...ownership, owner: true }))
   }, [web])
 

@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react'
 import { PiInfoBold } from 'react-icons/pi'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
+import { useSession } from '@auth-client'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
 import Layout from '@components/layout'

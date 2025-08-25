@@ -1,7 +1,5 @@
 import { Prisma } from '@prisma/client'
 
-/// <reference path="./next-auth.d.ts" />
-
 declare global {
   type Listing = {
     id: number

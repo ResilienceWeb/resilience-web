@@ -3,18 +3,17 @@
 import { useState } from 'react'
 import Image from 'next/legacy/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import * as Sentry from '@sentry/nextjs'
-import { signIn } from 'next-auth/react'
+import { authClient } from '@auth-client'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import LogoImage from '../../../public/logo.png'
 import styles from '../auth.module.css'
 
 export default function SignIn() {
-  const [error, setError] = useState('')
   const router = useRouter()
+  const [error, setError] = useState('')
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo')
 
@@ -36,29 +35,28 @@ export default function SignIn() {
             </div>
           )}
 
-          {isUserAttemptingEdit ||
-            (isUserAttemptingPropose && (
-              <p className="my-6 text-sm sm:my-8 sm:text-base">
-                <span className="font-bold">
-                  Everyone can contribute to Resilience Web.
-                </span>{' '}
-                Enter your email to get started.
-              </p>
-            ))}
+          {(isUserAttemptingEdit || isUserAttemptingPropose) && (
+            <p className="my-6 text-sm sm:my-8 sm:text-base">
+              <span className="font-bold">
+                Everyone can contribute to Resilience Web.
+              </span>{' '}
+              Enter your email to get started.
+            </p>
+          )}
+
           <form
             onSubmit={async (e) => {
               try {
                 e.preventDefault()
                 const formData = new FormData(e.currentTarget)
-                const response = await signIn('nodemailer', {
-                  email: formData.get('email'),
-                  redirect: false,
-                  redirectTo: redirectTo ?? '/admin',
-                  callbackUrl: window.location.origin,
+                const { error } = await authClient.signIn.magicLink({
+                  email: formData.get('email') as string,
+                  callbackURL: redirectTo ?? '/admin',
                 })
 
-                if (response?.error) throw new Error(response.error)
-                router.push(response?.url ?? '/')
+                if (error) throw new Error(error.message)
+                setError('')
+                router.push('/auth/verify-request')
               } catch (error) {
                 console.error('[RW] Error signing in:', error)
                 Sentry.captureException(error)

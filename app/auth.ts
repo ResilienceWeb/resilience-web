@@ -1,82 +1,74 @@
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import NextAuth from 'next-auth'
-import Nodemailer from 'next-auth/providers/nodemailer'
+import * as Sentry from '@sentry/nextjs'
+import { betterAuth } from 'better-auth'
+import { prismaAdapter } from 'better-auth/adapters/prisma'
+import { magicLink, admin } from 'better-auth/plugins'
 import nodemailer from 'nodemailer'
 import prisma from '@prisma-rw'
 import { simpleHtmlTemplate, textTemplate } from '@helpers/emailTemplates'
 
-export const { auth, handlers, signIn, signOut } = NextAuth({
-  providers: [
-    Nodemailer({
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: Number(process.env.EMAIL_SERVER_PORT),
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
-        },
-      },
-      from: `Resilience Web <${process.env.EMAIL_FROM}>`,
-      maxAge: 604800, // 7 days
-      sendVerificationRequest({ identifier: email, url, provider }) {
-        return new Promise((resolve, reject) => {
-          nodemailer.createTransport(provider.server).sendMail(
-            {
-              to: email,
-              from: provider.from,
-              subject: `Sign in to the Resilience Web`,
-              text: textTemplate({ url }),
-              html: simpleHtmlTemplate({
-                url,
-                email,
-                mainText: '',
-                buttonText: 'Sign in',
-                footerText: `If you did not request this email you can safely ignore it.`,
-              }),
-            },
-            (error) => {
-              if (error) {
-                console.error(
-                  '[RW] SEND_VERIFICATION_EMAIL_ERROR',
-                  email,
-                  error,
-                )
-                return reject(
-                  new Error(`SEND_VERIFICATION_EMAIL_ERROR ${error}`),
-                )
-              }
-              return resolve()
-            },
-          )
+export const auth = betterAuth({
+  database: prismaAdapter(prisma, {
+    provider: 'postgresql',
+  }),
+  plugins: [
+    admin(),
+    magicLink({
+      expiresIn: 60 * 60 * 24 * 7, // one week
+      sendMagicLink: ({ email, url }) => {
+        const transporter = nodemailer.createTransport({
+          host: process.env.EMAIL_SERVER_HOST,
+          port: Number(process.env.EMAIL_SERVER_PORT),
+          auth: {
+            user: process.env.EMAIL_SERVER_USER,
+            pass: process.env.EMAIL_SERVER_PASSWORD,
+          },
         })
+
+        transporter.sendMail(
+          {
+            to: email,
+            from: process.env.EMAIL_FROM,
+            subject: `Sign in to the Resilience Web`,
+            text: textTemplate({ url }),
+            html: simpleHtmlTemplate({
+              url,
+              email,
+              mainText: '',
+              buttonText: 'Sign in',
+              footerText: `If you did not request this email you can safely ignore it.`,
+            }),
+          },
+          (error) => {
+            if (error) {
+              console.error('[RW] SEND_VERIFICATION_EMAIL_ERROR', email, error)
+              Sentry.captureException(error)
+            }
+          },
+        )
       },
     }),
   ],
-  // @ts-ignore
-  adapter: PrismaAdapter(prisma),
   session: {
-    strategy: 'database',
-    maxAge: 720 * 60 * 60,
-    updateAge: 24 * 60 * 60,
-  },
-  callbacks: {
-    session({ session, user }) {
-      session.user = {
-        email: session.user.email,
-        emailVerified: session.user.emailVerified,
-        name: session.user.name,
-        id: user.id,
-        admin: user.admin,
-      }
-      return session
+    modelName: 'Session',
+    fields: {
+      expiresAt: 'expires',
+      token: 'sessionToken',
     },
   },
-  theme: {
-    colorScheme: 'light',
+  account: {
+    modelName: 'Account',
+    fields: {
+      accountId: 'providerAccountId',
+      refreshToken: 'refresh_token',
+      accessToken: 'access_token',
+      accessTokenExpiresAt: 'access_token_expires',
+      idToken: 'id_token',
+    },
   },
-  pages: {
-    signIn: '/auth/signin',
-    verifyRequest: '/auth/verify-request',
+  user: {
+    modelName: 'User',
   },
-  debug: false,
+  verification: {
+    modelName: 'Verification',
+  },
 })

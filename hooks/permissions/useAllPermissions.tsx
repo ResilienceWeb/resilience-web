@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
+import { useSession } from '@auth-client'
 
 async function fetchAllPermissionsRequest() {
   const response = await fetch('/api/permissions/all')
@@ -9,7 +9,7 @@ async function fetchAllPermissionsRequest() {
 }
 
 export default function useAllPermissions() {
-  const { data: session, status: sessionStatus } = useSession()
+  const { data: session } = useSession()
 
   const {
     data: permissions,
@@ -18,7 +18,7 @@ export default function useAllPermissions() {
   } = useQuery({
     queryKey: ['all-permissions'],
     queryFn: fetchAllPermissionsRequest,
-    enabled: sessionStatus === 'authenticated' && session.user.admin,
+    enabled: session && session.user.role === 'admin',
   })
 
   return {

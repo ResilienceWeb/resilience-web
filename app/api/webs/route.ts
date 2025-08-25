@@ -101,7 +101,9 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    })
     if (!session?.user) {
       return Response.json(
         {
@@ -125,7 +127,7 @@ export async function POST(request) {
       },
     })
 
-    if (currentOwnerships?.webs.length > 0 && !session.user.admin) {
+    if (currentOwnerships?.webs.length > 0 && session.user.role !== 'admin') {
       return Response.json(
         {
           error:

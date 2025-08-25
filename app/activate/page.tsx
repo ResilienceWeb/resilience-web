@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { useSession, signIn } from 'next-auth/react'
+import { useSearchParams, useRouter } from 'next/navigation'
+import { useSession, signIn } from '@auth-client'
 import { Spinner } from '@components/ui/spinner'
 
 export default function ActivatePage() {
+  const router = useRouter()
   const session = useSession()
 
   const searchParams = useSearchParams()
@@ -14,13 +15,14 @@ export default function ActivatePage() {
   useEffect(() => {
     if (!session?.data) {
       if (email) {
-        signIn('nodemailer', {
-          email: email,
-          redirectTo: '/admin?firstTime=true',
+        signIn.magicLink({
+          email,
+          callbackURL: '/admin?firstTime=true',
         })
+        router.push('/auth/verify-request')
       }
     }
-  }, [session?.data, email])
+  }, [session?.data, email, router])
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">

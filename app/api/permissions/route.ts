@@ -8,7 +8,9 @@ import WebPermissionsRevokedEmail from '@components/emails/WebPermissionsRevoked
 
 export async function GET(request) {
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    })
 
     if (!session?.user) {
       return new Response(
@@ -42,7 +44,9 @@ export async function GET(request) {
 }
 
 export async function PUT(request: Request) {
-  const session = await auth()
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  })
   const body = await request.json()
   const { webId, userEmail } = body
   const isOwner = await isOwnerOfWeb(session.user.id, webId)

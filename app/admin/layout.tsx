@@ -10,7 +10,6 @@ import {
 import { auth } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
 import LayoutContainer from '@components/admin/layout-container'
-import SessionProvider from './SessionProvider'
 import Providers from './providers'
 
 export const metadata: Metadata = {
@@ -41,7 +40,9 @@ export async function fetchPermissionsHydrate() {
 }
 
 export default async function Layout({ children }) {
-  const session = await auth()
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
   if (!session) {
     redirect('/auth/signin')
   }
@@ -58,14 +59,12 @@ export default async function Layout({ children }) {
   })
 
   return (
-    <SessionProvider session={session}>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <Providers>
-          <LayoutContainer>
-            <Suspense>{children}</Suspense>
-          </LayoutContainer>
-        </Providers>
-      </HydrationBoundary>
-    </SessionProvider>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Providers>
+        <LayoutContainer>
+          <Suspense>{children}</Suspense>
+        </LayoutContainer>
+      </Providers>
+    </HydrationBoundary>
   )
 }

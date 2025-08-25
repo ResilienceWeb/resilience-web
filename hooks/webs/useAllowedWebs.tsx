@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { useSession } from 'next-auth/react'
-import useWebs from '@hooks/webs/useWebs'
-import usePermissions from '@hooks/permissions/usePermissions'
+import { useSession } from '@auth-client'
 import useMyOwnerships from '@hooks/ownership/useMyOwnerships'
+import usePermissions from '@hooks/permissions/usePermissions'
+import useWebs from '@hooks/webs/useWebs'
 
 const useAllowedWebs = () => {
   const { data: session } = useSession()
@@ -31,16 +31,17 @@ const useAllowedWebs = () => {
       return null
     }
 
-    const allowedWebs = session?.user.admin
-      ? webs
-      : webs.filter(
-          (s) =>
-            permissions.webIds?.includes(s.id) ||
-            allUniqueWebIds.includes(s.id),
-        )
+    const allowedWebs =
+      session?.user.role === 'admin'
+        ? webs
+        : webs.filter(
+            (s) =>
+              permissions.webIds?.includes(s.id) ||
+              allUniqueWebIds.includes(s.id),
+          )
 
     return allowedWebs
-  }, [allUniqueWebIds, permissions, session?.user.admin, webs])
+  }, [allUniqueWebIds, permissions, session?.user.role, webs])
 
   return {
     allowedWebs: allAllowedWebs,

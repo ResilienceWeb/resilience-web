@@ -5,8 +5,8 @@ import { useSearchParams, useRouter, redirect } from 'next/navigation'
 import { useAppContext } from '@store/hooks'
 import { driver } from 'driver.js'
 import 'driver.js/dist/driver.css'
-import { useSession } from 'next-auth/react'
 import posthog from 'posthog-js'
+import { useSession } from '@auth-client'
 import EditableList from '@components/admin/editable-list'
 import { Spinner } from '@components/ui/spinner'
 import useDeleteListing from '@hooks/listings/useDeleteListing'
@@ -17,7 +17,7 @@ import useAllowedWebs from '@hooks/webs/useAllowedWebs'
 
 const driverObj = driver({
   showProgress: true,
-  allowClose: false,
+  allowClose: true,
   steps: [
     {
       element: '[data-tourid=new-listing]',
@@ -85,7 +85,7 @@ export default function AdminPage() {
 
   const allowedListings = useMemo(() => {
     if (isLoadingListings || isLoadingPermissions) return null
-    if (isOwnerOfCurrentWeb || session.user.admin) return listings
+    if (isOwnerOfCurrentWeb || session.user.role === 'admin') return listings
 
     if (permissions?.webIds?.includes(selectedWebId)) return listings
 
@@ -147,7 +147,7 @@ export default function AdminPage() {
   return (
     <EditableList
       deleteListing={deleteListing}
-      isAdmin={session?.user.admin}
+      isAdmin={session?.user.role === 'admin'}
       items={allowedListings}
     />
   )

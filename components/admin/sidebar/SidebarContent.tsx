@@ -17,7 +17,7 @@ import Image from 'next/legacy/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAppContext } from '@store/hooks'
-import { useSession } from 'next-auth/react'
+import { useSession } from '@auth-client'
 import DonateButton from '@components/donate-button'
 import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
 import useHasPermissionForCurrentWeb from '@hooks/permissions/useHasPermissionForCurrentWeb'
@@ -93,7 +93,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       })
     }
 
-    if (isOwnerOfCurrentWeb || session?.user.admin) {
+    if (isOwnerOfCurrentWeb || session?.user.role === 'admin') {
       links.push({
         label: 'Web Settings',
         href: '/admin/web-settings',
@@ -126,12 +126,12 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     hasPermissionForCurrentWeb,
     isOwnerOfCurrentWeb,
     selectedWebId,
-    session?.user.admin,
+    session?.user.role,
   ])
 
   const adminNavLinks = useMemo(() => {
     const links: any[] = []
-    if (session?.user.admin) {
+    if (session?.user.role === 'admin') {
       links.push({
         label: 'Dashboard',
         href: '/admin/dashboard',
@@ -140,7 +140,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     }
 
     return links
-  }, [session?.user.admin])
+  }, [session?.user.role])
 
   return (
     <div

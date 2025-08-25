@@ -8,7 +8,9 @@ import InviteEmail from '@components/emails/InviteEmail'
 
 export async function POST(request) {
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    })
 
     if (!session) {
       return Response.json(

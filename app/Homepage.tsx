@@ -1,8 +1,9 @@
 'use client'
-import Layout from '@components/layout'
+
 import Hero from '@components/homepage/hero'
-import WebCards from '@components/homepage/web-cards'
 import JoinTheCommunity from '@components/homepage/join-the-community'
+import WebCards from '@components/homepage/web-cards'
+import Layout from '@components/layout'
 
 export default function Homepage({ webs }) {
   return (

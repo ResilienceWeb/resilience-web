@@ -1,5 +1,5 @@
 import { memo, useState } from 'react'
-import { useSession } from 'next-auth/react'
+import { useSession } from '@auth-client'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
@@ -94,7 +94,7 @@ const PermissionsTable = ({ permissions, isOwner, webId }: Props) => {
                                   Invite pending
                                 </Badge>
                               )}
-                              {permission.user.admin && (
+                              {permission.user.role === 'admin' && (
                                 <Badge variant="secondary">Admin</Badge>
                               )}
                             </div>
@@ -109,7 +109,7 @@ const PermissionsTable = ({ permissions, isOwner, webId }: Props) => {
                             {!permission.user.emailVerified && (
                               <Badge variant="secondary">Invite pending</Badge>
                             )}
-                            {permission.user.admin && (
+                            {permission.user.role === 'admin' && (
                               <Badge variant="secondary">Admin</Badge>
                             )}
                           </div>

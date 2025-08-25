@@ -72,7 +72,9 @@ export async function GET(request, props) {
 
 export async function PUT(request, props) {
   const params = await props.params
-  const session = await auth()
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  })
 
   if (!session?.user) {
     return new Response('Unauthorized', {
@@ -92,7 +94,7 @@ export async function PUT(request, props) {
   const isWebOwner = userOwnerships?.webs.some(
     (web) => web.slug === params.slug,
   )
-  if (!isWebOwner && !session?.user.admin) {
+  if (!isWebOwner && session?.user.role !== 'admin') {
     return new Response('Unauthorized', {
       status: 403,
     })
@@ -174,9 +176,11 @@ export async function PUT(request, props) {
 
 export async function PATCH(request, props) {
   const params = await props.params
-  const session = await auth()
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  })
 
-  if (!session?.user.admin) {
+  if (session?.user.role !== 'admin') {
     return new Response('Unauthorized', {
       status: 403,
     })
