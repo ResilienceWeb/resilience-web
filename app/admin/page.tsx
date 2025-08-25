@@ -17,7 +17,7 @@ import useAllowedWebs from '@hooks/webs/useAllowedWebs'
 
 const driverObj = driver({
   showProgress: true,
-  allowClose: false,
+  allowClose: true,
   steps: [
     {
       element: '[data-tourid=new-listing]',
