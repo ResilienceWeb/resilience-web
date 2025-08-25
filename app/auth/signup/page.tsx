@@ -37,15 +37,14 @@ export default function SignUp() {
             </div>
           )}
 
-          {isUserAttemptingEdit ||
-            (isUserAttemptingPropose && (
-              <p className="my-6 text-sm sm:my-8 sm:text-base">
-                <span className="font-bold">
-                  Everyone can contribute to Resilience Web.
-                </span>{' '}
-                Enter your email to get started.
-              </p>
-            ))}
+          {(isUserAttemptingEdit || isUserAttemptingPropose) && (
+            <p className="my-6 text-sm sm:my-8 sm:text-base">
+              <span className="font-bold">
+                Everyone can contribute to Resilience Web.
+              </span>{' '}
+              Enter your email to get started.
+            </p>
+          )}
 
           <form
             onSubmit={async (e) => {

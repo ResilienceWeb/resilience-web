@@ -22,6 +22,11 @@ Currently online at [https://resilienceweb.org.uk](https://resilienceweb.org.uk)
 - To prepare the database with tables run `npx prisma migrate reset`
 - To view the databases contents run `npm run db`
 
+## Deploying to the staging environment
+
+- Follow instructions [here](https://vercel.com/docs/cli) to set up Vercel CLI (you need to have an account in our Vercel team)
+- Run `npx vercel deploy -- target staging`
+
 ## Contributing
 
 If you'd like to contribute to the project, get in touch at info@resilienceweb.org.uk. We welcome anyone who wants to contribute code, documendation or testing efforts. If you'd prefer to support the project financially, you can do so at [https://opencollective.com/resilience-web](https://opencollective.com/resilience-web).
