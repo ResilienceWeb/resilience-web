@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
+import { useSession } from '@auth-client'
 
 async function fetchMyOwnershipsRequest() {
   const response = await fetch(`/api/ownerships`)

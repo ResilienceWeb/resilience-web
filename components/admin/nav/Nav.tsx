@@ -6,7 +6,8 @@ import { FiChevronDown } from 'react-icons/fi'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { useSession, signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useSession, signOut } from '@auth-client'
 import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 import {
   DropdownMenu,
@@ -21,10 +22,17 @@ const WebSelector = dynamic(() => import('./web-selector'))
 
 const Nav = ({ onOpen }) => {
   const { data: session } = useSession()
+  const router = useRouter()
 
-  const handleSignOut = useCallback(() => {
-    signOut()
-  }, [])
+  const handleSignOut = useCallback(async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push('/auth/signin')
+        },
+      },
+    })
+  }, [router])
 
   return (
     <div className="max-w-[100vw] flex-1 border-b border-gray-200 bg-[#fafafa] px-4">

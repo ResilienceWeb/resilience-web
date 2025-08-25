@@ -2,7 +2,8 @@
 
 import { useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useSession, signIn } from 'next-auth/react'
+import { useSession } from '@auth-client'
+import { signIn } from 'next-auth/react'
 import { Spinner } from '@components/ui/spinner'
 
 export default function ActivatePage() {

@@ -1,5 +1,5 @@
 import { memo, useState } from 'react'
-import { useSession } from 'next-auth/react'
+import { useSession } from '@auth-client'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'

@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
 import { useAppContext } from '@store/hooks'
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from '@auth-client'
 
 async function fetchPermissionsForCurrentWebRequest({ queryKey }) {
   const [_key, { webSlug }] = queryKey
@@ -11,7 +11,7 @@ async function fetchPermissionsForCurrentWebRequest({ queryKey }) {
 }
 
 export default function usePermissionsForCurrentWeb() {
-  const { status: sessionStatus } = useSession()
+  const { data: session } = useSession()
   const { selectedWebSlug: webSlug } = useAppContext()
 
   const {
@@ -21,7 +21,7 @@ export default function usePermissionsForCurrentWeb() {
   } = useQuery({
     queryKey: ['current-web-permissions', { webSlug }],
     queryFn: fetchPermissionsForCurrentWebRequest,
-    enabled: sessionStatus === 'authenticated',
+    enabled: Boolean(session),
   })
 
   return {

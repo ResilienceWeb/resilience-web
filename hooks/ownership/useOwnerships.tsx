@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
 import { useAppContext } from '@store/hooks'
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from '@auth-client'
 
 async function fetchOwnershipsRequest({ queryKey }) {
   const [_key, { webSlug }] = queryKey

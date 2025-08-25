@@ -1,9 +1,10 @@
+import type { Metadata } from 'next'
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { auth } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
-import SessionProvider from '../../../admin/SessionProvider'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Edit Listing | Resilience Web',
   openGraph: {
     title: 'Edit Listing | Resilience Web',
@@ -15,12 +16,14 @@ export default async function Layout(props) {
 
   const { children } = props
 
-  const session = await auth()
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
   if (!session) {
     redirect(
       `${REMOTE_URL}/auth/signin?redirectTo=${`/edit/${params.webSlug}/${params.listingSlug}`}`,
     )
   }
 
-  return <SessionProvider session={session}>{children}</SessionProvider>
+  return children
 }

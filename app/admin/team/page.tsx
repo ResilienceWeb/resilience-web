@@ -6,9 +6,9 @@ import { AiOutlineLoading } from 'react-icons/ai'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAppContext } from '@store/hooks'
 import { useQueryClient } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { useSession } from '@auth-client'
 import { REMOTE_URL } from '@helpers/config'
 import PermissionsTable from '@components/admin/permissions-table'
 import Faq from '@components/faq'
@@ -206,7 +206,7 @@ export default function TeamPage() {
 
       {(permissionsForCurrentWeb?.length > 0 ||
         decoratedOwnerships?.length > 0 ||
-        session.user.admin) && (
+        session.user.role === 'admin') && (
         <div className="pt-4">
           <h2 className="text-2xl font-bold">Team</h2>
           <p className="mb-4">

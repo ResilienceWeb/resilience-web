@@ -12,7 +12,9 @@ import ListingEditProposedAdminEmail from '@components/emails/ListingEditPropose
 export async function GET(request, props) {
   const params = await props.params
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    })
     if (!session?.user) {
       return new Response('Not authorized', { status: 401 })
     }
@@ -37,7 +39,9 @@ export async function GET(request, props) {
 
 export async function POST(request) {
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    })
     if (!session?.user) {
       return new Response('Not authorized', { status: 401 })
     }
@@ -197,7 +201,9 @@ export async function POST(request) {
 export async function DELETE(request, props) {
   const params = await props.params
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    })
     if (!session) {
       return new Response('Not authorized', { status: 401 })
     }

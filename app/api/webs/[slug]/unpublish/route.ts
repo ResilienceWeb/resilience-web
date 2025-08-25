@@ -3,11 +3,13 @@ import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
 
-export async function POST(_request, props) {
+export async function POST(request, props) {
   const params = await props.params
-  const session = await auth()
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  })
 
-  if (!session?.user.admin) {
+  if (session?.user.role !== 'admin') {
     return new Response('Unauthorized', {
       status: 403,
     })

@@ -47,6 +47,9 @@
       "@auth": [
         "app/auth.ts"
       ],
+      "@auth-client": [
+        "lib/auth-client.ts"
+      ],
       "@trigger/*": [
         "trigger/*"
       ],

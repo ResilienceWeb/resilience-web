@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { useSession } from '@auth-client'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { Button } from '@components/ui/button'
 import {
@@ -42,7 +42,7 @@ type FormValues = z.infer<typeof formSchema>
 
 export default function UserSettingsPage() {
   const { updateUser, isPending, isSuccess } = useUpdateUser()
-  const { status: sessionStatus } = useSession()
+  const { data: session } = useSession()
   const { user } = useCurrentUser()
   const { ownerships, isPending: isLoadingOwnerships } = useMyOwnerships()
   const { permissions, isPending: isLoadingPermissions } = usePermissions()
@@ -77,7 +77,7 @@ export default function UserSettingsPage() {
     [updateUser],
   )
 
-  if (!user || sessionStatus === 'loading') {
+  if (!user || !session) {
     return <Spinner />
   }
 

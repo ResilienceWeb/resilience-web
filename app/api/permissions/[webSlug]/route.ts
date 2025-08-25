@@ -2,10 +2,12 @@ import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
 
-export async function GET(_request, props) {
+export async function GET(request, props) {
   const params = await props.params
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    })
 
     if (!session?.user) {
       return Response.json(

@@ -11,7 +11,9 @@ import ListingEditAcceptedEmail from '@components/emails/ListingEditAcceptedEmai
 export async function POST(request, props) {
   const params = await props.params
   try {
-    const session = await auth()
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    })
     if (!session?.user) {
       return new Response('Not authorized', { status: 401 })
     }
