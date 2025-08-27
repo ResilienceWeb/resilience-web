@@ -17,6 +17,7 @@ interface DeleteConfirmationDialogProps {
   isOpen: boolean
   onClose: () => void
   description: string
+  titleLabel?: string
   buttonLabel: string
 }
 
@@ -25,13 +26,14 @@ const DeleteConfirmationDialog = ({
   isOpen,
   onClose,
   description,
+  titleLabel = 'Delete',
   buttonLabel,
 }: DeleteConfirmationDialogProps) => {
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete</AlertDialogTitle>
+          <AlertDialogTitle>{titleLabel}</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogDescription>{description}</AlertDialogDescription>
         <AlertDialogFooter>

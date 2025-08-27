@@ -3,8 +3,7 @@
 import { useMemo } from 'react'
 import type { ReactElement } from 'react'
 import { BiCategory } from 'react-icons/bi'
-import { GrAnnounce } from 'react-icons/gr'
-import { GrOverview } from 'react-icons/gr'
+import { GrAnnounce, GrOverview } from 'react-icons/gr'
 import {
   HiViewList,
   HiUserGroup,
@@ -12,7 +11,7 @@ import {
   HiExternalLink,
   HiX,
 } from 'react-icons/hi'
-import { LuBook } from 'react-icons/lu'
+import { LuBook, LuUserRoundSearch } from 'react-icons/lu'
 import Image from 'next/legacy/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -132,11 +131,20 @@ export default function SidebarContent({ closeMenu, ...rest }) {
   const adminNavLinks = useMemo(() => {
     const links: any[] = []
     if (session?.user.role === 'admin') {
-      links.push({
-        label: 'Dashboard',
-        href: '/admin/dashboard',
-        icon: <GrOverview />,
-      })
+      links.push(
+        ...[
+          {
+            label: 'Dashboard',
+            href: '/admin/dashboard',
+            icon: <GrOverview />,
+          },
+          {
+            label: 'Manage users',
+            href: '/admin/users',
+            icon: <LuUserRoundSearch />,
+          },
+        ],
+      )
     }
 
     return links

@@ -11,17 +11,14 @@ export default function Sidebar({ isOpen, onClose }) {
         <SidebarContent closeMenu={onClose} />
       </div>
 
-      {/* Mobile Drawer */}
       <div
         className={`fixed inset-0 z-50 transition-opacity duration-300 ease-in-out lg:hidden ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'} `}
       >
-        {/* Overlay */}
         <div
           className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ease-in-out ${isOpen ? 'opacity-100' : 'opacity-0'} `}
           onClick={onClose}
         />
 
-        {/* Drawer Content */}
         <div
           className={`fixed left-0 top-0 h-full w-full transform bg-white transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} `}
         >
