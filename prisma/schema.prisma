@@ -34,7 +34,6 @@ model User {
   email            String?       @unique(map: "users.email_unique")
   emailVerified    Boolean       @default(true) @map("email_verified")
   image            String?
-  admin            Boolean       @default(false)
   accounts         Account[]
   sessions         Session[]
   permission       Permission[]
