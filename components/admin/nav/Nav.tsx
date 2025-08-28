@@ -13,16 +13,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu'
+import useIsMobile from '@hooks/application/useIsMobile'
+import NotificationsFeed from './NotificationsFeed'
 
 const WebSelector = dynamic(() => import('./web-selector'))
 
 const Nav = ({ onOpen }) => {
   const { data: session } = useSession()
   const router = useRouter()
+  const isMobile = useIsMobile()
 
   const handleSignOut = useCallback(async () => {
     await signOut({
@@ -50,28 +52,40 @@ const Nav = ({ onOpen }) => {
             <WebSelector />
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex items-center gap-2">
             <GetInTouchButton userEmail={session?.user?.email} />
+            <NotificationsFeed />
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-1 rounded-full text-gray-600 hover:text-gray-900">
-                  <BsPersonCircle className="h-8 w-8" />
-                  <FiChevronDown className="h-4 w-4" />
-                </button>
+                {isMobile ? (
+                  <button className="flex items-center gap-1 rounded-full text-gray-600 hover:text-gray-900">
+                    <BsPersonCircle className="h-8 w-8" />
+                    <FiChevronDown className="h-4 w-4" />
+                  </button>
+                ) : (
+                  <button className="flex items-center gap-2 rounded-full px-2 py-1 text-gray-700 hover:text-gray-900">
+                    <div className="flex flex-col items-end leading-tight text-left">
+                      {session?.user?.name && (
+                        <span className="text-sm font-semibold">
+                          {session?.user?.name}
+                        </span>
+                      )}
+                      {session?.user?.email && (
+                        <span className="text-xs text-gray-600">
+                          {session.user.email}
+                        </span>
+                      )}
+                    </div>
+                    <FiChevronDown className="h-4 w-4" />
+                  </button>
+                )}
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                {session?.user.email && (
-                  <>
-                    <DropdownMenuLabel className="text-xs text-gray-600">
-                      Signed in as {session.user.email}
-                    </DropdownMenuLabel>
-                    <DropdownMenuItem asChild>
-                      <Link href="/admin/user-settings">User settings</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                  </>
-                )}
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/user-settings">User settings</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut}>
                   Sign out
                 </DropdownMenuItem>

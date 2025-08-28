@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
@@ -52,6 +52,12 @@ const FeedbackDialog = ({
       feedback: '',
     },
   })
+
+  useEffect(() => {
+    if (userEmail && !form.getValues('email')) {
+      form.setValue('email', userEmail, { shouldDirty: false })
+    }
+  }, [userEmail, form])
 
   const onFormSubmit = useCallback(
     async (data: z.infer<typeof formSchema>) => {

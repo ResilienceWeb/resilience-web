@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react'
+import { Button } from '@components/ui/button'
+import { Checkbox } from '@components/ui/checkbox'
 import {
   Dialog,
   DialogContent,
@@ -7,9 +9,6 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@components/ui/dialog'
-import { Button } from '@components/ui/button'
-import { Checkbox } from '@components/ui/checkbox'
-import type { CheckedState } from '@radix-ui/react-checkbox'
 
 export default function AddTagToListingsDialog({
   tag,
@@ -25,7 +24,10 @@ export default function AddTagToListingsDialog({
     new Set(linkedListingsIds),
   )
 
-  const handleCheckboxChange = (listingId: number, checked: CheckedState) => {
+  const handleCheckboxChange = (
+    listingId: number,
+    checked: boolean | 'indeterminate',
+  ) => {
     const newSelected = new Set(selectedListings)
     if (checked) {
       newSelected.add(listingId)

@@ -99,7 +99,8 @@ export default tseslint.config([
           "ignoreRestSiblings": true,
           "vars": "all",
           "argsIgnorePattern": "^_",
-          "destructuredArrayIgnorePattern": "^_"
+          "destructuredArrayIgnorePattern": "^_",
+          "destructuredObjectIgnorePattern": "^_"
         }
       ],
       "@typescript-eslint/no-unsafe-assignment": 0,

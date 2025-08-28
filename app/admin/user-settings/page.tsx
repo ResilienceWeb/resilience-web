@@ -168,7 +168,7 @@ export default function UserSettingsPage() {
           ) : (
             <div className="space-y-6">
               <div>
-                <h3 className="text-md mb-3 font-semibold">Owner of</h3>
+                <h3 className="text-sm mb-3 font-semibold">Owner of</h3>
                 {ownerships && ownerships.length > 0 ? (
                   <ul className="flex flex-col gap-2">
                     {ownerships.map((web) => (
@@ -189,14 +189,14 @@ export default function UserSettingsPage() {
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     You are not an owner of any webs yet.
                   </p>
                 )}
               </div>
 
               <div>
-                <h3 className="text-md mt-4 mb-3 font-semibold">Editor of</h3>
+                <h3 className="text-sm mt-4 mb-3 font-semibold">Editor of</h3>
                 {permissions?.fullPermissionData?.webs &&
                 permissions.fullPermissionData.webs.length > 0 ? (
                   <ul className="flex flex-col gap-2">
@@ -210,16 +210,15 @@ export default function UserSettingsPage() {
                         </div>
                         <Link
                           href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
-                          className="text-sm text-blue-600 hover:underline"
                           target="_blank"
                         >
-                          View
+                          <Button variant="outline">View</Button>
                         </Link>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     You don't have edit permissions for any webs.
                   </p>
                 )}

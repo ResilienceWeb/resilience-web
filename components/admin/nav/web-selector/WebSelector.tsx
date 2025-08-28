@@ -95,7 +95,7 @@ const WebSelector = () => {
       styles={{
         container: (baseStyles) => ({
           ...baseStyles,
-          minWidth: '250px',
+          minWidth: '180px',
         }),
         control: (provided) => ({
           ...provided,
