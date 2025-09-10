@@ -134,7 +134,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       links.push(
         ...[
           {
-            label: 'Dashboard',
+            label: 'Manage webs',
             href: '/admin/dashboard',
             icon: <GrOverview />,
           },

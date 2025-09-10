@@ -30,21 +30,21 @@ export default function UserPage() {
 
   const [isLoading, setIsLoading] = useState(true)
   const [user, setUser] = useState<Record<string, any> | null>(null)
-  const [sessions, setSessions] = useState<Array<Record<string, any>>>([])
   const [isBanOpen, setIsBanOpen] = useState(false)
   const [isBanning, setIsBanning] = useState(false)
   const [isUnbanning, setIsUnbanning] = useState(false)
-  // const [isRemoveOpen, setIsRemoveOpen] = useState(false)
-  // const [isRemoving, setIsRemoving] = useState(false)
+  const [isRemoveOpen, setIsRemoveOpen] = useState(false)
+  const [isRemoving, setIsRemoving] = useState(false)
 
   useEffect(() => {
-    if (!userId) return
+    if (!userId) {
+      return
+    }
 
     let cancelled = false
     const run = async () => {
       setIsLoading(true)
       try {
-        // Fetch specific user via filter
         const resUsers: any = await authClient.admin.listUsers({
           query: {
             filterField: 'id',
@@ -58,19 +58,8 @@ export default function UserPage() {
 
         const found = usersPayload?.users?.[0] ?? null
 
-        // Fetch sessions for this user
-        const resSessions: any = await authClient.admin.listUserSessions({
-          userId,
-        })
-        const sessionsPayload = resSessions?.data ?? resSessions
-
         if (cancelled) return
         setUser(found)
-        setSessions(
-          Array.isArray(sessionsPayload)
-            ? sessionsPayload
-            : (sessionsPayload?.sessions ?? []),
-        )
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -113,19 +102,19 @@ export default function UserPage() {
     }
   }
 
-  // const handleRemove = async () => {
-  //   if (!userId) return
-  //   try {
-  //     setIsRemoving(true)
-  //     await authClient.admin.removeUser({
-  //       userId,
-  //     })
-  //     setIsRemoveOpen(false)
-  //     router.push('/admin/users')
-  //   } finally {
-  //     setIsRemoving(false)
-  //   }
-  // }
+  const handleRemove = async () => {
+    if (!userId) return
+    try {
+      setIsRemoving(true)
+      await authClient.admin.removeUser({
+        userId,
+      })
+      setIsRemoveOpen(false)
+      router.push('/admin/users')
+    } finally {
+      setIsRemoving(false)
+    }
+  }
 
   return (
     <div className="mb-6 flex flex-col gap-4">
@@ -150,13 +139,13 @@ export default function UserPage() {
               {isBanning ? 'Banning...' : 'Ban'}
             </Button>
           )}
-          {/* <Button
+          <Button
             variant="secondary"
             onClick={() => setIsRemoveOpen(true)}
             disabled={isRemoving}
           >
             {isRemoving ? 'Removing...' : 'Remove'}
-          </Button> */}
+          </Button>
         </div>
       </div>
 
@@ -265,51 +254,6 @@ export default function UserPage() {
         </Table>
       </div>
 
-      <div className="bg-card rounded-lg border">
-        <div className="border-b p-4 font-semibold">Sessions</div>
-        <Table>
-          <TableHeader className="bg-muted/50">
-            <TableRow>
-              <TableHead>Token</TableHead>
-              <TableHead>Created</TableHead>
-              <TableHead>Expires</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sessions.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={3} className="text-muted-foreground">
-                  No sessions
-                </TableCell>
-              </TableRow>
-            ) : (
-              sessions.map((s, idx) => (
-                <TableRow key={idx}>
-                  <TableCell
-                    className="max-w-[280px] truncate"
-                    title={s.sessionToken || s.token || ''}
-                  >
-                    {s.sessionToken || s.token || '-'}
-                  </TableCell>
-                  <TableCell>
-                    {s.createdAt
-                      ? new Date(s.createdAt).toLocaleString('en-GB')
-                      : '-'}
-                  </TableCell>
-                  <TableCell>
-                    {s.expires || s.expiresAt
-                      ? new Date(s.expires || s.expiresAt).toLocaleString(
-                          'en-GB',
-                        )
-                      : '-'}
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
-
       <DeleteConfirmationDialog
         isOpen={isBanOpen}
         onClose={() => setIsBanOpen(false)}
@@ -319,14 +263,14 @@ export default function UserPage() {
         handleRemove={handleBan as any}
       />
 
-      {/* <DeleteConfirmationDialog
+      <DeleteConfirmationDialog
         isOpen={isRemoveOpen}
         onClose={() => setIsRemoveOpen(false)}
         description="Are you sure you want to remove this user? This action is irreversible."
         titleLabel="Remove user"
         buttonLabel={isRemoving ? 'Removing...' : 'Remove user'}
         handleRemove={handleRemove as any}
-      /> */}
+      />
     </div>
   )
 }

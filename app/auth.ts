@@ -49,6 +49,9 @@ export const auth = betterAuth({
   },
   user: {
     modelName: 'User',
+    deleteUser: {
+      enabled: true,
+    },
   },
   verification: {
     modelName: 'Verification',
