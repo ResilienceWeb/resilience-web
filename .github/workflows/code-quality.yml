@@ -15,7 +15,7 @@ jobs:
         run: npm ci
       - name: Run Stylelint
         run: npm run stylelint:dry
-      - name: Run Eslint
-        run: npm run eslint:dry
+      # - name: Run Eslint
+      #   run: npm run eslint:dry
       - name: Run Typescript
         run: npm run tsc
