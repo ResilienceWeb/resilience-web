@@ -27,7 +27,6 @@ export default function useMyWebAccess() {
     refetchOnWindowFocus: false,
   })
 
-  // Transform data to include accessible webs with roles
   const accessibleWebs =
     webAccess?.map((access) => ({
       ...access.web,

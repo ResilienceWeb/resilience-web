@@ -28,9 +28,9 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { Spinner } from '@components/ui/spinner'
-import useMyWebAccess from '@hooks/web-access/useMyWebAccess'
 import useCurrentUser from '@hooks/user/useCurrentUser'
 import useUpdateUser from '@hooks/user/useUpdateUser'
+import useMyWebAccess from '@hooks/web-access/useMyWebAccess'
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -43,10 +43,10 @@ export default function UserSettingsPage() {
   const { updateUser, isPending, isSuccess } = useUpdateUser()
   const { data: session } = useSession()
   const { user } = useCurrentUser()
-  const { 
-    ownedWebs, 
-    editableWebs, 
-    isPending: isLoadingWebAccess 
+  const {
+    ownedWebs,
+    editableWebs,
+    isPending: isLoadingWebAccess,
   } = useMyWebAccess()
 
   const form = useForm<FormValues>({

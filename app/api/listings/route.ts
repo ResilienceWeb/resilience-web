@@ -191,11 +191,7 @@ export async function POST(request) {
           id: webId,
         },
         include: {
-          ownerships: {
-            select: {
-              email: true,
-            },
-          },
+          webAccess: true,
         },
       })
 
@@ -212,7 +208,9 @@ export async function POST(request) {
         url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin`,
       })
 
-      const emails = selectedWeb.ownerships.map((ownership) => ownership.email)
+      const emails = selectedWeb.webAccess
+        .filter((access) => access.role === 'OWNER')
+        .map((access) => access.email)
       emails.forEach((email) => {
         sendEmail({
           to: email,

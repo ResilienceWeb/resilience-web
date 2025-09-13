@@ -21,22 +21,12 @@ export const metadata: Metadata = {
   },
 }
 
-async function fetchMyOwnershipsHydrate() {
-  const response = await fetch(`${REMOTE_URL}/api/ownerships`, {
+async function fetchMyWebAccessHydrate() {
+  const response = await fetch(`${REMOTE_URL}/api/web-access`, {
     headers: await headers(),
   })
   const data = await response.json()
-  return data.ownerships
-}
-
-export async function fetchPermissionsHydrate() {
-  const response = await fetch(`${REMOTE_URL}/api/permissions`, {
-    headers: await headers(),
-  })
-  const data = await response.json()
-  const listingIds = data.permission?.listings.map((l) => l.id) ?? []
-  const webIds = data.permission?.webs.map((l) => l.id) ?? []
-  return { listingIds, webIds, fullPermissionData: data.permission }
+  return data.webAccess
 }
 
 export default async function Layout({ children }) {
@@ -49,13 +39,8 @@ export default async function Layout({ children }) {
 
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({
-    queryKey: ['permission'],
-    queryFn: fetchPermissionsHydrate,
-  })
-
-  await queryClient.prefetchQuery({
-    queryKey: ['my-ownerships'],
-    queryFn: fetchMyOwnershipsHydrate,
+    queryKey: ['my-web-access'],
+    queryFn: fetchMyWebAccessHydrate,
   })
 
   return (

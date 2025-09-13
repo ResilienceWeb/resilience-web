@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { Web } from '@prisma/client'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function createWebRequest(webData): Promise<{ web: Web }> {
   const response = await fetch('/api/webs', {
@@ -34,7 +34,7 @@ export default function useCreateWeb() {
         ['webs', { withAdminInfo: false }],
         [...(context.previousWebs as Web[]), data.web],
       )
-      queryClient.invalidateQueries({ queryKey: ['my-ownerships'] })
+      queryClient.invalidateQueries({ queryKey: ['my-web-access'] })
     },
   })
 

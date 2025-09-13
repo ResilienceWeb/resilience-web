@@ -89,10 +89,7 @@ export default function TeamPage() {
             duration: 5000,
           })
           form.reset()
-          queryClient.invalidateQueries({ queryKey: ['ownerships'] })
-          queryClient.invalidateQueries({
-            queryKey: ['current-web-permissions'],
-          })
+          queryClient.invalidateQueries({ queryKey: ['web-access-for-web'] })
         } else {
           throw new Error('Failed to send invite')
         }
