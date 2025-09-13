@@ -35,7 +35,6 @@ export async function GET(request) {
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
-      include: { ownerships: true },
     })
 
     return Response.json({

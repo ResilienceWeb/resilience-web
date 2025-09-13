@@ -1,4 +1,3 @@
-import { getListingEdits } from '@db/listingEditRepository'
 import { Prisma } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -8,6 +7,7 @@ import { sendEmail } from '@helpers/email'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingEditProposedAdminEmail from '@components/emails/ListingEditProposedAdminEmail'
+import { getListingEdits } from '@db/listingEditRepository'
 
 export async function GET(request, props) {
   const params = await props.params
@@ -141,16 +141,7 @@ export async function POST(request) {
           include: {
             web: {
               include: {
-                ownerships: {
-                  include: {
-                    user: true,
-                  },
-                },
-                permissions: {
-                  include: {
-                    user: true,
-                  },
-                },
+                webAccess: true,
               },
             },
           },
@@ -160,13 +151,8 @@ export async function POST(request) {
 
     const web = listingEdit.listing.web
 
-    const ownerEmails = web.ownerships.map((ownership) => ownership.user?.email)
-    const editorEmails = web.permissions.map(
-      (permission) => permission.user?.email,
-    )
-    const allEmails = [...ownerEmails, ...editorEmails]
-
-    const emailPromises = allEmails.map(async (emailAddress) => {
+    const ownerAndEditorEmails = web.webAccess.map((access) => access.email)
+    const emailPromises = ownerAndEditorEmails.map(async (emailAddress) => {
       await sendEmail({
         to: emailAddress,
         subject: `New listing edit proposed for ${web.title} Resilience Web`,

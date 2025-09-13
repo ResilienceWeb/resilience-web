@@ -24,9 +24,8 @@ export function useUsers(searchQuery?: string) {
   const isSearching = searchQuery && searchQuery.trim().length > 0
 
   return useInfiniteQuery({
-    queryKey: ['users', searchQuery],
+    queryKey: ['users', isSearching, searchQuery],
     queryFn: async ({ pageParam = 0 }) => {
-      // If searching, fetch more data to have enough results for client-side filtering
       const fetchLimit = isSearching ? 100 : USERS_PER_PAGE
       const queryParams: any = {
         limit: fetchLimit,

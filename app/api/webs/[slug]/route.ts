@@ -27,11 +27,10 @@ export async function GET(request, props) {
 
   const include = Prisma.validator<Prisma.WebInclude>()({
     listings: {},
-    permissions: {},
-    ownerships: {},
     features: {},
     relations: {},
     location: {},
+    webAccess: {},
   })
 
   if (withListings) {
@@ -43,16 +42,7 @@ export async function GET(request, props) {
   }
 
   if (withAdminInfo) {
-    include.permissions = {
-      include: {
-        user: true,
-      },
-    }
-    include.ownerships = {
-      include: {
-        user: true,
-      },
-    }
+    include.webAccess = true
     include.features = true
     include.relations = true
     include.location = true
@@ -82,18 +72,17 @@ export async function PUT(request, props) {
     })
   }
 
-  const userOwnerships = await prisma.ownership.findUnique({
+  const access = await prisma.webAccess.findFirst({
     where: {
       email: session.user.email,
+      web: {
+        slug: params.slug,
+      },
     },
-    include: {
-      webs: true,
-    },
+    select: { role: true },
   })
+  const isWebOwner = access?.role === 'OWNER'
 
-  const isWebOwner = userOwnerships?.webs.some(
-    (web) => web.slug === params.slug,
-  )
   if (!isWebOwner && session?.user.role !== 'admin') {
     return new Response('Unauthorized', {
       status: 403,
