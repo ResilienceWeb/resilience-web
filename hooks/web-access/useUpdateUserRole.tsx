@@ -1,6 +1,6 @@
+import { WebRole } from '@prisma/client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { WebRole } from '@prisma/client'
 
 interface UpdateUserRoleParams {
   webId?: number
@@ -31,13 +31,12 @@ export default function useUpdateUserRole() {
 
   return useMutation({
     mutationFn: updateUserRoleRequest,
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       toast.success('Success', {
         description: `User ${variables.userEmail} role updated to ${variables.role.toLowerCase()}`,
         duration: 5000,
       })
 
-      // Invalidate relevant queries
       queryClient.invalidateQueries({ queryKey: ['web-access'] })
       queryClient.invalidateQueries({ queryKey: ['web-access-for-web'] })
       queryClient.invalidateQueries({ queryKey: ['my-web-access'] })

@@ -87,13 +87,7 @@ export default function AdminPage() {
     if (canEditCurrentWeb) return listings
 
     return null
-  }, [
-    session,
-    isLoadingListings,
-    listings,
-    canEditCurrentWeb,
-    isCheckingEditAccess,
-  ])
+  }, [isLoadingListings, listings, canEditCurrentWeb, isCheckingEditAccess])
 
   useEffect(() => {
     if (

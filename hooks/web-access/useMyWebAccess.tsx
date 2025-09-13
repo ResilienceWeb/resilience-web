@@ -6,7 +6,7 @@ async function fetchMyWebAccessRequest() {
   if (!response.ok) {
     throw new Error('Failed to fetch my web access')
   }
-  
+
   const data = await response.json()
   return data.webAccess
 }
@@ -28,16 +28,16 @@ export default function useMyWebAccess() {
   })
 
   // Transform data to include accessible webs with roles
-  const accessibleWebs = webAccess?.map(access => ({
-    ...access.web,
-    role: access.role,
-    accessId: access.id,
-    accessCreatedAt: access.createdAt,
-  })) || []
+  const accessibleWebs =
+    webAccess?.map((access) => ({
+      ...access.web,
+      role: access.role,
+      accessId: access.id,
+      accessCreatedAt: access.createdAt,
+    })) || []
 
-  // Separate by role for convenience
-  const ownedWebs = accessibleWebs.filter(web => web.role === 'OWNER')
-  const editableWebs = accessibleWebs.filter(web => web.role === 'EDITOR')
+  const ownedWebs = accessibleWebs.filter((web) => web.role === 'OWNER')
+  const editableWebs = accessibleWebs.filter((web) => web.role === 'EDITOR')
 
   return {
     webAccess,

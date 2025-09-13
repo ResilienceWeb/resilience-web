@@ -1,9 +1,6 @@
 import * as Sentry from '@sentry/nextjs'
 import { auth } from '@auth'
-import {
-  getWebAccessStats,
-  isUserOwnerOfWeb,
-} from '@db/webAccessRepository'
+import { getWebAccessStats, isUserOwnerOfWeb } from '@db/webAccessRepository'
 import { getWebBySlug } from '@db/webRepository'
 
 export async function GET(request: Request) {
@@ -15,7 +12,7 @@ export async function GET(request: Request) {
     if (!session?.user) {
       return Response.json(
         { error: "You don't have enough permissions to perform this action." },
-        { status: 403 }
+        { status: 403 },
       )
     }
 
@@ -26,11 +23,10 @@ export async function GET(request: Request) {
     if (!webSlug && !webId) {
       return Response.json(
         { error: 'Missing required parameter: web or webId' },
-        { status: 400 }
+        { status: 400 },
       )
     }
 
-    // Get web ID if slug provided
     let targetWebId = webId ? parseInt(webId) : null
     if (webSlug && !targetWebId) {
       const web = await getWebBySlug(webSlug)
@@ -40,12 +36,11 @@ export async function GET(request: Request) {
       targetWebId = web.id
     }
 
-    // Check if user has access to view stats (owner or admin)
     const isOwner = await isUserOwnerOfWeb(session.user.email, targetWebId)
     if (!isOwner && session.user.role !== 'admin') {
       return Response.json(
         { error: "You don't have enough permissions to view web statistics." },
-        { status: 403 }
+        { status: 403 },
       )
     }
 
@@ -56,7 +51,7 @@ export async function GET(request: Request) {
     Sentry.captureException(e)
     return Response.json(
       { error: `Unable to fetch web access stats - ${e}` },
-      { status: 500 }
+      { status: 500 },
     )
   }
 }

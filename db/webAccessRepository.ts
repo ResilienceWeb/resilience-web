@@ -1,5 +1,4 @@
 import { WebRole } from '@prisma/client'
-import { printSchema } from 'graphql'
 import prisma from '@prisma-rw'
 
 /**

@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     if (!session?.user) {
       return Response.json(
         { error: "You don't have enough permissions to perform this action." },
-        { status: 403 }
+        { status: 403 },
       )
     }
 
@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     if (!webSlug && !webId) {
       return Response.json(
         { error: 'Missing required parameter: web or webId' },
-        { status: 400 }
+        { status: 400 },
       )
     }
 
@@ -45,16 +45,17 @@ export async function GET(request: Request) {
     const userEmail = session.user.email
 
     switch (checkType) {
-      case 'owner':
+      case 'owner': {
         const isOwner = await isUserOwnerOfWeb(userEmail, targetWebId)
         return Response.json({ isOwner })
-
-      case 'edit':
+      }
+      case 'edit': {
         const canEdit = await canUserEditWeb(userEmail, targetWebId)
         return Response.json({ canEdit })
+      }
 
       case 'access':
-      default:
+      default: {
         const access = await getUserWebAccess(userEmail, targetWebId)
         return Response.json({
           hasAccess: !!access,
@@ -62,13 +63,14 @@ export async function GET(request: Request) {
           isOwner: access?.role === 'OWNER',
           canEdit: access?.role === 'OWNER' || access?.role === 'EDITOR',
         })
+      }
     }
   } catch (e) {
     console.error(`[RW] Unable to check web access - ${e}`)
     Sentry.captureException(e)
     return Response.json(
       { error: `Unable to check web access - ${e}` },
-      { status: 500 }
+      { status: 500 },
     )
   }
 }

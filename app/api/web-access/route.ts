@@ -1,18 +1,15 @@
-import {
-  getUserWebAccess,
-  getUserAllWebAccess,
-  getWebAllUserAccessBySlug,
-  addUserToWeb,
-  removeUserFromWeb,
-  updateUserRole,
-  isUserOwnerOfWeb,
-} from '@db/webAccessRepository'
-import { getWebById, getWebBySlug } from '@db/webRepository'
-import { WebRole } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import { auth } from '@auth'
 import { sendEmail } from '@helpers/email'
 import WebPermissionsRevokedEmail from '@components/emails/WebPermissionsRevokedEmail'
+import {
+  getUserWebAccess,
+  getUserAllWebAccess,
+  getWebAllUserAccessBySlug,
+  removeUserFromWeb,
+  isUserOwnerOfWeb,
+} from '@db/webAccessRepository'
+import { getWebById, getWebBySlug } from '@db/webRepository'
 
 export async function GET(request: Request) {
   try {
@@ -32,13 +29,11 @@ export async function GET(request: Request) {
     const userEmail = searchParams.get('email')
 
     if (webSlug) {
-      // Get all access for a specific web
       const webAccess = await getWebAllUserAccessBySlug(webSlug)
       return Response.json({ webAccess })
     }
 
     if (userEmail) {
-      // Get all access for a specific user (admin only or self)
       if (session.user.role !== 'admin' && session.user.email !== userEmail) {
         return Response.json(
           { error: "You don't have permission to view other users' access." },
@@ -49,7 +44,6 @@ export async function GET(request: Request) {
       return Response.json({ webAccess })
     }
 
-    // Get current user's access
     const webAccess = await getUserAllWebAccess(session.user.email)
     return Response.json({ webAccess })
   } catch (e) {
@@ -78,7 +72,6 @@ export async function DELETE(request: Request) {
     const body = await request.json()
     const { webId, webSlug, userEmail } = body
 
-    // Validate required fields
     if (!userEmail || (!webId && !webSlug)) {
       return Response.json(
         { error: 'Missing required fields: userEmail and webId or webSlug' },
@@ -86,7 +79,6 @@ export async function DELETE(request: Request) {
       )
     }
 
-    // Get web ID if slug provided
     let targetWebId = webId
     let selectedWeb
     if (webSlug && !webId) {
@@ -99,7 +91,6 @@ export async function DELETE(request: Request) {
       selectedWeb = await getWebById(targetWebId)
     }
 
-    // Check if current user is owner of the web
     const isOwner = await isUserOwnerOfWeb(session.user.email, targetWebId)
     if (!isOwner && session.user.role !== 'admin') {
       return Response.json(
@@ -113,16 +104,17 @@ export async function DELETE(request: Request) {
       const userAccess = await getUserWebAccess(userEmail, targetWebId)
       if (userAccess?.role === 'OWNER') {
         return Response.json(
-          { error: 'Owners cannot remove themselves from a web. Transfer ownership first or contact an admin.' },
+          {
+            error:
+              'Owners cannot remove themselves from a web. Transfer ownership first or contact an admin.',
+          },
           { status: 400 },
         )
       }
     }
 
-    // Remove user from web
     await removeUserFromWeb(userEmail, targetWebId)
 
-    // Send notification email
     if (selectedWeb) {
       const webPermissionsRevokedEmail = WebPermissionsRevokedEmail({
         webTitle: selectedWeb.title,
