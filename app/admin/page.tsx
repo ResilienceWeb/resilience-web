@@ -11,8 +11,7 @@ import EditableList from '@components/admin/editable-list'
 import { Spinner } from '@components/ui/spinner'
 import useDeleteListing from '@hooks/listings/useDeleteListing'
 import useListings from '@hooks/listings/useListings'
-import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
-import usePermissions from '@hooks/permissions/usePermissions'
+import useCanEditWeb from '@hooks/web-access/useCanEditWeb'
 import useAllowedWebs from '@hooks/webs/useAllowedWebs'
 
 const driverObj = driver({
@@ -72,7 +71,8 @@ export default function AdminPage() {
   const router = useRouter()
   const { data: session } = useSession()
   const { selectedWebId } = useAppContext()
-  const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
+  const { canEdit: canEditCurrentWeb, isPending: isCheckingEditAccess } =
+    useCanEditWeb()
 
   const {
     allowedWebs,
@@ -80,27 +80,19 @@ export default function AdminPage() {
     isLoading: isLoadingAllowedWebs,
   } = useAllowedWebs()
   const { listings, isPending: isLoadingListings } = useListings()
-  const { permissions, isPending: isLoadingPermissions } = usePermissions()
   const { mutate: deleteListing } = useDeleteListing()
 
   const allowedListings = useMemo(() => {
-    if (isLoadingListings || isLoadingPermissions) return null
-    if (isOwnerOfCurrentWeb || session.user.role === 'admin') return listings
+    if (isLoadingListings || isCheckingEditAccess) return null
+    if (canEditCurrentWeb) return listings
 
-    if (permissions?.webIds?.includes(selectedWebId)) return listings
-
-    return listings?.filter((listing) => {
-      return permissions?.listingIds?.includes(listing.id)
-    })
+    return null
   }, [
     session,
-    isLoadingPermissions,
     isLoadingListings,
-    isOwnerOfCurrentWeb,
     listings,
-    permissions?.webIds,
-    permissions?.listingIds,
-    selectedWebId,
+    canEditCurrentWeb,
+    isCheckingEditAccess,
   ])
 
   useEffect(() => {
@@ -144,11 +136,5 @@ export default function AdminPage() {
     redirect('/admin/welcome')
   }
 
-  return (
-    <EditableList
-      deleteListing={deleteListing}
-      isAdmin={session?.user.role === 'admin'}
-      items={allowedListings}
-    />
-  )
+  return <EditableList deleteListing={deleteListing} items={allowedListings} />
 }

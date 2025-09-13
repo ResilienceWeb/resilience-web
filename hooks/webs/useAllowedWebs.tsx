@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import { useSession } from '@auth-client'
-import useMyOwnerships from '@hooks/ownership/useMyOwnerships'
-import usePermissions from '@hooks/permissions/usePermissions'
+import useMyWebAccess from '@hooks/web-access/useMyWebAccess'
 import useWebs from '@hooks/webs/useWebs'
 
 const useAllowedWebs = () => {
@@ -11,42 +10,30 @@ const useAllowedWebs = () => {
     isPending: isLoadingWebs,
     isFetching: isFetchingWebs,
   } = useWebs()
-  const { permissions, isPending: isLoadingPermissions } = usePermissions()
-  const { ownerships, isPending: isLoadingOwnerships } = useMyOwnerships()
+  const { accessibleWebs, isPending: isLoadingWebAccess } = useMyWebAccess()
 
-  const allUniqueWebIds = useMemo(() => {
-    if (!permissions && !ownerships) {
-      return []
-    }
-
-    const allWebIds =
-      permissions?.fullPermissionData?.listings.map((l) => l.webId) ?? []
-    const ownedWebsIds = ownerships?.map((o) => o.id) ?? []
-
-    return Array.from(new Set([...allWebIds, ...ownedWebsIds]))
-  }, [ownerships, permissions])
+  const allowedWebIds = useMemo(() => {
+    return accessibleWebs?.map((web) => web.id) ?? []
+  }, [accessibleWebs])
 
   const allAllowedWebs = useMemo(() => {
-    if (!webs || !permissions) {
+    if (!webs) {
       return null
     }
 
-    const allowedWebs =
-      session?.user.role === 'admin'
-        ? webs
-        : webs.filter(
-            (s) =>
-              permissions.webIds?.includes(s.id) ||
-              allUniqueWebIds.includes(s.id),
-          )
+    // Admin users can access all webs
+    if (session?.user.role === 'admin') {
+      return webs
+    }
 
-    return allowedWebs
-  }, [allUniqueWebIds, permissions, session?.user.role, webs])
+    // Filter webs based on user's web access
+    return webs.filter((web) => allowedWebIds.includes(web.id))
+  }, [webs, allowedWebIds, session?.user.role])
 
   return {
     allowedWebs: allAllowedWebs,
     isLoadingWebs: isLoadingWebs || isFetchingWebs,
-    isLoading: isLoadingPermissions || isLoadingOwnerships || isFetchingWebs,
+    isLoading: isLoadingWebAccess || isFetchingWebs,
   }
 }
 

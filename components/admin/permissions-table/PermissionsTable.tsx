@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table'
-import useRemovePermission from '@hooks/permissions/useRemovePermission'
+import useRemoveWebAccess from '@hooks/web-access/useRemoveWebAccess'
 
 const columns = [
   {
@@ -36,11 +36,11 @@ const PermissionsTable = ({ permissions, isOwner, webId }: Props) => {
     isRemoveConfirmationDialogOpenWithUserEmail,
     setIsRemoveConfirmationDialogOpenWithUserEmail,
   ] = useState<{ userEmail: string }>()
-  const { removePermission } = useRemovePermission()
+  const { mutate: removeWebAccess } = useRemoveWebAccess()
 
   const handleRemove = () => {
     const { userEmail } = isRemoveConfirmationDialogOpenWithUserEmail
-    removePermission({ userEmail, webId })
+    removeWebAccess({ userEmail, webId })
   }
 
   return (
@@ -52,7 +52,7 @@ const PermissionsTable = ({ permissions, isOwner, webId }: Props) => {
               {columns.map((column, index) => (
                 <TableHead key={`heading-${index}`}>{column.Header}</TableHead>
               ))}
-              {isOwner && permissions.some((p) => !p.owner) && (
+              {isOwner && permissions.some((p) => p.role !== 'OWNER') && (
                 <TableHead>Actions</TableHead>
               )}
             </TableRow>
