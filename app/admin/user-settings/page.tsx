@@ -28,8 +28,7 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { Spinner } from '@components/ui/spinner'
-import useMyOwnerships from '@hooks/ownership/useMyOwnerships'
-import usePermissions from '@hooks/permissions/usePermissions'
+import useMyWebAccess from '@hooks/web-access/useMyWebAccess'
 import useCurrentUser from '@hooks/user/useCurrentUser'
 import useUpdateUser from '@hooks/user/useUpdateUser'
 
@@ -44,8 +43,11 @@ export default function UserSettingsPage() {
   const { updateUser, isPending, isSuccess } = useUpdateUser()
   const { data: session } = useSession()
   const { user } = useCurrentUser()
-  const { ownerships, isPending: isLoadingOwnerships } = useMyOwnerships()
-  const { permissions, isPending: isLoadingPermissions } = usePermissions()
+  const { 
+    ownedWebs, 
+    editableWebs, 
+    isPending: isLoadingWebAccess 
+  } = useMyWebAccess()
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -163,15 +165,15 @@ export default function UserSettingsPage() {
           <CardDescription>Webs you can access and manage</CardDescription>
         </CardHeader>
         <CardContent>
-          {isLoadingOwnerships || isLoadingPermissions ? (
+          {isLoadingWebAccess ? (
             <Spinner />
           ) : (
             <div className="space-y-6">
               <div>
                 <h3 className="text-sm mb-3 font-semibold">Owner of</h3>
-                {ownerships && ownerships.length > 0 ? (
+                {ownedWebs && ownedWebs.length > 0 ? (
                   <ul className="flex flex-col gap-2">
-                    {ownerships.map((web) => (
+                    {ownedWebs.map((web) => (
                       <li
                         key={web.id}
                         className="flex items-center justify-between pb-2"
@@ -197,10 +199,9 @@ export default function UserSettingsPage() {
 
               <div>
                 <h3 className="text-sm mt-4 mb-3 font-semibold">Editor of</h3>
-                {permissions?.fullPermissionData?.webs &&
-                permissions.fullPermissionData.webs.length > 0 ? (
+                {editableWebs && editableWebs.length > 0 ? (
                   <ul className="flex flex-col gap-2">
-                    {permissions.fullPermissionData.webs.map((web) => (
+                    {editableWebs.map((web) => (
                       <li
                         key={web.id}
                         className="flex items-center justify-between pb-2"

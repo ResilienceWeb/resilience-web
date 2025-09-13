@@ -1,12 +1,12 @@
-import { Prisma } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
 import { sendEmail } from '@helpers/email'
 import InviteEmail from '@components/emails/InviteEmail'
+import { addUserToWeb } from '@db/webAccessRepository'
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     const session = await auth.api.getSession({
       headers: request.headers,
@@ -42,70 +42,10 @@ export async function POST(request) {
       )
     }
 
-    const newUserData: Prisma.UserUpsertArgs = {
-      where: { email },
-      create: { email },
-      update: { email },
-    }
-    const user = await prisma.user.upsert(newUserData)
-    const webIdToConnect = webId ? { id: webId } : []
-
     if (asOwner) {
-      const newData: Prisma.OwnershipUpsertArgs = {
-        where: {
-          email,
-        },
-        create: {
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
-          webs: {
-            connect: webIdToConnect,
-          },
-        },
-        update: {
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
-          webs: {
-            connect: webIdToConnect,
-          },
-        },
-      }
-
-      await prisma.ownership.upsert(newData)
+      await addUserToWeb(email, webId, 'OWNER')
     } else {
-      const newData: Prisma.PermissionUpsertArgs = {
-        where: {
-          email,
-        },
-        create: {
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
-          webs: {
-            connect: webIdToConnect,
-          },
-        },
-        update: {
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
-          webs: {
-            connect: webIdToConnect,
-          },
-        },
-      }
-
-      await prisma.permission.upsert(newData)
+      await addUserToWeb(email, webId, 'EDITOR')
     }
 
     const emailEncoded = encodeURIComponent(email)

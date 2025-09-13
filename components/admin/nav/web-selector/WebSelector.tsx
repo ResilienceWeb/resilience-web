@@ -3,7 +3,6 @@ import Select from 'react-select'
 import type { Options } from 'react-select'
 import { usePathname } from 'next/navigation'
 import { useAppContext } from '@store/hooks'
-import usePermissions from '@hooks/permissions/usePermissions'
 import useAllowedWebs from '@hooks/webs/useAllowedWebs'
 
 type WebOption = {
@@ -14,11 +13,10 @@ type WebOption = {
 const WebSelector = () => {
   const pathname = usePathname()
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
-  const { permissions } = usePermissions()
   const { allowedWebs, isLoading: isLoadingAllowedWebs } = useAllowedWebs()
 
   const webOptions: Options<WebOption> = useMemo(() => {
-    if (!permissions || !allowedWebs) return []
+    if (!allowedWebs) return []
 
     return allowedWebs
       ?.sort((a, b) => a.title.localeCompare(b.title))
@@ -26,7 +24,7 @@ const WebSelector = () => {
         value: s.slug,
         label: s.title,
       }))
-  }, [allowedWebs, permissions])
+  }, [allowedWebs])
 
   const selectedOption = useMemo(
     () => webOptions.find((s) => s.value === selectedWebSlug),

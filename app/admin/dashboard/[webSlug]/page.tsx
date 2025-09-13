@@ -38,6 +38,8 @@ export default function WebDashboardPage({ params }) {
     router.back()
   }, [router])
 
+  console.log(web)
+
   const decoratedOwnerships = useMemo(() => {
     if (!web || !web.ownerships) {
       return []

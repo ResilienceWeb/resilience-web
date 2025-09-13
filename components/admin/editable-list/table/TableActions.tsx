@@ -5,8 +5,7 @@ import customMultiSelectStyles from '@styles/select-styles'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import useCategories from '@hooks/categories/useCategories'
-import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
-import useHasPermissionForCurrentWeb from '@hooks/permissions/useHasPermissionForCurrentWeb'
+import useCanEditWeb from '@hooks/web-access/useCanEditWeb'
 
 const TableActions = ({
   searchTerm,
@@ -14,8 +13,7 @@ const TableActions = ({
   handleSelectedCategoriesChange,
   goToCreateListing,
 }) => {
-  const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
-  const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
+  const { canEdit: canEditWeb } = useCanEditWeb()
 
   const { categories: fetchedCategories } = useCategories()
   const [categories, setCategories] = useState<any[]>()
@@ -34,7 +32,7 @@ const TableActions = ({
 
   return (
     <div className="flex flex-1 flex-col justify-start gap-4 md:flex-row">
-      {(hasPermissionForCurrentWeb || isOwnerOfCurrentWeb) && (
+      {canEditWeb && (
         <>
           <div className="flex flex-1 flex-col gap-4 md:flex-row">
             <div className="relative flex-1">

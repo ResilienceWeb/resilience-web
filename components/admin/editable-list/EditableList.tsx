@@ -5,15 +5,11 @@ import { useAppContext } from '@store/hooks'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { removeNonAlphaNumeric } from '@helpers/utils'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
-import usePermissions from '@hooks/permissions/usePermissions'
-import useWebs from '@hooks/webs/useWebs'
 import Table from './table/Table'
 import TableActions from './table/TableActions'
 
-const EditableList = ({ deleteListing, isAdmin, items }) => {
+const EditableList = ({ deleteListing, items }) => {
   const router = useRouter()
-  const { permissions } = usePermissions()
-  const { webs } = useWebs()
   const { selectedWebId, selectedWebSlug } = useAppContext()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState<Array<any>>([])
@@ -90,20 +86,6 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
     setSelectedCategories(value)
   }, [])
 
-  const explanatoryText = useMemo(() => {
-    if (isAdmin) {
-      return 'You are an admin. You can see all the listings on each web, as well as invite people, or edit categories or tags on each web.'
-    }
-
-    const selectedWebName = webs?.find((s) => s.id === selectedWebId)?.title
-
-    if (permissions?.webIds?.includes(selectedWebId)) {
-      return `You have access to edit any listing or add new listings on the ${selectedWebName} Resilience Web.`
-    }
-
-    return null
-  }, [isAdmin, permissions?.webIds, selectedWebId, webs])
-
   if (!filteredItems) {
     return null
   }
@@ -112,7 +94,6 @@ const EditableList = ({ deleteListing, isAdmin, items }) => {
     <>
       <div className="mb-4">
         <h1 className="text-2xl font-bold">Listings</h1>
-        <p className="max-w-[500px] text-sm text-gray-600">{explanatoryText}</p>
         <p className="mt-4 max-w-[500px] text-sm text-gray-600">
           This web is publicly accessible at{' '}
           <a

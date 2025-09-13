@@ -18,6 +18,7 @@
     "^@auth-client$",
     "^@helpers/(.*)$",
     "^@components/(.*)$",
+    "^@db/(.*)$",
     "^@hooks/(.*)$",
     "^[./]"
   ],

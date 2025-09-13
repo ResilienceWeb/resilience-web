@@ -99,8 +99,7 @@ export default tseslint.config([
           "ignoreRestSiblings": true,
           "vars": "all",
           "argsIgnorePattern": "^_",
-          "destructuredArrayIgnorePattern": "^_",
-          "destructuredObjectIgnorePattern": "^_"
+          "destructuredArrayIgnorePattern": "^_"
         }
       ],
       "@typescript-eslint/no-unsafe-assignment": 0,
@@ -114,7 +113,8 @@ export default tseslint.config([
       "@typescript-eslint/no-floating-promises": 0,
       "@typescript-eslint/no-require-imports": 0,
       "@typescript-eslint/no-base-to-string": 0,
-      "@typescript-eslint/no-misused-promises": 0
+      "@typescript-eslint/no-misused-promises": 0,
+      "@typescript-eslint/triple-slash-reference": 0,
     }
   },
   {

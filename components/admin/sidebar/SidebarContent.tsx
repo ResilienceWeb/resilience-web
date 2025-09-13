@@ -18,8 +18,8 @@ import { usePathname } from 'next/navigation'
 import { useAppContext } from '@store/hooks'
 import { useSession } from '@auth-client'
 import DonateButton from '@components/donate-button'
-import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
-import useHasPermissionForCurrentWeb from '@hooks/permissions/useHasPermissionForCurrentWeb'
+import useCanEditWeb from '@hooks/web-access/useCanEditWeb'
+import useIsOwnerOfWeb from '@hooks/web-access/useIsOwnerOfWeb'
 import LogoImage from '../../../public/logo.png'
 
 interface NavItemProps {
@@ -60,8 +60,8 @@ const NavItem = ({ label, icon, href, tourId, closeMenu }: NavItemProps) => {
 
 export default function SidebarContent({ closeMenu, ...rest }) {
   const { data: session } = useSession()
-  const hasPermissionForCurrentWeb = useHasPermissionForCurrentWeb()
-  const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
+  const canEditWeb = useCanEditWeb()
+  const isOwnerOfCurrentWeb = useIsOwnerOfWeb()
   const { selectedWebId } = useAppContext()
 
   const navLinks = useMemo(() => {
@@ -76,7 +76,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       })
     }
 
-    if (hasPermissionForCurrentWeb || isOwnerOfCurrentWeb) {
+    if (canEditWeb) {
       links.push({
         label: 'Categories & Tags',
         href: '/admin/categories',
@@ -121,12 +121,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     })
 
     return links
-  }, [
-    hasPermissionForCurrentWeb,
-    isOwnerOfCurrentWeb,
-    selectedWebId,
-    session?.user.role,
-  ])
+  }, [canEditWeb, isOwnerOfCurrentWeb, selectedWebId, session?.user.role])
 
   const adminNavLinks = useMemo(() => {
     const links: any[] = []

@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -8,7 +8,6 @@ import { useAppContext } from '@store/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import * as z from 'zod'
-import { useSession } from '@auth-client'
 import { REMOTE_URL } from '@helpers/config'
 import PermissionsTable from '@components/admin/permissions-table'
 import Faq from '@components/faq'
@@ -25,9 +24,8 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { Spinner } from '@components/ui/spinner'
-import useIsOwnerOfCurrentWeb from '@hooks/ownership/useIsOwnerOfCurrentWeb'
-import useOwnerships from '@hooks/ownership/useOwnerships'
-import usePermissionsForCurrentWeb from '@hooks/permissions/usePermissionsForCurrentWeb'
+import useIsOwnerOfWeb from '@hooks/web-access/useIsOwnerOfWeb'
+import useWebAccessForWeb from '@hooks/web-access/useWebAccessForWeb'
 import useSelectedWebName from '@hooks/webs/useSelectedWebName'
 
 const faqs = [
@@ -53,13 +51,10 @@ type FormValues = z.infer<typeof formSchema>
 
 export default function TeamPage() {
   const queryClient = useQueryClient()
-  const { data: session } = useSession()
-  const isOwnerOfCurrentWeb = useIsOwnerOfCurrentWeb()
-  const { data: permissionsForCurrentWeb, isPending: isPermissionsPending } =
-    usePermissionsForCurrentWeb()
-  const { ownerships } = useOwnerships()
+  const { isOwner } = useIsOwnerOfWeb()
   const selectedWebName = useSelectedWebName()
   const { selectedWebId } = useAppContext()
+  const { webAccess, isPending: isWebAccessPending } = useWebAccessForWeb()
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -70,27 +65,6 @@ export default function TeamPage() {
       asOwner: false,
     },
   })
-
-  const decoratedOwnerships = useMemo(() => {
-    if (!ownerships) {
-      return []
-    }
-
-    return ownerships.map((ownership) => ({ ...ownership, owner: true }))
-  }, [ownerships])
-
-  const permissionsForCurrentWebWithoutOwners = useMemo(() => {
-    const filteredPermissions = []
-    const ownershipsEmails = ownerships?.map((o) => o.user.email)
-    permissionsForCurrentWeb?.map((permission) => {
-      if (!ownershipsEmails?.includes(permission.user.email)) {
-        // @ts-ignore
-        filteredPermissions.push(permission)
-      }
-    })
-
-    return filteredPermissions
-  }, [ownerships, permissionsForCurrentWeb])
 
   const sendInvite = useCallback(
     async (data: FormValues) => {
@@ -133,13 +107,13 @@ export default function TeamPage() {
     [selectedWebId, form, queryClient],
   )
 
-  if (isPermissionsPending || !selectedWebId) {
+  if (isWebAccessPending || !selectedWebId) {
     return <Spinner />
   }
 
   return (
     <div className="flex flex-col divide-y divide-gray-200">
-      {isOwnerOfCurrentWeb && (
+      {isOwner && (
         <div className="pb-8">
           <h1 className="mb-6 text-2xl font-bold">Invite team member</h1>
           <div className="overflow-hidden rounded-md bg-white p-4 shadow-xs">
@@ -204,9 +178,7 @@ export default function TeamPage() {
         </div>
       )}
 
-      {(permissionsForCurrentWeb?.length > 0 ||
-        decoratedOwnerships?.length > 0 ||
-        session.user.role === 'admin') && (
+      {webAccess.length > 0 && (
         <div className="pt-4">
           <h2 className="text-2xl font-bold">Team</h2>
           <p className="mb-4">
@@ -214,11 +186,8 @@ export default function TeamPage() {
             <span className="font-semibold">{selectedWebName}</span> web.
           </p>
           <PermissionsTable
-            permissions={[
-              ...decoratedOwnerships,
-              ...permissionsForCurrentWebWithoutOwners,
-            ]}
-            isOwner={isOwnerOfCurrentWeb}
+            permissions={webAccess}
+            isOwner={isOwner}
             webId={selectedWebId}
           />
         </div>

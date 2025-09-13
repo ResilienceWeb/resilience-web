@@ -20,7 +20,6 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { Spinner } from '@components/ui/spinner'
-import usePermissions from '@hooks/permissions/usePermissions'
 import useUpdateWeb from '@hooks/webs/useUpdateWeb'
 import useWeb from '@hooks/webs/useWeb'
 import useWebs from '@hooks/webs/useWebs'
@@ -101,7 +100,6 @@ function WebsSelect({ selectedWebSlug }: { selectedWebSlug: string }) {
 }
 
 export default function WebSettingsPage() {
-  const { isPending: isLoadingPermissions } = usePermissions()
   const { selectedWebSlug } = useAppContext()
   const { web: webData, isPending: isLoadingWeb } = useWeb({
     webSlug: selectedWebSlug,
@@ -179,7 +177,7 @@ export default function WebSettingsPage() {
     [updateWeb, webData?.slug],
   )
 
-  if (isLoadingPermissions || isLoadingWeb) {
+  if (isLoadingWeb) {
     return <Spinner />
   }
 

@@ -7,14 +7,7 @@ import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dial
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@components/ui/table'
+import { Table, TableBody, TableCell, TableRow } from '@components/ui/table'
 
 type AdminListUsersResponse = {
   users: Array<Record<string, any>>
