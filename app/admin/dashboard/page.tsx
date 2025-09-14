@@ -139,8 +139,7 @@ export default function DashboardPage() {
                 return date2.getTime() - date1.getTime()
               })
               .map((web) => {
-                const teamMembersCount =
-                  web.ownerships.length + web.permissions.length
+                const teamMembersCount = web.webAccess.length
 
                 const hasNoImage = !web.image
                 const noDescription = !web.description

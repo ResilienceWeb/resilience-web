@@ -29,11 +29,10 @@ export default function useCreateWeb() {
       ])
       return { previousWebs, newWeb }
     },
-    onSuccess: (data, _variables, context) => {
-      queryClient.setQueryData(
-        ['webs', { withAdminInfo: false }],
-        [...(context.previousWebs as Web[]), data.web],
-      )
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['webs', { withAdminInfo: false }],
+      })
       queryClient.invalidateQueries({ queryKey: ['my-web-access'] })
     },
   })

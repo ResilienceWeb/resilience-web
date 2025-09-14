@@ -1,10 +1,10 @@
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Button } from '@components/ui/button'
-import { Badge } from '@components/ui/badge'
-
+import posthog from 'posthog-js'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { Badge } from '@components/ui/badge'
+import { Button } from '@components/ui/button'
 
 // Hardcoded array to determine which webs are displayed last
 const lastOnesOnHomepage = [
@@ -54,7 +54,9 @@ const WebCards = ({ webs }) => {
               return 1
             }
           })
-          .map((web) => <Card key={web.id} web={web} />)}
+          .map((web) => (
+            <Card key={web.id} web={web} />
+          ))}
 
         <CreateNewWebCard />
       </div>
@@ -95,6 +97,7 @@ const CreateNewWebCard = () => {
   const router = useRouter()
 
   const handleClick = () => {
+    posthog.capture('create-new-web-click')
     router.push('/auth/signup')
   }
 

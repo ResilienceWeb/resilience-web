@@ -9,7 +9,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import * as z from 'zod'
 import { REMOTE_URL } from '@helpers/config'
-import PermissionsTable from '@components/admin/permissions-table'
+import WebAccessTable from '@components/admin/web-access-table'
 import Faq from '@components/faq'
 import { Button } from '@components/ui/button'
 import { Checkbox } from '@components/ui/checkbox'
@@ -182,8 +182,8 @@ export default function TeamPage() {
             People who can add and edit listings on the{' '}
             <span className="font-semibold">{selectedWebName}</span> web.
           </p>
-          <PermissionsTable
-            permissions={webAccess}
+          <WebAccessTable
+            webAccess={webAccess}
             isOwner={isOwner}
             webId={selectedWebId}
           />

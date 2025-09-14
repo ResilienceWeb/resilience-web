@@ -57,8 +57,6 @@ export async function GET(request) {
 
     const include = Prisma.validator<Prisma.WebInclude>()({
       listings: {},
-      permissions: {},
-      ownerships: {},
       features: {},
       webAccess: {},
     })
@@ -74,8 +72,6 @@ export async function GET(request) {
     }
 
     if (withAdminInfo) {
-      include.permissions = true
-      include.ownerships = true
       include.features = true
       include.webAccess = true
     }
@@ -120,16 +116,14 @@ export async function POST(request) {
     const { title, slug, description, contactEmail, location } =
       await request.json()
 
-    const currentOwnerships = await prisma.ownership.findUnique({
+    const currentOwnerships = await prisma.webAccess.findMany({
       where: {
         email: session.user.email,
-      },
-      include: {
-        webs: true,
+        role: 'OWNER',
       },
     })
 
-    if (currentOwnerships?.webs.length > 0 && session.user.role !== 'admin') {
+    if (currentOwnerships?.length > 0 && session.user.role !== 'admin') {
       return Response.json(
         {
           error:
@@ -151,14 +145,10 @@ export async function POST(request) {
         categories: {
           create: defaultCategories,
         },
-        ownerships: {
-          connectOrCreate: {
-            where: {
-              email: session.user.email,
-            },
-            create: {
-              email: session.user.email,
-            },
+        webAccess: {
+          create: {
+            email: session.user.email,
+            role: 'OWNER',
           },
         },
         ...(location

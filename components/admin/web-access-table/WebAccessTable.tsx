@@ -25,12 +25,12 @@ const columns = [
 ]
 
 type Props = {
-  permissions: any[]
+  webAccess: any[]
   isOwner?: boolean
   webId?: number
 }
 
-const PermissionsTable = ({ permissions, isOwner, webId }: Props) => {
+const WebAccessTable = ({ webAccess, isOwner, webId }: Props) => {
   const { data: session } = useSession()
   const [
     isRemoveConfirmationDialogOpenWithUserEmail,
@@ -52,23 +52,23 @@ const PermissionsTable = ({ permissions, isOwner, webId }: Props) => {
               {columns.map((column, index) => (
                 <TableHead key={`heading-${index}`}>{column.Header}</TableHead>
               ))}
-              {isOwner && permissions.some((p) => p.role !== 'OWNER') && (
+              {isOwner && webAccess.some((p) => p.role !== 'OWNER') && (
                 <TableHead>Actions</TableHead>
               )}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {permissions.map((permission) => {
-              const permissionKey = permission.owner
-                ? `owner-${permission.id}`
-                : `permission-${permission.id}`
+            {webAccess.map((webAccess) => {
+              const webAccessKey = webAccess.owner
+                ? `owner-${webAccess.id}`
+                : `permission-${webAccess.id}`
 
               return (
-                <TableRow key={permissionKey}>
+                <TableRow key={webAccessKey}>
                   {columns.map((column, index) => {
                     if (column.accessor === 'email') {
-                      const emailAddress = permission.email
-                      const name = permission.user.name
+                      const emailAddress = webAccess.email
+                      const name = webAccess.user.name
                       return (
                         <TableCell key={`0-${index}`}>
                           <div className="flex flex-col">
@@ -84,17 +84,17 @@ const PermissionsTable = ({ permissions, isOwner, webId }: Props) => {
                     }
 
                     if (column.accessor === 'permissions') {
-                      if (permission.owner === true) {
+                      if (webAccess.role === 'OWNER') {
                         return (
                           <TableCell key={`1-${index}`}>
                             <div className="flex gap-2">
                               <Badge>Owner</Badge>
-                              {!permission.user.emailVerified && (
+                              {!webAccess.user.emailVerified && (
                                 <Badge variant="secondary">
                                   Invite pending
                                 </Badge>
                               )}
-                              {permission.user.role === 'admin' && (
+                              {webAccess.user.role === 'admin' && (
                                 <Badge variant="secondary">Admin</Badge>
                               )}
                             </div>
@@ -106,10 +106,10 @@ const PermissionsTable = ({ permissions, isOwner, webId }: Props) => {
                         <TableCell key={`2-${index}`}>
                           <div className="flex gap-2">
                             <Badge variant="secondary">Editor</Badge>
-                            {!permission.user.emailVerified && (
+                            {!webAccess.user.emailVerified && (
                               <Badge variant="secondary">Invite pending</Badge>
                             )}
-                            {permission.user.role === 'admin' && (
+                            {webAccess.user.role === 'admin' && (
                               <Badge variant="secondary">Admin</Badge>
                             )}
                           </div>
@@ -119,15 +119,15 @@ const PermissionsTable = ({ permissions, isOwner, webId }: Props) => {
                   })}
 
                   {isOwner &&
-                    session?.user?.email !== permission.email &&
-                    !permission.owner && (
+                    session?.user?.email !== webAccess.email &&
+                    !webAccess.owner && (
                       <TableCell>
                         <Button
                           variant="destructive"
                           size="sm"
                           onClick={() =>
                             setIsRemoveConfirmationDialogOpenWithUserEmail({
-                              userEmail: permission.email,
+                              userEmail: webAccess.email,
                             })
                           }
                         >
@@ -152,4 +152,4 @@ const PermissionsTable = ({ permissions, isOwner, webId }: Props) => {
   )
 }
 
-export default memo(PermissionsTable)
+export default memo(WebAccessTable)

@@ -4,8 +4,9 @@ import { useCallback, useMemo, use, useState } from 'react'
 import { HiArrowLeft } from 'react-icons/hi'
 import { HiOutlineClipboard, HiOutlineClipboardCheck } from 'react-icons/hi'
 import { useRouter } from 'next/navigation'
+import type { WebAccess } from '@prisma/client'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
-import PermissionsTable from '@components/admin/permissions-table'
+import WebAccessTable from '@components/admin/web-access-table'
 import WebFeatures from '@components/admin/web-features'
 import {
   Accordion,
@@ -38,45 +39,16 @@ export default function WebDashboardPage({ params }) {
     router.back()
   }, [router])
 
-  console.log(web)
-
-  const decoratedOwnerships = useMemo(() => {
-    if (!web || !web.ownerships) {
-      return []
-    }
-
-    return web.ownerships
-      .filter((ownership) => ownership.user?.role !== 'admin')
-      .map((ownership) => ({ ...ownership, owner: true }))
-  }, [web])
-
-  const permissionsForCurrentWebWithoutOwners = useMemo(() => {
-    if (!web || !web.ownerships || !web.permissions) {
-      return []
-    }
-
-    const filteredPermissions = []
-    const ownershipsEmails = web.ownerships?.map((o) => o.user?.email)
-    web.permissions?.map((permission) => {
-      if (!ownershipsEmails?.includes(permission.user.email)) {
-        // @ts-ignore
-        filteredPermissions.push(permission)
-      }
-    })
-
-    return filteredPermissions
-  }, [web])
-
   const mailToEmails = useMemo(() => {
-    if (!web || !web.ownerships || !web.permissions) {
+    if (!web || !web.webAccess) {
       return []
     }
-    const ownershipsEmails = web.ownerships?.map((o) => o.user?.email)
-    const permissionsEmails = web.permissions
-      ?.map((p) => (p.user?.emailVerified ? p.user?.email : undefined))
+
+    const emails = web.webAccess
+      .map((wa: WebAccess) => wa.email)
       .filter(Boolean)
 
-    return [...ownershipsEmails, ...permissionsEmails].join(',')
+    return emails.join(',')
   }, [web])
 
   const listingEmails = useMemo(() => {
@@ -279,15 +251,10 @@ export default function WebDashboardPage({ params }) {
         <WebFeatures web={web} />
       </div>
 
-      {(web.permissions?.length > 0 || decoratedOwnerships?.length > 0) && (
+      {web.webAccess?.length > 0 && (
         <div className="mt-4 flex flex-col gap-2">
           <h2 className="text-2xl font-bold">Team</h2>
-          <PermissionsTable
-            permissions={[
-              ...decoratedOwnerships,
-              ...permissionsForCurrentWebWithoutOwners,
-            ]}
-          />
+          <WebAccessTable webAccess={web.webAccess} />
           <Button variant="outline" asChild className="mb-8 self-start">
             <a href={`mailto:${mailToEmails}`}>
               Send email to owners and editors

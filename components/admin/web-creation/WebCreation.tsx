@@ -125,8 +125,6 @@ const WebCreation = () => {
   })
 
   const { watch, setValue } = form
-
-  // Watch the title field to generate slug
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === 'title' && value.title) {
@@ -135,6 +133,13 @@ const WebCreation = () => {
     })
     return () => subscription.unsubscribe()
   }, [watch, setValue])
+
+  useEffect(() => {
+    const currentContactEmail = watch('contactEmail')
+    if (!currentContactEmail && session?.data?.user?.email) {
+      setValue('contactEmail', session.data.user.email)
+    }
+  }, [watch, setValue, session])
 
   useEffect(() => {
     posthog.capture('web-creation-start')

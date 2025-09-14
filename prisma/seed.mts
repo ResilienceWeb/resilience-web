@@ -335,12 +335,11 @@ async function populateSeedData() {
     },
   })
 
-  await prisma.ownership.create({
+  await prisma.webAccess.create({
     data: {
       email: userCambridgeOwner.email,
-      webs: {
-        connect: [{ id: newWebCambridge.id }],
-      },
+      webId: newWebCambridge.id,
+      role: 'OWNER',
     },
   })
 }

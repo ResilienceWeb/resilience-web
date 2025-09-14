@@ -42,7 +42,11 @@ export async function GET(request, props) {
   }
 
   if (withAdminInfo) {
-    include.webAccess = true
+    include.webAccess = {
+      include: {
+        user: true,
+      },
+    }
     include.features = true
     include.relations = true
     include.location = true

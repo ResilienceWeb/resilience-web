@@ -1,5 +1,6 @@
 import { WebRole } from '@prisma/client'
 import prisma from '@prisma-rw'
+import { getWebBySlug } from './webRepository'
 
 /**
  * Get a user's access level for a specific web
@@ -142,6 +143,20 @@ export async function isUserOwnerOfWeb(
 }
 
 /**
+ * Check if the current user is an owner of a specific web by slug
+ */
+export async function isCurrentUserOwnerOfWeb(
+  email: string,
+  webSlug: string,
+): Promise<boolean> {
+  const web = await getWebBySlug(webSlug)
+  if (!web) {
+    return false
+  }
+  return await isUserOwnerOfWeb(email, web.id)
+}
+
+/**
  * Check if a user can edit a specific web (OWNER or EDITOR)
  */
 export async function canUserEditWeb(
@@ -205,60 +220,6 @@ export async function getWebEditors(webId: number) {
       web: true,
     },
     orderBy: { createdAt: 'asc' },
-  })
-}
-
-/**
- * Transfer ownership from one user to another
- */
-export async function transferWebOwnership(
-  currentOwnerEmail: string,
-  newOwnerEmail: string,
-  webId: number,
-) {
-  return prisma.$transaction(async (tx) => {
-    // Downgrade current owner to editor
-    await tx.webAccess.update({
-      where: {
-        user_web_access: { email: currentOwnerEmail, webId },
-      },
-      data: { role: 'EDITOR' },
-    })
-
-    // Upgrade new owner (or create if doesn't exist)
-    await tx.webAccess.upsert({
-      where: {
-        user_web_access: { email: newOwnerEmail, webId },
-      },
-      update: { role: 'OWNER' },
-      create: {
-        email: newOwnerEmail,
-        webId,
-        role: 'OWNER',
-      },
-    })
-
-    return { success: true }
-  })
-}
-
-/**
- * Bulk add users to a web with the same role
- */
-export async function bulkAddUsersToWeb(
-  emails: string[],
-  webId: number,
-  role: WebRole,
-) {
-  const data = emails.map((email) => ({
-    email,
-    webId,
-    role,
-  }))
-
-  return prisma.webAccess.createMany({
-    data,
-    skipDuplicates: true,
   })
 }
 
