@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
   // Go to Cambridge web - it has more listings for better testing
-  await page.goto('http://cambridge.localhost:3000')
+  await page.goto('http://cambridge.localhost:4000')
   // Switch to list view to see all listings
   await page.getByRole('tab', { name: 'List' }).click()
 })

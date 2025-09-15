@@ -1,4 +1,4 @@
-import { logger, task, wait } from '@trigger.dev/sdk/v3'
+import { logger, task, wait } from '@trigger.dev/sdk'
 import { REMOTE_URL } from '@helpers/config'
 
 export const unfeatureListingTask = task({
