@@ -36,7 +36,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'next dev --turbopack',
+    command: 'next dev --turbopack -p 4000',
     url: 'http://localhost:4000',
     reuseExistingServer: !process.env.CI,
   },
