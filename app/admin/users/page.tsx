@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, X } from 'lucide-react'
-import { useDebounce } from 'use-debounce'
+import { useDebounceValue } from 'usehooks-ts'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
@@ -28,7 +28,7 @@ const columns = [
 export default function UsersPage() {
   const router = useRouter()
   const [searchInput, setSearchInput] = useState('')
-  const [debouncedSearch] = useDebounce(searchInput, 300)
+  const [debouncedSearch] = useDebounceValue(searchInput, 300)
 
   const {
     data,

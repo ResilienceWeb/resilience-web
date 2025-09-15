@@ -5,8 +5,7 @@ import dynamic from 'next/dynamic'
 import type { Category } from '@prisma/client'
 import '@styles/font-awesome.css'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
-import { useDebounce } from 'use-debounce'
-import useLocalStorage from 'use-local-storage'
+import { useDebounceValue, useLocalStorage } from 'usehooks-ts'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import {
   removeNonAlphaNumeric,
@@ -81,7 +80,7 @@ const Web = ({
   )
 
   const [searchTerm, setSearchTerm] = useState('')
-  const [searchTermValue] = useDebounce(searchTerm, 500)
+  const [searchTermValue] = useDebounceValue(searchTerm, 500)
   const handleSearchTermChange = useCallback(
     (event) => setSearchTerm(event.target.value),
     [],

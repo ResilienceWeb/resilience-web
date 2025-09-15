@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import useLocalStorage from 'use-local-storage'
+import { useLocalStorage } from 'usehooks-ts'
 import useAllowedWebs from '@hooks/webs/useAllowedWebs'
 import { AppContext } from './AppContext'
 
