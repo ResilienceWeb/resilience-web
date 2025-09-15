@@ -329,6 +329,7 @@ async function populateSeedData() {
 
   const userCambridgeOwner = await prisma.user.create({
     data: {
+      role: 'admin',
       email:
         process.env.RW_TEST_USER_EMAIL ??
         'ismail.diner+cambridge-owner@gmail.com',

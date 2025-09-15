@@ -193,13 +193,13 @@ export default function UserPage() {
             </TableRow>
             <TableRow>
               <TableCell className="w-56 font-medium text-muted-foreground">
-                Status
+                Ban status
               </TableCell>
               <TableCell>
                 {user.banned ? (
                   <Badge variant="destructive">Banned</Badge>
                 ) : (
-                  <Badge>Active</Badge>
+                  <Badge>Not banned</Badge>
                 )}
               </TableCell>
             </TableRow>

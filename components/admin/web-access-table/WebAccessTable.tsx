@@ -1,4 +1,5 @@
 import { memo, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useSession } from '@auth-client'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
 import { Badge } from '@components/ui/badge'
@@ -28,9 +29,16 @@ type Props = {
   webAccess: any[]
   isOwner?: boolean
   webId?: number
+  isInAdminSection?: boolean
 }
 
-const WebAccessTable = ({ webAccess, isOwner, webId }: Props) => {
+const WebAccessTable = ({
+  webAccess,
+  isOwner,
+  webId,
+  isInAdminSection = false,
+}: Props) => {
+  const router = useRouter()
   const { data: session } = useSession()
   const [
     isRemoveConfirmationDialogOpenWithUserEmail,
@@ -41,6 +49,14 @@ const WebAccessTable = ({ webAccess, isOwner, webId }: Props) => {
   const handleRemove = () => {
     const { userEmail } = isRemoveConfirmationDialogOpenWithUserEmail
     removeWebAccess({ userEmail, webId })
+  }
+
+  const handleRowClick = (userId: string) => {
+    if (!isInAdminSection) {
+      return
+    }
+
+    router.push(`/admin/users/${userId}`)
   }
 
   return (
@@ -64,7 +80,11 @@ const WebAccessTable = ({ webAccess, isOwner, webId }: Props) => {
                 : `permission-${webAccess.id}`
 
               return (
-                <TableRow key={webAccessKey}>
+                <TableRow
+                  key={webAccessKey}
+                  onClick={() => handleRowClick(webAccess.user.id)}
+                  className={isInAdminSection ? 'cursor-pointer' : undefined}
+                >
                   {columns.map((column, index) => {
                     if (column.accessor === 'email') {
                       const emailAddress = webAccess.email
