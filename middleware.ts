@@ -25,7 +25,7 @@ export default function middleware(req: NextRequest) {
         ? hostname
             .replace('.cambridgeresilienceweb.org.uk', '')
             .replace('.resilienceweb.org.uk', '')
-        : hostname.replace(`.localhost:3000`, '')
+        : hostname.replace(`.localhost:4000`, '')
   }
 
   if (hostname === 'transition') {
@@ -34,7 +34,7 @@ export default function middleware(req: NextRequest) {
 
   if (!pathname.includes('.') && !pathname.startsWith('/api')) {
     if (
-      hostname === 'localhost:3000' ||
+      hostname === 'localhost:4000' ||
       hostname === 'cambridgeresilienceweb.org.uk' ||
       hostname === 'resilienceweb.org.uk' ||
       hostname === 'staging.resilienceweb.org.uk' ||

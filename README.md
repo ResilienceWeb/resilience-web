@@ -11,7 +11,7 @@ Currently online at [https://resilienceweb.org.uk](https://resilienceweb.org.uk)
 - Make sure you have Node.js installed
   - To select the right runtime check the `.nvmrc` file, alternatively if you have node version manager (nvm) installed simply run the `nvm install` command
 - Run the `npm install` command to install the projects dependencies
-- Run the `npm run dev` command to build and run a development version of the app, it will then open in your default browser at http://localhost:3000
+- Run the `npm run dev` command to build and run a development version of the app, it will then open in your default browser at http://localhost:4000
 
 ## Local database setup
 
