@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState, memo } from 'react'
-import { useExtractColors } from 'react-extract-colors'
 import Image from 'next/image'
 import { hasAlpha } from '@helpers/colors'
+import { useGetDominantColor } from '@hooks/application/useGetDominantColor'
 
 type Props = {
   alt: string
@@ -14,7 +14,7 @@ type Props = {
 const ListingImage = ({ alt, src, sizes, isInView, priority }: Props) => {
   const imageRef = useRef<any>(null)
   const [isImageTransparent, setIsImageTransparent] = useState<boolean>(false)
-  const { dominantColor } = useExtractColors(src)
+  const { dominantColor } = useGetDominantColor(src)
 
   useLayoutEffect(() => {
     if (imageRef.current && (isInView === true || isInView === undefined)) {
