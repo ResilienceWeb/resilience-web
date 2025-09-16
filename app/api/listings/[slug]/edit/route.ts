@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
 import deleteImage from '@helpers/deleteImage'
-import { sendEmail } from '@helpers/email'
+import { sendEmail, sendMultipleEmails } from '@helpers/email'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingEditProposedAdminEmail from '@components/emails/ListingEditProposedAdminEmail'
@@ -152,18 +152,15 @@ export async function POST(request) {
     const web = listingEdit.listing.web
 
     const ownerAndEditorEmails = web.webAccess.map((access) => access.email)
-    const emailPromises = ownerAndEditorEmails.map(async (emailAddress) => {
-      await sendEmail({
-        to: emailAddress,
-        subject: `New listing edit proposed for ${web.title} Resilience Web`,
-        email: ListingEditProposedAdminEmail({
-          webTitle: web.title,
-          listingTitle: listingEdit.title || listingEdit.listing.title,
-        }),
-      })
-    })
 
-    await Promise.all(emailPromises)
+    await sendMultipleEmails({
+      toEmails: ownerAndEditorEmails,
+      subject: `New listing edit proposed for ${web.title} Resilience Web`,
+      email: ListingEditProposedAdminEmail({
+        webTitle: web.title,
+        listingTitle: listingEdit.title || listingEdit.listing.title,
+      }),
+    })
 
     return Response.json(
       {

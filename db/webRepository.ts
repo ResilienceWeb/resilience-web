@@ -5,6 +5,18 @@ export const getWebById = async (webId: number) => {
     where: {
       id: webId,
     },
+    include: {
+      webAccess: {
+        select: {
+          email: true,
+        },
+      },
+      _count: {
+        select: {
+          listings: true,
+        },
+      },
+    },
   })
 }
 

@@ -1,7 +1,7 @@
 import { logger, task, wait } from '@trigger.dev/sdk'
 import { REMOTE_URL } from '@helpers/config'
 
-export const unfeatureListingTask = task({
+const unfeatureListingTask = task({
   id: 'unfeature-listing',
   run: async (payload: any, { ctx }) => {
     logger.log('Scheduling job to unfeature listing in 7 days', {
@@ -20,3 +20,5 @@ export const unfeatureListingTask = task({
     }
   },
 })
+
+export default unfeatureListingTask

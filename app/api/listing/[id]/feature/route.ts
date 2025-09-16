@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/nextjs'
-import { unfeatureListingTask } from '@trigger/unfeature-listing'
+import unfeatureListingTask from '@trigger/unfeature-listing'
 import prisma from '@prisma-rw'
 
 export async function PATCH(_request, props) {

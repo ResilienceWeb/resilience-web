@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
+import checkWebInactiveTask from '@trigger/check-web-inactive'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
@@ -189,6 +190,12 @@ export async function POST(request) {
       subject: `New resilience web created 🎉: ${web.title}`,
       email: webCreatedAdminEmailComponent,
     })
+
+    const handle = await checkWebInactiveTask.trigger({
+      email: session?.user.email,
+      webId: web.id,
+    })
+    console.log('[RW]Task is running with handle', handle.id)
 
     return Response.json({
       web,

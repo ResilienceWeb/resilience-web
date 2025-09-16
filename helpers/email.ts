@@ -47,3 +47,15 @@ export const sendEmail = async ({ to, subject, email }) => {
 
   await mailerSend.email.send(emailParams)
 }
+
+export const sendMultipleEmails = async ({ toEmails, subject, email }) => {
+  const emailPromises = toEmails.map(async (emailAddress) => {
+    await sendEmail({
+      to: emailAddress,
+      subject,
+      email,
+    })
+  })
+
+  await Promise.all(emailPromises)
+}

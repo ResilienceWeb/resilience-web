@@ -201,7 +201,7 @@ export async function POST(request) {
         },
       })
 
-      const webCreatedEmailComponent = ListingProposedEmail({
+      const listingProposedEmailComponent = ListingProposedEmail({
         proposedListingTitle: listing.title,
         proposerEmail: proposer?.email,
         webTitle: `${selectedWeb.title}`,
@@ -215,7 +215,7 @@ export async function POST(request) {
         sendEmail({
           to: email,
           subject: `New listing proposed for ${selectedWeb.title} Resilience Web: ${listing.title}`,
-          email: webCreatedEmailComponent,
+          email: listingProposedEmailComponent,
         })
       })
     }

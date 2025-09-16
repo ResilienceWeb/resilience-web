@@ -16,6 +16,7 @@
     "^@prisma-rw$",
     "^@auth$",
     "^@auth-client$",
+    "^@trigger$",
     "^@helpers/(.*)$",
     "^@components/(.*)$",
     "^@db/(.*)$",

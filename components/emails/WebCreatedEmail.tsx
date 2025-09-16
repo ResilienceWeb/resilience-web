@@ -47,27 +47,35 @@ const WebCreatedEmail = ({ webTitle, url }: props) => {
           />
           <Text style={paragraph}>Hello 👋</Text>
           <Text style={paragraph}>
-            Well done for creating Resilience Web {webTitle}! 🥳
+            Well done for creating {webTitle} Resilience Web! 🥳
           </Text>
           <Text style={paragraph}>You are now able to:</Text>
           <Text style={listItem}>• invite others to join your team</Text>
           <Text style={listItem}>• add, edit and remove listings</Text>
           <Text style={listItem}>• manage categories and tags</Text>
-          <Text style={listItem}>• manage your web's settings</Text>
+          <Text style={listItem}>• update your web's settings</Text>
           <Text style={paragraph}>
             If you ever need help, you can always get in touch at{' '}
-            <Link href="mailto@resilienceweb.org.uk">
+            <Link href="mailto:info@resilienceweb.org.uk">
               info@resilienceweb.org.uk
             </Link>{' '}
             or join one of our monthly assemblies on the first Wednesday of the
             month. Book your spot{' '}
-            <Link href="https://www.eventbrite.co.uk/e/resilience-web-monthly-assembly-drop-in-tickets-966287189997">
+            <Link href="https://www.eventbrite.co.uk/e/resilience-web-monthly-assembly-tickets-1220916868219">
               here
             </Link>
+            .
+          </Text>
+          <Text>
+            You can also visit{' '}
+            <Link href="https://knowledgebase.resilienceweb.org.uk/">
+              our knowledgebase
+            </Link>{' '}
+            for more information.
           </Text>
           <Section style={btnContainer}>
             <Button style={button} href={url}>
-              Go to admin dashboard
+              Go to dashboard
             </Button>
           </Section>
           <Text style={paragraph}>
