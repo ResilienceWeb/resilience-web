@@ -1,13 +1,23 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { GraphQLClient } from 'graphql-request'
 import prisma from '@prisma-rw'
 import { getIconUnicode } from '@helpers/icons'
 import Web, { CENTRAL_NODE_ID } from './Web'
+
+const PLACECAL_NEIGHBORHOOD_ID = {
+  norwich: 14629,
+}
 
 export default async function WebPage(props) {
   const params = await props.params
   const { subdomain: webSlug } = params
   const data = await getData({ webSlug })
+
+  let events = []
+  if (PLACECAL_NEIGHBORHOOD_ID[webSlug]) {
+    events = await getEvents(PLACECAL_NEIGHBORHOOD_ID[webSlug])
+  }
 
   if (!data) {
     return notFound()
@@ -18,6 +28,7 @@ export default async function WebPage(props) {
   return (
     <Web
       data={transformedData}
+      events={events}
       features={webData.features}
       webName={webData.title}
       webDescription={webData.description}
@@ -336,6 +347,99 @@ async function getData({ webSlug }): Promise<DataType> {
     transformedData,
     // @ts-ignore
     webData,
+  }
+}
+
+// Types for Events API
+interface EventAddress {
+  streetAddress: string
+  postalCode: string
+  geo: {
+    latitude: number
+    longitude: number
+  }
+}
+
+interface EventOrganizer {
+  id: string
+  name: string
+}
+
+interface Event {
+  id: string
+  name: string
+  summary: string
+  description: string
+  startDate: string
+  endDate: string
+  publisherUrl: string
+  address: EventAddress
+  organizer: EventOrganizer
+}
+
+interface EventsResponse {
+  eventsByFilter: Event[]
+}
+
+export async function getEvents(neighbourhoodId: number): Promise<Event[]> {
+  const today = new Date()
+  const twoWeeksFromNow = new Date()
+  twoWeeksFromNow.setDate(today.getDate() + 14)
+
+  // Format dates as required by the API (YYYY-MM-DD HH:mm)
+  const formatDate = (date: Date): string => {
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day} 00:00`
+  }
+
+  const fromDate = formatDate(today)
+  const toDate = formatDate(twoWeeksFromNow)
+
+  const eventsClient = new GraphQLClient(process.env.PLACECAL_GRAPHQL_URL || '')
+
+  const query = `
+    query GetEventsByFilter($neighbourhoodId: Int!, $fromDate: String!, $toDate: String!) {
+      eventsByFilter(
+        neighbourhoodId: $neighbourhoodId
+        fromDate: $fromDate
+        toDate: $toDate
+      ) {
+        id
+        name
+        summary
+        description
+        startDate
+        endDate
+        publisherUrl
+        address {
+          streetAddress
+          postalCode
+          geo {
+            latitude
+            longitude
+          }
+        }
+        organizer {
+          id
+          name
+        }
+      }
+    }
+  `
+
+  try {
+    const response = await eventsClient.request<EventsResponse>(query, {
+      neighbourhoodId,
+      fromDate,
+      toDate,
+    })
+
+    return response.eventsByFilter
+  } catch (error) {
+    console.error('Error fetching events:', error)
+    return []
   }
 }
 

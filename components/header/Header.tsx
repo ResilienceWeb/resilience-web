@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useMemo } from 'react'
 import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import Select from 'react-select'
 import Image from 'next/legacy/image'
@@ -19,6 +19,7 @@ type HeaderProps = {
   handleSearchTermChange: any
   handleTagSelection: any
   handleClearSearchTermValue: any
+  hasEvents: boolean
   isGeoMappingEnabled: boolean
   isMobile: boolean
   isWebMode: boolean
@@ -37,6 +38,7 @@ const Header = ({
   handleSearchTermChange,
   handleTagSelection,
   handleClearSearchTermValue,
+  hasEvents,
   isGeoMappingEnabled,
   isMobile,
   isWebMode,
@@ -47,16 +49,26 @@ const Header = ({
 }: HeaderProps) => {
   const [currentTab, setCurrentTab] = useState(activeTab)
 
-  useEffect(() => {
-    setCurrentTab(activeTab)
-  }, [activeTab])
-
   const handleTabChange = (value) => {
     setCurrentTab(value)
     if (onTabChange) {
       onTabChange(value)
     }
   }
+
+  const tabCount = useMemo(() => {
+    let tabCount = 2
+
+    if (isGeoMappingEnabled) {
+      tabCount += 1
+    }
+
+    if (hasEvents) {
+      tabCount += 1
+    }
+
+    return tabCount
+  }, [hasEvents, isGeoMappingEnabled])
 
   if (isMobile) {
     return (
@@ -140,39 +152,47 @@ const Header = ({
                   value={selectedTags}
                 />
               )}
-              {isGeoMappingEnabled && (
-                <div className="w-full pb-2">
-                  <Tabs
-                    defaultValue="list"
-                    value={currentTab}
-                    onValueChange={handleTabChange}
-                    className="w-full"
+              <div className="w-full pb-2">
+                <Tabs
+                  defaultValue="list"
+                  value={currentTab}
+                  onValueChange={handleTabChange}
+                  className="w-full"
+                >
+                  <TabsList
+                    className={cn('grid', 'w-full', `grid-cols-${tabCount}`)}
                   >
-                    <TabsList
-                      className={cn(
-                        'grid',
-                        'w-full',
-                        isGeoMappingEnabled ? 'grid-cols-2' : 'grid-cols-1',
-                      )}
+                    <TabsTrigger
+                      value="web"
+                      className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
                     >
+                      Web
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="list"
+                      className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                    >
+                      List
+                    </TabsTrigger>
+                    {isGeoMappingEnabled && (
                       <TabsTrigger
-                        value="list"
+                        value="map"
                         className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
                       >
-                        List
+                        Map
                       </TabsTrigger>
-                      {isGeoMappingEnabled && (
-                        <TabsTrigger
-                          value="map"
-                          className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
-                        >
-                          Map
-                        </TabsTrigger>
-                      )}
-                    </TabsList>
-                  </Tabs>
-                </div>
-              )}
+                    )}
+                    {hasEvents && (
+                      <TabsTrigger
+                        value="events"
+                        className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                      >
+                        Events
+                      </TabsTrigger>
+                    )}
+                  </TabsList>
+                </Tabs>
+              </div>
             </div>
           </div>
         </div>
@@ -199,18 +219,12 @@ const Header = ({
         </div>
         <div className="w-full px-4 pb-2">
           <Tabs
-            defaultValue="list"
+            defaultValue="web"
             value={currentTab}
             onValueChange={handleTabChange}
             className="w-full"
           >
-            <TabsList
-              className={cn(
-                'grid',
-                'w-full',
-                isGeoMappingEnabled ? 'grid-cols-3' : 'grid-cols-2',
-              )}
-            >
+            <TabsList className={cn('grid', 'w-full', `grid-cols-${tabCount}`)}>
               <TabsTrigger
                 value="web"
                 className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
@@ -229,6 +243,14 @@ const Header = ({
                   className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
                 >
                   Map
+                </TabsTrigger>
+              )}
+              {hasEvents && (
+                <TabsTrigger
+                  value="events"
+                  className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                >
+                  Events
                 </TabsTrigger>
               )}
             </TabsList>
