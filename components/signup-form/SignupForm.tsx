@@ -1,7 +1,9 @@
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useReCaptcha } from 'next-recaptcha-v3'
 import { z } from 'zod'
+import { Button } from '@components/ui/button'
 import {
   Form,
   FormControl,
@@ -10,8 +12,6 @@ import {
   FormMessage,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
-import { useReCaptcha } from 'next-recaptcha-v3'
-import { Button } from '@components/ui/button'
 
 const FormSchema = z.object({
   email: z.string().min(2, {
@@ -93,7 +93,7 @@ const SignupForm = () => {
           Submit
         </Button>
       </form>
-      <p className="google-recaptcha-text mt-1 text-[10px]!">
+      <p className="google-recaptcha-text mt-1 text-[10px] max-w-[350px]">
         This site is protected by reCAPTCHA and the Google{' '}
         <a href="https://policies.google.com/privacy">Privacy Policy</a> and{' '}
         <a href="https://policies.google.com/terms">Terms of Service</a> apply.
