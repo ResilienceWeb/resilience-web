@@ -77,9 +77,10 @@ const Web = ({
     'tags',
     parseAsArrayOf(parseAsString).withDefault([]),
   )
+  const [activeTab, setActiveTab] = useLocalStorage('activeTab', undefined)
   const [viewParam, setViewParam] = useQueryState(
     'view',
-    parseAsString.withDefault(defaultTab),
+    parseAsString.withDefault(activeTab ?? defaultTab),
   )
 
   const [searchTerm, setSearchTerm] = useState('')
@@ -113,7 +114,6 @@ const Web = ({
   }, [tags, tagsParam])
 
   const [selectedId, setSelectedId] = useState()
-  const [activeTab, setActiveTab] = useLocalStorage('activeTab', viewParam)
 
   useEffect(() => {
     if (viewParam !== activeTab) {
