@@ -14,6 +14,7 @@ import {
   htmlTitle,
 } from '@helpers/utils'
 import AlertBanner from '@components/alert-banner'
+import Events from '@components/events'
 import Header from '@components/header'
 import { License, LicenseTransition } from '@components/license'
 import MainList from '@components/main-list'
@@ -42,6 +43,7 @@ type Props = {
     nodes: ListingNodeType[]
     edges: any[]
   }
+  events?: any[]
   features: any
   webName: string
   webDescription?: string
@@ -52,6 +54,7 @@ type Props = {
 
 const Web = ({
   data,
+  events,
   features,
   webName,
   webDescription = null,
@@ -74,9 +77,10 @@ const Web = ({
     'tags',
     parseAsArrayOf(parseAsString).withDefault([]),
   )
+  const [activeTab, setActiveTab] = useLocalStorage('activeTab', undefined)
   const [viewParam, setViewParam] = useQueryState(
     'view',
-    parseAsString.withDefault(defaultTab),
+    parseAsString.withDefault(activeTab ?? defaultTab),
   )
 
   const [searchTerm, setSearchTerm] = useState('')
@@ -110,7 +114,6 @@ const Web = ({
   }, [tags, tagsParam])
 
   const [selectedId, setSelectedId] = useState()
-  const [activeTab, setActiveTab] = useLocalStorage('activeTab', viewParam)
 
   useEffect(() => {
     if (viewParam !== activeTab) {
@@ -325,6 +328,7 @@ const Web = ({
           handleClearSearchTermValue={handleClearSearchTermValue}
           handleSearchTermChange={handleSearchTermChange}
           handleTagSelection={handleTagSelection}
+          hasEvents={events?.length > 0}
           isGeoMappingEnabled={isGeoMappingEnabled}
           isMobile={isMobile}
           isWebMode={false}
@@ -344,6 +348,7 @@ const Web = ({
 
         {activeTab === 'list' && <MainList filteredItems={filteredItems} />}
         {activeTab === 'map' && <ListingsMap items={filteredItems} />}
+        {activeTab === 'events' && <Events items={events} />}
 
         {isMobile && (
           <MobileOptionsSheet
@@ -354,7 +359,7 @@ const Web = ({
         )}
 
         {isTransitionMode && <LicenseTransition />}
-        {!isTransitionMode && <License />}
+        {!isTransitionMode && activeTab !== 'events' && <License />}
       </div>
     </>
   )
