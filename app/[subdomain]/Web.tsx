@@ -43,7 +43,7 @@ type Props = {
     nodes: ListingNodeType[]
     edges: any[]
   }
-  events: any[]
+  events?: any[]
   features: any
   webName: string
   webDescription?: string
@@ -328,7 +328,7 @@ const Web = ({
           handleClearSearchTermValue={handleClearSearchTermValue}
           handleSearchTermChange={handleSearchTermChange}
           handleTagSelection={handleTagSelection}
-          hasEvents={events.length > 0}
+          hasEvents={events?.length > 0}
           isGeoMappingEnabled={isGeoMappingEnabled}
           isMobile={isMobile}
           isWebMode={false}
@@ -359,7 +359,7 @@ const Web = ({
         )}
 
         {isTransitionMode && <LicenseTransition />}
-        {!isTransitionMode && <License />}
+        {!isTransitionMode && activeTab !== 'events' && <License />}
       </div>
     </>
   )

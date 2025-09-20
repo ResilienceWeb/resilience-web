@@ -3,6 +3,7 @@
 import { useMemo, memo } from 'react'
 import Link from 'next/link'
 import { Clock, MapPin, Timer, Globe } from 'lucide-react'
+import Footer from '@components/footer'
 import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 
 type EventAddress = {
@@ -45,8 +46,7 @@ function formatDateHeading(date: Date) {
 
 function formatTime(date: Date) {
   return date.toLocaleTimeString(undefined, {
-    hour: 'numeric',
-    minute: '2-digit',
+    timeStyle: 'short',
   })
 }
 
@@ -59,6 +59,16 @@ function formatTimeRange(start: Date, end: Date) {
 function formatDuration(start: Date, end: Date) {
   const ms = Math.max(0, end.getTime() - start.getTime())
   const mins = Math.round(ms / 60000)
+
+  if (mins >= 60 * 24) {
+    const days = Math.floor(mins / (60 * 24))
+    const remMins = mins % (60 * 24)
+    const remHours = Math.floor(remMins / 60)
+    if (remHours > 0) {
+      return `${days} day${days === 1 ? '' : 's'} ${remHours}h`
+    }
+    return `${days} day${days === 1 ? '' : 's'}`
+  }
   if (mins < 60) return `${mins} min${mins === 1 ? '' : 's'}`
   const hours = Math.floor(mins / 60)
   const rem = mins % 60
@@ -113,90 +123,106 @@ const Events = ({ items }: Props) => {
   }, [items])
 
   return (
-    <div className="max-w-4xl mx-auto px-4">
-      <p className="text-gray-600">
-        These events are provided by{' '}
-        <a
-          href={`https://${selectedWebSlug}.placecal.org`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          PlaceCal Norwich
-        </a>
-      </p>
+    <>
+      <div className="max-w-4xl mx-auto px-4">
+        <p className="text-gray-600 mt-1">
+          These events are provided by our friends at{' '}
+          <a
+            href={`https://${selectedWebSlug}.placecal.org`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            PlaceCal Norwich
+          </a>
+        </p>
 
-      {groups.length === 0 && (
-        <div className="text-center text-neutral-500">No upcoming events</div>
-      )}
+        {groups.length === 0 && (
+          <div className="text-center text-neutral-500">No upcoming events</div>
+        )}
 
-      {groups.map(({ key, date, events }) => (
-        <div key={key} className="my-6">
-          <div className="flex items-end justify-between">
-            <h2 className="text-2xl md:text-3xl font-semibold text-neutral-800">
-              {formatDateHeading(date)}
-            </h2>
-          </div>
+        {groups.map(({ key, date, events }) => (
+          <div key={key} className="my-6">
+            <div className="flex items-end justify-between">
+              <h2 className="text-2xl md:text-3xl font-semibold text-neutral-800">
+                {formatDateHeading(date)}
+              </h2>
+            </div>
 
-          <ul className="mt-4 flex flex-col gap-4">
-            {events.map((ev) => {
-              const start = new Date(ev.startDate)
-              const end = new Date(ev.endDate)
-              const onlineOrAddress = getLocationLabel(ev.address)
-              const isOnline = onlineOrAddress === 'Online'
-              return (
-                <Link
-                  href={`https://${selectedWebSlug}.placecal.org/events/${ev.id}`}
-                  key={ev.id}
-                  target="_blank"
-                  passHref
-                >
-                  <li className="rounded-xl border border-neutral-200 bg-white p-4 md:p-5 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <div className="text-lg md:text-xl font-semibold text-neutral-800">
-                          {ev.name}
-                        </div>
-
-                        <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-neutral-700">
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4 text-emerald-600" />
-                            <span>{formatTimeRange(start, end)}</span>
+            <ul className="mt-4 flex flex-col gap-4">
+              {events.map((ev) => {
+                const start = new Date(ev.startDate)
+                const end = new Date(ev.endDate)
+                const onlineOrAddress = getLocationLabel(ev.address)
+                const isOnline = onlineOrAddress === 'Online'
+                return (
+                  <Link
+                    href={`https://${selectedWebSlug}.placecal.org/events/${ev.id}`}
+                    key={ev.id}
+                    target="_blank"
+                    passHref
+                  >
+                    <li className="rounded-xl border border-neutral-200 bg-white p-4 md:p-5 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <div className="text-lg md:text-xl font-semibold text-neutral-800">
+                            {ev.name}
                           </div>
 
-                          <div className="flex items-center gap-2">
-                            <Timer className="h-4 w-4 text-emerald-600" />
-                            <span>{formatDuration(start, end)}</span>
+                          <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-neutral-700">
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-4 w-4 text-emerald-600" />
+                              <span>{formatTimeRange(start, end)}</span>
+                            </div>
+
+                            <div className="flex items-center gap-1">
+                              <Timer className="h-4 w-4 text-emerald-600" />
+                              <span>{formatDuration(start, end)}</span>
+                            </div>
                           </div>
 
-                          <div className="flex items-center gap-2">
-                            {isOnline ? (
-                              <Globe className="h-4 w-4 text-emerald-600" />
-                            ) : (
-                              <MapPin className="h-4 w-4 text-emerald-600" />
+                          <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-neutral-700">
+                            <div className="flex items-center gap-2">
+                              {isOnline ? (
+                                <Globe className="h-4 w-4 shrink-0 text-emerald-600" />
+                              ) : (
+                                <MapPin className="h-4 w-4 shrink-0 text-emerald-600" />
+                              )}
+                              <span className="max-w-[28rem]">
+                                {onlineOrAddress}
+                              </span>
+                            </div>
+
+                            {ev.organizer?.name && (
+                              <div className="flex items-center gap-2">
+                                <span className="inline-block rounded-full bg-neutral-100 text-neutral-700 text-xs font-semibold px-3 py-1">
+                                  {ev.organizer.name}
+                                </span>
+                              </div>
                             )}
-                            <span className="truncate max-w-[28rem]">
-                              {onlineOrAddress}
-                            </span>
                           </div>
                         </div>
                       </div>
+                    </li>
+                  </Link>
+                )
+              })}
+            </ul>
+          </div>
+        ))}
 
-                      {ev.organizer?.name && (
-                        <div className="shrink-0">
-                          <span className="inline-block rounded-full bg-neutral-100 text-neutral-700 text-xs font-semibold px-3 py-1">
-                            {ev.organizer.name}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </li>
-                </Link>
-              )
-            })}
-          </ul>
-        </div>
-      ))}
-    </div>
+        <p className="text-gray-600 mt-1">
+          These events are provided by our friends at{' '}
+          <a
+            href={`https://${selectedWebSlug}.placecal.org`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            PlaceCal Norwich
+          </a>
+        </p>
+      </div>
+      <Footer hideBorder />
+    </>
   )
 }
 

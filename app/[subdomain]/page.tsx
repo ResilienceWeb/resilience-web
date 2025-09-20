@@ -350,7 +350,6 @@ async function getData({ webSlug }): Promise<DataType> {
   }
 }
 
-// Types for Events API
 interface EventAddress {
   streetAddress: string
   postalCode: string
@@ -381,7 +380,7 @@ interface EventsResponse {
   eventsByFilter: Event[]
 }
 
-export async function getEvents(neighbourhoodId: number): Promise<Event[]> {
+async function getEvents(neighbourhoodId: number): Promise<Event[]> {
   const today = new Date()
   const twoWeeksFromNow = new Date()
   twoWeeksFromNow.setDate(today.getDate() + 14)
