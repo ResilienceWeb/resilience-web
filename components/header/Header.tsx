@@ -56,18 +56,10 @@ const Header = ({
     }
   }
 
-  const tabCount = useMemo(() => {
-    let tabCount = 2
-
-    if (isGeoMappingEnabled) {
-      tabCount += 1
-    }
-
-    if (hasEvents) {
-      tabCount += 1
-    }
-
-    return tabCount
+  const colsClass = useMemo(() => {
+    if (hasEvents && isGeoMappingEnabled) return 'grid-cols-4'
+    if (hasEvents || isGeoMappingEnabled) return 'grid-cols-3'
+    return 'grid-cols-2'
   }, [hasEvents, isGeoMappingEnabled])
 
   if (isMobile) {
@@ -159,9 +151,7 @@ const Header = ({
                   onValueChange={handleTabChange}
                   className="w-full"
                 >
-                  <TabsList
-                    className={cn('grid', 'w-full', `grid-cols-${tabCount}`)}
-                  >
+                  <TabsList className={cn('grid w-full', colsClass)}>
                     <TabsTrigger
                       value="web"
                       className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
@@ -224,7 +214,7 @@ const Header = ({
             onValueChange={handleTabChange}
             className="w-full"
           >
-            <TabsList className={cn('grid', 'w-full', `grid-cols-${tabCount}`)}>
+            <TabsList className={cn('grid w-full', colsClass)}>
               <TabsTrigger
                 value="web"
                 className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
