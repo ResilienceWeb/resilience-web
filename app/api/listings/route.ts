@@ -5,7 +5,7 @@ import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { sendEmail } from '@helpers/email'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
-import ListingProposedEmail from '@components/emails/ListingProposedEmail'
+import ListingProposedAdminEmail from '@components/emails/ListingProposedAdminEmail'
 
 export async function GET(request) {
   const searchParams = request.nextUrl.searchParams
@@ -201,10 +201,11 @@ export async function POST(request) {
         },
       })
 
-      const listingProposedEmailComponent = ListingProposedEmail({
+      const listingProposedEmailComponent = ListingProposedAdminEmail({
         proposedListingTitle: listing.title,
         proposerEmail: proposer?.email,
         webTitle: `${selectedWeb.title}`,
+        listingId: listing.id,
         url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin`,
       })
 

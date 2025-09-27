@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import {
   Body,
   Container,
@@ -23,13 +24,15 @@ type props = {
   proposedListingTitle: string
   proposerEmail: string
   webTitle: string
+  listingId: number
   url: string
 }
 
-const ListingProposedEmail = ({
+const ListingProposedAdminEmail = ({
   proposedListingTitle,
   proposerEmail,
   webTitle,
+  listingId,
   url,
 }: props) => {
   return (
@@ -57,6 +60,14 @@ const ListingProposedEmail = ({
           <Text style={paragraph}>Here are the details:</Text>
           <Text style={listItem}>Listing title: {proposedListingTitle}</Text>
           <Text style={listItem}>Proposed by: {proposerEmail}</Text>
+
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Text style={{ fontSize: '16px' }}>Status:</Text>
+            <img
+              src={`https://resilienceweb.org.uk/api/listing/${listingId}/status-badge`}
+              alt="Listing approval status"
+            />
+          </div>
           <Hr style={hr} />
           <Text style={footer}>Resilience Web CIC</Text>
         </Container>
@@ -65,4 +76,4 @@ const ListingProposedEmail = ({
   )
 }
 
-export default ListingProposedEmail
+export default ListingProposedAdminEmail
