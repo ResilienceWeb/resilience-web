@@ -55,57 +55,87 @@ export default async function TransitionPage() {
 }
 
 async function getData() {
-  const url = 'https://transitiongroups.org/wp-json/cds/v1/initiatives?country=GB&per_page=10000'
-  
+  const url =
+    'https://transitiongroups.org/wp-json/cds/v1/initiatives?country=GB&per_page=10000'
+
   try {
     // Primary: serve from cache and revalidate in background
     // If upstream fails during revalidation, previous cached data is kept
     const response = await fetch(url, {
       next: { revalidate: 86400, tags: ['transition-data'] },
+      signal: AbortSignal.timeout(10000), // 10 second timeout
+      headers: {
+        'User-Agent': 'ResilienceWeb/1.0',
+        Accept: 'application/json',
+      },
     })
     if (!response.ok) throw new Error(`Upstream responded ${response.status}`)
     const { body: data } = await response.json()
+
+    // Validate data structure
+    if (!Array.isArray(data)) {
+      throw new Error('Invalid data format received')
+    }
+
     return transformData(data)
   } catch (err) {
-    console.error('[RW] Transition fetch failed, attempting cached fallback', err)
-    
+    console.error(
+      '[RW] Transition fetch failed, attempting cached fallback',
+      err,
+    )
+
     // Fallback 1: try to serve any existing cached payload
     try {
-      const cachedResponse = await fetch(url, { cache: 'force-cache' })
+      const cachedResponse = await fetch(url, {
+        cache: 'force-cache',
+        signal: AbortSignal.timeout(5000), // Shorter timeout for cache attempt
+      })
       if (cachedResponse.ok) {
         const { body: cached } = await cachedResponse.json()
-        return transformData(cached)
+        if (Array.isArray(cached)) {
+          return transformData(cached)
+        }
       }
     } catch (_) {
       // Ignore cache errors and proceed to minimal fallback
     }
-    
+
     // Fallback 2: minimal safe structure so builds never fail
-    return {
-      nodes: [
-        {
-          id: CENTRAL_NODE_ID,
-          label: 'Transition UK',
-          color: '#fcba03',
-          group: 'central-node',
-          font: { size: 56 },
-          fixed: { x: true, y: true },
-          shape: 'box',
-          shapeProperties: { borderRadius: 3 },
-          margin: 10,
-          borderWidthSelected: 2,
-          widthConstraint: false,
-        },
-      ],
-      edges: [],
-      categories: [],
-      tags: [],
-      features: [{ feature: FEATURES.showMap, enabled: true }],
-    }
+    console.warn('[RW] Using minimal fallback structure for Transition page')
+    return getMinimalFallback()
+  }
+}
+
+function getMinimalFallback() {
+  return {
+    nodes: [
+      {
+        id: CENTRAL_NODE_ID,
+        label: 'Transition UK',
+        color: '#fcba03',
+        group: 'central-node',
+        font: { size: 56 },
+        fixed: { x: true, y: true },
+        shape: 'box',
+        shapeProperties: { borderRadius: 3 },
+        margin: 10,
+        borderWidthSelected: 2,
+        widthConstraint: false,
+      },
+    ],
+    edges: [],
+    categories: [],
+    tags: [],
+    features: [{ feature: FEATURES.showMap, enabled: true }],
   }
 }
 
 function transformData(data) {
+  // Validate input data
+  if (!Array.isArray(data) || data.length === 0) {
+    console.warn('[RW] Empty or invalid data provided to transformData')
+    return getMinimalFallback()
+  }
 
   const nodes = []
   const edges = []
@@ -113,6 +143,11 @@ function transformData(data) {
   const tags = []
 
   data.forEach((item) => {
+    // Skip items with missing required fields
+    if (!item || !item.title || !item.countries) {
+      console.warn('[RW] Skipping invalid item:', item?.id || 'unknown')
+      return
+    }
     const categoryLabel = item.countries
       .replace(/&amp;/g, '&')
       .replace(' | United Kingdom', '')
