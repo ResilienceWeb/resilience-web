@@ -460,4 +460,4 @@ function drawCirclePoints(points, radius, center) {
 }
 
 export const dynamicParams = true
-export const revalidate = 300
+export const revalidate = 3600

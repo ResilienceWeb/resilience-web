@@ -1,8 +1,8 @@
+import { notFound } from 'next/navigation'
 import { GraphQLClient } from 'graphql-request'
 import { remark } from 'remark'
 import html from 'remark-html'
 import NewsItem from './NewsItem'
-import { notFound } from 'next/navigation'
 
 export default async function NewsItemPage(props) {
   const params = await props.params
@@ -95,4 +95,4 @@ async function getNewsItem({ slug }): Promise<any> {
 }
 
 export const dynamicParams = true
-export const revalidate = 600
+export const revalidate = 3600
