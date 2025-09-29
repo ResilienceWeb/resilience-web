@@ -55,11 +55,57 @@ export default async function TransitionPage() {
 }
 
 async function getData() {
-  const response = await fetch(
-    'https://transitiongroups.org/wp-json/cds/v1/initiatives?country=GB&per_page=10000',
-    { cache: 'force-cache' },
-  )
-  const { body: data } = await response.json()
+  const url = 'https://transitiongroups.org/wp-json/cds/v1/initiatives?country=GB&per_page=10000'
+  
+  try {
+    // Primary: serve from cache and revalidate in background
+    // If upstream fails during revalidation, previous cached data is kept
+    const response = await fetch(url, {
+      next: { revalidate: 86400, tags: ['transition-data'] },
+    })
+    if (!response.ok) throw new Error(`Upstream responded ${response.status}`)
+    const { body: data } = await response.json()
+    return transformData(data)
+  } catch (err) {
+    console.error('[RW] Transition fetch failed, attempting cached fallback', err)
+    
+    // Fallback 1: try to serve any existing cached payload
+    try {
+      const cachedResponse = await fetch(url, { cache: 'force-cache' })
+      if (cachedResponse.ok) {
+        const { body: cached } = await cachedResponse.json()
+        return transformData(cached)
+      }
+    } catch (_) {
+      // Ignore cache errors and proceed to minimal fallback
+    }
+    
+    // Fallback 2: minimal safe structure so builds never fail
+    return {
+      nodes: [
+        {
+          id: CENTRAL_NODE_ID,
+          label: 'Transition UK',
+          color: '#fcba03',
+          group: 'central-node',
+          font: { size: 56 },
+          fixed: { x: true, y: true },
+          shape: 'box',
+          shapeProperties: { borderRadius: 3 },
+          margin: 10,
+          borderWidthSelected: 2,
+          widthConstraint: false,
+        },
+      ],
+      edges: [],
+      categories: [],
+      tags: [],
+      features: [{ feature: FEATURES.showMap, enabled: true }],
+    }
+  }
+}
+
+function transformData(data) {
 
   const nodes = []
   const edges = []
@@ -224,3 +270,5 @@ async function getData() {
 
   return structuredData
 }
+
+export const revalidate = 86400
