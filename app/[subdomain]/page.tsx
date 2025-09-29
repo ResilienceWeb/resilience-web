@@ -116,7 +116,11 @@ async function getData({ webSlug }): Promise<DataType> {
         slug: webSlug,
       },
     },
-    include: {
+    select: {
+      id: true,
+      label: true,
+      color: true,
+      icon: true,
       listings: {
         where: {
           inactive: false,
@@ -128,7 +132,12 @@ async function getData({ webSlug }): Promise<DataType> {
           },
         ],
         include: {
-          socials: true,
+          socials: {
+            select: {
+              platform: true,
+              url: true,
+            },
+          },
           location: {
             select: {
               latitude: true,
@@ -198,7 +207,6 @@ async function getData({ webSlug }): Promise<DataType> {
         title,
         description,
         image,
-        website,
         socials,
         seekingVolunteers,
         location,
@@ -207,16 +215,13 @@ async function getData({ webSlug }): Promise<DataType> {
         tags,
         relations,
       }) => {
-        transformedData.nodes.push({
+        const transformedNode: any = {
           id: `listing-${listingId}`,
           title,
           description,
           image: image ?? '',
-          website,
           location,
           socials,
-          seekingVolunteers,
-          featured,
           category: {
             color: `#${category.color}`,
             label: category.label,
@@ -227,16 +232,24 @@ async function getData({ webSlug }): Promise<DataType> {
           // below are for vis-network node styling and data
           label: title,
           color: `#${category.color}`,
-          icon: {
+          icon: undefined,
+        }
+
+        if (category.icon !== 'default') {
+          transformedNode.icon = {
             face: '"Font Awesome 5 Free"',
-            code:
-              category.icon !== 'default'
-                ? getIconUnicode(category.icon)
-                : undefined,
+            code: getIconUnicode(category.icon),
             color: 'white',
             weight: 700,
-          },
-        })
+          }
+        }
+        if (seekingVolunteers) {
+          transformedNode.seekingVolunteers = true
+        }
+        if (featured) {
+          transformedNode.featured = true
+        }
+        transformedData.nodes.push(transformedNode)
 
         relations.map((relation) => {
           const newEdge = {
@@ -311,7 +324,6 @@ async function getData({ webSlug }): Promise<DataType> {
       to: categoryId,
       width: 2,
       selectedWidth: 3,
-      // length: categoriesCount * 75,
       smooth: {
         enabled: true,
         type: 'continuous',
