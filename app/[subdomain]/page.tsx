@@ -12,16 +12,20 @@ const PLACECAL_NEIGHBORHOOD_ID = {
 export default async function WebPage(props) {
   const params = await props.params
   const { subdomain: webSlug } = params
-  const data = await getData({ webSlug })
+  const rawData = await getData({ webSlug })
 
   let events = []
   if (PLACECAL_NEIGHBORHOOD_ID[webSlug]) {
     events = await getEvents(PLACECAL_NEIGHBORHOOD_ID[webSlug])
   }
 
-  if (!data) {
+  if (!rawData) {
     return notFound()
   }
+
+  const data = (rawData as any).compressed
+    ? JSON.parse(Buffer.from((rawData as any).data, 'base64').toString())
+    : rawData
 
   const { transformedData, webData } = data
 
@@ -73,21 +77,35 @@ export async function generateStaticParams() {
   return subdomains
 }
 
-type DataType = {
-  transformedData: {
-    nodes: ListingNodeType[]
-    edges: any[]
-  }
-  webData: {
-    title: string
-    description: string
-    published: boolean
-    image: string
-    slug: string
-    features: Record<string, any>
-    contactEmail: string
-  }
-}
+type DataType =
+  | {
+      transformedData: {
+        nodes: ListingNodeType[]
+        edges: any[]
+      }
+      webData: {
+        title: string
+        description: string
+        published: boolean
+        image: string
+        slug: string
+        features: Record<string, any>
+        contactEmail: string
+      }
+    }
+  | {
+      compressed: true
+      data: string
+      webData: {
+        title: string
+        description: string
+        published: boolean
+        image: string
+        slug: string
+        features: Record<string, any>
+        contactEmail: string
+      }
+    }
 
 async function getData({ webSlug }): Promise<DataType> {
   const webData = await prisma.web.findUnique({
@@ -131,7 +149,14 @@ async function getData({ webSlug }): Promise<DataType> {
             id: 'asc',
           },
         ],
-        include: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          image: true,
+          slug: true,
+          featured: true,
+          seekingVolunteers: true,
           socials: {
             select: {
               platform: true,
@@ -153,7 +178,11 @@ async function getData({ webSlug }): Promise<DataType> {
               icon: true,
             },
           },
-          web: true,
+          web: {
+            select: {
+              slug: true,
+            },
+          },
           tags: {
             select: {
               id: true,
@@ -161,7 +190,8 @@ async function getData({ webSlug }): Promise<DataType> {
             },
           },
           relations: {
-            include: {
+            select: {
+              id: true,
               category: {
                 select: {
                   id: true,
@@ -218,7 +248,10 @@ async function getData({ webSlug }): Promise<DataType> {
         const transformedNode: any = {
           id: `listing-${listingId}`,
           title,
-          description,
+          description:
+            description?.length > 300
+              ? description.substring(0, 300) + '...'
+              : description,
           image: image ?? '',
           location,
           socials,
@@ -355,9 +388,16 @@ async function getData({ webSlug }): Promise<DataType> {
     })
   }
 
-  return {
+  const result = {
     transformedData,
     // @ts-ignore
+    webData,
+  }
+
+  const compressed = Buffer.from(JSON.stringify(result)).toString('base64')
+  return {
+    compressed: true,
+    data: compressed,
     webData,
   }
 }
