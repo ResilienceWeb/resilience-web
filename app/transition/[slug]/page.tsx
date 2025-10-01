@@ -48,8 +48,9 @@ export async function generateMetadata(props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const url = 'https://transitiongroups.org/wp-json/cds/v1/initiatives?country=GB&per_page=10000'
-  
+  const url =
+    'https://maps.transitionnetwork.org/wp-json/cds/v1/initiatives?country=GB&per_page=10000'
+
   try {
     const response = await fetch(url, { cache: 'force-cache' })
     if (!response.ok) throw new Error(`Upstream responded ${response.status}`)
@@ -60,7 +61,7 @@ export async function generateStaticParams() {
     }))
   } catch (err) {
     console.error('[RW] Transition generateStaticParams fetch failed', err)
-    
+
     // Return empty array to prevent build failure
     // This means no static paths will be generated, but pages can still be rendered on-demand
     return []
@@ -68,8 +69,9 @@ export async function generateStaticParams() {
 }
 
 async function getListing({ listingSlug }): Promise<any> {
-  const url = 'https://transitiongroups.org/wp-json/cds/v1/initiatives?country=GB&per_page=10000'
-  
+  const url =
+    'https://maps.transitionnetwork.org/wp-json/cds/v1/initiatives?country=GB&per_page=10000'
+
   try {
     // Primary: serve from cache and revalidate in background
     // If upstream fails during revalidation, previous cached data is kept
@@ -80,8 +82,11 @@ async function getListing({ listingSlug }): Promise<any> {
     const { body: data } = await response.json()
     return transformAndFindListing(data, listingSlug)
   } catch (err) {
-    console.error('[RW] Transition getListing fetch failed, attempting cached fallback', err)
-    
+    console.error(
+      '[RW] Transition getListing fetch failed, attempting cached fallback',
+      err,
+    )
+
     // Fallback: try to serve any existing cached payload
     try {
       const cachedResponse = await fetch(url, { cache: 'force-cache' })
@@ -92,7 +97,7 @@ async function getListing({ listingSlug }): Promise<any> {
     } catch (_) {
       // Ignore cache errors and return null
     }
-    
+
     // Final fallback: return null to prevent build failure
     console.log(`[RW] All fallbacks failed for listing slug ${listingSlug}`)
     return null

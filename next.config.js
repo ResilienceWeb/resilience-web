@@ -44,10 +44,6 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'transitiongroups.org'
-      },
-      {
-        protocol: 'https',
         hostname: 'maps.transitionnetwork.org'
       },
       {

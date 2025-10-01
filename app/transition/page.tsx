@@ -55,8 +55,9 @@ export default async function TransitionPage() {
 }
 
 async function getData() {
-  const url = 'https://transitiongroups.org/wp-json/cds/v1/initiatives?country=GB&per_page=10000'
-  
+  const url =
+    'https://maps.transitionnetwork.org/wp-json/cds/v1/initiatives?country=GB&per_page=10000'
+
   try {
     // Primary: serve from cache and revalidate in background
     // If upstream fails during revalidation, previous cached data is kept
@@ -67,8 +68,11 @@ async function getData() {
     const { body: data } = await response.json()
     return transformData(data)
   } catch (err) {
-    console.error('[RW] Transition fetch failed, attempting cached fallback', err)
-    
+    console.error(
+      '[RW] Transition fetch failed, attempting cached fallback',
+      err,
+    )
+
     // Fallback 1: try to serve any existing cached payload
     try {
       const cachedResponse = await fetch(url, { cache: 'force-cache' })
@@ -79,7 +83,7 @@ async function getData() {
     } catch (_) {
       // Ignore cache errors and proceed to minimal fallback
     }
-    
+
     // Fallback 2: minimal safe structure so builds never fail
     return {
       nodes: [
@@ -106,7 +110,6 @@ async function getData() {
 }
 
 function transformData(data) {
-
   const nodes = []
   const edges = []
   const categories = []
