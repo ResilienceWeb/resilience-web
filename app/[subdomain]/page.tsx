@@ -3,8 +3,9 @@ import { notFound } from 'next/navigation'
 import { GraphQLClient } from 'graphql-request'
 import prisma from '@prisma-rw'
 import { getIconUnicode } from '@helpers/icons'
-import Web, { CENTRAL_NODE_ID } from './Web'
+import Web from './Web'
 
+const CENTRAL_NODE_ID = 999
 const PLACECAL_NEIGHBORHOOD_ID = {
   norwich: 14629,
 }
@@ -248,10 +249,7 @@ async function getData({ webSlug }): Promise<DataType> {
         const transformedNode: any = {
           id: `listing-${listingId}`,
           title,
-          description:
-            description?.length > 300
-              ? description.substring(0, 300) + '...'
-              : description,
+          description,
           image: image ?? '',
           location,
           socials,
