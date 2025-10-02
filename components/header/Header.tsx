@@ -4,7 +4,7 @@ import Select from 'react-select'
 import Image from 'next/legacy/image'
 import NextLink from 'next/link'
 import customMultiSelectStyles from '@styles/select-styles'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { REMOTE_URL } from '@helpers/config'
 import { cn } from '@components/lib/utils'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
@@ -65,7 +65,7 @@ const Header = ({
   if (isMobile) {
     return (
       <>
-        <NextLink href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
+        <NextLink href={REMOTE_URL}>
           <Button variant="outline" size="sm" className="mt-2 ml-2">
             <HiHome />
             Homepage
@@ -200,7 +200,7 @@ const Header = ({
             </h2>
           </div>
 
-          <NextLink href={`${PROTOCOL}://${REMOTE_HOSTNAME}`}>
+          <NextLink href={REMOTE_URL}>
             <Button variant="outline" size="sm">
               <HiHome />
               Homepage

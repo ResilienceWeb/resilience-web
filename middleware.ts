@@ -7,7 +7,7 @@ export default function middleware(req: NextRequest) {
   // Get pathname of request (e.g. /blog-slug)
   const { pathname } = req.nextUrl
 
-  // Get hostname of request (e.g. demo.vercel.pub)
+  // Get hostname of request
   const hostname = req.headers.get('host')
   if (!hostname) {
     return new Response(null, {
@@ -21,15 +21,21 @@ export default function middleware(req: NextRequest) {
     currentHost = hostname.replace(`.staging.resilienceweb.org.uk`, '')
   } else {
     currentHost =
-      process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
+      process.env.NODE_ENV === 'production'
         ? hostname
             .replace('.cambridgeresilienceweb.org.uk', '')
             .replace('.resilienceweb.org.uk', '')
+            .replace('.resilienceweb.netlify.app', '')
         : hostname.replace(`.localhost:4000`, '')
   }
 
   if (hostname === 'transition') {
     return NextResponse.rewrite(new URL('/transition', req.url))
+  }
+
+  if (currentHost === 'test') {
+    // TODO Change redirect for 'cambridge-city' to 'cambridge'
+    return NextResponse.redirect('https://test2.cambridgeresilienceweb.org.uk')
   }
 
   if (!pathname.includes('.') && !pathname.startsWith('/api')) {
@@ -38,6 +44,8 @@ export default function middleware(req: NextRequest) {
       hostname === 'cambridgeresilienceweb.org.uk' ||
       hostname === 'resilienceweb.org.uk' ||
       hostname === 'staging.resilienceweb.org.uk' ||
+      hostname === 'resilienceweb.netlify.app' ||
+      currentHost === 'www' ||
       (process.env.VERCEL_ENV === 'preview' &&
         hostname === process.env.VERCEL_URL)
     ) {
