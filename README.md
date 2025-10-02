@@ -37,6 +37,4 @@ I wrote a blog post that goes through technical choices that I made for this pro
 
 ## Acknowledgements
 
-[![Powered by Vercel](https://resilienceweb.org.uk/powered-by-vercel.svg)](https://vercel.com?utm_source=resilience-web&utm_campaign=oss)
-
 Many thanks to [Gitbook](https://www.gitbook.com) for supporting our project by giving us a membership on their brilliant documentation platform.
