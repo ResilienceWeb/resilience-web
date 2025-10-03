@@ -5,10 +5,10 @@ const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
-    log: ['info'],
+    log: process.env.PRISMA_LOG_LEVEL ? ['info'] : [],
   })
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma
 }
 
