@@ -54,7 +54,8 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   experimental: {
-    scrollRestoration: process.env.NODE_ENV === 'development' ? false : true
+    scrollRestoration: process.env.NODE_ENV === 'development' ? false : true,
+    staticGenerationMaxConcurrency: 5
   },
   async rewrites() {
     return [
