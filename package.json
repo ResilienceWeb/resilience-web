@@ -61,7 +61,7 @@
     "next": "15.5.4",
     "next-recaptcha-v3": "1.5.2",
     "next-view-transitions": "0.3.4",
-    "nodemailer": "7.0.6",
+    "nodemailer": "7.0.9",
     "nuqs": "2.5.1",
     "posthog-js": "1.265.1",
     "radix-ui": "1.4.3",
