@@ -64,8 +64,10 @@ const ListingProposedAdminEmail = ({
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Text style={{ fontSize: '16px' }}>Status:</Text>
             <img
-              src={`https://resilienceweb.org.uk/api/listing/${listingId}/status-badge`}
+              src={`https://resilienceweb.org.uk/api/listing/${listingId}/status-badge?format=png`}
               alt="Listing approval status"
+              width="100"
+              height="30"
             />
           </div>
           <Hr style={hr} />
