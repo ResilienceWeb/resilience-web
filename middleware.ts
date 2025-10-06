@@ -25,7 +25,10 @@ export default function middleware(req: NextRequest) {
         ? hostname
             .replace('.cambridgeresilienceweb.org.uk', '')
             .replace('.resilienceweb.org.uk', '')
-            .replace(`.${process.env.NEXT_PUBLIC_BASE_URL}`, '')
+            .replace(
+              `.${process.env.NEXT_PUBLIC_BASE_URL?.replace(/^https?:\/\//, '')}`,
+              '',
+            )
         : hostname.replace(`.localhost:4000`, '')
   }
 
