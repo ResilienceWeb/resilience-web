@@ -16,6 +16,12 @@ export default function middleware(req: NextRequest) {
     })
   }
 
+  console.log(
+    'DINER',
+    process.env.NEXT_PUBLIC_BASE_URL?.replace(/^https?:\/\//, ''),
+  )
+  console.log('hostname', hostname)
+
   let currentHost
   if (hostname.includes('staging.')) {
     currentHost = hostname.replace(`.staging.resilienceweb.org.uk`, '')
@@ -25,6 +31,7 @@ export default function middleware(req: NextRequest) {
         ? hostname
             .replace('.cambridgeresilienceweb.org.uk', '')
             .replace('.resilienceweb.org.uk', '')
+            .replace('.resilienceweb.netlify.app', '')
             .replace(
               `.${process.env.NEXT_PUBLIC_BASE_URL?.replace(/^https?:\/\//, '')}`,
               '',
