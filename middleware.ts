@@ -25,6 +25,7 @@ export default function middleware(req: NextRequest) {
         ? hostname
             .replace('.cambridgeresilienceweb.org.uk', '')
             .replace('.resilienceweb.org.uk', '')
+            .replace(`.${process.env.NEXT_PUBLIC_BASE_URL}`, '')
         : hostname.replace(`.localhost:4000`, '')
   }
 
@@ -38,6 +39,8 @@ export default function middleware(req: NextRequest) {
       hostname === 'cambridgeresilienceweb.org.uk' ||
       hostname === 'resilienceweb.org.uk' ||
       hostname === 'staging.resilienceweb.org.uk' ||
+      hostname ===
+        process.env.NEXT_PUBLIC_BASE_URL?.replace(/^https?:\/\//, '') ||
       (process.env.VERCEL_ENV === 'preview' &&
         hostname === process.env.VERCEL_URL)
     ) {
