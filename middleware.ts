@@ -16,11 +16,9 @@ export default function middleware(req: NextRequest) {
     })
   }
 
-  console.log(
-    'DINER',
-    process.env.NEXT_PUBLIC_BASE_URL?.replace(/^https?:\/\//, ''),
-  )
+  console.log('DINER', process.env.NEXT_PUBLIC_BASE_URL)
   console.log('hostname', hostname)
+  console.log('url', url)
 
   let currentHost
   if (hostname.includes('staging.')) {
@@ -32,10 +30,6 @@ export default function middleware(req: NextRequest) {
             .replace('.cambridgeresilienceweb.org.uk', '')
             .replace('.resilienceweb.org.uk', '')
             .replace('.resilienceweb.netlify.app', '')
-            .replace(
-              `.${process.env.NEXT_PUBLIC_BASE_URL?.replace(/^https?:\/\//, '')}`,
-              '',
-            )
         : hostname.replace(`.localhost:4000`, '')
   }
 
@@ -49,8 +43,7 @@ export default function middleware(req: NextRequest) {
       hostname === 'cambridgeresilienceweb.org.uk' ||
       hostname === 'resilienceweb.org.uk' ||
       hostname === 'staging.resilienceweb.org.uk' ||
-      hostname ===
-        process.env.NEXT_PUBLIC_BASE_URL?.replace(/^https?:\/\//, '') ||
+      hostname === 'resilienceweb.netlify.app' ||
       (process.env.VERCEL_ENV === 'preview' &&
         hostname === process.env.VERCEL_URL)
     ) {
