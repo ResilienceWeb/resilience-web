@@ -7,7 +7,7 @@ export default function middleware(req: NextRequest) {
   // Get pathname of request (e.g. /blog-slug)
   const { pathname } = req.nextUrl
 
-  // Get hostname of request (e.g. demo.vercel.pub)
+  // Get hostname of request
   const hostname = req.headers.get('host')
   if (!hostname) {
     return new Response(null, {
@@ -21,7 +21,7 @@ export default function middleware(req: NextRequest) {
     currentHost = hostname.replace(`.staging.resilienceweb.org.uk`, '')
   } else {
     currentHost =
-      process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
+      process.env.NODE_ENV === 'production'
         ? hostname
             .replace('.cambridgeresilienceweb.org.uk', '')
             .replace('.resilienceweb.org.uk', '')

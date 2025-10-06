@@ -1,16 +1,6 @@
-export const REMOTE_URL =
-  process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
-    ? 'https://staging.resilienceweb.org.uk'
-    : process.env.NODE_ENV === 'development'
-      ? 'http://localhost:4000'
-      : 'https://resilienceweb.org.uk'
-
+export const REMOTE_URL = process.env.NEXT_PUBLIC_BASE_URL
 export const REMOTE_HOSTNAME =
-  process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
-    ? 'staging.resilienceweb.org.uk'
-    : process.env.NODE_ENV === 'development'
-      ? 'localhost:4000'
-      : 'resilienceweb.org.uk'
+  process.env.NEXT_PUBLIC_BASE_URL?.replace(/^https?:\/\//, '') || ''
 
 export const PROTOCOL =
   process.env.NODE_ENV === 'development' ? 'http' : 'https'
