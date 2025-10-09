@@ -75,8 +75,12 @@ const nextConfig = {
   },
   async redirects() {
     return [{
-      source: 'https://test.cambridgeresilienceweb.org.uk',
-      destination: 'https://test2.cambridgeresilienceweb.org.uk',
+      source: '/',
+      has: [{
+        type: 'host',
+        value: 'test.cambridgeresilienceweb.org.uk'
+      }],
+      destination: 'https://test2.cambridgeresilienceweb.org.uk/',
       permanent: true
     }]
   },
