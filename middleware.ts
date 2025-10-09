@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, redirect } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export default function middleware(req: NextRequest) {
@@ -38,9 +38,11 @@ export default function middleware(req: NextRequest) {
   }
 
   console.log('DINER hostname left', hostname)
+  console.log('DINER', currentHost)
 
   if (currentHost === 'test') {
     currentHost = 'test2'
+    redirect(new URL(`/${currentHost}${pathname}`, req.url))
   }
 
   if (!pathname.includes('.') && !pathname.startsWith('/api')) {
