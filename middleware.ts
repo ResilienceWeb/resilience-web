@@ -1,4 +1,4 @@
-import { NextResponse, redirect } from 'next/server'
+import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export default function middleware(req: NextRequest) {
@@ -42,7 +42,7 @@ export default function middleware(req: NextRequest) {
 
   if (currentHost === 'test') {
     currentHost = 'test2'
-    redirect(new URL(`/${currentHost}${pathname}`, req.url))
+    return NextResponse.redirect('https://test2.cambridgeresilienceweb.org.uk')
   }
 
   if (!pathname.includes('.') && !pathname.startsWith('/api')) {
