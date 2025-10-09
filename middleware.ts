@@ -39,6 +39,10 @@ export default function middleware(req: NextRequest) {
 
   console.log('DINER hostname left', hostname)
 
+  if (currentHost === 'test') {
+    currentHost = 'test2'
+  }
+
   if (!pathname.includes('.') && !pathname.startsWith('/api')) {
     if (
       hostname === 'localhost:4000' ||

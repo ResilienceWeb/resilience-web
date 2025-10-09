@@ -73,17 +73,6 @@ const nextConfig = {
       },
     ]
   },
-  async redirects() {
-    return [{
-      source: '/',
-      has: [{
-        type: 'host',
-        value: 'test.cambridgeresilienceweb.org.uk'
-      }],
-      destination: 'https://test2.cambridgeresilienceweb.org.uk/',
-      permanent: true
-    }]
-  },
   skipTrailingSlashRedirect: true,
   async headers() {
     return [
