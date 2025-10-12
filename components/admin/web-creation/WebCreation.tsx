@@ -41,7 +41,7 @@ const faqs = [
   {
     question: '🌱 What is a Resilience Web?',
     answer:
-      'A Resilience Web is a digital mapping of environmental and social justice groups in a place, curated by people who live there. These webs are intended to help the discovery, collaboration and networking between activists and groups around issues that they care about.',
+      'A Resilience Web is a digital mapping of environmental and social justice groups in a place, curated by people who live there. These webs are intended to help the discovery, collaboration and networking between activists and groups.',
   },
   {
     question: '💵 How much does it cost to use the platform?',

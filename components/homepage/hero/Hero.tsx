@@ -17,7 +17,7 @@ export default function Hero() {
             </p>
             <p className="max-w-2xl text-lg text-gray-600 md:text-center md:text-xl">
               These webs help foster discovery, collaboration and networking
-              between activists and groups around issues they care about.
+              between activists and groups.
             </p>
           </div>
         </div>
