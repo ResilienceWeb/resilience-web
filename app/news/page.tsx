@@ -1,7 +1,8 @@
+import type { Metadata } from 'next'
 import { GraphQLClient } from 'graphql-request'
 import News from './News'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'News | Resilience Web',
   description: 'News & updates from the Resilience Web team',
   openGraph: {

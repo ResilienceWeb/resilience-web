@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { GraphQLClient } from 'graphql-request'
 import { remark } from 'remark'
@@ -18,7 +19,7 @@ export default async function NewsItemPage(props) {
   return <NewsItem post={post} contentHtml={contentHtml} />
 }
 
-export async function generateMetadata(props) {
+export async function generateMetadata(props): Promise<Metadata> {
   const params = await props.params
   const { post } = await getNewsItem({ slug: params.slug })
 

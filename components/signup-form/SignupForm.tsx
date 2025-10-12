@@ -93,7 +93,7 @@ const SignupForm = () => {
           Submit
         </Button>
       </form>
-      <p className="google-recaptcha-text mt-1 text-[10px] max-w-[350px]">
+      <p className="google-recaptcha-text mt-1 text-[10px]! max-w-[350px]">
         This site is protected by reCAPTCHA and the Google{' '}
         <a href="https://policies.google.com/privacy">Privacy Policy</a> and{' '}
         <a href="https://policies.google.com/terms">Terms of Service</a> apply.
