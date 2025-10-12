@@ -33,9 +33,8 @@ export default function middleware(req: NextRequest) {
     return NextResponse.rewrite(new URL('/transition', req.url))
   }
 
-  if (currentHost === 'test') {
-    // TODO Change redirect for 'cambridge-city' to 'cambridge'
-    return NextResponse.redirect('https://test2.cambridgeresilienceweb.org.uk')
+  if (currentHost === 'cambridge-city') {
+    return NextResponse.redirect('https://cambridge.resilienceweb.org.uk')
   }
 
   if (!pathname.includes('.') && !pathname.startsWith('/api')) {
