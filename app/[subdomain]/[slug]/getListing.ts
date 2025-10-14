@@ -1,5 +1,5 @@
-import { exclude } from '@helpers/utils'
 import prisma from '@prisma-rw'
+import { exclude } from '@helpers/utils'
 
 export default async function getListing({ webSlug, listingSlug }) {
   const listingData = await prisma.listing.findFirst({

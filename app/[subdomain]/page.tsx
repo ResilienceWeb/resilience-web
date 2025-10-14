@@ -158,6 +158,7 @@ async function getData({ webSlug }): Promise<DataType> {
           slug: true,
           featured: true,
           seekingVolunteers: true,
+          website: true,
           socials: {
             select: {
               platform: true,
@@ -245,6 +246,7 @@ async function getData({ webSlug }): Promise<DataType> {
         slug,
         tags,
         relations,
+        website,
       }) => {
         const transformedNode: any = {
           id: `listing-${listingId}`,
@@ -264,6 +266,7 @@ async function getData({ webSlug }): Promise<DataType> {
           label: title,
           color: `#${category.color}`,
           icon: undefined,
+          website,
         }
 
         if (category.icon !== 'default') {
