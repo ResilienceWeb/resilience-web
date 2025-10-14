@@ -57,22 +57,6 @@ const nextConfig = {
     scrollRestoration: process.env.NODE_ENV === 'development' ? false : true,
     staticGenerationMaxConcurrency: 5,
   },
-  async rewrites() {
-    return [
-      {
-        source: "/ph-ingest/static/:path*",
-        destination: "https://eu-assets.i.posthog.com/static/:path*"
-      },
-      {
-        source: "/ph-ingest/:path*",
-        destination: "https://eu.i.posthog.com/:path*"
-      },
-      {
-        source: "/ph-ingest/decide",
-        destination: "https://eu.i.posthog.com/decide",
-      },
-    ]
-  },
   skipTrailingSlashRedirect: true,
   async headers() {
     return [

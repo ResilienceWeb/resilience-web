@@ -61,10 +61,9 @@ export default function middleware(req: NextRequest) {
  * - _next/static (static files)
  * - _next/image (image optimization files)
  * - favicon.ico (favicon file)
- * - ph-ingest (PostHog)
  */
 export const config = {
   matcher: [
-    '/((?!api|admin|_next/static|_next/image|favicon.svg|favicon.ico|ph-ingest).*)',
+    '/((?!api|admin|_next/static|_next/image|favicon.svg|favicon.ico).*)',
   ],
 }
