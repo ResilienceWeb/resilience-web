@@ -34,7 +34,8 @@ const ListingEditReview = ({
     })
     router.back()
   }
-  console.log(listing, editedListing)
+
+  const hadNoLocationPreviously = Boolean(!listing.location)
 
   return (
     <div className="space-y-6">
@@ -230,26 +231,36 @@ const ListingEditReview = ({
         </div>
       )}
 
-      {listing.location &&
-        editedListing.location &&
-        listing.location.description !== editedListing.location.description && (
-          <>
-            <h3 className="mt-2 text-lg font-semibold">Location</h3>
-            <p className="bg-[#fec4c0] w-fit text-[red]">
-              {listing.location?.description}
-            </p>
-            <p className="my-2 bg-[#b5efdb] w-fit text-[green]">
-              {editedListing.location?.description}
-            </p>
+      {listing.location?.description !==
+        editedListing.location?.description && (
+        <div className="flex flex-col gap-2">
+          <h3 className="mt-2 text-lg font-semibold">
+            Location {hadNoLocationPreviously ? '(new)' : '(changed)'}
+          </h3>
+          <p className="bg-[#fec4c0] w-fit text-[red]">
+            {listing.location?.description}
+          </p>
 
+          {!hadNoLocationPreviously && (
             <ListingMap
-              latitude={editedListing.location?.latitude}
-              longitude={editedListing.location?.longitude}
-              locationDescription={editedListing.location?.description}
+              latitude={listing.location?.latitude}
+              longitude={listing.location?.longitude}
+              locationDescription={listing.location?.description}
               hideDescription
             />
-          </>
-        )}
+          )}
+
+          <p className="bg-[#b5efdb] w-fit text-[green]">
+            {editedListing.location?.description}
+          </p>
+          <ListingMap
+            latitude={editedListing.location?.latitude}
+            longitude={editedListing.location?.longitude}
+            locationDescription={editedListing.location?.description}
+            hideDescription
+          />
+        </div>
+      )}
 
       <div className="mt-8 flex justify-end gap-4">
         <Button variant="destructive" onClick={handleReject}>
