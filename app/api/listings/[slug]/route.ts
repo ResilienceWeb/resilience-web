@@ -35,6 +35,7 @@ export async function GET(request, props) {
       },
       include: {
         socials: true,
+        actions: true,
         proposer: true,
         location: {
           select: {
@@ -113,9 +114,10 @@ export async function PUT(request) {
     )
     const slug = formData.get('slug')
     const socials = formData.get('socials')
+    const actions = formData.get('actions')
 
-    // Parse socials data if it exists
     const socialsData = socials ? JSON.parse(socials) : []
+    const actionsData = actions ? JSON.parse(actions) : []
 
     // Prepare tags
     const tagsArray = tags !== '' ? tags.split(',') : []
@@ -198,6 +200,13 @@ export async function PUT(request) {
           url: social.url,
         })),
       },
+      actions: {
+        deleteMany: {}, // Remove all existing action buttons
+        create: actionsData.map((action) => ({
+          type: action.type,
+          url: action.url,
+        })),
+      },
       tags: {
         connect: tagsToConnect,
         disconnect: tagsToDisconnect,
@@ -232,6 +241,7 @@ export async function PUT(request) {
       where: { id: Number(listingId) },
       include: {
         socials: true,
+        actions: true,
         proposer: true,
         web: true,
         location: {

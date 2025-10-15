@@ -2,8 +2,8 @@
 
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { FaShareAlt, FaTrash } from 'react-icons/fa'
-import { socialMediaPlatforms } from '@helpers/socials'
+import { FaMousePointer, FaTrash } from 'react-icons/fa'
+import { actionTypes } from '@helpers/actions'
 import { Button } from '@components/ui/button'
 import {
   FormField,
@@ -21,48 +21,42 @@ import {
   SelectValue,
 } from '@components/ui/select'
 
-const SocialMedia = () => {
+const Actions = () => {
   const methods = useFormContext()
   const { fields, append } = useFieldArray({
     control: methods.control,
-    name: 'socials',
+    name: 'actions',
   })
 
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between pb-2">
-        <FormLabel className="font-semibold">Social Media</FormLabel>
+        <FormLabel className="font-semibold">Action Buttons</FormLabel>
         <Button
           type="button"
           variant="outline"
           size="sm"
           className="flex items-center gap-1"
           onClick={() => {
-            const currentSocials = methods.getValues('socials') || []
-            const unusedPlatforms = socialMediaPlatforms.filter(
-              (platform) =>
-                !currentSocials.some((item) => item.platform === platform.id),
+            const currentActions = methods.getValues('actions') || []
+            const unusedTypes = actionTypes.filter(
+              (actionType) =>
+                !currentActions.some((item) => item.type === actionType.id),
             )
 
-            if (unusedPlatforms.length > 0) {
-              append({ platform: unusedPlatforms[0].id, url: '' })
+            if (unusedTypes.length > 0) {
+              append({ type: unusedTypes[0].id, url: '' })
             }
           }}
-          disabled={
-            methods.getValues('socials')?.length >= socialMediaPlatforms.length
-          }
+          disabled={methods.getValues('actions')?.length >= actionTypes.length}
         >
           <AiOutlinePlus className="mr-1" />
-          Add Social Media link
+          Add Action Button
         </Button>
       </div>
 
       <div className="flex flex-col gap-1">
         {fields.map((field, index) => {
-          const currentValue = methods.getValues(`socials.${index}`)
-          const platform = socialMediaPlatforms.find(
-            (p) => p.id === currentValue?.platform,
-          )
           return (
             <div
               key={field.id}
@@ -72,11 +66,11 @@ const SocialMedia = () => {
                 <div className="w-1/3">
                   <FormField
                     control={methods.control}
-                    name={`socials.${index}.platform`}
+                    name={`actions.${index}.type`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm text-gray-600">
-                          Platform
+                          Action Type
                         </FormLabel>
                         <Select
                           value={field.value}
@@ -85,19 +79,19 @@ const SocialMedia = () => {
                           }}
                         >
                           <SelectTrigger className="bg-white">
-                            <SelectValue placeholder="Select platform">
+                            <SelectValue placeholder="Select action type">
                               {field.value && (
                                 <div className="flex items-center gap-2">
                                   {(() => {
-                                    const platform = socialMediaPlatforms.find(
-                                      (p) => p.id === field.value,
+                                    const actionType = actionTypes.find(
+                                      (a) => a.id === field.value,
                                     )
-                                    if (platform) {
-                                      const Icon = platform.icon
+                                    if (actionType) {
+                                      const Icon = actionType.icon
                                       return (
                                         <Icon
                                           style={{
-                                            color: platform.color,
+                                            color: actionType.color,
                                           }}
                                         />
                                       )
@@ -105,8 +99,8 @@ const SocialMedia = () => {
                                     return null
                                   })()}
                                   {
-                                    socialMediaPlatforms.find(
-                                      (p) => p.id === field.value,
+                                    actionTypes.find(
+                                      (a) => a.id === field.value,
                                     )?.label
                                   }
                                 </div>
@@ -114,33 +108,33 @@ const SocialMedia = () => {
                             </SelectValue>
                           </SelectTrigger>
                           <SelectContent>
-                            {socialMediaPlatforms
-                              .filter((platform) => {
-                                const currentPlatforms = methods
-                                  .getValues('socials')
-                                  .map((item) => item.platform)
+                            {actionTypes
+                              .filter((actionType) => {
+                                const currentTypes = methods
+                                  .getValues('actions')
+                                  .map((item) => item.type)
                                 return (
-                                  platform.id === field.value ||
-                                  !currentPlatforms.includes(platform.id)
+                                  actionType.id === field.value ||
+                                  !currentTypes.includes(actionType.id)
                                 )
                               })
-                              .map((platform) => (
+                              .map((actionType) => (
                                 <SelectItem
-                                  key={platform.id}
-                                  value={platform.id}
+                                  key={actionType.id}
+                                  value={actionType.id}
                                 >
                                   <div className="flex items-center gap-2">
                                     {(() => {
-                                      const Icon = platform.icon
+                                      const Icon = actionType.icon
                                       return (
                                         <Icon
                                           style={{
-                                            color: platform.color,
+                                            color: actionType.color,
                                           }}
                                         />
                                       )
                                     })()}
-                                    {platform.label}
+                                    {actionType.label}
                                   </div>
                                 </SelectItem>
                               ))}
@@ -155,7 +149,7 @@ const SocialMedia = () => {
                 <div className="flex-1">
                   <FormField
                     control={methods.control}
-                    name={`socials.${index}.url`}
+                    name={`actions.${index}.url`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm text-gray-600">
@@ -163,10 +157,7 @@ const SocialMedia = () => {
                         </FormLabel>
                         <div className="relative">
                           <FormControl>
-                            <Input
-                              {...field}
-                              placeholder={platform?.prefix || 'https://'}
-                            />
+                            <Input {...field} placeholder="https://" />
                           </FormControl>
                         </div>
                         <FormMessage />
@@ -182,9 +173,9 @@ const SocialMedia = () => {
                     size="icon"
                     className="h-10 w-10 rounded-full opacity-70 hover:bg-red-50 hover:text-red-600 hover:opacity-100"
                     onClick={() => {
-                      const currentSocials = [...methods.getValues('socials')]
-                      currentSocials.splice(index, 1)
-                      methods.setValue('socials', currentSocials)
+                      const currentActions = [...methods.getValues('actions')]
+                      currentActions.splice(index, 1)
+                      methods.setValue('actions', currentActions)
                     }}
                   >
                     <FaTrash />
@@ -195,14 +186,14 @@ const SocialMedia = () => {
           )
         })}
 
-        {(!methods.watch('socials') ||
-          methods.watch('socials').length === 0) && (
+        {(!methods.watch('actions') ||
+          methods.watch('actions').length === 0) && (
           <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-50 p-4 text-center">
             <div className="mb-2 rounded-full bg-gray-100 p-3">
-              <FaShareAlt className="text-2xl text-gray-400" />
+              <FaMousePointer className="text-2xl text-gray-400" />
             </div>
             <p className="text-muted-foreground mb-2">
-              No social media links added
+              No action buttons added
             </p>
             <Button
               type="button"
@@ -210,39 +201,38 @@ const SocialMedia = () => {
               size="sm"
               className="mt-2"
               onClick={() => {
-                append({ platform: socialMediaPlatforms[0].id, url: '' })
+                append({ type: actionTypes[0].id, url: '' })
               }}
             >
               <AiOutlinePlus className="mr-1" />
-              Add Social Media link
+              Add Action Button
             </Button>
           </div>
         )}
 
-        {methods.watch('socials').length > 0 && (
+        {methods.watch('actions').length > 0 && (
           <Button
             type="button"
             variant="outline"
             size="sm"
             className="mt-2 w-fit"
             onClick={() => {
-              const currentSocials = methods.getValues('socials') || []
-              const unusedPlatforms = socialMediaPlatforms.filter(
-                (platform) =>
-                  !currentSocials.some((item) => item.platform === platform.id),
+              const currentActions = methods.getValues('actions') || []
+              const unusedTypes = actionTypes.filter(
+                (actionType) =>
+                  !currentActions.some((item) => item.type === actionType.id),
               )
 
-              if (unusedPlatforms.length > 0) {
-                append({ platform: unusedPlatforms[0].id, url: '' })
+              if (unusedTypes.length > 0) {
+                append({ type: unusedTypes[0].id, url: '' })
               }
             }}
             disabled={
-              methods.getValues('socials')?.length >=
-              socialMediaPlatforms.length
+              methods.getValues('actions')?.length >= actionTypes.length
             }
           >
             <AiOutlinePlus className="mr-1" />
-            Add Social Media link
+            Add Action Button
           </Button>
         )}
       </div>
@@ -250,4 +240,4 @@ const SocialMedia = () => {
   )
 }
 
-export default SocialMedia
+export default Actions

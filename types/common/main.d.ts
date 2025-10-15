@@ -10,6 +10,7 @@ declare global {
     description: string
     email?: string
     socials?: ListingSocialMedia[]
+    actions?: ListingAction[]
     notes?: string
     seekingVolunteers: boolean
     featured: boolean

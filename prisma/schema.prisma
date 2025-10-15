@@ -170,6 +170,7 @@ model Listing {
   location          ListingLocation?     @relation(fields: [locationId], references: [id])
   locationId        Int?                 @unique
   edits             ListingEdit[]
+  actions           ListingAction[]
 
   @@unique([webId, slug])
   @@map("listings")
@@ -187,6 +188,18 @@ model ListingSocialMedia {
   listingEditId Int?
 
   @@map("listing_social_media")
+}
+
+model ListingAction {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  listingId Int?
+  listing   Listing? @relation(fields: [listingId], references: [id])
+  type      String
+  url       String
+
+  @@map("listing_action")
 }
 
 model ListingEdit {
