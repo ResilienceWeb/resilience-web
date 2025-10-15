@@ -4,7 +4,7 @@ import { useAppContext } from '@store/hooks'
 async function updateListingRequest(listingData) {
   const formData = new FormData()
   Object.keys(listingData).forEach((key) => {
-    if (key === 'socials') {
+    if (key === 'socials' || key === 'actions') {
       formData.append(key, JSON.stringify(listingData[key]))
     } else {
       formData.append(key, listingData[key])

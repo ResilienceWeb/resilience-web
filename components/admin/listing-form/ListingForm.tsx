@@ -5,11 +5,11 @@ import { useForm, FormProvider } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
+import type { StylesConfig } from 'react-select'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Category } from '@prisma/client'
-import { useAppContext } from '@store/hooks'
 import { z } from 'zod'
 import { generateSlug } from '@helpers/utils'
 import RichTextEditor from '@components/rich-text-editor'
@@ -35,6 +35,8 @@ import {
 import { Separator } from '@components/ui/separator'
 import useListings from '@hooks/listings/useListings'
 import useTags from '@hooks/tags/useTags'
+import { useAppContext } from '@store/hooks'
+import Actions from './Actions'
 import ImageUpload from './ImageUpload'
 import SocialMedia from './SocialMedia'
 
@@ -48,10 +50,12 @@ const SetLocationMap = dynamic(
 
 const socialItemSchema = z.object({
   platform: z.string(),
-  url: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
-    .or(z.literal('')),
+  url: z.string().url('Please enter a valid URL (https://...)'),
+})
+
+const actionItemSchema = z.object({
+  type: z.string(),
+  url: z.string().url('Please enter a valid URL (https://...)'),
 })
 
 const listingFormSchema = z.object({
@@ -65,6 +69,7 @@ const listingFormSchema = z.object({
     .url('Please enter a valid URL (https://...)')
     .or(z.literal('')),
   socials: z.array(socialItemSchema),
+  actions: z.array(actionItemSchema),
   seekingVolunteers: z.boolean(),
   featured: z.boolean(),
   image: z.any(),
@@ -93,15 +98,18 @@ interface Props {
   isSubmitting?: boolean
 }
 
-const customMultiSelectStyles = {
+const customMultiSelectStyles: StylesConfig<TagOption, true> = {
   container: (baseStyles) => ({
     ...baseStyles,
     width: '100%',
-    zIndex: 1001,
   }),
   menuPortal: (baseStyles) => ({
     ...baseStyles,
     zIndex: 10,
+  }),
+  menu: (baseStyles) => ({
+    ...baseStyles,
+    zIndex: 10000,
   }),
 }
 
@@ -184,6 +192,7 @@ const ListingForm = ({
 
   const methods = useForm<FormValues>({
     resolver: zodResolver(listingFormSchema),
+    mode: 'onTouched',
     defaultValues: {
       id: listing?.id || null,
       title: listing?.title || '',
@@ -192,6 +201,7 @@ const ListingForm = ({
       email: listing?.email || '',
       website: listing?.website || '',
       socials: listing?.socials || [],
+      actions: listing?.actions || [],
       seekingVolunteers: listing?.seekingVolunteers || false,
       featured: listing?.featured || false,
       image: listing?.image,
@@ -258,7 +268,7 @@ const ListingForm = ({
         <form
           onSubmit={handleSubmit(handleSubmitForm)}
           encType="multipart/form-data"
-          className="px-4 py-4 sm:p-6"
+          className="p-4 sm:p-6"
         >
           <FormField
             control={methods.control}
@@ -370,6 +380,7 @@ const ListingForm = ({
           />
 
           <SocialMedia />
+          <Actions />
 
           <div className="mt-4">
             <SlugField

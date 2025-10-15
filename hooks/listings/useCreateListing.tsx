@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 async function createListingRequest(listingData) {
   const formData = new FormData()
   Object.keys(listingData).forEach((key) => {
-    if (key === 'socials') {
+    if (key === 'socials' || key === 'actions') {
       formData.append(key, JSON.stringify(listingData[key]))
     } else {
       formData.append(key, listingData[key])

@@ -35,6 +35,7 @@ import { Separator } from '@components/ui/separator'
 import useTags from '@hooks/tags/useTags'
 import ImageUpload from './ImageUpload'
 import SocialMedia from './SocialMedia'
+import Actions from './Actions'
 
 const SetLocationMap = dynamic(
   () => import('@components/admin/set-location-map'),
@@ -123,6 +124,14 @@ const listingFormSchema = z.object({
       }),
     )
     .default([]),
+  actions: z
+    .array(
+      z.object({
+        type: z.string(),
+        url: z.string().url('Please enter a valid URL').or(z.literal('')),
+      }),
+    )
+    .default([]),
   seekingVolunteers: z.boolean(),
   image: z.any(),
   slug: z.string(),
@@ -160,6 +169,7 @@ const ListingFormSimplified = ({
       email: listing?.email || '',
       website: listing?.website || '',
       socials: listing?.socials || [],
+      actions: listing?.actions || [],
       seekingVolunteers: listing?.seekingVolunteers || false,
       image: listing?.image,
       slug: listing?.slug || '',
@@ -306,6 +316,8 @@ const ListingFormSimplified = ({
           </div>
 
           <SocialMedia />
+
+          <Actions />
 
           {!isEditMode && <SlugField webSlug={webSlug} />}
 

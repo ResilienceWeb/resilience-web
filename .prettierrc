@@ -13,6 +13,7 @@
     "^next$",
     "^next/(.*)$",
     "<THIRD_PARTY_MODULES>",
+    "^@prisma$",
     "^@prisma-rw$",
     "^@auth$",
     "^@auth-client$",
@@ -21,6 +22,7 @@
     "^@components/(.*)$",
     "^@db/(.*)$",
     "^@hooks/(.*)$",
+    "^@store/(.*)$",
     "^[./]"
   ],
   "plugins": [

@@ -99,6 +99,7 @@ export async function POST(request) {
     const locationDescription = formData.get('locationDescription')
     const slug = formData.get('slug')
     const socials = formData.get('socials')
+    const actions = formData.get('actions')
 
     // Prepare tags
     const tagsArray = tags !== '' ? tags.split(',') : []
@@ -113,8 +114,8 @@ export async function POST(request) {
     }))
 
     const isProposedListing = stringToBoolean(pending)
-    // Parse socials data if it exists
     const socialsData = socials ? JSON.parse(socials) : []
+    const actionsData = actions ? JSON.parse(actions) : []
 
     const newData: Prisma.ListingCreateInput = {
       title: title,
@@ -135,6 +136,12 @@ export async function POST(request) {
         create: socialsData.map((social) => ({
           platform: social.platform,
           url: social.url,
+        })),
+      },
+      actions: {
+        create: actionsData.map((action) => ({
+          type: action.type,
+          url: action.url,
         })),
       },
       pending: isProposedListing,

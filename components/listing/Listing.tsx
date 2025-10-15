@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { actionTypes, actionIconStyles } from '@helpers/actions'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import CategoryTag from '@components/category-tag'
@@ -43,8 +44,13 @@ function Listing({ listing }) {
   }, [])
 
   const goBack = useCallback(() => {
+    const canGoBack = window.history?.length && window.history.length > 1
     const referrer = document.referrer
-    if (referrer.includes('google') || referrer.includes('bing')) {
+    if (
+      referrer.includes('google') ||
+      referrer.includes('bing') ||
+      !canGoBack
+    ) {
       router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
     } else {
       router.back()
@@ -186,6 +192,36 @@ function Listing({ listing }) {
           <div className="prose prose-lg prose-headings:font-semibold prose-a:text-blue-600 mb-12 max-w-none">
             <RichText html={listing.description} />
           </div>
+
+          {listing.actions && listing.actions.length > 0 && (
+            <div className="mb-8 flex flex-wrap gap-3">
+              {listing.actions.map((action, index) => {
+                const config = actionIconStyles[action.type.toLowerCase()]
+                const actionConfig = actionTypes.find(
+                  (a) => a.id === action.type.toLowerCase(),
+                )
+
+                if (!actionConfig) {
+                  return null
+                }
+
+                const Icon = actionConfig.icon
+
+                return (
+                  <a
+                    key={`action-${index}`}
+                    href={action.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group inline-flex items-center gap-2 rounded-full px-4 py-2 font-medium transition-all ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
+                  >
+                    <Icon className="h-4 w-4 transition-transform group-hover:scale-110" />
+                    <span className="text-sm">{actionConfig.label}</span>
+                  </a>
+                )
+              })}
+            </div>
+          )}
 
           {listing.location?.latitude &&
             listing.location?.longitude &&

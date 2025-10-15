@@ -7,7 +7,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: postgresql://postgres:password@localhost:5432/postgres # postgresql://postgres:postgres@localhost:5432/grading-app
+      DATABASE_URL: postgresql://postgres:password@localhost:5432/postgres
     services:
       postgres:
         image: postgres:17
@@ -32,6 +32,8 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npx playwright test
+      env:
+        NEXT_PUBLIC_BASE_URL: http://localhost:4000
     - uses: actions/upload-artifact@v4
       if: always()
       with:

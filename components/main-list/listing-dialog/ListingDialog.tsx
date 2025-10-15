@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
+import { actionTypes, actionIconStyles } from '@helpers/actions'
 import { sanitizeLink } from '@helpers/utils'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
@@ -192,6 +193,36 @@ const ListingDialog = ({
           <div className="my-4">
             <RichText html={item.description} />
           </div>
+
+          {item.actions && item.actions.length > 0 && (
+            <div className="mb-4 flex flex-wrap gap-2">
+              {item.actions.map((action, index) => {
+                const config = actionIconStyles[action.type.toLowerCase()]
+                const actionConfig = actionTypes.find(
+                  (a) => a.id === action.type.toLowerCase(),
+                )
+
+                if (!actionConfig) {
+                  return null
+                }
+
+                const Icon = actionConfig.icon
+
+                return (
+                  <a
+                    key={`action-${index}`}
+                    href={action.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium transition-all ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
+                  >
+                    <Icon className="h-4 w-4 transition-transform group-hover:scale-110" />
+                    <span>{actionConfig.label}</span>
+                  </a>
+                )
+              })}
+            </div>
+          )}
 
           <div className="mt-4 flex flex-wrap justify-end gap-1">
             {item.tags?.map((tag) => {
