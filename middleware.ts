@@ -34,7 +34,9 @@ export default function middleware(req: NextRequest) {
   }
 
   if (currentHost === 'cambridge-city') {
-    return NextResponse.redirect('https://cambridge.resilienceweb.org.uk')
+    return NextResponse.redirect(
+      `https://cambridge.resilienceweb.org.uk${pathname}`,
+    )
   }
 
   if (!pathname.includes('.') && !pathname.startsWith('/api')) {
