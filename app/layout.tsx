@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/600.css'
 import '@styles/styles.global.css'
@@ -8,11 +9,12 @@ import {
 } from '@tanstack/react-query'
 import { ViewTransitions } from 'next-view-transitions'
 import { REMOTE_URL } from '@helpers/config'
+import { PageTracker } from '@helpers/page-tracker/PageTracker'
 import { Toaster } from '@components/ui/sonner'
 import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import Providers from './providers'
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL(REMOTE_URL),
   title: 'Resilience Web',
   description:
@@ -43,6 +45,7 @@ export default async function RootLayout({
           <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         </head>
         <body>
+          <PageTracker />
           <Providers>
             <HydrationBoundary state={dehydrate(queryClient)}>
               {children}

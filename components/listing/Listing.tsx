@@ -1,17 +1,17 @@
 'use client'
 
-import { memo, useCallback, useEffect, useState, useMemo } from 'react'
+import { memo, useEffect, useState, useMemo } from 'react'
 import { FiEdit } from 'react-icons/fi'
 import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
 import { SlGlobe } from 'react-icons/sl'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { actionTypes, actionIconStyles } from '@helpers/actions'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import CategoryTag from '@components/category-tag'
+import { MagicBackButton } from '@components/magic-back-button/MagicBackButton'
 import Item from '@components/main-list/item'
 import RichText from '@components/rich-text'
 import ShareButton from '@components/share-button'
@@ -31,7 +31,6 @@ const ListingMap = dynamic(() => import('@components/listing-map'), {
 })
 
 function Listing({ listing }) {
-  const router = useRouter()
   const [subdomain, setSubdomain] = useState<string>()
 
   useEffect(() => {
@@ -42,20 +41,6 @@ function Listing({ listing }) {
 
     setSubdomain(hostname.split('.')[0])
   }, [])
-
-  const goBack = useCallback(() => {
-    const canGoBack = window.history?.length && window.history.length > 1
-    const referrer = document.referrer
-    if (
-      referrer.includes('google') ||
-      referrer.includes('bing') ||
-      !canGoBack
-    ) {
-      router.push(`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}`)
-    } else {
-      router.back()
-    }
-  }, [router, subdomain])
 
   const { categories } = useCategoriesPublic({ webSlug: subdomain })
   const categoriesIndexes = useMemo(() => {
@@ -80,13 +65,10 @@ function Listing({ listing }) {
   return (
     <>
       <div className="w-full sm:px-6 md:w-[700px] lg:px-8">
-        <button
-          onClick={goBack}
-          className="group mb-6 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900"
-        >
+        <MagicBackButton className="group mb-6 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900">
           <HiArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
           Back to main list
-        </button>
+        </MagicBackButton>
 
         {listing.image && (
           <div className="group relative mb-4 h-[200px] w-full overflow-hidden rounded-xl bg-gray-100 md:h-[350px]">
@@ -272,13 +254,10 @@ function Listing({ listing }) {
         </div>
 
         <div className="w-full mb-8 flex justify-between">
-          <button
-            onClick={goBack}
-            className="group mb-8 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900"
-          >
+          <MagicBackButton className="group mb-6 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900">
             <HiArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
             Back to main list
-          </button>
+          </MagicBackButton>
 
           <Link href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}>
             <Button variant="purple">
