@@ -45,7 +45,7 @@ export default function CategoriesPage() {
 
         <TabsContent value="tags" className="mt-6">
           <TagsHeader />
-          {tags.length === 0 ? (
+          {tags?.length === 0 ? (
             <p className="text-center text-gray-600">No tags yet</p>
           ) : isTagsPending ? (
             <Spinner />

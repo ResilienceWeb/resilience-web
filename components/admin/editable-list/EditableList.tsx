@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { removeNonAlphaNumeric } from '@helpers/utils'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
+import { Button } from '@components/ui/button'
 import { useAppContext } from '@store/hooks'
 import Table from './table/Table'
 import TableActions from './table/TableActions'
@@ -92,20 +93,27 @@ const EditableList = ({ deleteListing, items }) => {
 
   return (
     <>
-      <div className="mb-4">
-        <h1 className="text-2xl font-bold">Listings</h1>
-        <p className="mt-4 max-w-[500px] text-sm text-gray-600">
-          This web is publicly accessible at{' '}
-          <a
-            href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
-            target="_blank"
-            className="font-semibold text-[#2B6CB0] hover:underline"
-            rel="noopener noreferrer"
-          >
-            {`${selectedWebSlug}.${REMOTE_HOSTNAME}`}
-          </a>
-        </p>
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Listings</h1>
+          <p className="mt-4 max-w-[500px] text-sm text-gray-600">
+            This web is publicly accessible at{' '}
+            <a
+              href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
+              target="_blank"
+              className="font-semibold text-[#2B6CB0] hover:underline"
+              rel="noopener noreferrer"
+            >
+              {`${selectedWebSlug}.${REMOTE_HOSTNAME}`}
+            </a>
+          </p>
+        </div>
+
+        <Button variant="secondary" size="sm" asChild>
+          <Link href="/admin/listing-edits">View Suggested Edits</Link>
+        </Button>
       </div>
+
       <TableActions
         searchTerm={searchTerm}
         handleSearchTermChange={handleSearchTermChange}

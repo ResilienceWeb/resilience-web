@@ -45,3 +45,44 @@ export const getListingEdits = async (listingSlug, webSlug) => {
 
   return listingEdits
 }
+
+export const getListingEditsByWeb = async (
+  webSlug: string,
+  includeAccepted = false
+) => {
+  const listingEdits = await prisma.listingEdit.findMany({
+    where: {
+      accepted: includeAccepted ? undefined : false,
+      listing: {
+        web: {
+          slug: webSlug,
+        },
+      },
+    },
+    include: {
+      socials: true,
+      actions: true,
+      category: {
+        select: {
+          id: true,
+          color: true,
+          label: true,
+        },
+      },
+      user: true,
+      location: true,
+      listing: {
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  })
+
+  return listingEdits
+}
