@@ -158,16 +158,16 @@ export default function DashboardPage() {
                         {(hasNoImage || noDescription) && (
                           <div className="flex flex-wrap gap-1">
                             {hasNoImage && (
-                              <div className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-1 text-xs">
+                              <Badge variant="secondary">
                                 <PiWarningCircleBold className="h-4 w-4" />
                                 <span>No image</span>
-                              </div>
+                              </Badge>
                             )}
                             {noDescription && (
-                              <div className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2 py-1 text-xs">
+                              <Badge variant="secondary">
                                 <PiWarningCircleBold className="h-4 w-4" />
                                 <span>No description</span>
-                              </div>
+                              </Badge>
                             )}
                           </div>
                         )}

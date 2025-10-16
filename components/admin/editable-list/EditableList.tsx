@@ -1,10 +1,10 @@
 import { useCallback, useState, useMemo, memo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useAppContext } from '@store/hooks'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { removeNonAlphaNumeric } from '@helpers/utils'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
+import { useAppContext } from '@store/hooks'
 import Table from './table/Table'
 import TableActions from './table/TableActions'
 
@@ -116,8 +116,8 @@ const EditableList = ({ deleteListing, items }) => {
         <Table
           goToEdit={goToEdit}
           goToProposedEdits={goToProposedEdits}
-          removeItem={openRemoveDialog}
           items={filteredItems}
+          removeItem={openRemoveDialog}
         />
       ) : (
         <div className="my-12 flex justify-center">
