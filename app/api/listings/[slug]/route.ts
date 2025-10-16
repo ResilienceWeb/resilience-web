@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache'
 import { Prisma } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -287,6 +288,8 @@ export async function PUT(request) {
         }),
       })
     }
+
+    revalidatePath(`/${listing.web.slug}/${listing.slug}`)
 
     return Response.json({
       listing,

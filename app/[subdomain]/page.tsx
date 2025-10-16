@@ -165,6 +165,12 @@ async function getData({ webSlug }): Promise<DataType> {
               url: true,
             },
           },
+          actions: {
+            select: {
+              type: true,
+              url: true,
+            },
+          },
           location: {
             select: {
               latitude: true,
@@ -240,6 +246,7 @@ async function getData({ webSlug }): Promise<DataType> {
         description,
         image,
         socials,
+        actions,
         seekingVolunteers,
         location,
         featured,
@@ -255,6 +262,7 @@ async function getData({ webSlug }): Promise<DataType> {
           image: image ?? '',
           location,
           socials,
+          actions,
           category: {
             color: `#${category.color}`,
             label: category.label,

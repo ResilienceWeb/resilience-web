@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 async function createListingEditRequest(listingData) {
   const formData = new FormData()
   Object.keys(listingData).forEach((key) => {
-    if (key === 'socials') {
+    if (key === 'socials' || key === 'actions') {
       formData.append(key, JSON.stringify(listingData[key]))
     } else if (key === 'image') {
       if (listingData[key] === null) {

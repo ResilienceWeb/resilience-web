@@ -1,5 +1,3 @@
-import { revalidatePath } from 'next/cache'
-import { markListingEditAsAccepted } from '@db/listingEditRepository'
 import type { Prisma } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -7,6 +5,7 @@ import { auth } from '@auth'
 import deleteImage from '@helpers/deleteImage'
 import { sendEmail } from '@helpers/email'
 import ListingEditAcceptedEmail from '@components/emails/ListingEditAcceptedEmail'
+import { markListingEditAsAccepted } from '@db/listingEditRepository'
 
 export async function POST(request, props) {
   const params = await props.params
@@ -29,6 +28,7 @@ export async function POST(request, props) {
       include: {
         user: true,
         socials: true,
+        actions: true,
         category: true,
         location: true,
         listing: {
@@ -68,6 +68,13 @@ export async function POST(request, props) {
         create: listingEdit.socials.map((social) => ({
           platform: social.platform,
           url: social.url,
+        })),
+      },
+      actions: {
+        deleteMany: {},
+        create: listingEdit.actions.map((action) => ({
+          type: action.type,
+          url: action.url,
         })),
       },
     }
@@ -139,7 +146,6 @@ export async function POST(request, props) {
 
     await markListingEditAsAccepted(listingEditId)
 
-    revalidatePath(`/${updatedListing.web.slug}/${updatedListing.slug}`)
     return Response.json({
       listing: updatedListing,
     })

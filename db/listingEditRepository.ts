@@ -30,6 +30,7 @@ export const getListingEdits = async (listingSlug, webSlug) => {
     },
     include: {
       socials: true,
+      actions: true,
       category: {
         select: {
           id: true,

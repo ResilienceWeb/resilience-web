@@ -4,7 +4,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Button } from '@components/ui/button'
 import useDeleteListingEdit from '@hooks/listings/useDeleteListingEdit'
+import ActionEdits from './ActionEdits'
 import Diff from './Diff'
+import SocialMediaEdits from './SocialMediaEdits'
 
 const ListingMap = dynamic(() => import('@components/listing-map'), {
   ssr: false,
@@ -36,6 +38,8 @@ const ListingEditReview = ({
   }
 
   const hadNoLocationPreviously = Boolean(!listing.location)
+
+  console.log(listing, editedListing)
 
   return (
     <div className="space-y-6">
@@ -137,99 +141,9 @@ const ListingEditReview = ({
         </div>
       )}
 
-      {/* Display social media differences */}
-      {(listing.socials?.length > 0 || editedListing.socials?.length > 0) && (
-        <div className="mt-4">
-          <div className="flex flex-col gap-4">
-            {/* Get all unique platforms from both listings */}
-            {[
-              ...new Set([
-                ...(listing.socials?.map((s) => s.platform) || []),
-                ...(editedListing.socials?.map((s) => s.platform) || []),
-              ]),
-            ].map((platform) => {
-              const oldSocial = listing.socials?.find(
-                (s) => s.platform === platform,
-              )
-              const newSocial = editedListing.socials?.find(
-                (s) => s.platform === platform,
-              )
+      <SocialMediaEdits listing={listing} editedListing={editedListing} />
 
-              // Platform exists in both, but URLs differ (modified)
-              if (oldSocial && newSocial && oldSocial.url !== newSocial.url) {
-                return (
-                  <div key={platform} className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="first-letter:capitalize">
-                        {platform}:
-                      </span>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span
-                            style={{
-                              color: 'red',
-                              backgroundColor: '#fec4c0',
-                              textDecoration: 'line-through',
-                            }}
-                          >
-                            {oldSocial.url}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span
-                            style={{
-                              color: 'green',
-                              backgroundColor: '#b5efdb',
-                            }}
-                          >
-                            {newSocial.url}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )
-              }
-
-              // Platform only in current listing (removed)
-              if (oldSocial && !newSocial) {
-                return (
-                  <div key={platform} className="flex items-center gap-2">
-                    <span className="first-letter:capitalize">{platform}:</span>
-                    <span
-                      style={{
-                        color: 'red',
-                        backgroundColor: '#fec4c0',
-                        textDecoration: 'line-through',
-                      }}
-                    >
-                      {oldSocial.url}
-                    </span>
-                    <span className="text-gray-600 italic">(removed)</span>
-                  </div>
-                )
-              }
-
-              // Platform only in edited listing (added)
-              if (!oldSocial && newSocial) {
-                return (
-                  <div key={platform} className="flex items-center gap-2">
-                    <span className="first-letter:capitalize">{platform}:</span>
-                    <span
-                      style={{ color: 'green', backgroundColor: '#b5efdb' }}
-                    >
-                      {newSocial.url}
-                    </span>
-                    <span className="text-gray-600 italic">(added)</span>
-                  </div>
-                )
-              }
-
-              return null
-            })}
-          </div>
-        </div>
-      )}
+      <ActionEdits listing={listing} editedListing={editedListing} />
 
       {listing.location?.description !==
         editedListing.location?.description && (
