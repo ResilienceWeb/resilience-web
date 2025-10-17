@@ -4,7 +4,6 @@ import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAppContext } from '@store/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -27,6 +26,7 @@ import { Spinner } from '@components/ui/spinner'
 import useIsOwnerOfWeb from '@hooks/web-access/useIsOwnerOfWeb'
 import useWebAccessForWeb from '@hooks/web-access/useWebAccessForWeb'
 import useSelectedWebName from '@hooks/webs/useSelectedWebName'
+import { useAppContext } from '@store/hooks'
 
 const faqs = [
   {
@@ -42,9 +42,9 @@ const faqs = [
 ]
 
 const formSchema = z.object({
-  email: z.string().min(1, 'Email is required').email('Invalid email address'),
+  email: z.email({ error: 'Invalid email address' }),
   listings: z.array(z.string()),
-  asOwner: z.boolean().default(false),
+  asOwner: z.boolean().default(false).optional(),
 })
 
 type FormValues = z.infer<typeof formSchema>

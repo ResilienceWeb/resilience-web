@@ -33,9 +33,9 @@ import {
 } from '@components/ui/select'
 import { Separator } from '@components/ui/separator'
 import useTags from '@hooks/tags/useTags'
+import Actions from './Actions'
 import ImageUpload from './ImageUpload'
 import SocialMedia from './SocialMedia'
-import Actions from './Actions'
 
 const SetLocationMap = dynamic(
   () => import('@components/admin/set-location-map'),
@@ -108,30 +108,25 @@ type TagOption = {
 
 const listingFormSchema = z.object({
   id: z.number().nullable(),
-  title: z.string().min(1, 'Title is required'),
-  description: z.string().min(1, 'Description is required'),
-  category: z.number().nullable().or(z.coerce.number()),
-  email: z.string().email('Please enter a valid email').or(z.literal('')),
+  title: z.string().min(1, { error: 'Title is required' }),
+  description: z.string().min(1, { error: 'Description is required' }),
+  category: z.coerce.number().nullable(),
+  email: z.email({ error: 'Please enter a valid email' }).or(z.literal('')),
   website: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
+    .url({ error: 'Please enter a valid URL (https://...)' })
     .or(z.literal('')),
-  socials: z
-    .array(
-      z.object({
-        platform: z.string(),
-        url: z.string().url('Please enter a valid URL').or(z.literal('')),
-      }),
-    )
-    .default([]),
-  actions: z
-    .array(
-      z.object({
-        type: z.string(),
-        url: z.string().url('Please enter a valid URL').or(z.literal('')),
-      }),
-    )
-    .default([]),
+  socials: z.array(
+    z.object({
+      platform: z.string(),
+      url: z.string(),
+    }),
+  ),
+  actions: z.array(
+    z.object({
+      type: z.string(),
+      url: z.string(),
+    }),
+  ),
   seekingVolunteers: z.boolean(),
   image: z.any(),
   slug: z.string(),
@@ -149,8 +144,6 @@ const listingFormSchema = z.object({
   locationDescription: z.string().optional(),
 })
 
-type FormValues = z.infer<typeof listingFormSchema>
-
 const ListingFormSimplified = ({
   listing,
   categories,
@@ -159,7 +152,7 @@ const ListingFormSimplified = ({
   webSlug,
 }: Props) => {
   const { tags } = useTags()
-  const form = useForm<FormValues>({
+  const form = useForm({
     resolver: zodResolver(listingFormSchema),
     defaultValues: {
       id: listing?.id || null,

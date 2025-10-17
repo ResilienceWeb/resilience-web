@@ -6,6 +6,7 @@ import { removeNonAlphaNumeric } from '@helpers/utils'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
 import { Button } from '@components/ui/button'
 import { useAppContext } from '@store/hooks'
+import { tour } from '../../../app/admin/tour'
 import Table from './table/Table'
 import TableActions from './table/TableActions'
 
@@ -56,6 +57,9 @@ const EditableList = ({ deleteListing, items }) => {
   )
 
   const goToCreateListing = useCallback(() => {
+    if (tour.isActive) {
+      tour.moveNext()
+    }
     router.push('/admin/new-listing')
   }, [router])
 

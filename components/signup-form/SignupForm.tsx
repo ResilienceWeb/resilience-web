@@ -15,7 +15,7 @@ import { Input } from '@components/ui/input'
 
 const FormSchema = z.object({
   email: z.string().min(2, {
-    message: 'You forgot to enter your email :)',
+    error: 'You forgot to enter your email :)',
   }),
 })
 

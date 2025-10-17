@@ -50,30 +50,29 @@ const SetLocationMap = dynamic(
 
 const socialItemSchema = z.object({
   platform: z.string(),
-  url: z.string().url('Please enter a valid URL (https://...)'),
+  url: z.url({ error: 'Please enter a valid URL (https://...)' }),
 })
 
 const actionItemSchema = z.object({
   type: z.string(),
-  url: z.string().url('Please enter a valid URL (https://...)'),
+  url: z.url({ error: 'Please enter a valid URL (https://...)' }),
 })
 
 const listingFormSchema = z.object({
   id: z.number().or(z.null()),
-  title: z.string().min(1, 'Title is required'),
-  description: z.string().min(1, 'Description is required'),
-  category: z.string().min(1, 'Category is required'),
-  email: z.string().email('Please enter a valid email').or(z.literal('')),
+  title: z.string().min(1, { error: 'Title is required' }),
+  description: z.string().min(1, { error: 'Description is required' }),
+  category: z.string().min(1, { error: 'Category is required' }),
+  email: z.email({ error: 'Please enter a valid email' }).or(z.literal('')),
   website: z
-    .string()
-    .url('Please enter a valid URL (https://...)')
+    .url({ error: 'Please enter a valid URL (https://...)' })
     .or(z.literal('')),
   socials: z.array(socialItemSchema),
   actions: z.array(actionItemSchema),
   seekingVolunteers: z.boolean(),
   featured: z.boolean(),
   image: z.any(),
-  slug: z.string().min(1, 'Slug is required'),
+  slug: z.string().min(1, { error: 'Slug is required' }),
   tags: z.array(z.object({ value: z.number(), label: z.string() })),
   relations: z.array(z.object({ value: z.number(), label: z.string() })),
   noPhysicalLocation: z.boolean(),

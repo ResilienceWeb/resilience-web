@@ -15,11 +15,11 @@ import { LuBook, LuUserRoundSearch } from 'react-icons/lu'
 import Image from 'next/legacy/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useAppContext } from '@store/hooks'
 import { useSession } from '@auth-client'
 import DonateButton from '@components/donate-button'
 import useCanEditWeb from '@hooks/web-access/useCanEditWeb'
 import useIsOwnerOfWeb from '@hooks/web-access/useIsOwnerOfWeb'
+import { useAppContext } from '@store/hooks'
 import LogoImage from '../../../public/logo.png'
 
 interface NavItemProps {
@@ -61,7 +61,7 @@ const NavItem = ({ label, icon, href, tourId, closeMenu }: NavItemProps) => {
 export default function SidebarContent({ closeMenu, ...rest }) {
   const { data: session } = useSession()
   const canEditWeb = useCanEditWeb()
-  const isOwnerOfCurrentWeb = useIsOwnerOfWeb()
+  const { isOwner } = useIsOwnerOfWeb()
   const { selectedWebId } = useAppContext()
 
   const navLinks = useMemo(() => {
@@ -76,7 +76,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       })
     }
 
-    if (canEditWeb) {
+    if (selectedWebId && canEditWeb) {
       links.push({
         label: 'Categories & Tags',
         href: '/admin/categories',
@@ -92,7 +92,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       })
     }
 
-    if (isOwnerOfCurrentWeb || session?.user.role === 'admin') {
+    if (isOwner || session?.user.role === 'admin') {
       links.push({
         label: 'Web Settings',
         href: '/admin/web-settings',
@@ -121,7 +121,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     })
 
     return links
-  }, [canEditWeb, isOwnerOfCurrentWeb, selectedWebId, session?.user.role])
+  }, [canEditWeb, isOwner, selectedWebId, session?.user.role])
 
   const adminNavLinks = useMemo(() => {
     const links: any[] = []

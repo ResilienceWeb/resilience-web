@@ -83,18 +83,18 @@ const faqs = [
 ]
 
 const formSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
+  title: z.string().min(1, { error: 'Title is required' }),
   slug: z
     .string()
-    .min(1, 'Slug is required')
+    .min(1, { error: 'Slug is required' })
     .refine(urlValidator, {
-      message: 'Please only use letters, numbers and dashes',
+      error: 'Please only use letters, numbers and dashes',
     })
     .refine((value) => value === value.toLowerCase(), {
-      message: 'Slug must be lowercase',
+      error: 'Slug must be lowercase',
     }),
-  contactEmail: z.string().email('Please enter a valid email').optional(),
-  description: z.string().optional(),
+  contactEmail: z.email({ error: 'Please enter a valid email' }).optional(),
+  description: z.string(),
   location: z
     .object({
       latitude: z.number(),

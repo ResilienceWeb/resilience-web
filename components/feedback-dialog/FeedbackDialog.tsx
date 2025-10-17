@@ -27,11 +27,11 @@ import { Input } from '@components/ui/input'
 import { Textarea } from '@components/ui/textarea'
 
 const formSchema = z.object({
-  email: z.string().min(1, 'Email is required').email('Invalid email address'),
+  email: z.string().min(1, { error: 'Email is required' }).email({ error: 'Invalid email address' }),
   feedback: z
     .string()
-    .min(1, 'Feedback is required')
-    .max(1000, 'Feedback must be less than 1000 characters'),
+    .min(1, { error: 'Feedback is required' })
+    .max(1000, { error: 'Feedback must be less than 1000 characters' }),
 })
 
 interface FeedbackDialogProps {
