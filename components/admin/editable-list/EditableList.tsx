@@ -101,7 +101,7 @@ const EditableList = ({ deleteListing, items }) => {
             <a
               href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
               target="_blank"
-              className="font-semibold text-[#2B6CB0] hover:underline"
+              className="font-semibold hover:underline"
               rel="noopener noreferrer"
             >
               {`${selectedWebSlug}.${REMOTE_HOSTNAME}`}

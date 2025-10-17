@@ -11,6 +11,9 @@ import styles from './Network.module.css'
 
 const options = {
   autoResize: true,
+  layout: {
+    improvedLayout: false,
+  },
   nodes: {
     scaling: {
       min: 8,
