@@ -39,8 +39,6 @@ const ListingEditReview = ({
 
   const hadNoLocationPreviously = Boolean(!listing.location)
 
-  console.log(listing, editedListing)
-
   return (
     <div className="space-y-6">
       <Diff

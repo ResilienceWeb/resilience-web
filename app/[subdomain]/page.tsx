@@ -39,6 +39,7 @@ export default async function WebPage(props) {
       webDescription={webData.description}
       webIsPublished={webData.published}
       webContactEmail={webData.contactEmail}
+      webSlug={webSlug}
     />
   )
 }

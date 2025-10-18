@@ -4,7 +4,6 @@ import { useMemo, memo } from 'react'
 import Link from 'next/link'
 import { Clock, MapPin, Timer, Globe } from 'lucide-react'
 import Footer from '@components/footer'
-import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 
 type EventAddress = {
   streetAddress?: string
@@ -30,10 +29,6 @@ type EventItem = {
   publisherUrl?: string
   address?: EventAddress
   organizer?: EventOrganizer
-}
-
-type Props = {
-  items: EventItem[]
 }
 
 function formatDateHeading(date: Date) {
@@ -96,9 +91,12 @@ function getLocationLabel(address?: EventAddress) {
   return text
 }
 
-const Events = ({ items }: Props) => {
-  const selectedWebSlug = useSelectedWebSlug()
+type Props = {
+  items: EventItem[]
+  webSlug: string
+}
 
+const Events = ({ items, webSlug }: Props) => {
   const groups = useMemo(() => {
     if (!items || items.length === 0)
       return [] as { key: string; date: Date; events: EventItem[] }[]
@@ -128,7 +126,7 @@ const Events = ({ items }: Props) => {
         <p className="text-gray-600 mt-1">
           These events are provided by our friends at{' '}
           <a
-            href={`https://${selectedWebSlug}.placecal.org`}
+            href={`https://${webSlug}.placecal.org`}
             target="_blank"
             rel="noreferrer"
           >
@@ -156,7 +154,7 @@ const Events = ({ items }: Props) => {
                 const isOnline = onlineOrAddress === 'Online'
                 return (
                   <Link
-                    href={`https://${selectedWebSlug}.placecal.org/events/${ev.id}`}
+                    href={`https://${webSlug}.placecal.org/events/${ev.id}`}
                     key={ev.id}
                     target="_blank"
                     passHref
@@ -213,7 +211,7 @@ const Events = ({ items }: Props) => {
         <p className="text-gray-600 mt-1">
           These events are provided by our friends at{' '}
           <a
-            href={`https://${selectedWebSlug}.placecal.org`}
+            href={`https://${webSlug}.placecal.org`}
             target="_blank"
             rel="noreferrer"
           >

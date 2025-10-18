@@ -14,7 +14,6 @@ import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import { Separator } from '@components/ui/separator'
 import VolunteerSwitch from '@components/volunteer-switch'
-import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import LogoImage from '../../public/logo.png'
 
 interface DrawerProps {
@@ -31,6 +30,7 @@ interface DrawerProps {
   searchTerm: string
   webDescription?: string
   webContactEmail?: string
+  webSlug: string
   isTransitionMode?: boolean
 }
 
@@ -49,8 +49,8 @@ const Drawer = ({
   webDescription,
   webContactEmail,
   isTransitionMode = false,
+  webSlug,
 }: DrawerProps) => {
-  const selectedWebSlug = useSelectedWebSlug()
   return (
     <div className="fixed z-3 h-screen w-[300px] bg-white shadow-xl">
       <div className="flex h-full flex-col overflow-hidden">
@@ -69,7 +69,7 @@ const Drawer = ({
           {!isTransitionMode && (
             <>
               <div className="p-4">
-                <a href={`${REMOTE_URL}/new-listing/${selectedWebSlug}`}>
+                <a href={`${REMOTE_URL}/new-listing/${webSlug}`}>
                   <Button
                     size="lg"
                     variant="default"

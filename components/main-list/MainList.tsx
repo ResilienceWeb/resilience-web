@@ -5,17 +5,16 @@ import NextLink from 'next/link'
 import { REMOTE_URL } from '@helpers/config'
 import Footer from '@components/footer'
 import { Button } from '@components/ui/button'
-import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import Item from './item'
 
 interface MainListProps {
   filteredItems: any[]
+  webSlug: string
 }
 
-const MainList = ({ filteredItems }: MainListProps) => {
-  const selectedWebSlug = useSelectedWebSlug()
-  const { categories } = useCategoriesPublic({ webSlug: selectedWebSlug })
+const MainList = ({ filteredItems, webSlug }: MainListProps) => {
+  const { categories } = useCategoriesPublic({ webSlug })
   const categoriesIndexes = useMemo(() => {
     const categoriesIndexesObj = {}
     categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))
@@ -43,7 +42,7 @@ const MainList = ({ filteredItems }: MainListProps) => {
                 No listings were found that match your search 🤔 Maybe propose
                 the listing to the maintainers?
               </p>
-              <NextLink href={`${REMOTE_URL}/new-listing/${selectedWebSlug}`}>
+              <NextLink href={`${REMOTE_URL}/new-listing/${webSlug}`}>
                 <Button
                   variant="default"
                   className="bg-[#2B8257] hover:bg-[#236c47]"

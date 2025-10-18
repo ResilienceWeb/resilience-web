@@ -1,6 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
 import type { Tag } from '@prisma/client'
-import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
+import { useQuery } from '@tanstack/react-query'
 
 async function fetchTagsRequest({ queryKey }) {
   const [_key, { webSlug }] = queryKey
@@ -9,17 +8,15 @@ async function fetchTagsRequest({ queryKey }) {
   return tags.filter((tag) => tag.listings.length > 0)
 }
 
-export default function useTags() {
-  const selectedWebSlug = useSelectedWebSlug()
+export default function useTagsPublic({ webSlug }) {
   const {
     data: tags,
     isPending,
     isError,
   } = useQuery<Tag[]>({
-    queryKey: ['tags', { webSlug: selectedWebSlug, public: true }],
+    queryKey: ['tags', { webSlug, public: true }],
     queryFn: fetchTagsRequest,
     refetchOnWindowFocus: false,
-    enabled: selectedWebSlug !== undefined,
     staleTime: Infinity,
   })
 

@@ -49,6 +49,7 @@ export default async function TransitionPage() {
         webIsPublished
         isTransitionMode
         features={data.features}
+        webSlug="transition"
       />
     </HydrationBoundary>
   )

@@ -1,5 +1,5 @@
-import { useAppContext } from '@store/hooks'
 import useWebs from '@hooks/webs/useWebs'
+import { useAppContext } from '@store/hooks'
 
 export default function useSelectedWebName() {
   const { selectedWebId } = useAppContext()

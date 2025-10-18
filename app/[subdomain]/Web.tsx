@@ -21,7 +21,6 @@ import MainList from '@components/main-list'
 import MobileOptionsSheet from '@components/mobile-options-sheet'
 import { Spinner } from '@components/ui/spinner'
 import useIsMobile from '@hooks/application/useIsMobile'
-import useSelectedWebSlug from '@hooks/application/useSelectedWebSlug'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import useTagsPublic from '@hooks/tags/useTagsPublic'
 
@@ -50,6 +49,7 @@ type Props = {
   webIsPublished: boolean
   webContactEmail?: string
   isTransitionMode?: boolean
+  webSlug: string
 }
 
 const Web = ({
@@ -61,10 +61,10 @@ const Web = ({
   webIsPublished,
   isTransitionMode = false,
   webContactEmail,
+  webSlug,
 }: Props) => {
   const isMobile = useIsMobile()
   const [isVolunteer, setIsVolunteer] = useState(false)
-  const selectedWebSlug = useSelectedWebSlug()
   const defaultTab = isMobile ? 'list' : 'web'
 
   const isGeoMappingEnabled = isFeatureEnabled(FEATURES.showMap, features)
@@ -121,10 +121,8 @@ const Web = ({
     }
   }, [viewParam, activeTab, setActiveTab])
 
-  const { categories: fetchedCategories } = useCategoriesPublic({
-    webSlug: selectedWebSlug,
-  })
-  const { tags: fetchedTags } = useTagsPublic()
+  const { categories: fetchedCategories } = useCategoriesPublic({ webSlug })
+  const { tags: fetchedTags } = useTagsPublic({ webSlug })
 
   useEffect(() => {
     if (!fetchedCategories) return
@@ -308,6 +306,7 @@ const Web = ({
           searchTerm={searchTerm}
           webDescription={webDescription}
           webContactEmail={webContactEmail}
+          webSlug={webSlug}
           isTransitionMode={isTransitionMode}
         />
       )}
@@ -346,15 +345,17 @@ const Web = ({
           />
         )}
 
-        {activeTab === 'list' && <MainList filteredItems={filteredItems} />}
+        {activeTab === 'list' && (
+          <MainList filteredItems={filteredItems} webSlug={webSlug} />
+        )}
         {activeTab === 'map' && <ListingsMap items={filteredItems} />}
-        {activeTab === 'events' && <Events items={events} />}
+        {activeTab === 'events' && <Events items={events} webSlug={webSlug} />}
 
         {isMobile && (
           <MobileOptionsSheet
             webDescription={webDescription}
             isTransitionMode={isTransitionMode}
-            selectedWebSlug={selectedWebSlug}
+            selectedWebSlug={webSlug}
           />
         )}
 
