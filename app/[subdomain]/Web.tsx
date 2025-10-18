@@ -67,6 +67,8 @@ const Web = ({
   const [isVolunteer, setIsVolunteer] = useState(false)
   const defaultTab = isMobile ? 'list' : 'web'
 
+  console.log('isMobile', isMobile)
+
   const isGeoMappingEnabled = isFeatureEnabled(FEATURES.showMap, features)
 
   const [categoriesParam, setCategoriesParam] = useQueryState(
@@ -116,7 +118,7 @@ const Web = ({
   const [selectedId, setSelectedId] = useState()
 
   useEffect(() => {
-    if (viewParam !== activeTab) {
+    if (activeTab === undefined) {
       setActiveTab(viewParam)
     }
   }, [viewParam, activeTab, setActiveTab])

@@ -142,25 +142,22 @@ const Drawer = ({
               />
             )}
           </div>
-          {webDescription && webDescription.length < 100 && (
-            <>
-              <Separator />
-              <div className="mx-2 mt-4">
+
+          <Separator />
+          <div className="mx-2 mt-4">
+            {webDescription && webDescription.length < 100 && (
+              <>
                 <h2 className="text-xl font-semibold">About this web</h2>
                 <RichText html={webDescription} />
-              </div>
-            </>
-          )}
-          {webDescription && webDescription.length >= 100 && (
-            <>
-              <Separator />
-              <div className="mx-2 mt-4">
-                <Link href="/web">
-                  <Button variant="outline">About this web</Button>
-                </Link>
-              </div>
-            </>
-          )}
+              </>
+            )}
+
+            {webDescription && webDescription.length >= 100 && (
+              <Link href="/web">
+                <Button variant="outline">About this web</Button>
+              </Link>
+            )}
+          </div>
         </div>
         {webContactEmail && (
           <div className="m-2">
