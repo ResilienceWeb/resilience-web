@@ -12,7 +12,7 @@ import {
   HiX,
 } from 'react-icons/hi'
 import { LuBook, LuUserRoundSearch } from 'react-icons/lu'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession } from '@auth-client'
@@ -157,7 +157,6 @@ export default function SidebarContent({ closeMenu, ...rest }) {
               alt="Resilience Web CIC logo"
               src={LogoImage}
               width="222"
-              height="75"
               unoptimized
             />
             <button

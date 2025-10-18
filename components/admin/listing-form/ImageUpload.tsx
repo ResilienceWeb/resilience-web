@@ -2,7 +2,7 @@ import { useRef, useState, memo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { FiUploadCloud, FiImage } from 'react-icons/fi'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import optimizeImage from '@helpers/optimizeImage'
 import { Button } from '@components/ui/button'
 import {
@@ -96,10 +96,9 @@ const ImageUpload = ({
                   <Image
                     alt="Preview of image uploaded by user"
                     src={preview ?? currentValue}
-                    layout="fill"
-                    objectFit="contain"
+                    fill
+                    style={{ objectFit: 'contain' }}
                     unoptimized
-                    className="rounded-md"
                   />
                 </div>
                 <div className="mt-4 flex justify-center gap-2">

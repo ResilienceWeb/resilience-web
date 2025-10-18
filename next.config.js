@@ -13,6 +13,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 const nextConfig = {
   reactStrictMode: false,
   images: {
+    qualities: [80],
     remotePatterns: [
       {
         protocol: 'https',

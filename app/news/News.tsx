@@ -1,5 +1,6 @@
 'use client'
-import Image from 'next/legacy/image'
+
+import Image from 'next/image'
 import { Link } from 'next-view-transitions'
 import Layout from '@components/layout'
 
@@ -43,9 +44,11 @@ export default function News({ posts }: NewsProps) {
                     <div className="relative -mx-6 -mt-6 mb-4 h-[210px] bg-gray-100">
                       <Image
                         src={post.coverImage?.url}
-                        layout="fill"
-                        objectFit="cover"
                         alt={`Image for blog post ${post.title}`}
+                        fill
+                        sizes="(max-width: 1280px) 90vw, 200px"
+                        quality={80}
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
                     <div>

@@ -3,7 +3,7 @@
 import { useMemo, memo, useState } from 'react'
 import { HiChevronRight, HiOutlineX } from 'react-icons/hi'
 import { RxHamburgerMenu } from 'react-icons/rx'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
@@ -97,7 +97,6 @@ export default function MainNav() {
                   alt="Resilience Web CIC logo"
                   src={LogoImage}
                   width="145"
-                  height="50"
                   unoptimized
                 />
               </Link>

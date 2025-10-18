@@ -38,21 +38,14 @@ const WebCards = ({ webs }) => {
               web.slug !== 'transition-uk',
           )
           .sort((a, b) => {
-            if (
-              lastOnesOnHomepage.includes(a.title) >
-              lastOnesOnHomepage.includes(b.title)
-            ) {
-              return 1
-            } else {
-              return -1
-            }
+            const aIsLast = lastOnesOnHomepage.includes(a.title)
+            const bIsLast = lastOnesOnHomepage.includes(b.title)
+            return Number(aIsLast) - Number(bIsLast)
           })
           .sort((a, b) => {
-            if (isNewWeb(a.createdAt) > isNewWeb(b.createdAt)) {
-              return -1
-            } else {
-              return 1
-            }
+            const aIsNew = isNewWeb(a.createdAt)
+            const bIsNew = isNewWeb(b.createdAt)
+            return Number(bIsNew) - Number(aIsNew)
           })
           .map((web) => (
             <Card key={web.id} web={web} />
@@ -72,11 +65,7 @@ const Card = ({ web }) => {
   return (
     <Link href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}>
       <div className="group relative h-full overflow-hidden rounded-xl bg-white shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
-        {isNew && (
-          <Badge className="absolute top-2 right-2 z-10 bg-green-700">
-            New
-          </Badge>
-        )}
+        {isNew && <Badge className="absolute top-2 right-2 z-10">New</Badge>}
         <div className="relative h-48 overflow-hidden">
           <Image
             alt={`Image representing ${web.title} web`}
@@ -86,7 +75,7 @@ const Card = ({ web }) => {
           />
         </div>
         <div className="p-4">
-          <h3 className="text-xl font-semibold text-gray-900">{web.title}</h3>
+          <h3 className="text-xl font-semibold">{web.title}</h3>
         </div>
       </div>
     </Link>

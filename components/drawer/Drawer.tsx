@@ -3,7 +3,7 @@
 import { memo } from 'react'
 import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
 import Select from 'react-select'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import NextLink from 'next/link'
 import Link from 'next/link'
 import customMultiSelectStyles from '@styles/select-styles'
@@ -60,9 +60,8 @@ const Drawer = ({
               <Image
                 alt="Resilience Web CIC logo"
                 src={LogoImage}
-                width="306"
-                height="104"
-                unoptimized
+                width="268"
+                priority
               />
             </div>
           </NextLink>

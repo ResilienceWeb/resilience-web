@@ -1,7 +1,7 @@
 import { memo, useState, useMemo } from 'react'
 import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import Select from 'react-select'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import NextLink from 'next/link'
 import customMultiSelectStyles from '@styles/select-styles'
 import { REMOTE_URL } from '@helpers/config'
@@ -9,6 +9,7 @@ import { cn } from '@components/lib/utils'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs'
+import LogoImage from '../../public/logo.png'
 
 type HeaderProps = {
   categories: any
@@ -75,9 +76,8 @@ const Header = ({
           <div className="my-4">
             <Image
               alt="Resilience Web CIC logo"
-              src="/logo.png"
-              width="306"
-              height="104"
+              src={LogoImage}
+              width="268"
               unoptimized
             />
           </div>

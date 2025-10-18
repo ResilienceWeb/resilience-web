@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { FaGithub, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import Link from 'next/link'
 import { REMOTE_URL } from '@helpers/config'
 import SignupForm from '@components/signup-form'
@@ -47,7 +47,6 @@ export default function Footer({ hideBorder = false }) {
                 alt="Resilience Web CIC logo"
                 src={LogoImage}
                 width="148"
-                height="55"
                 unoptimized
               />
             </div>
