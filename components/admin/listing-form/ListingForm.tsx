@@ -292,7 +292,7 @@ const ListingForm = ({
                   <FormLabel className="font-semibold">Category*</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    value={String(field.value)}
+                    value={field.value ? String(field.value) : undefined}
                   >
                     <FormControl>
                       <SelectTrigger>

@@ -6,6 +6,7 @@ import { HiOutlineClipboard, HiOutlineClipboardCheck } from 'react-icons/hi'
 import { useRouter } from 'next/navigation'
 import type { WebAccess } from '@prisma/client'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
 import WebAccessTable from '@components/admin/web-access-table'
 import WebFeatures from '@components/admin/web-features'
 import {
@@ -17,6 +18,7 @@ import {
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
+import useDeleteWeb from '@hooks/webs/useDeleteWeb'
 import usePublishWeb from '@hooks/webs/usePublishWeb'
 import useUnpublishWeb from '@hooks/webs/useUnpublishWeb'
 import useWeb from '@hooks/webs/useWeb'
@@ -33,7 +35,9 @@ export default function WebDashboardPage({ params }) {
     usePublishWeb(webSlug)
   const { mutate: unpublishWeb, isPending: isUnpublishingWeb } =
     useUnpublishWeb(webSlug)
+  const { mutate: deleteWeb, isPending: isDeletingWeb } = useDeleteWeb(webSlug)
   const [copied, setCopied] = useState(false)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
   const goBack = useCallback(() => {
     router.back()
@@ -100,6 +104,15 @@ export default function WebDashboardPage({ params }) {
         return false
       })
   }, [listingEmails])
+
+  const handleDeleteWeb = useCallback(() => {
+    deleteWeb(undefined, {
+      onSuccess: () => {
+        router.push('/admin/webs')
+      },
+    })
+    setIsDeleteDialogOpen(false)
+  }, [deleteWeb, router])
 
   if (isLoadingWeb) {
     return <Spinner />
@@ -255,13 +268,41 @@ export default function WebDashboardPage({ params }) {
         <div className="mt-4 flex flex-col gap-2">
           <h2 className="text-2xl font-bold">Team</h2>
           <WebAccessTable webAccess={web.webAccess} isInAdminSection />
-          <Button variant="outline" asChild className="mb-8 self-start">
+          <Button variant="outline" asChild className="self-start">
             <a href={`mailto:${mailToEmails}`}>
               Send email to owners and editors
             </a>
           </Button>
         </div>
       )}
+
+      <div className="my-8 border-t border-gray-200 pt-6">
+        <h2 className="text-2xl font-bold text-destructive mb-2">
+          Danger Zone
+        </h2>
+        <p className="text-muted-foreground mb-4">
+          Deleting this web will permanently remove all associated data,
+          including listings, categories, and team access. This action cannot be
+          undone.
+        </p>
+        <Button
+          variant="destructive"
+          onClick={() => setIsDeleteDialogOpen(true)}
+          disabled={isDeletingWeb}
+        >
+          {isDeletingWeb ? <Spinner /> : null}
+          Delete Web
+        </Button>
+      </div>
+
+      <DeleteConfirmationDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        handleRemove={handleDeleteWeb}
+        description={`Are you sure you want to delete "${web.title}" web? This will permanently delete all ${web.listings.length} listings and cannot be undone.`}
+        titleLabel="Delete Web"
+        buttonLabel="Delete Web"
+      />
     </div>
   )
 }
