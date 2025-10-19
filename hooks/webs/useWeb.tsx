@@ -18,7 +18,6 @@ export default function useWeb({ webSlug, withAdminInfo = false }) {
   } = useQuery({
     queryKey: ['webs', { webSlug, withAdminInfo }],
     queryFn: fetchWebRequest,
-    refetchOnWindowFocus: false,
     enabled: webSlug !== undefined && webSlug !== '',
   })
 

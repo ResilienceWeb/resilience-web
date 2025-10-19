@@ -138,23 +138,25 @@ const WebAccessTable = ({
                     }
                   })}
 
-                  {isOwner &&
-                    session?.user?.email !== webAccess.email &&
-                    !webAccess.owner && (
-                      <TableCell>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() =>
-                            setIsRemoveConfirmationDialogOpenWithUserEmail({
-                              userEmail: webAccess.email,
-                            })
-                          }
-                        >
-                          Remove
-                        </Button>
-                      </TableCell>
-                    )}
+                  {isOwner ||
+                    (session?.user.role === 'admin' &&
+                      session?.user?.email !== webAccess.email &&
+                      !webAccess.owner && (
+                        <TableCell>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setIsRemoveConfirmationDialogOpenWithUserEmail({
+                                userEmail: webAccess.email,
+                              })
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </TableCell>
+                      ))}
                 </TableRow>
               )
             })}

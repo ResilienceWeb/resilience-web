@@ -131,6 +131,7 @@ export async function DELETE(request: Request) {
     return Response.json({
       success: true,
       message: `User ${userEmail} removed from web successfully`,
+      data: selectedWeb,
     })
   } catch (e) {
     console.error(`[RW] Unable to remove user from web - ${e}`)

@@ -267,7 +267,11 @@ export default function WebDashboardPage({ params }) {
       {web.webAccess?.length > 0 && (
         <div className="mt-4 flex flex-col gap-2">
           <h2 className="text-2xl font-bold">Team</h2>
-          <WebAccessTable webAccess={web.webAccess} isInAdminSection />
+          <WebAccessTable
+            webAccess={web.webAccess}
+            webId={web.id}
+            isInAdminSection
+          />
           <Button variant="outline" asChild className="self-start">
             <a href={`mailto:${mailToEmails}`}>
               Send email to owners and editors

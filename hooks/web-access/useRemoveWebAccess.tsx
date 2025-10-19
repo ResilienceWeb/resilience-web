@@ -29,7 +29,7 @@ export default function useRemoveWebAccess() {
 
   return useMutation({
     mutationFn: removeWebAccessRequest,
-    onSuccess: (_data, variables) => {
+    onSuccess: (response, variables) => {
       toast.success('Success', {
         description: `User ${variables.userEmail} removed from web`,
         duration: 5000,
@@ -39,6 +39,14 @@ export default function useRemoveWebAccess() {
       queryClient.invalidateQueries({ queryKey: ['web-access-for-web'] })
       queryClient.invalidateQueries({ queryKey: ['my-web-access'] })
       queryClient.invalidateQueries({ queryKey: ['web-access-check'] })
+
+      // for admin area
+      queryClient.invalidateQueries({
+        queryKey: [
+          'webs',
+          { webSlug: response.data.slug, withAdminInfo: true },
+        ],
+      })
     },
     onError: (error: Error) => {
       toast.error('Error', {

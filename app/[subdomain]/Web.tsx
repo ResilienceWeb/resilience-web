@@ -67,8 +67,6 @@ const Web = ({
   const [isVolunteer, setIsVolunteer] = useState(false)
   const defaultTab = isMobile ? 'list' : 'web'
 
-  console.log('isMobile', isMobile)
-
   const isGeoMappingEnabled = isFeatureEnabled(FEATURES.showMap, features)
 
   const [categoriesParam, setCategoriesParam] = useQueryState(
