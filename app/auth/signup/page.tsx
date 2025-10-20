@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
 import * as Sentry from '@sentry/nextjs'
 import { authClient } from '@auth-client'
+import { ERROR_MESSAGES } from '@auth-client'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import LogoImage from '../../../public/logo.png'
@@ -16,6 +17,15 @@ export default function SignUp() {
   const [error, setError] = useState('')
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo')
+  const errorCode = searchParams.get('error')
+
+  useEffect(() => {
+    if (errorCode) {
+      const errorMessage =
+        ERROR_MESSAGES[errorCode] || 'An error occurred. Please try again.'
+      setError(errorMessage)
+    }
+  }, [errorCode])
 
   const isUserAttemptingEdit = redirectTo?.includes('/edit')
   const isUserAttemptingPropose = redirectTo?.includes('/new-listing')
