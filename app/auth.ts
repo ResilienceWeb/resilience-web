@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { magicLink, admin } from 'better-auth/plugins'
@@ -9,6 +10,19 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
+  logger: {
+    level: 'warn',
+    log: (level, message, ...args) => {
+      if (level === 'error' || level === 'warn') {
+        Sentry.captureException({ level, message, args })
+      }
+    },
+  },
+  onAPIError: {
+    onError: (error, _ctx) => {
+      Sentry.captureException(error)
+    },
+  },
   plugins: [
     admin(),
     magicLink({

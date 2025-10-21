@@ -66,7 +66,10 @@ export default function SignUp() {
                   callbackURL: redirectTo ?? '/admin',
                 })
 
-                if (error) throw new Error(error.message)
+                if (error) {
+                  Sentry.captureException(error)
+                  throw new Error(error.message)
+                }
                 setError('')
                 router.push('/auth/verify-request')
               } catch (error) {
