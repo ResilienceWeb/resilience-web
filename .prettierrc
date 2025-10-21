@@ -15,6 +15,7 @@
     "<THIRD_PARTY_MODULES>",
     "^@prisma$",
     "^@prisma-rw$",
+    "^@prisma-rw-build$",
     "^@auth$",
     "^@auth-client$",
     "^@trigger$",
