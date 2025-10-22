@@ -4,8 +4,8 @@ import { useCallback, useMemo, useEffect, useState, memo } from 'react'
 import { FaStar } from 'react-icons/fa'
 import { HiUserGroup } from 'react-icons/hi'
 import { useInView } from 'react-intersection-observer'
-import { useRouter } from 'next/navigation'
 import chroma from 'chroma-js'
+import { useTransitionRouter } from 'next-view-transitions'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
 import {
@@ -23,7 +23,7 @@ type Props = {
 }
 
 const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
-  const router = useRouter()
+  const router = useTransitionRouter()
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
   const { ref, inView } = useInView()

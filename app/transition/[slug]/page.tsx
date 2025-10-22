@@ -11,7 +11,7 @@ export default async function TransitionListingPage(props) {
   })
 
   if (!listing) {
-    console.log(`[RW-TransitionWeb] Listing not found for slug ${params.slug}`)
+    console.log(`[RW] Listing not found for slug ${params.slug}`)
     return null
   }
 
@@ -149,7 +149,7 @@ function transformAndFindListing(data: any[], listingSlug: string) {
   const listing = cleanedData.find((item) => item.slug === listingSlug)
 
   if (!listing) {
-    console.log(`[RW-TransitionWeb] Listing not found for slug ${listingSlug}`)
+    console.log(`[RW] Listing not found for slug ${listingSlug}`)
     return null
   }
 

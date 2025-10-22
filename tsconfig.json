@@ -23,7 +23,7 @@
     "verbatimModuleSyntax": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
       "@components/*": [
@@ -58,7 +58,7 @@
       ],
       "@prisma-rw-build": [
         "prisma/build-client"
-      ]
+      ],
     },
     "typeRoots": [
       "./node_modules/@types",
@@ -80,8 +80,7 @@
     "./next.config.js",
     "./pages/_error.js",
     ".next/types/**/*.ts",
-    "trigger.config.ts",
-    ".next/dev/types/**/*.ts"
+    "trigger.config.ts"
   ],
   "exclude": [
     "node_modules"
