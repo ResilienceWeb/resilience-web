@@ -8,7 +8,17 @@ const mailerSend = new MailerSend({
 
 const sentFrom = new Sender('info@resilienceweb.org.uk', 'Resilience Web')
 
-export const sendEmail = async ({ to, subject, email }) => {
+export const sendEmail = async ({
+  to,
+  subject,
+  email,
+  replyTo,
+}: {
+  to: string
+  subject: string
+  email: any
+  replyTo?: string
+}) => {
   const emailHtml = await render(email)
   const emailText = await render(email, {
     plainText: true,
@@ -27,6 +37,7 @@ export const sendEmail = async ({ to, subject, email }) => {
     await transport.sendMail({
       to,
       from: process.env.EMAIL_FROM,
+      replyTo: replyTo ?? process.env.EMAIL_FROM,
       subject,
       text: emailText,
       html: emailHtml,
@@ -36,11 +47,12 @@ export const sendEmail = async ({ to, subject, email }) => {
   }
 
   const recipients = [new Recipient(to)]
+  const replyToSender = new Sender(replyTo ?? process.env.EMAIL_FROM)
 
   const emailParams = new EmailParams()
     .setFrom(sentFrom)
     .setTo(recipients)
-    .setReplyTo(sentFrom)
+    .setReplyTo(replyToSender)
     .setSubject(subject)
     .setHtml(emailHtml)
     .setText(emailText)

@@ -9,6 +9,7 @@ export async function POST(request) {
       email: feedback,
       subject: `Message from ${email}`,
       to: 'cambridgeresilienceweb@gmail.com',
+      replyTo: email,
     })
 
     return Response.json(
