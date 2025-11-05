@@ -66,8 +66,6 @@ export default function SignIn() {
                   },
                 )
 
-                // TODO: ensure redirect happens correctly
-                // callbackURL: redirectTo ?? '/admin',
                 if (error) {
                   Sentry.captureException(error)
                   const errorMessage =
@@ -78,7 +76,11 @@ export default function SignIn() {
                 // Store email in session storage for verification page
                 sessionStorage.setItem('otp-email', email)
                 setError('')
-                router.push('/auth/verify-otp')
+
+                const verifyUrl = redirectTo
+                  ? `/auth/verify-otp?redirectTo=${encodeURIComponent(redirectTo)}`
+                  : '/auth/verify-otp'
+                router.push(verifyUrl)
               } catch (error) {
                 console.error('[RW] Error signing in:', error)
                 Sentry.captureException(error)
