@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useSession, signIn } from '@auth-client'
+import { useSession, authClient } from '@auth-client'
 import { Spinner } from '@components/ui/spinner'
 
 export default function ActivatePage() {
@@ -15,11 +15,12 @@ export default function ActivatePage() {
   useEffect(() => {
     if (!session?.data) {
       if (email) {
-        signIn.magicLink({
+        authClient.emailOtp.sendVerificationOtp({
           email,
-          callbackURL: '/admin?firstTime=true',
+          type: 'email-verification',
         })
-        router.push('/auth/verify-request')
+        sessionStorage.setItem('otp-email', email)
+        router.push('/auth/verify-otp?redirectTo=/admin?firstTime=true')
       }
     }
   }, [session?.data, email, router])
