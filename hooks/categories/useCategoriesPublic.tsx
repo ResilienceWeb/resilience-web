@@ -18,6 +18,7 @@ export default function useCategoriesPublic({ webSlug }) {
     queryFn: fetchCategoriesRequest,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
+    enabled: Boolean(webSlug),
   })
 
   return {

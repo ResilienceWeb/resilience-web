@@ -18,6 +18,7 @@ export default function useTagsPublic({ webSlug }) {
     queryFn: fetchTagsRequest,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
+    enabled: Boolean(webSlug),
   })
 
   return {
