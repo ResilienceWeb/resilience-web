@@ -17,7 +17,7 @@ export default function ActivatePage() {
       if (email) {
         authClient.emailOtp.sendVerificationOtp({
           email,
-          type: 'email-verification',
+          type: 'sign-in',
         })
         sessionStorage.setItem('otp-email', email)
         router.push('/auth/verify-otp?redirectTo=/admin?firstTime=true')
