@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import * as Sentry from '@sentry/nextjs'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
 import { authClient, ERROR_MESSAGES } from '@auth-client'
+import type { AUTH_ERROR_CODE } from '@auth-client'
 import { Button } from '@components/ui/button'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@components/ui/input-otp'
 import LogoImage from '../../../public/logo.png'
@@ -119,25 +120,10 @@ export default function VerifyOTP() {
           },
         })
 
-        // Map common error messages
-        let errorMessage = 'An error occurred. Please try again.'
-        if (
-          verifyError.message?.includes('invalid') ||
-          verifyError.message?.includes('Invalid')
-        ) {
-          errorMessage =
-            (ERROR_MESSAGES as any).INVALID_OTP ||
-            'Invalid code. Please check and try again.'
-        } else if (
-          verifyError.message?.includes('expired') ||
-          verifyError.message?.includes('Expired')
-        ) {
-          errorMessage =
-            (ERROR_MESSAGES as any).OTP_EXPIRED ||
-            'This code has expired. Please request a new one.'
-        } else if (verifyError.message) {
-          errorMessage = verifyError.message
-        }
+        const errorMessage =
+          ERROR_MESSAGES[verifyError.code as AUTH_ERROR_CODE] ||
+          verifyError.message ||
+          'An error occurred. Please try again.'
 
         setError(errorMessage)
         setIsVerifying(false)
@@ -148,7 +134,6 @@ export default function VerifyOTP() {
       sessionStorage.removeItem('otp-email')
       sessionStorage.removeItem('otp-resend-attempts')
 
-      // Redirect to callback URL or admin
       router.push(redirectTo ?? '/admin')
     } catch (error) {
       console.error('[RW] Error verifying OTP:', error)
@@ -194,12 +179,10 @@ export default function VerifyOTP() {
         return
       }
 
-      // Track resend attempt
       const newAttempts = [...resendAttempts, { timestamp: Date.now() }]
       setResendAttempts(newAttempts)
       sessionStorage.setItem('otp-resend-attempts', JSON.stringify(newAttempts))
 
-      // Clear OTP input
       setOtp('')
       setError('')
       setIsResending(false)

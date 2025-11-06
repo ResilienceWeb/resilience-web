@@ -26,7 +26,7 @@ export const auth = betterAuth({
   plugins: [
     admin(),
     emailOTP({
-      expiresIn: 60 * 5, // 5 minutes (300 seconds)
+      expiresIn: 60 * 10, // 10 minutes
       sendVerificationOTP: async ({ email, otp }) => {
         const otpEmail = OTPEmail({
           email,

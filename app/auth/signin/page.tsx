@@ -73,7 +73,6 @@ export default function SignIn() {
                   throw new Error(errorMessage)
                 }
 
-                // Store email in session storage for verification page
                 sessionStorage.setItem('otp-email', email)
                 setError('')
 

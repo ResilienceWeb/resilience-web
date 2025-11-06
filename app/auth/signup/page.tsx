@@ -76,7 +76,6 @@ export default function SignUp() {
                   throw new Error(errorMessage)
                 }
 
-                // Store email in session storage for verification page
                 sessionStorage.setItem('otp-email', email)
                 setError('')
                 const verifyUrl = redirectTo

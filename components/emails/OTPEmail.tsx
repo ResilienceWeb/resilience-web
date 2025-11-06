@@ -49,7 +49,7 @@ const OTPEmail = ({ email, otp }: OTPEmailProps) => {
           </Section>
 
           <Text style={paragraph}>
-            <strong>This code will expire in 5 minutes.</strong>
+            <strong>This code will expire in 10 minutes.</strong>
           </Text>
 
           <Text style={paragraph}>
