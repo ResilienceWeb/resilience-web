@@ -52,3 +52,6 @@ data
 
 # Typescript cache
 *.tsbuildinfo
+
+# Local Netlify folder
+.netlify
