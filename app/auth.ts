@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/nextjs'
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
-import { magicLink, admin } from 'better-auth/plugins'
+import { emailOTP, admin } from 'better-auth/plugins'
 import prisma from '@prisma-rw'
 import { sendEmail } from '@helpers/email'
-import SignInEmail from '@components/emails/SignInEmail'
+import OTPEmail from '@components/emails/OTPEmail'
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -25,21 +25,18 @@ export const auth = betterAuth({
   },
   plugins: [
     admin(),
-    magicLink({
-      expiresIn: 60 * 60 * 24 * 7, // one week
-      sendMagicLink: ({ email, url }) => {
-        const signInEmail = SignInEmail({
-          url,
+    emailOTP({
+      expiresIn: 60 * 10, // 10 minutes
+      sendVerificationOTP: async ({ email, otp }) => {
+        const otpEmail = OTPEmail({
           email,
-          mainText: '',
-          buttonText: 'Sign in',
-          footerText: `If you did not request this email you can safely ignore it.`,
+          otp,
         })
 
         return sendEmail({
           to: email,
-          subject: `Sign in to the Resilience Web`,
-          email: signInEmail,
+          subject: `Your Resilience Web verification code`,
+          email: otpEmail,
         })
       },
     }),

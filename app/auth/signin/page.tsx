@@ -5,8 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
 import * as Sentry from '@sentry/nextjs'
-import { authClient } from '@auth-client'
-import { ERROR_MESSAGES } from '@auth-client'
+import { authClient, ERROR_MESSAGES } from '@auth-client'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import LogoImage from '../../../public/logo.png'
@@ -59,24 +58,35 @@ export default function SignIn() {
               try {
                 e.preventDefault()
                 const formData = new FormData(e.currentTarget)
-                const { error } = await authClient.signIn.magicLink({
-                  email: formData.get('email') as string,
-                  callbackURL: redirectTo ?? '/admin',
-                })
+                const email = formData.get('email') as string
+                const { error } = await authClient.emailOtp.sendVerificationOtp(
+                  {
+                    email,
+                    type: 'sign-in',
+                  },
+                )
 
                 if (error) {
                   Sentry.captureException(error)
-                  throw new Error(error.message)
+                  const errorMessage =
+                    error.message || 'Unable to send code. Please try again.'
+                  throw new Error(errorMessage)
                 }
+
+                sessionStorage.setItem('otp-email', email)
                 setError('')
-                router.push('/auth/verify-request')
+
+                const verifyUrl = redirectTo
+                  ? `/auth/verify-otp?redirectTo=${encodeURIComponent(redirectTo)}`
+                  : '/auth/verify-otp'
+                router.push(verifyUrl)
               } catch (error) {
                 console.error('[RW] Error signing in:', error)
                 Sentry.captureException(error)
                 setError(
                   error instanceof Error
                     ? error.message
-                    : 'An unknown error occurred.',
+                    : 'Unable to send code. Please try again.',
                 )
               }
             }}
@@ -101,7 +111,7 @@ export default function SignIn() {
             {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
           </form>
         </div>
-        <div className="w-full max-w-[500px] rounded-xl bg-white p-4 text-sm sm:p-6 sm:text-base">
+        <div className="w-full max-w-[490px] rounded-xl bg-white p-4 text-sm sm:p-6 sm:text-base">
           <span>Not a member of Resilience Web? </span>
           <Link
             href={

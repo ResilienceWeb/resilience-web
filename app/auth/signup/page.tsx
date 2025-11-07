@@ -61,24 +61,34 @@ export default function SignUp() {
               try {
                 e.preventDefault()
                 const formData = new FormData(e.currentTarget)
-                const { error } = await authClient.signIn.magicLink({
-                  email: formData.get('email') as string,
-                  callbackURL: redirectTo ?? '/admin',
-                })
+                const email = formData.get('email') as string
+                const { error } = await authClient.emailOtp.sendVerificationOtp(
+                  {
+                    email,
+                    type: 'sign-in',
+                  },
+                )
 
                 if (error) {
                   Sentry.captureException(error)
-                  throw new Error(error.message)
+                  const errorMessage =
+                    error.message || 'Unable to send code. Please try again.'
+                  throw new Error(errorMessage)
                 }
+
+                sessionStorage.setItem('otp-email', email)
                 setError('')
-                router.push('/auth/verify-request')
+                const verifyUrl = redirectTo
+                  ? `/auth/verify-otp?redirectTo=${encodeURIComponent(redirectTo)}`
+                  : '/auth/verify-otp'
+                router.push(verifyUrl)
               } catch (error) {
                 console.error('[RW] Error signing up:', error)
                 Sentry.captureException(error)
                 setError(
                   error instanceof Error
                     ? error.message
-                    : 'An unknown error occurred.',
+                    : 'Unable to send code. Please try again.',
                 )
               }
             }}
@@ -104,7 +114,7 @@ export default function SignUp() {
           </form>
         </div>
 
-        <div className="w-full max-w-[500px] rounded-xl bg-white p-4 text-sm sm:p-6 sm:text-base">
+        <div className="w-full max-w-[490px] rounded-xl bg-white p-4 text-sm sm:p-6 sm:text-base">
           <span>Already have an account? </span>
           <Link
             href={

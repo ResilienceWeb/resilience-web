@@ -1,15 +1,13 @@
-import { adminClient, magicLinkClient } from 'better-auth/client/plugins'
+import { adminClient, emailOTPClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/react'
 
 export const authClient = createAuthClient({
-  plugins: [adminClient(), magicLinkClient()],
+  plugins: [adminClient(), emailOTPClient()],
 })
 
 export type AUTH_ERROR_CODE = keyof typeof authClient.$ERROR_CODES
 
-export const ERROR_MESSAGES: Record<AUTH_ERROR_CODE, string> = {
-  INVALID_TOKEN:
-    'Your sign-in link is invalid or has already been used. Please request a new one.',
+export const ERROR_MESSAGES: Partial<Record<AUTH_ERROR_CODE, string>> = {
   SESSION_EXPIRED: 'Your session has expired. Please sign in again.',
   INVALID_EMAIL: 'The email address is invalid.',
   USER_NOT_FOUND: 'No account found with this email address.',
@@ -49,9 +47,12 @@ export const ERROR_MESSAGES: Record<AUTH_ERROR_CODE, string> = {
     'No password-based account found. Please sign in using a different method.',
   FAILED_TO_UNLINK_LAST_ACCOUNT:
     'Cannot remove your last sign-in method. Please add another method first.',
-  ACCOUNT_NOT_FOUND: 'Account not found. Please check your details and try again.',
+  ACCOUNT_NOT_FOUND:
+    'Account not found. Please check your details and try again.',
   USER_ALREADY_HAS_PASSWORD:
     'This account already has a password set. Please sign in with your password.',
+  INVALID_OTP: 'Invalid code. Please check and try again.',
+  OTP_EXPIRED: 'This code has expired. Please request a new one.',
 }
 
 export const { signIn, signOut, useSession } = authClient
