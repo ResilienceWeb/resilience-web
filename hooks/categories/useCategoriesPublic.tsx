@@ -1,4 +1,4 @@
-import type { Category } from '@prisma/client'
+import type { Category } from '@prisma-client'
 import { useQuery } from '@tanstack/react-query'
 
 async function fetchCategoriesRequest({ queryKey }) {
