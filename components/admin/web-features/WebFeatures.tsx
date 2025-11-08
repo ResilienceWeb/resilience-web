@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import type { Web } from '@prisma/client'
+import type { Web } from '@prisma-client'
 import { toast } from 'sonner'
 import { FEATURES } from '@helpers/features'
 import { Switch } from '@components/ui/switch'

@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import type { Web, WebLocation } from '@prisma/client'
+import type { Web, WebLocation } from '@prisma-client'
 import Layout from '@components/layout'
 import RichText from '@components/rich-text'
 import { Button } from '@components/ui/button'
