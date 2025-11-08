@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import type { Web, WebLocation } from '@prisma/client'
+import type { Web, WebLocation } from '@prisma-client'
 import truncate from 'lodash.truncate'
 import prisma from '@prisma-rw-build'
 import WebHome from './WebHome'

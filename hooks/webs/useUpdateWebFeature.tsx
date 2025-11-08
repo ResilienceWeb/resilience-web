@@ -1,4 +1,4 @@
-import type { Web } from '@prisma/client'
+import type { Web } from '@prisma-client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const updateWebFeatureRequest = async (webData) => {
