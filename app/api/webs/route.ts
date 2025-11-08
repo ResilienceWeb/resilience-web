@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import checkWebInactiveTask from '@trigger/check-web-inactive'
 import prisma from '@prisma-rw'
@@ -56,11 +56,11 @@ export async function GET(request) {
       ? stringToBoolean(onlyPublishedParam)
       : false
 
-    const include = Prisma.validator<Prisma.WebInclude>()({
+    const include = {
       listings: {},
       features: {},
       webAccess: {},
-    })
+    } satisfies Prisma.WebInclude
 
     if (withListings) {
       include.listings = {

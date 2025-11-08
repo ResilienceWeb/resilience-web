@@ -1,7 +1,7 @@
+import type { Tag } from '@prisma-client'
 import { useQuery } from '@tanstack/react-query'
-import { useAppContext } from '@store/hooks'
-import type { Tag } from '@prisma/client'
 import useIsAdminMode from '@hooks/application/useIsAdminMode'
+import { useAppContext } from '@store/hooks'
 
 async function fetchTagsRequest({ queryKey }) {
   const [_key, { webSlug, all }] = queryKey

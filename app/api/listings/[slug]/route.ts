@@ -1,5 +1,5 @@
 import { revalidatePath } from 'next/cache'
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import deleteImage from '@helpers/deleteImage'

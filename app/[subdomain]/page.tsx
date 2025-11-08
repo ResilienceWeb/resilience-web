@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { GraphQLClient } from 'graphql-request'
-import prisma from '@prisma-rw-build'
+import prisma from '@prisma-rw'
 import { getIconUnicode } from '@helpers/icons'
 import Web from './Web'
 
