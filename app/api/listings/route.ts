@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma-client'
+import { Prisma } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'

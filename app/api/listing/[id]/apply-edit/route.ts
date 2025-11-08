@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma-client'
+import type { Prisma } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'

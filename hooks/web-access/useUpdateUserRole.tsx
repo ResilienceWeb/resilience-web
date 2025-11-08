@@ -1,4 +1,4 @@
-import { WebRole } from '@prisma-client'
+import { WebRole } from '@prisma/client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 

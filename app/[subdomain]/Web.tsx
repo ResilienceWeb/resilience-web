@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, memo, useState } from 'react'
 import dynamic from 'next/dynamic'
-import type { Category } from '@prisma/browser'
+import type { Category } from '@prisma/client'
 import '@styles/font-awesome.css'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts'
@@ -310,7 +310,7 @@ const Web = ({
           isTransitionMode={isTransitionMode}
         />
       )}
-      <div className="relative h-screen md:ml-75">
+      <div className="relative h-screen md:ml-[18.75rem]">
         {webIsPublished === false && (
           <AlertBanner
             content="Note: this web is currently work in progress and not fully published yet."

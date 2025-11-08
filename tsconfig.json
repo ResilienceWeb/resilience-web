@@ -53,12 +53,6 @@
       "@trigger/*": [
         "trigger/*"
       ],
-      "@prisma-client": [
-        "prisma/generated/client"
-      ],
-      "@prisma/*": [
-        "prisma/generated/*"
-      ],
       "@prisma-rw": [
         "prisma/client"
       ],

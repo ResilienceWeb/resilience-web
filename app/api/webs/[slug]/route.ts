@@ -1,6 +1,6 @@
 import { revalidatePath } from 'next/cache'
-import { Prisma } from '@prisma-client'
-import type { Web } from '@prisma/browser'
+import { Prisma } from '@prisma/client'
+import type { Web } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
@@ -25,13 +25,13 @@ export async function GET(request, props) {
     ? stringToBoolean(withAdminInfoParam)
     : false
 
-  const include = {
+  const include = Prisma.validator<Prisma.WebInclude>()({
     listings: {},
     features: {},
     relations: {},
     location: {},
     webAccess: {},
-  } satisfies Prisma.WebInclude
+  })
 
   if (withListings) {
     include.listings = {

@@ -1,4 +1,4 @@
-import type { Tag } from '@prisma-client'
+import type { Tag } from '@prisma/client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 

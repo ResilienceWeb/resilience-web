@@ -1,5 +1,5 @@
-import type { Category } from '@prisma-client'
 import { useQuery } from '@tanstack/react-query'
+import type { Category } from '@prisma/client'
 import { useAppContext } from '@store/hooks'
 
 async function fetchCategoriesRequest({ queryKey }) {

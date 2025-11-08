@@ -1,4 +1,4 @@
-import type { Tag } from '@prisma-client'
+import type { Tag } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 
 async function fetchTagsRequest({ queryKey }) {

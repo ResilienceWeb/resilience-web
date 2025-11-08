@@ -1,5 +1,5 @@
-import type { Web } from '@prisma-client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { Web } from '@prisma/client'
 
 async function updateWebRequest(webData) {
   const formData = new FormData()
