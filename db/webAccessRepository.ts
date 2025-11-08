@@ -1,4 +1,4 @@
-import { WebRole } from '@prisma/client'
+import { WebRole } from '@prisma-client'
 import prisma from '@prisma-rw'
 import { getWebBySlug } from './webRepository'
 
