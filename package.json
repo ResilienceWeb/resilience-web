@@ -19,7 +19,7 @@
     "eslint:fix": "eslint . --fix",
     "format:dry": "prettier . --check",
     "format:fix": "prettier . --write",
-    "tsc": "tsc --noEmit",
+    "tsc": "tsc",
     "quality:dry": "npm run stylelint:dry && npm run eslint:dry && npm run format:dry && npm run tsc",
     "quality:fix": "npm run stylelint:fix && npm run eslint:fix && npm run format:fix",
     "test:e2e": "playwright test --ui"

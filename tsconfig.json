@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "es2024",
     "lib": [
       "dom",
       "dom.iterable",
-      "es2022"
+      "es2024"
     ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
+    "erasableSyntaxOnly": true,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
     // Make indexing stricter
