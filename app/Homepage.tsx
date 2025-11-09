@@ -1,5 +1,6 @@
 'use client'
 
+import Features from '@components/homepage/features'
 import Hero from '@components/homepage/hero'
 import JoinTheCommunity from '@components/homepage/join-the-community'
 import WebCards from '@components/homepage/web-cards'
@@ -10,6 +11,7 @@ export default function Homepage({ webs }) {
     <Layout>
       <Hero />
       <WebCards webs={webs} />
+      <Features />
       <JoinTheCommunity />
     </Layout>
   )
