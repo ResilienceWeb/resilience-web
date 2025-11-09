@@ -25,7 +25,7 @@
     "test:e2e": "playwright test --ui"
   },
   "prisma": {
-    "seed": "node --experimental-strip-types prisma/seed.mts"
+    "seed": "node prisma/seed.mts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.662.0",
