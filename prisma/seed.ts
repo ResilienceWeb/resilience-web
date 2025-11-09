@@ -296,7 +296,6 @@ async function populateSeedData() {
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   setTimeout(async () => {
     for (const listing of listingsDurham) {
       const category = await prisma.category.findFirst({

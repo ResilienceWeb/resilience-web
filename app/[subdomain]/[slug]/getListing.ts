@@ -1,7 +1,23 @@
 import prisma from '@prisma-rw'
 import { exclude } from '@helpers/utils'
+import { isBuildTime, getListingFromCache } from '../../../lib/build-cache'
 
-export default async function getListing({ webSlug, listingSlug }) {
+export default async function getListing({
+  webSlug,
+  listingSlug,
+}: {
+  webSlug: string
+  listingSlug: string
+}) {
+  // During build, try cache first
+  if (isBuildTime()) {
+    const cached = getListingFromCache(webSlug, listingSlug)
+    if (cached) {
+      return cached
+    }
+  }
+
+  // Fallback to DB query (runtime or cache miss)
   const listingData = await prisma.listing.findFirst({
     where: {
       slug: listingSlug,
