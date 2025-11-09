@@ -16,7 +16,11 @@ Sentry.init({
   replaysOnErrorSampleRate: 0,
   replaysSessionSampleRate: 0,
 
-  integrations: [],
+  integrations: [
+    Sentry.feedbackIntegration({
+      colorScheme: 'system',
+    }),
+  ],
 })
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart
