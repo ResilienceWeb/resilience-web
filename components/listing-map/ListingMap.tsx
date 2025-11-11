@@ -17,10 +17,22 @@ export default function ListingMap({
   locationDescription,
   hideDescription = false,
 }: ListingMapProps) {
+  const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
+
   return (
     <div>
       {!hideDescription && (
-        <p className="font-semibold">{locationDescription}</p>
+        <div className="flex items-center justify-between mb-2">
+          <p className="font-semibold">{locationDescription}</p>
+          <a
+            href={googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-green-600 hover:text-green-800 underline"
+          >
+            Get Directions
+          </a>
+        </div>
       )}
       <div className="h-[300px] overflow-hidden rounded-lg">
         <MapContainer
