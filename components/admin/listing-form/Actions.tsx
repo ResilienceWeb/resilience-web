@@ -166,7 +166,7 @@ const Actions = () => {
                   />
                 </div>
 
-                <div className="ml-2 flex-shrink-0 self-end">
+                <div className="ml-2 shrink-0 self-end">
                   <Button
                     type="button"
                     variant="ghost"

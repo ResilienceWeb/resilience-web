@@ -185,7 +185,7 @@ const Events = ({ items, webSlug }: Props) => {
                               ) : (
                                 <MapPin className="h-4 w-4 shrink-0 text-emerald-600" />
                               )}
-                              <span className="max-w-[28rem]">
+                              <span className="max-w-md">
                                 {onlineOrAddress}
                               </span>
                             </div>

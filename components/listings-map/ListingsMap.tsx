@@ -174,7 +174,7 @@ function MapComponent({ items = [] }: MapProps) {
             <Button
               variant="outline"
               onClick={toggleFullScreen}
-              className="absolute top-3 right-3 z-[1000] bg-white flex items-center gap-1 text-xs py-1 h-auto shadow-md"
+              className="absolute top-3 right-3 z-1000 bg-white flex items-center gap-1 text-xs py-1 h-auto shadow-md"
             >
               <BsArrowsFullscreen className="h-3 w-3" />
               {isFullScreen ? 'Exit fullscreen' : 'Fullscreen'}

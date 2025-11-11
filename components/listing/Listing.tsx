@@ -2,14 +2,14 @@
 
 import { memo, useEffect, useState, useMemo } from 'react'
 import { FiEdit } from 'react-icons/fi'
-import { HiArrowLeft, HiUserGroup } from 'react-icons/hi'
-import { SlGlobe } from 'react-icons/sl'
+import { HiArrowLeft, HiUserGroup, HiExternalLink } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { actionTypes, actionIconStyles } from '@helpers/actions'
 import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
+import { sanitizeLink } from '@helpers/utils'
 import CategoryTag from '@components/category-tag'
 import { MagicBackButton } from '@components/magic-back-button/MagicBackButton'
 import Item from '@components/main-list/item'
@@ -32,6 +32,11 @@ const ListingMap = dynamic(() => import('@components/listing-map'), {
 
 function Listing({ listing }) {
   const [subdomain, setSubdomain] = useState<string>()
+
+  const websiteSanitized = useMemo(
+    () => sanitizeLink(listing.website),
+    [listing.website],
+  )
 
   useEffect(() => {
     const hostname = window.location.hostname
@@ -94,7 +99,7 @@ function Listing({ listing }) {
                   {listing.title}
                 </h1>
 
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 mt-2">
                   <div className="relative flex items-center gap-2">
                     <CategoryTag colorHex={listing.category.color}>
                       {listing.category.label}
@@ -103,10 +108,10 @@ function Listing({ listing }) {
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <div className="group flex items-center gap-1.5 rounded-full bg-green-50/80 px-3 py-1 text-sm font-medium text-green-700 ring-1 ring-green-100/80 transition-colors hover:bg-green-100">
-                              <HiUserGroup className="h-3.5 w-3.5" />
-                              Seeking volunteers
-                            </div>
+                            <p className="text-[#2B8257]">
+                              Seeking volunteers{' '}
+                              <HiUserGroup className="inline" />
+                            </p>
                           </TooltipTrigger>
                           <TooltipContent
                             side="bottom"
@@ -122,6 +127,20 @@ function Listing({ listing }) {
                     )}
                   </div>
                 </div>
+                {listing.website && (
+                  <div className="flex mt-2 items-start gap-1">
+                    <p className="font-semibold text-gray-700">Website:</p>
+                    <a
+                      href={listingWebsite}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-0.5 text-blue-400 hover:text-blue-500"
+                    >
+                      <span>{websiteSanitized}</span>
+                      <HiExternalLink />
+                    </a>
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center justify-end gap-2">
@@ -132,16 +151,7 @@ function Listing({ listing }) {
                     description="Check out this listing on Resilience Web, a place-based visualisation of environmental and social justice groups making the world a better place."
                   />
                 )}
-                {listing.website && (
-                  <a
-                    href={listingWebsite}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 text-gray-500 ring-1 ring-gray-200/50 transition-all hover:bg-gray-100 hover:text-gray-700 hover:ring-gray-300"
-                  >
-                    <SlGlobe className="h-5 w-5 transition-transform group-hover:scale-110" />
-                  </a>
-                )}
+
                 {listing.socials &&
                   listing.socials.map((social, index) => {
                     const config =

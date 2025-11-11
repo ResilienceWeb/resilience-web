@@ -1,4 +1,6 @@
 import { memo, useCallback, useState } from 'react'
+import { icons } from '@helpers/icons'
+import CategoryTag from '@components/category-tag'
 import { Button } from '@components/ui/button'
 import {
   Table,
@@ -8,11 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table'
-import CategoryTag from '@components/category-tag'
-import useUpdateCategory from '@hooks/categories/useUpdateCategory'
 import useDeleteCategory from '@hooks/categories/useDeleteCategory'
+import useUpdateCategory from '@hooks/categories/useUpdateCategory'
 import { UpdateCategoryDialog } from '../header/category-dialog'
-import { icons } from '@helpers/icons'
 
 const columns = [
   {
@@ -122,7 +122,7 @@ const List = ({ categories }) => {
                     return (
                       <TableCell key={index}>
                         <DisplayIcon
-                          className="!h-6 !w-6"
+                          className="h-6! w-6!"
                           style={{ color: `#${row.color}` }}
                         />
                       </TableCell>
