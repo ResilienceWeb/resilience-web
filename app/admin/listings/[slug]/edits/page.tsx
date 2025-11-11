@@ -5,7 +5,6 @@ import { HiArrowLeft } from 'react-icons/hi'
 import { PiInfoBold } from 'react-icons/pi'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useAppContext } from '@store/hooks'
 import { toast } from 'sonner'
 import ListingEditReview from '@components/admin/listing-form/listing-edit-review'
 import { Button } from '@components/ui/button'
@@ -13,6 +12,7 @@ import { Spinner } from '@components/ui/spinner'
 import useApplyListingEdit from '@hooks/listings/useApplyListingEdit'
 import useListing from '@hooks/listings/useListing'
 import useListingEdits from '@hooks/listings/useListingEdits'
+import { useAppContext } from '@store/hooks'
 
 export default function ListingEditsPage({ params }) {
   // @ts-ignore
@@ -47,7 +47,7 @@ export default function ListingEditsPage({ params }) {
 
   useEffect(() => {
     if (isSuccess) {
-      router.push(`/admin/listings/${slug}`)
+      router.push(`/admin/listings/${slug}?editApplied=true`)
     }
     if (isError) {
       toast.error('Failed to apply listing edit')

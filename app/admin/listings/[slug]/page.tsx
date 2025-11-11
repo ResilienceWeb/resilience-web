@@ -1,24 +1,35 @@
 'use client'
 
-import { useCallback, use } from 'react'
+import { useCallback, use, useEffect, useState } from 'react'
 import { HiArrowLeft } from 'react-icons/hi'
 import { PiInfoBold } from 'react-icons/pi'
 import NextLink from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useAppContext } from '@store/hooks'
+import { useRouter, useSearchParams } from 'next/navigation'
 import ListingForm from '@components/admin/listing-form'
+import { Alert, AlertTitle } from '@components/ui/alert'
 import { Spinner } from '@components/ui/spinner'
 import useCategories from '@hooks/categories/useCategories'
 import useListing from '@hooks/listings/useListing'
 import useUpdateListing from '@hooks/listings/useUpdateListing'
+import { useAppContext } from '@store/hooks'
 
 export default function ListingPage({ params }) {
   // @ts-ignore
   const { slug } = use(params)
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { categories } = useCategories()
   const { mutate: updateListing } = useUpdateListing()
   const { selectedWebSlug } = useAppContext()
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get('editApplied') === 'true') {
+      setShowSuccessMessage(true)
+      const newUrl = window.location.pathname
+      window.history.replaceState({}, '', newUrl)
+    }
+  }, [searchParams])
 
   const goBack = useCallback(() => {
     router.push('/admin')
@@ -52,6 +63,14 @@ export default function ListingPage({ params }) {
         <HiArrowLeft className="h-4 w-4" />
         Back
       </button>
+
+      {showSuccessMessage && (
+        <Alert className="mt-4">
+          <AlertTitle className="flex items-center justify-between">
+            Edit applied successfully
+          </AlertTitle>
+        </Alert>
+      )}
 
       <div className="mt-4">
         {!listing.pending && (
