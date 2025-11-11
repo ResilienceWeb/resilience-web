@@ -90,15 +90,8 @@ export default function VerifyOTP() {
     }
   }, [resendAttempts, calculateRateLimit])
 
-  const handleOtpChange = (value: string) => {
-    setOtp(value)
-    setError('')
-  }
-
-  const handleVerify = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (otp.length !== 6) {
+  const verifyOtp = async (otpValue: string) => {
+    if (otpValue.length !== 6) {
       setError('Please enter a 6-digit code')
       return
     }
@@ -109,7 +102,7 @@ export default function VerifyOTP() {
     try {
       const { error: verifyError } = await authClient.signIn.emailOtp({
         email,
-        otp,
+        otp: otpValue,
       })
 
       if (verifyError) {
@@ -145,6 +138,21 @@ export default function VerifyOTP() {
       setError('An unexpected error occurred. Please try again.')
       setIsVerifying(false)
     }
+  }
+
+  const handleOtpChange = (value: string) => {
+    setOtp(value)
+    setError('')
+
+    // Auto-verify when all 6 digits are entered
+    if (value.length === 6) {
+      verifyOtp(value)
+    }
+  }
+
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault()
+    await verifyOtp(otp)
   }
 
   const handleResend = async () => {
