@@ -14,7 +14,7 @@ export default tseslint.config([
   reactPlugin.configs.flat['jsx-runtime'],
   promisePlugin.configs['flat/recommended'],
   ...tanstackQueryPlugin.configs['flat/recommended'],
-  reactHooksPlugin.configs['recommended-latest'],
+  reactHooksPlugin.configs.flat.recommended,
   {
     plugins: {
       react: reactPlugin,
