@@ -50,7 +50,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
 
   return (
     <div
-      className="content-visibility-auto animate-in fade-in slide-in-from-bottom relative h-fit cursor-pointer rounded-md bg-white shadow-md transition-all duration-200 ease-in-out hover:shadow-xl"
+      className="animate-in fade-in slide-in-from-bottom relative h-fit cursor-pointer rounded-md bg-white shadow-md transition-all duration-200 ease-in-out hover:shadow-xl"
       onClick={onClick}
       ref={ref}
     >
