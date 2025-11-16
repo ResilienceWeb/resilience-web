@@ -2,13 +2,13 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { BsArrowsFullscreen } from 'react-icons/bs'
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import dynamic from 'next/dynamic'
-import NextLink from 'next/link'
 import L from 'leaflet'
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet/dist/leaflet.css'
 import { getIconUnicode } from '@helpers/icons'
-import CategoryTag from '@components/category-tag'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
 
@@ -46,6 +46,75 @@ function createCustomIcon(iconName: string, color: string) {
 
 interface MapProps {
   items?: any[]
+}
+
+function MarkerClusterGroup({ items }: { items: any[] }) {
+  const map = useMap()
+  const clusterRef = useRef<any>(null)
+
+  useEffect(() => {
+    import('leaflet.markercluster').then(() => {
+      const clusterGroup = new (L as any).MarkerClusterGroup({
+        chunkedLoading: true,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+        zoomToBoundsOnClick: true,
+        maxClusterRadius: 80,
+      })
+
+      clusterRef.current = clusterGroup
+
+      items.forEach((item) => {
+        const markerIcon = item.category?.icon
+          ? createCustomIcon(item.category.icon, item.category.color)
+          : new L.Icon.Default()
+
+        const marker = L.marker(
+          [
+            parseFloat(item.location.latitude),
+            parseFloat(item.location.longitude),
+          ],
+          { icon: markerIcon },
+        )
+
+        const popupContent = `
+          <div class="flex flex-col gap-2">
+            <h3 class="text-lg font-bold">${item.label}</h3>
+            ${
+              item.description
+                ? `<p class="m-0 text-sm text-gray-600">${
+                    item.description.length > 100
+                      ? item.description.substring(0, 100) + '...'
+                      : item.description
+                  }</p>`
+                : ''
+            }
+            ${
+              item.category
+                ? `<div class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium" style="background-color: ${item.category.color}20; color: ${item.category.color}">
+                ${item.category.label}
+              </div>`
+                : ''
+            }
+            <a href="/${item.slug}" class="text-sm text-blue-600 hover:underline">View details</a>
+          </div>
+        `
+
+        marker.bindPopup(popupContent)
+        clusterGroup.addLayer(marker)
+      })
+
+      map.addLayer(clusterGroup)
+
+      return () => {
+        if (clusterRef.current) {
+          map.removeLayer(clusterRef.current)
+        }
+      }
+    })
+  }, [map, items])
+
+  return null
 }
 
 function FitBoundsToMarkers({ markers }: { markers: [number, number][] }) {
@@ -190,56 +259,11 @@ function MapComponent({ items = [] }: MapProps) {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
 
-              {/* Fit bounds to show all markers */}
               {markerPositions.length > 0 && (
                 <FitBoundsToMarkers markers={markerPositions} />
               )}
 
-              {/* Display markers for items with coordinates */}
-              {listingsWithCoordinates.map((item) => {
-                const markerIcon = item.category?.icon
-                  ? createCustomIcon(item.category.icon, item.category.color)
-                  : new L.Icon.Default()
-
-                return (
-                  <Marker
-                    key={item.id}
-                    position={[
-                      parseFloat(item.location.latitude),
-                      parseFloat(item.location.longitude),
-                    ]}
-                    icon={markerIcon}
-                  >
-                    <Popup>
-                      <div className="flex flex-col gap-2">
-                        <h3 className="text-lg font-bold">{item.label}</h3>
-                        {item.description && (
-                          <p
-                            className="m-0 text-sm text-gray-600"
-                            dangerouslySetInnerHTML={{
-                              __html:
-                                item.description.length > 100
-                                  ? `${item.description.substring(0, 100)}...`
-                                  : item.description,
-                            }}
-                          ></p>
-                        )}
-                        {item.category && (
-                          <CategoryTag colorHex={item.category.color}>
-                            {item.category.label}
-                          </CategoryTag>
-                        )}
-                        <NextLink
-                          href={`/${item.slug}`}
-                          className="text-sm text-blue-600 hover:underline"
-                        >
-                          View details
-                        </NextLink>
-                      </div>
-                    </Popup>
-                  </Marker>
-                )
-              })}
+              <MarkerClusterGroup items={listingsWithCoordinates} />
             </MapContainer>
           </div>
         </>
@@ -248,7 +272,6 @@ function MapComponent({ items = [] }: MapProps) {
   )
 }
 
-// Dynamically import leaflet-related components to avoid SSR issues
 const MapWithNoSSR = dynamic(() => Promise.resolve(MapComponent), {
   ssr: false,
 })
