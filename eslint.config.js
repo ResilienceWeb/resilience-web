@@ -14,7 +14,7 @@ export default tseslint.config([
   reactPlugin.configs.flat['jsx-runtime'],
   promisePlugin.configs['flat/recommended'],
   ...tanstackQueryPlugin.configs['flat/recommended'],
-  reactHooksPlugin.configs['recommended-latest'],
+  reactHooksPlugin.configs.flat.recommended,
   {
     plugins: {
       react: reactPlugin,
@@ -118,6 +118,6 @@ export default tseslint.config([
     }
   },
   {
-    ignores: ['package-lock.json', 'postcss.config.js', 'tailwind.config.js', 'node_modules', '.next', 'playwright-report'],
+    ignores: ['package-lock.json', 'postcss.config.js', 'tailwind.config.js', 'node_modules', '.next', 'playwright-report', 'prisma/generated', '.netlify'],
   },
 ])

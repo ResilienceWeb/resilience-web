@@ -149,11 +149,13 @@ const Network = ({ data, selectedId, setSelectedId }) => {
       },
       hoverNode: function () {
         if (network) {
+          // eslint-disable-next-line react-hooks/immutability
           network.canvas.body.container.style.cursor = 'pointer'
         }
       },
       blurNode: function () {
         if (network) {
+          // eslint-disable-next-line react-hooks/immutability
           network.canvas.body.container.style.cursor = 'default'
         }
       },

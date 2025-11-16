@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useEffect, useState, useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { FiEdit } from 'react-icons/fi'
 import { HiArrowLeft, HiUserGroup, HiExternalLink } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
@@ -31,21 +31,21 @@ const ListingMap = dynamic(() => import('@components/listing-map'), {
 })
 
 function Listing({ listing }) {
-  const [subdomain, setSubdomain] = useState<string>()
+  const subdomain = useMemo(() => {
+    if (typeof window === 'undefined') {
+      return undefined
+    }
+    const hostname = window.location.hostname
+    if (!hostname.includes('.')) {
+      return undefined
+    }
+    return hostname.split('.')[0]
+  }, [])
 
   const websiteSanitized = useMemo(
     () => sanitizeLink(listing.website),
     [listing.website],
   )
-
-  useEffect(() => {
-    const hostname = window.location.hostname
-    if (!hostname.includes('.')) {
-      return
-    }
-
-    setSubdomain(hostname.split('.')[0])
-  }, [])
 
   const { categories } = useCategoriesPublic({ webSlug: subdomain })
   const categoriesIndexes = useMemo(() => {

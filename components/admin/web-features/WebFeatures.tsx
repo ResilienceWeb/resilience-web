@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { Web } from '@prisma-client'
 import { toast } from 'sonner'
 import { FEATURES } from '@helpers/features'
@@ -20,14 +20,8 @@ type WebFeaturesProps = {
 }
 
 export default function WebFeatures({ web }: WebFeaturesProps) {
-  const [features, setFeatures] = useState<Feature[]>([])
+  const [features, setFeatures] = useState<Feature[]>(web?.features ?? [])
   const { updateWebFeature, isPending } = useUpdateWebFeature()
-
-  useEffect(() => {
-    if (web?.features) {
-      setFeatures(web.features)
-    }
-  }, [web])
 
   const handleFeatureToggle = (featureKey: string, enabled: boolean) => {
     try {

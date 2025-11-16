@@ -1,6 +1,6 @@
 'use client'
 
-import { useSyncExternalStore } from 'react'
+import { useSyncExternalStore, useRef } from 'react'
 import type { PageTrackerState } from './types'
 
 const INITIAL_STATE: PageTrackerState = {
@@ -51,17 +51,19 @@ export const getPageTrackerStore = () => {
 }
 
 export const usePageTracker = (selector) => {
-  let lastSelected
+  const lastSelectedRef = useRef(undefined)
 
   return useSyncExternalStore(
     pageTrackerStore.subscribe,
     () => {
       const selected = selector(pageTrackerStore.getState())
 
-      if (JSON.stringify(lastSelected) !== JSON.stringify(selected)) {
-        lastSelected = selected
+      if (
+        JSON.stringify(lastSelectedRef.current) !== JSON.stringify(selected)
+      ) {
+        lastSelectedRef.current = selected
       }
-      return lastSelected
+      return lastSelectedRef.current
     },
     () => selector(pageTrackerStore.getState()),
   )

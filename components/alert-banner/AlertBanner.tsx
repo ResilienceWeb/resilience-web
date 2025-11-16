@@ -60,7 +60,7 @@ const AlertBanner: React.FC<IAlertProps> = ({
     }
   }
 
-  const AlertContent = () => (
+  const alertContent = (
     <div className={cn('flex w-full justify-center', getColorClasses())}>
       <div className="flex max-w-7xl items-center gap-2 px-4 py-2">
         {getIcon()}
@@ -77,12 +77,12 @@ const AlertBanner: React.FC<IAlertProps> = ({
         rel="noopener noreferrer"
         className="w-full"
       >
-        <AlertContent />
+        {alertContent}
       </Link>
     )
   }
 
-  return <AlertContent />
+  return alertContent
 }
 
 export default memo(AlertBanner)

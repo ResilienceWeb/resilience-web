@@ -1,7 +1,7 @@
 'use client'
 
 import { memo, useEffect, useMemo } from 'react'
-import { useForm, useFormContext } from 'react-hook-form'
+import { useForm, useFormContext, useWatch } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
@@ -181,8 +181,13 @@ const ListingFormSimplified = ({
 
   const {
     formState: { isDirty, isSubmitting },
-    watch,
+    control,
   } = form
+
+  const noPhysicalLocation = useWatch({
+    control,
+    name: 'noPhysicalLocation',
+  })
 
   const tagOptions: Options<TagOption> = useMemo(() => {
     if (!tags) return []
@@ -387,7 +392,7 @@ const ListingFormSimplified = ({
             )}
           />
 
-          {!watch('noPhysicalLocation') && (
+          {!noPhysicalLocation && (
             <SetLocationMap
               latitude={listing?.location?.latitude}
               longitude={listing?.location?.longitude}

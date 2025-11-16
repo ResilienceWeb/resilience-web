@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, use, useEffect, useState } from 'react'
+import { useCallback, use, useEffect } from 'react'
 import { HiArrowLeft } from 'react-icons/hi'
 import { PiInfoBold } from 'react-icons/pi'
 import NextLink from 'next/link'
@@ -14,22 +14,21 @@ import useUpdateListing from '@hooks/listings/useUpdateListing'
 import { useAppContext } from '@store/hooks'
 
 export default function ListingPage({ params }) {
-  // @ts-ignore
-  const { slug } = use(params)
+  const { slug } = use<{ slug: string }>(params)
   const router = useRouter()
   const searchParams = useSearchParams()
   const { categories } = useCategories()
   const { mutate: updateListing } = useUpdateListing()
   const { selectedWebSlug } = useAppContext()
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+
+  const showSuccessMessage = searchParams.get('editApplied') === 'true'
 
   useEffect(() => {
-    if (searchParams.get('editApplied') === 'true') {
-      setShowSuccessMessage(true)
+    if (showSuccessMessage) {
       const newUrl = window.location.pathname
       window.history.replaceState({}, '', newUrl)
     }
-  }, [searchParams])
+  }, [showSuccessMessage])
 
   const goBack = useCallback(() => {
     router.push('/admin')

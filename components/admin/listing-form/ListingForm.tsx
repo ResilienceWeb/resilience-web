@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useForm, FormProvider, useWatch } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
@@ -225,7 +225,23 @@ const ListingForm = ({
     watch,
     setValue,
     formState: { errors },
+    control,
   } = methods
+
+  const noPhysicalLocation = useWatch({
+    control,
+    name: 'noPhysicalLocation',
+  })
+
+  const tagsValues = useWatch({
+    control,
+    name: 'tags',
+  })
+
+  const relationsValues = useWatch({
+    control,
+    name: 'relations',
+  })
 
   const handleSubmitForm = (submittedData: any) => {
     const data = {
@@ -398,7 +414,7 @@ const ListingForm = ({
               name="tags"
               options={tagOptions}
               styles={customMultiSelectStyles}
-              value={watch('tags')}
+              value={tagsValues}
               onChange={(newValue) => setValue('tags', [...newValue])}
             />
           </div>
@@ -410,7 +426,7 @@ const ListingForm = ({
               name="relations"
               options={relationOptions}
               styles={customMultiSelectStyles}
-              value={watch('relations')}
+              value={relationsValues}
               onChange={(newValue) => setValue('relations', [...newValue])}
             />
           </div>
@@ -462,7 +478,7 @@ const ListingForm = ({
             )}
           />
 
-          {!watch('noPhysicalLocation') && (
+          {!noPhysicalLocation && (
             <div className="mt-4">
               <SetLocationMap
                 latitude={listing?.location?.latitude}
