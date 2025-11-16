@@ -1,10 +1,14 @@
 'use client'
 
 import { useCallback, useEffect } from 'react'
-import { useForm, FormProvider, useFormContext } from 'react-hook-form'
+import {
+  useForm,
+  FormProvider,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form'
 import type { MultiValue, ActionMeta } from 'react-select'
 import dynamic from 'next/dynamic'
-import { useAppContext } from '@store/hooks'
 import { toast } from 'sonner'
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
 import RichTextEditor from '@components/rich-text-editor'
@@ -23,6 +27,7 @@ import { Spinner } from '@components/ui/spinner'
 import useUpdateWeb from '@hooks/webs/useUpdateWeb'
 import useWeb from '@hooks/webs/useWeb'
 import useWebs from '@hooks/webs/useWebs'
+import { useAppContext } from '@store/hooks'
 
 const Select = dynamic(() => import('react-select'), { ssr: false })
 
@@ -121,9 +126,9 @@ export default function WebSettingsPage() {
   const {
     handleSubmit,
     formState: { errors, isDirty },
-    watch,
     reset,
     setValue,
+    control,
   } = methods
 
   useEffect(() => {
@@ -177,11 +182,13 @@ export default function WebSettingsPage() {
     [updateWeb, webData?.slug],
   )
 
+  const isPublished = useWatch({ control, name: 'published' })
+  const title = useWatch({ control, name: 'title' })
+  const contactEmail = useWatch({ control, name: 'contactEmail' })
+
   if (isLoadingWeb) {
     return <Spinner />
   }
-
-  const isPublished = watch('published')
 
   return (
     <div className="flex flex-col gap-4 mb-8">
@@ -242,7 +249,7 @@ export default function WebSettingsPage() {
                 </FormDescription>
                 <Input
                   name="title"
-                  value={watch('title') || ''}
+                  value={title ?? ''}
                   onChange={(e) =>
                     setValue('title', e.target.value, { shouldDirty: true })
                   }
@@ -265,7 +272,7 @@ export default function WebSettingsPage() {
                 <Input
                   name="contactEmail"
                   type="email"
-                  value={watch('contactEmail') || ''}
+                  value={contactEmail ?? ''}
                   onChange={(e) =>
                     setValue('contactEmail', e.target.value, {
                       shouldDirty: true,

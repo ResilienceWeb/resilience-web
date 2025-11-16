@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
@@ -124,22 +124,21 @@ const WebCreation = () => {
     },
   })
 
-  const { watch, setValue } = form
-  useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (name === 'title' && value.title) {
-        setValue('slug', generateSlug(value.title))
-      }
-    })
-    return () => subscription.unsubscribe()
-  }, [watch, setValue])
+  const { setValue, control } = form
 
+  const titleValue = useWatch({ control, name: 'title' })
   useEffect(() => {
-    const currentContactEmail = watch('contactEmail')
-    if (!currentContactEmail && session?.data?.user?.email) {
+    if (titleValue) {
+      setValue('slug', generateSlug(titleValue))
+    }
+  }, [titleValue, setValue])
+
+  const contactEmailValue = useWatch({ control, name: 'contactEmail' })
+  useEffect(() => {
+    if (!contactEmailValue && session?.data?.user?.email) {
       setValue('contactEmail', session.data.user.email)
     }
-  }, [watch, setValue, session])
+  }, [contactEmailValue, setValue, session])
 
   useEffect(() => {
     posthog.capture('web-creation-start')

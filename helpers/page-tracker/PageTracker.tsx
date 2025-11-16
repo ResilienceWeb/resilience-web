@@ -100,6 +100,7 @@ export const usePageTrackerHandler = ({
       window.onpopstate = originalOnPopState
       history.pushState = originalPushState
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 }
 

@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 
 const useIsAdminMode = () => {
-  const [isAdminMode, setIsAdminMode] = useState(false)
-  useEffect(() => {
-    const isAdminMode = window.location.href.includes('/admin')
-    setIsAdminMode(isAdminMode)
+  const isAdminMode = useMemo(() => {
+    return window.location.href.includes('/admin')
   }, [])
   return isAdminMode
 }

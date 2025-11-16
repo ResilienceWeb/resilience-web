@@ -1,13 +1,13 @@
 'use client'
 
-import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import { HiUserGroup, HiOutlineLink, HiExternalLink } from 'react-icons/hi'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
+import { actionTypes, actionIconStyles } from '@helpers/actions'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
-import { actionTypes, actionIconStyles } from '@helpers/actions'
 import { sanitizeLink } from '@helpers/utils'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
@@ -42,7 +42,13 @@ const ListingDialog = ({
   onClose,
   isFullScreen = false,
 }: DialogProps) => {
-  const [subdomain, setSubdomain] = useState<string>()
+  const subdomain = useMemo(() => {
+    const hostname = window.location.hostname
+    if (!hostname.includes('.')) {
+      return ''
+    }
+    return hostname.split('.')[0]
+  }, [])
 
   const websiteSanitized = useMemo(
     () => sanitizeLink(item.website),
@@ -55,15 +61,6 @@ const ListingDialog = ({
         'The link to this listing is copied to your clipboard and ready to be shared.',
       duration: 4000,
     })
-  }, [])
-
-  useEffect(() => {
-    const hostname = window.location.hostname
-    if (!hostname.includes('.')) {
-      return
-    }
-
-    setSubdomain(hostname.split('.')[0])
   }, [])
 
   const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${item.slug}`

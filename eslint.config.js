@@ -118,6 +118,6 @@ export default tseslint.config([
     }
   },
   {
-    ignores: ['package-lock.json', 'postcss.config.js', 'tailwind.config.js', 'node_modules', '.next', 'playwright-report'],
+    ignores: ['package-lock.json', 'postcss.config.js', 'tailwind.config.js', 'node_modules', '.next', 'playwright-report', 'prisma/generated', '.netlify'],
   },
 ])

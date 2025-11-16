@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react'
+import { memo, useMemo } from 'react'
 import { HiOutlineSearch, HiPlus } from 'react-icons/hi'
 import Select from 'react-select'
 import customMultiSelectStyles from '@styles/select-styles'
@@ -16,18 +16,15 @@ const TableActions = ({
   const { canEdit: canEditWeb } = useCanEditWeb()
 
   const { categories: fetchedCategories } = useCategories()
-  const [categories, setCategories] = useState<any[]>()
 
-  useEffect(() => {
-    if (!fetchedCategories) return
+  const categories = useMemo(() => {
+    if (!fetchedCategories) return []
 
-    const mappedCategories = fetchedCategories.map((c) => ({
+    return fetchedCategories.map((c) => ({
       value: c.label,
       label: c.label,
       color: `#${c.color}`,
     }))
-
-    setCategories(mappedCategories)
   }, [fetchedCategories])
 
   return (

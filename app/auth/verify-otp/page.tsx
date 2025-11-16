@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
 import { useSearchParams, useRouter } from 'next/navigation'
 import * as Sentry from '@sentry/nextjs'
@@ -12,83 +12,27 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@components/ui/input-otp'
 import LogoImage from '../../../public/logo.png'
 import styles from '../auth.module.css'
 
-const MAX_RESEND_ATTEMPTS = 3
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000 // 10 minutes
-
-interface ResendAttempt {
-  timestamp: number
-}
-
 export default function VerifyOTP() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo')
 
   const [otp, setOtp] = useState('')
-  const [email, setEmail] = useState('')
+  const email = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('otp-email') || ''
+    }
+    return ''
+  }, [])
   const [error, setError] = useState('')
   const [isVerifying, setIsVerifying] = useState(false)
   const [isResending, setIsResending] = useState(false)
-  const [resendAttempts, setResendAttempts] = useState<ResendAttempt[]>([])
-  const [timeUntilRetry, setTimeUntilRetry] = useState(0)
 
   useEffect(() => {
-    const storedEmail = sessionStorage.getItem('otp-email')
-    if (storedEmail) {
-      setEmail(storedEmail)
-    } else {
+    if (!email) {
       router.push('/auth/signin')
     }
-  }, [router])
-
-  useEffect(() => {
-    const storedAttempts = sessionStorage.getItem('otp-resend-attempts')
-    if (storedAttempts) {
-      try {
-        const attempts = JSON.parse(storedAttempts) as ResendAttempt[]
-        setResendAttempts(attempts)
-      } catch (e) {
-        console.error('[RW] Error parsing resend attempts:', e)
-      }
-    }
-  }, [])
-
-  // Calculate if rate limited and time until retry
-  const calculateRateLimit = useCallback(() => {
-    const now = Date.now()
-    const recentAttempts = resendAttempts.filter(
-      (attempt) => now - attempt.timestamp < RATE_LIMIT_WINDOW_MS,
-    )
-
-    if (recentAttempts.length >= MAX_RESEND_ATTEMPTS) {
-      const oldestAttempt = recentAttempts[0]
-      const timeUntilReset =
-        RATE_LIMIT_WINDOW_MS - (now - oldestAttempt.timestamp)
-      return { isRateLimited: true, timeUntilReset }
-    }
-
-    return { isRateLimited: false, timeUntilReset: 0 }
-  }, [resendAttempts])
-
-  // Update countdown timer
-  useEffect(() => {
-    const { isRateLimited, timeUntilReset } = calculateRateLimit()
-    if (isRateLimited) {
-      setTimeUntilRetry(Math.ceil(timeUntilReset / 1000))
-
-      const interval = setInterval(() => {
-        const { timeUntilReset: newTimeUntilReset } = calculateRateLimit()
-        const seconds = Math.ceil(newTimeUntilReset / 1000)
-        setTimeUntilRetry(seconds)
-
-        if (seconds <= 0) {
-          clearInterval(interval)
-        }
-      }, 1000)
-
-      return () => clearInterval(interval)
-    }
-  }, [resendAttempts, calculateRateLimit])
+  }, [email, router])
 
   const verifyOtp = async (otpValue: string) => {
     if (otpValue.length !== 6) {
@@ -125,7 +69,6 @@ export default function VerifyOTP() {
 
       // Clear session storage on success
       sessionStorage.removeItem('otp-email')
-      sessionStorage.removeItem('otp-resend-attempts')
 
       router.push(redirectTo ?? '/admin')
     } catch (error) {
@@ -156,16 +99,6 @@ export default function VerifyOTP() {
   }
 
   const handleResend = async () => {
-    const { isRateLimited } = calculateRateLimit()
-
-    if (isRateLimited) {
-      const minutes = Math.ceil(timeUntilRetry / 60)
-      setError(
-        `Too many attempts. Please wait ${minutes} minute${minutes > 1 ? 's' : ''} before trying again.`,
-      )
-      return
-    }
-
     setIsResending(true)
     setError('')
 
@@ -187,10 +120,6 @@ export default function VerifyOTP() {
         return
       }
 
-      const newAttempts = [...resendAttempts, { timestamp: Date.now() }]
-      setResendAttempts(newAttempts)
-      sessionStorage.setItem('otp-resend-attempts', JSON.stringify(newAttempts))
-
       setOtp('')
       setError('')
       setIsResending(false)
@@ -205,13 +134,6 @@ export default function VerifyOTP() {
       setIsResending(false)
     }
   }
-
-  const { isRateLimited } = calculateRateLimit()
-  const remainingAttempts =
-    MAX_RESEND_ATTEMPTS -
-    resendAttempts.filter(
-      (attempt) => Date.now() - attempt.timestamp < RATE_LIMIT_WINDOW_MS,
-    ).length
 
   return (
     <div className={styles.root}>
@@ -275,21 +197,11 @@ export default function VerifyOTP() {
               type="button"
               variant="link"
               onClick={handleResend}
-              disabled={isResending || isRateLimited}
+              disabled={isResending}
               className="mt-1"
             >
-              {isResending
-                ? 'Sending...'
-                : isRateLimited
-                  ? `Wait ${Math.ceil(timeUntilRetry / 60)} minute${Math.ceil(timeUntilRetry / 60) > 1 ? 's' : ''}`
-                  : 'Resend code'}
+              {isResending ? 'Sending...' : 'Resend code'}
             </Button>
-            {!isRateLimited && remainingAttempts < MAX_RESEND_ATTEMPTS && (
-              <p className="mt-1 text-xs text-gray-500">
-                {remainingAttempts} resend{remainingAttempts !== 1 ? 's' : ''}{' '}
-                remaining
-              </p>
-            )}
           </div>
         </div>
       </div>

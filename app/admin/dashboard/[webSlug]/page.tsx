@@ -261,7 +261,7 @@ export default function WebDashboardPage({ params }) {
       )}
 
       <div className="mt-6">
-        <WebFeatures web={web} />
+        <WebFeatures key={web.id} web={web} />
       </div>
 
       {web.webAccess?.length > 0 && (

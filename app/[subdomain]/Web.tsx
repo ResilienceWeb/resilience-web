@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, memo, useState } from 'react'
 import dynamic from 'next/dynamic'
-import type { Category } from '@prisma/browser'
 import '@styles/font-awesome.css'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts'
@@ -91,16 +90,34 @@ const Web = ({
   )
   const handleClearSearchTermValue = useCallback(() => setSearchTerm(''), [])
 
-  const [categories, setCategories] = useState<any[]>([])
-  const [tags, setTags] = useState<any[]>([])
+  const { categories: fetchedCategories } = useCategoriesPublic({ webSlug })
+  const { tags: fetchedTags } = useTagsPublic({ webSlug })
+
+  const categories = useMemo(() => {
+    if (!fetchedCategories) return []
+    return fetchedCategories.map((c) => ({
+      value: c.label,
+      label: c.label,
+      color: `#${c.color}`,
+    }))
+  }, [fetchedCategories])
+
+  const tags = useMemo(() => {
+    if (!fetchedTags) return []
+    return fetchedTags.map((t) => ({
+      value: t.label,
+      label: t.label,
+      // @ts-ignore
+      color: t.color ?? '#2f2f30',
+    }))
+  }, [fetchedTags])
 
   const selectedCategories = useMemo(() => {
     return categoriesParam.map((categoryLabel) => {
       return {
         value: categoryLabel,
         label: categoryLabel,
-        color: categories.find((c: Category) => c.label === categoryLabel)
-          ?.color,
+        color: categories.find((c) => c.label === categoryLabel)?.color,
       }
     })
   }, [categories, categoriesParam])
@@ -120,34 +137,6 @@ const Web = ({
       setActiveTab(viewParam)
     }
   }, [viewParam, activeTab, setActiveTab])
-
-  const { categories: fetchedCategories } = useCategoriesPublic({ webSlug })
-  const { tags: fetchedTags } = useTagsPublic({ webSlug })
-
-  useEffect(() => {
-    if (!fetchedCategories) return
-
-    setCategories(
-      fetchedCategories.map((c) => ({
-        value: c.label,
-        label: c.label,
-        color: `#${c.color}`,
-      })),
-    )
-  }, [fetchedCategories])
-
-  useEffect(() => {
-    if (!fetchedTags) return
-
-    setTags(
-      fetchedTags.map((t) => ({
-        value: t.label,
-        label: t.label,
-        // @ts-ignore
-        color: t.color ?? '#2f2f30',
-      })),
-    )
-  }, [fetchedTags])
 
   const handleCategorySelection = useCallback(
     (value) => {
