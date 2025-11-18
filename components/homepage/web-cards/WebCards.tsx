@@ -65,7 +65,11 @@ const Card = ({ web }) => {
   return (
     <Link href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}>
       <div className="group relative h-full overflow-hidden rounded-xl bg-white shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
-        {isNew && <Badge className="absolute top-2 right-2 z-10">New</Badge>}
+        {isNew && (
+          <Badge variant="secondary" className="absolute top-2 right-2 z-10">
+            New
+          </Badge>
+        )}
         <div className="relative h-48 overflow-hidden">
           <Image
             alt={`Image representing ${web.title} web`}

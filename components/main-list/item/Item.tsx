@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import chroma from 'chroma-js'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
+import { Badge } from '@components/ui/badge'
 import {
   Tooltip,
   TooltipContent,
@@ -58,13 +59,18 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <FaStar className="absolute top-1 right-1 z-100 h-[26px] w-[26px] text-yellow-200" />
+              <FaStar className="absolute top-[140px] z-100 h-[26px] w-[26px] text-yellow-200 right-1 bottom-1" />
             </TooltipTrigger>
             <TooltipContent>
               <p>Featured listing</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+      )}
+      {dataItem.new && (
+        <Badge variant="secondary" className="absolute top-1 right-1 z-10">
+          New
+        </Badge>
       )}
       <CategoryTag
         className="absolute top-1 left-1 z-10 min-w-min shadow-md"

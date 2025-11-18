@@ -160,6 +160,7 @@ async function getData({ webSlug }): Promise<DataType> {
           featured: true,
           seekingVolunteers: true,
           website: true,
+          createdAt: true,
           socials: {
             select: {
               platform: true,
@@ -239,6 +240,15 @@ async function getData({ webSlug }): Promise<DataType> {
     edges: [],
   }
 
+  // Calculate if web is older than 2 months
+  const twoMonthsAgo = new Date()
+  twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2)
+  const webIsOlderThanTwoMonths = webData.createdAt < twoMonthsAgo
+
+  // Calculate date for 1 month ago
+  const twoWeeksAgo = new Date()
+  twoWeeksAgo.setMonth(twoWeeksAgo.getMonth() - 1)
+
   categories.map((category) => {
     category.listings.map(
       ({
@@ -255,7 +265,11 @@ async function getData({ webSlug }): Promise<DataType> {
         tags,
         relations,
         website,
+        createdAt,
       }) => {
+        // Determine if listing is new
+        const isNew = webIsOlderThanTwoMonths && createdAt > twoWeeksAgo
+
         const transformedNode: any = {
           id: `listing-${listingId}`,
           title,
@@ -276,6 +290,10 @@ async function getData({ webSlug }): Promise<DataType> {
           color: `#${category.color}`,
           icon: undefined,
           website,
+        }
+
+        if (isNew) {
+          transformedNode.new = isNew
         }
 
         if (category.icon !== 'default') {

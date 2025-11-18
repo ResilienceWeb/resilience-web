@@ -200,12 +200,13 @@ const Web = ({
           item.group !== 'related-web',
       )
       .sort(sortStringsFunc)
-      .sort((item) => {
-        if (item.featured) {
-          return -1
-        } else {
-          return 1
-        }
+      .sort((a, b) => {
+        // Sort by featured first, then new, then regular
+        if (a.featured && !b.featured) return -1
+        if (!a.featured && b.featured) return 1
+        if (a.new && !b.new) return -1
+        if (!a.new && b.new) return 1
+        return 0
       })
 
     if (isVolunteer) {

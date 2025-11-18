@@ -47,6 +47,7 @@ declare global {
     website: string
     seekingVolunteers: boolean
     featured: boolean
+    new: boolean
     category: {
       color: string
       label: string

@@ -53,6 +53,7 @@ function MarkerClusterGroup({ items }: { items: any[] }) {
   const clusterRef = useRef<any>(null)
 
   useEffect(() => {
+    // eslint-disable-next-line promise/catch-or-return
     import('leaflet.markercluster').then(() => {
       const clusterGroup = new (L as any).MarkerClusterGroup({
         chunkedLoading: true,

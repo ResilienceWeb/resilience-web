@@ -22,6 +22,8 @@ const MainList = ({ filteredItems, webSlug }: MainListProps) => {
     return categoriesIndexesObj
   }, [categories])
 
+  console.log(filteredItems)
+
   return (
     <>
       <div className="flex min-h-[calc(100vh-302px)] flex-col items-center px-4 py-2">
