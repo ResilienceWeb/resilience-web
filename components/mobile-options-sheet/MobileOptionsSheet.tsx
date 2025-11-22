@@ -61,9 +61,20 @@ const MobileOptionsSheet = ({
             <>
               <Separator />
               <div className="px-1">
-                <h2 className="mb-2 text-lg font-semibold">About this web</h2>
-                {/* <p className="text-sm text-gray-600">{webDescription}</p> */}
-                <RichText html={webDescription} />
+                {webDescription && webDescription.length < 100 && (
+                  <>
+                    <h2 className="mb-2 text-lg font-semibold">
+                      About this web
+                    </h2>
+                    <RichText html={webDescription} />
+                  </>
+                )}
+
+                {webDescription && webDescription.length >= 100 && (
+                  <Link href="/web">
+                    <Button variant="outline">About this web</Button>
+                  </Link>
+                )}
               </div>
             </>
           )}

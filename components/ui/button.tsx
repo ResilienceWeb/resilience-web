@@ -1,7 +1,6 @@
 import * as React from 'react'
-import { Slot as SlotPrimitive } from 'radix-ui'
 import { cva, type VariantProps } from 'class-variance-authority'
-
+import { Slot as SlotPrimitive } from 'radix-ui'
 import { cn } from '@components/lib/utils'
 
 const buttonVariants = cva(
@@ -10,17 +9,18 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90',
+          'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-[.97]',
         destructive:
-          'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90',
+          'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 active:scale-[.97]',
         outline:
-          'border border-primary bg-background text-primary shadow-xs hover:bg-accent hover:text-primary/90',
+          'border border-primary bg-background text-primary shadow-xs hover:bg-accent hover:text-primary/90 active:scale-[.97]',
         secondary:
-          'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
+          'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 active:scale-[.97]',
         purple:
-          'bg-purple-600 text-primary-foreground shadow-xs hover:bg-purple-500',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
+          'bg-purple-600 text-primary-foreground shadow-xs hover:bg-purple-500 active:scale-[.97]',
+        ghost:
+          'hover:bg-accent hover:text-accent-foreground active:scale-[.97]',
+        link: 'text-primary underline-offset-4 hover:underline active:scale-[.97]',
       },
       size: {
         default: 'h-9 px-4 py-2',
@@ -42,7 +42,13 @@ export interface ButtonProps
   asChild?: boolean
 }
 
-const Button = ({ className, variant, size, asChild = false, ...props }: ButtonProps) => {
+const Button = ({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: ButtonProps) => {
   const Comp = asChild ? SlotPrimitive.Slot : 'button'
   return (
     <Comp
