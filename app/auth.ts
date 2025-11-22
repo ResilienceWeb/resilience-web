@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs'
-import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
+import { betterAuth } from 'better-auth/minimal'
 import { emailOTP, admin } from 'better-auth/plugins'
 import prisma from '@prisma-rw'
 import { sendEmail } from '@helpers/email'
