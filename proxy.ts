@@ -7,6 +7,29 @@ export default function middleware(req: NextRequest) {
   // Get pathname of request (e.g. /blog-slug)
   const { pathname } = req.nextUrl
 
+  // Block common scanner/bot paths early to prevent unnecessary processing
+  const scannerPatterns = [
+    '.php',
+    '.asp',
+    '.aspx',
+    '.jsp',
+    '.cgi',
+    'wp-',
+    'wordpress',
+    'xmlrpc',
+    '.env',
+    '.git',
+    'phpmyadmin',
+    '.sql',
+    'backup',
+  ]
+
+  if (
+    scannerPatterns.some((pattern) => pathname.toLowerCase().includes(pattern))
+  ) {
+    return new Response(null, { status: 404 })
+  }
+
   // Get hostname of request
   const hostname = req.headers.get('host')
   if (!hostname) {
