@@ -36,7 +36,7 @@
     "@prisma/client": "6.19.0",
     "@react-email/components": "1.0.1",
     "@react-email/render": "2.0.0",
-    "@sentry/nextjs": "10.25.0",
+    "@sentry/nextjs": "10.27.0",
     "@tanstack/react-query": "5.90.9",
     "@tinymce/tinymce-react": "6.3.0",
     "@trigger.dev/sdk": "4.1.0",
