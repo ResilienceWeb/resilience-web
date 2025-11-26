@@ -56,7 +56,6 @@ const nextConfig = {
   },
   experimental: {
     scrollRestoration: process.env.NODE_ENV === 'development' ? false : true,
-    staticGenerationMaxConcurrency: 5,
   },
   skipTrailingSlashRedirect: true,
   async headers() {
