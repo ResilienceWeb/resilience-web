@@ -7,6 +7,8 @@ on:
 jobs:
   cron:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
     - name: Deploy main to production
       uses: wei/curl@master

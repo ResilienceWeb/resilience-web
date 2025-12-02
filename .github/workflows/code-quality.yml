@@ -4,6 +4,8 @@ on:
     branches: [main]
 jobs:
   test:
+    permissions:
+      contents: read
     timeout-minutes: 5
     runs-on: ubuntu-latest
     env:
