@@ -95,6 +95,7 @@
     "@types/react": "19.2.7",
     "@typescript-eslint/eslint-plugin": "8.46.0",
     "@typescript-eslint/parser": "8.46.0",
+    "baseline-browser-mapping": "2.9.2",
     "eslint": "9.39.1",
     "eslint-config-next": "16.0.7",
     "eslint-plugin-jsx-a11y": "6.10.2",

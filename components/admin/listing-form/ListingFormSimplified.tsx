@@ -9,7 +9,6 @@ import dynamic from 'next/dynamic'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Category } from '@prisma-client'
 import { z } from 'zod'
-import { urlValidator } from '@helpers/form'
 import { generateSlug } from '@helpers/utils'
 import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
@@ -65,12 +64,11 @@ const SlugField = ({ webSlug }) => {
     <FormField
       control={control}
       name="slug"
-      rules={{ validate: urlValidator }}
       render={({ field }) => (
         <FormItem>
           <FormLabel className="font-semibold">Link to listing page</FormLabel>
           <div className="flex">
-            <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
+            <span className="inline-flex shrink-0 items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
               {`${webSlug}.resilienceweb.org.uk/`}
             </span>
             <Input {...field} className="rounded-l-none" />
@@ -129,7 +127,12 @@ const listingFormSchema = z.object({
   ),
   seekingVolunteers: z.boolean(),
   image: z.any(),
-  slug: z.string(),
+  slug: z
+    .string()
+    .min(1, { error: 'Slug is required' })
+    .regex(/^[a-z0-9-]+$/, {
+      error: 'Only lowercase letters, numbers, and hyphens are allowed',
+    }),
   tags: z.array(z.object({ value: z.number(), label: z.string() })),
   noPhysicalLocation: z.boolean(),
   location: z

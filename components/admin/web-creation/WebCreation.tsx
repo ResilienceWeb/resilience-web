@@ -10,7 +10,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import posthog from 'posthog-js'
 import * as z from 'zod'
 import { useSession } from '@auth-client'
-import { urlValidator } from '@helpers/form'
 import { generateSlug } from '@helpers/utils'
 import Faq from '@components/faq'
 import RichTextEditor from '@components/rich-text-editor'
@@ -87,11 +86,8 @@ const formSchema = z.object({
   slug: z
     .string()
     .min(1, { error: 'Slug is required' })
-    .refine(urlValidator, {
-      error: 'Please only use letters, numbers and dashes',
-    })
-    .refine((value) => value === value.toLowerCase(), {
-      error: 'Slug must be lowercase',
+    .regex(/^[a-z0-9-]+$/, {
+      error: 'Only lowercase letters, numbers, and hyphens are allowed',
     }),
   contactEmail: z.email({ error: 'Please enter a valid email' }).optional(),
   description: z.string(),

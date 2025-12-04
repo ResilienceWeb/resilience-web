@@ -72,7 +72,12 @@ const listingFormSchema = z.object({
   seekingVolunteers: z.boolean(),
   featured: z.boolean(),
   image: z.any(),
-  slug: z.string().min(1, { error: 'Slug is required' }),
+  slug: z
+    .string()
+    .min(1, { error: 'Slug is required' })
+    .regex(/^[a-z0-9-]+$/, {
+      error: 'Only lowercase letters, numbers, and hyphens are allowed',
+    }),
   tags: z.array(z.object({ value: z.number(), label: z.string() })),
   relations: z.array(z.object({ value: z.number(), label: z.string() })),
   noPhysicalLocation: z.boolean(),
@@ -136,7 +141,7 @@ const SlugField = ({ isEditMode, register, watch, setValue, errors }) => {
         Link to listing page
       </label>
       <div className="flex">
-        <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
+        <span className="inline-flex shrink-0 items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
           {`${selectedWebSlug}.resilienceweb.org.uk/`}
         </span>
         <Input {...register('slug')} id="slug" className="rounded-l-none" />
