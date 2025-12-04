@@ -13,11 +13,12 @@ const provider = new OpenStreetMapProvider({
   },
 })
 
-const geoSearchControl = GeoSearchControl({
-  provider,
-  style: 'bar',
-  showMarker: false,
-})
+const createGeoSearchControl = () =>
+  GeoSearchControl({
+    provider,
+    style: 'bar',
+    showMarker: false,
+  })
 
 const DEFAULT_CENTER = {
   lat: 51.505,
@@ -38,50 +39,87 @@ const MapContent = ({
   const { setValue } = useFormContext()
   const map = useMap()
   const markerRef = useRef(null)
+  const geoSearchControlRef = useRef<ReturnType<
+    typeof GeoSearchControl
+  > | null>(null)
   const initialCenter =
     latitude && longitude ? { lat: latitude, lng: longitude } : undefined
   const [position, setPosition] = useState(initialCenter)
 
-  map.on('geosearch/showlocation', (event) => {
-    setPosition({
-      // @ts-ignore
-      lat: event.location.y,
-      // @ts-ignore
-      lng: event.location.x,
-    })
-    setValue(
-      'location',
-      {
-        // @ts-ignore
-        latitude: event.location.y,
-        // @ts-ignore
-        longitude: event.location.x,
-        // @ts-ignore
-        description: event.location.label,
-      },
-      { shouldValidate: true, shouldDirty: true },
-    )
-  })
-
   useEffect(() => {
-    if (locationDescription) {
-      geoSearchControl.searchElement.input.value = locationDescription
+    const handleShowLocation = (event: any) => {
+      const location = event.location || event
+      setPosition({
+        lat: location.y,
+        lng: location.x,
+      })
+      setValue(
+        'location',
+        {
+          latitude: location.y,
+          longitude: location.x,
+          description: location.label,
+        },
+        { shouldValidate: true, shouldDirty: true },
+      )
     }
 
-    if (locationDescription === undefined) {
-      geoSearchControl.searchElement.input.value = ''
-    }
-  }, [locationDescription])
+    const geoSearchControl = createGeoSearchControl()
+    geoSearchControlRef.current = geoSearchControl
 
-  useEffect(() => {
     geoSearchControl.searchElement.input.setAttribute('data-1p-ignore', 'true')
     map.addControl(geoSearchControl)
 
+    map.on('geosearch/showlocation', handleShowLocation)
+
+    // Workaround: Listen for clicks on result items directly
+    // The leaflet-geosearch library has a bug where clicking results doesn't always fire the event
+    const resultsContainer =
+      geoSearchControl.searchElement.form.querySelector('.results')
+    const handleResultClick = (e: Event) => {
+      const target = e.target as HTMLElement
+      const resultItem = target.closest('[data-key]')
+      if (resultItem && geoSearchControl.resultList?.results) {
+        const idx = Number(resultItem.getAttribute('data-key'))
+        const result = geoSearchControl.resultList.results[idx]
+        if (result) {
+          // Manually trigger the location update
+          setTimeout(() => {
+            const newPosition = { lat: result.y, lng: result.x }
+            setPosition(newPosition)
+            map.setView(newPosition, map.getZoom())
+            setValue(
+              'location',
+              {
+                latitude: result.y,
+                longitude: result.x,
+                description: result.label,
+              },
+              { shouldValidate: true, shouldDirty: true },
+            )
+          }, 100)
+        }
+      }
+    }
+    resultsContainer?.addEventListener('click', handleResultClick)
+
     return () => {
+      map.off('geosearch/showlocation', handleShowLocation)
+      resultsContainer?.removeEventListener('click', handleResultClick)
       map.removeControl(geoSearchControl)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [map, setValue])
+
+  useEffect(() => {
+    if (!geoSearchControlRef.current) return
+
+    if (locationDescription) {
+      geoSearchControlRef.current.searchElement.input.value =
+        locationDescription
+    } else {
+      geoSearchControlRef.current.searchElement.input.value = ''
+    }
+  }, [locationDescription])
 
   return (
     <>
