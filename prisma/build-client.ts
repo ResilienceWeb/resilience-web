@@ -1,13 +1,16 @@
 import { PrismaClient } from '@prisma-client'
 import { PrismaPg } from '@prisma/adapter-pg'
+import { Pool } from 'pg'
 
-const adapter = new PrismaPg({
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL_BUILD || process.env.DATABASE_URL,
+  max: 3, // Limit connections during build
   ssl: {
     rejectUnauthorized: false,
   },
 })
 
+const adapter = new PrismaPg(pool)
 const buildPrisma = new PrismaClient({ adapter })
 
 buildPrisma.$connect().catch((error) => {
@@ -23,14 +26,20 @@ buildPrisma.$connect().catch((error) => {
   process.exit(1)
 })
 
-// Ensure cleanup: disconnect Prisma client on build completion
+// Ensure cleanup: disconnect Prisma client and pool on build completion
 if (typeof process !== 'undefined') {
+  let isCleanedUp = false
+
   const cleanup = async () => {
+    if (isCleanedUp) return
+    isCleanedUp = true
+
     try {
       if (process.env.DEBUG_BUILD === 'true') {
         console.log('🔌 Disconnecting Prisma build client...')
       }
       await buildPrisma.$disconnect()
+      await pool.end()
       if (process.env.DEBUG_BUILD === 'true') {
         console.log('✅ Prisma build client disconnected successfully')
       }
@@ -43,10 +52,6 @@ if (typeof process !== 'undefined') {
   process.on('beforeExit', cleanup)
   process.on('SIGINT', cleanup)
   process.on('SIGTERM', cleanup)
-  process.on('exit', () => {
-    // Synchronous cleanup on exit
-    buildPrisma.$disconnect()
-  })
 }
 
 export default buildPrisma
