@@ -141,7 +141,7 @@ export async function PUT(request, props) {
       const { image: oldImageKey } = await prisma.web.findUnique({
         where: { slug },
       })
-      imageUrl = await uploadImage(image, oldImageKey)
+      imageUrl = await uploadImage(image, oldImageKey, { resize: false })
       if (imageUrl) {
         newData.image = imageUrl
       }

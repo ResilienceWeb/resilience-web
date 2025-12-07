@@ -10,27 +10,42 @@ function generateUniqueId() {
   return `${timestamp}-${random}`
 }
 
+type UploadOptions = {
+  resize?: boolean
+}
+
 export default async function uploadImage(
   image: File,
   oldImageKey?: string,
+  options: UploadOptions = { resize: true },
 ): Promise<string> {
   const imageBuffer = Buffer.from(await image.arrayBuffer())
   const uniqueFileId = generateUniqueId()
-  let fileName = `${uniqueFileId}-${image.name}`
+  const baseName = path.parse(image.name).name
+  let fileName = `${uniqueFileId}-${baseName}.webp`
 
   if (process.env.NODE_ENV === 'development') {
     fileName = `dev-${fileName}`
   }
 
-  const compressedImage = await sharp(imageBuffer)
-    .webp({ quality: 80 })
-    .toBuffer()
+  let sharpInstance = sharp(imageBuffer)
+
+  if (options.resize) {
+    sharpInstance = sharpInstance.resize({
+      width: 650,
+      withoutEnlargement: true,
+    })
+  }
+
+  const compressedImage = await sharpInstance.webp({ quality: 75 }).toBuffer()
 
   const putObjectCommand = new PutObjectCommand({
     Bucket: config.bucketName,
     Body: compressedImage,
     Key: fileName,
     ACL: 'public-read',
+    ContentType: 'image/webp',
+    CacheControl: 'public, max-age=31536000, immutable',
   })
 
   const response = await doSpace.send(putObjectCommand)
