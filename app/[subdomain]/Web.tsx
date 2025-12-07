@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, memo, useState } from 'react'
+import { useCallback, useMemo, memo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import '@styles/font-awesome.css'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
@@ -76,11 +76,18 @@ const Web = ({
     'tags',
     parseAsArrayOf(parseAsString).withDefault([]),
   )
-  const [activeTab, setActiveTab] = useLocalStorage('activeTab', undefined)
+  const [storedTab, setStoredTab] = useLocalStorage<string | undefined>(
+    'activeTab',
+    undefined,
+    { initializeWithValue: false },
+  )
   const [viewParam, setViewParam] = useQueryState(
     'view',
-    parseAsString.withDefault(activeTab ?? defaultTab),
+    parseAsString.withDefault(defaultTab),
   )
+
+  // Use viewParam as the source of truth, sync with localStorage after mount
+  const activeTab = storedTab ?? viewParam
 
   const [searchTerm, setSearchTerm] = useState('')
   const [searchTermValue] = useDebounceValue(searchTerm, 500)
@@ -132,12 +139,6 @@ const Web = ({
 
   const [selectedId, setSelectedId] = useState()
 
-  useEffect(() => {
-    if (activeTab === undefined) {
-      setActiveTab(viewParam)
-    }
-  }, [viewParam, activeTab, setActiveTab])
-
   const handleCategorySelection = useCallback(
     (value) => {
       const categoryLabels = value.map((c) => c.label)
@@ -164,10 +165,10 @@ const Web = ({
 
   const handleTabChange = useCallback(
     (value: string) => {
-      setActiveTab(value)
+      setStoredTab(value)
       setViewParam(value)
     },
-    [setActiveTab, setViewParam],
+    [setStoredTab, setViewParam],
   )
 
   const descriptiveNodes = useMemo(

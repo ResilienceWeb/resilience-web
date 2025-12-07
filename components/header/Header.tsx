@@ -1,4 +1,4 @@
-import { memo, useState, useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
 import Select from 'react-select'
 import Image from 'next/image'
@@ -48,13 +48,8 @@ const Header = ({
   activeTab,
   onTabChange,
 }: HeaderProps) => {
-  const [currentTab, setCurrentTab] = useState(activeTab)
-
-  const handleTabChange = (value) => {
-    setCurrentTab(value)
-    if (onTabChange) {
-      onTabChange(value)
-    }
+  const handleTabChange = (value: string) => {
+    onTabChange?.(value)
   }
 
   const colsClass = useMemo(() => {
@@ -147,7 +142,7 @@ const Header = ({
               <div className="w-full pb-2">
                 <Tabs
                   defaultValue="list"
-                  value={currentTab}
+                  value={activeTab}
                   onValueChange={handleTabChange}
                   className="w-full"
                 >
@@ -210,7 +205,7 @@ const Header = ({
         <div className="w-full px-4 pb-2">
           <Tabs
             defaultValue="web"
-            value={currentTab}
+            value={activeTab}
             onValueChange={handleTabChange}
             className="w-full"
           >
