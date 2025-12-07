@@ -44,8 +44,6 @@ export default async function uploadImage(
     Body: compressedImage,
     Key: fileName,
     ACL: 'public-read',
-    ContentType: 'image/webp',
-    CacheControl: 'public, max-age=31536000, immutable',
   })
 
   const response = await doSpace.send(putObjectCommand)
