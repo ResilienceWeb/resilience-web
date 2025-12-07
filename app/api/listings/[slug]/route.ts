@@ -304,6 +304,7 @@ export async function PUT(request) {
     }
 
     revalidatePath(`/${listing.web.slug}/${listing.slug}`)
+    revalidatePath(`/${listing.web.slug}`)
 
     return Response.json({
       listing,
