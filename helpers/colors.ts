@@ -32,13 +32,18 @@ export function hasAlpha(imgEl) {
 
   context.drawImage(imgEl, 0, 0)
 
-  const data = context.getImageData(0, 0, width, height).data
-  let hasAlphaPixels = false
-  for (let i = 3, n = data.length; i < n; i += 4) {
-    if (data[i] < 255) {
-      hasAlphaPixels = true
-      break
+  try {
+    const data = context.getImageData(0, 0, width, height).data
+    let hasAlphaPixels = false
+    for (let i = 3, n = data.length; i < n; i += 4) {
+      if (data[i] < 255) {
+        hasAlphaPixels = true
+        break
+      }
     }
+    return hasAlphaPixels
+  } catch {
+    // Canvas is tainted by cross-origin image data - cannot read pixels
+    return false
   }
-  return hasAlphaPixels
 }

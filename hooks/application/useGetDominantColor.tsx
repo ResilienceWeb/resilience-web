@@ -105,7 +105,14 @@ async function extractDominantColors(
 
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
 
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      let imageData
+      try {
+        imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      } catch {
+        // Canvas is tainted by cross-origin image - return null color
+        resolve({ dominantColor: null })
+        return
+      }
       const pixels = imageData.data
 
       const colorMap: ColorMap = countColors(
