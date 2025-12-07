@@ -225,6 +225,7 @@ export async function PUT(request) {
     const image = formData.get('image')
     let imageUrl: string | null = null
     if (image && image !== 'undefined' && image !== 'null') {
+      // User is uploading a new image
       const { image: oldImageKey } = await prisma.listing.findUnique({
         where: { id: Number(listingId) },
         select: {
@@ -236,6 +237,19 @@ export async function PUT(request) {
       if (imageUrl) {
         newData.image = imageUrl
       }
+    } else if (image === 'null') {
+      // User explicitly removed the image
+      const { image: oldImageKey } = await prisma.listing.findUnique({
+        where: { id: Number(listingId) },
+        select: {
+          image: true,
+        },
+      })
+
+      if (oldImageKey) {
+        await deleteImage(oldImageKey)
+      }
+      newData.image = null
     }
 
     const listing = await prisma.listing.update({
