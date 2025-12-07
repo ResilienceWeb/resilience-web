@@ -30,10 +30,17 @@ const Layout = ({
       <main
         className={`flex min-h-[calc(100vh-186px)] flex-col items-center md:min-h-[calc(100vh-328px)] ${!hideBorder ? 'border-t border-t-gray-200' : ''} `}
       >
-        {pathname === '/' && (
+        {/* {pathname === '/' && (
           <AlertBanner
             content="Join our online monthly Assembly. Click here to read more."
             type="info"
+            url="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219?aff=oddtdtcreator"
+          />
+        )} */}
+        {pathname === '/' && (
+          <AlertBanner
+            content="We are currently undergoing essential technical maintenance which may temporarily result in issues on our platform. Please bear with us."
+            type="warning"
             url="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219?aff=oddtdtcreator"
           />
         )}
