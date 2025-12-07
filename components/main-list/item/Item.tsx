@@ -84,7 +84,6 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
           alt={`${dataItem.label} cover image`}
           src={dataItem.image}
           sizes="(max-width: 768px) 90vw, 300px"
-          isInView={inView}
           priority={inView && isWithinAFewSecondsOfRender}
         />
       ) : (

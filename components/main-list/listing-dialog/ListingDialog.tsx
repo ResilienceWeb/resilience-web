@@ -145,7 +145,6 @@ const ListingDialog = ({
             alt={`${item.label} cover image`}
             src={item.image}
             sizes="(max-width: 768px) 90vw, 300px"
-            isInView
             priority
           />
         )}
