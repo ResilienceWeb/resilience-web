@@ -75,6 +75,11 @@ export default async function getListing({
           id: true,
         },
       },
+      web: {
+        select: {
+          slug: true,
+        },
+      },
     },
   })
 

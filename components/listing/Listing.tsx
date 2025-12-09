@@ -31,23 +31,12 @@ const ListingMap = dynamic(() => import('@components/listing-map'), {
 })
 
 function Listing({ listing }) {
-  const subdomain = useMemo(() => {
-    if (typeof window === 'undefined') {
-      return undefined
-    }
-    const hostname = window.location.hostname
-    if (!hostname.includes('.')) {
-      return undefined
-    }
-    return hostname.split('.')[0]
-  }, [])
-
   const websiteSanitized = useMemo(
     () => sanitizeLink(listing.website),
     [listing.website],
   )
 
-  const { categories } = useCategoriesPublic({ webSlug: subdomain })
+  const { categories } = useCategoriesPublic({ webSlug: listing.web?.slug })
   const categoriesIndexes = useMemo(() => {
     const categoriesIndexesObj = {}
     categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))
@@ -231,7 +220,7 @@ function Listing({ listing }) {
               return (
                 <Link
                   key={tag.id}
-                  href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
+                  href={`${PROTOCOL}://${listing.web?.slug}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
                 >
                   <Badge
                     className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
@@ -269,7 +258,9 @@ function Listing({ listing }) {
             Back to main list
           </MagicBackButton>
 
-          <Link href={`${REMOTE_URL}/edit/${subdomain}/${listing.slug}`}>
+          <Link
+            href={`${REMOTE_URL}/edit/${listing.web?.slug}/${listing.slug}`}
+          >
             <Button variant="purple">
               <FiEdit className="h-5 w-5" />
               Edit Listing

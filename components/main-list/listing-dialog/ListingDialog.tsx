@@ -3,7 +3,7 @@
 import { memo, useCallback, useMemo } from 'react'
 import { HiUserGroup, HiOutlineLink, HiExternalLink } from 'react-icons/hi'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import { actionTypes, actionIconStyles } from '@helpers/actions'
 import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
@@ -42,13 +42,7 @@ const ListingDialog = ({
   onClose,
   isFullScreen = false,
 }: DialogProps) => {
-  const subdomain = useMemo(() => {
-    const hostname = window.location.hostname
-    if (!hostname.includes('.')) {
-      return ''
-    }
-    return hostname.split('.')[0]
-  }, [])
+  const { subdomain } = useParams<{ subdomain: string }>()
 
   const websiteSanitized = useMemo(
     () => sanitizeLink(item.website),
