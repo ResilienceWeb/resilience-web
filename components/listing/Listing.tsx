@@ -214,24 +214,26 @@ function Listing({ listing }) {
               />
             )}
 
-          <div className="mb-12 flex flex-wrap justify-end gap-2">
-            {listing.tags?.map((tag) => {
-              const urlEncodedTag = tag.label.replace(' ', '+')
-              return (
-                <Link
-                  key={tag.id}
-                  href={`${PROTOCOL}://${listing.web?.slug}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
-                >
-                  <Badge
-                    className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
-                    style={{ backgroundColor: tag.color ?? '#718096' }}
+          {listing.web?.slug && listing.tags?.length > 0 && (
+            <div className="mb-12 flex flex-wrap justify-end gap-2">
+              {listing.tags.map((tag) => {
+                const urlEncodedTag = tag.label.replace(' ', '+')
+                return (
+                  <Link
+                    key={tag.id}
+                    href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
                   >
-                    #{tag.label}
-                  </Badge>
-                </Link>
-              )
-            })}
-          </div>
+                    <Badge
+                      className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
+                      style={{ backgroundColor: tag.color ?? '#718096' }}
+                    >
+                      #{tag.label}
+                    </Badge>
+                  </Link>
+                )
+              })}
+            </div>
+          )}
 
           {listing.relations?.length > 0 && (
             <div className="mb-12 overflow-hidden">
@@ -258,14 +260,16 @@ function Listing({ listing }) {
             Back to main list
           </MagicBackButton>
 
-          <Link
-            href={`${REMOTE_URL}/edit/${listing.web?.slug}/${listing.slug}`}
-          >
-            <Button variant="purple">
-              <FiEdit className="h-5 w-5" />
-              Edit Listing
-            </Button>
-          </Link>
+          {listing.web?.slug && (
+            <Link
+              href={`${REMOTE_URL}/edit/${listing.web.slug}/${listing.slug}`}
+            >
+              <Button variant="purple">
+                <FiEdit className="h-5 w-5" />
+                Edit Listing
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </>
