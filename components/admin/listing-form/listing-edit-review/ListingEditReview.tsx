@@ -38,6 +38,9 @@ const ListingEditReview = ({
   }
 
   const hadNoLocationPreviously = Boolean(!listing.location)
+  const editedLocationHasNoPhysicalLocation = Boolean(
+    editedListing.location?.noPhysicalLocation,
+  )
 
   return (
     <div className="space-y-6">
@@ -153,24 +156,31 @@ const ListingEditReview = ({
             {listing.location?.description}
           </p>
 
-          {!hadNoLocationPreviously && (
-            <ListingMap
-              latitude={listing.location?.latitude}
-              longitude={listing.location?.longitude}
-              locationDescription={listing.location?.description}
-              hideDescription
-            />
-          )}
+          {!hadNoLocationPreviously &&
+            listing.location?.latitude &&
+            listing.location?.longitude && (
+              <ListingMap
+                latitude={listing.location.latitude}
+                longitude={listing.location.longitude}
+                locationDescription={listing.location?.description}
+                hideDescription
+              />
+            )}
 
           <p className="bg-[#b5efdb] w-fit text-[green]">
             {editedListing.location?.description}
+            {editedLocationHasNoPhysicalLocation && ' (no physical location)'}
           </p>
-          <ListingMap
-            latitude={editedListing.location?.latitude}
-            longitude={editedListing.location?.longitude}
-            locationDescription={editedListing.location?.description}
-            hideDescription
-          />
+          {!editedLocationHasNoPhysicalLocation &&
+            editedListing.location?.latitude &&
+            editedListing.location?.longitude && (
+              <ListingMap
+                latitude={editedListing.location.latitude}
+                longitude={editedListing.location.longitude}
+                locationDescription={editedListing.location?.description}
+                hideDescription
+              />
+            )}
         </div>
       )}
 

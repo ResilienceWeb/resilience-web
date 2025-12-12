@@ -254,7 +254,7 @@ function Listing({ listing }) {
           )}
         </div>
 
-        <div className="w-full mb-8 flex justify-between">
+        <div className="w-full my-8 flex justify-between">
           <MagicBackButton className="group mb-6 flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900">
             <HiArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
             Back to main list
