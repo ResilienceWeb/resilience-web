@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo } from 'react'
 import { useSearchParams, useRouter, redirect } from 'next/navigation'
+import * as Sentry from '@sentry/nextjs'
 import 'driver.js/dist/driver.css'
 import posthog from 'posthog-js'
 import { useSession } from '@auth-client'
@@ -37,15 +38,12 @@ export default function AdminPage() {
   }, [isLoadingListings, listings, canEditCurrentWeb, isCheckingEditAccess])
 
   useEffect(() => {
-    if (
-      process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
-      !process.env.NEXT_PUBLIC_VERCEL_URL.includes('vercel.app')
-    ) {
-      console.log('[Posthog] Identifying user')
+    if (process.env.NODE_ENV === 'production' && session?.user) {
+      console.log('Identifying user')
       posthog.identify(session.user.id, { email: session.user.email })
+      Sentry.setUser({ id: session.user.id, email: session.user.email })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [session?.user])
 
   const clearSearchParams = () => {
     router.replace('/admin')

@@ -180,7 +180,7 @@ const ListingDialog = ({
             <div className="mt-4 flex justify-between">{socialLinks}</div>
           )}
 
-          <div className="my-4">
+          <div className="my-4 prose prose-lg prose-headings:font-semibold prose-a:text-blue-600 mb-12 max-w-none">
             <RichText html={item.description} />
           </div>
 
