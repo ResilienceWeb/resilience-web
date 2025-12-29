@@ -21,15 +21,16 @@ export default async function getListing({
   const listingData = await prisma.listing.findFirst({
     where: {
       slug: listingSlug,
-      ...(webSlug
-        ? {
-            web: {
+      web: {
+        deletedAt: null,
+        ...(webSlug
+          ? {
               slug: {
                 contains: webSlug,
               },
-            },
-          }
-        : {}),
+            }
+          : {}),
+      },
     },
     include: {
       socials: true,

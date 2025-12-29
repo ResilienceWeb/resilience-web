@@ -281,13 +281,10 @@ export default function WebDashboardPage({ params }) {
       )}
 
       <div className="my-8 border-t border-gray-200 pt-6">
-        <h2 className="text-2xl font-bold text-destructive mb-2">
-          Danger Zone
-        </h2>
+        <h2 className="text-2xl font-bold text-destructive mb-2">Delete</h2>
         <p className="text-muted-foreground mb-4">
-          Deleting this web will permanently remove all associated data,
-          including listings, categories, and team access. This action cannot be
-          undone.
+          Note that this is a soft delete. This will mark the web as deleted but
+          the web is still recoverable in case this was a mistake.
         </p>
         <Button
           variant="destructive"
@@ -303,7 +300,7 @@ export default function WebDashboardPage({ params }) {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         handleRemove={handleDeleteWeb}
-        description={`Are you sure you want to delete "${web.title}" web? This will permanently delete all ${web.listings.length} listings and cannot be undone.`}
+        description={`Are you sure you want to delete the "${web.title}" web? This action is reversible, but the web will not be visible or accessible anywhere.`}
         titleLabel="Delete Web"
         buttonLabel="Delete Web"
       />

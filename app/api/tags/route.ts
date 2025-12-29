@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
           slug: {
             equals: web,
           },
+          deletedAt: null,
         },
       },
       orderBy: [

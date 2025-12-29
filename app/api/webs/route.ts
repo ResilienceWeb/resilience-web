@@ -80,6 +80,7 @@ export async function GET(request: NextRequest) {
 
     const webs = await prisma.web.findMany({
       where: {
+        deletedAt: null,
         ...(onlyPublished
           ? {
               published: true,
@@ -122,6 +123,9 @@ export async function POST(request: NextRequest) {
       where: {
         email: session.user.email,
         role: 'OWNER',
+        web: {
+          deletedAt: null,
+        },
       },
     })
 

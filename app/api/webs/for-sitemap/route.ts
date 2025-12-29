@@ -6,6 +6,7 @@ export async function GET() {
     const webs = await prisma.web.findMany({
       where: {
         published: true,
+        deletedAt: null,
       },
       select: {
         slug: true,

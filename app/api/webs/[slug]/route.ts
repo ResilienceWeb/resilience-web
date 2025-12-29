@@ -56,12 +56,17 @@ export async function GET(
     include.location = true
   }
 
-  const web: Data['web'] = await prisma.web.findUnique({
+  const web: Data['web'] = await prisma.web.findFirst({
     where: {
       slug,
+      deletedAt: null,
     },
     include,
   })
+
+  if (!web) {
+    return Response.json({ message: 'Web not found' }, { status: 404 })
+  }
 
   return Response.json({
     web,
@@ -85,6 +90,7 @@ export async function PUT(request, props) {
       email: session.user.email,
       web: {
         slug: params.slug,
+        deletedAt: null,
       },
     },
     select: { role: true },
@@ -142,8 +148,8 @@ export async function PUT(request, props) {
     const image = formData.get('image')
     let imageUrl: string | null = null
     if (image && image !== 'undefined' && image !== 'null') {
-      const { image: oldImageKey } = await prisma.web.findUnique({
-        where: { slug },
+      const { image: oldImageKey } = await prisma.web.findFirst({
+        where: { slug, deletedAt: null },
       })
       imageUrl = await uploadImage(image, oldImageKey, { resize: false })
       if (imageUrl) {

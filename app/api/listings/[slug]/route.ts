@@ -28,15 +28,16 @@ export async function GET(
     const listing = await prisma.listing.findFirst({
       where: {
         slug,
-        ...(webSlug
-          ? {
-              web: {
+        web: {
+          deletedAt: null,
+          ...(webSlug
+            ? {
                 slug: {
                   contains: webSlug,
                 },
-              },
-            }
-          : {}),
+              }
+            : {}),
+        },
       },
       include: {
         socials: true,

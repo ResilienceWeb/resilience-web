@@ -19,9 +19,14 @@ export async function GET(request: NextRequest) {
           ? {
               web: {
                 slug: web,
+                deletedAt: null,
               },
             }
-          : {}),
+          : {
+              web: {
+                deletedAt: null,
+              },
+            }),
       },
       include: {
         location: {
@@ -194,9 +199,10 @@ export async function POST(request) {
     })
 
     if (isProposedListing) {
-      const selectedWeb = await prisma.web.findUnique({
+      const selectedWeb = await prisma.web.findFirst({
         where: {
           id: webId,
+          deletedAt: null,
         },
         include: {
           webAccess: true,
