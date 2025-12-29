@@ -1,7 +1,11 @@
+import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
-export async function PATCH(_request, props) {
+export async function PATCH(
+  _request: NextRequest,
+  props: { params: Promise<{ id: string }> },
+) {
   const params = await props.params
   try {
     const listingId = Number(params.id)

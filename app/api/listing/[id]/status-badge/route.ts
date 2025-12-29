@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import sharp from 'sharp'
 import prisma from '@prisma-rw'
@@ -95,7 +96,10 @@ async function svgToPng(svg: string): Promise<ArrayBuffer> {
   return ab
 }
 
-export async function GET(_request, props) {
+export async function GET(
+  _request: NextRequest,
+  props: { params: Promise<{ id: string }> },
+) {
   const params = await props.params
   const url = new URL(_request.url)
   const format = (url.searchParams.get('format') || 'svg').toLowerCase()

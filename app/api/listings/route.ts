@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server'
 import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -7,7 +8,7 @@ import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingProposedAdminEmail from '@components/emails/ListingProposedAdminEmail'
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const web = searchParams.get('web')
 

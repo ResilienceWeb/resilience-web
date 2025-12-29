@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
@@ -6,7 +7,7 @@ import { sendEmail } from '@helpers/email'
 import InviteEmail from '@components/emails/InviteEmail'
 import { addUserToWeb } from '@db/webAccessRepository'
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const session = await auth.api.getSession({
       headers: request.headers,

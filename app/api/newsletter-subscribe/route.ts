@@ -1,8 +1,9 @@
+import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 
 const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   const { email, recaptchaToken } = await request.json()
 
   if (!email || !email.length) {

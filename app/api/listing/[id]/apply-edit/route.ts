@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server'
 import type { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -7,7 +8,10 @@ import { sendEmail } from '@helpers/email'
 import ListingEditAcceptedEmail from '@components/emails/ListingEditAcceptedEmail'
 import { markListingEditAsAccepted } from '@db/listingEditRepository'
 
-export async function POST(request, props) {
+export async function POST(
+  request: NextRequest,
+  props: { params: Promise<{ id: string }> },
+) {
   const params = await props.params
   try {
     const session = await auth.api.getSession({

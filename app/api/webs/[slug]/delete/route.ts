@@ -1,9 +1,13 @@
 import { revalidatePath } from 'next/cache'
+import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import { auth } from '@auth'
 import { deleteWebBySlug, getWebBySlug } from '@db/webRepository'
 
-export async function DELETE(request, props) {
+export async function DELETE(
+  request: NextRequest,
+  props: { params: Promise<{ slug: string }> },
+) {
   const params = await props.params
   const session = await auth.api.getSession({
     headers: request.headers,

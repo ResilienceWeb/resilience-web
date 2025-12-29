@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server'
 import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import checkWebInactiveTask from '@trigger/check-web-inactive'
@@ -40,7 +41,7 @@ const defaultCategories = [
   },
 ]
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
     const withListingsParam = searchParams.get('withListings')
@@ -98,7 +99,7 @@ export async function GET(request) {
   }
 }
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   try {
     const session = await auth.api.getSession({
       headers: request.headers,

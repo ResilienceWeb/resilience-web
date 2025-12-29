@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import { auth } from '@auth'
 import {
@@ -7,7 +8,7 @@ import {
 } from '@db/webAccessRepository'
 import { getWebBySlug } from '@db/webRepository'
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const session = await auth.api.getSession({
       headers: request.headers,

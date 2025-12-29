@@ -1,9 +1,13 @@
+import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import { auth } from '@auth'
-import { getListingEditsByWeb } from '@db/listingEditRepository'
 import { stringToBoolean } from '@helpers/utils'
+import { getListingEditsByWeb } from '@db/listingEditRepository'
 
-export async function GET(request, props) {
+export async function GET(
+  request: NextRequest,
+  props: { params: Promise<{ slug: string }> },
+) {
   const params = await props.params
   const slug = params.slug
 

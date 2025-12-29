@@ -1,4 +1,5 @@
 import { revalidatePath } from 'next/cache'
+import type { NextRequest } from 'next/server'
 import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -14,7 +15,10 @@ function exclude(data, keys) {
   )
 }
 
-export async function GET(request, props) {
+export async function GET(
+  request: NextRequest,
+  props: { params: Promise<{ slug: string }> },
+) {
   const params = await props.params
   try {
     const slug = params.slug
@@ -318,7 +322,10 @@ export async function PUT(request) {
   }
 }
 
-export async function DELETE(request, props) {
+export async function DELETE(
+  request: NextRequest,
+  props: { params: Promise<{ slug: string }> },
+) {
   const params = await props.params
   try {
     const slug = params.slug

@@ -1,7 +1,11 @@
+import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
-export async function PUT(request: Request, props) {
+export async function PUT(
+  request: NextRequest,
+  props: { params: Promise<{ id: string }> },
+) {
   const params = await props.params
   const id = params.id
   const { addedListingIds, removedListingIds } = await request.json()

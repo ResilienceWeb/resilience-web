@@ -1,9 +1,13 @@
 import { revalidatePath } from 'next/cache'
+import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
 
-export async function POST(request, props) {
+export async function POST(
+  request: NextRequest,
+  props: { params: Promise<{ slug: string }> },
+) {
   const params = await props.params
   const session = await auth.api.getSession({
     headers: request.headers,

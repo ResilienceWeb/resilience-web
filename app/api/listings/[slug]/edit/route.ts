@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server'
 import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -9,7 +10,10 @@ import { stringToBoolean } from '@helpers/utils'
 import ListingEditProposedAdminEmail from '@components/emails/ListingEditProposedAdminEmail'
 import { getListingEdits } from '@db/listingEditRepository'
 
-export async function GET(request, props) {
+export async function GET(
+  request: NextRequest,
+  props: { params: Promise<{ slug: string }> },
+) {
   const params = await props.params
   try {
     const session = await auth.api.getSession({

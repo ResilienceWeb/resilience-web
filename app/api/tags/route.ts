@@ -1,8 +1,9 @@
+import type { NextRequest } from 'next/server'
 import type { Tag } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
     const web = searchParams.get('web')
@@ -35,7 +36,7 @@ export async function GET(request) {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const body = await request.json()
   try {
     const tag = await prisma.tag.create({
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PATCH(request: Request) {
+export async function PATCH(request: NextRequest) {
   const body = await request.json()
 
   try {

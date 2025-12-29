@@ -1,7 +1,8 @@
+import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import { sendEmail } from '@helpers/email'
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   const { email, feedback } = await request.json()
 
   try {
