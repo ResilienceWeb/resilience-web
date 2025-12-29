@@ -109,6 +109,7 @@ model Web {
   location     WebLocation? @relation(fields: [locationId], references: [id])
   locationId   Int?         @unique
   webAccess    WebAccess[]
+  deletedAt    DateTime?    @map("deleted_at")
 
   @@map("Location")
 }

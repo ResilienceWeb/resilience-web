@@ -2,7 +2,7 @@ import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import { auth } from '@auth'
-import { deleteWebBySlug, getWebBySlug } from '@db/webRepository'
+import { softDeleteWebBySlug, getWebBySlug } from '@db/webRepository'
 
 export async function DELETE(
   request: NextRequest,
@@ -28,7 +28,7 @@ export async function DELETE(
       return Response.json({ message: 'Web not found' }, { status: 404 })
     }
 
-    await deleteWebBySlug(slug)
+    await softDeleteWebBySlug(slug)
 
     revalidatePath('/')
     revalidatePath(`/${slug}`)

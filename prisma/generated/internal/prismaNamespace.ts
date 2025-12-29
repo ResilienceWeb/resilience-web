@@ -1872,7 +1872,8 @@ export const WebScalarFieldEnum = {
   contactEmail: 'contactEmail',
   published: 'published',
   image: 'image',
-  locationId: 'locationId'
+  locationId: 'locationId',
+  deletedAt: 'deletedAt'
 } as const
 
 export type WebScalarFieldEnum = (typeof WebScalarFieldEnum)[keyof typeof WebScalarFieldEnum]

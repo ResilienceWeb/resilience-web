@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { GraphQLClient } from 'graphql-request'
 import prisma from '@prisma-rw'
 import { getIconUnicode } from '@helpers/icons'
+import { getAllWebs, getWebBySlug } from '@db/webRepository'
 import Web from './Web'
 
 const CENTRAL_NODE_ID = 999
@@ -47,11 +48,7 @@ export default async function WebPage(props) {
 export async function generateMetadata(props): Promise<Metadata> {
   const params = await props.params
   const { subdomain: webSlug } = params
-  const webData = await prisma.web.findUnique({
-    where: {
-      slug: webSlug,
-    },
-  })
+  const webData = await getWebBySlug(webSlug)
 
   if (!webData) {
     return null
@@ -70,7 +67,7 @@ export async function generateMetadata(props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const webs = await prisma.web.findMany()
+  const webs = await getAllWebs()
   const paths = webs.map((w) => `${w.slug}`)
   const subdomains = paths.map((path) => ({
     subdomain: path,
@@ -110,9 +107,10 @@ type DataType =
     }
 
 async function getData({ webSlug }): Promise<DataType> {
-  const webData = await prisma.web.findUnique({
+  const webData = await prisma.web.findFirst({
     where: {
       slug: webSlug,
+      deletedAt: null,
     },
     include: {
       features: {
@@ -134,6 +132,7 @@ async function getData({ webSlug }): Promise<DataType> {
     where: {
       web: {
         slug: webSlug,
+        deletedAt: null,
       },
     },
     select: {

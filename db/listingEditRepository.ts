@@ -17,15 +17,16 @@ export const getListingEdits = async (listingSlug, webSlug) => {
       accepted: false,
       listing: {
         slug: listingSlug,
-        ...(webSlug
-          ? {
-              web: {
+        web: {
+          ...(webSlug
+            ? {
                 slug: {
                   contains: webSlug,
                 },
-              },
-            }
-          : {}),
+              }
+            : {}),
+          deletedAt: null,
+        },
       },
     },
     include: {
@@ -48,7 +49,7 @@ export const getListingEdits = async (listingSlug, webSlug) => {
 
 export const getListingEditsByWeb = async (
   webSlug: string,
-  includeAccepted = false
+  includeAccepted = false,
 ) => {
   const listingEdits = await prisma.listingEdit.findMany({
     where: {
@@ -56,6 +57,7 @@ export const getListingEditsByWeb = async (
       listing: {
         web: {
           slug: webSlug,
+          deletedAt: null,
         },
       },
     },

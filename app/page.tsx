@@ -27,6 +27,7 @@ async function getData(): Promise<any> {
   const webs = await prisma.web.findMany({
     where: {
       published: true,
+      deletedAt: null,
     },
     select: {
       id: true,

@@ -20,9 +20,10 @@ export default async function WebHomePage(props) {
 export async function generateMetadata(props): Promise<Metadata> {
   const params = await props.params
   const { subdomain: webSlug } = params
-  const webData = await prisma.web.findUnique({
+  const webData = await prisma.web.findFirst({
     where: {
       slug: webSlug,
+      deletedAt: null,
     },
   })
 
@@ -57,9 +58,10 @@ type Data = {
 }
 
 async function getData({ webSlug }): Promise<Data> {
-  const webData = await prisma.web.findUnique({
+  const webData = await prisma.web.findFirst({
     where: {
       slug: webSlug,
+      deletedAt: null,
     },
     include: {
       relations: true,

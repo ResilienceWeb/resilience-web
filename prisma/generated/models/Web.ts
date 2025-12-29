@@ -47,6 +47,7 @@ export type WebMinAggregateOutputType = {
   published: boolean | null
   image: string | null
   locationId: number | null
+  deletedAt: Date | null
 }
 
 export type WebMaxAggregateOutputType = {
@@ -60,6 +61,7 @@ export type WebMaxAggregateOutputType = {
   published: boolean | null
   image: string | null
   locationId: number | null
+  deletedAt: Date | null
 }
 
 export type WebCountAggregateOutputType = {
@@ -73,6 +75,7 @@ export type WebCountAggregateOutputType = {
   published: number
   image: number
   locationId: number
+  deletedAt: number
   _all: number
 }
 
@@ -98,6 +101,7 @@ export type WebMinAggregateInputType = {
   published?: true
   image?: true
   locationId?: true
+  deletedAt?: true
 }
 
 export type WebMaxAggregateInputType = {
@@ -111,6 +115,7 @@ export type WebMaxAggregateInputType = {
   published?: true
   image?: true
   locationId?: true
+  deletedAt?: true
 }
 
 export type WebCountAggregateInputType = {
@@ -124,6 +129,7 @@ export type WebCountAggregateInputType = {
   published?: true
   image?: true
   locationId?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -224,6 +230,7 @@ export type WebGroupByOutputType = {
   published: boolean
   image: string | null
   locationId: number | null
+  deletedAt: Date | null
   _count: WebCountAggregateOutputType | null
   _avg: WebAvgAggregateOutputType | null
   _sum: WebSumAggregateOutputType | null
@@ -260,6 +267,7 @@ export type WebWhereInput = {
   published?: Prisma.BoolFilter<"Web"> | boolean
   image?: Prisma.StringNullableFilter<"Web"> | string | null
   locationId?: Prisma.IntNullableFilter<"Web"> | number | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Web"> | Date | string | null
   categories?: Prisma.CategoryListRelationFilter
   listings?: Prisma.ListingListRelationFilter
   tags?: Prisma.TagListRelationFilter
@@ -283,6 +291,7 @@ export type WebOrderByWithRelationInput = {
   published?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   categories?: Prisma.CategoryOrderByRelationAggregateInput
   listings?: Prisma.ListingOrderByRelationAggregateInput
   tags?: Prisma.TagOrderByRelationAggregateInput
@@ -309,6 +318,7 @@ export type WebWhereUniqueInput = Prisma.AtLeast<{
   contactEmail?: Prisma.StringNullableFilter<"Web"> | string | null
   published?: Prisma.BoolFilter<"Web"> | boolean
   image?: Prisma.StringNullableFilter<"Web"> | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Web"> | Date | string | null
   categories?: Prisma.CategoryListRelationFilter
   listings?: Prisma.ListingListRelationFilter
   tags?: Prisma.TagListRelationFilter
@@ -332,6 +342,7 @@ export type WebOrderByWithAggregationInput = {
   published?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.WebCountOrderByAggregateInput
   _avg?: Prisma.WebAvgOrderByAggregateInput
   _max?: Prisma.WebMaxOrderByAggregateInput
@@ -353,6 +364,7 @@ export type WebScalarWhereWithAggregatesInput = {
   published?: Prisma.BoolWithAggregatesFilter<"Web"> | boolean
   image?: Prisma.StringNullableWithAggregatesFilter<"Web"> | string | null
   locationId?: Prisma.IntNullableWithAggregatesFilter<"Web"> | number | null
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Web"> | Date | string | null
 }
 
 export type WebCreateInput = {
@@ -364,6 +376,7 @@ export type WebCreateInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingCreateNestedManyWithoutWebInput
   tags?: Prisma.TagCreateNestedManyWithoutWebInput
@@ -387,6 +400,7 @@ export type WebUncheckedCreateInput = {
   published?: boolean
   image?: string | null
   locationId?: number | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingUncheckedCreateNestedManyWithoutWebInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutWebInput
@@ -407,6 +421,7 @@ export type WebUpdateInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUpdateManyWithoutWebNestedInput
@@ -430,6 +445,7 @@ export type WebUncheckedUpdateInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUncheckedUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
@@ -452,6 +468,7 @@ export type WebCreateManyInput = {
   published?: boolean
   image?: string | null
   locationId?: number | null
+  deletedAt?: Date | string | null
 }
 
 export type WebUpdateManyMutationInput = {
@@ -463,6 +480,7 @@ export type WebUpdateManyMutationInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WebUncheckedUpdateManyInput = {
@@ -476,6 +494,7 @@ export type WebUncheckedUpdateManyInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WebListRelationFilter = {
@@ -499,6 +518,7 @@ export type WebCountOrderByAggregateInput = {
   published?: Prisma.SortOrder
   image?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type WebAvgOrderByAggregateInput = {
@@ -517,6 +537,7 @@ export type WebMaxOrderByAggregateInput = {
   published?: Prisma.SortOrder
   image?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type WebMinOrderByAggregateInput = {
@@ -530,6 +551,7 @@ export type WebMinOrderByAggregateInput = {
   published?: Prisma.SortOrder
   image?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type WebSumOrderByAggregateInput = {
@@ -824,6 +846,7 @@ export type WebCreateWithoutRelationOfInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingCreateNestedManyWithoutWebInput
   tags?: Prisma.TagCreateNestedManyWithoutWebInput
@@ -846,6 +869,7 @@ export type WebUncheckedCreateWithoutRelationOfInput = {
   published?: boolean
   image?: string | null
   locationId?: number | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingUncheckedCreateNestedManyWithoutWebInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutWebInput
@@ -870,6 +894,7 @@ export type WebCreateWithoutRelationsInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingCreateNestedManyWithoutWebInput
   tags?: Prisma.TagCreateNestedManyWithoutWebInput
@@ -892,6 +917,7 @@ export type WebUncheckedCreateWithoutRelationsInput = {
   published?: boolean
   image?: string | null
   locationId?: number | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingUncheckedCreateNestedManyWithoutWebInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutWebInput
@@ -937,6 +963,7 @@ export type WebScalarWhereInput = {
   published?: Prisma.BoolFilter<"Web"> | boolean
   image?: Prisma.StringNullableFilter<"Web"> | string | null
   locationId?: Prisma.IntNullableFilter<"Web"> | number | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"Web"> | Date | string | null
 }
 
 export type WebUpsertWithWhereUniqueWithoutRelationsInput = {
@@ -964,6 +991,7 @@ export type WebCreateWithoutCategoriesInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   listings?: Prisma.ListingCreateNestedManyWithoutWebInput
   tags?: Prisma.TagCreateNestedManyWithoutWebInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutWebsInput
@@ -986,6 +1014,7 @@ export type WebUncheckedCreateWithoutCategoriesInput = {
   published?: boolean
   image?: string | null
   locationId?: number | null
+  deletedAt?: Date | string | null
   listings?: Prisma.ListingUncheckedCreateNestedManyWithoutWebInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutWebInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutWebsInput
@@ -1021,6 +1050,7 @@ export type WebUpdateWithoutCategoriesInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   listings?: Prisma.ListingUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUpdateManyWithoutWebNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutWebsNestedInput
@@ -1043,6 +1073,7 @@ export type WebUncheckedUpdateWithoutCategoriesInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   listings?: Prisma.ListingUncheckedUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutWebsNestedInput
@@ -1062,6 +1093,7 @@ export type WebCreateWithoutTagsInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingCreateNestedManyWithoutWebInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutWebsInput
@@ -1084,6 +1116,7 @@ export type WebUncheckedCreateWithoutTagsInput = {
   published?: boolean
   image?: string | null
   locationId?: number | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingUncheckedCreateNestedManyWithoutWebInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutWebsInput
@@ -1119,6 +1152,7 @@ export type WebUpdateWithoutTagsInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUpdateManyWithoutWebNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutWebsNestedInput
@@ -1141,6 +1175,7 @@ export type WebUncheckedUpdateWithoutTagsInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUncheckedUpdateManyWithoutWebNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutWebsNestedInput
@@ -1160,6 +1195,7 @@ export type WebCreateWithoutListingsInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryCreateNestedManyWithoutWebInput
   tags?: Prisma.TagCreateNestedManyWithoutWebInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutWebsInput
@@ -1182,6 +1218,7 @@ export type WebUncheckedCreateWithoutListingsInput = {
   published?: boolean
   image?: string | null
   locationId?: number | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutWebInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutWebInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutWebsInput
@@ -1217,6 +1254,7 @@ export type WebUpdateWithoutListingsInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUpdateManyWithoutWebNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutWebsNestedInput
@@ -1239,6 +1277,7 @@ export type WebUncheckedUpdateWithoutListingsInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutWebsNestedInput
@@ -1258,6 +1297,7 @@ export type WebCreateWithoutLocationInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingCreateNestedManyWithoutWebInput
   tags?: Prisma.TagCreateNestedManyWithoutWebInput
@@ -1279,6 +1319,7 @@ export type WebUncheckedCreateWithoutLocationInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingUncheckedCreateNestedManyWithoutWebInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutWebInput
@@ -1315,6 +1356,7 @@ export type WebUpdateWithoutLocationInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUpdateManyWithoutWebNestedInput
@@ -1336,6 +1378,7 @@ export type WebUncheckedUpdateWithoutLocationInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUncheckedUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
@@ -1356,6 +1399,7 @@ export type WebCreateWithoutPermissionsInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingCreateNestedManyWithoutWebInput
   tags?: Prisma.TagCreateNestedManyWithoutWebInput
@@ -1378,6 +1422,7 @@ export type WebUncheckedCreateWithoutPermissionsInput = {
   published?: boolean
   image?: string | null
   locationId?: number | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingUncheckedCreateNestedManyWithoutWebInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutWebInput
@@ -1418,6 +1463,7 @@ export type WebCreateWithoutOwnershipsInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingCreateNestedManyWithoutWebInput
   tags?: Prisma.TagCreateNestedManyWithoutWebInput
@@ -1440,6 +1486,7 @@ export type WebUncheckedCreateWithoutOwnershipsInput = {
   published?: boolean
   image?: string | null
   locationId?: number | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingUncheckedCreateNestedManyWithoutWebInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutWebInput
@@ -1480,6 +1527,7 @@ export type WebCreateWithoutWebAccessInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingCreateNestedManyWithoutWebInput
   tags?: Prisma.TagCreateNestedManyWithoutWebInput
@@ -1502,6 +1550,7 @@ export type WebUncheckedCreateWithoutWebAccessInput = {
   published?: boolean
   image?: string | null
   locationId?: number | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingUncheckedCreateNestedManyWithoutWebInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutWebInput
@@ -1537,6 +1586,7 @@ export type WebUpdateWithoutWebAccessInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUpdateManyWithoutWebNestedInput
@@ -1559,6 +1609,7 @@ export type WebUncheckedUpdateWithoutWebAccessInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUncheckedUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
@@ -1578,6 +1629,7 @@ export type WebCreateWithoutFeaturesInput = {
   contactEmail?: string | null
   published?: boolean
   image?: string | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingCreateNestedManyWithoutWebInput
   tags?: Prisma.TagCreateNestedManyWithoutWebInput
@@ -1600,6 +1652,7 @@ export type WebUncheckedCreateWithoutFeaturesInput = {
   published?: boolean
   image?: string | null
   locationId?: number | null
+  deletedAt?: Date | string | null
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutWebInput
   listings?: Prisma.ListingUncheckedCreateNestedManyWithoutWebInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutWebInput
@@ -1635,6 +1688,7 @@ export type WebUpdateWithoutFeaturesInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUpdateManyWithoutWebNestedInput
@@ -1657,6 +1711,7 @@ export type WebUncheckedUpdateWithoutFeaturesInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUncheckedUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
@@ -1676,6 +1731,7 @@ export type WebUpdateWithoutRelationOfInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUpdateManyWithoutWebNestedInput
@@ -1698,6 +1754,7 @@ export type WebUncheckedUpdateWithoutRelationOfInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUncheckedUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
@@ -1719,6 +1776,7 @@ export type WebUncheckedUpdateManyWithoutRelationOfInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WebUpdateWithoutRelationsInput = {
@@ -1730,6 +1788,7 @@ export type WebUpdateWithoutRelationsInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUpdateManyWithoutWebNestedInput
@@ -1752,6 +1811,7 @@ export type WebUncheckedUpdateWithoutRelationsInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUncheckedUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
@@ -1773,6 +1833,7 @@ export type WebUncheckedUpdateManyWithoutRelationsInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WebUpdateWithoutPermissionsInput = {
@@ -1784,6 +1845,7 @@ export type WebUpdateWithoutPermissionsInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUpdateManyWithoutWebNestedInput
@@ -1806,6 +1868,7 @@ export type WebUncheckedUpdateWithoutPermissionsInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUncheckedUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
@@ -1827,6 +1890,7 @@ export type WebUncheckedUpdateManyWithoutPermissionsInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type WebUpdateWithoutOwnershipsInput = {
@@ -1838,6 +1902,7 @@ export type WebUpdateWithoutOwnershipsInput = {
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUpdateManyWithoutWebNestedInput
@@ -1860,6 +1925,7 @@ export type WebUncheckedUpdateWithoutOwnershipsInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutWebNestedInput
   listings?: Prisma.ListingUncheckedUpdateManyWithoutWebNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
@@ -1881,6 +1947,7 @@ export type WebUncheckedUpdateManyWithoutOwnershipsInput = {
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -1997,6 +2064,7 @@ export type WebSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   published?: boolean
   image?: boolean
   locationId?: boolean
+  deletedAt?: boolean
   categories?: boolean | Prisma.Web$categoriesArgs<ExtArgs>
   listings?: boolean | Prisma.Web$listingsArgs<ExtArgs>
   tags?: boolean | Prisma.Web$tagsArgs<ExtArgs>
@@ -2021,6 +2089,7 @@ export type WebSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   published?: boolean
   image?: boolean
   locationId?: boolean
+  deletedAt?: boolean
   location?: boolean | Prisma.Web$locationArgs<ExtArgs>
 }, ExtArgs["result"]["web"]>
 
@@ -2035,6 +2104,7 @@ export type WebSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   published?: boolean
   image?: boolean
   locationId?: boolean
+  deletedAt?: boolean
   location?: boolean | Prisma.Web$locationArgs<ExtArgs>
 }, ExtArgs["result"]["web"]>
 
@@ -2049,9 +2119,10 @@ export type WebSelectScalar = {
   published?: boolean
   image?: boolean
   locationId?: boolean
+  deletedAt?: boolean
 }
 
-export type WebOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "title" | "slug" | "description" | "contactEmail" | "published" | "image" | "locationId", ExtArgs["result"]["web"]>
+export type WebOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"createdAt" | "updatedAt" | "id" | "title" | "slug" | "description" | "contactEmail" | "published" | "image" | "locationId" | "deletedAt", ExtArgs["result"]["web"]>
 export type WebInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   categories?: boolean | Prisma.Web$categoriesArgs<ExtArgs>
   listings?: boolean | Prisma.Web$listingsArgs<ExtArgs>
@@ -2097,6 +2168,7 @@ export type $WebPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     published: boolean
     image: string | null
     locationId: number | null
+    deletedAt: Date | null
   }, ExtArgs["result"]["web"]>
   composites: {}
 }
@@ -2540,6 +2612,7 @@ export interface WebFieldRefs {
   readonly published: Prisma.FieldRef<"Web", 'Boolean'>
   readonly image: Prisma.FieldRef<"Web", 'String'>
   readonly locationId: Prisma.FieldRef<"Web", 'Int'>
+  readonly deletedAt: Prisma.FieldRef<"Web", 'DateTime'>
 }
     
 

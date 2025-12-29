@@ -22,7 +22,12 @@ export async function getUserWebAccess(email: string, webId: number) {
  */
 export async function getUserAllWebAccess(email: string) {
   return prisma.webAccess.findMany({
-    where: { email },
+    where: {
+      email,
+      web: {
+        deletedAt: null,
+      },
+    },
     include: {
       user: true,
       web: true,
@@ -36,7 +41,12 @@ export async function getUserAllWebAccess(email: string) {
  */
 export async function getWebAllUserAccess(webId: number) {
   return prisma.webAccess.findMany({
-    where: { webId },
+    where: {
+      webId,
+      web: {
+        deletedAt: null,
+      },
+    },
     include: {
       user: true,
       web: true,
@@ -54,7 +64,7 @@ export async function getWebAllUserAccess(webId: number) {
 export async function getWebAllUserAccessBySlug(webSlug: string) {
   return prisma.webAccess.findMany({
     where: {
-      web: { slug: webSlug },
+      web: { slug: webSlug, deletedAt: null },
     },
     include: {
       user: true,
@@ -178,7 +188,12 @@ export async function canUserEditWeb(
  */
 export async function getUserAccessibleWebs(email: string) {
   const webAccess = await prisma.webAccess.findMany({
-    where: { email },
+    where: {
+      email,
+      web: {
+        deletedAt: null,
+      },
+    },
     include: { web: true },
     orderBy: { createdAt: 'desc' },
   })
@@ -197,6 +212,9 @@ export async function getWebOwners(webId: number) {
     where: {
       webId,
       role: 'OWNER',
+      web: {
+        deletedAt: null,
+      },
     },
     include: {
       user: true,
@@ -214,6 +232,9 @@ export async function getWebEditors(webId: number) {
     where: {
       webId,
       role: 'EDITOR',
+      web: {
+        deletedAt: null,
+      },
     },
     include: {
       user: true,
