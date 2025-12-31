@@ -1,7 +1,7 @@
 
 <image src="https://www.resilienceweb.org.uk/_next/static/media/logo.b5bac6f2.png" height="100" />
 
-
+Resilience Webs are interactive digital maps of most environmental and social justice related organisations working within and for a place.
 
 Inspiration: [https://www.transitioncambridge.org/thewiki/wiki-uploads/TTEvents.TranNews/megsweb.pdf](https://www.transitioncambridge.org/thewiki/wiki-uploads/TTEvents.TranNews/megsweb.pdf)
 
@@ -68,15 +68,23 @@ npx prisma db seed
 - Follow instructions [here](https://vercel.com/docs/cli) to set up Vercel CLI (you need to have an account in our Vercel team)
 - Run `npx vercel deploy -- target staging`
 
+
 ## Contributing
 
 If you'd like to contribute to the project, get in touch at info@resilienceweb.org.uk. We welcome anyone who wants to contribute code, documendation or testing efforts.
 
 If you'd prefer to support the project financially, you can do so at [https://opencollective.com/resilience-web](https://opencollective.com/resilience-web).
 
+
 ## Technical details
 
 I wrote a blog post that goes through technical choices that I made for this project. You can read it here: [https://dinerismail.dev/blog/how-i-built-a-product-that-people-love](https://dinerismail.dev/blog/how-i-built-a-product-that-people-love)
+
+
+## License
+
+[Attribution 4.0 International](LICENSE.md)
+
 
 ## Acknowledgements
 
