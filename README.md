@@ -1,35 +1,78 @@
+
+<image src="https://www.resilienceweb.org.uk/_next/static/media/logo.b5bac6f2.png" height="100" />
+
+
+
 Inspiration: [https://www.transitioncambridge.org/thewiki/wiki-uploads/TTEvents.TranNews/megsweb.pdf](https://www.transitioncambridge.org/thewiki/wiki-uploads/TTEvents.TranNews/megsweb.pdf)
 
 Currently online at [https://resilienceweb.org.uk](https://resilienceweb.org.uk)
+## Getting started
 
-## Running the app locally
+### Prerequisites
 
-- Clone the repository locally
-- From the root directory of this project
-- Duplicate the `.env.example` file, renaming it to `.env`
-  - Ask Diner for env var values required for development
-- Make sure you have Node.js installed
+Check these are installed:
+
+- Node.js
   - To select the right runtime check the `.nvmrc` file, alternatively if you have node version manager (nvm) installed simply run the `nvm install` command
-- Run the `npm install` command to install the projects dependencies
-- Run the `npm run dev` command to build and run a development version of the app, it will then open in your default browser at http://localhost:4000
+- [Docker](https://www.docker.com/)
 
-## Local database setup
+### Installation
 
-- Make sure you have a valid `.env` file, the example DATABASE_URL environment variable will be used in this process
-- Make sure you have docker installed from https://www.docker.com/
-- Fill out `RW_TEST_USER_EMAIL` in .env with your own email address. This will help the Prisma seed function create a test account for you. The email needs to be valid as authentication works via an OTP code sent to your email.
-- To create the local database run `npm run db:up`
-- To prepare the database with tables run `npx prisma migrate reset`
-- To view the databases contents run `npm run db`
+- Clone a local copy of the repository
+- Create a `.env` file by copying the `.env.example` file:
+```sh
+cp .env.example .env
+```
+- Ask Diner for env var values required for development
 
-## Deploying to the staging environment
+- Install the projects dependencies:
+```sh
+npm install
+```
+- Build and run a development version of the app:
+```sh
+npm run dev
+```
+It will open in your default browser at http://localhost:4000.
+
+### Local database setup
+
+- Ensure you have a valid `.env` file, the example DATABASE_URL environment variable will be used in this process
+- Set `RW_TEST_USER_EMAIL` in `.env` to your own email address. This will help the Prisma seed function create a test account for you. The email needs to be valid as authentication works via an OTP code sent to your email.
+- To create the local database:
+```sh
+npm run db:up
+```
+- To prepare the database with tables:
+```sh
+npx prisma migrate reset
+```
+- To view the databases contents:
+```sh
+npm run db
+```
+
+## Usage
+
+See the [knowledge base](https://knowledgebase.resilienceweb.org.uk/) for more information.
+
+Database seeds can be run with:
+```sh
+npx prisma db seed
+```
+
+## Deploying
+
+### To the staging environment
 
 - Follow instructions [here](https://vercel.com/docs/cli) to set up Vercel CLI (you need to have an account in our Vercel team)
 - Run `npx vercel deploy -- target staging`
 
 ## Contributing
 
-If you'd like to contribute to the project, get in touch at info@resilienceweb.org.uk. We welcome anyone who wants to contribute code, documendation or testing efforts. If you'd prefer to support the project financially, you can do so at [https://opencollective.com/resilience-web](https://opencollective.com/resilience-web).
+If you'd like to contribute to the project, get in touch at info@resilienceweb.org.uk. We welcome anyone who wants to contribute code, documendation or testing efforts.
+
+If you'd prefer to support the project financially, you can do so at [https://opencollective.com/resilience-web](https://opencollective.com/resilience-web).
 
 ## Technical details
 

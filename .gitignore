@@ -55,3 +55,6 @@ data
 
 # Local Netlify folder
 .netlify
+
+# Local development config
+/mise.local.toml
