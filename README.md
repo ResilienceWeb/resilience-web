@@ -1,5 +1,5 @@
 
-<image src="https://www.resilienceweb.org.uk/_next/static/media/logo.b5bac6f2.png" height="100" />
+<image src="https://www.resilienceweb.org.uk/logo.png" height="100" />
 
 Resilience Webs are interactive digital maps of most environmental and social justice related organisations working within and for a place.
 
