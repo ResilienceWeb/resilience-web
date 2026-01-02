@@ -76,7 +76,7 @@ Resilience Web uses a **subdomain-based multi-tenancy** approach where each comm
                            ↓
 ┌─────────────────────────────────────────────────────────┐
 │                    Data Access Layer                     │
-│              Prisma ORM 7.2.0 + PostgreSQL 17           │
+│              Prisma ORM 7 + PostgreSQL 17           │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -89,12 +89,12 @@ Resilience Web uses a **subdomain-based multi-tenancy** approach where each comm
 
 ### Database & ORM
 - **PostgreSQL 17** (via Docker for local dev)
-- **Prisma 7.2.0** (ORM with custom client path)
+- **Prisma 7** (ORM with custom client path)
   - Runtime client: `@prisma-rw`
   - Build-time client: `@prisma-rw-build`
 
 ### Authentication & Authorization
-- **Better Auth v1.4.9** (Email OTP with 10-minute expiry)
+- **Better Auth** (Email OTP with 10-minute expiry)
 - Role-based access control (OWNER, EDITOR roles via `WebAccess`)
 
 ### File Storage
@@ -108,7 +108,7 @@ Resilience Web uses a **subdomain-based multi-tenancy** approach where each comm
 - **Templates**: React Email components
 
 ### Background Jobs
-- **Trigger.dev v4.1.2** (scheduled tasks)
+- **Trigger.dev v4** (scheduled tasks)
   - Monitor inactive webs
   - Auto-unfeature expired listings
 
@@ -117,7 +117,7 @@ Resilience Web uses a **subdomain-based multi-tenancy** approach where each comm
 - **Shadcn/ui** (component library built on Radix UI)
 - **Leaflet** (interactive maps with marker clustering)
 - **Vis-Network** (relationship graph visualization)
-- **TinyMCE v8.3.1** (WYSIWYG rich text editor)
+- **TinyMCE v8** (WYSIWYG rich text editor)
 
 ### CMS & Content
 - **Hygraph** (GraphQL headless CMS for blog and static pages)

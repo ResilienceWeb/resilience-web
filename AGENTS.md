@@ -60,7 +60,7 @@ Key files:
 
 ### Authentication
 
-Uses **Better Auth** (v1.4.9) with email OTP (one-time passcode) authentication:
+Uses **Better Auth** with email OTP (one-time passcode) authentication:
 - Configuration: [app/auth.ts](app/auth.ts)
 - Client utilities: [lib/auth-client.ts](lib/auth-client.ts)
 - Email templates: [components/emails/](components/emails/)
@@ -69,7 +69,7 @@ Uses **Better Auth** (v1.4.9) with email OTP (one-time passcode) authentication:
 
 ### Database Layer
 
-**Prisma 7.2.0** with PostgreSQL 17:
+**Prisma 7** with PostgreSQL 17:
 - Schema: [prisma/schema.prisma](prisma/schema.prisma)
 - Client instances:
   - `@prisma-rw` - Standard runtime client ([prisma/client.ts](prisma/client.ts))
@@ -112,8 +112,6 @@ REST API endpoints in [app/api/](app/api/):
 - `/api/categories/*`, `/api/tags/*` - Category/tag management
 - `/api/feedback` - Feedback collection (CORS enabled)
 
-API routes have a 30-second timeout (configured in [vercel.json](vercel.json)).
-
 ### State Management
 
 - **React Query (@tanstack/react-query)** - Server state management
@@ -126,7 +124,7 @@ API routes have a 30-second timeout (configured in [vercel.json](vercel.json)).
 
 ### Image Management
 
-Images stored on **DigitalOcean Spaces** (S3-compatible):
+Images stored on **DigitalOcean Spaces** (S3-compatible) (soon to move to Supabase):
 - Upload: [helpers/uploadImage.ts](helpers/uploadImage.ts)
 - Delete: [helpers/deleteImage.ts](helpers/deleteImage.ts)
 - Client: [lib/digitalocean.ts](lib/digitalocean.ts)
@@ -137,7 +135,7 @@ Remote patterns configured in [next.config.js](next.config.js) for DigitalOcean 
 
 ### Background Jobs
 
-**Trigger.dev** (v4.1.2) for scheduled tasks:
+**Trigger.dev** for scheduled tasks:
 - [trigger/check-web-inactive.ts](trigger/check-web-inactive.ts) - Monitor inactive webs
 - [trigger/unfeature-listing.ts](trigger/unfeature-listing.ts) - Auto-unfeature listings
 - Config: [trigger.config.ts](trigger.config.ts)
@@ -192,7 +190,7 @@ Remote patterns configured in [next.config.js](next.config.js) for DigitalOcean 
 
 ### Rich Text Editing
 
-**TinyMCE** (v8.3.1) for WYSIWYG editing:
+**TinyMCE** for WYSIWYG editing:
 - Used in listing descriptions and web content
 - Wrapper: `@tinymce/tinymce-react`
 
