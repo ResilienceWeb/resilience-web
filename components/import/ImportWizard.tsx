@@ -200,7 +200,7 @@ export function ImportWizard({ webSlug, webId }: ImportWizardProps) {
       </Card>
 
       {currentStep < 4 && (
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-8">
           <Button
             variant="outline"
             onClick={currentStep === 1 ? handleStartOver : handleBack}

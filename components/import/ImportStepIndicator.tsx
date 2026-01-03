@@ -27,7 +27,7 @@ interface ImportStepIndicatorProps {
 export function ImportStepIndicator({ currentStep }: ImportStepIndicatorProps) {
   return (
     <nav aria-label="Progress">
-      <ol role="list" className="flex items-center justify-between">
+      <ol role="list" className="flex items-start justify-between gap-8">
         {STEPS.map((step, stepIdx) => {
           const isComplete = currentStep > step.number;
           const isCurrent = currentStep === step.number;
@@ -35,23 +35,11 @@ export function ImportStepIndicator({ currentStep }: ImportStepIndicatorProps) {
           return (
             <li
               key={step.number}
-              className={cn(
-                "relative",
-                stepIdx !== STEPS.length - 1 && "flex-1"
-              )}
+              className="flex flex-col items-center flex-1"
             >
-              {stepIdx !== STEPS.length - 1 && (
-                <div
-                  className={cn(
-                    "absolute left-8 top-4 h-0.5 w-full transition-colors",
-                    isComplete ? "bg-primary" : "bg-gray-200"
-                  )}
-                  aria-hidden="true"
-                />
-              )}
-
-              <div className="group relative flex flex-col items-center">
-                <span className="flex h-9 items-center">
+              <div className="flex flex-col items-center w-full">
+                {/* Step number/checkmark */}
+                <div className="flex items-center justify-center">
                   <span
                     className={cn(
                       "relative z-10 flex h-8 w-8 items-center justify-center rounded-full transition-colors",
@@ -77,8 +65,10 @@ export function ImportStepIndicator({ currentStep }: ImportStepIndicatorProps) {
                       </span>
                     )}
                   </span>
-                </span>
-                <span className="mt-2 flex flex-col items-center text-center">
+                </div>
+
+                {/* Step label */}
+                <div className="mt-3 flex flex-col items-center text-center">
                   <span
                     className={cn(
                       "text-sm font-medium",
@@ -87,10 +77,10 @@ export function ImportStepIndicator({ currentStep }: ImportStepIndicatorProps) {
                   >
                     {step.title}
                   </span>
-                  <span className="text-xs text-gray-500 hidden sm:block">
+                  <span className="text-xs text-gray-500 hidden sm:block mt-1">
                     {step.description}
                   </span>
-                </span>
+                </div>
               </div>
             </li>
           );

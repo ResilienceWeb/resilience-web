@@ -1,18 +1,16 @@
-"use client";
+'use client'
 
 /**
  * Display import results summary with downloadable error report
  */
-
-import { CheckCircle, XCircle, AlertCircle, Download } from "lucide-react";
-import type { ImportSummary } from "@/lib/import/types";
-import { Button } from "@components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
-import Link from "next/link";
+import Link from 'next/link'
+import type { ImportSummary } from '@/lib/import/types'
+import { CheckCircle, XCircle, AlertCircle, Download } from 'lucide-react'
+import { Button } from '@components/ui/button'
 
 interface ImportResultsProps {
-  summary: ImportSummary;
-  webSlug: string;
+  summary: ImportSummary
+  webSlug: string
 }
 
 export function ImportResults({ summary, webSlug }: ImportResultsProps) {
@@ -23,60 +21,58 @@ export function ImportResults({ summary, webSlug }: ImportResultsProps) {
     skipCount,
     batches,
     completedAt,
-  } = summary;
+  } = summary
 
-  const hasErrors = errorCount > 0;
-  const hasSkipped = skipCount > 0;
+  const hasErrors = errorCount > 0
+  const hasSkipped = skipCount > 0
 
   // Generate error report CSV
   const downloadErrorReport = () => {
     const errors = batches.flatMap((batch) =>
-      batch.results.filter((r) => !r.success || r.skipped)
-    );
+      batch.results.filter((r) => !r.success || r.skipped),
+    )
 
-    if (errors.length === 0) return;
+    if (errors.length === 0) return
 
     const csvContent = [
-      ["Row Number", "Status", "Error Message"].join(","),
+      ['Row Number', 'Status', 'Error Message'].join(','),
       ...errors.map((error) =>
         [
           error.rowNumber,
-          error.skipped ? "Skipped" : "Error",
+          error.skipped ? 'Skipped' : 'Error',
           error.skipped
             ? `Duplicate (${error.skipReason})`
-            : error.error || "Unknown error",
+            : error.error || 'Unknown error',
         ]
           .map((cell) => `"${String(cell).replace(/"/g, '""')}"`)
-          .join(",")
+          .join(','),
       ),
-    ].join("\n");
+    ].join('\n')
 
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `import-errors-${new Date().toISOString().split("T")[0]}.csv`;
-    link.click();
-  };
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = `import-errors-${new Date().toISOString().split('T')[0]}.csv`
+    link.click()
+  }
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            {hasErrors ? (
-              <>
-                <XCircle className="h-6 w-6 text-red-600" />
-                <span>Import Completed with Errors</span>
-              </>
-            ) : (
-              <>
-                <CheckCircle className="h-6 w-6 text-green-600" />
-                <span>Import Completed Successfully</span>
-              </>
-            )}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
+      <div className="flex items-center gap-2 mb-6">
+        {hasErrors ? (
+          <>
+            <XCircle className="h-6 w-6 text-red-600" />
+            <h3 className="text-lg font-semibold">Import Completed with Errors</h3>
+          </>
+        ) : (
+          <>
+            <CheckCircle className="h-6 w-6 text-green-600" />
+            <h3 className="text-lg font-semibold">Import Completed Successfully</h3>
+          </>
+        )}
+      </div>
+
+      <div className="space-y-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-3xl font-bold text-gray-900">
@@ -111,7 +107,7 @@ export function ImportResults({ summary, webSlug }: ImportResultsProps) {
             )}
           </div>
 
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-gray-600 mt-6">
             Completed at {new Date(completedAt).toLocaleString()}
           </div>
 
@@ -143,20 +139,15 @@ export function ImportResults({ summary, webSlug }: ImportResultsProps) {
             </div>
           )}
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 mt-7">
             <Button asChild className="flex-1">
-              <Link href={`/${webSlug}/admin/listings`}>
-                View Listings
-              </Link>
+              <Link href="/admin">View Listings</Link>
             </Button>
             <Button variant="outline" asChild className="flex-1">
-              <Link href={`/${webSlug}/admin/import`}>
-                Import More
-              </Link>
+              <Link href="/admin/import">Import More</Link>
             </Button>
           </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+        </div>
+      </div>
+  )
 }
