@@ -16,9 +16,6 @@ export async function findDuplicateListings(
 ): Promise<string[]> {
   if (names.length === 0) return [];
 
-  // Normalize names for case-insensitive comparison
-  const normalizedNames = names.map((name) => name.trim().toLowerCase());
-
   const existingListings = await prisma.listing.findMany({
     where: {
       webId,

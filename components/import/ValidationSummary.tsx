@@ -23,7 +23,7 @@ interface ValidationSummaryProps {
 }
 
 export function ValidationSummary({
-  totalRows,
+  totalRows: _totalRows,
   validCount,
   invalidCount,
   errors,

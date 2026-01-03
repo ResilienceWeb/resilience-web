@@ -6,8 +6,7 @@
 
 import { useCallback, useState } from "react";
 import { Upload } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@components/ui/button";
+import { cn } from "@components/lib/utils";
 
 interface FileUploadZoneProps {
   onFileSelect: (file: File) => void;

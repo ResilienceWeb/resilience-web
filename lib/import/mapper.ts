@@ -169,15 +169,18 @@ export function mapRow(
     if (isEmpty(value)) continue;
 
     // Handle social media fields separately
-    if (
-      ["facebook", "twitter", "instagram", "linkedin", "youtube"].includes(
-        field
-      )
-    ) {
+    const socialPlatforms: SocialMediaLink["platform"][] = [
+      "facebook",
+      "twitter",
+      "instagram",
+      "linkedin",
+      "youtube",
+    ];
+    if (socialPlatforms.includes(field as SocialMediaLink["platform"])) {
       const url = sanitizeUrl(value);
-      if (url) {
-        mapped.socialMedia!.push({
-          platform: field as SocialMediaLink["platform"],
+      if (url && (field === "facebook" || field === "twitter" || field === "instagram" || field === "linkedin" || field === "youtube")) {
+        mapped.socialMedia?.push({
+          platform: field,
           url,
         });
       }

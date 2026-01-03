@@ -64,7 +64,7 @@ export function validateRow(
   });
 
   if (!result.success) {
-    result.error.errors.forEach((error) => {
+    result.error.issues.forEach((error) => {
       errors.push({
         rowNumber,
         field: error.path.join("."),
@@ -79,7 +79,7 @@ export function validateRow(
     row.socialMedia.forEach((social, index) => {
       const socialResult = socialMediaSchema.safeParse(social);
       if (!socialResult.success) {
-        socialResult.error.errors.forEach((error) => {
+        socialResult.error.issues.forEach((error) => {
           errors.push({
             rowNumber,
             field: `socialMedia[${index}].${error.path.join(".")}`,

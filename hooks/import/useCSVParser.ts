@@ -82,7 +82,7 @@ export function useCSVParser(): UseCSVParserResult {
                 totalRows: results.data.length,
               });
             } catch (err) {
-              reject(err);
+              reject(err instanceof Error ? err : new Error(String(err)));
             }
           },
           error: (error) => {

@@ -27,7 +27,6 @@ import type {
   ImportRequest,
   ImportSummary,
   ImportRowResult,
-  MappedRow,
 } from "@/lib/import/types";
 
 /**
