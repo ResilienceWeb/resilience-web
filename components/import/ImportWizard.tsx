@@ -160,7 +160,7 @@ export function ImportWizard({ webSlug, webId }: ImportWizardProps) {
 
       case 4:
         if (importSummary) {
-          return <ImportResults summary={importSummary} webSlug={webSlug} />;
+          return <ImportResults summary={importSummary} />;
         }
         return (
           <ImportProgress

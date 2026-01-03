@@ -10,10 +10,9 @@ import { Button } from '@components/ui/button'
 
 interface ImportResultsProps {
   summary: ImportSummary
-  webSlug: string
 }
 
-export function ImportResults({ summary, webSlug }: ImportResultsProps) {
+export function ImportResults({ summary }: ImportResultsProps) {
   const {
     totalRows,
     successCount,
