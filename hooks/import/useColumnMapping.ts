@@ -2,7 +2,7 @@
  * Hook for managing column mapping state and validation
  */
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import {
   applyAutoMapping,
   isMappingValid,
@@ -37,6 +37,22 @@ export function useColumnMapping({
   const [columnMapping, setColumnMapping] = useState<ColumnMapping>(() =>
     applyAutoMapping(headers)
   );
+
+  // Track the current headers to detect when a new file is uploaded
+  const [currentHeaders, setCurrentHeaders] = useState<string[]>(headers);
+
+  // Re-apply auto-detection when headers change (e.g., when a new file is uploaded)
+  // Only do this when headers actually change (new file), not on every render
+  useEffect(() => {
+    const headersChanged =
+      headers.length !== currentHeaders.length ||
+      headers.some((h, i) => h !== currentHeaders[i]);
+
+    if (headersChanged && headers.length > 0) {
+      setCurrentHeaders(headers);
+      setColumnMapping(applyAutoMapping(headers));
+    }
+  }, [headers, currentHeaders]);
 
   const updateMapping = useCallback(
     (csvColumn: string, field: ListingField | null) => {
