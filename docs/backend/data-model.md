@@ -265,35 +265,35 @@ Represents a community web/subdomain (multi-tenant entity).
 | Field | Type | Constraints | Description | Schema.org Mapping |
 |-------|------|-------------|-------------|--------------------|
 | id | Integer | PK | Unique identifier | - |
-| title | String | UK | Web name/title | schema.org/Organization → name |
-| slug | String | UK | URL-safe identifier (subdomain) | schema.org/Organization → identifier |
-| description | String | - | Web description | schema.org/Organization → description |
-| contactEmail | String | - | Contact email for the web | schema.org/Organization → email |
+| title | String | UK | Web name/title | schema.org/WebSite → name |
+| slug | String | UK | URL-safe identifier (subdomain) | schema.org/WebSite → identifier |
+| description | String | - | Web description | schema.org/WebSite → description |
+| contactEmail | String | - | Contact email for the web | schema.org/WebSite → publisher → email |
 | published | Boolean | - | Whether web is publicly visible | - |
-| image | String | - | Web logo/image URL | schema.org/Organization → logo |
-| locationId | Integer | FK → WebLocation, Nullable | Geographic location | schema.org/Organization → location |
+| image | String | - | Web logo/image URL | schema.org/WebSite → image |
+| locationId | Integer | FK → WebLocation, Nullable | Geographic area served | schema.org/WebSite → spatialCoverage |
 | deletedAt | DateTime | Nullable | Soft delete timestamp | - |
 | createdAt | DateTime | Auto | Creation timestamp | - |
 | updatedAt | DateTime | Auto | Last update timestamp | - |
 
-**Schema.org Type**: [Organization](https://schema.org/Organization)
+**Schema.org Type**: [WebSite](https://schema.org/WebSite)
 
 ---
 
 ### WebLocation
 
-Geographic coordinates for a Web.
+Geographic area covered by a Web (used for spatialCoverage).
 
 | Field | Type | Constraints | Description | Schema.org Mapping |
 |-------|------|-------------|-------------|--------------------|
 | id | Integer | PK | Unique identifier | - |
-| latitude | Float | - | Latitude coordinate | schema.org/GeoCoordinates → latitude |
-| longitude | Float | - | Longitude coordinate | schema.org/GeoCoordinates → longitude |
-| description | String | - | Human-readable address | schema.org/PostalAddress → streetAddress or schema.org/Place → address |
+| latitude | Float | - | Latitude coordinate | schema.org/Place → geo → latitude |
+| longitude | Float | - | Longitude coordinate | schema.org/Place → geo → longitude |
+| description | String | - | Human-readable place name | schema.org/Place → name or address |
 | createdAt | DateTime | Auto | Creation timestamp | - |
 | updatedAt | DateTime | Auto | Last update timestamp | - |
 
-**Schema.org Type**: [GeoCoordinates](https://schema.org/GeoCoordinates) + [Place](https://schema.org/Place)
+**Schema.org Type**: [Place](https://schema.org/Place) with [GeoCoordinates](https://schema.org/GeoCoordinates)
 
 ---
 
@@ -383,7 +383,7 @@ Core entity representing organizations/businesses in a Web.
 | pending | Boolean | - | Awaiting approval | - |
 | featured | Boolean | - | Featured on homepage | - |
 | categoryId | Integer | FK → Category | Primary category | schema.org/Organization → category |
-| webId | Integer | FK → Web | Parent web | schema.org/Organization → parentOrganization |
+| webId | Integer | FK → Web | Associated web directory | - |
 | locationId | Integer | FK → ListingLocation, Nullable | Geographic location | schema.org/Organization → location |
 | proposerId | String | FK → User, Nullable | User who proposed listing | - |
 | image | String | - | Logo/image URL | schema.org/Organization → logo |
@@ -498,9 +498,10 @@ All models include:
 The application's data model closely aligns with schema.org vocabularies for semantic web compatibility:
 
 - **Listing** → [Organization](https://schema.org/Organization) / [LocalBusiness](https://schema.org/LocalBusiness)
-- **Web** → [Organization](https://schema.org/Organization)
+- **Web** → [WebSite](https://schema.org/WebSite)
 - **User** → [Person](https://schema.org/Person)
-- **ListingLocation** / **WebLocation** → [GeoCoordinates](https://schema.org/GeoCoordinates) + [Place](https://schema.org/Place)
+- **WebLocation** → [Place](https://schema.org/Place) with [GeoCoordinates](https://schema.org/GeoCoordinates) (for spatialCoverage)
+- **ListingLocation** → [GeoCoordinates](https://schema.org/GeoCoordinates) + [Place](https://schema.org/Place)
 - **Category** / **Tag** → [DefinedTerm](https://schema.org/DefinedTerm)
 - **ListingSocialMedia** → [ContactPoint](https://schema.org/ContactPoint) or `sameAs` property
 - **ListingAction** → [Action](https://schema.org/Action) (as `potentialAction`)
