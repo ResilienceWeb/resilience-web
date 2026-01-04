@@ -5,7 +5,7 @@
  */
 
 import { useCallback, useState } from "react";
-import { Upload } from "lucide-react";
+import { Upload, FileText, X } from "lucide-react";
 import { cn } from "@components/lib/utils";
 
 interface FileUploadZoneProps {
@@ -20,6 +20,7 @@ export function FileUploadZone({
   error,
 }: FileUploadZoneProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -48,6 +49,7 @@ export function FileUploadZone({
       const csvFile = files.find((file) => file.name.endsWith(".csv"));
 
       if (csvFile) {
+        setSelectedFile(csvFile);
         onFileSelect(csvFile);
       }
     },
@@ -58,11 +60,17 @@ export function FileUploadZone({
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (file) {
+        setSelectedFile(file);
         onFileSelect(file);
       }
     },
     [onFileSelect]
   );
+
+  const handleClearFile = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedFile(null);
+  }, []);
 
   return (
     <div className="w-full">
@@ -73,27 +81,49 @@ export function FileUploadZone({
         onDrop={handleDrop}
         className={cn(
           "relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg transition-colors",
-          isDragging
+          selectedFile
+            ? "border-green-500 bg-green-50 dark:bg-green-950/20"
+            : isDragging
             ? "border-primary bg-primary/5"
             : "border-gray-300 hover:border-gray-400",
           isLoading && "opacity-50 pointer-events-none"
         )}
       >
-        <div className="flex flex-col items-center justify-center pt-5 pb-6 px-4">
-          <Upload
-            className={cn(
-              "w-12 h-12 mb-4 transition-colors",
-              isDragging ? "text-primary" : "text-gray-400"
-            )}
-          />
-          <p className="mb-2 text-sm text-gray-700 dark:text-gray-300">
-            <span className="font-semibold">Click to upload</span> or drag and
-            drop
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            CSV file (max 5MB, up to 10,000 rows)
-          </p>
-        </div>
+        {selectedFile ? (
+          <div className="flex flex-col items-center justify-center pt-5 pb-6 px-4">
+            <FileText className="w-12 h-12 mb-4 text-green-600 dark:text-green-400" />
+            <p className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+              {selectedFile.name}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {(selectedFile.size / 1024).toFixed(1)} KB
+            </p>
+            <button
+              onClick={handleClearFile}
+              disabled={isLoading}
+              className="mt-4 flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+            >
+              <X className="w-4 h-4" />
+              Remove file
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center pt-5 pb-6 px-4">
+            <Upload
+              className={cn(
+                "w-12 h-12 mb-4 transition-colors",
+                isDragging ? "text-primary" : "text-gray-400"
+              )}
+            />
+            <p className="mb-2 text-sm text-gray-700 dark:text-gray-300">
+              <span className="font-semibold">Click to upload</span> or drag and
+              drop
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              CSV file (max 5MB, up to 10,000 rows)
+            </p>
+          </div>
+        )}
         <input
           type="file"
           accept=".csv"
