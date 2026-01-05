@@ -55,5 +55,8 @@ data
 
 # Local Netlify folder
 .netlify
+
+# Local development config
 /.claude
 /.cursor
+/mise.local.toml
