@@ -46,7 +46,7 @@ describe('geocodeAddress', () => {
 
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => mockResponse,
+      json: () => Promise.resolve(mockResponse),
     } as Response)
 
     const result = await geocodeAddress('10 Downing Street, London')
@@ -60,7 +60,7 @@ describe('geocodeAddress', () => {
   it('should handle address not found', async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => [],
+      json: () => Promise.resolve([]),
     } as Response)
 
     const result = await geocodeAddress('Nonexistent Place XYZ123')
@@ -103,7 +103,8 @@ describe('geocodeAddress', () => {
   it('should include proper headers', async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => [{ lat: '51.5', lon: '-0.1', display_name: 'Test' }],
+      json: () =>
+        Promise.resolve([{ lat: '51.5', lon: '-0.1', display_name: 'Test' }]),
     } as Response)
 
     await geocodeAddress('Test Address')
@@ -114,28 +115,32 @@ describe('geocodeAddress', () => {
         headers: {
           'User-Agent': 'ResilienceWeb/1.0',
         },
-      })
+      }),
     )
   })
 
   it('should include country code parameter', async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => [{ lat: '51.5', lon: '-0.1', display_name: 'Test' }],
+      json: () =>
+        Promise.resolve([{ lat: '51.5', lon: '-0.1', display_name: 'Test' }]),
     } as Response)
 
     await geocodeAddress('Test Address')
 
     expect(fetch).toHaveBeenCalledWith(
       expect.stringContaining('countrycodes=gb'),
-      expect.any(Object)
+      expect.any(Object),
     )
   })
 
   it('should handle special characters in address', async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => [{ lat: '51.5', lon: '-0.1', display_name: 'Test & Co.' }],
+      json: () =>
+        Promise.resolve([
+          { lat: '51.5', lon: '-0.1', display_name: 'Test & Co.' },
+        ]),
     } as Response)
 
     const result = await geocodeAddress('123 Test & Co. Street, London')
@@ -148,7 +153,7 @@ describe('geocodeAddress', () => {
 
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => [],
+      json: () => Promise.resolve([]),
     } as Response)
 
     const result = await geocodeAddress(longAddress)
@@ -159,9 +164,7 @@ describe('geocodeAddress', () => {
   it('should handle malformed JSON response', async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => {
-        throw new Error('Invalid JSON')
-      },
+      json: () => Promise.reject(new Error('Invalid JSON')),
     } as Response)
 
     const result = await geocodeAddress('Test Address')
@@ -173,7 +176,7 @@ describe('geocodeAddress', () => {
   it('should handle null response', async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => null,
+      json: () => Promise.resolve(null),
     } as Response)
 
     const result = await geocodeAddress('Test Address')
@@ -185,7 +188,7 @@ describe('geocodeAddress', () => {
   it('should use fallback description when display_name missing', async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => [{ lat: '51.5', lon: '-0.1' }],
+      json: () => Promise.resolve([{ lat: '51.5', lon: '-0.1' }]),
     } as Response)
 
     const result = await geocodeAddress('Original Address')
@@ -197,9 +200,10 @@ describe('geocodeAddress', () => {
   it('should parse numeric strings to floats', async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
-      json: async () => [
-        { lat: '51.507351', lon: '-0.127758', display_name: 'Test' },
-      ],
+      json: () =>
+        Promise.resolve([
+          { lat: '51.507351', lon: '-0.127758', display_name: 'Test' },
+        ]),
     } as Response)
 
     const result = await geocodeAddress('Test')
@@ -222,11 +226,17 @@ describe('geocodeAddresses', () => {
     vi.mocked(fetch)
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => [{ lat: '51.5', lon: '-0.1', display_name: 'Address 1' }],
+        json: () =>
+          Promise.resolve([
+            { lat: '51.5', lon: '-0.1', display_name: 'Address 1' },
+          ]),
       } as Response)
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => [{ lat: '52.5', lon: '-1.1', display_name: 'Address 2' }],
+        json: () =>
+          Promise.resolve([
+            { lat: '52.5', lon: '-1.1', display_name: 'Address 2' },
+          ]),
       } as Response)
 
     const results = await geocodeAddresses(['Address 1', 'Address 2'])
@@ -246,12 +256,18 @@ describe('geocodeAddresses', () => {
     vi.mocked(fetch)
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => [{ lat: '51.5', lon: '-0.1', display_name: 'Success' }],
+        json: () =>
+          Promise.resolve([
+            { lat: '51.5', lon: '-0.1', display_name: 'Success' },
+          ]),
       } as Response)
       .mockRejectedValueOnce(new Error('Network error'))
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => [{ lat: '52.5', lon: '-1.1', display_name: 'Success 2' }],
+        json: () =>
+          Promise.resolve([
+            { lat: '52.5', lon: '-1.1', display_name: 'Success 2' },
+          ]),
       } as Response)
 
     const results = await geocodeAddresses(['Addr 1', 'Addr 2', 'Addr 3'])
