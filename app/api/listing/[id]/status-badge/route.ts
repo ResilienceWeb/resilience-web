@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
 // Use shields.io badge service for reliable email-compatible badges
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 function generateBadgeUrl(text: string, approved: boolean): string {
   const color = approved ? 'green' : 'gray'
