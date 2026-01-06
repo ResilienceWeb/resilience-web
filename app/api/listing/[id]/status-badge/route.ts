@@ -29,14 +29,33 @@ export async function GET(
 
     if (!listing) {
       const badgeUrl = generateBadgeUrl('Not_Found', false)
-      return Response.redirect(badgeUrl, 302)
+      // Fetch the image from shields.io and return it
+      const response = await fetch(badgeUrl)
+      const imageBuffer = await response.arrayBuffer()
+      return new Response(imageBuffer, {
+        status: 404,
+        headers: {
+          'Content-Type': 'image/svg+xml',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+        },
+      })
     }
 
     const approved = !listing.pending
     const text = approved ? 'Approved' : 'Not_Approved'
     const badgeUrl = generateBadgeUrl(text, approved)
 
-    return Response.redirect(badgeUrl, 302)
+    // Fetch the image from shields.io and return it
+    const response = await fetch(badgeUrl)
+    const imageBuffer = await response.arrayBuffer()
+
+    return new Response(imageBuffer, {
+      headers: {
+        'Content-Type': 'image/svg+xml',
+        'Cache-Control':
+          'public, max-age=0, s-maxage=600, stale-while-revalidate=300',
+      },
+    })
   } catch (e) {
     console.error(`[RW] Unable to generate listing status badge - ${e}`)
     Sentry.captureException(e)
