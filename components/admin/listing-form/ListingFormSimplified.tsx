@@ -104,6 +104,16 @@ type TagOption = {
   label: string
 }
 
+const socialItemSchema = z.object({
+  platform: z.string(),
+  url: z.url({ error: 'Please enter a valid URL (https://...)' }),
+})
+
+const actionItemSchema = z.object({
+  type: z.string(),
+  url: z.url({ error: 'Please enter a valid URL (https://...)' }),
+})
+
 const listingFormSchema = z.object({
   id: z.number().nullable(),
   title: z.string().min(1, { error: 'Title is required' }),
@@ -113,18 +123,8 @@ const listingFormSchema = z.object({
   website: z
     .url({ error: 'Please enter a valid URL (https://...)' })
     .or(z.literal('')),
-  socials: z.array(
-    z.object({
-      platform: z.string(),
-      url: z.string(),
-    }),
-  ),
-  actions: z.array(
-    z.object({
-      type: z.string(),
-      url: z.string(),
-    }),
-  ),
+  socials: z.array(socialItemSchema),
+  actions: z.array(actionItemSchema),
   seekingVolunteers: z.boolean(),
   image: z.any(),
   slug: z
