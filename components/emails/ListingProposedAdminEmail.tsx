@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import {
   Body,
   Container,
@@ -24,7 +23,6 @@ type props = {
   proposedListingTitle: string
   proposerEmail: string
   webTitle: string
-  listingId: number
   url: string
 }
 
@@ -32,7 +30,6 @@ const ListingProposedAdminEmail = ({
   proposedListingTitle,
   proposerEmail,
   webTitle,
-  listingId,
   url,
 }: props) => {
   return (
@@ -60,16 +57,6 @@ const ListingProposedAdminEmail = ({
           <Text style={paragraph}>Here are the details:</Text>
           <Text style={listItem}>Listing title: {proposedListingTitle}</Text>
           <Text style={listItem}>Proposed by: {proposerEmail}</Text>
-
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Text style={{ fontSize: '16px' }}>Status:</Text>
-            <img
-              src={`https://resilienceweb.org.uk/api/listing/${listingId}/status-badge`}
-              alt="Listing approval status"
-              width="100"
-              height="30"
-            />
-          </div>
           <Hr style={hr} />
           <Text style={footer}>Resilience Web CIC</Text>
         </Container>
