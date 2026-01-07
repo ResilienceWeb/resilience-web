@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function updateTagRequest(tagData) {
-  const response = await fetch('/api/tags', {
+  const response = await fetch(`/api/tags/${tagData.id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -24,7 +24,7 @@ export default function useUpdateTag() {
       queryClient.setQueryData(['tags'], newTag)
       return { previousTags, newTag }
     },
-    onError: (_err, _newCategory, context) => {
+    onError: (_err, _newTag, context) => {
       queryClient.setQueryData(
         ['tags', context?.newTag.id],
         context?.previousTags,

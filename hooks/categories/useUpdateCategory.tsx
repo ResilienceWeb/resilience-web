@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 async function updateCategoryRequest(categoryData) {
-  const response = await fetch('/api/categories', {
+  const response = await fetch(`/api/categories/${categoryData.id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -9,9 +9,8 @@ async function updateCategoryRequest(categoryData) {
     body: JSON.stringify(categoryData),
   })
 
-  const data = await response.json()
-  const { category } = data
-  return category
+  const responseJson = await response.json()
+  return responseJson.data
 }
 
 export default function useUpdateCategory() {
