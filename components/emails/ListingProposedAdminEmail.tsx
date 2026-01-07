@@ -23,7 +23,6 @@ type props = {
   proposedListingTitle: string
   proposerEmail: string
   webTitle: string
-  approved: boolean
   url: string
 }
 
@@ -31,7 +30,6 @@ const ListingProposedAdminEmail = ({
   proposedListingTitle,
   proposerEmail,
   webTitle,
-  approved,
   url,
 }: props) => {
   return (
@@ -59,18 +57,6 @@ const ListingProposedAdminEmail = ({
           <Text style={paragraph}>Here are the details:</Text>
           <Text style={listItem}>Listing title: {proposedListingTitle}</Text>
           <Text style={listItem}>Proposed by: {proposerEmail}</Text>
-
-          <Text style={listItem}>
-            Status:{' '}
-            <span
-              style={{
-                color: approved ? '#16a34a' : '#ca8a04',
-                fontWeight: 600,
-              }}
-            >
-              {approved ? 'Approved' : 'Not approved yet'}
-            </span>
-          </Text>
           <Hr style={hr} />
           <Text style={footer}>Resilience Web CIC</Text>
         </Container>

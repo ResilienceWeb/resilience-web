@@ -219,7 +219,6 @@ export async function POST(request) {
         proposedListingTitle: listing.title,
         proposerEmail: proposer?.email,
         webTitle: `${selectedWeb.title}`,
-        approved: !listing.pending,
         url: `${PROTOCOL}://${REMOTE_HOSTNAME}/admin`,
       })
 
