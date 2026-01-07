@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import {
   Body,
   Container,
@@ -24,7 +23,7 @@ type props = {
   proposedListingTitle: string
   proposerEmail: string
   webTitle: string
-  listingId: number
+  approved: boolean
   url: string
 }
 
@@ -32,7 +31,7 @@ const ListingProposedAdminEmail = ({
   proposedListingTitle,
   proposerEmail,
   webTitle,
-  listingId,
+  approved,
   url,
 }: props) => {
   return (
@@ -61,15 +60,17 @@ const ListingProposedAdminEmail = ({
           <Text style={listItem}>Listing title: {proposedListingTitle}</Text>
           <Text style={listItem}>Proposed by: {proposerEmail}</Text>
 
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Text style={{ fontSize: '16px' }}>Status:</Text>
-            <img
-              src={`https://resilienceweb.org.uk/api/listing/${listingId}/status-badge`}
-              alt="Listing approval status"
-              width="100"
-              height="30"
-            />
-          </div>
+          <Text style={listItem}>
+            Status:{' '}
+            <span
+              style={{
+                color: approved ? '#16a34a' : '#ca8a04',
+                fontWeight: 600,
+              }}
+            >
+              {approved ? 'Approved' : 'Not approved yet'}
+            </span>
+          </Text>
           <Hr style={hr} />
           <Text style={footer}>Resilience Web CIC</Text>
         </Container>

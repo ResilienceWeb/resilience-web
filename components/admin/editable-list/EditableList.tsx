@@ -101,7 +101,7 @@ const EditableList = ({ deleteListing, items }) => {
         <div>
           <h1 className="text-2xl font-bold">Listings</h1>
           <p className="mt-4 max-w-[500px] text-sm text-gray-600">
-            This web is publicly accessible at:{' '}
+            This web is publicly accessible at{' '}
             <a
               href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
               target="_blank"
