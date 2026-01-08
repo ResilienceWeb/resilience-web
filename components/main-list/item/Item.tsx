@@ -55,7 +55,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
       onClick={onClick}
       ref={ref}
     >
-      {dataItem.featured && (
+      {dataItem.featured && new Date(dataItem.featured) > new Date() && (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

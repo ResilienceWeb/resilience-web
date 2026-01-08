@@ -112,6 +112,7 @@ export async function PUT(request) {
     const email = formData.get('email')
     const seekingVolunteers = formData.get('seekingVolunteers')
     const featured = formData.get('featured')
+    const featuredDate = featured ? new Date(featured as string) : null
     const latitude = formData.get('latitude')
     const longitude = formData.get('longitude')
     const locationDescription = formData.get('locationDescription')
@@ -196,7 +197,7 @@ export async function PUT(request) {
       email: email,
       pending: false,
       seekingVolunteers: stringToBoolean(seekingVolunteers),
-      featured: stringToBoolean(featured),
+      featured: featuredDate,
       slug: slug,
       location: locationData,
       socials: {

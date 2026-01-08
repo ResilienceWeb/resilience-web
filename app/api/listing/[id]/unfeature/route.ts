@@ -15,7 +15,7 @@ export async function PATCH(
         id: listingId,
       },
       data: {
-        featured: false,
+        featured: null,
       },
     })
 
