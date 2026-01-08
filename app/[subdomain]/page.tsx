@@ -306,8 +306,9 @@ async function getData({ webSlug }): Promise<DataType> {
         if (seekingVolunteers) {
           transformedNode.seekingVolunteers = true
         }
-        if (featured) {
-          transformedNode.featured = true
+        // Check if featured date is in the future
+        if (featured && new Date(featured) > new Date()) {
+          transformedNode.featured = featured
         }
         transformedData.nodes.push(transformedNode)
 

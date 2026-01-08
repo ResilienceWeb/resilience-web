@@ -70,7 +70,6 @@ const listingFormSchema = z.object({
   socials: z.array(socialItemSchema),
   actions: z.array(actionItemSchema),
   seekingVolunteers: z.boolean(),
-  featured: z.boolean(),
   image: z.any(),
   slug: z
     .string()
@@ -207,7 +206,6 @@ const ListingForm = ({
       socials: listing?.socials || [],
       actions: listing?.actions || [],
       seekingVolunteers: listing?.seekingVolunteers || false,
-      featured: listing?.featured || false,
       image: listing?.image,
       slug: listing?.slug || '',
       tags: initialTagsValues || [],

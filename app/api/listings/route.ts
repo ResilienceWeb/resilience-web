@@ -100,6 +100,7 @@ export async function POST(request) {
     const email = formData.get('email')
     const seekingVolunteers = formData.get('seekingVolunteers')
     const featured = formData.get('featured')
+    const featuredDate = featured ? new Date(featured as string) : null
     const latitude = formData.get('latitude')
     const longitude = formData.get('longitude')
     const locationDescription = formData.get('locationDescription')
@@ -161,7 +162,7 @@ export async function POST(request) {
           : {}),
       },
       seekingVolunteers: stringToBoolean(seekingVolunteers),
-      featured: isProposedListing ? false : stringToBoolean(featured),
+      featured: isProposedListing ? null : featuredDate,
       slug: slug,
       location: {
         ...(latitude && longitude && locationDescription

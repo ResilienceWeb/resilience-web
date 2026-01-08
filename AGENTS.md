@@ -137,7 +137,6 @@ Remote patterns configured in [next.config.js](next.config.js) for DigitalOcean 
 
 **Trigger.dev** for scheduled tasks:
 - [trigger/check-web-inactive.ts](trigger/check-web-inactive.ts) - Monitor inactive webs
-- [trigger/unfeature-listing.ts](trigger/unfeature-listing.ts) - Auto-unfeature listings
 - Config: [trigger.config.ts](trigger.config.ts)
 - Run locally: `npm run trigger`
 

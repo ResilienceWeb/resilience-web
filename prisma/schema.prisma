@@ -168,7 +168,7 @@ model Listing {
   pending           Boolean              @default(false)
   proposer          User?                @relation(fields: [proposerId], references: [id])
   proposerId        String?
-  featured          Boolean              @default(false)
+  featured          DateTime?
   location          ListingLocation?     @relation(fields: [locationId], references: [id])
   locationId        Int?                 @unique
   edits             ListingEdit[]

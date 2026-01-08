@@ -1,6 +1,5 @@
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
-import unfeatureListingTask from '@trigger/unfeature-listing'
 import prisma from '@prisma-rw'
 
 export async function PATCH(
@@ -11,17 +10,18 @@ export async function PATCH(
   try {
     const listingId = Number(params.id)
 
+    // Set featured to 7 days from now
+    const featuredUntil = new Date()
+    featuredUntil.setDate(featuredUntil.getDate() + 7)
+
     const listing = await prisma.listing.update({
       where: {
         id: listingId,
       },
       data: {
-        featured: true,
+        featured: featuredUntil,
       },
     })
-
-    const handle = await unfeatureListingTask.trigger({ listingId })
-    console.log('[RW]Task is running with handle', handle.id)
 
     return Response.json({
       listing,
