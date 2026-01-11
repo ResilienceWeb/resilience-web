@@ -43,14 +43,7 @@ export async function GET(
         socials: true,
         actions: true,
         proposer: true,
-        location: {
-          select: {
-            latitude: true,
-            longitude: true,
-            description: true,
-            noPhysicalLocation: true,
-          },
-        },
+        location: true,
         category: {
           select: {
             id: true,
@@ -147,42 +140,22 @@ export async function PUT(request) {
       id: Number(relationId),
     }))
 
-    let locationData
-    if (noPhysicalLocation) {
-      locationData = {
-        upsert: {
-          create: {
-            noPhysicalLocation: true,
-          },
-          update: {
-            latitude: null,
-            longitude: null,
-            description: null,
-            noPhysicalLocation: true,
-          },
+    const hasLocationData = latitude && longitude && locationDescription
+    const locationData = {
+      upsert: {
+        create: {
+          latitude: hasLocationData ? parseFloat(latitude) : null,
+          longitude: hasLocationData ? parseFloat(longitude) : null,
+          description: hasLocationData ? locationDescription : null,
+          noPhysicalLocation,
         },
-      }
-    } else {
-      locationData = {
-        ...(latitude && longitude && locationDescription
-          ? {
-              upsert: {
-                create: {
-                  latitude: parseFloat(latitude),
-                  longitude: parseFloat(longitude),
-                  description: locationDescription,
-                  noPhysicalLocation: false,
-                },
-                update: {
-                  latitude: parseFloat(latitude),
-                  longitude: parseFloat(longitude),
-                  description: locationDescription,
-                  noPhysicalLocation: false,
-                },
-              },
-            }
-          : {}),
-      }
+        update: {
+          latitude: hasLocationData ? parseFloat(latitude) : null,
+          longitude: hasLocationData ? parseFloat(longitude) : null,
+          description: hasLocationData ? locationDescription : null,
+          noPhysicalLocation,
+        },
+      },
     }
 
     const newData: Prisma.ListingUpdateInput = {

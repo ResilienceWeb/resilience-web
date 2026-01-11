@@ -27,11 +27,14 @@ export default function useUpdateListing() {
 
   return useMutation({
     mutationFn: updateListingRequest,
-    onSuccess: (data) => {
-      queryClient.setQueryData(
-        ['listings', 'detail', { webSlug, listingSlug: data.slug }],
-        data,
-      )
+    onSettled: (updatedListing) => {
+      queryClient.invalidateQueries({
+        queryKey: [
+          'listings',
+          'detail',
+          { webSlug, listingSlug: updatedListing.slug },
+        ],
+      })
       queryClient.invalidateQueries({
         queryKey: ['listings', 'list', { webSlug }],
       })

@@ -230,6 +230,12 @@ async function populateSeedData() {
       published: true,
       image:
         'https://resilienceweb.ams3.digitaloceanspaces.com/d395de3529d0bb86b05ee6503.jpg',
+      features: {
+        create: {
+          feature: 'show-map',
+          enabled: true,
+        },
+      },
     },
   })
 
@@ -249,6 +255,12 @@ async function populateSeedData() {
       published: true,
       image:
         'https://resilienceweb.ams3.digitaloceanspaces.com/f0b36873107d6cef9da5f2400.webp',
+      features: {
+        create: {
+          feature: 'show-map',
+          enabled: true,
+        },
+      },
     },
   })
 
