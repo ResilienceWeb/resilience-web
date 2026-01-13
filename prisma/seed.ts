@@ -229,7 +229,7 @@ async function populateSeedData() {
       slug: 'cambridge',
       published: true,
       image:
-        'https://resilienceweb.ams3.digitaloceanspaces.com/d395de3529d0bb86b05ee6503.jpg',
+        'https://kdfprvggsvdbybtdpojv.supabase.co/storage/v1/object/public/resilienceweb-images/d395de3529d0bb86b05ee6503.jpg',
       features: {
         create: {
           feature: 'show-map',
@@ -254,7 +254,7 @@ async function populateSeedData() {
       slug: 'durham',
       published: true,
       image:
-        'https://resilienceweb.ams3.digitaloceanspaces.com/f0b36873107d6cef9da5f2400.webp',
+        'https://kdfprvggsvdbybtdpojv.supabase.co/storage/v1/object/public/resilienceweb-images/f0b36873107d6cef9da5f2400.webp',
       features: {
         create: {
           feature: 'show-map',
