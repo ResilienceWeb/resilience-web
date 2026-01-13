@@ -1,8 +1,11 @@
-import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import path from 'path'
 import sharp from 'sharp'
-import doSpace from '../lib/digitalocean'
-import config from './config'
+import {
+  supabaseAdmin,
+  STORAGE_BUCKET,
+  getPublicUrl,
+} from '../lib/supabase-storage'
+import deleteImage from './deleteImage'
 
 function generateUniqueId() {
   const timestamp = Date.now().toString(36)
@@ -39,33 +42,23 @@ export default async function uploadImage(
 
   const compressedImage = await sharpInstance.webp({ quality: 75 }).toBuffer()
 
-  const putObjectCommand = new PutObjectCommand({
-    Bucket: config.bucketName,
-    Body: compressedImage,
-    Key: fileName,
-    ACL: 'public-read',
-  })
+  const { error } = await supabaseAdmin.storage
+    .from(STORAGE_BUCKET)
+    .upload(fileName, compressedImage, {
+      contentType: 'image/webp',
+      upsert: false,
+    })
 
-  const response = await doSpace.send(putObjectCommand)
-
-  if (response['$metadata'].httpStatusCode === 200) {
-    const imageUrl = `${config.digitalOceanSpaces}${fileName}`
-
-    if (oldImageKey) {
-      // Delete previous image
-      const deleteObjectCommand = new DeleteObjectCommand({
-        Bucket: config.bucketName,
-        Key: path.basename(oldImageKey),
-      })
-
-      const deleteResponse = await doSpace.send(deleteObjectCommand)
-      if (deleteResponse['$metadata'].httpStatusCode !== 204) {
-        console.error('[RW] Error deleting old image', deleteResponse)
-      }
-    }
-
-    return imageUrl
-  } else {
-    console.error('[RW] Error uploading image', response)
+  if (error) {
+    console.error('[RW] Error uploading image', error)
+    return
   }
+
+  const imageUrl = getPublicUrl(fileName)
+
+  if (oldImageKey) {
+    await deleteImage(oldImageKey)
+  }
+
+  return imageUrl
 }

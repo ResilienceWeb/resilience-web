@@ -124,14 +124,11 @@ REST API endpoints in [app/api/](app/api/):
 
 ### Image Management
 
-Images stored on **DigitalOcean Spaces** (S3-compatible) (soon to move to Supabase):
+Images stored on **Supabase Storage** (S3-compatible) (soon to move to Supabase):
 - Upload: [helpers/uploadImage.ts](helpers/uploadImage.ts)
 - Delete: [helpers/deleteImage.ts](helpers/deleteImage.ts)
-- Client: [lib/digitalocean.ts](lib/digitalocean.ts)
+- Client: [lib/supabase-storage.ts](lib/supabase-storage.ts)
 - Optimized with Sharp on server
-- Next.js Image component handles optimization
-
-Remote patterns configured in [next.config.js](next.config.js) for DigitalOcean CDN and other image sources.
 
 ### Background Jobs
 
@@ -236,7 +233,7 @@ Key variables (see [.env.example](.env.example)):
 - `RW_TEST_USER_EMAIL` - Email for test account creation
 - `SENTRY_AUTH_TOKEN` - Sentry deployment token
 - `NEXT_PUBLIC_POSTHOG_KEY` - PostHog project key
-- DigitalOcean Spaces credentials for image storage
+- Supabase Storage credentials for image storage
 - Mailersend API key for production emails
 
 ## Code Quality Tools
