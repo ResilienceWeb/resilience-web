@@ -236,11 +236,11 @@ function Listing({ listing }) {
           )}
 
           {listing.relations?.length > 0 && (
-            <div className="mb-12 overflow-hidden">
-              <h2 className="mb-6 text-2xl font-bold tracking-tight text-gray-900">
+            <div className="mb-12">
+              <h2 className="mb-4 text-2xl font-bold tracking-tight">
                 Related listings
               </h2>
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                 {listing.relations.map((relatedListing) => (
                   <Item
                     categoriesIndexes={categoriesIndexes}
