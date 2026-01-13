@@ -20,7 +20,7 @@ C4Context
     System(resilienceWeb, "Resilience Web")
 
     System_Ext(postgres, "PostgreSQL")
-    System_Ext(doSpaces, "DigitalOcean Spaces")
+    System_Ext(doSpaces, "Supabase Storage")
     System_Ext(mailersend, "Mailersend")
     System_Ext(hygraph, "Hygraph CMS")
     System_Ext(sentry, "Sentry")
@@ -98,7 +98,7 @@ Resilience Web uses a **subdomain-based multi-tenancy** approach where each comm
 - Role-based access control (OWNER, EDITOR roles via `WebAccess`)
 
 ### File Storage
-- **DigitalOcean Spaces** (S3-compatible object storage)
+- **Supabase Storage** (S3-compatible object storage)
 - **Sharp** (server-side image optimization)
 - **Next.js Image Component** (automatic optimization)
 
@@ -238,7 +238,7 @@ Listing 1──* ListingSocialMedia
 ### Current Approach
 - Multi-tenant shared database (cost-effective for small-medium scale)
 - Serverless functions on Vercel (auto-scaling)
-- CDN-backed static assets via DigitalOcean Spaces
+- CDN-backed static assets via Supabase Storage
 - ISR for popular pages (reduces database load)
 
 ### Future Scaling Paths
