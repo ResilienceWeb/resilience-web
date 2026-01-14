@@ -175,6 +175,12 @@
     text-decoration: underline;
   }
 
+  .prose {
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
   a:hover {
     text-decoration: none !important;
   }
