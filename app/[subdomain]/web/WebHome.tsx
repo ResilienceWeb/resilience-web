@@ -67,7 +67,7 @@ const WebHome = ({ webData }: WebHomeProps) => {
       {/* Desktop and mobile layout for main content */}
       <div className="flex flex-col md:flex-row mt-6">
         <div className="w-full md:w-2/3 prose max-w-none md:pr-8">
-          <RichText html={webData.description} textSize="medium" />
+          <RichText html={webData.description} />
 
           <div className="mt-8">
             <Link href={`/`}>

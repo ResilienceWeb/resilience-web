@@ -132,6 +132,27 @@ function Listing({ listing }) {
                 )}
               </div>
 
+              {listing.web?.slug && listing.tags?.length > 0 && (
+                <div className="flex flex-wrap justify-end gap-2">
+                  {listing.tags.map((tag) => {
+                    const urlEncodedTag = tag.label.replace(' ', '+')
+                    return (
+                      <Link
+                        key={tag.id}
+                        href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
+                      >
+                        <Badge
+                          className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
+                          style={{ backgroundColor: tag.color ?? '#718096' }}
+                        >
+                          #{tag.label}
+                        </Badge>
+                      </Link>
+                    )
+                  })}
+                </div>
+              )}
+
               <div className="flex items-center justify-end gap-2">
                 {typeof window !== 'undefined' && (
                   <ShareButton
@@ -170,7 +191,7 @@ function Listing({ listing }) {
             </div>
           </div>
 
-          <div className="prose prose-lg prose-headings:font-semibold prose-a:text-blue-600 mb-12 max-w-none">
+          <div className="prose prose-headings:font-semibold prose-a:text-blue-600 mb-12 max-w-none">
             <RichText html={listing.description} />
           </div>
 
@@ -213,27 +234,6 @@ function Listing({ listing }) {
                 locationDescription={listing.location.description}
               />
             )}
-
-          {listing.web?.slug && listing.tags?.length > 0 && (
-            <div className="mb-12 flex flex-wrap justify-end gap-2">
-              {listing.tags.map((tag) => {
-                const urlEncodedTag = tag.label.replace(' ', '+')
-                return (
-                  <Link
-                    key={tag.id}
-                    href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
-                  >
-                    <Badge
-                      className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
-                      style={{ backgroundColor: tag.color ?? '#718096' }}
-                    >
-                      #{tag.label}
-                    </Badge>
-                  </Link>
-                )
-              })}
-            </div>
-          )}
 
           {listing.relations?.length > 0 && (
             <div className="mb-12">
