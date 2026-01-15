@@ -85,7 +85,7 @@ function Listing({ listing }) {
         </div>
       )}
 
-      <div className="relative rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 md:p-8">
+      <div className="relative rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100 md:p-8">
         <div className="mb-8 border-b border-gray-100 pb-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div className="flex-1">
@@ -98,7 +98,7 @@ function Listing({ listing }) {
 
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link
-                  href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?categories=${listing.category.label}`}
+                  href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?categories=${encodeURIComponent(listing.category.label).replace(/%20/g, '+')}`}
                 >
                   <CategoryTag
                     colorHex={listing.category.color}
@@ -255,7 +255,25 @@ function Listing({ listing }) {
             </div>
           )}
 
-        {listing.web?.slug && listing.tags?.length > 0 && (
+        {listing.relations?.length > 0 && (
+          <div className="mt-8">
+            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">
+              Related Listings
+            </h3>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {listing.relations.map((relatedListing) => (
+                <Item
+                  categoriesIndexes={categoriesIndexes}
+                  dataItem={relatedListing}
+                  key={relatedListing.id}
+                  simplified
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {listing.tags?.length > 0 && (
           <div className="mt-8 flex flex-wrap gap-2">
             {listing.tags.map((tag) => {
               const urlEncodedTag = tag.label.replace(' ', '+')
@@ -273,24 +291,6 @@ function Listing({ listing }) {
                 </Link>
               )
             })}
-          </div>
-        )}
-
-        {listing.relations?.length > 0 && (
-          <div className="mb-8">
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">
-              Related Listings
-            </h3>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {listing.relations.map((relatedListing) => (
-                <Item
-                  categoriesIndexes={categoriesIndexes}
-                  dataItem={relatedListing}
-                  key={relatedListing.id}
-                  simplified
-                />
-              ))}
-            </div>
           </div>
         )}
       </div>
