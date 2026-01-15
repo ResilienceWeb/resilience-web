@@ -64,7 +64,7 @@ function Listing({ listing }) {
   }, [listing.website])
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+    <div className="w-full max-w-3xl mx-auto px-0 lg:px-8 pb-10">
       <MagicBackButton className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-all hover:text-gray-900 hover:gap-3">
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 transition-all group-hover:bg-gray-200">
           <HiArrowLeft className="h-4 w-4" />
@@ -82,43 +82,52 @@ function Listing({ listing }) {
             priority
             className="object-contain"
           />
-
-          <div className="absolute bottom-4 left-4">
-            <CategoryTag
-              colorHex={listing.category.color}
-              className="px-4 py-1.5 text-sm shadow-lg backdrop-blur-sm"
-            >
-              {listing.category.label}
-            </CategoryTag>
-          </div>
         </div>
       )}
 
       <div className="relative rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 md:p-8">
         <div className="mb-8 border-b border-gray-100 pb-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <div className="flex-1 space-y-4">
+            <div className="flex-1">
               <h1
                 data-testid="Title"
-                className="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl"
+                className="text-2xl font-bold tracking-tight text-gray-900 md:text-4xl"
               >
                 {listing.title}
               </h1>
 
-              <div className="flex flex-wrap items-center gap-3">
-                {!listing.image && (
-                  <CategoryTag colorHex={listing.category.color}>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Link
+                  href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?categories=${listing.category.label}`}
+                >
+                  <CategoryTag
+                    colorHex={listing.category.color}
+                    className="hover:opacity-90"
+                  >
                     {listing.category.label}
                   </CategoryTag>
+                </Link>
+
+                {listing.website && (
+                  <a
+                    href={listingWebsite}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700 transition-colors hover:bg-gray-200"
+                  >
+                    <HiExternalLink className="h-3.5 w-3.5" />
+                    <span>{websiteSanitized}</span>
+                  </a>
                 )}
 
                 {listing.seekingVolunteers && (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <p className="text-[#2B8257]">
-                          Seeking volunteers <HiUserGroup className="inline" />
-                        </p>
+                        <span className="inline-flex cursor-help items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700">
+                          <HiUserGroup className="h-3.5 w-3.5" />
+                          Seeking volunteers
+                        </span>
                       </TooltipTrigger>
                       <TooltipContent side="bottom" className="max-w-[200px]">
                         <p className="text-center text-sm">
@@ -130,21 +139,6 @@ function Listing({ listing }) {
                   </TooltipProvider>
                 )}
               </div>
-
-              {listing.website && (
-                <div className="flex items-start gap-1">
-                  <p className="font-semibold text-gray-700">Website:</p>
-                  <a
-                    href={listingWebsite}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-0.5 text-blue-400 hover:text-blue-500"
-                  >
-                    <span>{websiteSanitized}</span>
-                    <HiExternalLink />
-                  </a>
-                </div>
-              )}
             </div>
 
             <div className="flex flex-wrap items-center gap-2 pt-2 md:pt-0">
@@ -181,30 +175,9 @@ function Listing({ listing }) {
                 })}
             </div>
           </div>
-
-          {listing.web?.slug && listing.tags?.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-2">
-              {listing.tags.map((tag) => {
-                const urlEncodedTag = tag.label.replace(' ', '+')
-                return (
-                  <Link
-                    key={tag.id}
-                    href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
-                  >
-                    <Badge
-                      className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
-                      style={{ backgroundColor: tag.color ?? '#718096' }}
-                    >
-                      #{tag.label}
-                    </Badge>
-                  </Link>
-                )
-              })}
-            </div>
-          )}
         </div>
 
-        <div className="prose">
+        <div className="prose prose-sm md:prose-base">
           <RichText html={listing.description} />
         </div>
 
@@ -281,6 +254,27 @@ function Listing({ listing }) {
               </div>
             </div>
           )}
+
+        {listing.web?.slug && listing.tags?.length > 0 && (
+          <div className="mt-8 flex flex-wrap gap-2">
+            {listing.tags.map((tag) => {
+              const urlEncodedTag = tag.label.replace(' ', '+')
+              return (
+                <Link
+                  key={tag.id}
+                  href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
+                >
+                  <Badge
+                    className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
+                    style={{ backgroundColor: tag.color ?? '#718096' }}
+                  >
+                    #{tag.label}
+                  </Badge>
+                </Link>
+              )
+            })}
+          </div>
+        )}
 
         {listing.relations?.length > 0 && (
           <div className="mb-8">
