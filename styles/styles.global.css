@@ -158,6 +158,11 @@
     overflow-wrap: break-word;
   }
 
+  h1 {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
   /* stylelint-disable-next-line selector-id-pattern */
   #root,
   #__next {
@@ -173,6 +178,12 @@
     color: #09622f !important;
     font-weight: 600;
     text-decoration: underline;
+  }
+
+  .prose {
+    p:last-child {
+      margin-bottom: 0;
+    }
   }
 
   a:hover {
@@ -196,6 +207,7 @@
     height: 300px;
   }
 
+  /* stylelint-disable-next-line no-descending-specificity */
   .leaflet-popup-content p {
     margin: 0 !important;
   }

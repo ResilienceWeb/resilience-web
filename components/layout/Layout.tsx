@@ -5,11 +5,9 @@ import { usePathname } from 'next/navigation'
 import AlertBanner from '@components/alert-banner'
 import Footer from '@components/footer'
 import Nav from '@components/nav'
-import styles from './Layout.module.css'
 
 interface LayoutProps {
   children: React.ReactNode
-  applyPostStyling?: boolean
   hideFooter?: boolean
   hideNav?: boolean
   hideBorder?: boolean
@@ -17,7 +15,6 @@ interface LayoutProps {
 
 const Layout = ({
   children,
-  applyPostStyling = false,
   hideFooter = false,
   hideNav = false,
   hideBorder = false,
@@ -38,7 +35,7 @@ const Layout = ({
           />
         )}
         <div
-          className={`flex w-full max-w-6xl flex-col items-center justify-center px-4 pt-6 pb-8 ${applyPostStyling ? styles.root : ''} `}
+          className={`flex w-full max-w-6xl flex-col items-center justify-center px-4 pt-4 pb-8} `}
         >
           {children}
         </div>
