@@ -5,51 +5,15 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import '@styles/font-awesome.css'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import posthog from 'posthog-js'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { createCustomIcon } from '@helpers/map'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
-
-// UK center coordinates (approximately central England)
-const UK_CENTER: [number, number] = [24.5, -72.5]
-const UK_ZOOM = 17
-
-function createWebMarkerIcon() {
-  const iconHtml = `
-    <div style="
-      background: linear-gradient(135deg, #3A8159 0%, #2d6847 100%);
-      border-radius: 50%;
-      height: 36px;
-      width: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(58, 129, 89, 0.4);
-      border: 3px solid white;
-      transition: transform 0.2s ease;
-    ">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/>
-        <circle cx="12" cy="12" r="4" fill="white"/>
-        <path d="M12 2C12 2 12 12 12 12" stroke="white" stroke-width="2"/>
-        <path d="M12 12C12 12 12 22 12 22" stroke="white" stroke-width="2"/>
-        <path d="M2 12C2 12 12 12 12 12" stroke="white" stroke-width="2"/>
-        <path d="M12 12C12 12 22 12 22 12" stroke="white" stroke-width="2"/>
-      </svg>
-    </div>
-  `
-
-  return L.divIcon({
-    html: iconHtml,
-    className: 'web-marker-icon',
-    iconSize: [36, 36],
-    iconAnchor: [18, 18],
-    popupAnchor: [0, -20],
-  })
-}
 
 // Function to check if a web was created less than 4 months ago
 const isNewWeb = (createdAt: string | Date | null) => {
@@ -61,6 +25,10 @@ const isNewWeb = (createdAt: string | Date | null) => {
 
   return creationDate > fourMonthsAgo
 }
+
+// UK center coordinates (approximately central England)
+const UK_CENTER: [number, number] = [54.5, -2]
+const UK_ZOOM = 6
 
 interface Web {
   id: number
@@ -88,6 +56,10 @@ function FitBoundsToMarkers({ markers }: { markers: [number, number][] }) {
         markers.map((coords) => L.latLng(coords[0], coords[1])),
       )
       map.fitBounds(bounds, { padding: [20, 20] })
+      // Ensure minimum zoom level of 6 for better UK focus
+      if (map.getZoom() < 6) {
+        map.setZoom(6)
+      }
     } else if (markers.length === 1) {
       map.setView(markers[0], 12)
     }
@@ -106,7 +78,7 @@ function MapComponent({ webs = [] }: WebsMapProps) {
     import('../../../components/listings-map/leaflet-icon-fix')
 
     // Create marker icon after component mounts (client-side only)
-    setMarkerIcon(createWebMarkerIcon())
+    setMarkerIcon(createCustomIcon('City', '#3A8159'))
 
     const timer = setTimeout(() => {
       setIsLoading(false)
@@ -213,12 +185,13 @@ function MapComponent({ webs = [] }: WebsMapProps) {
 
 function WebPopupContent({ web }: { web: Web }) {
   const isNew = isNewWeb(web.createdAt)
+  const router = useRouter()
   const webUrl = `${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`
 
   return (
-    <div className="flex flex-col gap-3 p-1">
+    <div className="flex flex-col gap-2">
       {web.image && (
-        <div className="relative h-36 w-full overflow-hidden rounded-lg">
+        <div className="relative h-36 w-full overflow-hidden rounded-t-lg">
           <Image
             src={web.image}
             alt={`${web.title} web`}
@@ -236,14 +209,13 @@ function WebPopupContent({ web }: { web: Web }) {
         </div>
       )}
 
-      <div className="space-y-2">
+      <div className="px-4 pb-4">
         <h3 className="text-lg font-bold text-gray-900">{web.title}</h3>
 
         <Button
           onClick={() => {
             posthog.capture('web-popup-explore-click', { webId: web.id })
-            // TODO
-            // window.open(webUrl, '_blank')
+            router.push(webUrl)
           }}
           className="w-full"
         >

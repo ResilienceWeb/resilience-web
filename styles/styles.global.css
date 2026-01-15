@@ -208,6 +208,14 @@
   }
 
   /* stylelint-disable-next-line no-descending-specificity */
+  .leaflet-popup-content {
+    margin: 0 !important;
+  }
+
+  .leaflet-popup-content-wrapper {
+    padding: 0 !important;
+  }
+
   .leaflet-popup-content p {
     margin: 0 !important;
   }
