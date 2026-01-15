@@ -207,6 +207,7 @@
     height: 300px;
   }
 
+  /* stylelint-disable-next-line no-descending-specificity */
   .leaflet-popup-content p {
     margin: 0 !important;
   }
