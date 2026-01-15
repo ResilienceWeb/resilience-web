@@ -158,6 +158,11 @@
     overflow-wrap: break-word;
   }
 
+  h1 {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
   /* stylelint-disable-next-line selector-id-pattern */
   #root,
   #__next {
