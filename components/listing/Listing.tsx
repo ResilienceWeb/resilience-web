@@ -65,7 +65,7 @@ function Listing({ listing }) {
 
   return (
     <div className="w-full max-w-3xl mx-auto px-0 lg:px-8 pb-10">
-      <MagicBackButton className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-all hover:text-gray-900 hover:gap-3">
+      <MagicBackButton className="group mb-4 inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition-all hover:text-gray-900 hover:gap-3">
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 transition-all group-hover:bg-gray-200">
           <HiArrowLeft className="h-4 w-4" />
         </span>
@@ -73,7 +73,7 @@ function Listing({ listing }) {
       </MagicBackButton>
 
       {listing.image && (
-        <div className="group relative mb-8 h-[240px] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 md:h-[400px]">
+        <div className="group relative mb-6 h-[240px] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 md:h-[400px]">
           <Image
             src={listing.image}
             alt={`Image for ${listing.title}`}
@@ -86,62 +86,16 @@ function Listing({ listing }) {
       )}
 
       <div className="relative rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100 md:p-8">
-        <div className="mb-8 border-b border-gray-100 pb-8">
-          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <div className="flex-1">
-              <h1
-                data-testid="Title"
-                className="text-2xl font-bold tracking-tight text-gray-900 md:text-4xl"
-              >
-                {listing.title}
-              </h1>
+        <div className="mb-6 border-b border-gray-100 pb-6 md:mb-8 md:pb-8">
+          <div className="hidden md:flex md:items-start md:justify-between md:gap-4">
+            <h1
+              data-testid="Title"
+              className="text-4xl font-bold tracking-tight text-gray-900"
+            >
+              {listing.title}
+            </h1>
 
-              <div className="mt-4 flex flex-wrap gap-3">
-                <Link
-                  href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?categories=${encodeURIComponent(listing.category.label).replace(/%20/g, '+')}`}
-                >
-                  <CategoryTag
-                    colorHex={listing.category.color}
-                    className="hover:opacity-90"
-                  >
-                    {listing.category.label}
-                  </CategoryTag>
-                </Link>
-
-                {listing.website && (
-                  <a
-                    href={listingWebsite}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700 transition-colors hover:bg-gray-200"
-                  >
-                    <HiExternalLink className="h-3.5 w-3.5" />
-                    <span>{websiteSanitized}</span>
-                  </a>
-                )}
-
-                {listing.seekingVolunteers && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span className="inline-flex cursor-help items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700">
-                          <HiUserGroup className="h-3.5 w-3.5" />
-                          Seeking volunteers
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom" className="max-w-[200px]">
-                        <p className="text-center text-sm">
-                          This group is seeking volunteers or members. Get in
-                          touch with them if you'd like to help.
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2 pt-2 md:pt-0">
+            <div className="flex shrink-0 items-center gap-2">
               {typeof window !== 'undefined' && (
                 <ShareButton
                   url={window.location.href}
@@ -170,6 +124,94 @@ function Listing({ listing }) {
                       className={`group inline-flex h-10 w-10 items-center justify-center rounded-full ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} transition-all hover:shadow-md ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
                     >
                       <Icon className="h-5 w-5 transition-transform group-hover:scale-110" />
+                    </a>
+                  )
+                })}
+            </div>
+          </div>
+
+          <h1
+            data-testid="Title"
+            className="text-2xl font-bold tracking-tight text-gray-900 md:hidden"
+          >
+            {listing.title}
+          </h1>
+
+          <div className="mt-3 flex flex-wrap items-center gap-2 md:mt-4 md:gap-3">
+            <Link
+              href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?categories=${encodeURIComponent(listing.category.label).replace(/%20/g, '+')}`}
+            >
+              <CategoryTag
+                colorHex={listing.category.color}
+                className="hover:opacity-90"
+              >
+                {listing.category.label}
+              </CategoryTag>
+            </Link>
+
+            {listing.website && (
+              <a
+                href={listingWebsite}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 text-xs text-gray-700 transition-colors hover:bg-gray-200 md:gap-1.5 md:px-3 md:text-sm"
+              >
+                <HiExternalLink className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                <span className="max-w-[180px] truncate md:max-w-none">
+                  {websiteSanitized}
+                </span>
+              </a>
+            )}
+
+            {listing.seekingVolunteers && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="inline-flex cursor-help items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 md:gap-1.5 md:px-3 md:text-sm">
+                      <HiUserGroup className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                      Seeking volunteers
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-[200px]">
+                    <p className="text-center text-sm">
+                      This group is seeking volunteers or members. Get in touch
+                      with them if you'd like to help.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+
+            {/* Mobile only: Social icons inline with badges */}
+            <div className="flex items-center gap-1.5 md:hidden">
+              {typeof window !== 'undefined' && (
+                <ShareButton
+                  url={window.location.href}
+                  title="Resilience Web"
+                  description="Check out this listing on Resilience Web, a place-based visualisation of environmental and social justice groups making the world a better place."
+                />
+              )}
+
+              {listing.socials &&
+                listing.socials.map((social, index) => {
+                  const config = socialIconStyles[social.platform.toLowerCase()]
+                  const Icon = socialMediaPlatforms.find(
+                    (p) => p.id === social.platform.toLowerCase(),
+                  )?.icon
+
+                  if (!Icon) {
+                    return null
+                  }
+
+                  return (
+                    <a
+                      key={`social-mobile-${index}`}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`group inline-flex h-8 w-8 items-center justify-center rounded-full ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} transition-all ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
+                    >
+                      <Icon className="h-4 w-4" />
                     </a>
                   )
                 })}
