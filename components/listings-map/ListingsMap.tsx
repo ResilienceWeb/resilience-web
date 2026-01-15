@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { BsArrowsFullscreen } from 'react-icons/bs'
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
-import dynamic from 'next/dynamic'
 import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
@@ -101,7 +100,7 @@ function FitBoundsToMarkers({ markers }: { markers: [number, number][] }) {
   return null
 }
 
-function MapComponent({ items = [] }: MapProps) {
+function ListingsMap({ items = [] }: MapProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isFullScreen, setIsFullScreen] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
@@ -241,10 +240,4 @@ function MapComponent({ items = [] }: MapProps) {
   )
 }
 
-const MapWithNoSSR = dynamic(() => Promise.resolve(MapComponent), {
-  ssr: false,
-})
-
-export default function ListingsMap(props: MapProps) {
-  return <MapWithNoSSR {...props} />
-}
+export default ListingsMap

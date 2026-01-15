@@ -68,7 +68,7 @@ function FitBoundsToMarkers({ markers }: { markers: [number, number][] }) {
   return null
 }
 
-function MapComponent({ webs = [] }: WebsMapProps) {
+function WebsMap({ webs = [] }: WebsMapProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [markerIcon, setMarkerIcon] = useState<L.DivIcon | null>(null)
   const router = useRouter()
@@ -226,20 +226,4 @@ function WebPopupContent({ web }: { web: Web }) {
   )
 }
 
-const WebsMapWithNoSSR = dynamic(() => Promise.resolve(MapComponent), {
-  ssr: false,
-  loading: () => (
-    <div className="mx-auto max-w-7xl px-4 py-8" id="webs-map">
-      <h2 className="mb-6 text-center text-4xl font-bold tracking-tight text-gray-900">
-        Find Resilience Webs near you in the UK
-      </h2>
-      <div className="flex h-[600px] w-full items-center justify-center rounded-2xl bg-gray-50">
-        <Spinner />
-      </div>
-    </div>
-  ),
-})
-
-export default function WebsMap(props: WebsMapProps) {
-  return <WebsMapWithNoSSR {...props} />
-}
+export default WebsMap

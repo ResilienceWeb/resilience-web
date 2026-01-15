@@ -1,16 +1,22 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import Features from '@components/homepage/features'
 import Hero from '@components/homepage/hero'
 import JoinTheCommunity from '@components/homepage/join-the-community'
 import WebCards from '@components/homepage/web-cards'
-import WebsMap from '@components/homepage/webs-map'
 import Layout from '@components/layout'
 
-export default function Homepage({ webs }) {
-  const searchParams = useSearchParams()
-  const showMap = searchParams.get('map')
+const WebsMap = dynamic(() => import('@components/homepage/webs-map'), {
+  ssr: false,
+})
+
+interface HomepageProps {
+  webs: any[]
+  showMap?: boolean
+}
+
+export default function Homepage({ webs, showMap = false }: HomepageProps) {
   return (
     <Layout>
       <Hero />
