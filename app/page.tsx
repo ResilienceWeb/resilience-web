@@ -35,6 +35,13 @@ async function getData(): Promise<any> {
       slug: true,
       image: true,
       createdAt: true,
+      location: {
+        select: {
+          latitude: true,
+          longitude: true,
+          description: true,
+        },
+      },
     },
   })
 
