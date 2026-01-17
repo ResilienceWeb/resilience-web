@@ -25,6 +25,16 @@ The system SHALL restrict CSV import functionality to authenticated users with O
 - **WHEN** the user attempts to access any `/*/admin/import` URL
 - **THEN** the user is redirected to the login page
 
+### Requirement: CSV Template Download
+The system SHALL provide a downloadable blank CSV template to help users prepare their data for import.
+
+#### Scenario: User downloads blank CSV template
+- **GIVEN** a user is on the import wizard Step 1
+- **WHEN** the user clicks the "Download template" link
+- **THEN** a CSV file is downloaded with headers for all supported import fields
+- **AND** the file contains no data rows
+- **AND** the headers include: Name, Description, Email, Website, Phone, Address, Category, Tags, Facebook, Instagram, X, LinkedIn, YouTube
+
 ### Requirement: CSV File Upload
 The system SHALL accept CSV file uploads via drag-and-drop or file picker interface.
 

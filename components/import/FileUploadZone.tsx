@@ -5,8 +5,37 @@
  */
 
 import { useCallback, useState } from "react";
-import { Upload, FileText, X } from "lucide-react";
+import { Upload, FileText, X, Download } from "lucide-react";
 import { cn } from "@components/lib/utils";
+
+const CSV_TEMPLATE_HEADERS = [
+  "Name",
+  "Description",
+  "Email",
+  "Website",
+  "Phone",
+  "Address",
+  "Category",
+  "Tags",
+  "Facebook",
+  "Instagram",
+  "X",
+  "LinkedIn",
+  "YouTube",
+];
+
+function downloadTemplate() {
+  const csvContent = CSV_TEMPLATE_HEADERS.join(",") + "\n";
+  const blob = new Blob([csvContent], { type: "text/csv" });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "resilience-web-import-template.csv";
+  document.body.appendChild(link);
+  link.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(link);
+}
 
 interface FileUploadZoneProps {
   onFileSelect: (file: File) => void;
@@ -122,6 +151,18 @@ export function FileUploadZone({
             <p className="text-xs text-gray-500 dark:text-gray-400">
               CSV file (max 5MB, up to 10,000 rows)
             </p>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                downloadTemplate();
+              }}
+              className="relative z-10 mt-4 flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Download blank template
+            </button>
           </div>
         )}
         <input
@@ -129,7 +170,7 @@ export function FileUploadZone({
           accept=".csv"
           onChange={handleFileInput}
           disabled={isLoading}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          className="absolute inset-0 z-0 w-full h-full opacity-0 cursor-pointer"
         />
       </div>
 
