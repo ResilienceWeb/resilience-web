@@ -30,6 +30,7 @@ export const sanitizeLink = (link: string) => {
   let result = link
   result = result.replace('https://www.', '')
   result = result.replace('https://', '')
+  result = result.replace('http://', '')
   result = result.replace(/\/$/, '')
 
   return result

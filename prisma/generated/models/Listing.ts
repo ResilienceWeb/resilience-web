@@ -57,7 +57,7 @@ export type ListingMinAggregateOutputType = {
   webId: number | null
   pending: boolean | null
   proposerId: string | null
-  featured: boolean | null
+  featured: Date | null
   locationId: number | null
 }
 
@@ -78,7 +78,7 @@ export type ListingMaxAggregateOutputType = {
   webId: number | null
   pending: boolean | null
   proposerId: string | null
-  featured: boolean | null
+  featured: Date | null
   locationId: number | null
 }
 
@@ -286,7 +286,7 @@ export type ListingGroupByOutputType = {
   webId: number
   pending: boolean
   proposerId: string | null
-  featured: boolean
+  featured: Date | null
   locationId: number | null
   _count: ListingCountAggregateOutputType | null
   _avg: ListingAvgAggregateOutputType | null
@@ -330,7 +330,7 @@ export type ListingWhereInput = {
   webId?: Prisma.IntFilter<"Listing"> | number
   pending?: Prisma.BoolFilter<"Listing"> | boolean
   proposerId?: Prisma.StringNullableFilter<"Listing"> | string | null
-  featured?: Prisma.BoolFilter<"Listing"> | boolean
+  featured?: Prisma.DateTimeNullableFilter<"Listing"> | Date | string | null
   locationId?: Prisma.IntNullableFilter<"Listing"> | number | null
   socials?: Prisma.ListingSocialMediaListRelationFilter
   web?: Prisma.XOR<Prisma.WebNullableScalarRelationFilter, Prisma.WebWhereInput> | null
@@ -362,7 +362,7 @@ export type ListingOrderByWithRelationInput = {
   webId?: Prisma.SortOrder
   pending?: Prisma.SortOrder
   proposerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  featured?: Prisma.SortOrder
+  featured?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   socials?: Prisma.ListingSocialMediaOrderByRelationAggregateInput
   web?: Prisma.WebOrderByWithRelationInput
@@ -399,7 +399,7 @@ export type ListingWhereUniqueInput = Prisma.AtLeast<{
   webId?: Prisma.IntFilter<"Listing"> | number
   pending?: Prisma.BoolFilter<"Listing"> | boolean
   proposerId?: Prisma.StringNullableFilter<"Listing"> | string | null
-  featured?: Prisma.BoolFilter<"Listing"> | boolean
+  featured?: Prisma.DateTimeNullableFilter<"Listing"> | Date | string | null
   socials?: Prisma.ListingSocialMediaListRelationFilter
   web?: Prisma.XOR<Prisma.WebNullableScalarRelationFilter, Prisma.WebWhereInput> | null
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
@@ -430,7 +430,7 @@ export type ListingOrderByWithAggregationInput = {
   webId?: Prisma.SortOrder
   pending?: Prisma.SortOrder
   proposerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  featured?: Prisma.SortOrder
+  featured?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ListingCountOrderByAggregateInput
   _avg?: Prisma.ListingAvgOrderByAggregateInput
@@ -459,7 +459,7 @@ export type ListingScalarWhereWithAggregatesInput = {
   webId?: Prisma.IntWithAggregatesFilter<"Listing"> | number
   pending?: Prisma.BoolWithAggregatesFilter<"Listing"> | boolean
   proposerId?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
-  featured?: Prisma.BoolWithAggregatesFilter<"Listing"> | boolean
+  featured?: Prisma.DateTimeNullableWithAggregatesFilter<"Listing"> | Date | string | null
   locationId?: Prisma.IntNullableWithAggregatesFilter<"Listing"> | number | null
 }
 
@@ -476,7 +476,7 @@ export type ListingCreateInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
   web?: Prisma.WebCreateNestedOneWithoutListingsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
@@ -507,7 +507,7 @@ export type ListingUncheckedCreateInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
@@ -531,7 +531,7 @@ export type ListingUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
   web?: Prisma.WebUpdateOneWithoutListingsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
@@ -562,7 +562,7 @@ export type ListingUncheckedUpdateInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
@@ -590,7 +590,7 @@ export type ListingCreateManyInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
 }
 
@@ -607,7 +607,7 @@ export type ListingUpdateManyMutationInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ListingUncheckedUpdateManyInput = {
@@ -627,7 +627,7 @@ export type ListingUncheckedUpdateManyInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -1106,7 +1106,7 @@ export type ListingCreateWithoutProposerInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
   web?: Prisma.WebCreateNestedOneWithoutListingsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
@@ -1135,7 +1135,7 @@ export type ListingUncheckedCreateWithoutProposerInput = {
   slug: string
   webId: number
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
@@ -1192,7 +1192,7 @@ export type ListingScalarWhereInput = {
   webId?: Prisma.IntFilter<"Listing"> | number
   pending?: Prisma.BoolFilter<"Listing"> | boolean
   proposerId?: Prisma.StringNullableFilter<"Listing"> | string | null
-  featured?: Prisma.BoolFilter<"Listing"> | boolean
+  featured?: Prisma.DateTimeNullableFilter<"Listing"> | Date | string | null
   locationId?: Prisma.IntNullableFilter<"Listing"> | number | null
 }
 
@@ -1209,7 +1209,7 @@ export type ListingCreateWithoutWebInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
@@ -1238,7 +1238,7 @@ export type ListingUncheckedCreateWithoutWebInput = {
   slug: string
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
@@ -1288,7 +1288,7 @@ export type ListingCreateWithoutCategoryInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
   web?: Prisma.WebCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
@@ -1317,7 +1317,7 @@ export type ListingUncheckedCreateWithoutCategoryInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
@@ -1367,7 +1367,7 @@ export type ListingCreateWithoutTagsInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
   web?: Prisma.WebCreateNestedOneWithoutListingsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
@@ -1397,7 +1397,7 @@ export type ListingUncheckedCreateWithoutTagsInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
@@ -1441,7 +1441,7 @@ export type ListingCreateWithoutRelationOfInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
   web?: Prisma.WebCreateNestedOneWithoutListingsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
@@ -1471,7 +1471,7 @@ export type ListingUncheckedCreateWithoutRelationOfInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
@@ -1499,7 +1499,7 @@ export type ListingCreateWithoutRelationsInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
   web?: Prisma.WebCreateNestedOneWithoutListingsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
@@ -1529,7 +1529,7 @@ export type ListingUncheckedCreateWithoutRelationsInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
@@ -1589,7 +1589,7 @@ export type ListingCreateWithoutSocialsInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   web?: Prisma.WebCreateNestedOneWithoutListingsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
@@ -1619,7 +1619,7 @@ export type ListingUncheckedCreateWithoutSocialsInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
@@ -1658,7 +1658,7 @@ export type ListingUpdateWithoutSocialsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   web?: Prisma.WebUpdateOneWithoutListingsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
@@ -1688,7 +1688,7 @@ export type ListingUncheckedUpdateWithoutSocialsInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
@@ -1711,7 +1711,7 @@ export type ListingCreateWithoutActionsInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
   web?: Prisma.WebCreateNestedOneWithoutListingsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
@@ -1741,7 +1741,7 @@ export type ListingUncheckedCreateWithoutActionsInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
@@ -1780,7 +1780,7 @@ export type ListingUpdateWithoutActionsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
   web?: Prisma.WebUpdateOneWithoutListingsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
@@ -1810,7 +1810,7 @@ export type ListingUncheckedUpdateWithoutActionsInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
@@ -1833,7 +1833,7 @@ export type ListingCreateWithoutEditsInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
   web?: Prisma.WebCreateNestedOneWithoutListingsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
@@ -1863,7 +1863,7 @@ export type ListingUncheckedCreateWithoutEditsInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
@@ -1902,7 +1902,7 @@ export type ListingUpdateWithoutEditsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
   web?: Prisma.WebUpdateOneWithoutListingsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
@@ -1932,7 +1932,7 @@ export type ListingUncheckedUpdateWithoutEditsInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
@@ -1955,7 +1955,7 @@ export type ListingCreateWithoutLocationInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
   web?: Prisma.WebCreateNestedOneWithoutListingsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
@@ -1985,7 +1985,7 @@ export type ListingUncheckedCreateWithoutLocationInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
@@ -2024,7 +2024,7 @@ export type ListingUpdateWithoutLocationInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
   web?: Prisma.WebUpdateOneWithoutListingsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
@@ -2054,7 +2054,7 @@ export type ListingUncheckedUpdateWithoutLocationInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
@@ -2077,7 +2077,7 @@ export type ListingCreateWithoutPermissionsInput = {
   image?: string | null
   slug: string
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
   web?: Prisma.WebCreateNestedOneWithoutListingsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
@@ -2107,7 +2107,7 @@ export type ListingUncheckedCreateWithoutPermissionsInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
@@ -2154,7 +2154,7 @@ export type ListingCreateManyProposerInput = {
   slug: string
   webId: number
   pending?: boolean
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
 }
 
@@ -2171,7 +2171,7 @@ export type ListingUpdateWithoutProposerInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
   web?: Prisma.WebUpdateOneWithoutListingsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
@@ -2200,7 +2200,7 @@ export type ListingUncheckedUpdateWithoutProposerInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
@@ -2227,7 +2227,7 @@ export type ListingUncheckedUpdateManyWithoutProposerInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -2247,7 +2247,7 @@ export type ListingCreateManyWebInput = {
   slug: string
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
 }
 
@@ -2264,7 +2264,7 @@ export type ListingUpdateWithoutWebInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
@@ -2293,7 +2293,7 @@ export type ListingUncheckedUpdateWithoutWebInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
@@ -2320,7 +2320,7 @@ export type ListingUncheckedUpdateManyWithoutWebInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -2340,7 +2340,7 @@ export type ListingCreateManyCategoryInput = {
   webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: boolean
+  featured?: Date | string | null
   locationId?: number | null
 }
 
@@ -2357,7 +2357,7 @@ export type ListingUpdateWithoutCategoryInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
   web?: Prisma.WebUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
@@ -2386,7 +2386,7 @@ export type ListingUncheckedUpdateWithoutCategoryInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
@@ -2413,7 +2413,7 @@ export type ListingUncheckedUpdateManyWithoutCategoryInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -2430,7 +2430,7 @@ export type ListingUpdateWithoutTagsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
   web?: Prisma.WebUpdateOneWithoutListingsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
@@ -2460,7 +2460,7 @@ export type ListingUncheckedUpdateWithoutTagsInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
@@ -2487,7 +2487,7 @@ export type ListingUncheckedUpdateManyWithoutTagsInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -2504,7 +2504,7 @@ export type ListingUpdateWithoutRelationOfInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
   web?: Prisma.WebUpdateOneWithoutListingsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
@@ -2534,7 +2534,7 @@ export type ListingUncheckedUpdateWithoutRelationOfInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
@@ -2561,7 +2561,7 @@ export type ListingUncheckedUpdateManyWithoutRelationOfInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -2578,7 +2578,7 @@ export type ListingUpdateWithoutRelationsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
   web?: Prisma.WebUpdateOneWithoutListingsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
@@ -2608,7 +2608,7 @@ export type ListingUncheckedUpdateWithoutRelationsInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
@@ -2635,7 +2635,7 @@ export type ListingUncheckedUpdateManyWithoutRelationsInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -2652,7 +2652,7 @@ export type ListingUpdateWithoutPermissionsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
   web?: Prisma.WebUpdateOneWithoutListingsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
@@ -2682,7 +2682,7 @@ export type ListingUncheckedUpdateWithoutPermissionsInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
@@ -2709,7 +2709,7 @@ export type ListingUncheckedUpdateManyWithoutPermissionsInput = {
   webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -2962,7 +2962,7 @@ export type $ListingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     webId: number
     pending: boolean
     proposerId: string | null
-    featured: boolean
+    featured: Date | null
     locationId: number | null
   }, ExtArgs["result"]["listing"]>
   composites: {}
@@ -3414,7 +3414,7 @@ export interface ListingFieldRefs {
   readonly webId: Prisma.FieldRef<"Listing", 'Int'>
   readonly pending: Prisma.FieldRef<"Listing", 'Boolean'>
   readonly proposerId: Prisma.FieldRef<"Listing", 'String'>
-  readonly featured: Prisma.FieldRef<"Listing", 'Boolean'>
+  readonly featured: Prisma.FieldRef<"Listing", 'DateTime'>
   readonly locationId: Prisma.FieldRef<"Listing", 'Int'>
 }
     

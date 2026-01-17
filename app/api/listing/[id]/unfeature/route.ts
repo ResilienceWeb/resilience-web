@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -15,9 +16,18 @@ export async function PATCH(
         id: listingId,
       },
       data: {
-        featured: false,
+        featured: null,
+      },
+      include: {
+        web: {
+          select: {
+            slug: true,
+          },
+        },
       },
     })
+
+    revalidatePath(`/${listing.web.slug}`)
 
     return Response.json({
       listing,

@@ -3,46 +3,13 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { BsArrowsFullscreen } from 'react-icons/bs'
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
-import dynamic from 'next/dynamic'
 import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet/dist/leaflet.css'
-import { getIconUnicode } from '@helpers/icons'
+import { createCustomIcon } from '@helpers/map'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
-
-function createCustomIcon(iconName: string, color: string) {
-  const iconUnicode = getIconUnicode(iconName) ?? '\uf3c5' // Default to map-marker if not found
-
-  const iconHtml = `
-    <div style="
-      background-color: white;
-      border-radius: 50%;
-      height: 32px;
-      width: 32px;
-      line-height: 26px;
-      text-align: center;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.2);
-      border: 2px solid ${color || '#3388ff'};
-    ">
-      <span style="
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        font-size: 16px;
-        color: ${color || '#3388ff'};
-      ">${iconUnicode}</span>
-    </div>
-  `
-
-  return L.divIcon({
-    html: iconHtml,
-    className: 'custom-icon',
-    iconSize: [32, 32],
-    iconAnchor: [16, 16],
-    popupAnchor: [0, -16],
-  })
-}
 
 interface MapProps {
   items?: any[]
@@ -60,7 +27,7 @@ function MarkerClusterGroup({ items }: { items: any[] }) {
         spiderfyOnMaxZoom: true,
         showCoverageOnHover: false,
         zoomToBoundsOnClick: true,
-        maxClusterRadius: 80,
+        maxClusterRadius: 20,
       })
 
       clusterRef.current = clusterGroup
@@ -79,7 +46,7 @@ function MarkerClusterGroup({ items }: { items: any[] }) {
         )
 
         const popupContent = `
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-2 p-2">
             <h3 class="text-lg font-bold">${item.label}</h3>
             ${
               item.description
@@ -92,7 +59,7 @@ function MarkerClusterGroup({ items }: { items: any[] }) {
             }
             ${
               item.category
-                ? `<div class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium" style="background-color: ${item.category.color}20; color: ${item.category.color}">
+                ? `<div class="size-fit inline-flex items-center rounded-full px-2 py-1 text-xs font-medium" style="background-color: ${item.category.color}20; color: ${item.category.color}">
                 ${item.category.label}
               </div>`
                 : ''
@@ -133,7 +100,7 @@ function FitBoundsToMarkers({ markers }: { markers: [number, number][] }) {
   return null
 }
 
-function MapComponent({ items = [] }: MapProps) {
+function ListingsMap({ items = [] }: MapProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isFullScreen, setIsFullScreen] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
@@ -273,10 +240,4 @@ function MapComponent({ items = [] }: MapProps) {
   )
 }
 
-const MapWithNoSSR = dynamic(() => Promise.resolve(MapComponent), {
-  ssr: false,
-})
-
-export default function ListingsMap(props: MapProps) {
-  return <MapWithNoSSR {...props} />
-}
+export default ListingsMap

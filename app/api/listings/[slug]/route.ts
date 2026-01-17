@@ -43,14 +43,7 @@ export async function GET(
         socials: true,
         actions: true,
         proposer: true,
-        location: {
-          select: {
-            latitude: true,
-            longitude: true,
-            description: true,
-            noPhysicalLocation: true,
-          },
-        },
+        location: true,
         category: {
           select: {
             id: true,
@@ -112,6 +105,7 @@ export async function PUT(request) {
     const email = formData.get('email')
     const seekingVolunteers = formData.get('seekingVolunteers')
     const featured = formData.get('featured')
+    const featuredDate = featured ? new Date(featured as string) : null
     const latitude = formData.get('latitude')
     const longitude = formData.get('longitude')
     const locationDescription = formData.get('locationDescription')
@@ -146,42 +140,22 @@ export async function PUT(request) {
       id: Number(relationId),
     }))
 
-    let locationData
-    if (noPhysicalLocation) {
-      locationData = {
-        upsert: {
-          create: {
-            noPhysicalLocation: true,
-          },
-          update: {
-            latitude: null,
-            longitude: null,
-            description: null,
-            noPhysicalLocation: true,
-          },
+    const hasLocationData = latitude && longitude && locationDescription
+    const locationData = {
+      upsert: {
+        create: {
+          latitude: hasLocationData ? parseFloat(latitude) : null,
+          longitude: hasLocationData ? parseFloat(longitude) : null,
+          description: hasLocationData ? locationDescription : null,
+          noPhysicalLocation,
         },
-      }
-    } else {
-      locationData = {
-        ...(latitude && longitude && locationDescription
-          ? {
-              upsert: {
-                create: {
-                  latitude: parseFloat(latitude),
-                  longitude: parseFloat(longitude),
-                  description: locationDescription,
-                  noPhysicalLocation: false,
-                },
-                update: {
-                  latitude: parseFloat(latitude),
-                  longitude: parseFloat(longitude),
-                  description: locationDescription,
-                  noPhysicalLocation: false,
-                },
-              },
-            }
-          : {}),
-      }
+        update: {
+          latitude: hasLocationData ? parseFloat(latitude) : null,
+          longitude: hasLocationData ? parseFloat(longitude) : null,
+          description: hasLocationData ? locationDescription : null,
+          noPhysicalLocation,
+        },
+      },
     }
 
     const newData: Prisma.ListingUpdateInput = {
@@ -196,7 +170,7 @@ export async function PUT(request) {
       email: email,
       pending: false,
       seekingVolunteers: stringToBoolean(seekingVolunteers),
-      featured: stringToBoolean(featured),
+      featured: featuredDate,
       slug: slug,
       location: locationData,
       socials: {

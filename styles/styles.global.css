@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 @plugin 'tailwindcss-animate';
@@ -158,6 +159,11 @@
     overflow-wrap: break-word;
   }
 
+  h1 {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
   /* stylelint-disable-next-line selector-id-pattern */
   #root,
   #__next {
@@ -173,6 +179,12 @@
     color: #09622f !important;
     font-weight: 600;
     text-decoration: underline;
+  }
+
+  .prose {
+    p:last-child {
+      margin-bottom: 0;
+    }
   }
 
   a:hover {
@@ -194,6 +206,14 @@
 
   .leaflet-container {
     height: 300px;
+  }
+
+  .leaflet-popup-content {
+    margin: 0 !important;
+  }
+
+  .leaflet-popup-content-wrapper {
+    padding: 0 !important;
   }
 
   .leaflet-popup-content p {

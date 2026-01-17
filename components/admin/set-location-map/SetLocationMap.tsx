@@ -160,7 +160,7 @@ const SetLocationMap = ({
         noPhysicalLocation ? 'pointer-events-none opacity-50' : 'opacity-100',
       )}
     >
-      <p className="py-2 text-sm font-normal text-gray-700 italic">
+      <p className="py-2 text-xs font-normal text-yellow-700 italic">
         The location can only be selected by adding an address via the search
         bar below. Selecting a location without an address is not supported.
       </p>

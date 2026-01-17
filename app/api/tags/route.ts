@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import type { Tag } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
@@ -42,34 +43,22 @@ export async function POST(request: NextRequest) {
   try {
     const tag = await prisma.tag.create({
       data: body,
+      include: {
+        web: {
+          select: {
+            slug: true,
+          },
+        },
+      },
     })
+
+    revalidatePath(`/${tag.web.slug}`)
 
     return Response.json({ data: tag })
   } catch (e) {
     console.error(`[RW] Unable to create tag - ${e}`)
     Sentry.captureException(e)
     return new Response(`Unable to create tag - ${e}`, {
-      status: 500,
-    })
-  }
-}
-
-export async function PATCH(request: NextRequest) {
-  const body = await request.json()
-
-  try {
-    const tag = await prisma.tag.update({
-      where: {
-        id: body.id,
-      },
-      data: body,
-    })
-
-    return Response.json({ data: tag })
-  } catch (e) {
-    console.error(`[RW] Unable to update tag - ${e}`)
-    Sentry.captureException(e)
-    return new Response(`Unable to update tag - ${e}`, {
       status: 500,
     })
   }

@@ -9,7 +9,7 @@ export const PROTOCOL =
   process.env.NODE_ENV === 'development' ? 'http' : 'https'
 
 const config = {
-  digitalOceanSpaces: 'https://resilienceweb.ams3.digitaloceanspaces.com/',
+  supabaseStorageUrl: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/resilienceweb/`,
   bucketName: 'resilienceweb',
 }
 

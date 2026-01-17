@@ -27,7 +27,6 @@ export default function useDeleteListingEdit() {
   } = useMutation({
     mutationFn: deleteListingEditRequest,
     onSuccess: (_, variables) => {
-      // Invalidate the listing edits query to trigger a refetch
       queryClient.invalidateQueries({
         queryKey: [
           'listingEdits',

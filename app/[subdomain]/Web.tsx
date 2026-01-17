@@ -202,9 +202,11 @@ const Web = ({
       )
       .sort(sortStringsFunc)
       .sort((a, b) => {
-        // Sort by featured first, then new, then regular
-        if (a.featured && !b.featured) return -1
-        if (!a.featured && b.featured) return 1
+        // Sort by featured first (if date is in the future), then new, then regular
+        const aFeatured = a.featured && new Date(a.featured) > new Date()
+        const bFeatured = b.featured && new Date(b.featured) > new Date()
+        if (aFeatured && !bFeatured) return -1
+        if (!aFeatured && bFeatured) return 1
         if (a.new && !b.new) return -1
         if (!a.new && b.new) return 1
         return 0

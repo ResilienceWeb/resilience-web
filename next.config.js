@@ -20,6 +20,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'kdfprvggsvdbybtdpojv.supabase.co',
+      },
+      {
+        protocol: 'https',
         hostname: 'media.graphcms.com',
       },
       {

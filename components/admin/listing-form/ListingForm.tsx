@@ -70,7 +70,6 @@ const listingFormSchema = z.object({
   socials: z.array(socialItemSchema),
   actions: z.array(actionItemSchema),
   seekingVolunteers: z.boolean(),
-  featured: z.boolean(),
   image: z.any(),
   slug: z
     .string()
@@ -180,48 +179,38 @@ const ListingForm = ({
       }))
   }, [listing?.title, listings])
 
-  const initialTagsValues = useMemo(() => {
-    return listing?.tags?.map((t) => ({
-      value: t.id,
-      label: t.label,
-    }))
-  }, [listing?.tags])
+  const getFormValues = (listing: Listing | undefined): FormValues => ({
+    id: listing?.id || null,
+    title: listing?.title || '',
+    description: listing?.description || '',
+    category: listing?.categoryId ? String(listing.categoryId) : undefined,
+    email: listing?.email || '',
+    website: listing?.website || '',
+    socials: listing?.socials || [],
+    actions: listing?.actions || [],
+    seekingVolunteers: listing?.seekingVolunteers || false,
+    image: listing?.image,
+    slug: listing?.slug || '',
+    tags: listing?.tags?.map((t) => ({ value: t.id, label: t.label })) || [],
+    relations:
+      listing?.relations?.map((l) => ({ value: l.id, label: l.title })) || [],
+    noPhysicalLocation: listing?.location?.noPhysicalLocation || false,
+    location:
+      listing?.location?.latitude && listing?.location?.longitude
+        ? {
+            latitude: listing.location.latitude,
+            longitude: listing.location.longitude,
+            description: listing.location.description,
+          }
+        : undefined,
+  })
 
-  const initialRelationsValues = useMemo(() => {
-    return listing?.relations?.map((l) => ({
-      value: l.id,
-      label: l.title,
-    }))
-  }, [listing?.relations])
+  console.log('listing', listing)
 
   const methods = useForm<FormValues>({
     resolver: zodResolver(listingFormSchema),
     mode: 'onTouched',
-    defaultValues: {
-      id: listing?.id || null,
-      title: listing?.title || '',
-      description: listing?.description || '',
-      category: listing?.categoryId ? String(listing?.categoryId) : undefined,
-      email: listing?.email || '',
-      website: listing?.website || '',
-      socials: listing?.socials || [],
-      actions: listing?.actions || [],
-      seekingVolunteers: listing?.seekingVolunteers || false,
-      featured: listing?.featured || false,
-      image: listing?.image,
-      slug: listing?.slug || '',
-      tags: initialTagsValues || [],
-      relations: initialRelationsValues || [],
-      noPhysicalLocation: listing?.location?.noPhysicalLocation || false,
-      location:
-        listing?.location?.latitude && listing?.location?.longitude
-          ? {
-              latitude: listing.location.latitude,
-              longitude: listing.location.longitude,
-              description: listing.location.description,
-            }
-          : undefined,
-    },
+    defaultValues: getFormValues(listing),
   })
 
   const {
@@ -229,9 +218,16 @@ const ListingForm = ({
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors },
     control,
   } = methods
+
+  useEffect(() => {
+    if (listing) {
+      reset(getFormValues(listing))
+    }
+  }, [listing, reset])
 
   const noPhysicalLocation = useWatch({
     control,

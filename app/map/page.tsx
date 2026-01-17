@@ -1,26 +1,26 @@
 import type { Metadata } from 'next'
 import prisma from '@prisma-rw'
-import Homepage from './Homepage'
+import Homepage from '../Homepage'
 
 export const metadata: Metadata = {
-  title: 'Resilience Web',
+  title: 'Resilience Web Map',
   openGraph: {
     type: 'website',
     locale: 'en_GB',
-    title: 'Resilience Web',
+    title: 'Resilience Web Map',
     images: [{ url: 'static/preview-image.png' }],
     description:
-      'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
+      'Explore the Resilience Web map to find local groups working to co-create a more socially and environmentally just city.',
   },
   twitter: {
     site: '@ResilienceWeb',
   },
 }
 
-export default async function Home() {
+export default async function MapPage() {
   const { webs } = await getData()
 
-  return <Homepage webs={webs} />
+  return <Homepage webs={webs} showMap={true} />
 }
 
 async function getData(): Promise<any> {

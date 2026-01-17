@@ -13,7 +13,7 @@ declare global {
     actions?: ListingAction[]
     notes?: string
     seekingVolunteers: boolean
-    featured: boolean
+    featured: Date | null
     inactive: boolean
     slug: string
     image?: string
@@ -46,7 +46,7 @@ declare global {
     image: string
     website: string
     seekingVolunteers: boolean
-    featured: boolean
+    featured: Date | null
     new: boolean
     category: {
       color: string
