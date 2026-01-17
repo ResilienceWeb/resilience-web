@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mapRow } from '../mapper'
-import { validateRow, listingImportSchema } from '../validator'
+import { validateRow } from '../validator'
 import type { ColumnMapping, MappedRow } from '../types'
 
 /**
@@ -34,7 +34,7 @@ describe('Security - CSV Injection Protection', () => {
     expect(mapped.description).toBe('=1+1')
 
     // Website gets sanitized to https://=HYPERLINK... which might pass validation
-    const errors = validateRow(mapped, 1)
+    validateRow(mapped, 1)
     // The website URL will be sanitized, check that name is preserved
     expect(mapped.name).toBe('=cmd|"/c calc"')
   })
@@ -173,7 +173,7 @@ describe('Security - XSS Protection', () => {
     }
 
     const mapped = mapRow(csvRow, columnMapping, 1)
-    const errors = validateRow(mapped, 1)
+    validateRow(mapped, 1)
 
     // sanitizeUrl adds https:// prefix to URLs without http(s):// protocol
     expect(mapped.website).toBe('https://data:text/html,<script>alert("XSS")</script>')
@@ -564,7 +564,7 @@ describe('Security - URL Validation', () => {
     }
 
     const mapped = mapRow(csvRow, columnMapping, 1)
-    const errors = validateRow(mapped, 1)
+    validateRow(mapped, 1)
 
     // sanitizeUrl adds https:// prefix to URLs without http(s):// protocol
     expect(mapped.website).toBe('https://file:///etc/passwd')

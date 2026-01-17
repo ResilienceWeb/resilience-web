@@ -2,7 +2,7 @@
  * Hook for managing column mapping state and validation
  */
 
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import {
   applyAutoMapping,
   isMappingValid,
@@ -29,30 +29,27 @@ interface UseColumnMappingResult {
   mappedRows: MappedRow[];
 }
 
+// Helper to check if headers arrays are equal
+function headersEqual(a: string[], b: string[]): boolean {
+  return a.length === b.length && a.every((h, i) => h === b[i]);
+}
+
 export function useColumnMapping({
   headers,
   rows,
 }: UseColumnMappingProps): UseColumnMappingResult {
-  // Initialize with auto-detected mapping
+  // Track previous headers and mapping together to handle prop changes
+  // This follows React's pattern for adjusting state when props change
+  const [prevHeaders, setPrevHeaders] = useState<string[]>(headers);
   const [columnMapping, setColumnMapping] = useState<ColumnMapping>(() =>
     applyAutoMapping(headers)
   );
 
-  // Track the current headers to detect when a new file is uploaded
-  const [currentHeaders, setCurrentHeaders] = useState<string[]>(headers);
-
-  // Re-apply auto-detection when headers change (e.g., when a new file is uploaded)
-  // Only do this when headers actually change (new file), not on every render
-  useEffect(() => {
-    const headersChanged =
-      headers.length !== currentHeaders.length ||
-      headers.some((h, i) => h !== currentHeaders[i]);
-
-    if (headersChanged && headers.length > 0) {
-      setCurrentHeaders(headers);
-      setColumnMapping(applyAutoMapping(headers));
-    }
-  }, [headers, currentHeaders]);
+  // Re-apply auto-detection when headers change (React's recommended pattern)
+  if (!headersEqual(headers, prevHeaders) && headers.length > 0) {
+    setPrevHeaders(headers);
+    setColumnMapping(applyAutoMapping(headers));
+  }
 
   const updateMapping = useCallback(
     (csvColumn: string, field: ListingField | null) => {

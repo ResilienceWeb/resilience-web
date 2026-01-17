@@ -28,7 +28,7 @@ export function ImportStepIndicator({ currentStep }: ImportStepIndicatorProps) {
   return (
     <nav aria-label="Progress">
       <ol role="list" className="flex items-start justify-between gap-8">
-        {STEPS.map((step, stepIdx) => {
+        {STEPS.map((step, _stepIdx) => {
           const isComplete = currentStep > step.number;
           const isCurrent = currentStep === step.number;
 
