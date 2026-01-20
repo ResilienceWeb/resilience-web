@@ -63,6 +63,9 @@ export default function Providers({ children }) {
         persistence: 'localStorage',
         capture_exceptions: true,
         capture_performance: true,
+        session_recording: {
+          maskAllInputs: false,
+        },
       })
     }
   }, [])
