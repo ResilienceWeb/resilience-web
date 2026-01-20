@@ -165,6 +165,7 @@ export async function PUT(request, props) {
     })
 
     revalidatePath(`/${params.slug}`)
+    revalidatePath('/')
     return Response.json({
       web: updatedWeb,
     })
