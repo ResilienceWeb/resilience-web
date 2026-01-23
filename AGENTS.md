@@ -252,5 +252,5 @@ Key variables (see [.env.example](.env.example)):
 - Turbopack used for faster dev builds
 - Prisma client generated to `prisma/generated/` (not default location)
 - Font Awesome 5 Free used for category icons via CSS classes
-- Node version specified in [.nvmrc](.nvmrc) (currently Node 22)
+- Node version specified in [.nvmrc](.nvmrc)
 - Repository uses semantic commits from git history

@@ -90,7 +90,7 @@
     "@types/diff": "7.0.2",
     "@types/leaflet": "1.9.21",
     "@types/leaflet.markercluster": "1.5.6",
-    "@types/node": "22.18.6",
+    "@types/node": "24.1.0",
     "@types/nodemailer": "7.0.5",
     "@types/react": "19.2.9",
     "@typescript-eslint/eslint-plugin": "8.46.0",
