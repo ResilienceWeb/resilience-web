@@ -205,8 +205,6 @@ const ListingForm = ({
         : undefined,
   })
 
-  console.log('listing', listing)
-
   const methods = useForm<FormValues>({
     resolver: zodResolver(listingFormSchema),
     mode: 'onTouched',
