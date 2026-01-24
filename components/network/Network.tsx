@@ -9,8 +9,6 @@ import ListingDialog from '@components/main-list/listing-dialog'
 import { Button } from '@components/ui/button'
 import styles from './Network.module.css'
 
-const CENTRAL_NODE_ID = 999
-
 type NodeType = {
   id: string | number
   label: string
@@ -41,7 +39,6 @@ type GraphData = {
 
 const Network = ({ data, selectedId, setSelectedId }) => {
   const router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
   const [isFullScreen, setIsFullScreen] = useState(false)
   const [hoveredNode, setHoveredNode] = useState<NodeType | null>(null)
   const graphRef = useRef<HTMLDivElement>(null)
@@ -49,25 +46,12 @@ const Network = ({ data, selectedId, setSelectedId }) => {
 
   const { width = 0, height = 0 } = useResizeObserver({ ref: graphRef })
 
-  const onOpen = () => setIsOpen(true)
-  const onClose = () => setIsOpen(false)
-
-  useEffect(() => {
-    if (selectedId) {
-      onOpen()
-    }
-  }, [selectedId])
+  // Derive isOpen from selectedId to avoid useEffect/setState pattern
+  const isOpen = Boolean(selectedId)
 
   // Transform vis-network data format to react-force-graph format
   const graphData: GraphData = useMemo(() => {
     if (!data) return { nodes: [], links: [] }
-
-    // Transform edges to links (react-force-graph uses source/target instead of from/to)
-    const links: LinkType[] = data.edges.map((edge) => ({
-      source: edge.from,
-      target: edge.to,
-      dashes: edge.dashes || false,
-    }))
 
     // Transform nodes with appropriate sizing based on group
     const nodes: NodeType[] = data.nodes.map((node) => {
@@ -86,6 +70,27 @@ const Network = ({ data, selectedId, setSelectedId }) => {
         val,
       }
     })
+
+    // Create a set of valid node IDs for quick lookup
+    const nodeIds = new Set(nodes.map((n) => n.id))
+
+    // Transform edges to links (react-force-graph uses source/target instead of from/to)
+    // Filter out links that reference non-existent nodes
+    const links: LinkType[] = data.edges
+      .filter((edge) => {
+        const sourceExists = nodeIds.has(edge.from)
+        const targetExists = nodeIds.has(edge.to)
+        if (!sourceExists || !targetExists) {
+          // Silent filter - these are typically relation edges with mismatched IDs
+          return false
+        }
+        return true
+      })
+      .map((edge) => ({
+        source: edge.from,
+        target: edge.to,
+        dashes: edge.dashes || false,
+      }))
 
     return { nodes, links }
   }, [data])
@@ -118,7 +123,6 @@ const Network = ({ data, selectedId, setSelectedId }) => {
 
   const onCloseDialog = useCallback(() => {
     setSelectedId(null)
-    onClose()
   }, [setSelectedId])
 
   const toggleFullScreen = useCallback(() => {
