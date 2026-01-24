@@ -27,6 +27,9 @@
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
+      "@/*": [
+        "./*"
+      ],
       "@components/*": [
         "components/*"
       ],

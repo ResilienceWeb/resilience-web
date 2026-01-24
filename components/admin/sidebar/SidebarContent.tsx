@@ -10,6 +10,7 @@ import {
   HiOutlineCog,
   HiExternalLink,
   HiX,
+  HiUpload,
 } from 'react-icons/hi'
 import { LuBook, LuUserRoundSearch } from 'react-icons/lu'
 import Image from 'next/image'
@@ -82,6 +83,13 @@ export default function SidebarContent({ closeMenu, ...rest }) {
         href: '/admin/categories',
         icon: <BiCategory />,
         tourId: 'nav-categories',
+      })
+
+      links.push({
+        label: 'Import',
+        href: '/admin/import',
+        icon: <HiUpload />,
+        tourId: 'nav-import',
       })
 
       links.push({
