@@ -162,7 +162,6 @@ const Network = ({ data, selectedId, setSelectedId }) => {
     (node: NodeType, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const label = node.label
       const fontSize = Math.max(12 / globalScale, 3)
-      ctx.font = `${fontSize}px Inter, sans-serif`
 
       // Calculate node radius based on val
       const nodeRadius = Math.sqrt(node.val || 8) * 2
@@ -190,26 +189,24 @@ const Network = ({ data, selectedId, setSelectedId }) => {
       ctx.lineWidth = hoveredNode?.id === node.id ? 2 / globalScale : 0.5
       ctx.stroke()
 
-      // Draw label
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-
-      // Text styling based on group
-      if (node.group === 'central-node') {
-        ctx.fillStyle = '#000'
-        ctx.font = `bold ${fontSize * 1.5}px Inter, sans-serif`
-      } else if (node.group === 'category') {
-        ctx.fillStyle = '#333'
-        ctx.font = `600 ${fontSize * 1.2}px Inter, sans-serif`
-      } else {
+      // Draw icon inside the circle (for listing nodes with icons)
+      if (
+        node.icon?.code &&
+        node.group !== 'central-node' &&
+        node.group !== 'category' &&
+        node.group !== 'related-web'
+      ) {
+        const iconSize = nodeRadius * 1.2
+        ctx.font = `900 ${iconSize}px "Font Awesome 5 Free"`
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
         ctx.fillStyle = '#fff'
+        ctx.fillText(node.icon.code, node.x || 0, node.y || 0)
       }
 
-      // Position label below node for larger nodes, centered for smaller ones
-      const labelY =
-        node.group === 'central-node' || node.group === 'category'
-          ? (node.y || 0) + nodeRadius + fontSize
-          : node.y || 0
+      // Draw label underneath the circle
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'top'
 
       // Truncate label if too long
       const maxLabelLength = node.group === 'central-node' ? 30 : 20
@@ -218,23 +215,64 @@ const Network = ({ data, selectedId, setSelectedId }) => {
           ? label.substring(0, maxLabelLength) + '...'
           : label
 
-      // Draw text background for better readability on listing nodes
-      if (
-        node.group !== 'central-node' &&
-        node.group !== 'category' &&
-        node.group !== 'related-web'
-      ) {
+      // Position label below the node
+      const labelY = (node.y || 0) + nodeRadius + 3
+
+      // Text styling based on group
+      if (node.group === 'central-node') {
+        ctx.font = `bold ${fontSize * 1.5}px Inter, sans-serif`
+        ctx.fillStyle = '#333'
+      } else if (node.group === 'category') {
+        ctx.font = `600 ${fontSize * 1.2}px Inter, sans-serif`
+        ctx.fillStyle = '#333'
+      } else if (node.group === 'related-web') {
+        ctx.font = `${fontSize}px Inter, sans-serif`
+        ctx.fillStyle = '#444'
+      } else {
+        // Listing nodes - draw text with background for readability
+        ctx.font = `${fontSize}px Inter, sans-serif`
         const textMetrics = ctx.measureText(displayLabel)
         const textWidth = textMetrics.width
         const textHeight = fontSize
 
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'
-        ctx.fillRect(
-          (node.x || 0) - textWidth / 2 - 2,
-          labelY - textHeight / 2 - 1,
-          textWidth + 4,
-          textHeight + 2,
+        // Draw background rectangle
+        ctx.fillStyle = 'rgba(50, 50, 50, 0.8)'
+        const padding = 2
+        const borderRadius = 3
+        const rectX = (node.x || 0) - textWidth / 2 - padding
+        const rectY = labelY - padding / 2
+        const rectWidth = textWidth + padding * 2
+        const rectHeight = textHeight + padding
+
+        // Rounded rectangle
+        ctx.beginPath()
+        ctx.moveTo(rectX + borderRadius, rectY)
+        ctx.lineTo(rectX + rectWidth - borderRadius, rectY)
+        ctx.quadraticCurveTo(
+          rectX + rectWidth,
+          rectY,
+          rectX + rectWidth,
+          rectY + borderRadius,
         )
+        ctx.lineTo(rectX + rectWidth, rectY + rectHeight - borderRadius)
+        ctx.quadraticCurveTo(
+          rectX + rectWidth,
+          rectY + rectHeight,
+          rectX + rectWidth - borderRadius,
+          rectY + rectHeight,
+        )
+        ctx.lineTo(rectX + borderRadius, rectY + rectHeight)
+        ctx.quadraticCurveTo(
+          rectX,
+          rectY + rectHeight,
+          rectX,
+          rectY + rectHeight - borderRadius,
+        )
+        ctx.lineTo(rectX, rectY + borderRadius)
+        ctx.quadraticCurveTo(rectX, rectY, rectX + borderRadius, rectY)
+        ctx.closePath()
+        ctx.fill()
+
         ctx.fillStyle = '#fff'
       }
 
