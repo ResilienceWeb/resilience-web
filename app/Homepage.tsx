@@ -18,7 +18,7 @@ interface HomepageProps {
 
 export default function Homepage({ webs, showMap = false }: HomepageProps) {
   return (
-    <Layout>
+    <Layout webs={webs}>
       <Hero />
       {showMap ? <WebsMap webs={webs} /> : <WebCards webs={webs} />}
       <Features />

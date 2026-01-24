@@ -8,22 +8,16 @@ import Nav from '@components/nav'
 
 interface LayoutProps {
   children: React.ReactNode
-  hideFooter?: boolean
-  hideNav?: boolean
+  webs?: any[]
   hideBorder?: boolean
 }
 
-const Layout = ({
-  children,
-  hideFooter = false,
-  hideNav = false,
-  hideBorder = false,
-}: LayoutProps) => {
+const Layout = ({ children, webs, hideBorder = false }: LayoutProps) => {
   const pathname = usePathname()
 
   return (
     <>
-      {!hideNav && <Nav />}
+      <Nav webs={webs} />
       <main
         className={`flex min-h-[calc(100vh-186px)] flex-col items-center md:min-h-[calc(100vh-328px)] ${!hideBorder ? 'border-t border-t-gray-200' : ''} `}
       >
@@ -40,7 +34,7 @@ const Layout = ({
           {children}
         </div>
       </main>
-      {!hideFooter && <Footer />}
+      <Footer />
     </>
   )
 }
