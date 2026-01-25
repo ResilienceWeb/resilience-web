@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/navigation'
 import { useResizeObserver } from 'usehooks-ts'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { getIconUnicode } from '@helpers/icons'
 import ListingDialog from '@components/main-list/listing-dialog'
 import { Button } from '@components/ui/button'
 import styles from './Network.module.css'
@@ -60,7 +61,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
       if (node.group === 'central-node') {
         val = 40
       } else if (node.group === 'category') {
-        val = 20
+        val = 15
       } else if (node.group === 'related-web') {
         val = 15
       }
@@ -112,8 +113,15 @@ const Network = ({ data, selectedId, setSelectedId }) => {
   )
 
   const handleNodeHover = useCallback((node: NodeType | null) => {
-    setHoveredNode(node)
-    document.body.style.cursor = node ? 'pointer' : 'default'
+    if (node && (node.group === 'category' || node.group === 'central-node')) {
+      // Don't show pointer cursor for categories as they are not clickable
+      setHoveredNode(null)
+      document.body.style.cursor = 'default'
+      return
+    } else {
+      setHoveredNode(node)
+      document.body.style.cursor = node ? 'pointer' : 'default'
+    }
   }, [])
 
   const selectedItem = useMemo(
@@ -174,7 +182,9 @@ const Network = ({ data, selectedId, setSelectedId }) => {
       if (node.group === 'central-node') {
         ctx.fillStyle = '#fcba03'
       } else if (node.group === 'category') {
-        ctx.fillStyle = '#c3c4c7'
+        ctx.fillStyle = '#ffffff'
+        ctx.strokeStyle = '#c3c4c7'
+        ctx.lineWidth = 2 / globalScale
       } else if (node.group === 'related-web') {
         ctx.fillStyle = '#6366f1' // Indigo for related webs
       } else {
@@ -187,21 +197,33 @@ const Network = ({ data, selectedId, setSelectedId }) => {
       ctx.strokeStyle =
         hoveredNode?.id === node.id ? '#000' : 'rgba(0, 0, 0, 0.2)'
       ctx.lineWidth = hoveredNode?.id === node.id ? 2 / globalScale : 0.5
+
+      // Override border to be thicker for categories
+      if (node.group === 'category') {
+        ctx.strokeStyle = '#999'
+        ctx.lineWidth = 1.5 / globalScale
+      }
+
       ctx.stroke()
 
-      // Draw icon inside the circle (for listing nodes with icons)
+      // Draw icon inside the circle
+      // For listings: comes as object with code
+      // For categories: comes as string name, need to look up
+      const iconCode =
+        node.icon?.code ||
+        (node.group === 'category' ? getIconUnicode(node.icon) : null)
+
       if (
-        node.icon?.code &&
+        iconCode &&
         node.group !== 'central-node' &&
-        node.group !== 'category' &&
         node.group !== 'related-web'
       ) {
-        const iconSize = nodeRadius * 1.2
+        const iconSize = nodeRadius * 1.0
         ctx.font = `900 ${iconSize}px "Font Awesome 5 Free"`
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
-        ctx.fillStyle = '#fff'
-        ctx.fillText(node.icon.code, node.x || 0, node.y || 0)
+        ctx.fillStyle = node.group === 'category' ? '#666' : '#fff'
+        ctx.fillText(iconCode, node.x || 0, node.y || 0)
       }
 
       // Draw label underneath the circle
