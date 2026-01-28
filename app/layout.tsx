@@ -2,15 +2,9 @@ import type { Metadata } from 'next'
 import '@fontsource/poppins/400.css'
 import '@fontsource/poppins/600.css'
 import '@styles/styles.global.css'
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query'
 import { REMOTE_URL } from '@helpers/config'
 import { PageTracker } from '@helpers/page-tracker/PageTracker'
 import { Toaster } from '@components/ui/sonner'
-import { fetchWebsHydrate } from '@hooks/webs/useWebs'
 import Providers from './providers'
 
 export const metadata: Metadata = {
@@ -23,18 +17,11 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const queryClient = new QueryClient()
-
-  await queryClient.prefetchQuery({
-    queryKey: ['webs', { withAdminInfo: false }],
-    queryFn: () => fetchWebsHydrate(),
-  })
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -44,11 +31,7 @@ export default async function RootLayout({
       </head>
       <body>
         <PageTracker />
-        <Providers>
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            {children}
-          </HydrationBoundary>
-        </Providers>
+        <Providers>{children}</Providers>
         <Toaster />
       </body>
     </html>
