@@ -169,7 +169,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
   const nodeCanvasObject = useCallback(
     (node: NodeType, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const label = node.label
-      const fontSize = Math.max(12 / globalScale, 3)
+      const fontSize = 4
 
       // Calculate node radius based on val
       const nodeRadius = Math.sqrt(node.val || 8) * 2
