@@ -39,6 +39,52 @@ type GraphData = {
   links: LinkType[]
 }
 
+// Central node pill dimensions (used for drawing and pointer area)
+const CENTRAL_LABEL_FONT = 'bold 14px Inter, sans-serif'
+const CENTRAL_PADDING_X = 16
+const CENTRAL_PADDING_Y = 10
+const CENTRAL_RADIUS = 8
+
+function getCentralNodeSize(
+  node: NodeType,
+  ctx: CanvasRenderingContext2D,
+): { w: number; h: number; label: string } {
+  const label =
+    node.label.length > 30 ? node.label.substring(0, 30) + '...' : node.label
+  ctx.font = CENTRAL_LABEL_FONT
+  const textWidth = ctx.measureText(label).width
+  return {
+    w: textWidth + CENTRAL_PADDING_X * 2,
+    h: 14 + CENTRAL_PADDING_Y * 2,
+    label,
+  }
+}
+
+function roundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+) {
+  if (typeof (ctx as any).roundRect === 'function') {
+    ;(ctx as any).roundRect(x, y, w, h, r)
+  } else {
+    ctx.beginPath()
+    ctx.moveTo(x + r, y)
+    ctx.lineTo(x + w - r, y)
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r)
+    ctx.lineTo(x + w, y + h - r)
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h)
+    ctx.lineTo(x + r, y + h)
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r)
+    ctx.lineTo(x, y + r)
+    ctx.quadraticCurveTo(x, y, x + r, y)
+    ctx.closePath()
+  }
+}
+
 const Network = ({ data, selectedId, setSelectedId }) => {
   const router = useRouter()
   const [isFullScreen, setIsFullScreen] = useState(false)
@@ -172,6 +218,44 @@ const Network = ({ data, selectedId, setSelectedId }) => {
       const label = node.label
       const fontSize = 4
 
+      // Central node: rounded pill with label inside, light blue, drop shadow
+      if (node.group === 'central-node') {
+        const { w, h, label: displayLabel } = getCentralNodeSize(node, ctx)
+        const x = (node.x || 0) - w / 2
+        const y = (node.y || 0) - h / 2
+
+        ctx.save()
+
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.14)'
+        ctx.shadowBlur = 8
+        ctx.shadowOffsetY = 2
+        ctx.shadowOffsetX = 0
+
+        roundRect(ctx, x, y, w, h, CENTRAL_RADIUS)
+        ctx.fillStyle = '#93c5e9'
+        ctx.fill()
+
+        ctx.shadowColor = 'transparent'
+        ctx.shadowBlur = 0
+        ctx.shadowOffsetY = 0
+        ctx.shadowOffsetX = 0
+
+        ctx.strokeStyle =
+          hoveredNode?.id === node.id ? '#1e3a5f' : 'rgba(0, 0, 0, 0.08)'
+        ctx.lineWidth = hoveredNode?.id === node.id ? 2 / globalScale : 1
+        roundRect(ctx, x, y, w, h, CENTRAL_RADIUS)
+        ctx.stroke()
+
+        ctx.font = CENTRAL_LABEL_FONT
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillStyle = '#2c3e50'
+        ctx.fillText(displayLabel, node.x || 0, node.y || 0)
+
+        ctx.restore()
+        return
+      }
+
       // Calculate node radius based on val
       const nodeRadius = Math.sqrt(node.val || 8) * 2
 
@@ -180,9 +264,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
       ctx.arc(node.x || 0, node.y || 0, nodeRadius, 0, 2 * Math.PI, false)
 
       // Fill color based on group or category
-      if (node.group === 'central-node') {
-        ctx.fillStyle = '#fcba03'
-      } else if (node.group === 'category') {
+      if (node.group === 'category') {
         ctx.fillStyle = '#ffffff'
         ctx.strokeStyle = '#c3c4c7'
         ctx.lineWidth = 2 / globalScale
@@ -242,10 +324,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
       const labelY = (node.y || 0) + nodeRadius + 3
 
       // Text styling based on group
-      if (node.group === 'central-node') {
-        ctx.font = `bold ${fontSize * 1.5}px Inter, sans-serif`
-        ctx.fillStyle = '#333'
-      } else if (node.group === 'category') {
+      if (node.group === 'category') {
         ctx.font = `600 ${fontSize * 1.2}px Inter, sans-serif`
         ctx.fillStyle = '#333'
       } else if (node.group === 'related-web') {
@@ -402,11 +481,20 @@ const Network = ({ data, selectedId, setSelectedId }) => {
           height={height}
           nodeCanvasObject={nodeCanvasObject}
           nodePointerAreaPaint={(node, color, ctx) => {
-            const nodeRadius = Math.sqrt(node.val || 8) * 2
-            ctx.beginPath()
-            ctx.arc(node.x || 0, node.y || 0, nodeRadius, 0, 2 * Math.PI)
-            ctx.fillStyle = color
-            ctx.fill()
+            if (node.group === 'central-node') {
+              const { w, h } = getCentralNodeSize(node, ctx)
+              const x = (node.x || 0) - w / 2
+              const y = (node.y || 0) - h / 2
+              roundRect(ctx, x, y, w, h, CENTRAL_RADIUS)
+              ctx.fillStyle = color
+              ctx.fill()
+            } else {
+              const nodeRadius = Math.sqrt(node.val || 8) * 2
+              ctx.beginPath()
+              ctx.arc(node.x || 0, node.y || 0, nodeRadius, 0, 2 * Math.PI)
+              ctx.fillStyle = color
+              ctx.fill()
+            }
           }}
           linkCanvasObject={linkCanvasObject}
           onNodeClick={handleNodeClick}
