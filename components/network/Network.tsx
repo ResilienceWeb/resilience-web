@@ -85,12 +85,43 @@ function roundRect(
   }
 }
 
+const RELATED_WEB_RADIUS = 12
+
+/** Wrap label into lines that fit within maxWidth (px). */
+function wrapLabel(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number,
+  font = '12px Inter, sans-serif',
+): string[] {
+  const words = text.trim().split(/\s+/)
+  if (words.length === 0) return []
+  const lines: string[] = []
+  let current = words[0] ?? ''
+  ctx.save()
+  ctx.font = font
+  for (let i = 1; i < words.length; i++) {
+    const next = current + ' ' + (words[i] ?? '')
+    if (ctx.measureText(next).width <= maxWidth) {
+      current = next
+    } else {
+      lines.push(current)
+      current = words[i] ?? ''
+    }
+  }
+  lines.push(current)
+  ctx.restore()
+  return lines
+}
+
 const Network = ({ data, selectedId, setSelectedId }) => {
   const router = useRouter()
   const [isFullScreen, setIsFullScreen] = useState(false)
   const [hoveredNode, setHoveredNode] = useState<NodeType | null>(null)
   const graphRef = useRef<HTMLDivElement>(null)
   const fgRef = useRef<ForceGraphMethods<NodeType, LinkType>>(null)
+  const logoImageRef = useRef<HTMLImageElement | null>(null)
+  const [, setLogoLoaded] = useState(false)
 
   const { width = 0, height = 0 } = useResizeObserver({ ref: graphRef })
 
@@ -110,7 +141,8 @@ const Network = ({ data, selectedId, setSelectedId }) => {
       } else if (node.group === 'category') {
         val = 15
       } else if (node.group === 'related-web') {
-        val = 15
+        // Larger radius so logo + label fit (nodeRadius = 24)
+        val = (RELATED_WEB_RADIUS / 2) ** 2
       }
 
       return {
@@ -161,7 +193,6 @@ const Network = ({ data, selectedId, setSelectedId }) => {
 
   const handleNodeHover = useCallback((node: NodeType | null) => {
     if (node && (node.group === 'category' || node.group === 'central-node')) {
-      // Don't show pointer cursor for categories as they are not clickable
       setHoveredNode(null)
       document.body.style.cursor = 'default'
       return
@@ -212,13 +243,21 @@ const Network = ({ data, selectedId, setSelectedId }) => {
     }
   }, [])
 
-  // Custom node canvas rendering
+  // Load logo for related-web nodes (client-side; public path)
+  useEffect(() => {
+    const img = new Image()
+    img.onload = () => {
+      logoImageRef.current = img
+      setLogoLoaded(true)
+    }
+    img.src = '/logo-circle.png'
+  }, [])
+
   const nodeCanvasObject = useCallback(
     (node: NodeType, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const label = node.label
       const fontSize = 4
 
-      // Central node: rounded pill with label inside, light blue, drop shadow
       if (node.group === 'central-node') {
         const { w, h, label: displayLabel } = getCentralNodeSize(node, ctx)
         const x = (node.x || 0) - w / 2
@@ -256,6 +295,70 @@ const Network = ({ data, selectedId, setSelectedId }) => {
         return
       }
 
+      if (node.group === 'related-web') {
+        const cx = node.x || 0
+        const cy = node.y || 0
+        const r = RELATED_WEB_RADIUS
+
+        ctx.save()
+
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.12)'
+        ctx.shadowBlur = 4
+        ctx.shadowOffsetY = 1
+        ctx.shadowOffsetX = 0
+
+        ctx.beginPath()
+        ctx.arc(cx, cy, r, 0, 2 * Math.PI)
+        ctx.fillStyle = '#ffffff'
+        ctx.fill()
+
+        ctx.shadowColor = 'transparent'
+        ctx.shadowBlur = 0
+        ctx.shadowOffsetY = 0
+        ctx.shadowOffsetX = 0
+
+        ctx.strokeStyle =
+          hoveredNode?.id === node.id ? '#1e3a5f' : 'rgba(0, 0, 0, 0.12)'
+        ctx.lineWidth = hoveredNode?.id === node.id ? 2 / globalScale : 1
+        ctx.stroke()
+
+        const img = logoImageRef.current
+        if (img?.complete && img.naturalWidth) {
+          const inset = 2
+          const iconR = r - inset
+          ctx.save()
+          ctx.beginPath()
+          ctx.arc(cx, cy, iconR, 0, 2 * Math.PI)
+          ctx.clip()
+          ctx.drawImage(
+            img,
+            0,
+            0,
+            img.naturalWidth,
+            img.naturalHeight,
+            cx - iconR,
+            cy - iconR,
+            iconR * 2,
+            iconR * 2,
+          )
+          ctx.restore()
+        }
+
+        const labelLines = wrapLabel(ctx, label, 50, '7px Inter, sans-serif')
+        const lineHeight = 10
+        const labelTop = cy + r + 4
+        ctx.font = '7px Inter, sans-serif'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'top'
+        ctx.fillStyle = '#333'
+        labelLines.forEach((line, i) => {
+          ctx.fillText(line, cx, labelTop + i * lineHeight)
+        })
+
+        ctx.restore()
+        return
+      }
+
       // Calculate node radius based on val
       const nodeRadius = Math.sqrt(node.val || 8) * 2
 
@@ -268,8 +371,6 @@ const Network = ({ data, selectedId, setSelectedId }) => {
         ctx.fillStyle = '#ffffff'
         ctx.strokeStyle = '#c3c4c7'
         ctx.lineWidth = 2 / globalScale
-      } else if (node.group === 'related-web') {
-        ctx.fillStyle = '#6366f1' // Indigo for related webs
       } else {
         ctx.fillStyle = node.color || '#999'
       }
@@ -327,9 +428,6 @@ const Network = ({ data, selectedId, setSelectedId }) => {
       if (node.group === 'category') {
         ctx.font = `600 ${fontSize * 1.2}px Inter, sans-serif`
         ctx.fillStyle = '#333'
-      } else if (node.group === 'related-web') {
-        ctx.font = `${fontSize}px Inter, sans-serif`
-        ctx.fillStyle = '#444'
       } else {
         // Listing nodes - draw text with background for readability
         ctx.font = `${fontSize}px Inter, sans-serif`
@@ -426,7 +524,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
           source.group === 'central-node' ||
           target.group === 'central-node'
         ) {
-          return 20
+          return 60
         }
         // Normal distance for category-to-listing links
         return 50
