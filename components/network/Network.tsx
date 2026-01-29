@@ -3,6 +3,7 @@ import ForceGraph2D, { type ForceGraphMethods } from 'react-force-graph-2d'
 import { BsArrowsFullscreen } from 'react-icons/bs'
 import Head from 'next/head'
 import { useRouter } from 'next/navigation'
+import { forceRadial } from 'd3-force'
 import { useResizeObserver } from 'usehooks-ts'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { getIconUnicode } from '@helpers/icons'
@@ -331,6 +332,36 @@ const Network = ({ data, selectedId, setSelectedId }) => {
     },
     [],
   )
+
+  // Configure forces for better spacing
+  useEffect(() => {
+    if (fgRef.current && graphData.nodes.length > 0) {
+      // Moderate repulsion between nodes
+      fgRef.current.d3Force('charge')?.strength(-110)
+      // Variable link distance based on node types
+      fgRef.current.d3Force('link')?.distance((link: any) => {
+        const source = link.source
+        const target = link.target
+        // Shorter distance for central-to-category links
+        if (
+          source.group === 'central-node' ||
+          target.group === 'central-node'
+        ) {
+          return 20
+        }
+        // Normal distance for category-to-listing links
+        return 50
+      })
+      // Add radial force to keep categories at consistent distance from center
+      const radial = forceRadial(120, 0, 0).strength((node: any) => {
+        // Only apply to category nodes
+        return node.group === 'category' ? 0.3 : 0
+      })
+      fgRef.current.d3Force('radial', radial as any)
+      // Reheat simulation to apply new forces
+      fgRef.current.d3ReheatSimulation()
+    }
+  }, [graphData])
 
   // Zoom to fit after initial render
   useEffect(() => {
