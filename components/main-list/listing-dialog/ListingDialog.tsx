@@ -64,53 +64,32 @@ const ListingDialog = ({
   }, [showCopiedToClipboardToast, individualListingLink])
 
   const socialLinks = (
-    <>
-      <div className="mt-2 flex items-center gap-2">
-        {item.socials &&
-          item.socials.map((social, index) => {
-            const config = socialIconStyles[social.platform.toLowerCase()]
+    <div className="mt-2 flex items-center gap-2">
+      {item.socials &&
+        item.socials.map((social, index) => {
+          const config = socialIconStyles[social.platform.toLowerCase()]
 
-            const Icon = socialMediaPlatforms.find(
-              (p) => p.id === social.platform.toLowerCase(),
-            )?.icon
+          const Icon = socialMediaPlatforms.find(
+            (p) => p.id === social.platform.toLowerCase(),
+          )?.icon
 
-            if (!Icon) {
-              return null
-            }
+          if (!Icon) {
+            return null
+          }
 
-            return (
-              <a
-                key={`social-${index}`}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group inline-flex h-10 w-10 items-center justify-center rounded-full ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} transition-all ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
-              >
-                <Icon className="h-5 w-5 transition-transform group-hover:scale-110" />
-              </a>
-            )
-          })}
-        {item.seekingVolunteers && (
-          <div className="ml-2 flex justify-end">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <p className="text-[#2B8257]">
-                    Seeking volunteers <HiUserGroup className="inline" />
-                  </p>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>
-                    This group is seeking volunteers or members. Get in touch
-                    with them if you'd like to help.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        )}
-      </div>
-    </>
+          return (
+            <a
+              key={`social-${index}`}
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`group inline-flex h-10 w-10 items-center justify-center rounded-full ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} transition-all ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
+            >
+              <Icon className="h-5 w-5 transition-transform group-hover:scale-110" />
+            </a>
+          )
+        })}
+    </div>
   )
 
   const listingWebsite = useMemo(() => {
@@ -131,7 +110,7 @@ const ListingDialog = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="max-h-screen sm:max-w-[672px] md:max-w-[760px] flex flex-col"
+        className="max-h-dvh sm:max-h-[85dvh] sm:max-w-2xl md:max-w-190 flex flex-col pt-10 sm:pt-6"
         forceMount={isFullScreen ? true : undefined}
       >
         {item.image && (
@@ -173,6 +152,26 @@ const ListingDialog = ({
                 <span>{websiteSanitized}</span>
                 <HiExternalLink />
               </a>
+            </div>
+          )}
+
+          {item.seekingVolunteers && (
+            <div className="mt-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <p className="text-[#2B8257]">
+                      Seeking volunteers <HiUserGroup className="inline" />
+                    </p>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      This group is seeking volunteers or members. Get in touch
+                      with them if you'd like to help.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           )}
 

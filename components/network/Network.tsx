@@ -68,10 +68,10 @@ function roundRect(
   h: number,
   r: number,
 ) {
+  ctx.beginPath()
   if (typeof (ctx as any).roundRect === 'function') {
     ;(ctx as any).roundRect(x, y, w, h, r)
   } else {
-    ctx.beginPath()
     ctx.moveTo(x + r, y)
     ctx.lineTo(x + w - r, y)
     ctx.quadraticCurveTo(x + w, y, x + w, y + r)
@@ -81,8 +81,8 @@ function roundRect(
     ctx.quadraticCurveTo(x, y + h, x, y + h - r)
     ctx.lineTo(x, y + r)
     ctx.quadraticCurveTo(x, y, x + r, y)
-    ctx.closePath()
   }
+  ctx.closePath()
 }
 
 const RELATED_WEB_RADIUS = 12

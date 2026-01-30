@@ -28,7 +28,7 @@ import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 const ListingMap = dynamic(() => import('@components/listing-map'), {
   ssr: false,
   loading: () => (
-    <div className="flex h-[300px] items-center justify-center rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="flex h-75 items-center justify-center rounded-2xl bg-linear-to-br from-gray-50 to-gray-100">
       <div className="flex items-center gap-2 text-gray-400">
         <FiMapPin className="h-5 w-5 animate-pulse" />
         <span>Loading map…</span>
@@ -73,7 +73,7 @@ function Listing({ listing }) {
       </MagicBackButton>
 
       {listing.image && (
-        <div className="group relative mb-6 h-[240px] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 md:h-[400px]">
+        <div className="group relative mb-6 h-60 w-full overflow-hidden rounded-2xl bg-linear-to-br from-gray-100 to-gray-200 md:h-100">
           <Image
             src={listing.image}
             alt={`Image for ${listing.title}`}
@@ -157,7 +157,7 @@ function Listing({ listing }) {
                 className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 text-xs text-gray-700 transition-colors hover:bg-gray-200 md:gap-1.5 md:px-3 md:text-sm"
               >
                 <HiExternalLink className="h-3 w-3 md:h-3.5 md:w-3.5" />
-                <span className="max-w-[180px] truncate md:max-w-none">
+                <span className="max-w-45 truncate md:max-w-70">
                   {websiteSanitized}
                 </span>
               </a>
@@ -172,7 +172,7 @@ function Listing({ listing }) {
                       Seeking volunteers
                     </span>
                   </TooltipTrigger>
-                  <TooltipContent side="bottom" className="max-w-[200px]">
+                  <TooltipContent side="bottom" className="max-w-50">
                     <p className="text-center text-sm">
                       This group is seeking volunteers or members. Get in touch
                       with them if you'd like to help.
@@ -265,10 +265,10 @@ function Listing({ listing }) {
               <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">
                 Location
               </h3>
-              <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-gray-50 to-white ring-1 ring-gray-100">
+              <div className="overflow-hidden rounded-2xl bg-linear-to-br from-gray-50 to-white ring-1 ring-gray-100">
                 <div className="flex items-center justify-between border-b border-gray-100 bg-white px-5 py-4">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 text-emerald-600 ring-1 ring-emerald-100">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-emerald-50 to-green-50 text-emerald-600 ring-1 ring-emerald-100">
                       <FiMapPin className="h-5 w-5" />
                     </span>
                     <p className="font-semibold text-gray-900">
@@ -279,13 +279,13 @@ function Listing({ listing }) {
                     href={`https://www.google.com/maps/dir/?api=1&destination=${listing.location.latitude},${listing.location.longitude}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-50 to-green-50 px-4 py-2 text-sm font-medium text-emerald-700 ring-1 ring-emerald-100 transition-all hover:from-emerald-100 hover:to-green-100 hover:shadow-md"
+                    className="inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-emerald-50 to-green-50 px-4 py-2 text-sm font-medium text-emerald-700 ring-1 ring-emerald-100 transition-all hover:from-emerald-100 hover:to-green-100 hover:shadow-md"
                   >
                     <FiNavigation className="h-4 w-4" />
                     Get Directions
                   </a>
                 </div>
-                <div className="h-[300px]">
+                <div className="h-75">
                   <ListingMap
                     latitude={listing.location.latitude}
                     longitude={listing.location.longitude}
