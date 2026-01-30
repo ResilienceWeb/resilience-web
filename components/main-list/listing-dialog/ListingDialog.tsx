@@ -131,7 +131,7 @@ const ListingDialog = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="max-h-screen sm:max-w-[672px] md:max-w-[760px] flex flex-col"
+        className="max-h-dvh sm:max-h-[85dvh] sm:max-w-[672px] md:max-w-[760px] flex flex-col pt-10 sm:pt-6"
         forceMount={isFullScreen ? true : undefined}
       >
         {item.image && (
