@@ -282,7 +282,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
   const nodeCanvasObject = useCallback(
     (node: NodeType, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const label = node.label
-      const fontSize = 4
+      const fontSize = 3.5
 
       if (node.group === 'central-node') {
         const { w, h, label: displayLabel } = getCentralNodeSize(node, ctx)
@@ -438,10 +438,9 @@ const Network = ({ data, selectedId, setSelectedId }) => {
 
       // Draw label underneath the circle
       ctx.textAlign = 'center'
-      ctx.textBaseline = 'top'
 
       // Truncate label if too long
-      const maxLabelLength = node.group === 'central-node' ? 30 : 20
+      const maxLabelLength = node.group === 'central-node' ? 30 : 28
       const displayLabel =
         label.length > maxLabelLength
           ? label.substring(0, maxLabelLength) + '...'
@@ -452,21 +451,23 @@ const Network = ({ data, selectedId, setSelectedId }) => {
 
       // Text styling based on group
       if (node.group === 'category') {
+        ctx.textBaseline = 'top'
         ctx.font = `600 ${fontSize * 1.2}px Inter, sans-serif`
         ctx.fillStyle = '#333'
       } else {
+        ctx.textBaseline = 'middle'
         // Listing nodes - draw text with background for readability
         ctx.font = `${fontSize}px Inter, sans-serif`
         const textMetrics = ctx.measureText(displayLabel)
         const textWidth = textMetrics.width
-        const textHeight = fontSize
+        const textHeight = fontSize * 1.2 // Account for actual text height with some spacing
 
         // Draw background rectangle
         ctx.fillStyle = 'rgba(50, 50, 50, 0.8)'
         const padding = 2
         const borderRadius = 3
         const rectX = (node.x || 0) - textWidth / 2 - padding
-        const rectY = labelY - padding / 2
+        const rectY = labelY - textHeight / 2 - padding / 2
         const rectWidth = textWidth + padding * 2
         const rectHeight = textHeight + padding
 
