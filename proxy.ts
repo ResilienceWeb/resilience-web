@@ -49,7 +49,9 @@ export default function middleware(req: NextRequest) {
             .replace('.cambridgeresilienceweb.org.uk', '')
             .replace('.resilienceweb.org.uk', '')
             .replace('.resilienceweb.netlify.app', '')
-        : hostname.replace(`.localhost:4000`, '')
+        : hostname
+            .replace(`.localhost:4000`, '')
+            .replace('.10.0.2.2.nip.io:4000', '')
   }
 
   if (hostname === 'transition') {
@@ -65,6 +67,7 @@ export default function middleware(req: NextRequest) {
   if (!pathname.includes('.') && !pathname.startsWith('/api')) {
     if (
       hostname === 'localhost:4000' ||
+      hostname === '10.0.2.2.nip.io:4000' ||
       hostname === 'cambridgeresilienceweb.org.uk' ||
       hostname === 'resilienceweb.org.uk' ||
       hostname === 'staging.resilienceweb.org.uk' ||

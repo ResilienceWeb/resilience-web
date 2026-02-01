@@ -1,14 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { REMOTE_URL } from '@helpers/config'
-
-export async function fetchWebsHydrate({ published = false } = {}) {
-  const response = await fetch(
-    `${REMOTE_URL}/api/webs?withListings=true&published=${published}`,
-  )
-  const responseJson = await response.json()
-  const { data: webs } = responseJson
-  return webs || []
-}
 
 async function fetchWebsRequest({ queryKey }) {
   const [_key, { withAdminInfo }] = queryKey

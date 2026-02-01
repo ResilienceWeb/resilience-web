@@ -18,7 +18,6 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@components/ui/navigation-menu'
-import useWebsPublic from '@hooks/webs/useWebsPublic'
 import LogoImage from '../../public/logo.png'
 
 interface NavItem {
@@ -27,12 +26,12 @@ interface NavItem {
   children?: Array<NavItem>
   href?: string
   isExternal?: boolean
+  webs?: any[]
 }
 
-export default function MainNav() {
+export default function MainNav({ webs }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
-  const { webs } = useWebsPublic()
 
   const navItems = useMemo(() => {
     return [
@@ -41,10 +40,7 @@ export default function MainNav() {
         href: '/#web-cards',
         children: webs
           ?.filter(
-            (web) =>
-              web.published &&
-              web.slug !== 'ctrlshift' &&
-              web.slug !== 'transition',
+            (web) => web.slug !== 'ctrlshift' && web.slug !== 'transition',
           )
           .map((web) => ({
             label: web.title,
