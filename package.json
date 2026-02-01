@@ -37,7 +37,7 @@
     "@tanstack/react-query": "5.90.17",
     "@tinymce/tinymce-react": "6.3.0",
     "@trigger.dev/sdk": "4.3.2",
-    "better-auth": "1.4.17",
+    "better-auth": "1.4.18",
     "chroma-js": "3.2.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",

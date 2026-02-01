@@ -10,6 +10,10 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
+  trustedOrigins: [
+    'http://localhost:4000',
+    'http://*.localhost:4000',
+  ],
   logger: {
     level: 'warn',
     log: (level, message, ...args) => {
