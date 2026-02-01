@@ -20,11 +20,6 @@ export const listingImportSchema = z.object({
     .max(500, 'Website URL is too long')
     .optional()
     .or(z.literal('')),
-  phone: z
-    .string()
-    .max(50, 'Phone number is too long')
-    .optional()
-    .or(z.literal('')),
   address: z
     .string()
     .max(500, 'Address is too long')

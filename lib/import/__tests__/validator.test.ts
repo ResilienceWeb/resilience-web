@@ -9,7 +9,6 @@ describe('listingImportSchema', () => {
       description: 'A test organization',
       email: 'test@example.com',
       website: 'https://example.com',
-      phone: '555-0123',
       address: '123 Test St, Test City, TC1 2AB',
       rowNumber: 1,
     }
@@ -78,7 +77,6 @@ describe('listingImportSchema', () => {
       name: 'Test Organization',
       email: '',
       website: '',
-      phone: '',
       address: '',
       rowNumber: 1,
     }

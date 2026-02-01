@@ -40,14 +40,6 @@ const FIELD_PATTERNS: Record<ListingField, RegExp[]> = {
     /^web$/i,
     /^homepage$/i,
   ],
-  phone: [
-    /^phone$/i,
-    /^tel$/i,
-    /^telephone$/i,
-    /^phone\s*number$/i,
-    /^contact\s*number$/i,
-    /^mobile$/i,
-  ],
   address: [
     /^address$/i,
     /^location$/i,
@@ -185,9 +177,6 @@ export function mapRow(
         case 'website':
           mapped.website = sanitizeUrl(value)
           break
-        case 'phone':
-          mapped.phone = sanitizeString(value)
-          break
         case 'address':
           mapped.address = sanitizeString(value)
           break
@@ -248,7 +237,6 @@ export function getAvailableFields(
     'description',
     'email',
     'website',
-    'phone',
     'address',
     'facebook',
     'twitter',

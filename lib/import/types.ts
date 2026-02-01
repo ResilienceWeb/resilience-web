@@ -10,7 +10,6 @@ export type ListingField =
   | 'description'
   | 'email'
   | 'website'
-  | 'phone'
   | 'address'
   | 'facebook'
   | 'twitter'
@@ -40,7 +39,6 @@ export interface MappedRow {
   description?: string
   email?: string
   website?: string
-  phone?: string
   address?: string
   socialMedia?: SocialMediaLink[]
   rowNumber: number // Original row number in CSV

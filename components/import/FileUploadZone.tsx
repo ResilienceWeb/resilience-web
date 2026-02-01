@@ -13,7 +13,6 @@ const CSV_TEMPLATE_HEADERS = [
   "Description",
   "Email",
   "Website",
-  "Phone",
   "Address",
   "Category",
   "Tags",

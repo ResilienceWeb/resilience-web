@@ -36,7 +36,6 @@ export function DataPreviewTable({
                 <TableHead className="min-w-75">Description</TableHead>
                 <TableHead className="min-w-37.5">Email</TableHead>
                 <TableHead className="min-w-37.5">Website</TableHead>
-                <TableHead className="min-w-30">Phone</TableHead>
                 <TableHead className="min-w-50">Address</TableHead>
                 <TableHead className="min-w-37.5">Social Media</TableHead>
               </TableRow>
@@ -72,11 +71,6 @@ export function DataPreviewTable({
                         {row.website}
                       </a>
                     ) : (
-                      <span className="text-gray-400 italic">—</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {row.phone || (
                       <span className="text-gray-400 italic">—</span>
                     )}
                   </TableCell>

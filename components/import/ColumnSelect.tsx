@@ -23,7 +23,6 @@ const FIELD_LABELS: Record<ListingField, string> = {
   description: 'Description',
   email: 'Email',
   website: 'Website',
-  phone: 'Phone',
   address: 'Address',
   facebook: 'Facebook',
   twitter: 'Twitter/X',

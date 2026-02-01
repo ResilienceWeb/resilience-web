@@ -9,10 +9,10 @@ import type { ColumnMapping } from '../types'
 
 describe('autoDetectMapping', () => {
   it('should detect standard column headers', () => {
-    const headers = ['Name', 'Description', 'Email', 'Website', 'Phone']
+    const headers = ['Name', 'Description', 'Email', 'Website']
     const suggestions = autoDetectMapping(headers)
 
-    expect(suggestions).toHaveLength(5)
+    expect(suggestions).toHaveLength(4)
     expect(
       suggestions.find((s) => s.csvColumn === 'Name')?.suggestedField,
     ).toBe('name')
@@ -25,9 +25,6 @@ describe('autoDetectMapping', () => {
     expect(
       suggestions.find((s) => s.csvColumn === 'Website')?.suggestedField,
     ).toBe('website')
-    expect(
-      suggestions.find((s) => s.csvColumn === 'Phone')?.suggestedField,
-    ).toBe('phone')
   })
 
   it('should detect name field variations', () => {
