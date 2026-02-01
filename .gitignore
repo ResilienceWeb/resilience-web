@@ -57,4 +57,7 @@ data
 .netlify
 
 # Local development config
+/.claude
+/.cursor
 /mise.local.toml
+.serena
