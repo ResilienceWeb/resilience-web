@@ -58,9 +58,9 @@ export function ColumnMappingTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-50">CSV Column</TableHead>
+              <TableHead className="w-50">CSV column</TableHead>
               <TableHead className="w-62.5">Maps to</TableHead>
-              <TableHead>Sample Data</TableHead>
+              <TableHead>Sample data</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

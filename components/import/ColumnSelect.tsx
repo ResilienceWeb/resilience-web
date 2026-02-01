@@ -62,7 +62,7 @@ export function ColumnSelect({
           className="w-full justify-between"
           disabled={disabled}
         >
-          {value ? FIELD_LABELS[value] : 'Select field...'}
+          {value === null ? "(Don't import)" : value ? FIELD_LABELS[value] : 'Select field...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

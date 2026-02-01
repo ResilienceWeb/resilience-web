@@ -37,7 +37,7 @@ export function DataPreviewTable({
                 <TableHead className="min-w-37.5">Email</TableHead>
                 <TableHead className="min-w-37.5">Website</TableHead>
                 <TableHead className="min-w-50">Address</TableHead>
-                <TableHead className="min-w-37.5">Social Media</TableHead>
+                <TableHead className="min-w-37.5">Social media</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

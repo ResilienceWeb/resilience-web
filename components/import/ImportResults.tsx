@@ -69,7 +69,7 @@ export function ImportResults({ summary }: ImportResultsProps) {
           <>
             <CheckCircle className="h-6 w-6 text-green-600" />
             <h3 className="text-lg font-semibold">
-              Import Completed Successfully
+              Import completed successfully
             </h3>
           </>
         )}
@@ -79,7 +79,7 @@ export function ImportResults({ summary }: ImportResultsProps) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <div className="text-3xl font-bold text-gray-900">{totalRows}</div>
-            <div className="text-sm text-gray-600 mt-1">Total Rows</div>
+            <div className="text-sm text-gray-600 mt-1">Total rows</div>
           </div>
 
           <div className="text-center p-4 bg-green-50 rounded-lg">
@@ -134,17 +134,17 @@ export function ImportResults({ summary }: ImportResultsProps) {
               className="w-full mt-6"
             >
               <Download className="h-4 w-4 mr-2" />
-              Download Error Report (CSV)
+              Download error report (CSV)
             </Button>
           </div>
         )}
 
         <div className="flex gap-3 mt-7">
           <Button asChild className="flex-1">
-            <Link href="/admin">View Listings</Link>
+            <Link href="/admin">View listings</Link>
           </Button>
           <Button variant="outline" asChild className="flex-1">
-            <Link href="/admin/import">Import More</Link>
+            <Link href="/admin/import">Import more</Link>
           </Button>
         </div>
       </div>
