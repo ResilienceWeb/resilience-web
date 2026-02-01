@@ -141,7 +141,7 @@ describe('filterDuplicates', () => {
 
     expect(result.unique).toHaveLength(3)
     expect(result.duplicates).toHaveLength(2)
-    expect(result.duplicates.map(d => d.rowNumber)).toEqual([3, 5])
+    expect(result.duplicates.map((d) => d.rowNumber)).toEqual([3, 5])
   })
 
   it('should handle all duplicates', () => {
@@ -297,14 +297,19 @@ describe('createImportSummary', () => {
           { rowNumber: 1, success: true, listingId: 1 },
           { rowNumber: 2, success: false, error: 'Error' },
         ],
-        1
+        1,
       ),
       processBatchResults(
         [
           { rowNumber: 3, success: true, listingId: 2 },
-          { rowNumber: 4, success: false, skipped: true, skipReason: 'duplicate' },
+          {
+            rowNumber: 4,
+            success: false,
+            skipped: true,
+            skipReason: 'duplicate',
+          },
         ],
-        2
+        2,
       ),
     ]
 

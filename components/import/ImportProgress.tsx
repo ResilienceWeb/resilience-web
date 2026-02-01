@@ -1,22 +1,21 @@
-"use client";
+'use client'
 
 /**
  * Progress indicator for import operation
  */
-
-import { Loader2 } from "lucide-react";
-import { Progress } from "@components/ui/progress";
+import { Loader2 } from 'lucide-react'
+import { Progress } from '@components/ui/progress'
 
 interface ImportProgressProps {
-  isImporting: boolean;
-  message?: string;
+  isImporting: boolean
+  message?: string
 }
 
 export function ImportProgress({
   isImporting,
-  message = "Processing import...",
+  message = 'Processing import...',
 }: ImportProgressProps) {
-  if (!isImporting) return null;
+  if (!isImporting) return null
 
   return (
     <div className="flex flex-col items-center justify-center py-12 space-y-6">
@@ -31,5 +30,5 @@ export function ImportProgress({
 
       <Progress value={undefined} className="w-full max-w-md" />
     </div>
-  );
+  )
 }

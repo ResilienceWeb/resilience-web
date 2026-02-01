@@ -1,10 +1,9 @@
-"use client";
+'use client'
 
 /**
  * Preview table showing mapped data before import
  */
-
-import type { MappedRow } from "@/lib/import/types";
+import type { MappedRow } from '@/lib/import/types'
 import {
   Table,
   TableBody,
@@ -12,34 +11,34 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@components/ui/table";
+} from '@components/ui/table'
 
 interface DataPreviewTableProps {
-  rows: MappedRow[];
-  maxRows?: number;
+  rows: MappedRow[]
+  maxRows?: number
 }
 
 export function DataPreviewTable({
   rows,
   maxRows = 10,
 }: DataPreviewTableProps) {
-  const previewRows = rows.slice(0, maxRows);
+  const previewRows = rows.slice(0, maxRows)
 
   return (
     <div className="space-y-4">
       <div className="border rounded-lg overflow-hidden">
-        <div className="overflow-x-auto max-h-[500px]">
+        <div className="overflow-x-auto max-h-125">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[60px]">Row</TableHead>
-                <TableHead className="min-w-[200px]">Name</TableHead>
-                <TableHead className="min-w-[300px]">Description</TableHead>
-                <TableHead className="min-w-[150px]">Email</TableHead>
-                <TableHead className="min-w-[150px]">Website</TableHead>
-                <TableHead className="min-w-[120px]">Phone</TableHead>
-                <TableHead className="min-w-[200px]">Address</TableHead>
-                <TableHead className="min-w-[150px]">Social Media</TableHead>
+                <TableHead className="w-15">Row</TableHead>
+                <TableHead className="min-w-50">Name</TableHead>
+                <TableHead className="min-w-75">Description</TableHead>
+                <TableHead className="min-w-37.5">Email</TableHead>
+                <TableHead className="min-w-37.5">Website</TableHead>
+                <TableHead className="min-w-30">Phone</TableHead>
+                <TableHead className="min-w-50">Address</TableHead>
+                <TableHead className="min-w-37.5">Social Media</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -56,14 +55,18 @@ export function DataPreviewTable({
                       )}
                     </div>
                   </TableCell>
-                  <TableCell>{row.email || <span className="text-gray-400 italic">—</span>}</TableCell>
+                  <TableCell>
+                    {row.email || (
+                      <span className="text-gray-400 italic">—</span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     {row.website ? (
                       <a
                         href={row.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline truncate block max-w-[150px]"
+                        className="text-blue-600 hover:underline truncate block max-w-37.5"
                         title={row.website}
                       >
                         {row.website}
@@ -72,10 +75,16 @@ export function DataPreviewTable({
                       <span className="text-gray-400 italic">—</span>
                     )}
                   </TableCell>
-                  <TableCell>{row.phone || <span className="text-gray-400 italic">—</span>}</TableCell>
                   <TableCell>
-                    <div className="max-w-[200px] truncate" title={row.address}>
-                      {row.address || <span className="text-gray-400 italic">—</span>}
+                    {row.phone || (
+                      <span className="text-gray-400 italic">—</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <div className="max-w-50 truncate" title={row.address}>
+                      {row.address || (
+                        <span className="text-gray-400 italic">—</span>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -106,5 +115,5 @@ export function DataPreviewTable({
         {rows.length > maxRows && ` (first ${maxRows} rows)`}
       </div>
     </div>
-  );
+  )
 }

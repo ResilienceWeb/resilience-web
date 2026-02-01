@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { validateRow, validateRows, listingImportSchema } from '../validator'
 import type { MappedRow } from '../types'
+import { validateRow, validateRows, listingImportSchema } from '../validator'
 
 describe('listingImportSchema', () => {
   it('should validate a complete valid row', () => {

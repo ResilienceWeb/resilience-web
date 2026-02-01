@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
 import type { ImportSummary, BatchImportResult } from '@/lib/import/types'
+import { describe, it, expect } from 'vitest'
 
 /**
  * Unit tests for ImportResults error report CSV generation logic
@@ -15,7 +15,7 @@ describe('ImportResults - CSV Error Report Generation', () => {
    */
   function generateErrorReportCSV(summary: ImportSummary): string {
     const errors = summary.batches.flatMap((batch) =>
-      batch.results.filter((r) => !r.success || r.skipped)
+      batch.results.filter((r) => !r.success || r.skipped),
     )
 
     if (errors.length === 0) return ''
@@ -31,7 +31,7 @@ describe('ImportResults - CSV Error Report Generation', () => {
             : error.error || 'Unknown error',
         ]
           .map((cell) => `"${String(cell).replace(/"/g, '""')}"`)
-          .join(',')
+          .join(','),
       ),
     ].join('\n')
 
@@ -49,7 +49,12 @@ describe('ImportResults - CSV Error Report Generation', () => {
         results: [
           { rowNumber: 1, success: true, listingId: 1 },
           { rowNumber: 2, success: false, error: 'Validation failed' },
-          { rowNumber: 3, success: false, skipped: true, skipReason: 'duplicate' },
+          {
+            rowNumber: 3,
+            success: false,
+            skipped: true,
+            skipReason: 'duplicate',
+          },
         ],
       },
     ]
@@ -252,7 +257,12 @@ describe('ImportResults - CSV Error Report Generation', () => {
         skipCount: 1,
         results: [
           { rowNumber: 3, success: true, listingId: 2 },
-          { rowNumber: 4, success: false, skipped: true, skipReason: 'duplicate' },
+          {
+            rowNumber: 4,
+            success: false,
+            skipped: true,
+            skipReason: 'duplicate',
+          },
         ],
       },
     ]

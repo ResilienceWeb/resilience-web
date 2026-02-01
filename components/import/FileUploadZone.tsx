@@ -128,9 +128,10 @@ export function FileUploadZone({
               {(selectedFile.size / 1024).toFixed(1)} KB
             </p>
             <button
+              type="button"
               onClick={handleClearFile}
               disabled={isLoading}
-              className="mt-4 flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+              className="relative z-10 mt-4 flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 transition-colors"
             >
               <X className="w-4 h-4" />
               Remove file

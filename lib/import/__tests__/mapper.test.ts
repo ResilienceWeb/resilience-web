@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { autoDetectMapping, mapRow, mapRows, getAvailableFields } from '../mapper'
+import {
+  autoDetectMapping,
+  mapRow,
+  mapRows,
+  getAvailableFields,
+} from '../mapper'
 import type { ColumnMapping } from '../types'
 
 describe('autoDetectMapping', () => {
@@ -8,11 +13,21 @@ describe('autoDetectMapping', () => {
     const suggestions = autoDetectMapping(headers)
 
     expect(suggestions).toHaveLength(5)
-    expect(suggestions.find(s => s.csvColumn === 'Name')?.suggestedField).toBe('name')
-    expect(suggestions.find(s => s.csvColumn === 'Description')?.suggestedField).toBe('description')
-    expect(suggestions.find(s => s.csvColumn === 'Email')?.suggestedField).toBe('email')
-    expect(suggestions.find(s => s.csvColumn === 'Website')?.suggestedField).toBe('website')
-    expect(suggestions.find(s => s.csvColumn === 'Phone')?.suggestedField).toBe('phone')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'Name')?.suggestedField,
+    ).toBe('name')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'Description')?.suggestedField,
+    ).toBe('description')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'Email')?.suggestedField,
+    ).toBe('email')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'Website')?.suggestedField,
+    ).toBe('website')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'Phone')?.suggestedField,
+    ).toBe('phone')
   })
 
   it('should detect name field variations', () => {
@@ -24,7 +39,7 @@ describe('autoDetectMapping', () => {
       'Title',
     ]
 
-    variations.forEach(header => {
+    variations.forEach((header) => {
       const suggestions = autoDetectMapping([header])
       expect(suggestions[0].suggestedField).toBe('name')
       expect(suggestions[0].confidence).toBe('high')
@@ -34,7 +49,7 @@ describe('autoDetectMapping', () => {
   it('should detect email field variations', () => {
     const variations = ['Email', 'E-mail', 'Contact Email', 'Email Address']
 
-    variations.forEach(header => {
+    variations.forEach((header) => {
       const suggestions = autoDetectMapping([header])
       expect(suggestions[0].suggestedField).toBe('email')
     })
@@ -43,7 +58,7 @@ describe('autoDetectMapping', () => {
   it('should detect website field variations', () => {
     const variations = ['Website', 'Web Site', 'URL', 'Homepage', 'Web Address']
 
-    variations.forEach(header => {
+    variations.forEach((header) => {
       const suggestions = autoDetectMapping([header])
       expect(suggestions[0].suggestedField).toBe('website')
     })
@@ -53,28 +68,49 @@ describe('autoDetectMapping', () => {
     const headers = ['Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'YouTube']
     const suggestions = autoDetectMapping(headers)
 
-    expect(suggestions.find(s => s.csvColumn === 'Facebook')?.suggestedField).toBe('facebook')
-    expect(suggestions.find(s => s.csvColumn === 'Twitter')?.suggestedField).toBe('twitter')
-    expect(suggestions.find(s => s.csvColumn === 'Instagram')?.suggestedField).toBe('instagram')
-    expect(suggestions.find(s => s.csvColumn === 'LinkedIn')?.suggestedField).toBe('linkedin')
-    expect(suggestions.find(s => s.csvColumn === 'YouTube')?.suggestedField).toBe('youtube')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'Facebook')?.suggestedField,
+    ).toBe('facebook')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'Twitter')?.suggestedField,
+    ).toBe('twitter')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'Instagram')?.suggestedField,
+    ).toBe('instagram')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'LinkedIn')?.suggestedField,
+    ).toBe('linkedin')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'YouTube')?.suggestedField,
+    ).toBe('youtube')
   })
 
   it('should handle case-insensitive matching', () => {
     const headers = ['NAME', 'email', 'WeBsItE']
     const suggestions = autoDetectMapping(headers)
 
-    expect(suggestions.find(s => s.csvColumn === 'NAME')?.suggestedField).toBe('name')
-    expect(suggestions.find(s => s.csvColumn === 'email')?.suggestedField).toBe('email')
-    expect(suggestions.find(s => s.csvColumn === 'WeBsItE')?.suggestedField).toBe('website')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'NAME')?.suggestedField,
+    ).toBe('name')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'email')?.suggestedField,
+    ).toBe('email')
+    expect(
+      suggestions.find((s) => s.csvColumn === 'WeBsItE')?.suggestedField,
+    ).toBe('website')
   })
 
   it('should return null for unrecognized headers', () => {
     const headers = ['Random Column', 'Another Unknown']
     const suggestions = autoDetectMapping(headers)
 
-    expect(suggestions.find(s => s.csvColumn === 'Random Column')?.suggestedField).toBeNull()
-    expect(suggestions.find(s => s.csvColumn === 'Another Unknown')?.suggestedField).toBeNull()
+    expect(
+      suggestions.find((s) => s.csvColumn === 'Random Column')?.suggestedField,
+    ).toBeNull()
+    expect(
+      suggestions.find((s) => s.csvColumn === 'Another Unknown')
+        ?.suggestedField,
+    ).toBeNull()
   })
 
   it('should assign confidence levels', () => {
@@ -82,11 +118,11 @@ describe('autoDetectMapping', () => {
     const suggestions = autoDetectMapping(headers)
 
     // Exact match should be high confidence
-    const nameMatch = suggestions.find(s => s.csvColumn === 'Name')
+    const nameMatch = suggestions.find((s) => s.csvColumn === 'Name')
     expect(nameMatch?.confidence).toBe('high')
 
     // "Desc" for description might be medium confidence
-    const descMatch = suggestions.find(s => s.csvColumn === 'Desc')
+    const descMatch = suggestions.find((s) => s.csvColumn === 'Desc')
     expect(descMatch?.confidence).toBeDefined()
   })
 })
@@ -95,14 +131,14 @@ describe('mapRow', () => {
   it('should map CSV row to MappedRow', () => {
     const csvRow = {
       'Organization Name': 'Test Org',
-      'Description': 'A test organization',
-      'Email': 'test@example.com',
+      Description: 'A test organization',
+      Email: 'test@example.com',
     }
 
     const columnMapping: ColumnMapping = {
       'Organization Name': 'name',
-      'Description': 'description',
-      'Email': 'email',
+      Description: 'description',
+      Email: 'email',
     }
 
     const mapped = mapRow(csvRow, columnMapping, 1)
@@ -115,13 +151,13 @@ describe('mapRow', () => {
 
   it('should sanitize string values', () => {
     const csvRow = {
-      'Name': '  Test Org  ',
-      'Description': '  Lots of whitespace  ',
+      Name: '  Test Org  ',
+      Description: '  Lots of whitespace  ',
     }
 
     const columnMapping: ColumnMapping = {
-      'Name': 'name',
-      'Description': 'description',
+      Name: 'name',
+      Description: 'description',
     }
 
     const mapped = mapRow(csvRow, columnMapping, 1)
@@ -132,15 +168,15 @@ describe('mapRow', () => {
 
   it('should group social media fields', () => {
     const csvRow = {
-      'Name': 'Test Org',
-      'Facebook': 'https://facebook.com/test',
-      'Twitter': 'https://twitter.com/test',
+      Name: 'Test Org',
+      Facebook: 'https://facebook.com/test',
+      Twitter: 'https://twitter.com/test',
     }
 
     const columnMapping: ColumnMapping = {
-      'Name': 'name',
-      'Facebook': 'facebook',
-      'Twitter': 'twitter',
+      Name: 'name',
+      Facebook: 'facebook',
+      Twitter: 'twitter',
     }
 
     const mapped = mapRow(csvRow, columnMapping, 1)
@@ -158,15 +194,15 @@ describe('mapRow', () => {
 
   it('should skip empty values', () => {
     const csvRow = {
-      'Name': 'Test Org',
-      'Email': '',
-      'Website': '   ',
+      Name: 'Test Org',
+      Email: '',
+      Website: '   ',
     }
 
     const columnMapping: ColumnMapping = {
-      'Name': 'name',
-      'Email': 'email',
-      'Website': 'website',
+      Name: 'name',
+      Email: 'email',
+      Website: 'website',
     }
 
     const mapped = mapRow(csvRow, columnMapping, 1)
@@ -178,12 +214,12 @@ describe('mapRow', () => {
 
   it('should skip unmapped columns', () => {
     const csvRow = {
-      'Name': 'Test Org',
+      Name: 'Test Org',
       'Random Column': 'Should be ignored',
     }
 
     const columnMapping: ColumnMapping = {
-      'Name': 'name',
+      Name: 'name',
       'Random Column': null,
     }
 
@@ -197,13 +233,13 @@ describe('mapRow', () => {
 describe('mapRows', () => {
   it('should map multiple rows', () => {
     const rows = [
-      { 'Name': 'Org 1', 'Email': 'org1@example.com' },
-      { 'Name': 'Org 2', 'Email': 'org2@example.com' },
+      { Name: 'Org 1', Email: 'org1@example.com' },
+      { Name: 'Org 2', Email: 'org2@example.com' },
     ]
 
     const columnMapping: ColumnMapping = {
-      'Name': 'name',
-      'Email': 'email',
+      Name: 'name',
+      Email: 'email',
     }
 
     const mapped = mapRows(rows, columnMapping)
@@ -233,8 +269,8 @@ describe('getAvailableFields', () => {
 
   it('should exclude already mapped fields', () => {
     const columnMapping: ColumnMapping = {
-      'Col1': 'name',
-      'Col2': 'email',
+      Col1: 'name',
+      Col2: 'email',
     }
 
     const available = getAvailableFields(columnMapping, 'Col3')
@@ -247,8 +283,8 @@ describe('getAvailableFields', () => {
 
   it('should include current column mapping as available', () => {
     const columnMapping: ColumnMapping = {
-      'Col1': 'name',
-      'Col2': 'email',
+      Col1: 'name',
+      Col2: 'email',
     }
 
     const available = getAvailableFields(columnMapping, 'Col2')

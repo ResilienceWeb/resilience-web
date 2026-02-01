@@ -1,25 +1,24 @@
-"use client";
+'use client'
 
 /**
  * Display validation errors and summary
  */
-
-import { AlertCircle, CheckCircle, XCircle } from "lucide-react";
-import type { RowValidationError } from "@/lib/import/types";
-import { Alert, AlertDescription, AlertTitle } from "@components/ui/alert";
+import { useState } from 'react'
+import type { RowValidationError } from '@/lib/import/types'
+import { AlertCircle, CheckCircle, XCircle } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert'
+import { Button } from '@components/ui/button'
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@components/ui/collapsible";
-import { Button } from "@components/ui/button";
-import { useState } from "react";
+} from '@components/ui/collapsible'
 
 interface ValidationSummaryProps {
-  totalRows: number;
-  validCount: number;
-  invalidCount: number;
-  errors: RowValidationError[];
+  totalRows: number
+  validCount: number
+  invalidCount: number
+  errors: RowValidationError[]
 }
 
 export function ValidationSummary({
@@ -28,30 +27,35 @@ export function ValidationSummary({
   invalidCount,
   errors,
 }: ValidationSummaryProps) {
-  const [showErrors, setShowErrors] = useState(false);
+  const [showErrors, setShowErrors] = useState(false)
 
   if (invalidCount === 0) {
     return (
-      <Alert className="border-green-200 bg-green-50">
+      <Alert className="border-green-200 bg-green-50 mb-2">
         <CheckCircle className="h-4 w-4 text-green-600" />
         <AlertTitle className="text-green-900">All rows valid</AlertTitle>
         <AlertDescription className="text-green-700">
           {validCount} rows ready to import with no errors detected.
         </AlertDescription>
       </Alert>
-    );
+    )
   }
 
   // Group errors by row number
-  const errorsByRow = errors.reduce((acc, error) => {
-    if (!acc[error.rowNumber]) {
-      acc[error.rowNumber] = [];
-    }
-    acc[error.rowNumber].push(error);
-    return acc;
-  }, {} as Record<number, RowValidationError[]>);
+  const errorsByRow = errors.reduce(
+    (acc, error) => {
+      if (!acc[error.rowNumber]) {
+        acc[error.rowNumber] = []
+      }
+      acc[error.rowNumber].push(error)
+      return acc
+    },
+    {} as Record<number, RowValidationError[]>,
+  )
 
-  const errorRowNumbers = Object.keys(errorsByRow).map(Number).sort((a, b) => a - b);
+  const errorRowNumbers = Object.keys(errorsByRow)
+    .map(Number)
+    .sort((a, b) => a - b)
 
   return (
     <div className="space-y-4">
@@ -59,15 +63,16 @@ export function ValidationSummary({
         <XCircle className="h-4 w-4" />
         <AlertTitle>Validation errors found</AlertTitle>
         <AlertDescription>
-          {invalidCount} row(s) contain errors that must be fixed before importing.{" "}
-          {validCount} row(s) are valid.
+          {invalidCount} row(s) contain errors that must be fixed before
+          importing. {validCount} row(s) are valid.
         </AlertDescription>
       </Alert>
 
       <Collapsible open={showErrors} onOpenChange={setShowErrors}>
         <CollapsibleTrigger asChild>
           <Button variant="outline" className="w-full">
-            {showErrors ? "Hide" : "Show"} error details ({errors.length} errors)
+            {showErrors ? 'Hide' : 'Show'} error details ({errors.length}{' '}
+            errors)
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-4">
@@ -82,10 +87,14 @@ export function ValidationSummary({
                 </p>
                 <ul className="space-y-1">
                   {errorsByRow[rowNumber].map((error, idx) => (
-                    <li key={idx} className="text-sm text-red-700 flex items-start gap-2">
-                      <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                    <li
+                      key={idx}
+                      className="text-sm text-red-700 flex items-start gap-2"
+                    >
+                      <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
                       <span>
-                        <span className="font-medium">{error.field}:</span> {error.message}
+                        <span className="font-medium">{error.field}:</span>{' '}
+                        {error.message}
                         {error.value && (
                           <span className="ml-1 text-red-600">
                             (value: "{error.value}")
@@ -101,5 +110,5 @@ export function ValidationSummary({
         </CollapsibleContent>
       </Collapsible>
     </div>
-  );
+  )
 }
