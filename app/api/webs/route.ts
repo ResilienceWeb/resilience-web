@@ -129,18 +129,6 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    if (currentOwnerships?.length > 0 && session.user.role !== 'admin') {
-      return Response.json(
-        {
-          error:
-            'You already own a web and at present we do not allow anyone to create more than one. If you want to delete your current Resilience Web to create a new one please get in touch at info@resilienceweb.org.uk',
-        },
-        {
-          status: 403,
-        },
-      )
-    }
-
     const web = await prisma.web.create({
       data: {
         title,
