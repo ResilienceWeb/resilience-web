@@ -21,18 +21,18 @@ import {
 } from './styles'
 
 type Props = {
-  webTitle: string
   listingTitle: string
+  webTitle: string
+  listingUrl: string
 }
 
-const ListingEditProposedAdminEmail = ({ webTitle, listingTitle }: Props) => {
-  const editUrl = `https://resilienceweb.org.uk/admin`
-
+const ListingCreatedEmail = ({ listingTitle, webTitle, listingUrl }: Props) => {
   return (
     <Html lang="en" dir="ltr">
       <Head />
       <Preview>
-        New edit suggestion for {listingTitle} on {webTitle} Resilience Web
+        A listing for {listingTitle} has been created on {webTitle} Resilience
+        Web
       </Preview>
       <Body style={main}>
         <Container style={container}>
@@ -40,20 +40,23 @@ const ListingEditProposedAdminEmail = ({ webTitle, listingTitle }: Props) => {
             src="https://resilienceweb.org.uk/logo.png"
             width="148"
             height="55"
-            alt="Resilience Web logo"
+            alt="Resilience Web"
             style={logo}
           />
           <Text style={paragraph}>Hello 👋</Text>
           <Text style={paragraph}>
-            Someone has suggested changes to the listing "{listingTitle}" on{' '}
-            {webTitle} Resilience Web 📝
+            A listing for <strong>{listingTitle}</strong> has been created on{' '}
+            <strong>{webTitle} Resilience Web</strong>. You received this email
+            because this is the contact email address for the listing.
           </Text>
           <Text style={paragraph}>
-            Please review these changes and either accept or reject them.
+            If any of the information is incorrect or incomplete, you can
+            propose edits by clicking below and pressing the Edit listing
+            button.
           </Text>
           <div style={btnContainer}>
-            <Link href={editUrl} style={button}>
-              Review Changes
+            <Link href={listingUrl} style={button}>
+              View Listing
             </Link>
           </div>
           <Hr style={hr} />
@@ -67,4 +70,4 @@ const ListingEditProposedAdminEmail = ({ webTitle, listingTitle }: Props) => {
   )
 }
 
-export default ListingEditProposedAdminEmail
+export default ListingCreatedEmail

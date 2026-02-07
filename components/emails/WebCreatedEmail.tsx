@@ -33,8 +33,7 @@ const WebCreatedEmail = ({ webTitle, url }: props) => {
     <Html lang="en" dir="ltr">
       <Head />
       <Preview>
-        Local discovery, collaboration and networking between activists and
-        organisations
+        Local discovery and collaboration between activists and organisations
       </Preview>
       <Body style={main}>
         <Container style={container}>

@@ -335,7 +335,7 @@ export default function WebSettingsPage() {
                 </FormLabel>
                 <FormDescription className="mb-2">
                   You can link to other webs that are related to this one. These
-                  will appear on the Network view as clickable items.
+                  will appear on the Web view as clickable items.
                 </FormDescription>
 
                 <div className="mb-6 max-w-md">

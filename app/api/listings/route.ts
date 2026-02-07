@@ -6,6 +6,7 @@ import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { sendEmail } from '@helpers/email'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
+import ListingCreatedEmail from '@components/emails/ListingCreatedEmail'
 import ListingProposedAdminEmail from '@components/emails/ListingProposedAdminEmail'
 
 export async function GET(request: NextRequest) {
@@ -199,17 +200,31 @@ export async function POST(request) {
       data: newData,
     })
 
-    if (isProposedListing) {
-      const selectedWeb = await prisma.web.findFirst({
-        where: {
-          id: webId,
-          deletedAt: null,
-        },
-        include: {
-          webAccess: true,
-        },
-      })
+    const selectedWeb = await prisma.web.findFirst({
+      where: {
+        id: webId,
+        deletedAt: null,
+      },
+      include: {
+        webAccess: true,
+      },
+    })
 
+    if (listing.email && selectedWeb?.contactEmail) {
+      const listingUrl = `https://${selectedWeb.slug}.resilienceweb.org.uk/${listing.slug}`
+      sendEmail({
+        to: listing.email,
+        subject: `A listing for ${listing.title} has been created on ${selectedWeb.title} Resilience Web`,
+        email: ListingCreatedEmail({
+          listingTitle: listing.title,
+          webTitle: selectedWeb.title,
+          listingUrl,
+        }),
+        replyTo: selectedWeb.contactEmail,
+      })
+    }
+
+    if (isProposedListing && selectedWeb) {
       const proposer = await prisma.user.findUnique({
         where: {
           id: proposerId,

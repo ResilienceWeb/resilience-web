@@ -69,8 +69,8 @@ const ListingProposedAcceptedEmail = ({
           </div>
           <Hr style={hr} />
           <Text style={footer}>
-            Resilience Web CIC - Local discovery, collaboration and networking
-            between activists and organisations
+            Resilience Web CIC - Local discovery and collaboration between
+            activists and organisations
           </Text>
         </Container>
       </Body>
