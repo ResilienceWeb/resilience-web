@@ -35,6 +35,7 @@ import {
 import { Separator } from '@components/ui/separator'
 import useListings from '@hooks/listings/useListings'
 import useTags from '@hooks/tags/useTags'
+import useWeb from '@hooks/webs/useWeb'
 import { useAppContext } from '@store/hooks'
 import Actions from './Actions'
 import ImageUpload from './ImageUpload'
@@ -158,6 +159,8 @@ const ListingForm = ({
   handleSubmit: onSubmit,
   isSubmitting = false,
 }: Props) => {
+  const { selectedWebSlug } = useAppContext()
+  const { web } = useWeb({ webSlug: selectedWebSlug })
   const { tags } = useTags()
   const { listings } = useListings()
 
@@ -371,6 +374,11 @@ const ListingForm = ({
                 <FormLabel className="font-semibold">
                   Contact email for organisation
                 </FormLabel>
+                <FormDescription>
+                  {web?.contactEmail
+                    ? 'When the listing is created, we will send a courtesy email to this address letting them know about it.'
+                    : 'To send a courtesy email to this address when listing is created, please set a contact email for your web in Web Settings first.'}
+                </FormDescription>
                 <FormControl>
                   <Input type="email" {...field} />
                 </FormControl>

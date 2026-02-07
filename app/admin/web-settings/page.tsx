@@ -9,7 +9,9 @@ import {
 } from 'react-hook-form'
 import type { MultiValue, ActionMeta } from 'react-select'
 import dynamic from 'next/dynamic'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
+import * as z from 'zod'
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
 import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
@@ -39,19 +41,24 @@ const SetLocationMap = dynamic(
   },
 )
 
-interface WebSettingsForm {
-  title: string
-  published: boolean
-  description: string
-  contactEmail: string
-  image: File | string | null
-  relatedWebs: WebOption[]
-  location: {
-    latitude: number
-    longitude: number
-    description: string
-  } | null
-}
+const webSettingsSchema = z.object({
+  title: z.string().min(1, { error: 'Title is required' }),
+  published: z.boolean(),
+  description: z.string(),
+  contactEmail: z.email({ error: 'Please enter a valid email' }),
+  image: z.any().nullable(),
+  relatedWebs: z.array(z.object({ value: z.string(), label: z.string() })),
+  location: z
+    .object({
+      latitude: z.number(),
+      longitude: z.number(),
+      description: z.string(),
+    })
+    .nullable()
+    .optional(),
+})
+
+type WebSettingsForm = z.infer<typeof webSettingsSchema>
 
 type WebOption = {
   value: string
@@ -112,6 +119,7 @@ export default function WebSettingsPage() {
   const { updateWeb, isPending, isSuccess } = useUpdateWeb()
 
   const methods = useForm<WebSettingsForm>({
+    resolver: zodResolver(webSettingsSchema),
     defaultValues: {
       title: '',
       published: false,
@@ -327,7 +335,7 @@ export default function WebSettingsPage() {
                 </FormLabel>
                 <FormDescription className="mb-2">
                   You can link to other webs that are related to this one. These
-                  will appear on the Network view as clickable items.
+                  will appear on the Web view as clickable items.
                 </FormDescription>
 
                 <div className="mb-6 max-w-md">
