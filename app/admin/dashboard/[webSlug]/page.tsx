@@ -125,7 +125,7 @@ export default function WebDashboardPage({ params }) {
         onClick={goBack}
       >
         <HiArrowLeft className="h-4 w-4" />
-        Back to main list
+        Back to {web.title} Resilience Web
       </button>
 
       <div className="flex items-center justify-between">

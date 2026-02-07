@@ -69,7 +69,7 @@ function Listing({ listing }) {
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 transition-all group-hover:bg-gray-200">
           <HiArrowLeft className="h-4 w-4" />
         </span>
-        Back to main list
+        Back to {listing.web?.title} Resilience Web
       </MagicBackButton>
 
       {listing.image && (
@@ -342,7 +342,7 @@ function Listing({ listing }) {
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 transition-all group-hover:bg-gray-200">
             <HiArrowLeft className="h-4 w-4" />
           </span>
-          Back to main list
+          Back to {listing.web?.title} Resilience Web
         </MagicBackButton>
 
         {listing.web?.slug && (
