@@ -220,8 +220,8 @@ const ListingFormSimplified = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmitForm)} className="bg-white">
-        <div className="flex flex-col gap-2 p-4 sm:p-6">
+      <form onSubmit={form.handleSubmit(handleSubmitForm)}>
+        <div className="flex flex-col gap-4 p-4 sm:p-6">
           <FormField
             control={form.control}
             name="title"
@@ -300,21 +300,19 @@ const ListingFormSimplified = ({
             )}
           />
 
-          <div className="grid grid-cols-1 gap-4 mt-4">
-            <FormField
-              control={form.control}
-              name="website"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold">Website</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="website"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-semibold">Website</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <SocialMedia />
 
@@ -350,7 +348,7 @@ const ListingFormSimplified = ({
               control={form.control}
               name="seekingVolunteers"
               render={({ field }) => (
-                <FormItem className="mt-6 flex flex-row items-start gap-2">
+                <FormItem className="mt-4 flex flex-row items-start gap-2">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
@@ -368,7 +366,7 @@ const ListingFormSimplified = ({
             />
           )}
 
-          <Separator className="my-4" />
+          <Separator className="my-2" />
 
           <FormField
             control={form.control}
@@ -376,7 +374,7 @@ const ListingFormSimplified = ({
             render={({ field }) => (
               <>
                 <FormLabel className="font-semibold">Location</FormLabel>
-                <FormItem className="mt-4 flex flex-row items-start gap-2">
+                <FormItem className="flex flex-row items-start gap-2">
                   <FormControl>
                     <Checkbox
                       checked={field.value}

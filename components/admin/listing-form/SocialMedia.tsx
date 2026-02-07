@@ -29,7 +29,7 @@ const SocialMedia = () => {
   })
 
   return (
-    <div className="mt-6">
+    <div className="mt-4">
       <div className="flex items-center justify-between pb-2">
         <FormLabel className="font-semibold">Social Media</FormLabel>
         <Button
@@ -175,7 +175,7 @@ const SocialMedia = () => {
                   />
                 </div>
 
-                <div className="ml-2 flex-shrink-0 self-end">
+                <div className="ml-2 flex-shrink-0 self-center">
                   <Button
                     type="button"
                     variant="ghost"
