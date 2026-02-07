@@ -89,7 +89,7 @@ const formSchema = z.object({
     .regex(/^[a-z0-9-]+$/, {
       error: 'Only lowercase letters, numbers, and hyphens are allowed',
     }),
-  contactEmail: z.email({ error: 'Please enter a valid email' }).optional(),
+  contactEmail: z.email({ error: 'Please enter a valid email' }),
   description: z.string(),
   location: z
     .object({
@@ -129,12 +129,11 @@ const WebCreation = () => {
     }
   }, [titleValue, setValue])
 
-  const contactEmailValue = useWatch({ control, name: 'contactEmail' })
   useEffect(() => {
-    if (!contactEmailValue && session?.data?.user?.email) {
+    if (session?.data?.user?.email) {
       setValue('contactEmail', session.data.user.email)
     }
-  }, [contactEmailValue, setValue, session])
+  }, [session?.data?.user?.email, setValue])
 
   useEffect(() => {
     posthog.capture('web-creation-start')

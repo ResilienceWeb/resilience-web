@@ -24,10 +24,10 @@ export default function News({ posts }: NewsProps) {
   return (
     <Layout>
       <div className="flex justify-center">
-        <div className="mb-4 max-w-[850px]">
+        <div className="mb-4 max-w-212.5">
           <h1 className="mb-3 text-3xl">News</h1>
           <p className="mb-3 text-lg text-gray-600">
-            News & updates from the Resilience Web team
+            News, updates and community articles from the Resilience Web team
           </p>
           <hr className="mb-10" />
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-12">
@@ -40,8 +40,8 @@ export default function News({ posts }: NewsProps) {
 
               return (
                 <Link href={`/news/${post.slug}`} key={post.slug}>
-                  <div className="w-full max-w-[445px] cursor-pointer overflow-hidden rounded-md bg-white p-4 shadow-xl transition-shadow duration-200 hover:shadow-2xl">
-                    <div className="relative -mx-6 -mt-6 mb-4 h-[210px] bg-gray-100">
+                  <div className="w-full max-w-111.25 cursor-pointer overflow-hidden rounded-md bg-white p-4 shadow-xl transition-shadow duration-200 hover:shadow-2xl">
+                    <div className="relative -mx-6 -mt-6 mb-4 h-52.5 bg-gray-100">
                       <Image
                         src={post.coverImage?.url}
                         alt={`Image for blog post ${post.title}`}
