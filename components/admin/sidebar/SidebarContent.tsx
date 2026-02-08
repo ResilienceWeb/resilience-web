@@ -86,17 +86,17 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       })
 
       links.push({
-        label: 'Import',
-        href: '/admin/import',
-        icon: <HiUpload />,
-        tourId: 'nav-import',
-      })
-
-      links.push({
         label: 'Team',
         href: '/admin/team',
         icon: <HiUserGroup />,
         tourId: 'nav-team',
+      })
+
+      links.push({
+        label: 'Import from CSV',
+        href: '/admin/import',
+        icon: <HiUpload />,
+        tourId: 'nav-import',
       })
     }
 

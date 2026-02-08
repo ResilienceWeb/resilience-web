@@ -44,6 +44,16 @@ export const tour = driver({
       },
     },
     {
+      element: '[data-tourid=nav-import]',
+      popover: {
+        title: 'Import listings from a CSV file 📒',
+        description:
+          'Import listings from a CSV file with column mapping and validation.',
+        side: 'bottom',
+        align: 'center',
+      },
+    },
+    {
       popover: {
         title: 'We will let you crack on now 😊',
         description:
