@@ -54,18 +54,18 @@ const Drawer = ({
   return (
     <div className="fixed z-3 h-screen w-[300px] bg-white shadow-xl">
       <div className="flex h-full flex-col overflow-hidden">
-        <div className="flex-1 overflow-y-auto pb-4">
-          <NextLink href={REMOTE_URL} className="block">
-            <div className="my-2 flex cursor-pointer justify-center px-4">
-              <Image
-                alt="Resilience Web CIC logo"
-                src={LogoImage}
-                width="268"
-                priority
-              />
-            </div>
-          </NextLink>
-          <Separator />
+        <NextLink href={REMOTE_URL} className="block shrink-0">
+          <div className="my-2 flex cursor-pointer justify-center px-4">
+            <Image
+              alt="Resilience Web CIC logo"
+              src={LogoImage}
+              width="268"
+              priority
+            />
+          </div>
+        </NextLink>
+        <Separator />
+        <div className="min-h-0 flex-1 overflow-y-auto pb-4">
           {!isTransitionMode && (
             <>
               <div className="p-4">
@@ -147,8 +147,10 @@ const Drawer = ({
           <div className="mx-2 mt-4">
             {webDescription && webDescription.length < 100 && (
               <>
-                <h2 className="text-xl font-semibold">About this web</h2>
-                <RichText html={webDescription} />
+                <h2 className="text-lg">About this web</h2>
+                <div className="prose prose-sm">
+                  <RichText html={webDescription} />
+                </div>
               </>
             )}
 
@@ -162,21 +164,21 @@ const Drawer = ({
         {webContactEmail && (
           <div className="m-2">
             <p className="text-sm">
-              If you have any questions or feedback about this web, please email{' '}
+              <h2>Contact email</h2>
               <a href={`mailto:${webContactEmail}`}>{webContactEmail}</a>
             </p>
           </div>
         )}
 
         <div className="shrink-0 border-t bg-white p-4">
-          <h2 className="text-xl font-semibold">Like what you see?</h2>
+          <h2 className="text-lg font-semibold">Like what you see?</h2>
           {isTransitionMode ? (
-            <p className="mb-3 text-gray-600">
+            <p className="text-sm mb-3 text-gray-600">
               If you can, please support the technology behind this with a small
               donation.
             </p>
           ) : (
-            <p className="mb-3 text-gray-600">
+            <p className="text-sm mb-3 text-gray-600">
               Consider making a donation to help us host and develop the
               Resilience Web platform 🙏🏼
             </p>

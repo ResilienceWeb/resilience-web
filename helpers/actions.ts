@@ -4,6 +4,7 @@ import {
   FaDonate,
   FaNewspaper,
   FaBook,
+  FaBriefcase,
 } from 'react-icons/fa'
 
 export const actionTypes = [
@@ -36,6 +37,12 @@ export const actionTypes = [
     label: 'Resources',
     icon: FaBook,
     color: '#EC4899',
+  },
+  {
+    id: 'corporate-volunteering',
+    label: 'Corporate volunteering',
+    icon: FaBriefcase,
+    color: '#F59E0B',
   },
 ]
 
@@ -79,5 +86,13 @@ export const actionIconStyles = {
     hoverBgClass: 'hover:bg-pink-100',
     hoverTextClass: 'hover:text-pink-600',
     hoverRingClass: 'hover:ring-pink-200',
+  },
+  'corporate-volunteering': {
+    bgClass: 'bg-amber-50',
+    textClass: 'text-amber-600/70',
+    ringClass: 'ring-amber-100/50',
+    hoverBgClass: 'hover:bg-amber-100',
+    hoverTextClass: 'hover:text-amber-600',
+    hoverRingClass: 'hover:ring-amber-200',
   },
 }

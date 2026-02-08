@@ -341,7 +341,9 @@ const Web = ({
         {activeTab === 'list' && (
           <MainList filteredItems={filteredItems} webSlug={webSlug} />
         )}
-        {activeTab === 'map' && <ListingsMap items={filteredItems} />}
+        {activeTab === 'map' && (
+          <ListingsMap items={filteredItems} webSlug={webSlug} />
+        )}
         {activeTab === 'events' && <Events items={events} webSlug={webSlug} />}
 
         {isMobile && (

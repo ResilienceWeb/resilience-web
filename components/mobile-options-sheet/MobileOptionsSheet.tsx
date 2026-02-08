@@ -34,9 +34,6 @@ const MobileOptionsSheet = ({
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle className="text-center">Options</SheetTitle>
-        </SheetHeader>
         <div className="mt-6 flex flex-col gap-4">
           {!isTransitionMode && (
             <>
@@ -51,7 +48,7 @@ const MobileOptionsSheet = ({
                   </Button>
                 </Link>
                 <p className="mt-1 text-sm text-gray-600">
-                  Know something that isn't yet listed? Let us know! 🙏
+                  Know something that isn't listed? Let us know! 🙏
                 </p>
               </div>
             </>
@@ -66,7 +63,9 @@ const MobileOptionsSheet = ({
                     <h2 className="mb-2 text-lg font-semibold">
                       About this web
                     </h2>
-                    <RichText html={webDescription} />
+                    <div className="prose prose-sm">
+                      <RichText html={webDescription} />
+                    </div>
                   </>
                 )}
 

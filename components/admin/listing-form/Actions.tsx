@@ -6,6 +6,7 @@ import { FaMousePointer, FaTrash } from 'react-icons/fa'
 import { actionTypes } from '@helpers/actions'
 import { Button } from '@components/ui/button'
 import {
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,7 +30,7 @@ const Actions = () => {
   })
 
   return (
-    <div className="mt-6">
+    <div className="mt-4">
       <div className="flex items-center justify-between pb-2">
         <FormLabel className="font-semibold">Action Buttons</FormLabel>
         <Button
@@ -166,7 +167,7 @@ const Actions = () => {
                   />
                 </div>
 
-                <div className="ml-2 shrink-0 self-end">
+                <div className="ml-2 shrink-0 self-center">
                   <Button
                     type="button"
                     variant="ghost"
@@ -182,6 +183,13 @@ const Actions = () => {
                   </Button>
                 </div>
               </div>
+              {methods.watch(`actions.${index}.type`) === 'contact' && (
+                <FormDescription className="mt-2">
+                  If you want to add a contact email address, please use the
+                  "Contact email for organisation" field above. This field only
+                  supports website URLs.
+                </FormDescription>
+              )}
             </div>
           )
         })}
