@@ -159,7 +159,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       {...rest}
     >
       <div className="flex h-full flex-col justify-between">
-        <div>
+        <div className="min-h-0 flex-1 overflow-y-auto">
           <div className="my-3 ml-2 flex h-20 items-center justify-between">
             <Image
               alt="Resilience Web CIC logo"
@@ -204,7 +204,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
             ))}
           </nav>
         </div>
-        <div className="p-4">
+        <div className="shrink-0 p-4">
           <h2 className="text-xl">Like what you see?</h2>
           <p className="mb-3 text-[0.9375rem] text-gray-600">
             Consider making a donation to help us host and develop the
