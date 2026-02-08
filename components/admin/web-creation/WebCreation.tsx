@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import posthog from 'posthog-js'
 import * as z from 'zod'
 import { useSession } from '@auth-client'
+import { scrollToFormError } from '@helpers/scrollToFormError'
 import { generateSlug } from '@helpers/utils'
 import Faq from '@components/faq'
 import RichTextEditor from '@components/rich-text-editor'
@@ -172,7 +173,7 @@ const WebCreation = () => {
         <CardContent className="pt-6">
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={form.handleSubmit(onSubmit, scrollToFormError)}
               className="flex flex-col gap-4"
             >
               <FormField

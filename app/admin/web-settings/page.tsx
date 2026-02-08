@@ -12,6 +12,7 @@ import dynamic from 'next/dynamic'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { scrollToFormError } from '@helpers/scrollToFormError'
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
 import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
@@ -207,7 +208,7 @@ export default function WebSettingsPage() {
         </p>
         <div className="my-4 rounded-md bg-white p-4 shadow-md">
           <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit, scrollToFormError)}>
               <div className="mb-6">
                 <FormField
                   control={methods.control}

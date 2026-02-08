@@ -9,6 +9,7 @@ import dynamic from 'next/dynamic'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Category } from '@prisma-client'
 import { z } from 'zod'
+import { scrollToFormError } from '@helpers/scrollToFormError'
 import { generateSlug } from '@helpers/utils'
 import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
@@ -220,7 +221,7 @@ const ListingFormSimplified = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmitForm)}>
+      <form onSubmit={form.handleSubmit(handleSubmitForm, scrollToFormError)}>
         <div className="flex flex-col gap-4 p-4 sm:p-6">
           <FormField
             control={form.control}

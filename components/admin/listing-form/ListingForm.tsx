@@ -11,6 +11,7 @@ import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Category } from '@prisma-client'
 import { z } from 'zod'
+import { scrollToFormError } from '@helpers/scrollToFormError'
 import { generateSlug } from '@helpers/utils'
 import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
@@ -283,7 +284,7 @@ const ListingForm = ({
     <FormProvider {...methods}>
       <Form {...methods}>
         <form
-          onSubmit={handleSubmit(handleSubmitForm)}
+          onSubmit={handleSubmit(handleSubmitForm, scrollToFormError)}
           encType="multipart/form-data"
           className="p-4 sm:p-6"
         >
