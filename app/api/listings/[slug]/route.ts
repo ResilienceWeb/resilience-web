@@ -112,6 +112,7 @@ export async function PUT(request) {
     const noPhysicalLocation = stringToBoolean(
       formData.get('noPhysicalLocation'),
     )
+    const removeLocation = stringToBoolean(formData.get('removeLocation'))
     const slug = formData.get('slug')
     const socials = formData.get('socials')
     const actions = formData.get('actions')
@@ -141,21 +142,44 @@ export async function PUT(request) {
     }))
 
     const hasLocationData = latitude && longitude && locationDescription
-    const locationData = {
-      upsert: {
-        create: {
-          latitude: hasLocationData ? parseFloat(latitude) : null,
-          longitude: hasLocationData ? parseFloat(longitude) : null,
-          description: hasLocationData ? locationDescription : null,
-          noPhysicalLocation,
+    let locationData: Prisma.ListingLocationUpdateOneWithoutListingNestedInput =
+      {}
+    if (hasLocationData) {
+      locationData = {
+        upsert: {
+          create: {
+            latitude: parseFloat(latitude),
+            longitude: parseFloat(longitude),
+            description: locationDescription,
+            noPhysicalLocation,
+          },
+          update: {
+            latitude: parseFloat(latitude),
+            longitude: parseFloat(longitude),
+            description: locationDescription,
+            noPhysicalLocation,
+          },
         },
-        update: {
-          latitude: hasLocationData ? parseFloat(latitude) : null,
-          longitude: hasLocationData ? parseFloat(longitude) : null,
-          description: hasLocationData ? locationDescription : null,
-          noPhysicalLocation,
+      }
+    } else if (noPhysicalLocation) {
+      locationData = {
+        upsert: {
+          create: {
+            latitude: null,
+            longitude: null,
+            description: null,
+            noPhysicalLocation: true,
+          },
+          update: {
+            latitude: null,
+            longitude: null,
+            description: null,
+            noPhysicalLocation: true,
+          },
         },
-      },
+      }
+    } else if (removeLocation) {
+      locationData = { disconnect: true }
     }
 
     const newData: Prisma.ListingUpdateInput = {

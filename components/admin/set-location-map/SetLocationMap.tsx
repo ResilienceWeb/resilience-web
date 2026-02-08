@@ -72,6 +72,16 @@ const MapContent = ({
 
     map.on('geosearch/showlocation', handleShowLocation)
 
+    // Clear form location when the reset button is clicked
+    const handleReset = () => {
+      setPosition(undefined)
+      setValue('location', undefined, {
+        shouldValidate: true,
+        shouldDirty: true,
+      })
+    }
+    geoSearchControl.resetButton.addEventListener('click', handleReset)
+
     // Workaround: Listen for clicks on result items directly
     // The leaflet-geosearch library has a bug where clicking results doesn't always fire the event
     const resultsContainer =
@@ -105,6 +115,7 @@ const MapContent = ({
 
     return () => {
       map.off('geosearch/showlocation', handleShowLocation)
+      geoSearchControl.resetButton.removeEventListener('click', handleReset)
       resultsContainer?.removeEventListener('click', handleResultClick)
       map.removeControl(geoSearchControl)
     }

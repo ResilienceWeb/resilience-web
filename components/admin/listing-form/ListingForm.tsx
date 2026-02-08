@@ -260,8 +260,9 @@ const ListingForm = ({
       data.latitude = data.location.latitude
       data.longitude = data.location.longitude
       data.locationDescription = data.location.description
-      delete data.location
     }
+    data.removeLocation = !data.location && !data.noPhysicalLocation
+    delete data.location
     data.tags = data.tags?.map((t) => t.value)
     data.relations = data.relations?.map((l) => l.value)
     if (listing) {
