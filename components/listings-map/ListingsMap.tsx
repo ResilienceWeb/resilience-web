@@ -1,18 +1,22 @@
 'use client'
 
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 import { BsArrowsFullscreen } from 'react-icons/bs'
+import { HiChevronDown, HiChevronUp } from 'react-icons/hi'
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet/dist/leaflet.css'
 import { createCustomIcon } from '@helpers/map'
+import Item from '@components/main-list/item'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
+import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 
 interface MapProps {
   items?: any[]
+  webSlug: string
 }
 
 function MarkerClusterGroup({ items }: { items: any[] }) {
@@ -100,10 +104,18 @@ function FitBoundsToMarkers({ markers }: { markers: [number, number][] }) {
   return null
 }
 
-function ListingsMap({ items = [] }: MapProps) {
+function ListingsMap({ items = [], webSlug }: MapProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isFullScreen, setIsFullScreen] = useState(false)
+  const [isUnmappedPanelOpen, setIsUnmappedPanelOpen] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
+
+  const { categories } = useCategoriesPublic({ webSlug })
+  const categoriesIndexes = useMemo(() => {
+    const obj: Record<string, number> = {}
+    categories?.map((c, i) => (obj[c.label] = i))
+    return obj
+  }, [categories])
 
   const toggleFullScreen = useCallback(() => {
     if (!document.fullscreenElement) {
@@ -161,8 +173,20 @@ function ListingsMap({ items = [] }: MapProps) {
   const defaultCenter = [52.401, 0.263]
   const defaultZoom = 14
 
-  const listingsWithCoordinates = items.filter(
-    (item) => item.location?.latitude && item.location?.longitude,
+  const listingsWithCoordinates = useMemo(
+    () =>
+      items.filter(
+        (item) => item.location?.latitude && item.location?.longitude,
+      ),
+    [items],
+  )
+
+  const listingsWithoutCoordinates = useMemo(
+    () =>
+      items.filter(
+        (item) => !item.location?.latitude || !item.location?.longitude,
+      ),
+    [items],
   )
 
   // Create array of marker positions for the FitBoundsToMarkers component
@@ -176,6 +200,46 @@ function ListingsMap({ items = [] }: MapProps) {
 
   return (
     <div className="w-full">
+      {listingsWithoutCoordinates.length > 0 && (
+        <div className="border-b bg-gray-50">
+          <button
+            className="flex w-full items-center justify-between px-4 py-2.5 text-sm"
+            onClick={() => setIsUnmappedPanelOpen((prev) => !prev)}
+          >
+            <span className="flex items-center gap-2">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold">
+                {listingsWithoutCoordinates.length}
+              </span>
+              listing
+              {listingsWithoutCoordinates.length !== 1 ? 's' : ''} without a
+              location
+              {!isUnmappedPanelOpen && (
+                <span className="text-xs">— click to show</span>
+              )}
+            </span>
+            {isUnmappedPanelOpen ? (
+              <HiChevronUp className="h-5 w-5" />
+            ) : (
+              <HiChevronDown className="h-5 w-5" />
+            )}
+          </button>
+          {isUnmappedPanelOpen && (
+            <div className="border-t px-4 pb-4">
+              <div className="flex gap-4 overflow-x-auto py-3">
+                {listingsWithoutCoordinates.map((item) => (
+                  <div key={item.id} className="w-[220px] shrink-0">
+                    <Item
+                      categoriesIndexes={categoriesIndexes}
+                      dataItem={item}
+                      simplified
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
       {isLoading ? (
         <div className="flex h-[calc(100vh-150px)] w-full flex-col items-center justify-center bg-white">
           <Spinner />
@@ -187,26 +251,12 @@ function ListingsMap({ items = [] }: MapProps) {
               No locations to display
             </h3>
             <p className="text-gray-600">
-              None of the current listings have location data available. Try
-              adjusting your filters or switching to the List view.
+              Try adjusting your filters or switching to the List view.
             </p>
           </div>
         </div>
       ) : (
         <>
-          <div className="border-b bg-white p-2">
-            <p className="text-sm text-gray-600">
-              Displaying{' '}
-              <span className="font-semibold">
-                {listingsWithCoordinates.length}
-              </span>{' '}
-              location{listingsWithCoordinates.length !== 1 ? 's' : ''} on the
-              map
-              {items.length > listingsWithCoordinates.length && (
-                <> (out of {items.length} total listings)</>
-              )}
-            </p>
-          </div>
           <div ref={mapContainerRef} className="relative">
             <Button
               variant="outline"
