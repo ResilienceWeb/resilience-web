@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { email: emailAddress, web: webId, asOwner } = await request.json()
-    const email = emailAddress.trim()
+    const email = emailAddress.trim().toLowerCase()
 
     if (!email) {
       return Response.json(
