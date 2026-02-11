@@ -24,6 +24,7 @@ const FIELD_LABELS: Record<ListingField, string> = {
   email: 'Email',
   website: 'Website',
   address: 'Address',
+  category: 'Category',
   facebook: 'Facebook',
   twitter: 'Twitter/X',
   instagram: 'Instagram',
@@ -62,7 +63,11 @@ export function ColumnSelect({
           className="w-full justify-between"
           disabled={disabled}
         >
-          {value === null ? "(Don't import)" : value ? FIELD_LABELS[value] : 'Select field...'}
+          {value === null
+            ? "(Don't import)"
+            : value
+              ? FIELD_LABELS[value]
+              : 'Select field...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
