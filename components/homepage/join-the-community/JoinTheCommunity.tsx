@@ -1,7 +1,7 @@
-import Link from 'next/link'
 import { FaDiscord } from 'react-icons/fa'
-import { Button } from '@components/ui/button'
+import Link from 'next/link'
 import SignupForm from '@components/signup-form'
+import { Button } from '@components/ui/button'
 import useIsMobile from '@hooks/application/useIsMobile'
 
 const JoinTheCommunity = () => {
@@ -13,8 +13,7 @@ const JoinTheCommunity = () => {
       <div className="flex flex-col items-start justify-start px-0 md:px-4">
         <h2 className="text-2xl text-gray-600">Want to get involved?</h2>
         <h2 className="text-2xl">
-          Keep up to date with new features, and help us with feedback and
-          ideas:
+          Keep up to date with new features and help us with feedback and ideas:
         </h2>
         <h3 className="mb-2 mt-6 text-2xl">1. Subscribe to our mailing list</h3>
         <SignupForm />
