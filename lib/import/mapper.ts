@@ -46,6 +46,7 @@ const FIELD_PATTERNS: Record<ListingField, RegExp[]> = {
     /^street\s*address$/i,
     /^full\s*address$/i,
   ],
+  category: [/^category$/i, /^cat$/i, /^type$/i, /^group$/i, /^sector$/i],
   facebook: [/^facebook$/i, /^fb$/i, /^facebook\s*url$/i, /^facebook\s*link$/i],
   twitter: [
     /^twitter$/i,
@@ -180,6 +181,9 @@ export function mapRow(
         case 'address':
           mapped.address = sanitizeString(value)
           break
+        case 'category':
+          mapped.category = sanitizeString(value)
+          break
       }
     }
   }
@@ -238,6 +242,7 @@ export function getAvailableFields(
     'email',
     'website',
     'address',
+    'category',
     'facebook',
     'twitter',
     'instagram',

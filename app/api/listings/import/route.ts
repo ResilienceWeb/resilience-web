@@ -136,6 +136,33 @@ export async function POST(request: NextRequest) {
             }
           }
 
+          // Look up or create category if provided
+          let categoryId: number | undefined
+          if (row.category) {
+            const existingCategory = await prisma.category.findUnique({
+              where: {
+                categoryIdentifier: {
+                  webId,
+                  label: row.category,
+                },
+              },
+              select: { id: true },
+            })
+
+            if (existingCategory) {
+              categoryId = existingCategory.id
+            } else {
+              const newCategory = await prisma.category.create({
+                data: {
+                  label: row.category,
+                  webId,
+                },
+                select: { id: true },
+              })
+              categoryId = newCategory.id
+            }
+          }
+
           // Generate unique slug for this listing
           const slug = await generateUniqueSlug(row.name, webId)
 
@@ -148,6 +175,11 @@ export async function POST(request: NextRequest) {
               website: row.website,
               slug,
               pending: false,
+              ...(categoryId && {
+                category: {
+                  connect: { id: categoryId },
+                },
+              }),
             },
             webId,
             location,
