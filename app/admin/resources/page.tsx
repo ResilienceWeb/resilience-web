@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+import { HiDownload, HiClipboard, HiCheck } from 'react-icons/hi'
 import Image from 'next/image'
 import { Button } from '@components/ui/button'
 import {
@@ -9,8 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@components/ui/card'
-import { HiDownload, HiClipboard, HiCheck } from 'react-icons/hi'
-import { useState } from 'react'
 
 const downloadImage = (filename: string) => {
   const link = document.createElement('a')

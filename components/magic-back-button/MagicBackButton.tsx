@@ -1,7 +1,7 @@
+import type { ButtonHTMLAttributes } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft } from 'lucide-react'
 import { usePageTracker } from '@helpers/page-tracker/usePageTracker'
-import type { ButtonHTMLAttributes } from 'react'
 
 type MagicBackButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   backLink?: string

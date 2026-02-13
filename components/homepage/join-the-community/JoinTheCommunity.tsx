@@ -1,7 +1,7 @@
-import Link from 'next/link'
 import { FaDiscord } from 'react-icons/fa'
-import { Button } from '@components/ui/button'
+import Link from 'next/link'
 import SignupForm from '@components/signup-form'
+import { Button } from '@components/ui/button'
 import useIsMobile from '@hooks/application/useIsMobile'
 
 const JoinTheCommunity = () => {

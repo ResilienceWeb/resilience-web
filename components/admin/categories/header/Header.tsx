@@ -2,8 +2,8 @@ import { memo, useCallback } from 'react'
 import { HiPlus } from 'react-icons/hi'
 import { useToggle } from 'usehooks-ts'
 import { Button } from '@components/ui/button'
-import { useAppContext } from '@store/hooks'
 import useCreateCategory from '@hooks/categories/useCreateCategory'
+import { useAppContext } from '@store/hooks'
 import { NewCategoryDialog } from './category-dialog'
 
 const Header = () => {

@@ -1,8 +1,8 @@
 'use client'
 import { useToggle } from 'usehooks-ts'
-import Footer from '@components/footer'
 import Nav from '@components/admin/nav'
 import Sidebar from '@components/admin/sidebar'
+import Footer from '@components/footer'
 
 const LayoutContainer = ({ children }) => {
   const [isOpen, _toggle, setIsOpen] = useToggle()

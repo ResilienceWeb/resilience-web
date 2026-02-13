@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-import { useAppContext } from '@store/hooks'
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from '@auth-client'
+import { useAppContext } from '@store/hooks'
 
 async function fetchWebAccessCheckRequest({ queryKey }) {
   const [_key, { webSlug, webId }] = queryKey

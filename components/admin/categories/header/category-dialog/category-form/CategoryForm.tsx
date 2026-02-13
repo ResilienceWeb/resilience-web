@@ -1,8 +1,8 @@
 import { memo, useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { HexColorPicker } from 'react-colorful'
-import { DialogFooter } from '@components/ui/dialog'
+import { useForm } from 'react-hook-form'
 import { Button } from '@components/ui/button'
+import { DialogFooter } from '@components/ui/dialog'
 import {
   Form,
   FormControl,

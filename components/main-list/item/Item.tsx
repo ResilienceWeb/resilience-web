@@ -6,6 +6,7 @@ import { HiUserGroup } from 'react-icons/hi'
 import { useInView } from 'react-intersection-observer'
 import { useParams, useRouter } from 'next/navigation'
 import chroma from 'chroma-js'
+import { isBranchDeploy } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
 import { Badge } from '@components/ui/badge'
@@ -15,7 +16,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip'
-import { isBranchDeploy } from '@helpers/config'
 import ImagePlaceholder from './image-placeholder'
 
 type Props = {

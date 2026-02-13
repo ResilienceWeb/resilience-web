@@ -32,9 +32,7 @@ const SocialMediaEdits = ({ listing, editedListing }: Props) => {
             return (
               <div key={platform} className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="first-letter:capitalize">
-                    {platform}:
-                  </span>
+                  <span className="first-letter:capitalize">{platform}:</span>
                   <div>
                     <div className="flex items-center gap-2">
                       <span
@@ -87,9 +85,7 @@ const SocialMediaEdits = ({ listing, editedListing }: Props) => {
             return (
               <div key={platform} className="flex items-center gap-2">
                 <span className="first-letter:capitalize">{platform}:</span>
-                <span
-                  style={{ color: 'green', backgroundColor: '#b5efdb' }}
-                >
+                <span style={{ color: 'green', backgroundColor: '#b5efdb' }}>
                   {newSocial.url}
                 </span>
                 <span className="text-gray-600 italic">(added)</span>

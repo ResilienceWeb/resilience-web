@@ -2,8 +2,8 @@ import { memo, useMemo, useCallback, useEffect } from 'react'
 import Select from 'react-select'
 import type { Options } from 'react-select'
 import { usePathname } from 'next/navigation'
-import { useAppContext } from '@store/hooks'
 import useAllowedWebs from '@hooks/webs/useAllowedWebs'
+import { useAppContext } from '@store/hooks'
 
 type WebOption = {
   value: string

@@ -1,8 +1,7 @@
-import { Badge } from '@components/ui/badge'
 import chroma from 'chroma-js'
-import { cn } from '@components/lib/utils'
-
 import { selectMoreAccessibleColor } from '@helpers/colors'
+import { cn } from '@components/lib/utils'
+import { Badge } from '@components/ui/badge'
 
 interface CategoryTagProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode

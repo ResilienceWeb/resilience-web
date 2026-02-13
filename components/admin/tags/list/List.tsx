@@ -1,5 +1,6 @@
 import { memo, useCallback, useState } from 'react'
 import { useToggle } from 'usehooks-ts'
+import { Button } from '@components/ui/button'
 import {
   Table,
   TableBody,
@@ -8,12 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table'
-import { Button } from '@components/ui/button'
-
-import useUpdateTag from '@hooks/tags/useUpdateTag'
-import useDeleteTag from '@hooks/tags/useDeleteTag'
-import useAddTagToListings from '@hooks/tags/useAddTagToListings'
 import useListings from '@hooks/listings/useListings'
+import useAddTagToListings from '@hooks/tags/useAddTagToListings'
+import useDeleteTag from '@hooks/tags/useDeleteTag'
+import useUpdateTag from '@hooks/tags/useUpdateTag'
 import { UpdateTagDialog } from '../header/tag-dialog'
 import AddTagToListingsDialog from './add-to-listings-dialog'
 

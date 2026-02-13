@@ -12,7 +12,11 @@ const Tooltip = ({ delayDuration = 50, ...props }) => (
 
 const TooltipTrigger = TooltipPrimitive.Trigger
 
-const TooltipContent = ({ className, sideOffset = 4, ...props }: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>) => (
+const TooltipContent = ({
+  className,
+  sideOffset = 4,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>) => (
   <TooltipPrimitive.Portal>
     <TooltipPrimitive.Content
       sideOffset={sideOffset}

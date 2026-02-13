@@ -1,9 +1,9 @@
 import { memo, useCallback } from 'react'
 import { HiPlus } from 'react-icons/hi'
 import { useToggle } from 'usehooks-ts'
-import { useAppContext } from '@store/hooks'
 import { Button } from '@components/ui/button'
 import useCreateTag from '@hooks/tags/useCreateTag'
+import { useAppContext } from '@store/hooks'
 import { NewTagDialog } from './tag-dialog'
 
 const Header = () => {

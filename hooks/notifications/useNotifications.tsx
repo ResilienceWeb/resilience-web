@@ -23,13 +23,7 @@ async function fetchNotifications(): Promise<NotificationItem[]> {
 export default function useNotifications() {
   const { data: session } = useSession()
 
-  const {
-    data,
-    isPending,
-    isError,
-    error,
-    refetch,
-  } = useQuery({
+  const { data, isPending, isError, error, refetch } = useQuery({
     queryKey: ['notifications'],
     queryFn: fetchNotifications,
     enabled: Boolean(session),

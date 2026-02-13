@@ -1,4 +1,8 @@
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
 import { Button } from '@components/ui/button'
+import { DialogFooter } from '@components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -8,16 +12,12 @@ import {
   FormMessage,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
-import { DialogFooter } from '@components/ui/dialog'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 
 const formSchema = z.object({
   label: z.string().min(1, 'Label is required'),
