@@ -1,34 +1,82 @@
+import type { InstrumentationOnRequestError } from 'next/dist/server/instrumentation/types'
+import { logs, SeverityNumber } from '@opentelemetry/api-logs'
+import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
+import { resourceFromAttributes } from '@opentelemetry/resources'
+import {
+  BatchLogRecordProcessor,
+  LoggerProvider,
+} from '@opentelemetry/sdk-logs'
 import * as Sentry from '@sentry/nextjs'
 
 const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build'
+const isProduction = process.env.NODE_ENV === 'production' && !isBuildPhase
 
-export const onRequestError = Sentry.captureRequestError
+const posthogApiKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
+const posthogHost =
+  process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com'
+
+export const loggerProvider = new LoggerProvider({
+  resource: resourceFromAttributes({ 'service.name': 'resilience-web' }),
+  processors:
+    isProduction && posthogApiKey
+      ? [
+          new BatchLogRecordProcessor(
+            new OTLPLogExporter({
+              url: `${posthogHost}/i/v1/logs`,
+              headers: {
+                Authorization: `Bearer ${posthogApiKey}`,
+                'Content-Type': 'application/json',
+              },
+            }),
+          ),
+        ]
+      : [],
+})
+
+export async function onRequestError(
+  ...args: Parameters<InstrumentationOnRequestError>
+) {
+  const [error, request, context] = args
+
+  Sentry.captureRequestError(error, request, context)
+
+  const err = error instanceof Error ? error : new Error(String(error))
+  const logger = loggerProvider.getLogger('resilience-web')
+  logger.emit({
+    body: err.message,
+    severityNumber: SeverityNumber.ERROR,
+    severityText: 'ERROR',
+    attributes: {
+      'error.type': err.name,
+      'error.stack': err.stack || '',
+      'http.method': request.method,
+      'http.path': request.path,
+      'next.route.path': context.routePath,
+      'next.route.type': context.routeType,
+      'next.router.kind': context.routerKind,
+    },
+  })
+
+  await loggerProvider.forceFlush()
+}
 
 export function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     Sentry.init({
       dsn: 'https://a205584b48c84a7fbfcd3632479d33f7@o4505069644611584.ingest.sentry.io/4505069646643200',
-      enabled: process.env.NODE_ENV === 'production' && !isBuildPhase,
-
-      // Adjust this value in production, or use tracesSampler for greater control
+      enabled: isProduction,
       tracesSampleRate: 1,
-
-      // Setting this option to true will print useful information to the console while you're setting up Sentry.
       debug: false,
     })
 
-    // Sentry.addIntegration(Sentry.captureConsoleIntegration())
+    logs.setGlobalLoggerProvider(loggerProvider)
   }
 
   if (process.env.NEXT_RUNTIME === 'edge') {
     Sentry.init({
       dsn: 'https://a205584b48c84a7fbfcd3632479d33f7@o4505069644611584.ingest.sentry.io/4505069646643200',
-      enabled: process.env.NODE_ENV === 'production' && !isBuildPhase,
-
-      // Adjust this value in production, or use tracesSampler for greater control
+      enabled: isProduction,
       tracesSampleRate: 1,
-
-      // Setting this option to true will print useful information to the console while you're setting up Sentry.
       debug: false,
     })
   }

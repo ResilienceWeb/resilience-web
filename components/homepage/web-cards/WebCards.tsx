@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import posthog from 'posthog-js'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { getWebUrl } from '@helpers/config'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 
@@ -63,7 +63,7 @@ const Card = ({ web }) => {
   const isNew = isNewWeb(web.createdAt)
 
   return (
-    <Link href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}>
+    <Link href={getWebUrl(web.slug)}>
       <div className="group relative h-full overflow-hidden rounded-xl bg-white shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl">
         {isNew && (
           <Badge variant="secondary" className="absolute top-2 right-2 z-10">

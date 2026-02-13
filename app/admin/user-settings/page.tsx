@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import * as z from 'zod'
 import { useSession } from '@auth-client'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { getWebUrl } from '@helpers/config'
 import { Button } from '@components/ui/button'
 import {
   Card,
@@ -182,7 +182,7 @@ export default function UserSettingsPage() {
                           <p>{web.title}</p>
                         </div>
                         <Link
-                          href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
+                          href={getWebUrl(web.slug)}
                           target="_blank"
                         >
                           <Button variant="outline">View</Button>
@@ -210,7 +210,7 @@ export default function UserSettingsPage() {
                           <p>{web.title}</p>
                         </div>
                         <Link
-                          href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
+                          href={getWebUrl(web.slug)}
                           target="_blank"
                         >
                           <Button variant="outline">View</Button>

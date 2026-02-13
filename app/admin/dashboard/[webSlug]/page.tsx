@@ -5,7 +5,7 @@ import { HiArrowLeft } from 'react-icons/hi'
 import { HiOutlineClipboard, HiOutlineClipboardCheck } from 'react-icons/hi'
 import { useRouter } from 'next/navigation'
 import type { WebAccess } from '@prisma-client'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { getWebUrl, REMOTE_HOSTNAME } from '@helpers/config'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
 import WebAccessTable from '@components/admin/web-access-table'
 import WebFeatures from '@components/admin/web-features'
@@ -134,7 +134,7 @@ export default function WebDashboardPage({ params }) {
             {web.title} Resilience Web
           </h1>
           <a
-            href={`${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`}
+            href={getWebUrl(web.slug)}
             target="_blank"
             rel="noopener noreferrer"
             className="text-primary w-fit font-semibold hover:underline"

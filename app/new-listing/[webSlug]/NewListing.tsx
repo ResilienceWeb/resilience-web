@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 import { PiInfoBold } from 'react-icons/pi'
 import Link from 'next/link'
 import { useSession } from '@auth-client'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { getWebUrl } from '@helpers/config'
 import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
 import Layout from '@components/layout'
 import { Button } from '@components/ui/button'
@@ -60,7 +60,7 @@ export default function NewListing({ webSlug }: { webSlug: string }) {
               hopefully approved by the admins of the{' '}
               <strong>{web?.title}</strong> web.
             </p>
-            <Link href={`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`}>
+            <Link href={getWebUrl(webSlug)}>
               <Button className="mt-8" variant="default">
                 Go back to {web?.title} Resilience Web
               </Button>

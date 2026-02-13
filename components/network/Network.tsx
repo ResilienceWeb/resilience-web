@@ -5,7 +5,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/navigation'
 import { forceRadial } from 'd3-force'
 import { useResizeObserver } from 'usehooks-ts'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { getWebUrl } from '@helpers/config'
 import { getIconUnicode } from '@helpers/icons'
 import ListingDialog from '@components/main-list/listing-dialog'
 import { Button } from '@components/ui/button'
@@ -180,7 +180,7 @@ const Network = ({ data, selectedId, setSelectedId }) => {
     (node: NodeType) => {
       if (typeof node.id === 'string' && node.id.includes('related-web')) {
         const webSlug = node.id.match(/related-web-(.*)/)?.[1] || ''
-        router.push(`${PROTOCOL}://${webSlug}.${REMOTE_HOSTNAME}`)
+        router.push(getWebUrl(webSlug))
       } else if (
         node.group !== 'category' &&
         node.group !== 'central-node' &&

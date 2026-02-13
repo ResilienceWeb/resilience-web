@@ -4,7 +4,7 @@ import { useCallback, useMemo, useEffect, useState, memo } from 'react'
 import { FaStar } from 'react-icons/fa'
 import { HiUserGroup } from 'react-icons/hi'
 import { useInView } from 'react-intersection-observer'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import chroma from 'chroma-js'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
@@ -15,6 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip'
+import { isBranchDeploy } from '@helpers/config'
 import ImagePlaceholder from './image-placeholder'
 
 type Props = {
@@ -25,6 +26,7 @@ type Props = {
 
 const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
   const router = useRouter()
+  const { subdomain } = useParams<{ subdomain: string }>()
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
   const { ref, inView } = useInView()
@@ -36,8 +38,11 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
   }, [])
 
   const onClick = useCallback(() => {
-    router.push(`/${dataItem.slug}`)
-  }, [dataItem.slug, router])
+    const path = isBranchDeploy()
+      ? `/${subdomain}/${dataItem.slug}`
+      : `/${dataItem.slug}`
+    router.push(path)
+  }, [dataItem.slug, router, subdomain])
 
   const categoryBackgroundColor = useMemo(
     () => chroma(dataItem.category.color).alpha(0.5).css(),

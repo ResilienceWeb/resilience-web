@@ -8,7 +8,7 @@ import '@styles/font-awesome.css'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import posthog from 'posthog-js'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { getWebUrl } from '@helpers/config'
 import { createCustomIcon } from '@helpers/map'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
@@ -185,7 +185,7 @@ function WebsMap({ webs = [] }: WebsMapProps) {
 function WebPopupContent({ web }: { web: Web }) {
   const isNew = isNewWeb(web.createdAt)
   const router = useRouter()
-  const webUrl = `${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`
+  const webUrl = getWebUrl(web.slug)
 
   return (
     <div className="flex flex-col gap-2">

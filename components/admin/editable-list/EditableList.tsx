@@ -1,7 +1,7 @@
 import { useCallback, useState, useMemo, memo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
+import { getWebUrl, REMOTE_HOSTNAME } from '@helpers/config'
 import { removeNonAlphaNumeric } from '@helpers/utils'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
 import { Button } from '@components/ui/button'
@@ -103,7 +103,7 @@ const EditableList = ({ deleteListing, items }) => {
           <p className="mt-4 max-w-[500px] text-sm text-gray-600">
             This web is publicly accessible at{' '}
             <a
-              href={`${PROTOCOL}://${selectedWebSlug}.${REMOTE_HOSTNAME}`}
+              href={getWebUrl(selectedWebSlug)}
               target="_blank"
               className="font-semibold hover:underline"
               rel="noopener noreferrer"
