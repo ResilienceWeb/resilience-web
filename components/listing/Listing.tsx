@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { actionTypes, actionIconStyles } from '@helpers/actions'
-import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
+import { getWebUrl, REMOTE_URL } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import { sanitizeLink } from '@helpers/utils'
 import CategoryTag from '@components/category-tag'
@@ -139,7 +139,7 @@ function Listing({ listing }) {
 
           <div className="mt-3 flex flex-wrap items-center gap-2 md:mt-4 md:gap-3">
             <Link
-              href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?categories=${encodeURIComponent(listing.category.label).replace(/%20/g, '+')}`}
+              href={`${getWebUrl(listing.web.slug)}?categories=${encodeURIComponent(listing.category.label).replace(/%20/g, '+')}`}
             >
               <CategoryTag
                 colorHex={listing.category.color}
@@ -322,7 +322,7 @@ function Listing({ listing }) {
               return (
                 <Link
                   key={tag.id}
-                  href={`${PROTOCOL}://${listing.web.slug}.${REMOTE_HOSTNAME}?tags=${urlEncodedTag}`}
+                  href={`${getWebUrl(listing.web.slug)}?tags=${urlEncodedTag}`}
                 >
                   <Badge
                     className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"

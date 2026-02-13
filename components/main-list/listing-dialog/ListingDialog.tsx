@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import { actionTypes, actionIconStyles } from '@helpers/actions'
-import { REMOTE_HOSTNAME, PROTOCOL } from '@helpers/config'
+import { getWebUrl } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import { sanitizeLink } from '@helpers/utils'
 import CategoryTag from '@components/category-tag'
@@ -57,7 +57,7 @@ const ListingDialog = ({
     })
   }, [])
 
-  const individualListingLink = `${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}/${item.slug}`
+  const individualListingLink = `${getWebUrl(subdomain)}/${item.slug}`
   const handleShareButtonClick = useCallback(() => {
     void navigator.clipboard.writeText(individualListingLink)
     showCopiedToClipboardToast()
@@ -219,7 +219,7 @@ const ListingDialog = ({
               return (
                 <Link
                   key={tag.id}
-                  href={`${PROTOCOL}://${subdomain}.${REMOTE_HOSTNAME}?web=${webSearchParam}&tags=${urlEncodedTag}`}
+                  href={`${getWebUrl(subdomain)}?web=${webSearchParam}&tags=${urlEncodedTag}`}
                   onClick={onClose}
                 >
                   <Badge
