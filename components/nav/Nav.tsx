@@ -6,7 +6,7 @@ import { RxHamburgerMenu } from 'react-icons/rx'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { PROTOCOL, REMOTE_HOSTNAME, REMOTE_URL } from '@helpers/config'
+import { getWebUrl, REMOTE_URL } from '@helpers/config'
 import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
 import { Button } from '@components/ui/button'
 import {
@@ -44,7 +44,7 @@ export default function MainNav({ webs }) {
           )
           .map((web) => ({
             label: web.title,
-            href: `${PROTOCOL}://${web.slug}.${REMOTE_HOSTNAME}`,
+            href: getWebUrl(web.slug),
           }))
           .concat({
             label: 'Create your own web',
