@@ -73,8 +73,7 @@ export default function middleware(req: NextRequest) {
       hostname === 'staging.resilienceweb.org.uk' ||
       hostname === 'resilienceweb.netlify.app' ||
       currentHost === 'www' ||
-      (process.env.VERCEL_ENV === 'preview' &&
-        hostname === process.env.VERCEL_URL)
+      hostname.endsWith('--resilienceweb.netlify.app')
     ) {
       return NextResponse.rewrite(url)
     }
