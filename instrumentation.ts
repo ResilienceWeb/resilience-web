@@ -1,4 +1,5 @@
-import { logs } from '@opentelemetry/api-logs'
+import type { InstrumentationOnRequestError } from 'next/dist/server/instrumentation/types'
+import { logs, SeverityNumber } from '@opentelemetry/api-logs'
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
 import { resourceFromAttributes } from '@opentelemetry/resources'
 import {
@@ -32,7 +33,32 @@ export const loggerProvider = new LoggerProvider({
       : [],
 })
 
-export const onRequestError = Sentry.captureRequestError
+export async function onRequestError(
+  ...args: Parameters<InstrumentationOnRequestError>
+) {
+  const [error, request, context] = args
+
+  Sentry.captureRequestError(error, request, context)
+
+  const err = error instanceof Error ? error : new Error(String(error))
+  const logger = loggerProvider.getLogger('resilience-web')
+  logger.emit({
+    body: err.message,
+    severityNumber: SeverityNumber.ERROR,
+    severityText: 'ERROR',
+    attributes: {
+      'error.type': err.name,
+      'error.stack': err.stack || '',
+      'http.method': request.method,
+      'http.path': request.path,
+      'next.route.path': context.routePath,
+      'next.route.type': context.routeType,
+      'next.router.kind': context.routerKind,
+    },
+  })
+
+  await loggerProvider.forceFlush()
+}
 
 export function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
