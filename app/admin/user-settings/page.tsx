@@ -181,10 +181,7 @@ export default function UserSettingsPage() {
                         <div className="flex-1">
                           <p>{web.title}</p>
                         </div>
-                        <Link
-                          href={getWebUrl(web.slug)}
-                          target="_blank"
-                        >
+                        <Link href={getWebUrl(web.slug)} target="_blank">
                           <Button variant="outline">View</Button>
                         </Link>
                       </li>
@@ -209,10 +206,7 @@ export default function UserSettingsPage() {
                         <div className="flex-1">
                           <p>{web.title}</p>
                         </div>
-                        <Link
-                          href={getWebUrl(web.slug)}
-                          target="_blank"
-                        >
+                        <Link href={getWebUrl(web.slug)} target="_blank">
                           <Button variant="outline">View</Button>
                         </Link>
                       </li>

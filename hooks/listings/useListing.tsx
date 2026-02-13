@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-
 import { useAppContext } from '@store/hooks'
 
 export async function fetchListingRequest({ queryKey }) {

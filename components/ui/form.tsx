@@ -1,11 +1,9 @@
 'use client'
 
 import * as React from 'react'
-import { Label as LabelPrimitive, Slot as SlotPrimitive } from 'radix-ui'
-
 import { Controller, FormProvider, useFormContext } from 'react-hook-form'
 import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form'
-
+import { Label as LabelPrimitive, Slot as SlotPrimitive } from 'radix-ui'
 import { cn } from '@components/lib/utils'
 import { Label } from '@components/ui/label'
 
@@ -66,21 +64,24 @@ const FormItemContext = React.createContext<FormItemContextValue>(
   {} as FormItemContextValue,
 )
 
-const FormItem = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+const FormItem = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
   const id = React.useId()
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div
-        className={cn('flex flex-col gap-2', className)}
-        {...props}
-      />
+      <div className={cn('flex flex-col gap-2', className)} {...props} />
     </FormItemContext.Provider>
   )
 }
 FormItem.displayName = 'FormItem'
 
-const FormLabel = ({ className, ...props }: React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>) => {
+const FormLabel = ({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>) => {
   const { error, formItemId } = useFormField()
 
   return (
@@ -93,7 +94,9 @@ const FormLabel = ({ className, ...props }: React.ComponentPropsWithoutRef<typeo
 }
 FormLabel.displayName = 'FormLabel'
 
-const FormControl = ({ ...props }: React.ComponentPropsWithoutRef<typeof SlotPrimitive.Slot>) => {
+const FormControl = ({
+  ...props
+}: React.ComponentPropsWithoutRef<typeof SlotPrimitive.Slot>) => {
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
   return (
@@ -111,7 +114,10 @@ const FormControl = ({ ...props }: React.ComponentPropsWithoutRef<typeof SlotPri
 }
 FormControl.displayName = 'FormControl'
 
-const FormDescription = ({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => {
+const FormDescription = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLParagraphElement>) => {
   const { formDescriptionId } = useFormField()
 
   return (
@@ -124,7 +130,11 @@ const FormDescription = ({ className, ...props }: React.HTMLAttributes<HTMLParag
 }
 FormDescription.displayName = 'FormDescription'
 
-const FormMessage = ({ className, children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => {
+const FormMessage = ({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLParagraphElement>) => {
   const { error, formMessageId } = useFormField()
   const body = error ? String(error?.message) : children
 

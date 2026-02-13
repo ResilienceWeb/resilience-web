@@ -1,12 +1,14 @@
 'use client'
 
 import * as React from 'react'
-import { Checkbox as CheckboxPrimitive } from 'radix-ui'
 import { Check } from 'lucide-react'
-
+import { Checkbox as CheckboxPrimitive } from 'radix-ui'
 import { cn } from '@components/lib/utils'
 
-const Checkbox = ({ className, ...props }: React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>) => (
+const Checkbox = ({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>) => (
   <CheckboxPrimitive.Root
     className={cn(
       'peer border-primary focus-visible:ring-ring data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground h-4 w-4 shrink-0 rounded-sm border shadow-sm focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',

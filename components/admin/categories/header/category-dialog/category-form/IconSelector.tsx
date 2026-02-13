@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { icons, categories } from '@helpers/icons'
 import { Button } from '@components/ui/button'
 import {
   Dialog,
@@ -8,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@components/ui/dialog'
-import { icons, categories } from '@helpers/icons'
 
 interface IconSelectorProps {
   value: string

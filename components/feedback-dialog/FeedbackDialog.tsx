@@ -27,7 +27,10 @@ import { Input } from '@components/ui/input'
 import { Textarea } from '@components/ui/textarea'
 
 const formSchema = z.object({
-  email: z.string().min(1, { error: 'Email is required' }).email({ error: 'Invalid email address' }),
+  email: z
+    .string()
+    .min(1, { error: 'Email is required' })
+    .email({ error: 'Invalid email address' }),
   feedback: z
     .string()
     .min(1, { error: 'Feedback is required' })

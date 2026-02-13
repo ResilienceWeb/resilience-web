@@ -1,45 +1,44 @@
-"use client";
+'use client'
 
 /**
  * File upload zone with drag-and-drop support
  */
-
-import { useCallback, useState } from "react";
-import { Upload, FileText, X, Download } from "lucide-react";
-import { cn } from "@components/lib/utils";
+import { useCallback, useState } from 'react'
+import { Upload, FileText, X, Download } from 'lucide-react'
+import { cn } from '@components/lib/utils'
 
 const CSV_TEMPLATE_HEADERS = [
-  "Name",
-  "Description",
-  "Email",
-  "Website",
-  "Address",
-  "Category",
-  "Tags",
-  "Facebook",
-  "Instagram",
-  "X",
-  "LinkedIn",
-  "YouTube",
-];
+  'Name',
+  'Description',
+  'Email',
+  'Website',
+  'Address',
+  'Category',
+  'Tags',
+  'Facebook',
+  'Instagram',
+  'X',
+  'LinkedIn',
+  'YouTube',
+]
 
 function downloadTemplate() {
-  const csvContent = CSV_TEMPLATE_HEADERS.join(",") + "\n";
-  const blob = new Blob([csvContent], { type: "text/csv" });
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "resilience-web-import-template.csv";
-  document.body.appendChild(link);
-  link.click();
-  window.URL.revokeObjectURL(url);
-  document.body.removeChild(link);
+  const csvContent = CSV_TEMPLATE_HEADERS.join(',') + '\n'
+  const blob = new Blob([csvContent], { type: 'text/csv' })
+  const url = window.URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'resilience-web-import-template.csv'
+  document.body.appendChild(link)
+  link.click()
+  window.URL.revokeObjectURL(url)
+  document.body.removeChild(link)
 }
 
 interface FileUploadZoneProps {
-  onFileSelect: (file: File) => void;
-  isLoading?: boolean;
-  error?: string | null;
+  onFileSelect: (file: File) => void
+  isLoading?: boolean
+  error?: string | null
 }
 
 export function FileUploadZone({
@@ -47,58 +46,58 @@ export function FileUploadZone({
   isLoading = false,
   error,
 }: FileUploadZoneProps) {
-  const [isDragging, setIsDragging] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   const handleDragEnter = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  }, []);
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+  }, [])
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-  }, []);
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }, [])
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }, []);
+    e.preventDefault()
+    e.stopPropagation()
+  }, [])
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
+      e.preventDefault()
+      e.stopPropagation()
+      setIsDragging(false)
 
-      const files = Array.from(e.dataTransfer.files);
-      const csvFile = files.find((file) => file.name.endsWith(".csv"));
+      const files = Array.from(e.dataTransfer.files)
+      const csvFile = files.find((file) => file.name.endsWith('.csv'))
 
       if (csvFile) {
-        setSelectedFile(csvFile);
-        onFileSelect(csvFile);
+        setSelectedFile(csvFile)
+        onFileSelect(csvFile)
       }
     },
-    [onFileSelect]
-  );
+    [onFileSelect],
+  )
 
   const handleFileInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
+      const file = e.target.files?.[0]
       if (file) {
-        setSelectedFile(file);
-        onFileSelect(file);
+        setSelectedFile(file)
+        onFileSelect(file)
       }
     },
-    [onFileSelect]
-  );
+    [onFileSelect],
+  )
 
   const handleClearFile = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    setSelectedFile(null);
-  }, []);
+    e.stopPropagation()
+    setSelectedFile(null)
+  }, [])
 
   return (
     <div className="w-full">
@@ -108,13 +107,13 @@ export function FileUploadZone({
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         className={cn(
-          "relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg transition-colors",
+          'relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg transition-colors',
           selectedFile
-            ? "border-green-500 bg-green-50 dark:bg-green-950/20"
+            ? 'border-green-500 bg-green-50 dark:bg-green-950/20'
             : isDragging
-            ? "border-primary bg-primary/5"
-            : "border-gray-300 hover:border-gray-400",
-          isLoading && "opacity-50 pointer-events-none"
+              ? 'border-primary bg-primary/5'
+              : 'border-gray-300 hover:border-gray-400',
+          isLoading && 'opacity-50 pointer-events-none',
         )}
       >
         {selectedFile ? (
@@ -140,8 +139,8 @@ export function FileUploadZone({
           <div className="flex flex-col items-center justify-center pt-5 pb-6 px-4">
             <Upload
               className={cn(
-                "w-12 h-12 mb-4 transition-colors",
-                isDragging ? "text-primary" : "text-gray-400"
+                'w-12 h-12 mb-4 transition-colors',
+                isDragging ? 'text-primary' : 'text-gray-400',
               )}
             />
             <p className="mb-2 text-sm text-gray-700 dark:text-gray-300">
@@ -154,9 +153,9 @@ export function FileUploadZone({
             <button
               type="button"
               onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                downloadTemplate();
+                e.preventDefault()
+                e.stopPropagation()
+                downloadTemplate()
               }}
               className="relative z-10 mt-4 flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
             >
@@ -187,5 +186,5 @@ export function FileUploadZone({
         </div>
       )}
     </div>
-  );
+  )
 }

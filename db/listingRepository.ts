@@ -1,10 +1,9 @@
 /**
  * Repository for listing data access operations
  */
-
-import prisma from "@prisma-rw";
-import type { Prisma } from "@prisma-client";
-import type { MappedRow } from "@/lib/import/types";
+import type { MappedRow } from '@/lib/import/types'
+import type { Prisma } from '@prisma-client'
+import prisma from '@prisma-rw'
 
 /**
  * Find duplicate listings by name within a web
@@ -12,9 +11,9 @@ import type { MappedRow } from "@/lib/import/types";
  */
 export async function findDuplicateListings(
   webId: number,
-  names: string[]
+  names: string[],
 ): Promise<string[]> {
-  if (names.length === 0) return [];
+  if (names.length === 0) return []
 
   const existingListings = await prisma.listing.findMany({
     where: {
@@ -26,19 +25,17 @@ export async function findDuplicateListings(
     select: {
       title: true,
     },
-  });
+  })
 
   // Return normalized existing names
-  return existingListings.map((listing) =>
-    listing.title.trim().toLowerCase()
-  );
+  return existingListings.map((listing) => listing.title.trim().toLowerCase())
 }
 
 /**
  * Find all listing names in a web for duplicate detection
  */
 export async function getAllListingNamesInWeb(
-  webId: number
+  webId: number,
 ): Promise<string[]> {
   const listings = await prisma.listing.findMany({
     where: {
@@ -47,9 +44,9 @@ export async function getAllListingNamesInWeb(
     select: {
       title: true,
     },
-  });
+  })
 
-  return listings.map((listing) => listing.title);
+  return listings.map((listing) => listing.title)
 }
 
 /**
@@ -57,26 +54,26 @@ export async function getAllListingNamesInWeb(
  * Returns array of created listing IDs
  */
 export async function bulkCreateListings(
-  listings: Prisma.ListingCreateManyInput[]
+  listings: Prisma.ListingCreateManyInput[],
 ): Promise<number[]> {
-  if (listings.length === 0) return [];
+  if (listings.length === 0) return []
 
   // Use a transaction to ensure all listings are created or none
   const result = await prisma.$transaction(async (tx) => {
-    const createdIds: number[] = [];
+    const createdIds: number[] = []
 
     for (const listing of listings) {
       const created = await tx.listing.create({
         data: listing,
         select: { id: true },
-      });
-      createdIds.push(created.id);
+      })
+      createdIds.push(created.id)
     }
 
-    return createdIds;
-  });
+    return createdIds
+  })
 
-  return result;
+  return result
 }
 
 /**
@@ -84,25 +81,25 @@ export async function bulkCreateListings(
  * Returns array of created location IDs
  */
 export async function bulkCreateListingLocations(
-  locations: Prisma.ListingLocationCreateManyInput[]
+  locations: Prisma.ListingLocationCreateManyInput[],
 ): Promise<number[]> {
-  if (locations.length === 0) return [];
+  if (locations.length === 0) return []
 
   const result = await prisma.$transaction(async (tx) => {
-    const createdIds: number[] = [];
+    const createdIds: number[] = []
 
     for (const location of locations) {
       const created = await tx.listingLocation.create({
         data: location,
         select: { id: true },
-      });
-      createdIds.push(created.id);
+      })
+      createdIds.push(created.id)
     }
 
-    return createdIds;
-  });
+    return createdIds
+  })
 
-  return result;
+  return result
 }
 
 /**
@@ -110,36 +107,36 @@ export async function bulkCreateListingLocations(
  * Returns count of created records
  */
 export async function bulkCreateListingSocialMedia(
-  socialMedia: Prisma.ListingSocialMediaCreateManyInput[]
+  socialMedia: Prisma.ListingSocialMediaCreateManyInput[],
 ): Promise<number> {
-  if (socialMedia.length === 0) return 0;
+  if (socialMedia.length === 0) return 0
 
   const result = await prisma.listingSocialMedia.createMany({
     data: socialMedia,
-  });
+  })
 
-  return result.count;
+  return result.count
 }
 
 /**
  * Create a single listing with related data (location, social media) in a transaction
  */
 export async function createListingWithRelations(data: {
-  listing: Omit<Prisma.ListingCreateInput, "web" | "location">;
-  webId: number;
+  listing: Omit<Prisma.ListingCreateInput, 'web' | 'location'>
+  webId: number
   location?: {
-    latitude: number;
-    longitude: number;
-    description: string;
-  };
+    latitude: number
+    longitude: number
+    description: string
+  }
   socialMedia?: Array<{
-    platform: string;
-    url: string;
-  }>;
+    platform: string
+    url: string
+  }>
 }): Promise<number> {
   const result = await prisma.$transaction(async (tx) => {
     // Create location first if provided
-    let locationId: number | undefined;
+    let locationId: number | undefined
     if (data.location) {
       const location = await tx.listingLocation.create({
         data: {
@@ -148,8 +145,8 @@ export async function createListingWithRelations(data: {
           description: data.location.description,
         },
         select: { id: true },
-      });
-      locationId = location.id;
+      })
+      locationId = location.id
     }
 
     // Create the listing
@@ -166,7 +163,7 @@ export async function createListingWithRelations(data: {
         }),
       },
       select: { id: true },
-    });
+    })
 
     // Create social media links if provided
     if (data.socialMedia && data.socialMedia.length > 0) {
@@ -176,13 +173,13 @@ export async function createListingWithRelations(data: {
           platform: social.platform,
           url: social.url,
         })),
-      });
+      })
     }
 
-    return listing.id;
-  });
+    return listing.id
+  })
 
-  return result;
+  return result
 }
 
 /**
@@ -192,24 +189,27 @@ export async function createListingWithRelations(data: {
 export async function bulkCreateListingsWithRelations(
   webId: number,
   rows: MappedRow[],
-  locations: Map<number, { latitude: number; longitude: number; description: string }>
+  locations: Map<
+    number,
+    { latitude: number; longitude: number; description: string }
+  >,
 ): Promise<number[]> {
-  if (rows.length === 0) return [];
+  if (rows.length === 0) return []
 
-  const createdIds: number[] = [];
+  const createdIds: number[] = []
 
   // Process in a transaction
   await prisma.$transaction(async (tx) => {
     for (const row of rows) {
       // Create location if available
-      let locationId: number | undefined;
-      const locationData = locations.get(row.rowNumber);
+      let locationId: number | undefined
+      const locationData = locations.get(row.rowNumber)
       if (locationData) {
         const location = await tx.listingLocation.create({
           data: locationData,
           select: { id: true },
-        });
-        locationId = location.id;
+        })
+        locationId = location.id
       }
 
       // Create the listing
@@ -225,9 +225,9 @@ export async function bulkCreateListingsWithRelations(
           ...(locationId && { locationId }),
         },
         select: { id: true },
-      });
+      })
 
-      createdIds.push(listing.id);
+      createdIds.push(listing.id)
 
       // Create social media links
       if (row.socialMedia && row.socialMedia.length > 0) {
@@ -237,12 +237,12 @@ export async function bulkCreateListingsWithRelations(
             platform: social.platform,
             url: social.url,
           })),
-        });
+        })
       }
     }
-  });
+  })
 
-  return createdIds;
+  return createdIds
 }
 
 /**
@@ -253,7 +253,7 @@ function generateSlug(name: string): string {
   return name
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/[\s_-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 }

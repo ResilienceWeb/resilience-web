@@ -1,11 +1,11 @@
 'use client'
 
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { ImportWizard } from '@components/import/ImportWizard'
 import { Spinner } from '@components/ui/spinner'
 import useCanEditWeb from '@hooks/web-access/useCanEditWeb'
 import { useAppContext } from '@store/hooks'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
 
 export default function ImportPage() {
   const router = useRouter()

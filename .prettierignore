@@ -8,6 +8,7 @@ obj
 !*.jsx
 !*.mts
 !*.mjs
+prisma/generated
 trigger.config.js
 postcss.config.js
 next.config.js

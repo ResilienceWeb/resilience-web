@@ -1,5 +1,5 @@
-import { SeverityNumber } from '@opentelemetry/api-logs'
 import { loggerProvider } from '@/instrumentation'
+import { SeverityNumber } from '@opentelemetry/api-logs'
 
 const logger = loggerProvider.getLogger('resilience-web')
 
