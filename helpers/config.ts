@@ -8,12 +8,16 @@ export const REMOTE_HOSTNAME =
 export const PROTOCOL =
   process.env.NODE_ENV === 'development' ? 'http' : 'https'
 
+export function isBranchDeploy(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    window.location.hostname.endsWith('--resilienceweb.netlify.app')
+  )
+}
+
 export function getWebUrl(slug: string): string {
-  if (typeof window !== 'undefined') {
-    const hostname = window.location.hostname
-    if (hostname.endsWith('--resilienceweb.netlify.app')) {
-      return `/${slug}`
-    }
+  if (isBranchDeploy()) {
+    return `/${slug}`
   }
   return `${PROTOCOL}://${slug}.${REMOTE_HOSTNAME}`
 }
