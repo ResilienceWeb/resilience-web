@@ -50,12 +50,21 @@ export default function VerifyOTP() {
       })
 
       if (verifyError) {
-        Sentry.captureException(verifyError, {
-          extra: {
-            email: email,
-            errorMessage: verifyError.message,
-          },
-        })
+        const isExpectedError = ['INVALID_OTP', 'OTP_EXPIRED'].includes(
+          verifyError.code ?? '',
+        )
+        if (!isExpectedError) {
+          Sentry.captureException(
+            new Error(verifyError.message ?? 'OTP verification failed'),
+            {
+              extra: {
+                email,
+                code: verifyError.code,
+                status: verifyError.status,
+              },
+            },
+          )
+        }
 
         const errorMessage =
           ERROR_MESSAGES[verifyError.code as AUTH_ERROR_CODE] ||
@@ -110,11 +119,16 @@ export default function VerifyOTP() {
         })
 
       if (resendError) {
-        Sentry.captureException(resendError, {
-          extra: {
-            email: email,
+        Sentry.captureException(
+          new Error(resendError.message ?? 'OTP resend failed'),
+          {
+            extra: {
+              email,
+              code: resendError.code,
+              status: resendError.status,
+            },
           },
-        })
+        )
         setError('Unable to send code. Please try again.')
         setIsResending(false)
         return
