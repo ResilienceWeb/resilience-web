@@ -38,7 +38,10 @@ const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
                 item.featured && new Date(item.featured) > new Date()
 
               return (
-                <TableRow key={index}>
+                <TableRow
+                  key={index}
+                  className={item.inactive ? 'opacity-60' : ''}
+                >
                   <TableCell>
                     <div className="flex flex-col gap-2">
                       <span>{item.title}</span>
@@ -82,6 +85,16 @@ const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
                       >
                         <span className="rounded-md bg-purple-100 px-2 py-1 text-base text-purple-800">
                           Pending
+                        </span>
+                      </div>
+                    ) : null}
+                    {item.inactive ? (
+                      <div
+                        className="group relative cursor-default"
+                        title="This listing is inactive and hidden from the public web page."
+                      >
+                        <span className="rounded-md bg-gray-100 px-2 py-1 text-base text-gray-600">
+                          Inactive
                         </span>
                       </div>
                     ) : null}
