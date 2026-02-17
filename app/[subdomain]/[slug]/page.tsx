@@ -20,7 +20,7 @@ export default async function ListingPage(props: PageProps) {
     listingSlug: params.slug,
   })
 
-  if (!listing) {
+  if (!listing || !listing.category) {
     return notFound()
   }
 
@@ -68,8 +68,9 @@ export async function generateStaticParams() {
   // This single query replaces thousands of individual queries during build
   const listings = await prisma.listing.findMany({
     where: {
-      // Only generate pages for active listings
+      // Only generate pages for active listings with a category
       inactive: false,
+      categoryId: { not: null },
       web: {
         deletedAt: null,
       },

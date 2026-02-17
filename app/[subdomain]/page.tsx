@@ -144,6 +144,7 @@ async function getData({ webSlug }): Promise<DataType> {
         where: {
           inactive: false,
           pending: false,
+          categoryId: { not: null },
         },
         orderBy: [
           {
