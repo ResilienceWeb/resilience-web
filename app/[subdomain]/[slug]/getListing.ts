@@ -90,12 +90,7 @@ export default async function getListing({
     return null
   }
 
-  const listing = exclude(listingData, [
-    'createdAt',
-    'updatedAt',
-    'notes',
-    'inactive',
-  ])
+  const listing = exclude(listingData, ['createdAt', 'updatedAt', 'notes'])
 
   return listing as Listing
 }

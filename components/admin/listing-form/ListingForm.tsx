@@ -72,6 +72,7 @@ const listingFormSchema = z.object({
   socials: z.array(socialItemSchema),
   actions: z.array(actionItemSchema),
   seekingVolunteers: z.boolean(),
+  inactive: z.boolean(),
   image: z.any(),
   slug: z
     .string()
@@ -193,6 +194,7 @@ const ListingForm = ({
     socials: listing?.socials || [],
     actions: listing?.actions || [],
     seekingVolunteers: listing?.seekingVolunteers || false,
+    inactive: listing?.inactive || false,
     image: listing?.image,
     slug: listing?.slug || '',
     tags: listing?.tags?.map((t) => ({ value: t.id, label: t.label })) || [],
@@ -455,6 +457,27 @@ const ListingForm = ({
                   <FormLabel>Currently seeking volunteers</FormLabel>
                   <FormDescription>
                     Would this group benefit from having more volunteers?
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={methods.control}
+            name="inactive"
+            render={({ field }) => (
+              <FormItem className="mt-8 flex flex-row items-start gap-2">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="flex flex-col gap-1">
+                  <FormLabel>Mark as inactive</FormLabel>
+                  <FormDescription>
+                    Inactive listings are hidden from the public web page
                   </FormDescription>
                 </div>
               </FormItem>

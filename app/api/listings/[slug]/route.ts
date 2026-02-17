@@ -75,7 +75,6 @@ export async function GET(
       'createdAt',
       'updatedAt',
       'notes',
-      'inactive',
     ])
 
     return Response.json({
@@ -104,6 +103,7 @@ export async function PUT(request) {
     const description = formData.get('description')
     const email = formData.get('email')
     const seekingVolunteers = formData.get('seekingVolunteers')
+    const inactive = formData.get('inactive')
     const featured = formData.get('featured')
     const featuredDate = featured ? new Date(featured as string) : null
     const latitude = formData.get('latitude')
@@ -194,6 +194,7 @@ export async function PUT(request) {
       email: email,
       pending: false,
       seekingVolunteers: stringToBoolean(seekingVolunteers),
+      inactive: stringToBoolean(inactive),
       featured: featuredDate,
       slug: slug,
       location: locationData,

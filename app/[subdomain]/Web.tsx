@@ -235,9 +235,10 @@ const Web = ({
           removeNonAlphaNumeric(item.label)
             .toLowerCase()
             .includes(searchTermValue.toLowerCase()) ||
-          removeNonAlphaNumeric(item.description)
-            .toLowerCase()
-            .includes(searchTermValue.toLowerCase()),
+          (item.description &&
+            removeNonAlphaNumeric(item.description)
+              .toLowerCase()
+              .includes(searchTermValue.toLowerCase())),
       )
     }
 
