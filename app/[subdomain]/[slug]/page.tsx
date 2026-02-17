@@ -70,6 +70,9 @@ export async function generateStaticParams() {
     where: {
       // Only generate pages for active listings
       inactive: false,
+      web: {
+        deletedAt: null,
+      },
     },
     include: {
       socials: true,

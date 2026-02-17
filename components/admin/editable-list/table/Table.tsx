@@ -52,7 +52,7 @@ const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
                             No image
                           </Badge>
                         )}
-                        {item.description.length < 250 && (
+                        {item.description?.length < 250 && (
                           <Badge variant="secondary">
                             <PiWarningCircleBold className="h-[18px] w-[18px]" />
                             <span>Short description</span>

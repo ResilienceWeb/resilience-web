@@ -163,8 +163,8 @@ const Drawer = ({
         </div>
         {webContactEmail && (
           <div className="m-2">
+            <h2>Contact email</h2>
             <p className="text-sm">
-              <h2>Contact email</h2>
               <a href={`mailto:${webContactEmail}`}>{webContactEmail}</a>
             </p>
           </div>
