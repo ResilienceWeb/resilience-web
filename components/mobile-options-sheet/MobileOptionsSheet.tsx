@@ -5,13 +5,7 @@ import DonateButton from '@components/donate-button'
 import RichText from '@components/rich-text'
 import { Button } from '@components/ui/button'
 import { Separator } from '@components/ui/separator'
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@components/ui/sheet'
+import { Sheet, SheetContent, SheetTrigger } from '@components/ui/sheet'
 
 const MobileOptionsSheet = ({
   webDescription,
