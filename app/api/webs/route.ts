@@ -119,16 +119,6 @@ export async function POST(request: NextRequest) {
     const { title, slug, description, contactEmail, location } =
       await request.json()
 
-    const currentOwnerships = await prisma.webAccess.findMany({
-      where: {
-        email: session.user.email,
-        role: 'OWNER',
-        web: {
-          deletedAt: null,
-        },
-      },
-    })
-
     const web = await prisma.web.create({
       data: {
         title,
