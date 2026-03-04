@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import type { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
@@ -149,6 +150,8 @@ export async function POST(
     }
 
     await markListingEditAsAccepted(listingEditId)
+
+    revalidatePath(`/${updatedListing.web.slug}`)
 
     return Response.json({
       listing: updatedListing,

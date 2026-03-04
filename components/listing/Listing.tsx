@@ -268,9 +268,6 @@ function Listing({ listing }) {
               <div className="overflow-hidden rounded-2xl bg-linear-to-br from-gray-50 to-white ring-1 ring-gray-100">
                 <div className="flex items-center justify-between border-b border-gray-100 bg-white px-5 py-4">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-emerald-50 to-green-50 text-emerald-600 ring-1 ring-emerald-100">
-                      <FiMapPin className="h-5 w-5" />
-                    </span>
                     <p className="font-semibold text-gray-900">
                       {listing.location.description}
                     </p>
@@ -281,7 +278,6 @@ function Listing({ listing }) {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-emerald-50 to-green-50 px-4 py-2 text-sm font-medium text-emerald-700 ring-1 ring-emerald-100 transition-all hover:from-emerald-100 hover:to-green-100 hover:shadow-md"
                   >
-                    <FiNavigation className="h-4 w-4" />
                     Get Directions
                   </a>
                 </div>
