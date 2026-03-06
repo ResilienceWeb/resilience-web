@@ -24,7 +24,7 @@ export default function News({ posts }: NewsProps) {
   return (
     <Layout>
       <div className="flex justify-center">
-        <div className="mb-4 max-w-212.5">
+        <div className="mb-16 max-w-212.5">
           <h1 className="mb-3 text-3xl">News</h1>
           <p className="mb-3 text-lg text-gray-600">
             News, updates and community articles from the Resilience Web team
