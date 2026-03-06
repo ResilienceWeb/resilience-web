@@ -28,7 +28,7 @@ export default function NewsItem({ post, contentHtml }: NewsItemProps) {
   return (
     <Layout>
       <h1 className="text-center text-pretty mt-4">{post.title}</h1>
-      <div className="mx-auto mt-2 mb-0 md:mb-6 flex flex-col items-center w-[90%] justify-center md:flex-row md:w-[750px]">
+      <div className="mx-auto mt-2 mb-0 md:mb-6 flex flex-col items-center w-[90%] justify-center md:flex-row md:w-187.5">
         {post.author?.name && (
           <p className="font-semibold">
             {post.author.name}
@@ -39,7 +39,7 @@ export default function NewsItem({ post, contentHtml }: NewsItemProps) {
       </div>
 
       {post.coverImage?.url && (
-        <div className="relative -mx-4 mb-0 md:mb-8 h-[250px] w-screen overflow-hidden md:h-[400px] md:w-[850px] md:rounded-xl">
+        <div className="relative -mx-4 mb-0 md:mb-8 h-62.5 w-screen overflow-hidden md:h-100 md:w-212.5 md:rounded-xl">
           <Image
             alt={`Cover image for post: ${post.title}`}
             src={post.coverImage.url}
@@ -51,7 +51,7 @@ export default function NewsItem({ post, contentHtml }: NewsItemProps) {
         </div>
       )}
 
-      <div className="mx-auto mb-12 max-w-[100%] md:max-w-[750px] prose prose-sm md:prose-base">
+      <div className="mx-auto mb-12 max-w-full md:max-w-187.5 prose prose-sm md:prose-base">
         <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
       </div>
 
