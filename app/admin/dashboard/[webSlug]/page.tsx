@@ -125,7 +125,7 @@ export default function WebDashboardPage({ params }) {
         onClick={goBack}
       >
         <HiArrowLeft className="h-4 w-4" />
-        Back to {web.title} Resilience Web
+        Back to list
       </button>
 
       <div className="flex items-center justify-between">
@@ -149,11 +149,16 @@ export default function WebDashboardPage({ params }) {
           </p>
         </div>
         {web.published ? (
-          <div className="flex flex-col items-center gap-4">
-            <Badge variant="secondary" className="text-lg">
+          <div className="flex flex-col items-end gap-4">
+            <Badge className="bg-green-100 text-green-800 text-lg hover:bg-green-100">
               Published
             </Badge>
-            <Button onClick={() => unpublishWeb()} disabled={isUnpublishingWeb}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => unpublishWeb()}
+              disabled={isUnpublishingWeb}
+            >
               {isUnpublishingWeb ? <Spinner /> : null}
               Unpublish
             </Button>

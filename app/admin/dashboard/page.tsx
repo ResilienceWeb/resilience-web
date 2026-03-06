@@ -1,10 +1,15 @@
 'use client'
 
+import { useMemo, useState } from 'react'
 import { PiWarningCircleBold } from 'react-icons/pi'
 import { SlGlobe } from 'react-icons/sl'
 import { useRouter } from 'next/navigation'
+import { Search, X } from 'lucide-react'
+import { useDebounceValue } from 'usehooks-ts'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import { Badge } from '@components/ui/badge'
+import { Button } from '@components/ui/button'
+import { Input } from '@components/ui/input'
 import { Spinner } from '@components/ui/spinner'
 import {
   Table,
@@ -74,6 +79,29 @@ const formatDate = (date) => {
 export default function DashboardPage() {
   const router = useRouter()
   const { isPending: isLoadingWebs, webs } = useWebs({ withAdminInfo: true })
+  const [searchInput, setSearchInput] = useState('')
+  const [debouncedSearch] = useDebounceValue(searchInput, 300)
+
+  const sortedWebs = useMemo(() => {
+    if (!webs) return []
+    return [...webs].sort((web1, web2) => {
+      if (web1.published !== web2.published) {
+        return web2.published ? 1 : -1
+      }
+      const date1 = getLastActivityDate(web1)
+      const date2 = getLastActivityDate(web2)
+      if (!date1 && !date2) return 0
+      if (!date1) return 1
+      if (!date2) return -1
+      return date2.getTime() - date1.getTime()
+    })
+  }, [webs])
+
+  const filteredWebs = useMemo(() => {
+    const search = debouncedSearch.trim().toLowerCase()
+    if (!search) return sortedWebs
+    return sortedWebs.filter((web) => web.title.toLowerCase().includes(search))
+  }, [sortedWebs, debouncedSearch])
 
   if (isLoadingWebs) {
     return <Spinner />
@@ -82,12 +110,44 @@ export default function DashboardPage() {
   const totalWebs = webs.length
   const publishedWebs = webs.filter((web) => web.published).length
   const inactiveWebs = webs.filter((web) => !isWebActive(web)).length
+  const isSearching = debouncedSearch.trim().length > 0
 
   return (
     <div className="mb-6 flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground">Manage Resilience Web instances</p>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground">
+            {isSearching ? (
+              <>
+                Search results for &quot;{debouncedSearch}&quot; (
+                {filteredWebs.length} found)
+              </>
+            ) : (
+              <>Manage Resilience Web instances</>
+            )}
+          </p>
+        </div>
+
+        <div className="relative max-w-md">
+          <Search className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
+          <Input
+            placeholder="Search webs by name..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            className="pl-9 pr-9"
+          />
+          {searchInput && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSearchInput('')}
+              className="hover:bg-muted absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 p-0"
+            >
+              <X className="h-3 w-3" />
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
@@ -121,24 +181,20 @@ export default function DashboardPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {webs
-              .sort((web1, web2) => {
-                // First sort by published status
-                if (web1.published !== web2.published) {
-                  return web2.published ? 1 : -1 // Published webs go first
-                }
-
-                // Then sort by last activity date
-                const date1 = getLastActivityDate(web1)
-                const date2 = getLastActivityDate(web2)
-
-                if (!date1 && !date2) return 0
-                if (!date1) return 1
-                if (!date2) return -1
-
-                return date2.getTime() - date1.getTime()
-              })
-              .map((web) => {
+            {filteredWebs.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={3} className="py-8 text-center">
+                  <div className="text-muted-foreground">
+                    {isSearching ? (
+                      <>No webs found matching &quot;{debouncedSearch}&quot;</>
+                    ) : (
+                      <>No webs found</>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredWebs.map((web) => {
                 const teamMembersCount = web.webAccess.length
 
                 const hasNoImage = !web.image
@@ -226,7 +282,8 @@ export default function DashboardPage() {
                     </TableCell>
                   </TableRow>
                 )
-              })}
+              })
+            )}
           </TableBody>
         </Table>
       </div>

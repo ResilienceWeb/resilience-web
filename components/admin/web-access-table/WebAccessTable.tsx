@@ -23,6 +23,10 @@ const columns = [
     Header: 'Permissions',
     accessor: 'permissions',
   },
+  {
+    Header: 'Actions',
+    accessor: 'actions',
+  },
 ]
 
 type Props = {
