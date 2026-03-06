@@ -1,11 +1,15 @@
-import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2'
 import Link from 'next/link'
 import { REMOTE_URL } from '@helpers/config'
 import DonateButton from '@components/donate-button'
 import RichText from '@components/rich-text'
 import { Button } from '@components/ui/button'
 import { Separator } from '@components/ui/separator'
-import { Sheet, SheetContent, SheetTrigger } from '@components/ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from '@components/ui/sheet'
 
 const MobileOptionsSheet = ({
   webDescription,
@@ -18,13 +22,13 @@ const MobileOptionsSheet = ({
 }) => {
   return (
     <Sheet>
+      <SheetTitle>Propose listing</SheetTitle>
       <SheetTrigger asChild>
         <Button
           variant="default"
           className="fixed right-4 bottom-4 z-50 h-10 transition-all active:scale-95"
         >
-          <HiOutlineAdjustmentsHorizontal />
-          <span className="font-semibold">Options</span>
+          <span className="font-semibold">Propose listing</span>
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">

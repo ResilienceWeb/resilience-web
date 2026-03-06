@@ -246,7 +246,8 @@ export default function WebSettingsPage() {
                     and we'll review and publish it for you. Please make sure
                     your web has at least 10 listings with complete information
                     and images, and that your web has a cover image uploaded
-                    below.
+                    below. Also please fill out the contact email field below if
+                    you haven't yet.
                   </p>
                 )}
               </div>

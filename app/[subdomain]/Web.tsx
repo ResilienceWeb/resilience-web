@@ -17,7 +17,6 @@ import Events from '@components/events'
 import Header from '@components/header'
 import { License, LicenseTransition } from '@components/license'
 import MainList from '@components/main-list'
-import MobileOptionsSheet from '@components/mobile-options-sheet'
 import { Spinner } from '@components/ui/spinner'
 import useIsMobile from '@hooks/application/useIsMobile'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
@@ -325,8 +324,10 @@ const Web = ({
           isGeoMappingEnabled={isGeoMappingEnabled}
           isMobile={isMobile}
           isWebMode={false}
+          isTransitionMode={isTransitionMode}
           searchTerm={searchTerm}
           selectedWebName={webName}
+          selectedWebSlug={webSlug}
           activeTab={activeTab}
           onTabChange={handleTabChange}
         />
@@ -346,14 +347,6 @@ const Web = ({
           <ListingsMap items={filteredItems} webSlug={webSlug} />
         )}
         {activeTab === 'events' && <Events items={events} webSlug={webSlug} />}
-
-        {isMobile && (
-          <MobileOptionsSheet
-            webDescription={webDescription}
-            isTransitionMode={isTransitionMode}
-            selectedWebSlug={webSlug}
-          />
-        )}
 
         {isTransitionMode && <LicenseTransition />}
         {!isTransitionMode && activeTab !== 'events' && <License />}

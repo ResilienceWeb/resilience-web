@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react'
-import { HiOutlineSearch, HiHome, HiOutlineX } from 'react-icons/hi'
+import { HiOutlineSearch, HiHome, HiOutlineX, HiPlus } from 'react-icons/hi'
 import Select from 'react-select'
 import Image from 'next/image'
 import NextLink from 'next/link'
@@ -24,8 +24,10 @@ type HeaderProps = {
   isGeoMappingEnabled: boolean
   isMobile: boolean
   isWebMode: boolean
+  isTransitionMode?: boolean
   searchTerm: string
   selectedWebName: string
+  selectedWebSlug?: string
   activeTab?: string
   onTabChange?: (value: string) => void
 }
@@ -43,8 +45,10 @@ const Header = ({
   isGeoMappingEnabled,
   isMobile,
   isWebMode,
+  isTransitionMode,
   searchTerm,
   selectedWebName,
+  selectedWebSlug,
   activeTab,
   onTabChange,
 }: HeaderProps) => {
@@ -61,12 +65,22 @@ const Header = ({
   if (isMobile) {
     return (
       <>
-        <NextLink href={REMOTE_URL}>
-          <Button variant="outline" size="sm" className="mt-2 ml-2">
-            <HiHome />
-            Homepage
-          </Button>
-        </NextLink>
+        <div className="mt-2 flex items-center justify-between px-2">
+          <NextLink href={REMOTE_URL}>
+            <Button variant="outline" size="sm">
+              <HiHome />
+              Homepage
+            </Button>
+          </NextLink>
+          {!isTransitionMode && (
+            <NextLink href={`${REMOTE_URL}/new-listing/${selectedWebSlug}`}>
+              <Button size="sm" className="bg-[#2B8257] hover:bg-[#236c47]">
+                <HiPlus />
+                Propose listing
+              </Button>
+            </NextLink>
+          )}
+        </div>
         <div className="flex flex-col items-center justify-center">
           <div className="my-4">
             <Image

@@ -45,14 +45,19 @@ const ListingCreatedEmail = ({ listingTitle, webTitle, listingUrl }: Props) => {
           />
           <Text style={paragraph}>Hello 👋</Text>
           <Text style={paragraph}>
-            A listing for <strong>{listingTitle}</strong> has been created on{' '}
-            <strong>{webTitle} Resilience Web</strong>. You received this email
-            because this is the contact email address for the listing.
+            Congratulations! A listing for <strong>{listingTitle}</strong> has
+            been created on <strong>{webTitle} Resilience Web</strong>. You
+            received this email because this is the contact email address for
+            the listing.
           </Text>
           <Text style={paragraph}>
             If any of the information is incorrect or incomplete, you can
             propose edits by clicking below and pressing the Edit listing
-            button.
+            button. If you would like the listing to be removed, please let us
+            know by replying to this email.
+          </Text>
+          <Text style={paragraph}>
+            You won&apos;t receive any other emails from us about this.
           </Text>
           <div style={btnContainer}>
             <Link href={listingUrl} style={button}>
