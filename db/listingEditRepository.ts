@@ -47,6 +47,28 @@ export const getListingEdits = async (listingSlug, webSlug) => {
   return listingEdits
 }
 
+export const getListingEditStats = async () => {
+  const [proposed, accepted] = await Promise.all([
+    prisma.listingEdit.count({
+      where: {
+        listing: {
+          web: { deletedAt: null },
+        },
+      },
+    }),
+    prisma.listingEdit.count({
+      where: {
+        accepted: true,
+        listing: {
+          web: { deletedAt: null },
+        },
+      },
+    }),
+  ])
+
+  return { proposed, accepted }
+}
+
 export const getListingEditsByWeb = async (
   webSlug: string,
   includeAccepted = false,

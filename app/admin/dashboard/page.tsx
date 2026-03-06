@@ -19,6 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table'
+import useAdminStats from '@hooks/useAdminStats'
 import useWebs from '@hooks/webs/useWebs'
 
 const columns = [
@@ -79,6 +80,7 @@ const formatDate = (date) => {
 export default function DashboardPage() {
   const router = useRouter()
   const { isPending: isLoadingWebs, webs } = useWebs({ withAdminInfo: true })
+  const { stats: adminStats } = useAdminStats()
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearch] = useDebounceValue(searchInput, 300)
 
@@ -150,7 +152,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="bg-card rounded-lg border p-4">
           <div className="text-muted-foreground text-sm font-medium">
             Total Webs
@@ -168,6 +170,16 @@ export default function DashboardPage() {
             Inactive Webs
           </div>
           <div className="mt-2 text-2xl font-bold">{inactiveWebs}</div>
+        </div>
+        <div className="bg-card rounded-lg border p-4">
+          <div className="text-muted-foreground text-sm font-medium">
+            Listing Edits (accepted / proposed)
+          </div>
+          <div className="mt-2 text-2xl font-bold">
+            {adminStats?.listingEdits
+              ? `${adminStats.listingEdits.accepted}/${adminStats.listingEdits.proposed}`
+              : '-'}
+          </div>
         </div>
       </div>
 

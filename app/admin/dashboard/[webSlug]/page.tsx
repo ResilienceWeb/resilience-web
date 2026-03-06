@@ -217,6 +217,26 @@ export default function WebDashboardPage({ params }) {
         </div>
       )}
 
+      <div className="mt-6">
+        <WebFeatures key={web.id} web={web} />
+      </div>
+
+      {web.webAccess?.length > 0 && (
+        <div className="mt-4 flex flex-col gap-2">
+          <h2 className="text-lg font-bold">Team</h2>
+          <WebAccessTable
+            webAccess={web.webAccess}
+            webId={web.id}
+            isInAdminSection
+          />
+          <Button variant="outline" asChild className="self-start">
+            <a href={`mailto:${mailToEmails}`}>
+              Send email to owners and editors
+            </a>
+          </Button>
+        </div>
+      )}
+
       {listingEmails.length > 0 && (
         <div className="mt-4 flex flex-col gap-2">
           <Accordion type="single" collapsible className="w-full">
@@ -262,26 +282,6 @@ export default function WebDashboardPage({ params }) {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </div>
-      )}
-
-      <div className="mt-6">
-        <WebFeatures key={web.id} web={web} />
-      </div>
-
-      {web.webAccess?.length > 0 && (
-        <div className="mt-4 flex flex-col gap-2">
-          <h2 className="text-2xl font-bold">Team</h2>
-          <WebAccessTable
-            webAccess={web.webAccess}
-            webId={web.id}
-            isInAdminSection
-          />
-          <Button variant="outline" asChild className="self-start">
-            <a href={`mailto:${mailToEmails}`}>
-              Send email to owners and editors
-            </a>
-          </Button>
         </div>
       )}
 
