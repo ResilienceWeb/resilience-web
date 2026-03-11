@@ -3,20 +3,21 @@ import { after } from 'next/server'
 import { log, flushLogs } from '@/lib/logger'
 import * as Sentry from '@sentry/nextjs'
 import { sendEmail } from '@helpers/email'
+import ContactEmail from '@components/emails/ContactEmail'
 
 export async function POST(request: NextRequest) {
-  const { email, feedback } = await request.json()
+  const { email, web, message } = await request.json()
 
   try {
     await sendEmail({
-      email: feedback,
-      subject: `Message from ${email}`,
+      email: ContactEmail({ email, web, message }),
+      subject: `Message from ${email}${web ? ` (${web})` : ''}`,
       to: 'cambridgeresilienceweb@gmail.com',
       replyTo: email,
     })
 
-    log('info', 'Feedback submitted successfully', {
-      endpoint: '/api/feedback',
+    log('info', 'Contact message submitted successfully', {
+      endpoint: '/api/contact',
     })
 
     after(async () => {
@@ -25,14 +26,14 @@ export async function POST(request: NextRequest) {
 
     return Response.json(
       {
-        result: 'Feedback sent successfully',
+        result: 'Message sent successfully',
       },
       { status: 201 },
     )
   } catch (e) {
     Sentry.captureException(e)
-    log('error', 'Failed to send feedback', {
-      endpoint: '/api/feedback',
+    log('error', 'Failed to send contact message', {
+      endpoint: '/api/contact',
       error: String(e),
     })
 
@@ -40,7 +41,7 @@ export async function POST(request: NextRequest) {
       await flushLogs()
     })
 
-    return new Response(`Unable to send feedback - ${e}`, {
+    return new Response(`Unable to send message - ${e}`, {
       status: 500,
     })
   }

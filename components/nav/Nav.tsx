@@ -7,7 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { getWebUrl, REMOTE_URL } from '@helpers/config'
-import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
+import GetInTouchButton from '@components/contact-dialog/GetInTouchButton'
 import { Button } from '@components/ui/button'
 import {
   NavigationMenu,

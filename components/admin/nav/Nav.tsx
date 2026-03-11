@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useSession, signOut } from '@auth-client'
-import GetInTouchButton from '@components/feedback-dialog/GetInTouchButton'
+import GetInTouchButton from '@components/contact-dialog/GetInTouchButton'
 import {
   DropdownMenu,
   DropdownMenuContent,
