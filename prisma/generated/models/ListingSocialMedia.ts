@@ -1373,6 +1373,11 @@ export type ListingSocialMediaFindManyArgs<ExtArgs extends runtime.Types.Extensi
    * Skip the first `n` ListingSocialMedias.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ListingSocialMedias.
+   */
   distinct?: Prisma.ListingSocialMediaScalarFieldEnum | Prisma.ListingSocialMediaScalarFieldEnum[]
 }
 

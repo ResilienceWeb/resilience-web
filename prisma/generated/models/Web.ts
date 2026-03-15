@@ -2809,6 +2809,11 @@ export type WebFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Skip the first `n` Webs.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Webs.
+   */
   distinct?: Prisma.WebScalarFieldEnum | Prisma.WebScalarFieldEnum[]
 }
 
