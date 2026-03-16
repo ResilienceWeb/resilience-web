@@ -1,8 +1,5 @@
 'use client'
 
-/**
- * Preview table showing mapped data before import
- */
 import type { MappedRow } from '@/lib/import/types'
 import {
   Table,
@@ -25,7 +22,7 @@ export function DataPreviewTable({
   const previewRows = rows.slice(0, maxRows)
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4">
       <div className="border rounded-lg overflow-hidden">
         <div className="overflow-x-auto max-h-125">
           <Table>

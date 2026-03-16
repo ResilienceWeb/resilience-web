@@ -43,7 +43,7 @@ const ListingEditReview = ({
   )
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-6">
       <Diff
         label="Title"
         string1={listing.title}

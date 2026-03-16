@@ -111,10 +111,14 @@ describe('Security - XSS Protection', () => {
   it('should handle script tags in name field', () => {
     const csvRow = {
       Name: '<script>alert("XSS")</script>',
+      Description: 'A test org',
+      Category: 'Community',
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
+      Description: 'description',
+      Category: 'category',
     }
 
     const mapped = mapRow(csvRow, columnMapping, 1)
@@ -145,11 +149,15 @@ describe('Security - XSS Protection', () => {
   it('should handle javascript: protocol in website field', () => {
     const csvRow = {
       Name: 'Test Org',
+      Description: 'A test org',
+      Category: 'Community',
       Website: 'javascript:alert("XSS")',
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
+      Description: 'description',
+      Category: 'category',
       Website: 'website',
     }
 
@@ -164,11 +172,15 @@ describe('Security - XSS Protection', () => {
   it('should handle data: protocol in website field', () => {
     const csvRow = {
       Name: 'Test Org',
+      Description: 'A test org',
+      Category: 'Community',
       Website: 'data:text/html,<script>alert("XSS")</script>',
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
+      Description: 'description',
+      Category: 'category',
       Website: 'website',
     }
 
@@ -209,11 +221,15 @@ describe('Security - SQL Injection Protection', () => {
   it('should handle SQL injection with single quotes', () => {
     const csvRow = {
       Name: "'; DROP TABLE listings; --",
+      Description: 'A test org',
+      Category: 'Community',
       Email: "admin'--",
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
+      Description: 'description',
+      Category: 'category',
       Email: 'email',
     }
 
@@ -324,6 +340,8 @@ describe('Security - Denial of Service (DoS) Protection', () => {
 
     const row: MappedRow = {
       name: longName,
+      description: 'Desc',
+      category: 'Community',
       rowNumber: 1,
     }
 
@@ -339,6 +357,7 @@ describe('Security - Denial of Service (DoS) Protection', () => {
     const row: MappedRow = {
       name: 'Test Org',
       description: longDesc,
+      category: 'Community',
       rowNumber: 1,
     }
 
@@ -353,6 +372,8 @@ describe('Security - Denial of Service (DoS) Protection', () => {
 
     const row: MappedRow = {
       name: 'Test Org',
+      description: 'Desc',
+      category: 'Community',
       email: longEmail,
       rowNumber: 1,
     }
@@ -367,6 +388,8 @@ describe('Security - Denial of Service (DoS) Protection', () => {
 
     const row: MappedRow = {
       name: 'Test Org',
+      description: 'Desc',
+      category: 'Community',
       website: longUrl,
       rowNumber: 1,
     }
@@ -379,6 +402,8 @@ describe('Security - Denial of Service (DoS) Protection', () => {
   it('should handle many social media links', () => {
     const row: MappedRow = {
       name: 'Test Org',
+      description: 'Desc',
+      category: 'Community',
       socialMedia: [
         { platform: 'facebook', url: 'https://facebook.com/1' },
         { platform: 'twitter', url: 'https://twitter.com/1' },
@@ -400,10 +425,14 @@ describe('Security - Unicode and Special Characters', () => {
   it('should handle Unicode characters in name', () => {
     const csvRow = {
       Name: 'Test Org 测试 🏢',
+      Description: 'A test org',
+      Category: 'Community',
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
+      Description: 'description',
+      Category: 'category',
     }
 
     const mapped = mapRow(csvRow, columnMapping, 1)
@@ -417,11 +446,13 @@ describe('Security - Unicode and Special Characters', () => {
     const csvRow = {
       Name: 'Test Org',
       Description: 'We love our community! ❤️🌍🌱',
+      Category: 'Community',
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
       Description: 'description',
+      Category: 'category',
     }
 
     const mapped = mapRow(csvRow, columnMapping, 1)
@@ -435,11 +466,13 @@ describe('Security - Unicode and Special Characters', () => {
     const csvRow = {
       Name: 'مؤسسة الاختبار', // Arabic
       Description: 'תיאור בעברית', // Hebrew
+      Category: 'Community',
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
       Description: 'description',
+      Category: 'category',
     }
 
     const mapped = mapRow(csvRow, columnMapping, 1)
@@ -519,11 +552,15 @@ describe('Security - Email Injection', () => {
   it('should reject email header injection attempts', () => {
     const csvRow = {
       Name: 'Test Org',
+      Description: 'A test org',
+      Category: 'Community',
       Email: 'test@example.com\nBcc: attacker@evil.com',
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
+      Description: 'description',
+      Category: 'category',
       Email: 'email',
     }
 
@@ -538,11 +575,15 @@ describe('Security - Email Injection', () => {
   it('should reject email with CRLF injection', () => {
     const csvRow = {
       Name: 'Test Org',
+      Description: 'A test org',
+      Category: 'Community',
       Email: 'test@example.com\r\nCc: admin@example.com',
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
+      Description: 'description',
+      Category: 'category',
       Email: 'email',
     }
 
@@ -557,11 +598,15 @@ describe('Security - URL Validation', () => {
   it('should handle file:// protocol URLs', () => {
     const csvRow = {
       Name: 'Test Org',
+      Description: 'A test org',
+      Category: 'Community',
       Website: 'file:///etc/passwd',
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
+      Description: 'description',
+      Category: 'category',
       Website: 'website',
     }
 
@@ -575,11 +620,15 @@ describe('Security - URL Validation', () => {
   it('should accept ftp:// protocol URLs (Zod allows various schemes)', () => {
     const csvRow = {
       Name: 'Test Org',
+      Description: 'A test org',
+      Category: 'Community',
       Website: 'ftp://example.com',
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
+      Description: 'description',
+      Category: 'category',
       Website: 'website',
     }
 
@@ -593,11 +642,15 @@ describe('Security - URL Validation', () => {
   it('should accept URLs with unusual characters (Zod is permissive)', () => {
     const csvRow = {
       Name: 'Test Org',
+      Description: 'A test org',
+      Category: 'Community',
       Website: 'https://example.com/path?query=value',
     }
 
     const columnMapping: ColumnMapping = {
       Name: 'name',
+      Description: 'description',
+      Category: 'category',
       Website: 'website',
     }
 

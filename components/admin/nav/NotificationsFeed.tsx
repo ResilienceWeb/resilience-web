@@ -53,7 +53,7 @@ const NotificationsFeed = () => {
               No notifications yet
             </div>
           ) : (
-            <ul className="space-y-2">
+            <ul className="flex flex-col gap-2">
               {items.map((notification) => (
                 <li
                   key={notification.id}

@@ -207,7 +207,7 @@ export function mapRows(
 export function getUnmappedRequiredFields(
   columnMapping: ColumnMapping,
 ): string[] {
-  const requiredFields: ListingField[] = ['name']
+  const requiredFields: ListingField[] = ['name', 'description', 'category']
   const mappedFields = new Set(
     Object.values(columnMapping).filter((f) => f !== null),
   )

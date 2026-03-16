@@ -187,7 +187,7 @@ const ListItem = ({ title, href }: ListItemProps) => {
       <NavigationMenuLink asChild>
         <Link
           href={href}
-          className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors select-none"
+          className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block rounded-md p-3 leading-none no-underline outline-hidden transition-colors select-none"
         >
           <div className="text-md leading-none font-semibold">{title}</div>
         </Link>
@@ -219,7 +219,7 @@ const MobileNavItem = ({
 
   if (children) {
     return (
-      <div className="space-y-4">
+      <div className="flex flex-col gap-4">
         <button
           className="flex w-full items-center justify-between py-2"
           onClick={() => setIsOpen(!isOpen)}

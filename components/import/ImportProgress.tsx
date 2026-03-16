@@ -18,10 +18,10 @@ export function ImportProgress({
   if (!isImporting) return null
 
   return (
-    <div className="flex flex-col items-center justify-center py-12 space-y-6">
+    <div className="flex flex-col items-center justify-center py-12 gap-6">
       <Loader2 className="h-12 w-12 animate-spin text-primary" />
 
-      <div className="text-center space-y-2">
+      <div className="text-center flex flex-col gap-2">
         <p className="text-lg font-medium">{message}</p>
         <p className="text-sm text-gray-600">
           This may take a moment. Please don't close this page.

@@ -9,7 +9,10 @@ import type { MappedRow, RowValidationError, ValidationResult } from './types'
  */
 export const listingImportSchema = z.object({
   name: z.string().min(1, 'Name is required').max(255, 'Name is too long'),
-  description: z.string().max(5000, 'Description is too long').optional(),
+  description: z
+    .string({ error: 'Description is required' })
+    .min(1, 'Description is required')
+    .max(5000, 'Description is too long'),
   email: z
     .email('Invalid email address')
     .max(255, 'Email is too long')
@@ -25,6 +28,9 @@ export const listingImportSchema = z.object({
     .max(500, 'Address is too long')
     .optional()
     .or(z.literal('')),
+  category: z
+    .string({ error: 'Category is required' })
+    .min(1, 'Category is required'),
   rowNumber: z.number().int().positive(),
 })
 
@@ -116,7 +122,7 @@ export function validateRows(rows: MappedRow[]): ValidationResult {
 export function validateRequiredFieldsMapped(
   columnMapping: Record<string, string | null>,
 ): { valid: boolean; missingFields: string[] } {
-  const requiredFields = ['name']
+  const requiredFields = ['name', 'description', 'category']
   const mappedFields = Object.values(columnMapping).filter(
     (field) => field !== null,
   )

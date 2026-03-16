@@ -7,6 +7,7 @@ describe('listingImportSchema', () => {
     const validRow = {
       name: 'Test Organization',
       description: 'A test organization',
+      category: 'Community',
       email: 'test@example.com',
       website: 'https://example.com',
       address: '123 Test St, Test City, TC1 2AB',
@@ -20,13 +21,81 @@ describe('listingImportSchema', () => {
   it('should require name field', () => {
     const invalidRow = {
       description: 'A test organization',
+      category: 'Community',
+      rowNumber: 1,
+    }
+
+    const result = listingImportSchema.safeParse(invalidRow)
+    expect(result.success).toBe(false)
+  })
+
+  it('should require description field', () => {
+    const invalidRow = {
+      name: 'Test Org',
+      category: 'Community',
       rowNumber: 1,
     }
 
     const result = listingImportSchema.safeParse(invalidRow)
     expect(result.success).toBe(false)
     if (!result.success) {
-      expect(result.error.issues[0].message).toContain('required')
+      const descriptionError = result.error.issues.find(
+        (issue) => issue.path[0] === 'description',
+      )
+      expect(descriptionError).toBeDefined()
+    }
+  })
+
+  it('should require category field', () => {
+    const invalidRow = {
+      name: 'Test Org',
+      description: 'A test organization',
+      rowNumber: 1,
+    }
+
+    const result = listingImportSchema.safeParse(invalidRow)
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      const categoryError = result.error.issues.find(
+        (issue) => issue.path[0] === 'category',
+      )
+      expect(categoryError).toBeDefined()
+    }
+  })
+
+  it('should reject empty description', () => {
+    const invalidRow = {
+      name: 'Test Org',
+      description: '',
+      category: 'Community',
+      rowNumber: 1,
+    }
+
+    const result = listingImportSchema.safeParse(invalidRow)
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      const descriptionError = result.error.issues.find(
+        (issue) => issue.path[0] === 'description',
+      )
+      expect(descriptionError?.message).toContain('required')
+    }
+  })
+
+  it('should reject empty category', () => {
+    const invalidRow = {
+      name: 'Test Org',
+      description: 'A test organization',
+      category: '',
+      rowNumber: 1,
+    }
+
+    const result = listingImportSchema.safeParse(invalidRow)
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      const categoryError = result.error.issues.find(
+        (issue) => issue.path[0] === 'category',
+      )
+      expect(categoryError?.message).toContain('required')
     }
   })
 
@@ -34,6 +103,8 @@ describe('listingImportSchema', () => {
     const longName = 'A'.repeat(256)
     const invalidRow = {
       name: longName,
+      description: 'A test organization',
+      category: 'Community',
       rowNumber: 1,
     }
 
@@ -47,6 +118,8 @@ describe('listingImportSchema', () => {
   it('should reject invalid email format', () => {
     const invalidRow = {
       name: 'Test Org',
+      description: 'A test organization',
+      category: 'Community',
       email: 'not-an-email',
       rowNumber: 1,
     }
@@ -61,6 +134,8 @@ describe('listingImportSchema', () => {
   it('should reject invalid website URL', () => {
     const invalidRow = {
       name: 'Test Org',
+      description: 'A test organization',
+      category: 'Community',
       website: 'not a url',
       rowNumber: 1,
     }
@@ -75,6 +150,8 @@ describe('listingImportSchema', () => {
   it('should accept optional fields as empty strings', () => {
     const validRow = {
       name: 'Test Organization',
+      description: 'A test organization',
+      category: 'Community',
       email: '',
       website: '',
       address: '',
@@ -91,6 +168,7 @@ describe('validateRow', () => {
     const validRow: MappedRow = {
       name: 'Test Organization',
       description: 'A test org',
+      category: 'Community',
       email: 'test@example.com',
       rowNumber: 1,
     }
@@ -102,6 +180,8 @@ describe('validateRow', () => {
   it('should return errors for invalid row', () => {
     const invalidRow: MappedRow = {
       name: '', // Empty name
+      description: 'A test org',
+      category: 'Community',
       email: 'invalid-email', // Invalid email
       rowNumber: 1,
     }
@@ -114,6 +194,8 @@ describe('validateRow', () => {
   it('should validate social media links', () => {
     const rowWithSocialMedia: MappedRow = {
       name: 'Test Org',
+      description: 'A test org',
+      category: 'Community',
       socialMedia: [
         { platform: 'facebook', url: 'https://facebook.com/test' },
         { platform: 'twitter', url: 'not-a-url' }, // Invalid URL
@@ -129,6 +211,8 @@ describe('validateRow', () => {
   it('should include field name in error', () => {
     const invalidRow: MappedRow = {
       name: 'Test Org',
+      description: 'A test org',
+      category: 'Community',
       email: 'invalid',
       rowNumber: 5,
     }
@@ -142,10 +226,10 @@ describe('validateRow', () => {
 describe('validateRows', () => {
   it('should separate valid and invalid rows', () => {
     const rows: MappedRow[] = [
-      { name: 'Valid Org 1', rowNumber: 1 },
-      { name: '', rowNumber: 2 }, // Invalid: empty name
-      { name: 'Valid Org 2', rowNumber: 3 },
-      { name: 'Org 3', email: 'bad-email', rowNumber: 4 }, // Invalid email
+      { name: 'Valid Org 1', description: 'Desc 1', category: 'Community', rowNumber: 1 },
+      { name: '', description: 'Desc 2', category: 'Community', rowNumber: 2 }, // Invalid: empty name
+      { name: 'Valid Org 2', description: 'Desc 3', category: 'Community', rowNumber: 3 },
+      { name: 'Org 3', description: 'Desc 4', category: 'Community', email: 'bad-email', rowNumber: 4 }, // Invalid email
     ]
 
     const result = validateRows(rows)
@@ -157,8 +241,8 @@ describe('validateRows', () => {
 
   it('should return valid=true when all rows are valid', () => {
     const rows: MappedRow[] = [
-      { name: 'Org 1', rowNumber: 1 },
-      { name: 'Org 2', email: 'test@example.com', rowNumber: 2 },
+      { name: 'Org 1', description: 'Desc 1', category: 'Community', rowNumber: 1 },
+      { name: 'Org 2', description: 'Desc 2', category: 'Community', email: 'test@example.com', rowNumber: 2 },
     ]
 
     const result = validateRows(rows)

@@ -58,7 +58,7 @@ export function ValidationSummary({
     .sort((a, b) => a - b)
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4">
       <Alert variant="destructive">
         <XCircle className="h-4 w-4" />
         <AlertTitle>Validation errors found</AlertTitle>
@@ -76,7 +76,7 @@ export function ValidationSummary({
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-4">
-          <div className="space-y-3 max-h-96 overflow-y-auto border rounded-lg p-4">
+          <div className="flex flex-col gap-1 max-h-96 overflow-y-auto border rounded-lg p-4">
             {errorRowNumbers.map((rowNumber) => (
               <div
                 key={rowNumber}
@@ -85,7 +85,7 @@ export function ValidationSummary({
                 <p className="font-medium text-sm text-red-900 mb-2">
                   Row {rowNumber}:
                 </p>
-                <ul className="space-y-1">
+                <ul className="flex flex-col gap-1">
                   {errorsByRow[rowNumber].map((error, idx) => (
                     <li
                       key={idx}
@@ -93,9 +93,11 @@ export function ValidationSummary({
                     >
                       <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
                       <span>
-                        <span className="font-medium">{error.field}:</span>{' '}
+                        <span className="font-medium capitalize">
+                          {error.field}:
+                        </span>{' '}
                         {error.message}
-                        {error.value && (
+                        {error.value && error.value !== 'undefined' && (
                           <span className="ml-1 text-red-600">
                             (value: "{error.value}")
                           </span>

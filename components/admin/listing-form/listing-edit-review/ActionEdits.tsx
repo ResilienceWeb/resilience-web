@@ -26,7 +26,7 @@ const ActionEdits = ({ listing, editedListing }: Props) => {
           // Action exists in both, but URLs differ (modified)
           if (oldAction && newAction && oldAction.url !== newAction.url) {
             return (
-              <div key={type} className="space-y-1">
+              <div key={type} className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                   <span className="first-letter:capitalize">{type}:</span>
                   <div>

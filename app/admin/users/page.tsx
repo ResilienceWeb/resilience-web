@@ -152,7 +152,7 @@ export default function UsersPage() {
                       }}
                     >
                       <TableCell>
-                        <div className="space-y-1">
+                        <div className="flex flex-col gap-1">
                           <div className="font-medium">
                             {user.name || '(No name)'}
                           </div>

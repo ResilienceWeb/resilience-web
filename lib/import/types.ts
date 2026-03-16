@@ -37,11 +37,11 @@ export interface ParsedCSVData {
  */
 export interface MappedRow {
   name: string
-  description?: string
+  description: string
   email?: string
   website?: string
   address?: string
-  category?: string
+  category: string
   socialMedia?: SocialMediaLink[]
   rowNumber: number // Original row number in CSV
 }

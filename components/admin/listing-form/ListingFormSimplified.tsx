@@ -356,7 +356,7 @@ const ListingFormSimplified = ({
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <div className="space-y-1 leading-none">
+                  <div className="leading-none">
                     <FormLabel>Currently seeking volunteers</FormLabel>
                     <p className="text-sm text-gray-500">
                       Would this group benefit from having more volunteers?

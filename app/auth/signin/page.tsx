@@ -91,7 +91,7 @@ export default function SignIn() {
               }
             }}
           >
-            <div className="space-y-1.5">
+            <div className="flex flex-col gap-1">
               <label
                 htmlFor="email"
                 className="text-sm font-medium text-gray-700 sm:text-base"

@@ -221,7 +221,7 @@ export default function DashboardPage() {
                     }}
                   >
                     <TableCell>
-                      <div className="space-y-1">
+                      <div className="flex flex-col gap-1">
                         <div className="font-medium">{web.title}</div>
                         {(hasNoImage || noDescription) && (
                           <div className="flex flex-wrap gap-1">
@@ -256,7 +256,7 @@ export default function DashboardPage() {
                         )}
 
                         {!isWebActive(web) ? (
-                          <div className="space-y-1">
+                          <div className="flex flex-col gap-1">
                             <Badge variant="secondary">Inactive</Badge>
                             <div className="text-muted-foreground text-xs">
                               Last activity:{' '}
@@ -271,7 +271,7 @@ export default function DashboardPage() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="space-y-1 text-sm">
+                      <div className="flex flex-col gap-1 text-sm">
                         <div className="flex items-center gap-1">
                           <span className="font-semibold">
                             {web.listings.length}

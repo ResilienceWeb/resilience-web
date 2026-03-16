@@ -1,8 +1,5 @@
 'use client'
 
-/**
- * Table for mapping CSV columns to listing fields
- */
 import { getAvailableFields } from '@/lib/import/mapper'
 import type { ColumnMapping, ListingField } from '@/lib/import/types'
 import { AlertCircle } from 'lucide-react'
@@ -36,7 +33,7 @@ export function ColumnMappingTable({
   const sampleRows = sampleData.slice(0, 3)
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4">
       {unmappedRequiredFields.length > 0 && (
         <div className="flex items-start gap-2 p-4 bg-amber-50 border border-amber-200 rounded-md">
           <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5" />
@@ -73,7 +70,9 @@ export function ColumnMappingTable({
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-2">
                       {header}
-                      {currentMapping === 'name' && (
+                      {(currentMapping === 'name' ||
+                        currentMapping === 'description' ||
+                        currentMapping === 'category') && (
                         <Badge variant="destructive" className="text-xs">
                           Required
                         </Badge>
@@ -88,7 +87,7 @@ export function ColumnMappingTable({
                     />
                   </TableCell>
                   <TableCell>
-                    <div className="space-y-1">
+                    <div className="flex flex-col gap-1">
                       {sampleRows.map((row, idx) => (
                         <div
                           key={idx}

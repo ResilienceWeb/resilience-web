@@ -56,7 +56,7 @@ export function ImportResults({ summary }: ImportResultsProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-6">
       <div className="flex items-center gap-2 mb-6">
         {hasErrors ? (
           <>
@@ -75,7 +75,7 @@ export function ImportResults({ summary }: ImportResultsProps) {
         )}
       </div>
 
-      <div className="space-y-6">
+      <div className="flex flex-col gap-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <div className="text-3xl font-bold text-gray-900">{totalRows}</div>
@@ -113,7 +113,7 @@ export function ImportResults({ summary }: ImportResultsProps) {
         </div>
 
         {(hasErrors || hasSkipped) && (
-          <div className="space-y-3 mt-6 mb-4">
+          <div className="flex flex-col gap-3 mt-6 mb-4">
             <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-md">
               <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5" />
               <div className="flex-1">

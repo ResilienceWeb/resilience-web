@@ -30,7 +30,7 @@ const SocialMediaEdits = ({ listing, editedListing }: Props) => {
           // Platform exists in both, but URLs differ (modified)
           if (oldSocial && newSocial && oldSocial.url !== newSocial.url) {
             return (
-              <div key={platform} className="space-y-1">
+              <div key={platform} className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                   <span className="first-letter:capitalize">{platform}:</span>
                   <div>

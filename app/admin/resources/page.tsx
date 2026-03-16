@@ -59,7 +59,7 @@ const CodeSnippet = () => {
 export default function ResourcesPage() {
   return (
     <div className="mb-6 flex flex-col gap-6">
-      <div className="space-y-2">
+      <div>
         <h1 className="text-3xl font-bold">Resources</h1>
         <p className="text-muted-foreground">
           Download resources and materials to help promote your connection to

@@ -115,9 +115,9 @@ describe('filterDuplicates', () => {
   it('should separate unique and duplicate rows', () => {
     const existingNames = createNameSet(['Existing Org'])
     const rows: MappedRow[] = [
-      { name: 'New Org 1', rowNumber: 1 },
-      { name: 'Existing Org', rowNumber: 2 }, // Duplicate with existing
-      { name: 'New Org 2', rowNumber: 3 },
+      { name: 'New Org 1', description: 'Desc', category: 'Community', rowNumber: 1 },
+      { name: 'Existing Org', description: 'Desc', category: 'Community', rowNumber: 2 }, // Duplicate with existing
+      { name: 'New Org 2', description: 'Desc', category: 'Community', rowNumber: 3 },
     ]
 
     const result = filterDuplicates(rows, existingNames)
@@ -130,11 +130,11 @@ describe('filterDuplicates', () => {
   it('should detect duplicates within the same batch', () => {
     const existingNames = createNameSet([])
     const rows: MappedRow[] = [
-      { name: 'Org 1', rowNumber: 1 },
-      { name: 'Org 2', rowNumber: 2 },
-      { name: 'Org 1', rowNumber: 3 }, // Duplicate within batch
-      { name: 'Org 3', rowNumber: 4 },
-      { name: 'org 2', rowNumber: 5 }, // Case-insensitive duplicate
+      { name: 'Org 1', description: 'Desc', category: 'Community', rowNumber: 1 },
+      { name: 'Org 2', description: 'Desc', category: 'Community', rowNumber: 2 },
+      { name: 'Org 1', description: 'Desc', category: 'Community', rowNumber: 3 }, // Duplicate within batch
+      { name: 'Org 3', description: 'Desc', category: 'Community', rowNumber: 4 },
+      { name: 'org 2', description: 'Desc', category: 'Community', rowNumber: 5 }, // Case-insensitive duplicate
     ]
 
     const result = filterDuplicates(rows, existingNames)
@@ -147,8 +147,8 @@ describe('filterDuplicates', () => {
   it('should handle all duplicates', () => {
     const existingNames = createNameSet(['Org 1', 'Org 2'])
     const rows: MappedRow[] = [
-      { name: 'Org 1', rowNumber: 1 },
-      { name: 'Org 2', rowNumber: 2 },
+      { name: 'Org 1', description: 'Desc', category: 'Community', rowNumber: 1 },
+      { name: 'Org 2', description: 'Desc', category: 'Community', rowNumber: 2 },
     ]
 
     const result = filterDuplicates(rows, existingNames)
@@ -160,9 +160,9 @@ describe('filterDuplicates', () => {
   it('should handle all unique', () => {
     const existingNames = createNameSet([])
     const rows: MappedRow[] = [
-      { name: 'Org 1', rowNumber: 1 },
-      { name: 'Org 2', rowNumber: 2 },
-      { name: 'Org 3', rowNumber: 3 },
+      { name: 'Org 1', description: 'Desc', category: 'Community', rowNumber: 1 },
+      { name: 'Org 2', description: 'Desc', category: 'Community', rowNumber: 2 },
+      { name: 'Org 3', description: 'Desc', category: 'Community', rowNumber: 3 },
     ]
 
     const result = filterDuplicates(rows, existingNames)
@@ -182,8 +182,8 @@ describe('filterDuplicates', () => {
   it('should preserve row numbers', () => {
     const existingNames = createNameSet(['Org 1'])
     const rows: MappedRow[] = [
-      { name: 'Org 1', rowNumber: 42 },
-      { name: 'Org 2', rowNumber: 99 },
+      { name: 'Org 1', description: 'Desc', category: 'Community', rowNumber: 42 },
+      { name: 'Org 2', description: 'Desc', category: 'Community', rowNumber: 99 },
     ]
 
     const result = filterDuplicates(rows, existingNames)
@@ -196,9 +196,9 @@ describe('filterDuplicates', () => {
 describe('extractNames', () => {
   it('should extract all names from rows', () => {
     const rows: MappedRow[] = [
-      { name: 'Org 1', rowNumber: 1 },
-      { name: 'Org 2', rowNumber: 2 },
-      { name: 'Org 3', rowNumber: 3 },
+      { name: 'Org 1', description: 'Desc', category: 'Community', rowNumber: 1 },
+      { name: 'Org 2', description: 'Desc', category: 'Community', rowNumber: 2 },
+      { name: 'Org 3', description: 'Desc', category: 'Community', rowNumber: 3 },
     ]
 
     const names = extractNames(rows)
@@ -212,9 +212,9 @@ describe('extractNames', () => {
 
   it('should filter out empty names', () => {
     const rows: MappedRow[] = [
-      { name: 'Org 1', rowNumber: 1 },
-      { name: '', rowNumber: 2 },
-      { name: 'Org 3', rowNumber: 3 },
+      { name: 'Org 1', description: 'Desc', category: 'Community', rowNumber: 1 },
+      { name: '', description: 'Desc', category: 'Community', rowNumber: 2 },
+      { name: 'Org 3', description: 'Desc', category: 'Community', rowNumber: 3 },
     ]
 
     const names = extractNames(rows)

@@ -168,7 +168,7 @@ export default function UserSettingsPage() {
           {isLoadingWebAccess ? (
             <Spinner />
           ) : (
-            <div className="space-y-6">
+            <div>
               <div>
                 <h3 className="text-sm mb-3 font-semibold">Owner of</h3>
                 {ownedWebs && ownedWebs.length > 0 ? (

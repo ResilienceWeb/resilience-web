@@ -134,7 +134,7 @@ export function ImportWizard({ webSlug, webId }: ImportWizardProps) {
       case 3:
         if (!validationResult) return null
         return (
-          <div className="space-y-6">
+          <div className="flex flex-col gap-6">
             <ValidationSummary
               totalRows={csvData?.totalRows || 0}
               validCount={validationResult.validRows.length}
@@ -171,7 +171,7 @@ export function ImportWizard({ webSlug, webId }: ImportWizardProps) {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto flex flex-col gap-8">
       <div className="mb-8">
         <ImportStepIndicator currentStep={currentStep} />
       </div>
