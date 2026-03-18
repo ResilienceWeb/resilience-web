@@ -48,7 +48,9 @@ const webSettingsSchema = z.object({
   description: z.string(),
   contactEmail: z.email({ error: 'Please enter a valid email' }),
   image: z.any().nullable(),
-  relatedWebs: z.array(z.object({ value: z.string(), label: z.string() })),
+  relatedWebs: z.array(
+    z.object({ value: z.union([z.string(), z.number()]), label: z.string() }),
+  ),
   location: z
     .object({
       latitude: z.number(),
@@ -62,7 +64,7 @@ const webSettingsSchema = z.object({
 type WebSettingsForm = z.infer<typeof webSettingsSchema>
 
 type WebOption = {
-  value: string
+  value: string | number
   label: string
 }
 
