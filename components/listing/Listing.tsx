@@ -1,7 +1,7 @@
 'use client'
 
 import { memo, useMemo } from 'react'
-import { FiEdit, FiMapPin, FiNavigation } from 'react-icons/fi'
+import { FiEdit, FiMapPin } from 'react-icons/fi'
 import { HiArrowLeft, HiUserGroup, HiExternalLink } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
