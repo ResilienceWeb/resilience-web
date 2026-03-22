@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
 import { useSearchParams, useRouter } from 'next/navigation'
 import * as Sentry from '@sentry/nextjs'
+import posthog from 'posthog-js'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
 import { authClient, ERROR_MESSAGES } from '@auth-client'
 import type { AUTH_ERROR_CODE } from '@auth-client'
@@ -78,6 +79,7 @@ export default function VerifyOTP() {
 
       // Clear session storage on success
       sessionStorage.removeItem('otp-email')
+      posthog.capture('user-signed-in')
 
       router.push(redirectTo ?? '/admin')
     } catch (error) {
