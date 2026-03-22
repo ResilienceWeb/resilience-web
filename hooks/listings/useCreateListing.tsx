@@ -1,4 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import posthog from 'posthog-js'
+import { useAppContext } from '@store/hooks'
 
 async function createListingRequest(listingData) {
   const formData = new FormData()
@@ -22,6 +24,7 @@ async function createListingRequest(listingData) {
 
 export default function useCreateListing() {
   const queryClient = useQueryClient()
+  const { selectedWebSlug: webSlug } = useAppContext()
 
   return useMutation({
     mutationFn: createListingRequest,
@@ -32,6 +35,9 @@ export default function useCreateListing() {
     },
     onError: (_err, _newListing, context) => {
       queryClient.setQueryData(['listings'], context?.previousListings)
+    },
+    onSuccess: (listing) => {
+      posthog.capture('listing-created', { listingSlug: listing?.slug, webSlug })
     },
     onSettled: () => {
       queryClient.invalidateQueries({

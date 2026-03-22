@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import posthog from 'posthog-js'
 
 async function publishWebRequest(webSlug) {
   const response = await fetch(`/api/webs/${webSlug}/publish`, {
@@ -17,6 +18,9 @@ export default function usePublishWeb(webSlug) {
 
   return useMutation({
     mutationFn: () => publishWebRequest(webSlug),
+    onSuccess: () => {
+      posthog.capture('web-published', { webSlug })
+    },
     onSettled: () => {
       void queryClient.invalidateQueries({
         queryKey: ['webs'],
