@@ -63,7 +63,7 @@
     "mailersend": "2.6.0",
     "next": "16.2.1",
     "next-recaptcha-v3": "1.5.3",
-    "nodemailer": "8.0.3",
+    "nodemailer": "8.0.4",
     "nuqs": "2.8.9",
     "papaparse": "5.5.3",
     "posthog-js": "1.363.1",
