@@ -9,9 +9,8 @@ async function createTagRequest(tagData) {
     body: JSON.stringify(tagData),
   })
 
-  const data = await response.json()
-  const { tag } = data
-  return tag
+  const result = await response.json()
+  return result.data
 }
 
 export default function useCreateTag() {

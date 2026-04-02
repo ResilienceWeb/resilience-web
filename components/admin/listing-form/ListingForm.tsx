@@ -3,9 +3,10 @@
 import { useEffect, useMemo } from 'react'
 import { useForm, FormProvider, useWatch } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
-import ReactSelect from 'react-select'
 import type { Options } from 'react-select'
 import type { StylesConfig } from 'react-select'
+import ReactSelect from 'react-select'
+import CreatableSelect from 'react-select/creatable'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -35,6 +36,7 @@ import {
 } from '@components/ui/select'
 import { Separator } from '@components/ui/separator'
 import useListings from '@hooks/listings/useListings'
+import useCreateTag from '@hooks/tags/useCreateTag'
 import useTags from '@hooks/tags/useTags'
 import useWeb from '@hooks/webs/useWeb'
 import { useAppContext } from '@store/hooks'
@@ -164,6 +166,7 @@ const ListingForm = ({
   const { selectedWebSlug } = useAppContext()
   const { web } = useWeb({ webSlug: selectedWebSlug })
   const { tags } = useTags()
+  const { mutateAsync: createTag } = useCreateTag()
   const { listings } = useListings()
 
   const tagOptions: Options<TagOption> = useMemo(() => {
@@ -420,13 +423,25 @@ const ListingForm = ({
 
           <div className="mt-4">
             <FormLabel className="font-semibold">Tags</FormLabel>
-            <ReactSelect
+            <CreatableSelect
               isMulti
               name="tags"
               options={tagOptions}
               styles={customMultiSelectStyles}
+              placeholder="Select or start typing to create tag..."
               value={tagsValues}
               onChange={(newValue) => setValue('tags', [...newValue])}
+              onCreateOption={async (inputValue) => {
+                const newTag = await createTag({
+                  label: inputValue,
+                  webId: web?.id,
+                })
+                setValue('tags', [
+                  ...tagsValues,
+                  { value: newTag.id, label: newTag.label },
+                ])
+              }}
+              formatCreateLabel={(inputValue) => `Create tag "${inputValue}"`}
             />
           </div>
 
