@@ -25,49 +25,48 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "baseUrl": "./",
     "paths": {
       "@/*": [
         "./*"
       ],
       "@components/*": [
-        "components/*"
+        "./components/*"
       ],
       "@hooks/*": [
-        "hooks/*"
+        "./hooks/*"
       ],
       "@helpers/*": [
-        "helpers/*"
+        "./helpers/*"
       ],
       "@db/*": [
-        "db/*"
+        "./db/*"
       ],
       "@store/*": [
-        "store/*"
+        "./store/*"
       ],
       "@styles/*": [
-        "styles/*"
+        "./styles/*"
       ],
       "@auth": [
-        "app/auth.ts"
+        "./app/auth.ts"
       ],
       "@auth-client": [
-        "lib/auth-client.ts"
+        "./lib/auth-client.ts"
       ],
       "@trigger/*": [
-        "trigger/*"
+        "./trigger/*"
       ],
       "@prisma-client": [
-        "prisma/generated/client"
+        "./prisma/generated/client"
       ],
       "@prisma/*": [
-        "prisma/generated/*"
+        "./prisma/generated/*"
       ],
       "@prisma-rw": [
-        "prisma/client"
+        "./prisma/client"
       ],
       "@prisma-rw-build": [
-        "prisma/build-client"
+        "./prisma/build-client"
       ]
     },
     "typeRoots": [

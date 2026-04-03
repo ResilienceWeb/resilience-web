@@ -88,6 +88,8 @@
     "zod": "4.3.6"
   },
   "devDependencies": {
+    "@eslint-react/eslint-plugin": "4.2.3",
+    "@eslint/js": "10.0.1",
     "@next/eslint-plugin-next": "16.2.2",
     "@playwright/test": "1.58.2",
     "@tailwindcss/postcss": "4.2.2",
@@ -102,15 +104,11 @@
     "@types/nodemailer": "7.0.11",
     "@types/papaparse": "5.5.2",
     "@types/react": "19.2.14",
-    "@typescript-eslint/eslint-plugin": "8.46.0",
-    "@typescript-eslint/parser": "8.46.0",
     "baseline-browser-mapping": "2.10.13",
-    "eslint": "9.39.2",
+    "eslint": "10.1.0",
     "eslint-config-next": "16.2.2",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-promise": "7.2.1",
-    "eslint-plugin-react": "7.37.5",
-    "eslint-plugin-react-hooks": "7.0.1",
     "globals": "17.4.0",
     "postcss": "8.5.8",
     "prettier": "3.8.1",
@@ -120,8 +118,8 @@
     "stylelint": "17.6.0",
     "stylelint-config-recommended": "18.0.0",
     "tailwindcss": "4.2.2",
-    "typescript": "5.9.3",
-    "typescript-eslint": "8.46.0",
+    "typescript": "6.0.2",
+    "typescript-eslint": "8.58.0",
     "vitest": "4.1.2"
   }
 }
