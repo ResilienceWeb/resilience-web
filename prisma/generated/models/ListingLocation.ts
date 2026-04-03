@@ -214,7 +214,7 @@ export type ListingLocationGroupByOutputType = {
   _max: ListingLocationMaxAggregateOutputType | null
 }
 
-type GetListingLocationGroupByPayload<T extends ListingLocationGroupByArgs> = Prisma.PrismaPromise<
+export type GetListingLocationGroupByPayload<T extends ListingLocationGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ListingLocationGroupByOutputType, T['by']> &
       {

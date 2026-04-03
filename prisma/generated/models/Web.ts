@@ -238,7 +238,7 @@ export type WebGroupByOutputType = {
   _max: WebMaxAggregateOutputType | null
 }
 
-type GetWebGroupByPayload<T extends WebGroupByArgs> = Prisma.PrismaPromise<
+export type GetWebGroupByPayload<T extends WebGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<WebGroupByOutputType, T['by']> &
       {
