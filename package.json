@@ -40,7 +40,7 @@
     "@react-email/render": "2.0.5",
     "@sentry/nextjs": "10.47.0",
     "@supabase/supabase-js": "2.101.1",
-    "@tanstack/react-query": "5.91.0",
+    "@tanstack/react-query": "5.96.1",
     "@tinymce/tinymce-react": "6.3.0",
     "@trigger.dev/sdk": "4.4.3",
     "better-auth": "1.5.6",
@@ -59,7 +59,7 @@
     "leaflet-geosearch": "4.4.0",
     "leaflet.markercluster": "1.5.3",
     "lodash.truncate": "4.4.2",
-    "lucide-react": "0.577.0",
+    "lucide-react": "1.7.0",
     "mailersend": "2.7.0",
     "next": "16.2.2",
     "next-recaptcha-v3": "1.5.3",
@@ -91,11 +91,11 @@
     "@eslint-react/eslint-plugin": "4.2.3",
     "@eslint/js": "10.0.1",
     "@next/eslint-plugin-next": "16.2.2",
-    "@playwright/test": "1.58.2",
+    "@playwright/test": "1.59.1",
     "@tailwindcss/postcss": "4.2.2",
     "@tailwindcss/typography": "0.5.19",
-    "@tanstack/eslint-plugin-query": "5.91.5",
-    "@tanstack/react-query-devtools": "5.91.3",
+    "@tanstack/eslint-plugin-query": "5.96.1",
+    "@tanstack/react-query-devtools": "5.96.1",
     "@trigger.dev/build": "4.4.3",
     "@trivago/prettier-plugin-sort-imports": "6.0.2",
     "@types/leaflet": "1.9.21",
@@ -121,5 +121,9 @@
     "typescript": "6.0.2",
     "typescript-eslint": "8.58.0",
     "vitest": "4.1.2"
+  },
+  "overrides": {
+    "eslint": "10.1.0",
+    "typescript": "6.0.2"
   }
 }
