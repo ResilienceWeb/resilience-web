@@ -121,8 +121,8 @@ const Network = ({ data, selectedId, setSelectedId }) => {
   const graphRef = useRef<HTMLDivElement>(null)
   const fgRef = useRef<ForceGraphMethods<NodeType, LinkType>>(null)
   const logoImageRef = useRef<HTMLImageElement | null>(null)
-  const [, setLogoLoaded] = useState(false)
-  const dragStartPos = useRef<{ x: number; y: number } | null>(null)
+  const [_logoLoaded, setLogoLoaded] = useState(false)
+  const dragStartPosRef = useRef<{ x: number; y: number } | null>(null)
 
   const { width = 0, height = 0 } = useResizeObserver({ ref: graphRef })
 
@@ -206,23 +206,23 @@ const Network = ({ data, selectedId, setSelectedId }) => {
   // Track drag start position for tap detection on mobile
   const handleNodeDrag = useCallback((node: NodeType) => {
     // Record position on first drag event
-    if (!dragStartPos.current) {
-      dragStartPos.current = { x: node.x || 0, y: node.y || 0 }
+    if (!dragStartPosRef.current) {
+      dragStartPosRef.current = { x: node.x || 0, y: node.y || 0 }
     }
   }, [])
 
   // Detect taps on mobile (minimal movement during drag)
   const handleNodeDragEnd = useCallback(
     (node: NodeType) => {
-      if (dragStartPos.current) {
-        const dx = (node.x || 0) - dragStartPos.current.x
-        const dy = (node.y || 0) - dragStartPos.current.y
+      if (dragStartPosRef.current) {
+        const dx = (node.x || 0) - dragStartPosRef.current.x
+        const dy = (node.y || 0) - dragStartPosRef.current.y
         const distance = Math.sqrt(dx * dx + dy * dy)
         // If node moved less than 5 units, treat as a tap
         if (distance < 5) {
           handleNodeClick(node)
         }
-        dragStartPos.current = null
+        dragStartPosRef.current = null
       }
     },
     [handleNodeClick],

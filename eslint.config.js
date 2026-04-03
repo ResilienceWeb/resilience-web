@@ -108,6 +108,8 @@ export default tseslint.config([
       "@typescript-eslint/no-misused-promises": 0,
       "@typescript-eslint/triple-slash-reference": 0,
       "@eslint-react/unsupported-syntax": 0,
+      "@eslint-react/dom-no-dangerously-set-innerhtml": 0,
+      "@eslint-react/no-array-index-key": 0,
     }
   },
   {

@@ -21,7 +21,7 @@ export default function AddTagToListingsDialog({
   }, [tag.listings])
 
   const [selectedListings, setSelectedListings] = useState(
-    new Set(linkedListingsIds),
+    () => new Set(linkedListingsIds),
   )
 
   const handleCheckboxChange = (

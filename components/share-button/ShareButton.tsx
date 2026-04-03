@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { FiShare2 } from 'react-icons/fi'
-import useShare from '@hooks/application/useShare'
+import createShareActions from '@hooks/application/useShare'
 
 interface ShareButtonProps {
   url: string
@@ -15,7 +15,7 @@ const ShareButton: FC<ShareButtonProps> = ({
   description,
   label,
 }) => {
-  const { share } = useShare()
+  const { share } = createShareActions()
 
   const handleShare = () => {
     share(url, title, description)

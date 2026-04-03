@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -18,13 +18,10 @@ export default function SignIn() {
   const redirectTo = searchParams.get('redirectTo')
   const errorCode = searchParams.get('error')
 
-  useEffect(() => {
-    if (errorCode) {
-      const errorMessage =
-        ERROR_MESSAGES[errorCode] || 'An error occurred. Please try again.'
-      setError(errorMessage)
-    }
-  }, [errorCode])
+  const errorFromParams = errorCode
+    ? (ERROR_MESSAGES[errorCode] || 'An error occurred. Please try again.')
+    : ''
+  const displayError = error || errorFromParams
 
   const isUserAttemptingEdit = redirectTo?.includes('/edit')
   const isUserAttemptingPropose = redirectTo?.includes('/new-listing')
@@ -108,7 +105,7 @@ export default function SignIn() {
             <Button type="submit" className="mt-4 w-full">
               Sign in
             </Button>
-            {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+            {displayError && <p className="mt-3 text-sm text-red-600">{displayError}</p>}
           </form>
         </div>
         <div className="w-full max-w-[490px] rounded-xl bg-white p-4 text-sm sm:p-6 sm:text-base">

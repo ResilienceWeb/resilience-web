@@ -94,7 +94,7 @@ const MapContent = ({
         const result = geoSearchControl.resultList.results[idx]
         if (result) {
           // Manually trigger the location update
-          setTimeout(() => {
+          resultClickTimeout = setTimeout(() => {
             const newPosition = { lat: result.y, lng: result.x }
             setPosition(newPosition)
             map.setView(newPosition, map.getZoom())
@@ -111,9 +111,11 @@ const MapContent = ({
         }
       }
     }
+    let resultClickTimeout: ReturnType<typeof setTimeout>
     resultsContainer?.addEventListener('click', handleResultClick)
 
     return () => {
+      clearTimeout(resultClickTimeout)
       map.off('geosearch/showlocation', handleShowLocation)
       geoSearchControl.resetButton.removeEventListener('click', handleReset)
       resultsContainer?.removeEventListener('click', handleResultClick)

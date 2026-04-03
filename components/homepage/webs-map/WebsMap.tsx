@@ -69,15 +69,14 @@ function FitBoundsToMarkers({ markers }: { markers: [number, number][] }) {
 
 function WebsMap({ webs = [] }: WebsMapProps) {
   const [isLoading, setIsLoading] = useState(true)
-  const [markerIcon, setMarkerIcon] = useState<L.DivIcon | null>(null)
+  const [markerIcon] = useState<L.DivIcon | null>(() =>
+    createCustomIcon('City', '#3A8159'),
+  )
   const router = useRouter()
 
   useEffect(() => {
     // Fix Leaflet default icon issue
     import('../../../components/listings-map/leaflet-icon-fix')
-
-    // Create marker icon after component mounts (client-side only)
-    setMarkerIcon(createCustomIcon('City', '#3A8159'))
 
     const timer = setTimeout(() => {
       setIsLoading(false)
