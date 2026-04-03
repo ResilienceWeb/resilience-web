@@ -1,8 +1,7 @@
 import eslint from '@eslint/js'
 import tanstackQueryPlugin from '@tanstack/eslint-plugin-query'
+import eslintReact from '@eslint-react/eslint-plugin'
 import promisePlugin from 'eslint-plugin-promise'
-import reactPlugin from 'eslint-plugin-react'
-import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
@@ -10,14 +9,10 @@ import nextPlugin from '@next/eslint-plugin-next'
 
 export default tseslint.config([
   eslint.configs.recommended,
-  reactPlugin.configs.flat.recommended,
-  reactPlugin.configs.flat['jsx-runtime'],
   promisePlugin.configs['flat/recommended'],
   ...tanstackQueryPlugin.configs['flat/recommended'],
-  reactHooksPlugin.configs.flat.recommended,
   {
     plugins: {
-      react: reactPlugin,
       '@next/next': nextPlugin,
       'jsx-a11y': jsxA11yPlugin,
     },
@@ -55,13 +50,7 @@ export default tseslint.config([
       "no-useless-escape": 0,
       "no-var": 1,
       "prefer-const": 1,
-      "react-hooks/rules-of-hooks": 2,
-      "react-hooks/exhaustive-deps": "warn",
-      "react/no-unescaped-entities": 0,
       "strict": 0,
-      "react/jsx-props-no-spreading": 0,
-      "react/react-in-jsx-scope": 0,
-      "react/prop-types": 0,
       "jsx-a11y/anchor-is-valid": 1,
       "jsx-a11y/label-has-associated-control": 1,
       "no-unused-vars": "off",
@@ -77,7 +66,10 @@ export default tseslint.config([
   },
   {
     files: ['**/*.ts', '**/*.tsx'],
-    extends: [tseslint.configs.recommendedTypeChecked],
+    extends: [
+      tseslint.configs.recommendedTypeChecked,
+      eslintReact.configs['recommended-typescript'],
+    ],
     ignores: ['**/*.js'],
     plugins: {
       '@typescript-eslint': tseslint.plugin,
@@ -115,6 +107,9 @@ export default tseslint.config([
       "@typescript-eslint/no-base-to-string": 0,
       "@typescript-eslint/no-misused-promises": 0,
       "@typescript-eslint/triple-slash-reference": 0,
+      "@eslint-react/unsupported-syntax": 0,
+      "@eslint-react/dom-no-dangerously-set-innerhtml": 0,
+      "@eslint-react/no-array-index-key": 0,
     }
   },
   {

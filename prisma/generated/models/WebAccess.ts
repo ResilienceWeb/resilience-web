@@ -203,7 +203,7 @@ export type WebAccessGroupByOutputType = {
   _max: WebAccessMaxAggregateOutputType | null
 }
 
-type GetWebAccessGroupByPayload<T extends WebAccessGroupByArgs> = Prisma.PrismaPromise<
+export type GetWebAccessGroupByPayload<T extends WebAccessGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<WebAccessGroupByOutputType, T['by']> &
       {

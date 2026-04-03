@@ -12,14 +12,13 @@ const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 const useMediaQuerySSR = (queryStr) => {
-  const [targetW, setTargetW] = useState(false)
+  const [targetW, setTargetW] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia(queryStr).matches
+  })
 
   const updateTarget = useCallback((e) => {
-    if (e.matches) {
-      setTargetW(true)
-    } else {
-      setTargetW(false)
-    }
+    setTargetW(e.matches)
   }, [])
 
   useIsomorphicLayoutEffect(() => {
@@ -27,10 +26,6 @@ const useMediaQuerySSR = (queryStr) => {
 
     media.addEventListener('change', updateTarget)
 
-    // Check on mount (callback is not called until a change occurs)
-    if (media.matches) {
-      setTargetW(true)
-    }
     // clean up
     return () => media.removeEventListener('change', updateTarget)
   }, [])

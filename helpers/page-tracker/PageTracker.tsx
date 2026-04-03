@@ -20,9 +20,9 @@ export const usePageTrackerHandler = ({
     enableStrictModeHandler,
   })
 
-  const pageIndex = useRef(0)
+  const pageIndexRef = useRef(0)
   // for isLastPage usage
-  const visitedTotalLength = useRef(1)
+  const visitedTotalLengthRef = useRef(1)
 
   useEffect(() => {
     initHistoryState()
@@ -33,22 +33,22 @@ export const usePageTrackerHandler = ({
       const state = event.state as HistoryCustomState
       const statePageIndex =
         state.__REACT_PAGE_TRACKER_INTERNAL__?.pageIndex ?? 0
-      const pageEvent = pageIndex.current > statePageIndex ? 'back' : 'forward'
+      const pageEvent = pageIndexRef.current > statePageIndex ? 'back' : 'forward'
       if (pageEvent === 'forward') {
-        pageIndex.current++
+        pageIndexRef.current++
       } else {
-        pageIndex.current = statePageIndex ?? 0
+        pageIndexRef.current = statePageIndex ?? 0
       }
       const pageHistory = [
         ...(state.__REACT_PAGE_TRACKER_INTERNAL__?.pageHistory || []),
       ]
       pageTrackerStore.setState({
-        pageIndex: pageIndex.current,
-        isFirstPage: pageIndex.current === 0,
-        isLastPage: pageHistory.length === visitedTotalLength.current,
+        pageIndex: pageIndexRef.current,
+        isFirstPage: pageIndexRef.current === 0,
+        isLastPage: pageHistory.length === visitedTotalLengthRef.current,
         referrer: state.__REACT_PAGE_TRACKER_INTERNAL__?.referrer ?? '',
         pageHistory,
-        pageHistoryLength: visitedTotalLength.current,
+        pageHistoryLength: visitedTotalLengthRef.current,
         pageEvent,
       })
     }
@@ -65,15 +65,15 @@ export const usePageTrackerHandler = ({
       }
       const newPageIndex =
         (history.state.__REACT_PAGE_TRACKER_INTERNAL__?.pageIndex ?? 0) + 1
-      pageIndex.current = newPageIndex
+      pageIndexRef.current = newPageIndex
       const newPageHistory = pageTrackerStore.getImmutablePageHistory()
       newPageHistory.push(url)
-      visitedTotalLength.current = newPageHistory.length
+      visitedTotalLengthRef.current = newPageHistory.length
       const newState = {
         pageIndex: newPageIndex,
         referrer: window.location.href,
         pageHistory: newPageHistory,
-        pageHistoryLength: visitedTotalLength.current,
+        pageHistoryLength: visitedTotalLengthRef.current,
       }
 
       const stateWithPageInfo: HistoryCustomState = {
@@ -90,7 +90,7 @@ export const usePageTrackerHandler = ({
       })
 
       debugLog(
-        `pushState: stateWithPageInfo.pageIndex -->${stateWithPageInfo.__REACT_PAGE_TRACKER_INTERNAL__.pageIndex} ,pageIndex.current --> ${pageIndex.current} referrer -->${stateWithPageInfo.__REACT_PAGE_TRACKER_INTERNAL__.referrer}`,
+        `pushState: stateWithPageInfo.pageIndex -->${stateWithPageInfo.__REACT_PAGE_TRACKER_INTERNAL__.pageIndex} ,pageIndexRef.current --> ${pageIndexRef.current} referrer -->${stateWithPageInfo.__REACT_PAGE_TRACKER_INTERNAL__.referrer}`,
       )
 
       return originalPushState(stateWithPageInfo, title || '', url || '')
@@ -100,7 +100,7 @@ export const usePageTrackerHandler = ({
       window.onpopstate = originalOnPopState
       history.pushState = originalPushState
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line @eslint-react/exhaustive-deps
   }, [])
 }
 
@@ -108,7 +108,7 @@ const useStrictModeDetector = ({
   enableStrictModeHandler,
 }: PageTrackerProps) => {
   const counterRef = useRef(0)
-  const isStrictMode = useRef(false)
+  const isStrictModeRef = useRef(false)
 
   const isNextjs = () => {
     return !!history.state.__PRIVATE_NEXTJS_INTERNALS_TREE
@@ -116,7 +116,7 @@ const useStrictModeDetector = ({
 
   const detectorHandler = () => {
     counterRef.current++
-    if (isStrictMode.current) {
+    if (isStrictModeRef.current) {
       return counterRef.current % 2 === 0
     }
     return false
@@ -126,7 +126,7 @@ const useStrictModeDetector = ({
     initStrictModeDetector: () => {
       counterRef.current++
       if (counterRef.current === 2) {
-        isStrictMode.current = true
+        isStrictModeRef.current = true
       }
     },
     strictModeDetector: () => {

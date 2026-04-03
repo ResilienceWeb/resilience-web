@@ -27,15 +27,15 @@ const FormField = <
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
   return (
-    <FormFieldContext.Provider value={{ name: props.name }}>
+    <FormFieldContext value={{ name: props.name }}>
       <Controller {...props} />
-    </FormFieldContext.Provider>
+    </FormFieldContext>
   )
 }
 
 const useFormField = () => {
-  const fieldContext = React.useContext(FormFieldContext)
-  const itemContext = React.useContext(FormItemContext)
+  const fieldContext = React.use(FormFieldContext)
+  const itemContext = React.use(FormItemContext)
   const { getFieldState, formState } = useFormContext()
 
   const fieldState = getFieldState(fieldContext.name, formState)
@@ -71,9 +71,9 @@ const FormItem = ({
   const id = React.useId()
 
   return (
-    <FormItemContext.Provider value={{ id }}>
+    <FormItemContext value={{ id }}>
       <div className={cn('flex flex-col gap-2', className)} {...props} />
-    </FormItemContext.Provider>
+    </FormItemContext>
   )
 }
 FormItem.displayName = 'FormItem'

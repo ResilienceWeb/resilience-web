@@ -54,12 +54,13 @@ export default function AdminPage() {
   useEffect(() => {
     if (firstTime === 'true') {
       posthog.capture('web-creation-dashboard-landing')
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         tour.drive()
         clearSearchParams()
       }, 2000)
+      return () => clearTimeout(timeout)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line @eslint-react/exhaustive-deps
   }, [firstTime])
 
   if (

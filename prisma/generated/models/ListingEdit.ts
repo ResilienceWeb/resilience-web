@@ -267,7 +267,7 @@ export type ListingEditGroupByOutputType = {
   _max: ListingEditMaxAggregateOutputType | null
 }
 
-type GetListingEditGroupByPayload<T extends ListingEditGroupByArgs> = Prisma.PrismaPromise<
+export type GetListingEditGroupByPayload<T extends ListingEditGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ListingEditGroupByOutputType, T['by']> &
       {

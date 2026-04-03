@@ -32,9 +32,10 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
   const { ref, inView } = useInView()
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setIsWithinAFewSecondsOfRender(false)
     }, 3000)
+    return () => clearTimeout(timeout)
   }, [])
 
   const onClick = useCallback(() => {
@@ -54,13 +55,20 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
     [categoriesIndexes, dataItem.category.label],
   )
 
+  const isFeatured = useMemo(
+    () =>
+      Boolean(dataItem.featured) &&
+      new Date(dataItem.featured).getTime() > Date.now(),
+    [dataItem.featured],
+  )
+
   return (
     <div
       className="animate-in fade-in slide-in-from-bottom relative h-fit cursor-pointer rounded-md bg-white shadow-md transition-all duration-200 ease-out hover:shadow-xl"
       onClick={onClick}
       ref={ref}
     >
-      {dataItem.featured && new Date(dataItem.featured) > new Date() && (
+      {isFeatured && (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

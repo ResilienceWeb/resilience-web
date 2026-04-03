@@ -26,7 +26,7 @@ const StoreProvider = ({ children }) => {
     [selectedWebId, selectedWebSlug, setSelectedWebSlug],
   )
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>
+  return <AppContext value={value}>{children}</AppContext>
 }
 
 export default StoreProvider

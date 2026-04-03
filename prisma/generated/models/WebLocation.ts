@@ -207,7 +207,7 @@ export type WebLocationGroupByOutputType = {
   _max: WebLocationMaxAggregateOutputType | null
 }
 
-type GetWebLocationGroupByPayload<T extends WebLocationGroupByArgs> = Prisma.PrismaPromise<
+export type GetWebLocationGroupByPayload<T extends WebLocationGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<WebLocationGroupByOutputType, T['by']> &
       {

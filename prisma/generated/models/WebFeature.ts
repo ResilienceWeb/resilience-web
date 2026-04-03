@@ -203,7 +203,7 @@ export type WebFeatureGroupByOutputType = {
   _max: WebFeatureMaxAggregateOutputType | null
 }
 
-type GetWebFeatureGroupByPayload<T extends WebFeatureGroupByArgs> = Prisma.PrismaPromise<
+export type GetWebFeatureGroupByPayload<T extends WebFeatureGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<WebFeatureGroupByOutputType, T['by']> &
       {

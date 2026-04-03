@@ -214,7 +214,7 @@ export type ListingActionGroupByOutputType = {
   _max: ListingActionMaxAggregateOutputType | null
 }
 
-type GetListingActionGroupByPayload<T extends ListingActionGroupByArgs> = Prisma.PrismaPromise<
+export type GetListingActionGroupByPayload<T extends ListingActionGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ListingActionGroupByOutputType, T['by']> &
       {

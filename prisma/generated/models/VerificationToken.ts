@@ -144,7 +144,7 @@ export type VerificationTokenGroupByOutputType = {
   _max: VerificationTokenMaxAggregateOutputType | null
 }
 
-type GetVerificationTokenGroupByPayload<T extends VerificationTokenGroupByArgs> = Prisma.PrismaPromise<
+export type GetVerificationTokenGroupByPayload<T extends VerificationTokenGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<VerificationTokenGroupByOutputType, T['by']> &
       {

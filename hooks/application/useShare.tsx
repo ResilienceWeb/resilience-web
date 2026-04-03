@@ -1,6 +1,6 @@
 import { toast } from 'sonner'
 
-const useShare = () => {
+const createShareActions = () => {
   const copy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text)
@@ -33,4 +33,4 @@ const useShare = () => {
   return { copy, share }
 }
 
-export default useShare
+export default createShareActions

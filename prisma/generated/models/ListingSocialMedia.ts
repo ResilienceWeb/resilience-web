@@ -214,7 +214,7 @@ export type ListingSocialMediaGroupByOutputType = {
   _max: ListingSocialMediaMaxAggregateOutputType | null
 }
 
-type GetListingSocialMediaGroupByPayload<T extends ListingSocialMediaGroupByArgs> = Prisma.PrismaPromise<
+export type GetListingSocialMediaGroupByPayload<T extends ListingSocialMediaGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ListingSocialMediaGroupByOutputType, T['by']> &
       {
