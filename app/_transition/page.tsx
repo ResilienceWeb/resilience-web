@@ -24,8 +24,7 @@ export default async function TransitionPage() {
   const data = await getData()
 
   await queryClient.prefetchQuery({
-    // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ['categories', { webSlug: 'transition' }],
+    queryKey: ['categories', { webSlug: 'transition' }, data.categories],
     queryFn: () => {
       return data.categories
     },
@@ -33,8 +32,7 @@ export default async function TransitionPage() {
   })
 
   await queryClient.prefetchQuery({
-    // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ['tags', { webSlug: 'transition', public: true }],
+    queryKey: ['tags', { webSlug: 'transition', public: true }, data.tags],
     queryFn: () => {
       return data.tags
     },
