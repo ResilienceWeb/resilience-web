@@ -32,7 +32,6 @@ const ListingImage = ({ alt, src, sizes, priority }: Props) => {
           borderTopRightRadius: '0.375rem',
           objectFit: 'contain',
         }}
-        unoptimized
       />
     </div>
   )
