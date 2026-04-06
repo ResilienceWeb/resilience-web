@@ -43,6 +43,7 @@ export default async function TransitionPage() {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Web
         data={data}
+        webId={0}
         webName="Transition UK"
         webIsPublished
         isTransitionMode

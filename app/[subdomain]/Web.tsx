@@ -1,10 +1,11 @@
 'use client'
 
-import { useCallback, useMemo, memo, useState } from 'react'
+import { useCallback, useEffect, useMemo, memo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import '@styles/font-awesome.css'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts'
+import { trackWebEvent } from '@helpers/analytics'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import {
   removeNonAlphaNumeric,
@@ -42,6 +43,7 @@ type Props = {
   }
   events?: any[]
   features: any
+  webId: number
   webName: string
   webDescription?: string
   webIsPublished: boolean
@@ -54,6 +56,7 @@ const Web = ({
   data,
   events,
   features,
+  webId,
   webName,
   webDescription = null,
   webIsPublished,
@@ -66,6 +69,10 @@ const Web = ({
   const defaultTab = isMobile ? 'list' : 'web'
 
   const isGeoMappingEnabled = isFeatureEnabled(FEATURES.showMap, features)
+
+  useEffect(() => {
+    trackWebEvent(webId, 'view')
+  }, [webId])
 
   const [categoriesParam, setCategoriesParam] = useQueryState(
     'categories',

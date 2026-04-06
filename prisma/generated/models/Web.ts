@@ -278,6 +278,7 @@ export type WebWhereInput = {
   relationOf?: Prisma.WebListRelationFilter
   location?: Prisma.XOR<Prisma.WebLocationNullableScalarRelationFilter, Prisma.WebLocationWhereInput> | null
   webAccess?: Prisma.WebAccessListRelationFilter
+  analyticsDaily?: Prisma.WebAnalyticsDailyListRelationFilter
 }
 
 export type WebOrderByWithRelationInput = {
@@ -302,6 +303,7 @@ export type WebOrderByWithRelationInput = {
   relationOf?: Prisma.WebOrderByRelationAggregateInput
   location?: Prisma.WebLocationOrderByWithRelationInput
   webAccess?: Prisma.WebAccessOrderByRelationAggregateInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyOrderByRelationAggregateInput
 }
 
 export type WebWhereUniqueInput = Prisma.AtLeast<{
@@ -329,6 +331,7 @@ export type WebWhereUniqueInput = Prisma.AtLeast<{
   relationOf?: Prisma.WebListRelationFilter
   location?: Prisma.XOR<Prisma.WebLocationNullableScalarRelationFilter, Prisma.WebLocationWhereInput> | null
   webAccess?: Prisma.WebAccessListRelationFilter
+  analyticsDaily?: Prisma.WebAnalyticsDailyListRelationFilter
 }, "id" | "title" | "slug" | "locationId">
 
 export type WebOrderByWithAggregationInput = {
@@ -387,6 +390,7 @@ export type WebCreateInput = {
   relationOf?: Prisma.WebCreateNestedManyWithoutRelationsInput
   location?: Prisma.WebLocationCreateNestedOneWithoutWebInput
   webAccess?: Prisma.WebAccessCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyCreateNestedManyWithoutWebInput
 }
 
 export type WebUncheckedCreateInput = {
@@ -410,6 +414,7 @@ export type WebUncheckedCreateInput = {
   relations?: Prisma.WebUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.WebUncheckedCreateNestedManyWithoutRelationsInput
   webAccess?: Prisma.WebAccessUncheckedCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput
 }
 
 export type WebUpdateInput = {
@@ -432,6 +437,7 @@ export type WebUpdateInput = {
   relationOf?: Prisma.WebUpdateManyWithoutRelationsNestedInput
   location?: Prisma.WebLocationUpdateOneWithoutWebNestedInput
   webAccess?: Prisma.WebAccessUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateInput = {
@@ -455,6 +461,7 @@ export type WebUncheckedUpdateInput = {
   relations?: Prisma.WebUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.WebUncheckedUpdateManyWithoutRelationsNestedInput
   webAccess?: Prisma.WebAccessUncheckedUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput
 }
 
 export type WebCreateManyInput = {
@@ -837,6 +844,20 @@ export type WebUpdateOneRequiredWithoutFeaturesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.WebUpdateToOneWithWhereWithoutFeaturesInput, Prisma.WebUpdateWithoutFeaturesInput>, Prisma.WebUncheckedUpdateWithoutFeaturesInput>
 }
 
+export type WebCreateNestedOneWithoutAnalyticsDailyInput = {
+  create?: Prisma.XOR<Prisma.WebCreateWithoutAnalyticsDailyInput, Prisma.WebUncheckedCreateWithoutAnalyticsDailyInput>
+  connectOrCreate?: Prisma.WebCreateOrConnectWithoutAnalyticsDailyInput
+  connect?: Prisma.WebWhereUniqueInput
+}
+
+export type WebUpdateOneRequiredWithoutAnalyticsDailyNestedInput = {
+  create?: Prisma.XOR<Prisma.WebCreateWithoutAnalyticsDailyInput, Prisma.WebUncheckedCreateWithoutAnalyticsDailyInput>
+  connectOrCreate?: Prisma.WebCreateOrConnectWithoutAnalyticsDailyInput
+  upsert?: Prisma.WebUpsertWithoutAnalyticsDailyInput
+  connect?: Prisma.WebWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WebUpdateToOneWithWhereWithoutAnalyticsDailyInput, Prisma.WebUpdateWithoutAnalyticsDailyInput>, Prisma.WebUncheckedUpdateWithoutAnalyticsDailyInput>
+}
+
 export type WebCreateWithoutRelationOfInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -856,6 +877,7 @@ export type WebCreateWithoutRelationOfInput = {
   relations?: Prisma.WebCreateNestedManyWithoutRelationOfInput
   location?: Prisma.WebLocationCreateNestedOneWithoutWebInput
   webAccess?: Prisma.WebAccessCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyCreateNestedManyWithoutWebInput
 }
 
 export type WebUncheckedCreateWithoutRelationOfInput = {
@@ -878,6 +900,7 @@ export type WebUncheckedCreateWithoutRelationOfInput = {
   features?: Prisma.WebFeatureUncheckedCreateNestedManyWithoutWebInput
   relations?: Prisma.WebUncheckedCreateNestedManyWithoutRelationOfInput
   webAccess?: Prisma.WebAccessUncheckedCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput
 }
 
 export type WebCreateOrConnectWithoutRelationOfInput = {
@@ -904,6 +927,7 @@ export type WebCreateWithoutRelationsInput = {
   relationOf?: Prisma.WebCreateNestedManyWithoutRelationsInput
   location?: Prisma.WebLocationCreateNestedOneWithoutWebInput
   webAccess?: Prisma.WebAccessCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyCreateNestedManyWithoutWebInput
 }
 
 export type WebUncheckedCreateWithoutRelationsInput = {
@@ -926,6 +950,7 @@ export type WebUncheckedCreateWithoutRelationsInput = {
   features?: Prisma.WebFeatureUncheckedCreateNestedManyWithoutWebInput
   relationOf?: Prisma.WebUncheckedCreateNestedManyWithoutRelationsInput
   webAccess?: Prisma.WebAccessUncheckedCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput
 }
 
 export type WebCreateOrConnectWithoutRelationsInput = {
@@ -1001,6 +1026,7 @@ export type WebCreateWithoutCategoriesInput = {
   relationOf?: Prisma.WebCreateNestedManyWithoutRelationsInput
   location?: Prisma.WebLocationCreateNestedOneWithoutWebInput
   webAccess?: Prisma.WebAccessCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyCreateNestedManyWithoutWebInput
 }
 
 export type WebUncheckedCreateWithoutCategoriesInput = {
@@ -1023,6 +1049,7 @@ export type WebUncheckedCreateWithoutCategoriesInput = {
   relations?: Prisma.WebUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.WebUncheckedCreateNestedManyWithoutRelationsInput
   webAccess?: Prisma.WebAccessUncheckedCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput
 }
 
 export type WebCreateOrConnectWithoutCategoriesInput = {
@@ -1060,6 +1087,7 @@ export type WebUpdateWithoutCategoriesInput = {
   relationOf?: Prisma.WebUpdateManyWithoutRelationsNestedInput
   location?: Prisma.WebLocationUpdateOneWithoutWebNestedInput
   webAccess?: Prisma.WebAccessUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateWithoutCategoriesInput = {
@@ -1082,6 +1110,7 @@ export type WebUncheckedUpdateWithoutCategoriesInput = {
   relations?: Prisma.WebUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.WebUncheckedUpdateManyWithoutRelationsNestedInput
   webAccess?: Prisma.WebAccessUncheckedUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput
 }
 
 export type WebCreateWithoutTagsInput = {
@@ -1103,6 +1132,7 @@ export type WebCreateWithoutTagsInput = {
   relationOf?: Prisma.WebCreateNestedManyWithoutRelationsInput
   location?: Prisma.WebLocationCreateNestedOneWithoutWebInput
   webAccess?: Prisma.WebAccessCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyCreateNestedManyWithoutWebInput
 }
 
 export type WebUncheckedCreateWithoutTagsInput = {
@@ -1125,6 +1155,7 @@ export type WebUncheckedCreateWithoutTagsInput = {
   relations?: Prisma.WebUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.WebUncheckedCreateNestedManyWithoutRelationsInput
   webAccess?: Prisma.WebAccessUncheckedCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput
 }
 
 export type WebCreateOrConnectWithoutTagsInput = {
@@ -1162,6 +1193,7 @@ export type WebUpdateWithoutTagsInput = {
   relationOf?: Prisma.WebUpdateManyWithoutRelationsNestedInput
   location?: Prisma.WebLocationUpdateOneWithoutWebNestedInput
   webAccess?: Prisma.WebAccessUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateWithoutTagsInput = {
@@ -1184,6 +1216,7 @@ export type WebUncheckedUpdateWithoutTagsInput = {
   relations?: Prisma.WebUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.WebUncheckedUpdateManyWithoutRelationsNestedInput
   webAccess?: Prisma.WebAccessUncheckedUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput
 }
 
 export type WebCreateWithoutListingsInput = {
@@ -1205,6 +1238,7 @@ export type WebCreateWithoutListingsInput = {
   relationOf?: Prisma.WebCreateNestedManyWithoutRelationsInput
   location?: Prisma.WebLocationCreateNestedOneWithoutWebInput
   webAccess?: Prisma.WebAccessCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyCreateNestedManyWithoutWebInput
 }
 
 export type WebUncheckedCreateWithoutListingsInput = {
@@ -1227,6 +1261,7 @@ export type WebUncheckedCreateWithoutListingsInput = {
   relations?: Prisma.WebUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.WebUncheckedCreateNestedManyWithoutRelationsInput
   webAccess?: Prisma.WebAccessUncheckedCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput
 }
 
 export type WebCreateOrConnectWithoutListingsInput = {
@@ -1264,6 +1299,7 @@ export type WebUpdateWithoutListingsInput = {
   relationOf?: Prisma.WebUpdateManyWithoutRelationsNestedInput
   location?: Prisma.WebLocationUpdateOneWithoutWebNestedInput
   webAccess?: Prisma.WebAccessUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateWithoutListingsInput = {
@@ -1286,6 +1322,7 @@ export type WebUncheckedUpdateWithoutListingsInput = {
   relations?: Prisma.WebUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.WebUncheckedUpdateManyWithoutRelationsNestedInput
   webAccess?: Prisma.WebAccessUncheckedUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput
 }
 
 export type WebCreateWithoutLocationInput = {
@@ -1307,6 +1344,7 @@ export type WebCreateWithoutLocationInput = {
   relations?: Prisma.WebCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.WebCreateNestedManyWithoutRelationsInput
   webAccess?: Prisma.WebAccessCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyCreateNestedManyWithoutWebInput
 }
 
 export type WebUncheckedCreateWithoutLocationInput = {
@@ -1329,6 +1367,7 @@ export type WebUncheckedCreateWithoutLocationInput = {
   relations?: Prisma.WebUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.WebUncheckedCreateNestedManyWithoutRelationsInput
   webAccess?: Prisma.WebAccessUncheckedCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput
 }
 
 export type WebCreateOrConnectWithoutLocationInput = {
@@ -1366,6 +1405,7 @@ export type WebUpdateWithoutLocationInput = {
   relations?: Prisma.WebUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.WebUpdateManyWithoutRelationsNestedInput
   webAccess?: Prisma.WebAccessUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateWithoutLocationInput = {
@@ -1388,6 +1428,7 @@ export type WebUncheckedUpdateWithoutLocationInput = {
   relations?: Prisma.WebUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.WebUncheckedUpdateManyWithoutRelationsNestedInput
   webAccess?: Prisma.WebAccessUncheckedUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput
 }
 
 export type WebCreateWithoutPermissionsInput = {
@@ -1409,6 +1450,7 @@ export type WebCreateWithoutPermissionsInput = {
   relationOf?: Prisma.WebCreateNestedManyWithoutRelationsInput
   location?: Prisma.WebLocationCreateNestedOneWithoutWebInput
   webAccess?: Prisma.WebAccessCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyCreateNestedManyWithoutWebInput
 }
 
 export type WebUncheckedCreateWithoutPermissionsInput = {
@@ -1431,6 +1473,7 @@ export type WebUncheckedCreateWithoutPermissionsInput = {
   relations?: Prisma.WebUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.WebUncheckedCreateNestedManyWithoutRelationsInput
   webAccess?: Prisma.WebAccessUncheckedCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput
 }
 
 export type WebCreateOrConnectWithoutPermissionsInput = {
@@ -1473,6 +1516,7 @@ export type WebCreateWithoutOwnershipsInput = {
   relationOf?: Prisma.WebCreateNestedManyWithoutRelationsInput
   location?: Prisma.WebLocationCreateNestedOneWithoutWebInput
   webAccess?: Prisma.WebAccessCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyCreateNestedManyWithoutWebInput
 }
 
 export type WebUncheckedCreateWithoutOwnershipsInput = {
@@ -1495,6 +1539,7 @@ export type WebUncheckedCreateWithoutOwnershipsInput = {
   relations?: Prisma.WebUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.WebUncheckedCreateNestedManyWithoutRelationsInput
   webAccess?: Prisma.WebAccessUncheckedCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput
 }
 
 export type WebCreateOrConnectWithoutOwnershipsInput = {
@@ -1537,6 +1582,7 @@ export type WebCreateWithoutWebAccessInput = {
   relations?: Prisma.WebCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.WebCreateNestedManyWithoutRelationsInput
   location?: Prisma.WebLocationCreateNestedOneWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyCreateNestedManyWithoutWebInput
 }
 
 export type WebUncheckedCreateWithoutWebAccessInput = {
@@ -1559,6 +1605,7 @@ export type WebUncheckedCreateWithoutWebAccessInput = {
   features?: Prisma.WebFeatureUncheckedCreateNestedManyWithoutWebInput
   relations?: Prisma.WebUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.WebUncheckedCreateNestedManyWithoutRelationsInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput
 }
 
 export type WebCreateOrConnectWithoutWebAccessInput = {
@@ -1596,6 +1643,7 @@ export type WebUpdateWithoutWebAccessInput = {
   relations?: Prisma.WebUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.WebUpdateManyWithoutRelationsNestedInput
   location?: Prisma.WebLocationUpdateOneWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateWithoutWebAccessInput = {
@@ -1618,6 +1666,7 @@ export type WebUncheckedUpdateWithoutWebAccessInput = {
   features?: Prisma.WebFeatureUncheckedUpdateManyWithoutWebNestedInput
   relations?: Prisma.WebUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.WebUncheckedUpdateManyWithoutRelationsNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput
 }
 
 export type WebCreateWithoutFeaturesInput = {
@@ -1639,6 +1688,7 @@ export type WebCreateWithoutFeaturesInput = {
   relationOf?: Prisma.WebCreateNestedManyWithoutRelationsInput
   location?: Prisma.WebLocationCreateNestedOneWithoutWebInput
   webAccess?: Prisma.WebAccessCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyCreateNestedManyWithoutWebInput
 }
 
 export type WebUncheckedCreateWithoutFeaturesInput = {
@@ -1661,6 +1711,7 @@ export type WebUncheckedCreateWithoutFeaturesInput = {
   relations?: Prisma.WebUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.WebUncheckedCreateNestedManyWithoutRelationsInput
   webAccess?: Prisma.WebAccessUncheckedCreateNestedManyWithoutWebInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput
 }
 
 export type WebCreateOrConnectWithoutFeaturesInput = {
@@ -1698,6 +1749,7 @@ export type WebUpdateWithoutFeaturesInput = {
   relationOf?: Prisma.WebUpdateManyWithoutRelationsNestedInput
   location?: Prisma.WebLocationUpdateOneWithoutWebNestedInput
   webAccess?: Prisma.WebAccessUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateWithoutFeaturesInput = {
@@ -1717,6 +1769,113 @@ export type WebUncheckedUpdateWithoutFeaturesInput = {
   tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutWebsNestedInput
   ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutWebsNestedInput
+  relations?: Prisma.WebUncheckedUpdateManyWithoutRelationOfNestedInput
+  relationOf?: Prisma.WebUncheckedUpdateManyWithoutRelationsNestedInput
+  webAccess?: Prisma.WebAccessUncheckedUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput
+}
+
+export type WebCreateWithoutAnalyticsDailyInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  title: string
+  slug: string
+  description?: string | null
+  contactEmail?: string | null
+  published?: boolean
+  image?: string | null
+  deletedAt?: Date | string | null
+  categories?: Prisma.CategoryCreateNestedManyWithoutWebInput
+  listings?: Prisma.ListingCreateNestedManyWithoutWebInput
+  tags?: Prisma.TagCreateNestedManyWithoutWebInput
+  permissions?: Prisma.PermissionCreateNestedManyWithoutWebsInput
+  ownerships?: Prisma.OwnershipCreateNestedManyWithoutWebsInput
+  features?: Prisma.WebFeatureCreateNestedManyWithoutWebInput
+  relations?: Prisma.WebCreateNestedManyWithoutRelationOfInput
+  relationOf?: Prisma.WebCreateNestedManyWithoutRelationsInput
+  location?: Prisma.WebLocationCreateNestedOneWithoutWebInput
+  webAccess?: Prisma.WebAccessCreateNestedManyWithoutWebInput
+}
+
+export type WebUncheckedCreateWithoutAnalyticsDailyInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  id?: number
+  title: string
+  slug: string
+  description?: string | null
+  contactEmail?: string | null
+  published?: boolean
+  image?: string | null
+  locationId?: number | null
+  deletedAt?: Date | string | null
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutWebInput
+  listings?: Prisma.ListingUncheckedCreateNestedManyWithoutWebInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutWebInput
+  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutWebsInput
+  ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutWebsInput
+  features?: Prisma.WebFeatureUncheckedCreateNestedManyWithoutWebInput
+  relations?: Prisma.WebUncheckedCreateNestedManyWithoutRelationOfInput
+  relationOf?: Prisma.WebUncheckedCreateNestedManyWithoutRelationsInput
+  webAccess?: Prisma.WebAccessUncheckedCreateNestedManyWithoutWebInput
+}
+
+export type WebCreateOrConnectWithoutAnalyticsDailyInput = {
+  where: Prisma.WebWhereUniqueInput
+  create: Prisma.XOR<Prisma.WebCreateWithoutAnalyticsDailyInput, Prisma.WebUncheckedCreateWithoutAnalyticsDailyInput>
+}
+
+export type WebUpsertWithoutAnalyticsDailyInput = {
+  update: Prisma.XOR<Prisma.WebUpdateWithoutAnalyticsDailyInput, Prisma.WebUncheckedUpdateWithoutAnalyticsDailyInput>
+  create: Prisma.XOR<Prisma.WebCreateWithoutAnalyticsDailyInput, Prisma.WebUncheckedCreateWithoutAnalyticsDailyInput>
+  where?: Prisma.WebWhereInput
+}
+
+export type WebUpdateToOneWithWhereWithoutAnalyticsDailyInput = {
+  where?: Prisma.WebWhereInput
+  data: Prisma.XOR<Prisma.WebUpdateWithoutAnalyticsDailyInput, Prisma.WebUncheckedUpdateWithoutAnalyticsDailyInput>
+}
+
+export type WebUpdateWithoutAnalyticsDailyInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  categories?: Prisma.CategoryUpdateManyWithoutWebNestedInput
+  listings?: Prisma.ListingUpdateManyWithoutWebNestedInput
+  tags?: Prisma.TagUpdateManyWithoutWebNestedInput
+  permissions?: Prisma.PermissionUpdateManyWithoutWebsNestedInput
+  ownerships?: Prisma.OwnershipUpdateManyWithoutWebsNestedInput
+  features?: Prisma.WebFeatureUpdateManyWithoutWebNestedInput
+  relations?: Prisma.WebUpdateManyWithoutRelationOfNestedInput
+  relationOf?: Prisma.WebUpdateManyWithoutRelationsNestedInput
+  location?: Prisma.WebLocationUpdateOneWithoutWebNestedInput
+  webAccess?: Prisma.WebAccessUpdateManyWithoutWebNestedInput
+}
+
+export type WebUncheckedUpdateWithoutAnalyticsDailyInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutWebNestedInput
+  listings?: Prisma.ListingUncheckedUpdateManyWithoutWebNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutWebNestedInput
+  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutWebsNestedInput
+  ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutWebsNestedInput
+  features?: Prisma.WebFeatureUncheckedUpdateManyWithoutWebNestedInput
   relations?: Prisma.WebUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.WebUncheckedUpdateManyWithoutRelationsNestedInput
   webAccess?: Prisma.WebAccessUncheckedUpdateManyWithoutWebNestedInput
@@ -1741,6 +1900,7 @@ export type WebUpdateWithoutRelationOfInput = {
   relations?: Prisma.WebUpdateManyWithoutRelationOfNestedInput
   location?: Prisma.WebLocationUpdateOneWithoutWebNestedInput
   webAccess?: Prisma.WebAccessUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateWithoutRelationOfInput = {
@@ -1763,6 +1923,7 @@ export type WebUncheckedUpdateWithoutRelationOfInput = {
   features?: Prisma.WebFeatureUncheckedUpdateManyWithoutWebNestedInput
   relations?: Prisma.WebUncheckedUpdateManyWithoutRelationOfNestedInput
   webAccess?: Prisma.WebAccessUncheckedUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateManyWithoutRelationOfInput = {
@@ -1798,6 +1959,7 @@ export type WebUpdateWithoutRelationsInput = {
   relationOf?: Prisma.WebUpdateManyWithoutRelationsNestedInput
   location?: Prisma.WebLocationUpdateOneWithoutWebNestedInput
   webAccess?: Prisma.WebAccessUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateWithoutRelationsInput = {
@@ -1820,6 +1982,7 @@ export type WebUncheckedUpdateWithoutRelationsInput = {
   features?: Prisma.WebFeatureUncheckedUpdateManyWithoutWebNestedInput
   relationOf?: Prisma.WebUncheckedUpdateManyWithoutRelationsNestedInput
   webAccess?: Prisma.WebAccessUncheckedUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateManyWithoutRelationsInput = {
@@ -1855,6 +2018,7 @@ export type WebUpdateWithoutPermissionsInput = {
   relationOf?: Prisma.WebUpdateManyWithoutRelationsNestedInput
   location?: Prisma.WebLocationUpdateOneWithoutWebNestedInput
   webAccess?: Prisma.WebAccessUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateWithoutPermissionsInput = {
@@ -1877,6 +2041,7 @@ export type WebUncheckedUpdateWithoutPermissionsInput = {
   relations?: Prisma.WebUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.WebUncheckedUpdateManyWithoutRelationsNestedInput
   webAccess?: Prisma.WebAccessUncheckedUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateManyWithoutPermissionsInput = {
@@ -1912,6 +2077,7 @@ export type WebUpdateWithoutOwnershipsInput = {
   relationOf?: Prisma.WebUpdateManyWithoutRelationsNestedInput
   location?: Prisma.WebLocationUpdateOneWithoutWebNestedInput
   webAccess?: Prisma.WebAccessUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateWithoutOwnershipsInput = {
@@ -1934,6 +2100,7 @@ export type WebUncheckedUpdateWithoutOwnershipsInput = {
   relations?: Prisma.WebUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.WebUncheckedUpdateManyWithoutRelationsNestedInput
   webAccess?: Prisma.WebAccessUncheckedUpdateManyWithoutWebNestedInput
+  analyticsDaily?: Prisma.WebAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput
 }
 
 export type WebUncheckedUpdateManyWithoutOwnershipsInput = {
@@ -1965,6 +2132,7 @@ export type WebCountOutputType = {
   relations: number
   relationOf: number
   webAccess: number
+  analyticsDaily: number
 }
 
 export type WebCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1977,6 +2145,7 @@ export type WebCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.In
   relations?: boolean | WebCountOutputTypeCountRelationsArgs
   relationOf?: boolean | WebCountOutputTypeCountRelationOfArgs
   webAccess?: boolean | WebCountOutputTypeCountWebAccessArgs
+  analyticsDaily?: boolean | WebCountOutputTypeCountAnalyticsDailyArgs
 }
 
 /**
@@ -2052,6 +2221,13 @@ export type WebCountOutputTypeCountWebAccessArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.WebAccessWhereInput
 }
 
+/**
+ * WebCountOutputType without action
+ */
+export type WebCountOutputTypeCountAnalyticsDailyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WebAnalyticsDailyWhereInput
+}
+
 
 export type WebSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   createdAt?: boolean
@@ -2075,6 +2251,7 @@ export type WebSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   relationOf?: boolean | Prisma.Web$relationOfArgs<ExtArgs>
   location?: boolean | Prisma.Web$locationArgs<ExtArgs>
   webAccess?: boolean | Prisma.Web$webAccessArgs<ExtArgs>
+  analyticsDaily?: boolean | Prisma.Web$analyticsDailyArgs<ExtArgs>
   _count?: boolean | Prisma.WebCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["web"]>
 
@@ -2134,6 +2311,7 @@ export type WebInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   relationOf?: boolean | Prisma.Web$relationOfArgs<ExtArgs>
   location?: boolean | Prisma.Web$locationArgs<ExtArgs>
   webAccess?: boolean | Prisma.Web$webAccessArgs<ExtArgs>
+  analyticsDaily?: boolean | Prisma.Web$analyticsDailyArgs<ExtArgs>
   _count?: boolean | Prisma.WebCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WebIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2156,6 +2334,7 @@ export type $WebPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     relationOf: Prisma.$WebPayload<ExtArgs>[]
     location: Prisma.$WebLocationPayload<ExtArgs> | null
     webAccess: Prisma.$WebAccessPayload<ExtArgs>[]
+    analyticsDaily: Prisma.$WebAnalyticsDailyPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     createdAt: Date
@@ -2573,6 +2752,7 @@ export interface Prisma__WebClient<T, Null = never, ExtArgs extends runtime.Type
   relationOf<T extends Prisma.Web$relationOfArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Web$relationOfArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   location<T extends Prisma.Web$locationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Web$locationArgs<ExtArgs>>): Prisma.Prisma__WebLocationClient<runtime.Types.Result.GetResult<Prisma.$WebLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   webAccess<T extends Prisma.Web$webAccessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Web$webAccessArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  analyticsDaily<T extends Prisma.Web$analyticsDailyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Web$analyticsDailyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebAnalyticsDailyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3246,6 +3426,30 @@ export type Web$webAccessArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.WebAccessScalarFieldEnum | Prisma.WebAccessScalarFieldEnum[]
+}
+
+/**
+ * Web.analyticsDaily
+ */
+export type Web$analyticsDailyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WebAnalyticsDaily
+   */
+  select?: Prisma.WebAnalyticsDailySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WebAnalyticsDaily
+   */
+  omit?: Prisma.WebAnalyticsDailyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WebAnalyticsDailyInclude<ExtArgs> | null
+  where?: Prisma.WebAnalyticsDailyWhereInput
+  orderBy?: Prisma.WebAnalyticsDailyOrderByWithRelationInput | Prisma.WebAnalyticsDailyOrderByWithRelationInput[]
+  cursor?: Prisma.WebAnalyticsDailyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WebAnalyticsDailyScalarFieldEnum | Prisma.WebAnalyticsDailyScalarFieldEnum[]
 }
 
 /**

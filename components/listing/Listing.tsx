@@ -1,12 +1,13 @@
 'use client'
 
-import { memo, useMemo } from 'react'
+import { memo, useEffect, useMemo } from 'react'
 import { FiEdit, FiMapPin } from 'react-icons/fi'
 import { HiArrowLeft, HiUserGroup, HiExternalLink } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { actionTypes, actionIconStyles } from '@helpers/actions'
+import { trackListingEvent } from '@helpers/analytics'
 import { getWebUrl, REMOTE_URL } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import { sanitizeLink } from '@helpers/utils'
@@ -38,6 +39,10 @@ const ListingMap = dynamic(() => import('@components/listing-map'), {
 })
 
 function Listing({ listing }) {
+  useEffect(() => {
+    trackListingEvent(listing.id, 'view')
+  }, [listing.id])
+
   const websiteSanitized = useMemo(
     () => sanitizeLink(listing.website),
     [listing.website],
@@ -247,6 +252,12 @@ function Listing({ listing }) {
                     href={action.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() =>
+                      trackListingEvent(
+                        listing.id,
+                        `action_${action.type.toLowerCase()}`,
+                      )
+                    }
                     className={`group inline-flex items-center gap-2 rounded-full px-4 py-2 font-medium transition-all ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
                   >
                     <Icon className="h-4 w-4" />

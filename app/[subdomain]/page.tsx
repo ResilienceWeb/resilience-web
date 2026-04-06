@@ -36,6 +36,7 @@ export default async function WebPage(props) {
       data={transformedData}
       events={events}
       features={webData.features}
+      webId={webData.id}
       webName={webData.title}
       webDescription={webData.description}
       webIsPublished={webData.published}
