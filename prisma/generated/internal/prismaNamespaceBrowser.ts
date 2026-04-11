@@ -68,7 +68,9 @@ export const ModelName = {
   Permission: 'Permission',
   Ownership: 'Ownership',
   WebAccess: 'WebAccess',
-  WebFeature: 'WebFeature'
+  WebFeature: 'WebFeature',
+  ListingAnalyticsDaily: 'ListingAnalyticsDaily',
+  WebAnalyticsDaily: 'WebAnalyticsDaily'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -334,6 +336,28 @@ export const WebFeatureScalarFieldEnum = {
 } as const
 
 export type WebFeatureScalarFieldEnum = (typeof WebFeatureScalarFieldEnum)[keyof typeof WebFeatureScalarFieldEnum]
+
+
+export const ListingAnalyticsDailyScalarFieldEnum = {
+  id: 'id',
+  listingId: 'listingId',
+  date: 'date',
+  eventType: 'eventType',
+  count: 'count'
+} as const
+
+export type ListingAnalyticsDailyScalarFieldEnum = (typeof ListingAnalyticsDailyScalarFieldEnum)[keyof typeof ListingAnalyticsDailyScalarFieldEnum]
+
+
+export const WebAnalyticsDailyScalarFieldEnum = {
+  id: 'id',
+  webId: 'webId',
+  date: 'date',
+  eventType: 'eventType',
+  count: 'count'
+} as const
+
+export type WebAnalyticsDailyScalarFieldEnum = (typeof WebAnalyticsDailyScalarFieldEnum)[keyof typeof WebAnalyticsDailyScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -108,8 +108,9 @@ model Web {
   relationOf   Web[]        @relation("related_webs")
   location     WebLocation? @relation(fields: [locationId], references: [id])
   locationId   Int?         @unique
-  webAccess    WebAccess[]
-  deletedAt    DateTime?    @map("deleted_at")
+  webAccess      WebAccess[]
+  deletedAt      DateTime?          @map("deleted_at")
+  analyticsDaily WebAnalyticsDaily[]
 
   @@map("Location")
 }
@@ -173,6 +174,7 @@ model Listing {
   locationId        Int?                 @unique
   edits             ListingEdit[]
   actions           ListingAction[]
+  analyticsDaily    ListingAnalyticsDaily[]
 
   @@unique([webId, slug])
   @@map("listings")
@@ -312,4 +314,32 @@ model WebFeature {
 
   @@unique([webId, feature])
   @@map("web_features")
+}
+
+model ListingAnalyticsDaily {
+  id        Int      @id @default(autoincrement())
+  listingId Int      @map("listing_id")
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  date      DateTime @db.Date
+  eventType String   @map("event_type")
+  count     Int      @default(0)
+
+  @@unique([listingId, date, eventType], name: "listing_date_event")
+  @@index([listingId, date])
+  @@index([date])
+  @@map("listing_analytics_daily")
+}
+
+model WebAnalyticsDaily {
+  id        Int      @id @default(autoincrement())
+  webId     Int      @map("web_id")
+  web       Web      @relation(fields: [webId], references: [id], onDelete: Cascade)
+  date      DateTime @db.Date
+  eventType String   @map("event_type")
+  count     Int      @default(0)
+
+  @@unique([webId, date, eventType], name: "web_date_event")
+  @@index([webId, date])
+  @@index([date])
+  @@map("web_analytics_daily")
 }

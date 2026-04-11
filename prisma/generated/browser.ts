@@ -107,3 +107,13 @@ export type WebAccess = Prisma.WebAccessModel
  * 
  */
 export type WebFeature = Prisma.WebFeatureModel
+/**
+ * Model ListingAnalyticsDaily
+ * 
+ */
+export type ListingAnalyticsDaily = Prisma.ListingAnalyticsDailyModel
+/**
+ * Model WebAnalyticsDaily
+ * 
+ */
+export type WebAnalyticsDaily = Prisma.WebAnalyticsDailyModel

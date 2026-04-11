@@ -11,15 +11,18 @@ import {
   HiExternalLink,
   HiX,
   HiUpload,
+  HiChartBar,
 } from 'react-icons/hi'
 import { LuBook, LuUserRoundSearch } from 'react-icons/lu'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession } from '@auth-client'
+import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import DonateButton from '@components/donate-button'
 import useCanEditWeb from '@hooks/web-access/useCanEditWeb'
 import useIsOwnerOfWeb from '@hooks/web-access/useIsOwnerOfWeb'
+import useWeb from '@hooks/webs/useWeb'
 import { useAppContext } from '@store/hooks'
 import LogoImage from '../../../public/logo.png'
 
@@ -63,7 +66,12 @@ export default function SidebarContent({ closeMenu, ...rest }) {
   const { data: session } = useSession()
   const canEditWeb = useCanEditWeb()
   const { isOwner } = useIsOwnerOfWeb()
-  const { selectedWebId } = useAppContext()
+  const { selectedWebId, selectedWebSlug } = useAppContext()
+  const { web } = useWeb({ webSlug: selectedWebSlug, withAdminInfo: true })
+  const isAnalyticsEnabled = isFeatureEnabled(
+    FEATURES.showAnalytics,
+    web?.features ?? [],
+  )
 
   const navLinks = useMemo(() => {
     const links: any[] = []
@@ -98,6 +106,15 @@ export default function SidebarContent({ closeMenu, ...rest }) {
         icon: <HiUpload />,
         tourId: 'nav-import',
       })
+
+      if (isAnalyticsEnabled) {
+        links.push({
+          label: 'Analytics',
+          href: '/admin/analytics',
+          icon: <HiChartBar />,
+          tourId: 'nav-analytics',
+        })
+      }
     }
 
     if (isOwner || session?.user.role === 'admin') {
@@ -129,7 +146,13 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     })
 
     return links
-  }, [canEditWeb, isOwner, selectedWebId, session?.user.role])
+  }, [
+    canEditWeb,
+    isAnalyticsEnabled,
+    isOwner,
+    selectedWebId,
+    session?.user.role,
+  ])
 
   const adminNavLinks = useMemo(() => {
     const links: any[] = []

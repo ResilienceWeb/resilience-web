@@ -401,7 +401,9 @@ export const ModelName = {
   Permission: 'Permission',
   Ownership: 'Ownership',
   WebAccess: 'WebAccess',
-  WebFeature: 'WebFeature'
+  WebFeature: 'WebFeature',
+  ListingAnalyticsDaily: 'ListingAnalyticsDaily',
+  WebAnalyticsDaily: 'WebAnalyticsDaily'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "account" | "user" | "session" | "verification" | "verificationToken" | "web" | "category" | "tag" | "listing" | "listingSocialMedia" | "listingAction" | "listingEdit" | "listingLocation" | "webLocation" | "permission" | "ownership" | "webAccess" | "webFeature"
+    modelProps: "account" | "user" | "session" | "verification" | "verificationToken" | "web" | "category" | "tag" | "listing" | "listingSocialMedia" | "listingAction" | "listingEdit" | "listingLocation" | "webLocation" | "permission" | "ownership" | "webAccess" | "webFeature" | "listingAnalyticsDaily" | "webAnalyticsDaily"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1753,6 +1755,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ListingAnalyticsDaily: {
+      payload: Prisma.$ListingAnalyticsDailyPayload<ExtArgs>
+      fields: Prisma.ListingAnalyticsDailyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ListingAnalyticsDailyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingAnalyticsDailyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ListingAnalyticsDailyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingAnalyticsDailyPayload>
+        }
+        findFirst: {
+          args: Prisma.ListingAnalyticsDailyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingAnalyticsDailyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ListingAnalyticsDailyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingAnalyticsDailyPayload>
+        }
+        findMany: {
+          args: Prisma.ListingAnalyticsDailyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingAnalyticsDailyPayload>[]
+        }
+        create: {
+          args: Prisma.ListingAnalyticsDailyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingAnalyticsDailyPayload>
+        }
+        createMany: {
+          args: Prisma.ListingAnalyticsDailyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ListingAnalyticsDailyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingAnalyticsDailyPayload>[]
+        }
+        delete: {
+          args: Prisma.ListingAnalyticsDailyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingAnalyticsDailyPayload>
+        }
+        update: {
+          args: Prisma.ListingAnalyticsDailyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingAnalyticsDailyPayload>
+        }
+        deleteMany: {
+          args: Prisma.ListingAnalyticsDailyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ListingAnalyticsDailyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ListingAnalyticsDailyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingAnalyticsDailyPayload>[]
+        }
+        upsert: {
+          args: Prisma.ListingAnalyticsDailyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingAnalyticsDailyPayload>
+        }
+        aggregate: {
+          args: Prisma.ListingAnalyticsDailyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateListingAnalyticsDaily>
+        }
+        groupBy: {
+          args: Prisma.ListingAnalyticsDailyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ListingAnalyticsDailyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ListingAnalyticsDailyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ListingAnalyticsDailyCountAggregateOutputType> | number
+        }
+      }
+    }
+    WebAnalyticsDaily: {
+      payload: Prisma.$WebAnalyticsDailyPayload<ExtArgs>
+      fields: Prisma.WebAnalyticsDailyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WebAnalyticsDailyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebAnalyticsDailyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WebAnalyticsDailyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebAnalyticsDailyPayload>
+        }
+        findFirst: {
+          args: Prisma.WebAnalyticsDailyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebAnalyticsDailyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WebAnalyticsDailyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebAnalyticsDailyPayload>
+        }
+        findMany: {
+          args: Prisma.WebAnalyticsDailyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebAnalyticsDailyPayload>[]
+        }
+        create: {
+          args: Prisma.WebAnalyticsDailyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebAnalyticsDailyPayload>
+        }
+        createMany: {
+          args: Prisma.WebAnalyticsDailyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WebAnalyticsDailyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebAnalyticsDailyPayload>[]
+        }
+        delete: {
+          args: Prisma.WebAnalyticsDailyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebAnalyticsDailyPayload>
+        }
+        update: {
+          args: Prisma.WebAnalyticsDailyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebAnalyticsDailyPayload>
+        }
+        deleteMany: {
+          args: Prisma.WebAnalyticsDailyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WebAnalyticsDailyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WebAnalyticsDailyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebAnalyticsDailyPayload>[]
+        }
+        upsert: {
+          args: Prisma.WebAnalyticsDailyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebAnalyticsDailyPayload>
+        }
+        aggregate: {
+          args: Prisma.WebAnalyticsDailyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWebAnalyticsDaily>
+        }
+        groupBy: {
+          args: Prisma.WebAnalyticsDailyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebAnalyticsDailyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WebAnalyticsDailyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebAnalyticsDailyCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2041,6 +2191,28 @@ export const WebFeatureScalarFieldEnum = {
 export type WebFeatureScalarFieldEnum = (typeof WebFeatureScalarFieldEnum)[keyof typeof WebFeatureScalarFieldEnum]
 
 
+export const ListingAnalyticsDailyScalarFieldEnum = {
+  id: 'id',
+  listingId: 'listingId',
+  date: 'date',
+  eventType: 'eventType',
+  count: 'count'
+} as const
+
+export type ListingAnalyticsDailyScalarFieldEnum = (typeof ListingAnalyticsDailyScalarFieldEnum)[keyof typeof ListingAnalyticsDailyScalarFieldEnum]
+
+
+export const WebAnalyticsDailyScalarFieldEnum = {
+  id: 'id',
+  webId: 'webId',
+  date: 'date',
+  eventType: 'eventType',
+  count: 'count'
+} as const
+
+export type WebAnalyticsDailyScalarFieldEnum = (typeof WebAnalyticsDailyScalarFieldEnum)[keyof typeof WebAnalyticsDailyScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2260,6 +2432,8 @@ export type GlobalOmitConfig = {
   ownership?: Prisma.OwnershipOmit
   webAccess?: Prisma.WebAccessOmit
   webFeature?: Prisma.WebFeatureOmit
+  listingAnalyticsDaily?: Prisma.ListingAnalyticsDailyOmit
+  webAnalyticsDaily?: Prisma.WebAnalyticsDailyOmit
 }
 
 /* Types for Logging */

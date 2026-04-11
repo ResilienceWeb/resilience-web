@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/navigation'
 import { forceRadial } from 'd3-force'
 import { useResizeObserver } from 'usehooks-ts'
+import { trackListingEvent } from '@helpers/analytics'
 import { getWebUrl } from '@helpers/config'
 import { getIconUnicode } from '@helpers/icons'
 import ListingDialog from '@components/main-list/listing-dialog'
@@ -187,6 +188,13 @@ const Network = ({ data, selectedId, setSelectedId }) => {
         node.group !== 'related-web'
       ) {
         setSelectedId(node.id)
+        const listingId =
+          typeof node.id === 'string'
+            ? Number(node.id.replace('listing-', ''))
+            : node.id
+        if (!Number.isNaN(listingId)) {
+          trackListingEvent(listingId, 'view')
+        }
       }
     },
     [router, setSelectedId],

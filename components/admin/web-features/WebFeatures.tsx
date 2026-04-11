@@ -64,7 +64,9 @@ export default function WebFeatures({ web }: WebFeaturesProps) {
               className="flex items-center justify-between p-4 border-b last:border-b-0"
             >
               <div className="flex flex-col gap-1">
-                <p className="text-sm font-medium leading-none">Show map</p>
+                <p className="text-sm font-medium leading-none">
+                  {getFeatureLabel(featureKey)}
+                </p>
                 <p className="text-sm text-muted-foreground">
                   {getFeatureDescription(featureKey)}
                 </p>
@@ -84,9 +86,20 @@ export default function WebFeatures({ web }: WebFeaturesProps) {
   )
 }
 
+function getFeatureLabel(feature: string): string {
+  const labels: Record<string, string> = {
+    [FEATURES.showMap]: 'Show map',
+    [FEATURES.showAnalytics]: 'Show analytics',
+  }
+
+  return labels[feature] || feature
+}
+
 function getFeatureDescription(feature: string): string {
   const descriptions: Record<string, string> = {
     [FEATURES.showMap]: 'Display the interactive map on the web',
+    [FEATURES.showAnalytics]:
+      'Display listing and web analytics in the admin dashboard',
   }
 
   return descriptions[feature] || 'No description available'
