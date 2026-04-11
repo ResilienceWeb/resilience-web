@@ -6,6 +6,7 @@ import { HiOutlineClipboard, HiOutlineClipboardCheck } from 'react-icons/hi'
 import { useRouter } from 'next/navigation'
 import type { WebAccess } from '@prisma-client'
 import { getWebUrl, REMOTE_HOSTNAME } from '@helpers/config'
+import AnalyticsSummary from '@components/admin/analytics-summary/AnalyticsSummary'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
 import WebAccessTable from '@components/admin/web-access-table'
 import WebFeatures from '@components/admin/web-features'
@@ -216,6 +217,14 @@ export default function WebDashboardPage({ params }) {
           </div>
         </div>
       )}
+
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold">Analytics</h3>
+        <p className="text-sm text-muted-foreground mb-2">
+          View counts and engagement for this web
+        </p>
+        <AnalyticsSummary webSlug={webSlug} compact />
+      </div>
 
       <div className="mt-6">
         <WebFeatures key={web.id} web={web} />

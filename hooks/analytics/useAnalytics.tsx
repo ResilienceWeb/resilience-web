@@ -9,13 +9,20 @@ async function fetchAnalytics(webSlug: string, period: number) {
   return responseJson.data
 }
 
-export default function useAnalytics(period: number = 30) {
+export default function useAnalytics({
+  webSlug: webSlugOverride,
+  period = 30,
+}: {
+  webSlug?: string
+  period?: number
+} = {}) {
   const { selectedWebSlug } = useAppContext()
+  const webSlug = webSlugOverride ?? selectedWebSlug
 
   const { data, isPending } = useQuery({
-    queryKey: ['analytics', { webSlug: selectedWebSlug, period }],
-    queryFn: () => fetchAnalytics(selectedWebSlug, period),
-    enabled: Boolean(selectedWebSlug),
+    queryKey: ['analytics', { webSlug, period }],
+    queryFn: () => fetchAnalytics(webSlug, period),
+    enabled: Boolean(webSlug),
     refetchOnWindowFocus: false,
   })
 
