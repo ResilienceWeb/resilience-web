@@ -256,7 +256,7 @@ export default function DashboardPage() {
                         )}
 
                         {!isWebActive(web) ? (
-                          <div className="flex flex-col gap-1">
+                          <div className="flex flex-col items-start gap-1">
                             <Badge variant="secondary">Inactive</Badge>
                             <div className="text-muted-foreground text-xs">
                               Last activity:{' '}
