@@ -45,26 +45,37 @@ const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
                   <TableCell>
                     <div className="flex flex-col gap-2">
                       <span>{item.title}</span>
-                      <div className="flex flex-wrap gap-1">
-                        {!item.image && (
-                          <Badge variant="secondary">
-                            <PiWarningCircleBold className="h-[18px] w-[18px]" />
-                            No image
+                      {item.inactive ? (
+                        <div className="flex flex-wrap gap-1">
+                          <Badge
+                            variant="secondary"
+                            title="This listing is inactive and hidden from the public web page."
+                          >
+                            Inactive
                           </Badge>
-                        )}
-                        {item.description?.length < 250 && (
-                          <Badge variant="secondary">
-                            <PiWarningCircleBold className="h-[18px] w-[18px]" />
-                            <span>Short description</span>
-                          </Badge>
-                        )}
-                        {!item.location && (
-                          <Badge variant="secondary">
-                            <PiWarningCircleBold className="h-[18px] w-[18px]" />
-                            <span>No location</span>
-                          </Badge>
-                        )}
-                      </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-wrap gap-1">
+                          {!item.image && (
+                            <Badge variant="secondary">
+                              <PiWarningCircleBold className="h-[18px] w-[18px]" />
+                              No image
+                            </Badge>
+                          )}
+                          {item.description?.length < 250 && (
+                            <Badge variant="secondary">
+                              <PiWarningCircleBold className="h-[18px] w-[18px]" />
+                              <span>Short description</span>
+                            </Badge>
+                          )}
+                          {!item.location && (
+                            <Badge variant="secondary">
+                              <PiWarningCircleBold className="h-[18px] w-[18px]" />
+                              <span>No location</span>
+                            </Badge>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -88,19 +99,9 @@ const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
                         </span>
                       </div>
                     ) : null}
-                    {item.inactive ? (
-                      <div
-                        className="group relative cursor-default"
-                        title="This listing is inactive and hidden from the public web page."
-                      >
-                        <span className="rounded-md bg-gray-100 px-2 py-1 text-base text-gray-600">
-                          Inactive
-                        </span>
-                      </div>
-                    ) : null}
                   </TableCell>
 
-                  <TableCell>
+                  <TableCell className="text-xs">
                     Created on{' '}
                     <b>
                       {Intl.DateTimeFormat('en-GB', {

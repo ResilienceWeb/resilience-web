@@ -18,6 +18,8 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu'
 import useIsMobile from '@hooks/application/useIsMobile'
+import useWeb from '@hooks/webs/useWeb'
+import { useAppContext } from '@store/hooks'
 import NotificationsFeed from './NotificationsFeed'
 
 const WebSelector = dynamic(() => import('./web-selector'))
@@ -26,6 +28,8 @@ const Nav = ({ onOpen }) => {
   const { data: session } = useSession()
   const router = useRouter()
   const isMobile = useIsMobile()
+  const { selectedWebSlug } = useAppContext()
+  const { web } = useWeb({ webSlug: selectedWebSlug })
 
   const handleSignOut = useCallback(async () => {
     await signOut({
@@ -56,7 +60,7 @@ const Nav = ({ onOpen }) => {
           </div>
 
           <div className="flex items-center gap-2">
-            <GetInTouchButton userEmail={session?.user?.email} />
+            <GetInTouchButton userEmail={session?.user?.email} webName={web?.title} />
             <NotificationsFeed />
 
             <DropdownMenu>

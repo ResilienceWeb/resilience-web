@@ -12,7 +12,13 @@ import {
 import useIsMobile from '@hooks/application/useIsMobile'
 import ContactDialog from './ContactDialog'
 
-const GetInTouchButton = ({ userEmail }: { userEmail?: string }) => {
+const GetInTouchButton = ({
+  userEmail,
+  webName,
+}: {
+  userEmail?: string
+  webName?: string
+}) => {
   const isMobile = useIsMobile()
   const [isContactDialogOpen, setIsContactDialogOpen] = useState(false)
 
@@ -50,6 +56,7 @@ const GetInTouchButton = ({ userEmail }: { userEmail?: string }) => {
         isOpen={isContactDialogOpen}
         onClose={() => setIsContactDialogOpen(false)}
         userEmail={userEmail}
+        webName={webName}
       />
     </>
   )
