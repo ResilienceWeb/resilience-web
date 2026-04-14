@@ -41,18 +41,20 @@ interface ContactDialogProps {
   isOpen: boolean
   onClose: () => void
   userEmail?: string
+  webName?: string
 }
 
 const ContactDialog = ({
   isOpen,
   onClose,
   userEmail,
+  webName,
 }: ContactDialogProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: userEmail || '',
-      web: '',
+      web: webName || '',
       message: '',
     },
   })
@@ -62,6 +64,12 @@ const ContactDialog = ({
       form.setValue('email', userEmail, { shouldDirty: false })
     }
   }, [userEmail, form])
+
+  useEffect(() => {
+    if (webName && !form.formState.dirtyFields.web) {
+      form.setValue('web', webName, { shouldDirty: false })
+    }
+  }, [webName, form])
 
   const onFormSubmit = useCallback(
     async (data: z.infer<typeof formSchema>) => {
@@ -105,11 +113,13 @@ const ContactDialog = ({
         <DialogDescription>
           Use this form to send us feedback or any questions you may have.
         </DialogDescription>
-        <p className="text-sm text-muted-foreground italic">
-          Note: This form contacts the Resilience Web platform team. If you have
-          a question about a specific local web, please use the Contact info
-          section in the side menu on that web's page instead.
-        </p>
+        {!webName && (
+          <p className="text-sm text-muted-foreground italic">
+            Note: This form contacts the Resilience Web platform team. If you
+            have a question about a specific local web, please use the Contact
+            info section in the side menu on that web's page instead.
+          </p>
+        )}
 
         <Form {...form}>
           <form
