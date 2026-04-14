@@ -32,6 +32,7 @@ interface NavLinkItem {
   tourId?: string
   label: string | ReactElement
   href: string
+  external?: boolean
 }
 
 interface NavGroup {
@@ -46,7 +47,15 @@ interface NavItemProps extends NavLinkItem {
 
 const ADVANCED_COLLAPSED_KEY = 'sidebar-advanced-collapsed'
 
-const NavItem = ({ label, icon, iconColor, href, tourId, closeMenu }: NavItemProps) => {
+const NavItem = ({
+  label,
+  icon,
+  iconColor,
+  href,
+  tourId,
+  external,
+  closeMenu,
+}: NavItemProps) => {
   const pathname = usePathname()
   let isActive = pathname === href
   if (href === '/admin' && pathname.includes('/admin/listings/')) {
@@ -54,7 +63,11 @@ const NavItem = ({ label, icon, iconColor, href, tourId, closeMenu }: NavItemPro
   }
 
   return (
-    <Link href={href} className="block px-2">
+    <Link
+      href={href}
+      className="block px-2"
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    >
       <button
         aria-current={isActive ? 'page' : undefined}
         data-tourid={tourId}
@@ -222,6 +235,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       href: 'https://knowledgebase.resilienceweb.org.uk',
       icon: <LuBook />,
       iconColor: 'text-teal-500',
+      external: true,
     })
     groups.push({ label: 'Help & Resources', items: helpItems })
 
@@ -314,6 +328,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
                       tourId={link.tourId}
                       icon={link.icon}
                       iconColor={link.iconColor}
+                      external={link.external}
                       closeMenu={closeMenu}
                     />
                   ))}
@@ -336,14 +351,14 @@ export default function SidebarContent({ closeMenu, ...rest }) {
               </div>
             )}
           </nav>
-        </div>
-        <div className="shrink-0 p-4">
-          <h2 className="text-xl">Like what you see?</h2>
-          <p className="mb-3 text-[0.9375rem] text-gray-600">
-            Consider making a donation to help us host and develop the
-            Resilience Web platform 🙏🏼
-          </p>
-          <DonateButton />
+          <div className="mt-6 p-4">
+            <h2 className="text-xl">Like what you see?</h2>
+            <p className="mb-3 text-sm text-gray-600">
+              Consider making a donation to help us host and develop the
+              Resilience Web platform 🙏🏼
+            </p>
+            <DonateButton />
+          </div>
         </div>
       </div>
     </div>
