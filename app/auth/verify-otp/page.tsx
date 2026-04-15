@@ -77,6 +77,13 @@ export default function VerifyOTP() {
         return
       }
 
+      // If signing up with a name, update the user's name
+      const name = sessionStorage.getItem('otp-name')
+      if (name) {
+        await authClient.updateUser({ name })
+        sessionStorage.removeItem('otp-name')
+      }
+
       // Clear session storage on success
       sessionStorage.removeItem('otp-email')
       posthog.capture('user-signed-in')

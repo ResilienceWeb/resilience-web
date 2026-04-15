@@ -58,7 +58,26 @@ export default function SignUp() {
               try {
                 e.preventDefault()
                 const formData = new FormData(e.currentTarget)
+                const name = formData.get('name') as string
                 const email = formData.get('email') as string
+
+                const checkResponse = await fetch(
+                  '/api/users/check-email',
+                  {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                  },
+                )
+                const { exists } = await checkResponse.json()
+
+                if (exists) {
+                  setError(
+                    'An account with this email already exists. Please sign in instead.',
+                  )
+                  return
+                }
+
                 const { error } = await authClient.emailOtp.sendVerificationOtp(
                   {
                     email,
@@ -74,6 +93,7 @@ export default function SignUp() {
                 }
 
                 sessionStorage.setItem('otp-email', email)
+                sessionStorage.setItem('otp-name', name)
                 setError('')
                 const verifyUrl = redirectTo
                   ? `/auth/verify-otp?redirectTo=${encodeURIComponent(redirectTo)}`
@@ -91,6 +111,21 @@ export default function SignUp() {
             }}
           >
             <div className="flex flex-col gap-1">
+              <label
+                htmlFor="name"
+                className="text-sm font-medium text-gray-700 sm:text-base"
+              >
+                Name
+              </label>
+              <Input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your name"
+                required
+              />
+            </div>
+            <div className="mt-3 flex flex-col gap-1">
               <label
                 htmlFor="email"
                 className="text-sm font-medium text-gray-700 sm:text-base"
