@@ -28,7 +28,7 @@ const JoinTheCommunity = () => {
           </Button>
         </Link>
 
-        <h3 className="mt-6 text-2xl">2. Join our Discord community</h3>
+        <h3 className="mt-6 text-2xl">3. Join our Discord community</h3>
         <Link href="https://discord.gg/SHj2wmRDwR" target="_blank">
           <Button className="mt-2" variant="outline">
             <FaDiscord />
