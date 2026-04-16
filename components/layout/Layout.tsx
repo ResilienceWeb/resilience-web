@@ -25,6 +25,7 @@ const Layout = ({ children, webs, hideBorder = false }: LayoutProps) => {
           <AlertBanner
             content="Join our online monthly Assembly. Click here to read more."
             type="info"
+            colorScheme="rw"
             url="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219?aff=oddtdtcreator"
           />
         )}
