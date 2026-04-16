@@ -11,30 +11,47 @@ const JoinTheCommunity = () => {
     <div className="my-12 flex w-full max-w-7xl justify-start">
       {!isMobile && <CommunityIcon />}
       <div className="flex flex-col items-start justify-start px-0 md:px-4">
-        <h2 className="text-2xl text-gray-600">Want to get involved?</h2>
-        <h2 className="text-2xl">
+        <p className="text-base font-medium text-gray-500">
+          Want to get involved?
+        </p>
+        <h2 className="mt-1 text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
           Keep up to date with new features, and help us with feedback and
-          ideas:
+          ideas
         </h2>
-        <h3 className="mb-2 mt-6 text-2xl">1. Subscribe to our mailing list</h3>
-        <SignupForm />
 
-        <h3 className="mt-6 text-2xl">
-          2. Attend one of our monthly assemblies
-        </h3>
-        <Link href="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219">
-          <Button className="mt-2" variant="outline">
-            Book your place
-          </Button>
-        </Link>
+        <ol className="mt-8 flex flex-col gap-6">
+          <li>
+            <p className="text-lg font-semibold text-gray-900">
+              1. Subscribe to our mailing list
+            </p>
+            <div className="mt-2">
+              <SignupForm />
+            </div>
+          </li>
 
-        <h3 className="mt-6 text-2xl">3. Join our Discord community</h3>
-        <Link href="https://discord.gg/SHj2wmRDwR" target="_blank">
-          <Button className="mt-2" variant="outline">
-            <FaDiscord />
-            Join the Community
-          </Button>
-        </Link>
+          <li>
+            <p className="text-lg font-semibold text-gray-900">
+              2. Attend one of our monthly assemblies
+            </p>
+            <Link href="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219">
+              <Button className="mt-2" variant="outline">
+                Book your place
+              </Button>
+            </Link>
+          </li>
+
+          <li>
+            <p className="text-lg font-semibold text-gray-900">
+              3. Join our Discord community
+            </p>
+            <Link href="https://discord.gg/SHj2wmRDwR" target="_blank">
+              <Button className="mt-2" variant="outline">
+                <FaDiscord />
+                Join the Community
+              </Button>
+            </Link>
+          </li>
+        </ol>
       </div>
     </div>
   )
