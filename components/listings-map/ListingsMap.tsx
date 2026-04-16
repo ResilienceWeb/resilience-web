@@ -199,7 +199,7 @@ function ListingsMap({ items = [], webSlug }: MapProps) {
   )
 
   return (
-    <div className="w-full">
+    <div className="flex min-h-0 w-full flex-1 flex-col">
       {listingsWithoutCoordinates.length > 0 && (
         <div className="border-b bg-gray-50">
           <button
@@ -257,7 +257,7 @@ function ListingsMap({ items = [], webSlug }: MapProps) {
         </div>
       ) : (
         <>
-          <div ref={mapContainerRef} className="relative">
+          <div ref={mapContainerRef} className="relative min-h-0 flex-1">
             <Button
               variant="outline"
               onClick={toggleFullScreen}
@@ -270,7 +270,7 @@ function ListingsMap({ items = [], webSlug }: MapProps) {
               center={defaultCenter as [number, number]}
               zoom={defaultZoom}
               scrollWheelZoom={true}
-              style={{ height: 'calc(100vh - 135px)', width: '100%' }}
+              style={{ height: '100%', width: '100%' }}
             >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

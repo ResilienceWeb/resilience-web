@@ -40,7 +40,7 @@ const MobileOptionsSheet = ({
                   <Button
                     size="lg"
                     variant="default"
-                    className="w-full bg-[#2B8257] hover:bg-[#236c47]"
+                    className="w-full bg-primary hover:bg-primary/90"
                   >
                     Propose new listing
                   </Button>

@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react'
 import { HiOutlineSearch, HiHome, HiOutlineX, HiPlus } from 'react-icons/hi'
+import { Share2, List, MapPin, CalendarDays } from 'lucide-react'
 import Select from 'react-select'
 import Image from 'next/image'
 import NextLink from 'next/link'
@@ -74,7 +75,7 @@ const Header = ({
           </NextLink>
           {!isTransitionMode && (
             <NextLink href={`${REMOTE_URL}/new-listing/${selectedWebSlug}`}>
-              <Button size="sm" className="bg-[#2B8257] hover:bg-[#236c47]">
+              <Button size="sm" className="bg-primary hover:bg-primary/90">
                 <HiPlus />
                 Propose listing
               </Button>
@@ -91,7 +92,7 @@ const Header = ({
             />
           </div>
           <h2 className="relative text-4xl font-bold">
-            <span className="relative z-10 after:absolute after:bottom-0 after:left-0 after:z-[-1] after:h-[23%] after:w-full after:bg-[#2B8257]">
+            <span className="relative z-10 after:absolute after:bottom-0 after:left-0 after:z-[-1] after:h-[23%] after:w-full after:bg-primary">
               {selectedWebName}
             </span>
           </h2>
@@ -163,29 +164,33 @@ const Header = ({
                   <TabsList className={cn('grid w-full', colsClass)}>
                     <TabsTrigger
                       value="web"
-                      className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                      className="gap-1.5 font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
                     >
+                      <Share2 className="h-3.5 w-3.5" />
                       Web
                     </TabsTrigger>
                     <TabsTrigger
                       value="list"
-                      className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                      className="gap-1.5 font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
                     >
+                      <List className="h-3.5 w-3.5" />
                       List
                     </TabsTrigger>
                     {isGeoMappingEnabled && (
                       <TabsTrigger
                         value="map"
-                        className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                        className="gap-1.5 font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
                       >
+                        <MapPin className="h-3.5 w-3.5" />
                         Map
                       </TabsTrigger>
                     )}
                     {hasEvents && (
                       <TabsTrigger
                         value="events"
-                        className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                        className="gap-1.5 font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
                       >
+                        <CalendarDays className="h-3.5 w-3.5" />
                         Events
                       </TabsTrigger>
                     )}
@@ -226,29 +231,33 @@ const Header = ({
             <TabsList className={cn('grid w-full', colsClass)}>
               <TabsTrigger
                 value="web"
-                className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                className="gap-1.5 font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
               >
+                <Share2 className="h-3.5 w-3.5" />
                 Web
               </TabsTrigger>
               <TabsTrigger
                 value="list"
-                className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                className="gap-1.5 font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
               >
+                <List className="h-3.5 w-3.5" />
                 List
               </TabsTrigger>
               {isGeoMappingEnabled && (
                 <TabsTrigger
                   value="map"
-                  className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                  className="gap-1.5 font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
                 >
+                  <MapPin className="h-3.5 w-3.5" />
                   Map
                 </TabsTrigger>
               )}
               {hasEvents && (
                 <TabsTrigger
                   value="events"
-                  className="font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
+                  className="gap-1.5 font-semibold hover:text-green-700 data-[state=active]:bg-green-700 data-[state=active]:text-white"
                 >
+                  <CalendarDays className="h-3.5 w-3.5" />
                   Events
                 </TabsTrigger>
               )}

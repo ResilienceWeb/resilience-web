@@ -62,7 +62,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
   return (
     <Link
       href={listingHref}
-      className="animate-in fade-in slide-in-from-bottom relative block h-fit rounded-md bg-white shadow-md transition-all duration-200 ease-out hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      className="animate-in fade-in slide-in-from-bottom motion-reduce:animate-none relative block h-fit rounded-md bg-white shadow-md transition-all duration-200 ease-out hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       ref={ref}
     >
       {isFeatured && (
@@ -116,7 +116,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <p className="text-sm text-[#2B8257]">
+                  <p className="text-sm text-primary">
                     Seeking volunteers <HiUserGroup className="inline" />
                   </p>
                 </TooltipTrigger>

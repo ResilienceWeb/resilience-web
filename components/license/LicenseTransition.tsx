@@ -1,6 +1,6 @@
 function LicenseTransition() {
   return (
-    <div className="pb-2 pl-4">
+    <div className="bg-white pb-2 pl-4">
       <p className="text-sm text-gray-600">
         Content on this page is licensed under a{' '}
         <a
