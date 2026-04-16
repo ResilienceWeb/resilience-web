@@ -16,24 +16,24 @@ export default function Hero({ webCount }: HeroProps) {
                 action
               </span>
             </h1>
-            <p className="max-w-[58ch] text-left text-lg leading-relaxed text-gray-600 md:text-center md:text-xl">
+            <p className="max-w-[58ch] text-left text-lg text-balance leading-relaxed text-gray-600 md:text-center md:text-xl">
               A Resilience Web is a holistic visualisation of environmental and
-              social justice groups in a place, curated by people who live there.
-              These webs help foster discovery, collaboration and networking
-              between activists and groups.
+              social justice groups in a place, curated by people who live
+              there. These webs help foster discovery, collaboration and
+              networking between activists and groups.
             </p>
-            <div className="flex items-center gap-3 text-sm text-gray-500 md:justify-center">
-              <span className="inline-flex h-2 w-2 rounded-full bg-green-500" />
-              <span>
-                {webCount} community webs active across the UK —{' '}
-                <a
-                  href="#web-cards"
-                  className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
-                >
-                  explore them
-                  <ArrowDown className="ml-1 inline h-3 w-3" />
-                </a>
+            <div className="flex flex-col items-start gap-2 text-sm text-gray-500 md:flex-row md:items-center md:gap-3 md:justify-center">
+              <span className="flex items-center gap-2">
+                <span className="inline-flex h-2 w-2 shrink-0 rounded-full bg-green-500" />
+                {webCount} community webs active across the UK
               </span>
+              <a
+                href="#web-cards"
+                className="flex items-center gap-1 font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+              >
+                Explore them
+                <ArrowDown className="h-3 w-3" />
+              </a>
             </div>
           </div>
         </div>
