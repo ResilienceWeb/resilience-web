@@ -190,7 +190,7 @@ const ContactDialog = ({
               <Button
                 type="submit"
                 disabled={form.formState.isSubmitting}
-                className="bg-[#2B8257] hover:bg-[#236c47]"
+                className="bg-primary hover:bg-primary/90"
               >
                 Send message
               </Button>

@@ -310,7 +310,7 @@ const Web = ({
           isTransitionMode={isTransitionMode}
         />
       )}
-      <div className="relative h-screen md:ml-75">
+      <div className="relative flex h-screen flex-col md:ml-75">
         {webIsPublished === false && (
           <AlertBanner
             content="Note: this web is currently work in progress and not fully published yet."

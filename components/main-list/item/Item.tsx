@@ -1,10 +1,11 @@
 'use client'
 
-import { useCallback, useMemo, useEffect, useState, memo } from 'react'
+import { useMemo, useEffect, useState, memo } from 'react'
 import { FaStar } from 'react-icons/fa'
 import { HiUserGroup } from 'react-icons/hi'
 import { useInView } from 'react-intersection-observer'
-import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import chroma from 'chroma-js'
 import { isBranchDeploy } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
@@ -25,7 +26,6 @@ type Props = {
 }
 
 const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
-  const router = useRouter()
   const { subdomain } = useParams<{ subdomain: string }>()
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
@@ -38,12 +38,9 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
     return () => clearTimeout(timeout)
   }, [])
 
-  const onClick = useCallback(() => {
-    const path = isBranchDeploy()
-      ? `/${subdomain}/${dataItem.slug}`
-      : `/${dataItem.slug}`
-    router.push(path)
-  }, [dataItem.slug, router, subdomain])
+  const listingHref = isBranchDeploy()
+    ? `/${subdomain}/${dataItem.slug}`
+    : `/${dataItem.slug}`
 
   const categoryBackgroundColor = useMemo(
     () => chroma(dataItem.category.color).alpha(0.5).css(),
@@ -63,9 +60,9 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
   )
 
   return (
-    <div
-      className="animate-in fade-in slide-in-from-bottom relative h-fit cursor-pointer rounded-md bg-white shadow-md transition-all duration-200 ease-out hover:shadow-xl"
-      onClick={onClick}
+    <Link
+      href={listingHref}
+      className="animate-in fade-in slide-in-from-bottom motion-reduce:animate-none relative block h-fit rounded-md bg-white shadow-md transition-all duration-200 ease-out hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       ref={ref}
     >
       {isFeatured && (
@@ -119,7 +116,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <p className="text-sm text-[#2B8257]">
+                  <p className="text-sm text-primary">
                     Seeking volunteers <HiUserGroup className="inline" />
                   </p>
                 </TooltipTrigger>
@@ -134,7 +131,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
           </div>
         )}
       </div>
-    </div>
+    </Link>
   )
 }
 

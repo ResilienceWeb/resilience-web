@@ -153,13 +153,12 @@ const Events = ({ items, webSlug }: Props) => {
                 const onlineOrAddress = getLocationLabel(ev.address)
                 const isOnline = onlineOrAddress === 'Online'
                 return (
-                  <Link
-                    href={`https://${webSlug}.placecal.org/events/${ev.id}`}
-                    key={ev.id}
-                    target="_blank"
-                    passHref
-                  >
-                    <li className="rounded-xl border border-neutral-200 bg-white p-4 md:p-5 shadow-sm hover:shadow-md transition-shadow">
+                  <li key={ev.id}>
+                    <Link
+                      href={`https://${webSlug}.placecal.org/events/${ev.id}`}
+                      target="_blank"
+                      className="block rounded-xl border border-neutral-200 bg-white p-4 md:p-5 shadow-sm transition-shadow hover:shadow-md"
+                    >
                       <div className="flex items-start justify-between gap-4">
                         <div>
                           <div className="text-lg md:text-xl font-semibold text-neutral-800">
@@ -200,24 +199,14 @@ const Events = ({ items, webSlug }: Props) => {
                           </div>
                         </div>
                       </div>
-                    </li>
-                  </Link>
+                    </Link>
+                  </li>
                 )
               })}
             </ul>
           </div>
         ))}
 
-        <p className="text-gray-600 mt-1">
-          These events are provided by our friends at{' '}
-          <a
-            href={`https://${webSlug}.placecal.org`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            PlaceCal Norwich
-          </a>
-        </p>
       </div>
       <Footer hideBorder />
     </>

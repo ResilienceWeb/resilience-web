@@ -158,7 +158,7 @@ export default function TeamPage() {
 
                   <Button
                     type="submit"
-                    className="bg-[#2B8257] hover:bg-[#236c47]"
+                    className="bg-primary hover:bg-primary/90"
                     disabled={
                       !form.formState.isValid || form.formState.isSubmitting
                     }

@@ -13,7 +13,7 @@ const VolunteerSwitch = ({
   checked,
 }: VolunteerSwitchProps) => {
   return (
-    <div className="w-full px-2.5">
+    <div className="w-full pt-1">
       <div className="flex items-center gap-2">
         <Checkbox
           id="volunteer"
