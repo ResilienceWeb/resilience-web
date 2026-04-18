@@ -310,7 +310,13 @@ const Web = ({
           isTransitionMode={isTransitionMode}
         />
       )}
-      <div className="relative flex h-screen flex-col md:ml-75">
+      <div
+        className={`relative flex flex-col md:ml-75 ${
+          activeTab === 'web' || activeTab === 'map'
+            ? 'h-screen'
+            : 'min-h-screen'
+        }`}
+      >
         {webIsPublished === false && (
           <AlertBanner
             content="Note: this web is currently work in progress and not fully published yet."

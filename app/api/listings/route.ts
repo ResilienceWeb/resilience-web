@@ -206,7 +206,11 @@ export async function POST(request) {
         deletedAt: null,
       },
       include: {
-        webAccess: true,
+        webAccess: {
+          include: {
+            user: true,
+          },
+        },
       },
     })
 
@@ -239,7 +243,7 @@ export async function POST(request) {
       })
 
       const emails = selectedWeb.webAccess
-        .filter((access) => access.role === 'OWNER')
+        .filter((access) => access.role === 'OWNER' && access.user?.emailVerified)
         .map((access) => access.email)
       emails.forEach((email) => {
         sendEmail({

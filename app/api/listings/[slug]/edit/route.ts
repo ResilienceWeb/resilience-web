@@ -153,7 +153,11 @@ export async function POST(request) {
           include: {
             web: {
               include: {
-                webAccess: true,
+                webAccess: {
+                  include: {
+                    user: true,
+                  },
+                },
               },
             },
           },
@@ -163,7 +167,9 @@ export async function POST(request) {
 
     const web = listingEdit.listing.web
 
-    const ownerAndEditorEmails = web.webAccess.map((access) => access.email)
+    const ownerAndEditorEmails = web.webAccess
+      .filter((access) => access.user?.emailVerified)
+      .map((access) => access.email)
 
     await sendMultipleEmails({
       toEmails: ownerAndEditorEmails,
