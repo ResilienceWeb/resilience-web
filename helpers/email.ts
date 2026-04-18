@@ -1,4 +1,4 @@
-import { render } from '@react-email/render'
+import { render } from 'react-email'
 import { MailerSend, EmailParams, Sender, Recipient } from 'mailersend'
 import { createTransport } from 'nodemailer'
 

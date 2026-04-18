@@ -7,7 +7,7 @@ import {
   Img,
   Preview,
   Text,
-} from '@react-email/components'
+} from 'react-email'
 import { main, container, logo, paragraph, hr, footer } from './styles'
 
 type props = {
