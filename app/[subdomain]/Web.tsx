@@ -120,8 +120,6 @@ const Web = ({
     return fetchedTags.map((t) => ({
       value: t.label,
       label: t.label,
-      // @ts-ignore
-      color: t.color ?? '#2f2f30',
     }))
   }, [fetchedTags])
 
@@ -139,9 +137,8 @@ const Web = ({
     return tagsParam.map((tagLabel) => ({
       value: tagLabel,
       label: tagLabel,
-      color: tags.find((t) => t.label === tagLabel)?.color,
     }))
-  }, [tags, tagsParam])
+  }, [tagsParam])
 
   const [selectedId, setSelectedId] = useState()
 

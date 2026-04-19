@@ -112,7 +112,7 @@ function MultiSelect({
                 style={
                   item.color
                     ? {
-                        backgroundColor: chroma(item.color).alpha(0.5).css(),
+                        backgroundColor: chroma(item.color).alpha(0.75).css(),
                         borderColor: 'transparent',
                       }
                     : undefined
@@ -172,7 +172,7 @@ function MultiSelect({
                   </div>
                   <Check
                     className={cn(
-                      'h-4 w-4',
+                      'ml-2 h-4 w-4',
                       selectedValues.has(option.value)
                         ? 'opacity-100'
                         : 'opacity-0',
