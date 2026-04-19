@@ -90,6 +90,7 @@ const Drawer = ({
             </div>
             <div className="w-full">
               <MultiSelect
+                id="category-select"
                 searchable={false}
                 onChange={handleCategorySelection}
                 options={categories}

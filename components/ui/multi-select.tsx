@@ -31,6 +31,7 @@ interface MultiSelectProps {
   onCreateOption?: (inputValue: string) => void | Promise<void>
   formatCreateLabel?: (inputValue: string) => string
   className?: string
+  id?: string
 }
 
 function MultiSelect({
@@ -43,6 +44,7 @@ function MultiSelect({
   onCreateOption,
   formatCreateLabel = (input) => `Create "${input}"`,
   className,
+  id,
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false)
   const [searchValue, setSearchValue] = React.useState('')
@@ -90,6 +92,7 @@ function MultiSelect({
       <PopoverTrigger asChild>
         <button
           type="button"
+          id={id}
           role="combobox"
           aria-expanded={open}
           className={cn(
@@ -118,6 +121,7 @@ function MultiSelect({
                 {item.label}
                 <span
                   role="button"
+                  aria-label={`Remove ${item.label}`}
                   tabIndex={0}
                   className="ml-0.5 rounded-sm p-0.5 hover:bg-black/10"
                   onMouseDown={(e) => handleRemove(e, item.value)}
