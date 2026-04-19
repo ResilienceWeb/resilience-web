@@ -1,10 +1,9 @@
 import { memo, useMemo } from 'react'
 import { HiOutlineSearch, HiHome, HiOutlineX, HiPlus } from 'react-icons/hi'
 import { Share2, List, MapPin, CalendarDays } from 'lucide-react'
-import Select from 'react-select'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import customMultiSelectStyles from '@styles/select-styles'
+import { MultiSelect } from '@components/ui/multi-select'
 import { REMOTE_URL } from '@helpers/config'
 import { cn } from '@components/lib/utils'
 import { Button } from '@components/ui/button'
@@ -132,25 +131,19 @@ const Header = ({
                   </div>
                 </div>
               </div>
-              <Select
-                isMulti
-                isSearchable={false}
-                menuPortalTarget={document.body}
+              <MultiSelect
+                searchable={false}
                 onChange={handleCategorySelection}
                 options={categories}
                 placeholder="Filter by category"
-                styles={customMultiSelectStyles}
                 value={selectedCategories}
               />
               {tags.length > 0 && (
-                <Select
-                  isMulti
-                  isSearchable={false}
-                  menuPortalTarget={document.body}
+                <MultiSelect
+                  searchable={false}
                   onChange={handleTagSelection}
                   options={tags}
                   placeholder="Filter by tag"
-                  styles={customMultiSelectStyles}
                   value={selectedTags}
                 />
               )}

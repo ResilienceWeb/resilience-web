@@ -2,11 +2,10 @@
 
 import { memo } from 'react'
 import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
-import Select from 'react-select'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import Link from 'next/link'
-import customMultiSelectStyles from '@styles/select-styles'
+import { MultiSelect } from '@components/ui/multi-select'
 import { REMOTE_URL } from '@helpers/config'
 import DonateButton from '@components/donate-button'
 import RichText from '@components/rich-text'
@@ -90,29 +89,22 @@ const Drawer = ({
               )}
             </div>
             <div className="w-full">
-              <Select
+              <MultiSelect
                 id="category-select"
-                isMulti
-                isSearchable={false}
-                menuPortalTarget={document.body}
+                searchable={false}
                 onChange={handleCategorySelection}
                 options={categories}
                 placeholder="Category"
-                styles={customMultiSelectStyles}
                 value={selectedCategories}
               />
             </div>
             {tags.length > 0 && (
               <div className="w-full">
-                <Select
-                  id="tag-select"
-                  isMulti
-                  isSearchable={false}
-                  menuPortalTarget={document.body}
+                <MultiSelect
+                  searchable={false}
                   onChange={handleTagSelection}
                   options={tags}
                   placeholder="Tag"
-                  styles={customMultiSelectStyles}
                   value={selectedTags}
                 />
               </div>

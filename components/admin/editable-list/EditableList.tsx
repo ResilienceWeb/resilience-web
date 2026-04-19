@@ -123,6 +123,7 @@ const EditableList = ({ deleteListing, items }) => {
         handleSearchTermChange={handleSearchTermChange}
         goToCreateListing={goToCreateListing}
         handleSelectedCategoriesChange={handleSelectedCategoriesChange}
+        selectedCategories={selectedCategories}
       />
       {filteredItems.length > 0 ? (
         <Table

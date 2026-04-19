@@ -3,10 +3,6 @@
 import { useEffect, useMemo } from 'react'
 import { useForm, FormProvider, useWatch } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
-import type { Options } from 'react-select'
-import type { StylesConfig } from 'react-select'
-import ReactSelect from 'react-select'
-import CreatableSelect from 'react-select/creatable'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -34,6 +30,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select'
+import {
+  MultiSelect,
+  type MultiSelectOption,
+} from '@components/ui/multi-select'
 import { Separator } from '@components/ui/separator'
 import useListings from '@hooks/listings/useListings'
 import useCreateTag from '@hooks/tags/useCreateTag'
@@ -106,25 +106,6 @@ interface Props {
   isSubmitting?: boolean
 }
 
-const customMultiSelectStyles: StylesConfig<TagOption, true> = {
-  container: (baseStyles) => ({
-    ...baseStyles,
-    width: '100%',
-  }),
-  menuPortal: (baseStyles) => ({
-    ...baseStyles,
-    zIndex: 10,
-  }),
-  menu: (baseStyles) => ({
-    ...baseStyles,
-    zIndex: 10000,
-  }),
-}
-
-type TagOption = {
-  value: number
-  label: string
-}
 
 const SlugField = ({ isEditMode, register, watch, setValue, errors }) => {
   const { selectedWebSlug } = useAppContext()
@@ -169,7 +150,7 @@ const ListingForm = ({
   const { mutateAsync: createTag } = useCreateTag()
   const { listings } = useListings()
 
-  const tagOptions: Options<TagOption> = useMemo(() => {
+  const tagOptions: MultiSelectOption[] = useMemo(() => {
     if (!tags) return []
     return tags.map((t) => ({
       value: t.id,
@@ -177,7 +158,7 @@ const ListingForm = ({
     }))
   }, [tags])
 
-  const relationOptions: Options<TagOption> = useMemo(() => {
+  const relationOptions: MultiSelectOption[] = useMemo(() => {
     if (!listings) return []
     return listings
       .filter((l) => l.title !== listing?.title)
@@ -423,14 +404,12 @@ const ListingForm = ({
 
           <div className="mt-4">
             <FormLabel className="font-semibold">Tags</FormLabel>
-            <CreatableSelect
-              isMulti
-              name="tags"
+            <MultiSelect
               options={tagOptions}
-              styles={customMultiSelectStyles}
               placeholder="Select or start typing to create tag..."
               value={tagsValues}
-              onChange={(newValue) => setValue('tags', [...newValue])}
+              onChange={(newValue) => setValue('tags', newValue as { value: number; label: string }[])}
+              creatable
               onCreateOption={async (inputValue) => {
                 const newTag = await createTag({
                   label: inputValue,
@@ -447,13 +426,10 @@ const ListingForm = ({
 
           <div className="mt-4">
             <FormLabel className="font-semibold">Related listings</FormLabel>
-            <ReactSelect
-              isMulti
-              name="relations"
+            <MultiSelect
               options={relationOptions}
-              styles={customMultiSelectStyles}
               value={relationsValues}
-              onChange={(newValue) => setValue('relations', [...newValue])}
+              onChange={(newValue) => setValue('relations', newValue as { value: number; label: string }[])}
             />
           </div>
 
