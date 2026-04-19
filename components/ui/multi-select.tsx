@@ -155,22 +155,25 @@ function MultiSelect({
                   key={option.value}
                   value={option.label}
                   onSelect={() => handleSelect(option)}
+                  className="justify-between"
                 >
+                  <div className="flex items-center">
+                    {option.color && (
+                      <span
+                        className="mr-2 inline-block h-3 w-3 rounded-full"
+                        style={{ backgroundColor: option.color }}
+                      />
+                    )}
+                    {option.label}
+                  </div>
                   <Check
                     className={cn(
-                      'mr-2 h-4 w-4',
+                      'h-4 w-4',
                       selectedValues.has(option.value)
                         ? 'opacity-100'
                         : 'opacity-0',
                     )}
                   />
-                  {option.color && (
-                    <span
-                      className="mr-2 inline-block h-3 w-3 rounded-full"
-                      style={{ backgroundColor: option.color }}
-                    />
-                  )}
-                  {option.label}
                 </CommandItem>
               ))}
               {showCreateOption && (

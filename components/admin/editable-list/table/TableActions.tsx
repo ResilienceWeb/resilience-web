@@ -10,6 +10,7 @@ const TableActions = ({
   searchTerm,
   handleSearchTermChange,
   handleSelectedCategoriesChange,
+  selectedCategories,
   goToCreateListing,
 }) => {
   const { canEdit: canEditWeb } = useCanEditWeb()
@@ -47,6 +48,7 @@ const TableActions = ({
                 searchable={false}
                 onChange={handleSelectedCategoriesChange}
                 options={categories}
+                value={selectedCategories}
                 placeholder="Filter by category"
               />
             </div>
