@@ -1,7 +1,6 @@
 import { memo, useMemo } from 'react'
 import { HiOutlineSearch, HiPlus } from 'react-icons/hi'
-import Select from 'react-select'
-import customMultiSelectStyles from '@styles/select-styles'
+import { MultiSelect } from '@components/ui/multi-select'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import useCategories from '@hooks/categories/useCategories'
@@ -44,14 +43,11 @@ const TableActions = ({
               />
             </div>
             <div className="flex-1">
-              <Select
-                isMulti
-                isSearchable={false}
-                menuPortalTarget={document.body}
+              <MultiSelect
+                searchable={false}
                 onChange={handleSelectedCategoriesChange}
                 options={categories}
                 placeholder="Filter by category"
-                styles={customMultiSelectStyles}
               />
             </div>
           </div>

@@ -1,7 +1,12 @@
 import { memo, useMemo, useCallback, useEffect } from 'react'
-import Select from 'react-select'
-import type { Options } from 'react-select'
 import { usePathname } from 'next/navigation'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@components/ui/select'
 import useAllowedWebs from '@hooks/webs/useAllowedWebs'
 import { useAppContext } from '@store/hooks'
 
@@ -15,7 +20,7 @@ const WebSelector = () => {
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
   const { allowedWebs, isLoading: isLoadingAllowedWebs } = useAllowedWebs()
 
-  const webOptions: Options<WebOption> = useMemo(() => {
+  const webOptions: WebOption[] = useMemo(() => {
     if (!allowedWebs) return []
 
     return allowedWebs
@@ -26,14 +31,9 @@ const WebSelector = () => {
       }))
   }, [allowedWebs])
 
-  const selectedOption = useMemo(
-    () => webOptions.find((s) => s.value === selectedWebSlug),
-    [selectedWebSlug, webOptions],
-  )
-
   const handleWebChange = useCallback(
-    (webOption) => {
-      setSelectedWebSlug(webOption.value)
+    (value: string) => {
+      setSelectedWebSlug(value)
     },
     [setSelectedWebSlug],
   )
@@ -80,31 +80,23 @@ const WebSelector = () => {
     )
   }
 
-  if (webOptions.length === 0 || !selectedOption || hideWebSelector) {
+  if (webOptions.length === 0 || !selectedWebSlug || hideWebSelector) {
     return null
   }
 
   return (
-    <Select
-      options={webOptions}
-      value={selectedOption}
-      onChange={handleWebChange}
-      isSearchable={false}
-      styles={{
-        container: (baseStyles) => ({
-          ...baseStyles,
-          minWidth: '180px',
-        }),
-        control: (provided) => ({
-          ...provided,
-          borderRadius: '10px',
-        }),
-        menu: (baseStyles) => ({
-          ...baseStyles,
-          zIndex: 10,
-        }),
-      }}
-    />
+    <Select value={selectedWebSlug} onValueChange={handleWebChange}>
+      <SelectTrigger className="min-w-45 rounded-[10px]">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {webOptions.map((option) => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }
 
