@@ -32,7 +32,7 @@ async function importListings(data: ImportData): Promise<ImportResponse> {
         webId: data.webId,
         columnMapping: data.columnMapping,
         rows: data.rows,
-      } as ImportRequest),
+      }),
     },
   )
 

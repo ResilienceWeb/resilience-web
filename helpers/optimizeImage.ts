@@ -42,7 +42,7 @@ const optimizeImage = async (photo): Promise<Blob> => {
   }
 
   return new Promise((resolve) => {
-    canvas.toBlob(resolve as BlobCallback, 'image/jpeg', QUALITY)
+    canvas.toBlob(resolve, 'image/jpeg', QUALITY)
   })
 }
 
