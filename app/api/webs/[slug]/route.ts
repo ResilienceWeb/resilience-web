@@ -40,7 +40,9 @@ export async function GET(
   if (withListings) {
     include.listings = {
       include: {
-        location: true,
+        listing: { include: { location: true } },
+        category: { select: { id: true, color: true, label: true } },
+        tags: { select: { id: true, label: true } },
       },
     }
   }
@@ -56,7 +58,7 @@ export async function GET(
     include.location = true
   }
 
-  const web: Data['web'] = await prisma.web.findFirst({
+  const web = await prisma.web.findFirst({
     where: {
       slug,
       deletedAt: null,
@@ -68,8 +70,22 @@ export async function GET(
     return Response.json({ message: 'Web not found' }, { status: 404 })
   }
 
+  // Flatten placements to listing-shaped objects so admin consumers keep working unchanged.
+  const flattened = withListings
+    ? {
+        ...web,
+        listings: (web.listings as any[]).map((p) => ({
+          ...p.listing,
+          slug: p.slug,
+          featured: p.featured,
+          category: p.category,
+          tags: p.tags,
+        })),
+      }
+    : web
+
   return Response.json({
-    web,
+    web: flattened,
   })
 }
 
