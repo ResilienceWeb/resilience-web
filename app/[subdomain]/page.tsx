@@ -143,71 +143,52 @@ async function getData({ webSlug }): Promise<DataType> {
       icon: true,
       listings: {
         where: {
-          inactive: false,
-          pending: false,
-          categoryId: { not: null },
-        },
-        orderBy: [
-          {
-            id: 'asc',
+          listing: {
+            inactive: false,
+            pending: false,
           },
-        ],
+        },
+        orderBy: { id: 'asc' },
         select: {
-          id: true,
-          title: true,
-          description: true,
-          image: true,
           slug: true,
           featured: true,
-          seekingVolunteers: true,
-          website: true,
-          createdAt: true,
-          socials: {
-            select: {
-              platform: true,
-              url: true,
-            },
-          },
-          actions: {
-            select: {
-              type: true,
-              url: true,
-            },
-          },
-          location: {
-            select: {
-              latitude: true,
-              longitude: true,
-              description: true,
-            },
-          },
-          category: {
-            select: {
-              id: true,
-              color: true,
-              label: true,
-              icon: true,
-            },
-          },
-          web: {
-            select: {
-              slug: true,
-            },
-          },
           tags: {
-            select: {
-              id: true,
-              label: true,
-            },
+            select: { id: true, label: true },
           },
-          relations: {
+          listing: {
             select: {
               id: true,
-              category: {
+              title: true,
+              description: true,
+              image: true,
+              seekingVolunteers: true,
+              website: true,
+              createdAt: true,
+              socials: {
+                select: { platform: true, url: true },
+              },
+              actions: {
+                select: { type: true, url: true },
+              },
+              location: {
+                select: {
+                  latitude: true,
+                  longitude: true,
+                  description: true,
+                },
+              },
+              relations: {
                 select: {
                   id: true,
-                  color: true,
-                  label: true,
+                  placements: {
+                    where: { web: { slug: webSlug } },
+                    select: {
+                      category: {
+                        select: { id: true, color: true, label: true },
+                      },
+                    },
+                    take: 1,
+                  },
                 },
               },
             },
@@ -251,8 +232,8 @@ async function getData({ webSlug }): Promise<DataType> {
   twoWeeksAgo.setMonth(twoWeeksAgo.getMonth() - 1)
 
   categories.map((category) => {
-    category.listings.map(
-      ({
+    category.listings.map((placement) => {
+      const {
         id: listingId,
         title,
         description,
@@ -261,92 +242,88 @@ async function getData({ webSlug }): Promise<DataType> {
         actions,
         seekingVolunteers,
         location,
-        featured,
-        slug,
-        tags,
         relations,
         website,
         createdAt,
-      }) => {
-        // Determine if listing is new
-        const isNew = webIsOlderThanTwoMonths && createdAt > twoWeeksAgo
+      } = placement.listing
+      const { slug, featured, tags } = placement
 
-        const transformedNode: any = {
-          id: `listing-${listingId}`,
-          title,
-          description,
-          image: image ?? '',
-          location,
-          socials,
-          actions,
-          category: {
-            color: `#${category.color}`,
-            label: category.label,
-            icon: category.icon,
-          },
-          slug,
-          tags,
-          // below are for vis-network node styling and data
-          label: title,
+      const isNew = webIsOlderThanTwoMonths && createdAt > twoWeeksAgo
+
+      const transformedNode: any = {
+        id: `listing-${listingId}`,
+        title,
+        description,
+        image: image ?? '',
+        location,
+        socials,
+        actions,
+        category: {
           color: `#${category.color}`,
-          icon: undefined,
-          website,
-        }
+          label: category.label,
+          icon: category.icon,
+        },
+        slug,
+        tags,
+        // below are for vis-network node styling and data
+        label: title,
+        color: `#${category.color}`,
+        icon: undefined,
+        website,
+      }
 
-        if (isNew) {
-          transformedNode.new = isNew
-        }
+      if (isNew) {
+        transformedNode.new = isNew
+      }
 
-        if (category.icon !== 'default') {
-          transformedNode.icon = {
-            face: '"Font Awesome 5 Free"',
-            code: getIconUnicode(category.icon),
-            color: 'white',
-            weight: 700,
-          }
+      if (category.icon !== 'default') {
+        transformedNode.icon = {
+          face: '"Font Awesome 5 Free"',
+          code: getIconUnicode(category.icon),
+          color: 'white',
+          weight: 700,
         }
-        if (seekingVolunteers) {
-          transformedNode.seekingVolunteers = true
-        }
-        // Check if featured date is in the future
-        if (featured && new Date(featured) > new Date()) {
-          transformedNode.featured = featured
-        }
-        transformedData.nodes.push(transformedNode)
+      }
+      if (seekingVolunteers) {
+        transformedNode.seekingVolunteers = true
+      }
+      if (featured && new Date(featured) > new Date()) {
+        transformedNode.featured = featured
+      }
+      transformedData.nodes.push(transformedNode)
 
-        relations.map((relation) => {
-          const newEdge = {
-            from: listingId,
-            to: relation.id,
-            dashes: true,
-            physics: false,
-            smooth: {
-              enabled: true,
-              type: 'continuous',
-              roundness: 0,
-            },
-          }
-          if (
-            !transformedData.edges.find(
-              (e) => e.from === newEdge.to && e.to === newEdge.from,
-            )
-          ) {
-            transformedData.edges.push(newEdge)
-          }
-        })
-
-        transformedData.edges.push({
-          from: category.id * 1000,
-          to: `listing-${listingId}`,
-          length: category.listings.length * 15,
+      relations.map((relation) => {
+        const newEdge = {
+          from: listingId,
+          to: relation.id,
+          dashes: true,
+          physics: false,
           smooth: {
             enabled: true,
             type: 'continuous',
             roundness: 0,
           },
-        })
-      },
-    )
+        }
+        if (
+          !transformedData.edges.find(
+            (e) => e.from === newEdge.to && e.to === newEdge.from,
+          )
+        ) {
+          transformedData.edges.push(newEdge)
+        }
+      })
+
+      transformedData.edges.push({
+        from: category.id * 1000,
+        to: `listing-${listingId}`,
+        length: category.listings.length * 15,
+        smooth: {
+          enabled: true,
+          type: 'continuous',
+          roundness: 0,
+        },
+      })
+    })
   })
 
   // Main node

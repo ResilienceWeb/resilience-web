@@ -339,7 +339,7 @@ async function populateSeedData() {
           website: listing.website,
           image: listing.image,
           locationId: locationId,
-          webs: {
+          placements: {
             create: {
               webId: newWebDurham.id,
               slug: listing.slug,
