@@ -97,7 +97,7 @@ model Web {
   description  String?
   contactEmail String?      @map("contact_email")
   categories   Category[]
-  listings     Listing[]
+  listings     ListingPlacement[]
   tags         Tag[]
   published    Boolean      @default(false)
   image        String?
@@ -108,9 +108,11 @@ model Web {
   relationOf   Web[]        @relation("related_webs")
   location     WebLocation? @relation(fields: [locationId], references: [id])
   locationId   Int?         @unique
-  webAccess      WebAccess[]
-  deletedAt      DateTime?          @map("deleted_at")
-  analyticsDaily WebAnalyticsDaily[]
+  webAccess             WebAccess[]
+  deletedAt             DateTime?               @map("deleted_at")
+  analyticsDaily        WebAnalyticsDaily[]
+  listingEdits          ListingEdit[]
+  listingAnalyticsDaily ListingAnalyticsDaily[]
 
   @@map("Location")
 }
@@ -124,7 +126,7 @@ model Category {
   id          Int           @id @default(autoincrement())
   webId       Int?
   web         Web?          @relation(fields: [webId], references: [id])
-  listings    Listing[]
+  listings    ListingPlacement[]
   ListingEdit ListingEdit[]
 
   @@unique([webId, label], name: "categoryIdentifier")
@@ -136,7 +138,7 @@ model Tag {
   label         String
   webId         Int?
   web           Web?         @relation(fields: [webId], references: [id])
-  listings      Listing[]
+  listings      ListingPlacement[]
   ListingEdit   ListingEdit? @relation(fields: [listingEditId], references: [id])
   listingEditId Int?
 
@@ -156,28 +158,41 @@ model Listing {
   notes             String?
   inactive          Boolean              @default(false)
   seekingVolunteers Boolean?             @map("seeking_volunteers")
-  categoryId        Int?
   image             String?
-  slug              String
-  webId             Int
-  web               Web?                 @relation(fields: [webId], references: [id])
-  category          Category?            @relation(fields: [categoryId], references: [id])
   permissions       Permission[]
-  tags              Tag[]
   relations         Listing[]            @relation("related")
   relationOf        Listing[]            @relation("related")
   pending           Boolean              @default(false)
   proposer          User?                @relation(fields: [proposerId], references: [id])
   proposerId        String?
-  featured          DateTime?
   location          ListingLocation?     @relation(fields: [locationId], references: [id])
   locationId        Int?                 @unique
   edits             ListingEdit[]
   actions           ListingAction[]
   analyticsDaily    ListingAnalyticsDaily[]
+  placements        ListingPlacement[]
 
-  @@unique([webId, slug])
   @@map("listings")
+}
+
+model ListingPlacement {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @default(now()) @updatedAt @map("updated_at")
+  listingId  Int       @map("listing_id")
+  listing    Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  webId      Int       @map("web_id")
+  web        Web       @relation(fields: [webId], references: [id], onDelete: Cascade)
+  slug       String
+  categoryId Int?      @map("category_id")
+  category   Category? @relation(fields: [categoryId], references: [id])
+  tags       Tag[]
+  featured   DateTime?
+
+  @@unique([listingId, webId], name: "listingPlacementPair")
+  @@unique([webId, slug], name: "webSlug")
+  @@index([webId])
+  @@map("listing_placements")
 }
 
 model ListingSocialMedia {
@@ -214,6 +229,8 @@ model ListingEdit {
   updatedAt   DateTime             @default(now()) @updatedAt @map("updated_at")
   listing     Listing              @relation(fields: [listingId], references: [id])
   listingId   Int
+  webId       Int                  @map("web_id")
+  web         Web                  @relation(fields: [webId], references: [id])
   title       String?
   website     String?
   description String?
@@ -231,6 +248,7 @@ model ListingEdit {
   actions     ListingAction[]
   accepted    Boolean              @default(false)
 
+  @@index([webId])
   @@map("listing_edits")
 }
 
@@ -320,12 +338,15 @@ model ListingAnalyticsDaily {
   id        Int      @id @default(autoincrement())
   listingId Int      @map("listing_id")
   listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  webId     Int      @map("web_id")
+  web       Web      @relation(fields: [webId], references: [id], onDelete: Cascade)
   date      DateTime @db.Date
   eventType String   @map("event_type")
   count     Int      @default(0)
 
-  @@unique([listingId, date, eventType], name: "listing_date_event")
+  @@unique([listingId, webId, date, eventType], name: "listing_web_date_event")
   @@index([listingId, date])
+  @@index([webId, date])
   @@index([date])
   @@map("listing_analytics_daily")
 }

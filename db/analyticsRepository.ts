@@ -8,14 +8,19 @@ export function isBot(userAgent: string | null): boolean {
   return BOT_PATTERN.test(userAgent)
 }
 
-export async function recordListingEvent(listingId: number, eventType: string) {
+export async function recordListingEvent(
+  listingId: number,
+  webId: number,
+  eventType: string,
+) {
   const today = new Date()
   today.setUTCHours(0, 0, 0, 0)
 
   await prisma.listingAnalyticsDaily.upsert({
     where: {
-      listing_date_event: {
+      listing_web_date_event: {
         listingId,
+        webId,
         date: today,
         eventType,
       },
@@ -25,6 +30,7 @@ export async function recordListingEvent(listingId: number, eventType: string) {
     },
     create: {
       listingId,
+      webId,
       date: today,
       eventType,
       count: 1,
@@ -67,21 +73,24 @@ export async function getListingAnalyticsForWeb(
   const analytics = await prisma.listingAnalyticsDaily.groupBy({
     by: ['listingId', 'eventType'],
     where: {
+      webId,
       date: { gte: startDate },
-      listing: {
-        webId,
-        web: { deletedAt: null },
-      },
+      web: { deletedAt: null },
     },
     _sum: { count: true },
   })
 
-  const listings = await prisma.listing.findMany({
+  const placements = await prisma.listingPlacement.findMany({
     where: { webId, web: { deletedAt: null } },
-    select: { id: true, title: true, slug: true },
+    select: {
+      slug: true,
+      listing: { select: { id: true, title: true } },
+    },
   })
 
-  const listingMap = new Map(listings.map((l) => [l.id, l]))
+  const listingMap = new Map(
+    placements.map((p) => [p.listing.id, { ...p.listing, slug: p.slug }]),
+  )
 
   const grouped: Record<
     number,

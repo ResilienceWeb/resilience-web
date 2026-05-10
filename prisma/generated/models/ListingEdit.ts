@@ -29,6 +29,7 @@ export type AggregateListingEdit = {
 export type ListingEditAvgAggregateOutputType = {
   id: number | null
   listingId: number | null
+  webId: number | null
   categoryId: number | null
   locationId: number | null
 }
@@ -36,6 +37,7 @@ export type ListingEditAvgAggregateOutputType = {
 export type ListingEditSumAggregateOutputType = {
   id: number | null
   listingId: number | null
+  webId: number | null
   categoryId: number | null
   locationId: number | null
 }
@@ -45,6 +47,7 @@ export type ListingEditMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   listingId: number | null
+  webId: number | null
   title: string | null
   website: string | null
   description: string | null
@@ -62,6 +65,7 @@ export type ListingEditMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   listingId: number | null
+  webId: number | null
   title: string | null
   website: string | null
   description: string | null
@@ -79,6 +83,7 @@ export type ListingEditCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   listingId: number
+  webId: number
   title: number
   website: number
   description: number
@@ -96,6 +101,7 @@ export type ListingEditCountAggregateOutputType = {
 export type ListingEditAvgAggregateInputType = {
   id?: true
   listingId?: true
+  webId?: true
   categoryId?: true
   locationId?: true
 }
@@ -103,6 +109,7 @@ export type ListingEditAvgAggregateInputType = {
 export type ListingEditSumAggregateInputType = {
   id?: true
   listingId?: true
+  webId?: true
   categoryId?: true
   locationId?: true
 }
@@ -112,6 +119,7 @@ export type ListingEditMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   listingId?: true
+  webId?: true
   title?: true
   website?: true
   description?: true
@@ -129,6 +137,7 @@ export type ListingEditMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   listingId?: true
+  webId?: true
   title?: true
   website?: true
   description?: true
@@ -146,6 +155,7 @@ export type ListingEditCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   listingId?: true
+  webId?: true
   title?: true
   website?: true
   description?: true
@@ -250,6 +260,7 @@ export type ListingEditGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   listingId: number
+  webId: number
   title: string | null
   website: string | null
   description: string | null
@@ -290,6 +301,7 @@ export type ListingEditWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"ListingEdit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ListingEdit"> | Date | string
   listingId?: Prisma.IntFilter<"ListingEdit"> | number
+  webId?: Prisma.IntFilter<"ListingEdit"> | number
   title?: Prisma.StringNullableFilter<"ListingEdit"> | string | null
   website?: Prisma.StringNullableFilter<"ListingEdit"> | string | null
   description?: Prisma.StringNullableFilter<"ListingEdit"> | string | null
@@ -301,6 +313,7 @@ export type ListingEditWhereInput = {
   userId?: Prisma.StringFilter<"ListingEdit"> | string
   accepted?: Prisma.BoolFilter<"ListingEdit"> | boolean
   listing?: Prisma.XOR<Prisma.ListingScalarRelationFilter, Prisma.ListingWhereInput>
+  web?: Prisma.XOR<Prisma.WebScalarRelationFilter, Prisma.WebWhereInput>
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   tags?: Prisma.TagListRelationFilter
   location?: Prisma.XOR<Prisma.ListingLocationNullableScalarRelationFilter, Prisma.ListingLocationWhereInput> | null
@@ -314,6 +327,7 @@ export type ListingEditOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -325,6 +339,7 @@ export type ListingEditOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   accepted?: Prisma.SortOrder
   listing?: Prisma.ListingOrderByWithRelationInput
+  web?: Prisma.WebOrderByWithRelationInput
   category?: Prisma.CategoryOrderByWithRelationInput
   tags?: Prisma.TagOrderByRelationAggregateInput
   location?: Prisma.ListingLocationOrderByWithRelationInput
@@ -341,6 +356,7 @@ export type ListingEditWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"ListingEdit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ListingEdit"> | Date | string
   listingId?: Prisma.IntFilter<"ListingEdit"> | number
+  webId?: Prisma.IntFilter<"ListingEdit"> | number
   title?: Prisma.StringNullableFilter<"ListingEdit"> | string | null
   website?: Prisma.StringNullableFilter<"ListingEdit"> | string | null
   description?: Prisma.StringNullableFilter<"ListingEdit"> | string | null
@@ -352,6 +368,7 @@ export type ListingEditWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringFilter<"ListingEdit"> | string
   accepted?: Prisma.BoolFilter<"ListingEdit"> | boolean
   listing?: Prisma.XOR<Prisma.ListingScalarRelationFilter, Prisma.ListingWhereInput>
+  web?: Prisma.XOR<Prisma.WebScalarRelationFilter, Prisma.WebWhereInput>
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   tags?: Prisma.TagListRelationFilter
   location?: Prisma.XOR<Prisma.ListingLocationNullableScalarRelationFilter, Prisma.ListingLocationWhereInput> | null
@@ -365,6 +382,7 @@ export type ListingEditOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -390,6 +408,7 @@ export type ListingEditScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ListingEdit"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ListingEdit"> | Date | string
   listingId?: Prisma.IntWithAggregatesFilter<"ListingEdit"> | number
+  webId?: Prisma.IntWithAggregatesFilter<"ListingEdit"> | number
   title?: Prisma.StringNullableWithAggregatesFilter<"ListingEdit"> | string | null
   website?: Prisma.StringNullableWithAggregatesFilter<"ListingEdit"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"ListingEdit"> | string | null
@@ -413,6 +432,7 @@ export type ListingEditCreateInput = {
   slug?: string | null
   accepted?: boolean
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
+  web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
   tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
@@ -426,6 +446,7 @@ export type ListingEditUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listingId: number
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -452,6 +473,7 @@ export type ListingEditUpdateInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
+  web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
   tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
@@ -465,6 +487,7 @@ export type ListingEditUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -485,6 +508,7 @@ export type ListingEditCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listingId: number
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -514,6 +538,7 @@ export type ListingEditUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -546,6 +571,7 @@ export type ListingEditCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   website?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -561,6 +587,7 @@ export type ListingEditCountOrderByAggregateInput = {
 export type ListingEditAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
 }
@@ -570,6 +597,7 @@ export type ListingEditMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   website?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -587,6 +615,7 @@ export type ListingEditMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   website?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -602,6 +631,7 @@ export type ListingEditMinOrderByAggregateInput = {
 export type ListingEditSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
 }
@@ -645,6 +675,48 @@ export type ListingEditUncheckedUpdateManyWithoutUserNestedInput = {
   connect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
   update?: Prisma.ListingEditUpdateWithWhereUniqueWithoutUserInput | Prisma.ListingEditUpdateWithWhereUniqueWithoutUserInput[]
   updateMany?: Prisma.ListingEditUpdateManyWithWhereWithoutUserInput | Prisma.ListingEditUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ListingEditScalarWhereInput | Prisma.ListingEditScalarWhereInput[]
+}
+
+export type ListingEditCreateNestedManyWithoutWebInput = {
+  create?: Prisma.XOR<Prisma.ListingEditCreateWithoutWebInput, Prisma.ListingEditUncheckedCreateWithoutWebInput> | Prisma.ListingEditCreateWithoutWebInput[] | Prisma.ListingEditUncheckedCreateWithoutWebInput[]
+  connectOrCreate?: Prisma.ListingEditCreateOrConnectWithoutWebInput | Prisma.ListingEditCreateOrConnectWithoutWebInput[]
+  createMany?: Prisma.ListingEditCreateManyWebInputEnvelope
+  connect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+}
+
+export type ListingEditUncheckedCreateNestedManyWithoutWebInput = {
+  create?: Prisma.XOR<Prisma.ListingEditCreateWithoutWebInput, Prisma.ListingEditUncheckedCreateWithoutWebInput> | Prisma.ListingEditCreateWithoutWebInput[] | Prisma.ListingEditUncheckedCreateWithoutWebInput[]
+  connectOrCreate?: Prisma.ListingEditCreateOrConnectWithoutWebInput | Prisma.ListingEditCreateOrConnectWithoutWebInput[]
+  createMany?: Prisma.ListingEditCreateManyWebInputEnvelope
+  connect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+}
+
+export type ListingEditUpdateManyWithoutWebNestedInput = {
+  create?: Prisma.XOR<Prisma.ListingEditCreateWithoutWebInput, Prisma.ListingEditUncheckedCreateWithoutWebInput> | Prisma.ListingEditCreateWithoutWebInput[] | Prisma.ListingEditUncheckedCreateWithoutWebInput[]
+  connectOrCreate?: Prisma.ListingEditCreateOrConnectWithoutWebInput | Prisma.ListingEditCreateOrConnectWithoutWebInput[]
+  upsert?: Prisma.ListingEditUpsertWithWhereUniqueWithoutWebInput | Prisma.ListingEditUpsertWithWhereUniqueWithoutWebInput[]
+  createMany?: Prisma.ListingEditCreateManyWebInputEnvelope
+  set?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  disconnect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  delete?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  connect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  update?: Prisma.ListingEditUpdateWithWhereUniqueWithoutWebInput | Prisma.ListingEditUpdateWithWhereUniqueWithoutWebInput[]
+  updateMany?: Prisma.ListingEditUpdateManyWithWhereWithoutWebInput | Prisma.ListingEditUpdateManyWithWhereWithoutWebInput[]
+  deleteMany?: Prisma.ListingEditScalarWhereInput | Prisma.ListingEditScalarWhereInput[]
+}
+
+export type ListingEditUncheckedUpdateManyWithoutWebNestedInput = {
+  create?: Prisma.XOR<Prisma.ListingEditCreateWithoutWebInput, Prisma.ListingEditUncheckedCreateWithoutWebInput> | Prisma.ListingEditCreateWithoutWebInput[] | Prisma.ListingEditUncheckedCreateWithoutWebInput[]
+  connectOrCreate?: Prisma.ListingEditCreateOrConnectWithoutWebInput | Prisma.ListingEditCreateOrConnectWithoutWebInput[]
+  upsert?: Prisma.ListingEditUpsertWithWhereUniqueWithoutWebInput | Prisma.ListingEditUpsertWithWhereUniqueWithoutWebInput[]
+  createMany?: Prisma.ListingEditCreateManyWebInputEnvelope
+  set?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  disconnect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  delete?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  connect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  update?: Prisma.ListingEditUpdateWithWhereUniqueWithoutWebInput | Prisma.ListingEditUpdateWithWhereUniqueWithoutWebInput[]
+  updateMany?: Prisma.ListingEditUpdateManyWithWhereWithoutWebInput | Prisma.ListingEditUpdateManyWithWhereWithoutWebInput[]
   deleteMany?: Prisma.ListingEditScalarWhereInput | Prisma.ListingEditScalarWhereInput[]
 }
 
@@ -833,6 +905,7 @@ export type ListingEditCreateWithoutUserInput = {
   slug?: string | null
   accepted?: boolean
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
+  web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
   tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
@@ -845,6 +918,7 @@ export type ListingEditUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listingId: number
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -893,6 +967,7 @@ export type ListingEditScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"ListingEdit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ListingEdit"> | Date | string
   listingId?: Prisma.IntFilter<"ListingEdit"> | number
+  webId?: Prisma.IntFilter<"ListingEdit"> | number
   title?: Prisma.StringNullableFilter<"ListingEdit"> | string | null
   website?: Prisma.StringNullableFilter<"ListingEdit"> | string | null
   description?: Prisma.StringNullableFilter<"ListingEdit"> | string | null
@@ -903,6 +978,71 @@ export type ListingEditScalarWhereInput = {
   locationId?: Prisma.IntNullableFilter<"ListingEdit"> | number | null
   userId?: Prisma.StringFilter<"ListingEdit"> | string
   accepted?: Prisma.BoolFilter<"ListingEdit"> | boolean
+}
+
+export type ListingEditCreateWithoutWebInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  title?: string | null
+  website?: string | null
+  description?: string | null
+  email?: string | null
+  image?: string | null
+  slug?: string | null
+  accepted?: boolean
+  listing: Prisma.ListingCreateNestedOneWithoutEditsInput
+  category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
+  tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
+  location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
+  user: Prisma.UserCreateNestedOneWithoutListingEditInput
+  socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingEditInput
+  actions?: Prisma.ListingActionCreateNestedManyWithoutListingEditInput
+}
+
+export type ListingEditUncheckedCreateWithoutWebInput = {
+  id?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  listingId: number
+  title?: string | null
+  website?: string | null
+  description?: string | null
+  email?: string | null
+  categoryId?: number | null
+  image?: string | null
+  slug?: string | null
+  locationId?: number | null
+  userId: string
+  accepted?: boolean
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditInput
+  socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingEditInput
+  actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingEditInput
+}
+
+export type ListingEditCreateOrConnectWithoutWebInput = {
+  where: Prisma.ListingEditWhereUniqueInput
+  create: Prisma.XOR<Prisma.ListingEditCreateWithoutWebInput, Prisma.ListingEditUncheckedCreateWithoutWebInput>
+}
+
+export type ListingEditCreateManyWebInputEnvelope = {
+  data: Prisma.ListingEditCreateManyWebInput | Prisma.ListingEditCreateManyWebInput[]
+  skipDuplicates?: boolean
+}
+
+export type ListingEditUpsertWithWhereUniqueWithoutWebInput = {
+  where: Prisma.ListingEditWhereUniqueInput
+  update: Prisma.XOR<Prisma.ListingEditUpdateWithoutWebInput, Prisma.ListingEditUncheckedUpdateWithoutWebInput>
+  create: Prisma.XOR<Prisma.ListingEditCreateWithoutWebInput, Prisma.ListingEditUncheckedCreateWithoutWebInput>
+}
+
+export type ListingEditUpdateWithWhereUniqueWithoutWebInput = {
+  where: Prisma.ListingEditWhereUniqueInput
+  data: Prisma.XOR<Prisma.ListingEditUpdateWithoutWebInput, Prisma.ListingEditUncheckedUpdateWithoutWebInput>
+}
+
+export type ListingEditUpdateManyWithWhereWithoutWebInput = {
+  where: Prisma.ListingEditScalarWhereInput
+  data: Prisma.XOR<Prisma.ListingEditUpdateManyMutationInput, Prisma.ListingEditUncheckedUpdateManyWithoutWebInput>
 }
 
 export type ListingEditCreateWithoutCategoryInput = {
@@ -916,6 +1056,7 @@ export type ListingEditCreateWithoutCategoryInput = {
   slug?: string | null
   accepted?: boolean
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
+  web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
   user: Prisma.UserCreateNestedOneWithoutListingEditInput
@@ -928,6 +1069,7 @@ export type ListingEditUncheckedCreateWithoutCategoryInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listingId: number
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -979,6 +1121,7 @@ export type ListingEditCreateWithoutTagsInput = {
   slug?: string | null
   accepted?: boolean
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
+  web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
   user: Prisma.UserCreateNestedOneWithoutListingEditInput
@@ -991,6 +1134,7 @@ export type ListingEditUncheckedCreateWithoutTagsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listingId: number
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -1032,6 +1176,7 @@ export type ListingEditUpdateWithoutTagsInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
+  web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
@@ -1044,6 +1189,7 @@ export type ListingEditUncheckedUpdateWithoutTagsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1068,6 +1214,7 @@ export type ListingEditCreateWithoutListingInput = {
   image?: string | null
   slug?: string | null
   accepted?: boolean
+  web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
   tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
@@ -1080,6 +1227,7 @@ export type ListingEditUncheckedCreateWithoutListingInput = {
   id?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -1132,6 +1280,7 @@ export type ListingEditCreateWithoutSocialsInput = {
   slug?: string | null
   accepted?: boolean
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
+  web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
   tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
@@ -1144,6 +1293,7 @@ export type ListingEditUncheckedCreateWithoutSocialsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listingId: number
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -1185,6 +1335,7 @@ export type ListingEditUpdateWithoutSocialsInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
+  web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
   tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
@@ -1197,6 +1348,7 @@ export type ListingEditUncheckedUpdateWithoutSocialsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1222,6 +1374,7 @@ export type ListingEditCreateWithoutActionsInput = {
   slug?: string | null
   accepted?: boolean
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
+  web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
   tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
@@ -1234,6 +1387,7 @@ export type ListingEditUncheckedCreateWithoutActionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listingId: number
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -1275,6 +1429,7 @@ export type ListingEditUpdateWithoutActionsInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
+  web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
   tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
@@ -1287,6 +1442,7 @@ export type ListingEditUncheckedUpdateWithoutActionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1312,6 +1468,7 @@ export type ListingEditCreateWithoutLocationInput = {
   slug?: string | null
   accepted?: boolean
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
+  web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
   tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
   user: Prisma.UserCreateNestedOneWithoutListingEditInput
@@ -1324,6 +1481,7 @@ export type ListingEditUncheckedCreateWithoutLocationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listingId: number
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -1369,6 +1527,7 @@ export type ListingEditCreateManyUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listingId: number
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -1391,6 +1550,7 @@ export type ListingEditUpdateWithoutUserInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
+  web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
   tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
@@ -1403,6 +1563,7 @@ export type ListingEditUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1422,6 +1583,7 @@ export type ListingEditUncheckedUpdateManyWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1433,11 +1595,85 @@ export type ListingEditUncheckedUpdateManyWithoutUserInput = {
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
+export type ListingEditCreateManyWebInput = {
+  id?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  listingId: number
+  title?: string | null
+  website?: string | null
+  description?: string | null
+  email?: string | null
+  categoryId?: number | null
+  image?: string | null
+  slug?: string | null
+  locationId?: number | null
+  userId: string
+  accepted?: boolean
+}
+
+export type ListingEditUpdateWithoutWebInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
+  tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
+  location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
+  socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingEditNestedInput
+  actions?: Prisma.ListingActionUpdateManyWithoutListingEditNestedInput
+}
+
+export type ListingEditUncheckedUpdateWithoutWebInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditNestedInput
+  socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingEditNestedInput
+  actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingEditNestedInput
+}
+
+export type ListingEditUncheckedUpdateManyWithoutWebInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
 export type ListingEditCreateManyCategoryInput = {
   id?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   listingId: number
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -1460,6 +1696,7 @@ export type ListingEditUpdateWithoutCategoryInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
+  web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
@@ -1472,6 +1709,7 @@ export type ListingEditUncheckedUpdateWithoutCategoryInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1491,6 +1729,7 @@ export type ListingEditUncheckedUpdateManyWithoutCategoryInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1506,6 +1745,7 @@ export type ListingEditCreateManyListingInput = {
   id?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -1528,6 +1768,7 @@ export type ListingEditUpdateWithoutListingInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
   tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
@@ -1540,6 +1781,7 @@ export type ListingEditUncheckedUpdateWithoutListingInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1559,6 +1801,7 @@ export type ListingEditUncheckedUpdateManyWithoutListingInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1576,6 +1819,7 @@ export type ListingEditCreateManyLocationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   listingId: number
+  webId: number
   title?: string | null
   website?: string | null
   description?: string | null
@@ -1598,6 +1842,7 @@ export type ListingEditUpdateWithoutLocationInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
+  web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
   tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
@@ -1610,6 +1855,7 @@ export type ListingEditUncheckedUpdateWithoutLocationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1629,6 +1875,7 @@ export type ListingEditUncheckedUpdateManyWithoutLocationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1694,6 +1941,7 @@ export type ListingEditSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   createdAt?: boolean
   updatedAt?: boolean
   listingId?: boolean
+  webId?: boolean
   title?: boolean
   website?: boolean
   description?: boolean
@@ -1705,6 +1953,7 @@ export type ListingEditSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   userId?: boolean
   accepted?: boolean
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
   category?: boolean | Prisma.ListingEdit$categoryArgs<ExtArgs>
   tags?: boolean | Prisma.ListingEdit$tagsArgs<ExtArgs>
   location?: boolean | Prisma.ListingEdit$locationArgs<ExtArgs>
@@ -1719,6 +1968,7 @@ export type ListingEditSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   createdAt?: boolean
   updatedAt?: boolean
   listingId?: boolean
+  webId?: boolean
   title?: boolean
   website?: boolean
   description?: boolean
@@ -1730,6 +1980,7 @@ export type ListingEditSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   userId?: boolean
   accepted?: boolean
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
   category?: boolean | Prisma.ListingEdit$categoryArgs<ExtArgs>
   location?: boolean | Prisma.ListingEdit$locationArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1740,6 +1991,7 @@ export type ListingEditSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   createdAt?: boolean
   updatedAt?: boolean
   listingId?: boolean
+  webId?: boolean
   title?: boolean
   website?: boolean
   description?: boolean
@@ -1751,6 +2003,7 @@ export type ListingEditSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   userId?: boolean
   accepted?: boolean
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
   category?: boolean | Prisma.ListingEdit$categoryArgs<ExtArgs>
   location?: boolean | Prisma.ListingEdit$locationArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1761,6 +2014,7 @@ export type ListingEditSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   listingId?: boolean
+  webId?: boolean
   title?: boolean
   website?: boolean
   description?: boolean
@@ -1773,9 +2027,10 @@ export type ListingEditSelectScalar = {
   accepted?: boolean
 }
 
-export type ListingEditOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "listingId" | "title" | "website" | "description" | "email" | "categoryId" | "image" | "slug" | "locationId" | "userId" | "accepted", ExtArgs["result"]["listingEdit"]>
+export type ListingEditOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "listingId" | "webId" | "title" | "website" | "description" | "email" | "categoryId" | "image" | "slug" | "locationId" | "userId" | "accepted", ExtArgs["result"]["listingEdit"]>
 export type ListingEditInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
   category?: boolean | Prisma.ListingEdit$categoryArgs<ExtArgs>
   tags?: boolean | Prisma.ListingEdit$tagsArgs<ExtArgs>
   location?: boolean | Prisma.ListingEdit$locationArgs<ExtArgs>
@@ -1786,12 +2041,14 @@ export type ListingEditInclude<ExtArgs extends runtime.Types.Extensions.Internal
 }
 export type ListingEditIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
   category?: boolean | Prisma.ListingEdit$categoryArgs<ExtArgs>
   location?: boolean | Prisma.ListingEdit$locationArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ListingEditIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
   category?: boolean | Prisma.ListingEdit$categoryArgs<ExtArgs>
   location?: boolean | Prisma.ListingEdit$locationArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1801,6 +2058,7 @@ export type $ListingEditPayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "ListingEdit"
   objects: {
     listing: Prisma.$ListingPayload<ExtArgs>
+    web: Prisma.$WebPayload<ExtArgs>
     category: Prisma.$CategoryPayload<ExtArgs> | null
     tags: Prisma.$TagPayload<ExtArgs>[]
     location: Prisma.$ListingLocationPayload<ExtArgs> | null
@@ -1813,6 +2071,7 @@ export type $ListingEditPayload<ExtArgs extends runtime.Types.Extensions.Interna
     createdAt: Date
     updatedAt: Date
     listingId: number
+    webId: number
     title: string | null
     website: string | null
     description: string | null
@@ -2218,6 +2477,7 @@ readonly fields: ListingEditFieldRefs;
 export interface Prisma__ListingEditClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   listing<T extends Prisma.ListingDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ListingDefaultArgs<ExtArgs>>): Prisma.Prisma__ListingClient<runtime.Types.Result.GetResult<Prisma.$ListingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  web<T extends Prisma.WebDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WebDefaultArgs<ExtArgs>>): Prisma.Prisma__WebClient<runtime.Types.Result.GetResult<Prisma.$WebPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   category<T extends Prisma.ListingEdit$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ListingEdit$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   tags<T extends Prisma.ListingEdit$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ListingEdit$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   location<T extends Prisma.ListingEdit$locationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ListingEdit$locationArgs<ExtArgs>>): Prisma.Prisma__ListingLocationClient<runtime.Types.Result.GetResult<Prisma.$ListingLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2257,6 +2517,7 @@ export interface ListingEditFieldRefs {
   readonly createdAt: Prisma.FieldRef<"ListingEdit", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ListingEdit", 'DateTime'>
   readonly listingId: Prisma.FieldRef<"ListingEdit", 'Int'>
+  readonly webId: Prisma.FieldRef<"ListingEdit", 'Int'>
   readonly title: Prisma.FieldRef<"ListingEdit", 'String'>
   readonly website: Prisma.FieldRef<"ListingEdit", 'String'>
   readonly description: Prisma.FieldRef<"ListingEdit", 'String'>

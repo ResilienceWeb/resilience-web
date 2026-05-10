@@ -5,6 +5,7 @@ import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import deleteImage from '@helpers/deleteImage'
 import { sendEmail } from '@helpers/email'
+import { flattenListingPlacement } from '@helpers/flattenPlacement'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingProposedAcceptedEmail from '@components/emails/ListingProposedAcceptedEmail'
@@ -25,45 +26,38 @@ export async function GET(
     const searchParams = request.nextUrl.searchParams
     const webSlug = searchParams.get('web')
 
-    const listing = await prisma.listing.findFirst({
-      where: {
-        slug,
-        web: {
-          deletedAt: null,
-          ...(webSlug
-            ? {
-                slug: {
-                  contains: webSlug,
-                },
-              }
-            : {}),
-        },
+    const placementWhere = {
+      slug,
+      web: {
+        deletedAt: null,
+        ...(webSlug ? { slug: { contains: webSlug } } : {}),
       },
+    }
+
+    const listing = await prisma.listing.findFirst({
+      where: { placements: { some: placementWhere } },
       include: {
         socials: true,
         actions: true,
         proposer: true,
         location: true,
-        category: {
-          select: {
-            id: true,
-            color: true,
-            label: true,
-          },
-        },
-        tags: {
-          select: {
-            id: true,
-            label: true,
+        placements: {
+          where: placementWhere,
+          include: {
+            web: true,
+            category: {
+              select: { id: true, color: true, label: true },
+            },
+            tags: { select: { id: true, label: true } },
           },
         },
         relations: {
           include: {
-            category: {
-              select: {
-                id: true,
-                color: true,
-                label: true,
+            placements: {
+              include: {
+                category: {
+                  select: { id: true, color: true, label: true },
+                },
               },
             },
           },
@@ -71,7 +65,12 @@ export async function GET(
       },
     })
 
-    const listingWithoutRedundantFields = exclude(listing, [
+    if (!listing) {
+      return Response.json({ listing: null })
+    }
+
+    const flattened = flattenListingPlacement(listing)
+    const listingWithoutRedundantFields = exclude(flattened, [
       'createdAt',
       'updatedAt',
       'notes',
@@ -184,19 +183,12 @@ export async function PUT(request) {
 
     const newData: Prisma.ListingUpdateInput = {
       title: title,
-      category: {
-        connect: {
-          id: category,
-        },
-      },
       website: website,
       description: description,
       email: email,
       pending: false,
       seekingVolunteers: stringToBoolean(seekingVolunteers),
       inactive: stringToBoolean(inactive),
-      featured: featuredDate,
-      slug: slug,
       location: locationData,
       socials: {
         deleteMany: {}, // Remove all existing social media entries
@@ -211,10 +203,6 @@ export async function PUT(request) {
           type: action.type,
           url: action.url,
         })),
-      },
-      tags: {
-        connect: tagsToConnect,
-        disconnect: tagsToDisconnect,
       },
       relations: {
         connect: relationsToConnect,
@@ -256,63 +244,141 @@ export async function PUT(request) {
       newData.image = null
     }
 
-    const listing = await prisma.listing.update({
+    const formWebId = formData.get('webId')
+    let placementWebId: number | undefined = formWebId
+      ? Number(formWebId)
+      : undefined
+
+    if (placementWebId === undefined) {
+      const existing = await prisma.listing.findUnique({
+        where: { id: Number(listingId) },
+        select: { placements: { select: { webId: true }, take: 2 } },
+      })
+      if (!existing) {
+        return new Response('Listing not found', { status: 404 })
+      }
+      if (existing.placements.length !== 1) {
+        return new Response(
+          'Listing exists in multiple webs; webId is required to disambiguate',
+          { status: 400 },
+        )
+      }
+      placementWebId = existing.placements[0].webId
+    }
+
+    const placementUpdate: Prisma.ListingPlacementUpdateInput = {
+      slug: slug as string,
+      featured: featuredDate,
+      category: category ? { connect: { id: category } } : { disconnect: true },
+      tags: {
+        connect: tagsToConnect,
+        disconnect: tagsToDisconnect,
+      },
+    }
+
+    const [listing] = await prisma.$transaction([
+      prisma.listing.update({
+        where: { id: Number(listingId) },
+        data: newData,
+        include: {
+          socials: true,
+          actions: true,
+          proposer: true,
+          location: {
+            select: {
+              latitude: true,
+              longitude: true,
+              description: true,
+            },
+          },
+          placements: {
+            where: { webId: placementWebId },
+            include: {
+              web: true,
+              category: { select: { id: true, color: true, label: true } },
+              tags: { select: { id: true, label: true } },
+            },
+          },
+          relations: {
+            include: {
+              placements: {
+                include: {
+                  category: {
+                    select: { id: true, color: true, label: true },
+                  },
+                },
+              },
+            },
+          },
+        },
+      }),
+      prisma.listingPlacement.update({
+        where: {
+          listingPlacementPair: {
+            listingId: Number(listingId),
+            webId: placementWebId,
+          },
+        },
+        data: placementUpdate,
+      }),
+    ])
+
+    const refreshed = await prisma.listing.findUnique({
       where: { id: Number(listingId) },
       include: {
         socials: true,
         actions: true,
         proposer: true,
-        web: true,
         location: {
-          select: {
-            latitude: true,
-            longitude: true,
-            description: true,
-          },
+          select: { latitude: true, longitude: true, description: true },
         },
-        tags: {
-          select: {
-            id: true,
-            label: true,
+        placements: {
+          where: { webId: placementWebId },
+          include: {
+            web: true,
+            category: { select: { id: true, color: true, label: true } },
+            tags: { select: { id: true, label: true } },
           },
         },
         relations: {
           include: {
-            category: {
-              select: {
-                id: true,
-                color: true,
-                label: true,
+            placements: {
+              include: {
+                category: {
+                  select: { id: true, color: true, label: true },
+                },
               },
             },
           },
         },
       },
-      data: newData,
     })
+
+    const flattened = flattenListingPlacement(refreshed!)
+    const placement = refreshed!.placements[0]
 
     const isApprovingProposedListing = formData.get(
       'isApprovingProposedListing',
     )
-    if (isApprovingProposedListing) {
+    if (isApprovingProposedListing && placement?.web) {
       await sendEmail({
         to: listing.proposer.email,
         subject: `Your proposed listing ${listing.title} has been accepted`,
         email: ListingProposedAcceptedEmail({
-          webTitle: listing.web.title,
+          webTitle: placement.web.title,
           listingTitle: listing.title,
-          listingSlug: listing.slug,
-          webSlug: listing.web.slug,
+          listingSlug: placement.slug,
+          webSlug: placement.web.slug,
         }),
       })
     }
 
-    revalidatePath(`/${listing.web.slug}/${listing.slug}`)
-    revalidatePath(`/${listing.web.slug}`)
+    if (placement?.web) {
+      revalidatePath(`/${placement.web.slug}/${placement.slug}`)
+      revalidatePath(`/${placement.web.slug}`)
+    }
 
-    return Response.json({
-      listing,
-    })
+    return Response.json({ listing: flattened })
   } catch (e) {
     console.error(`[RW] Unable to update listing - ${e}`)
     Sentry.captureException(e)
@@ -331,23 +397,41 @@ export async function DELETE(
     const slug = params.slug
     const { webId } = await request.json()
 
-    const listing = await prisma.listing.delete({
-      where: { webId_slug: { webId, slug } },
+    const placement = await prisma.listingPlacement.findUnique({
+      where: { webSlug: { webId, slug } },
+      include: {
+        listing: { include: { placements: { select: { id: true } } } },
+      },
     })
 
-    if (listing.locationId) {
-      await prisma.listingLocation.delete({
-        where: { id: listing.locationId },
+    if (!placement) {
+      return new Response('Listing not found in this web', { status: 404 })
+    }
+
+    const isOnlyPlacement = placement.listing.placements.length === 1
+    const { placements: _omit, ...listingFields } = placement.listing
+
+    if (isOnlyPlacement) {
+      // Last web: remove the listing entirely (cascade clears the placement).
+      const deleted = await prisma.listing.delete({
+        where: { id: placement.listingId },
       })
+
+      if (deleted.locationId) {
+        await prisma.listingLocation.delete({
+          where: { id: deleted.locationId },
+        })
+      }
+
+      if (deleted.image) {
+        await deleteImage(deleted.image)
+      }
+    } else {
+      // Other webs still hold this listing — just detach this placement.
+      await prisma.listingPlacement.delete({ where: { id: placement.id } })
     }
 
-    if (listing.image) {
-      await deleteImage(listing.image)
-    }
-
-    return Response.json({
-      listing,
-    })
+    return Response.json({ listing: listingFields })
   } catch (e) {
     console.error(`[RW] Unable to delete listing - ${e}`)
     Sentry.captureException(e)

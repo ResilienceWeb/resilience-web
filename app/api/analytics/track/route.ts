@@ -46,10 +46,16 @@ export async function POST(request: NextRequest) {
     }
 
     if (listingId) {
-      await recordListingEvent(listingId, eventType)
+      if (!webId) {
+        return Response.json(
+          { error: 'webId is required when tracking a listing event' },
+          { status: 400 },
+        )
+      }
+      await recordListingEvent(listingId, webId, eventType)
     }
 
-    if (webId) {
+    if (webId && !listingId) {
       await recordWebEvent(webId, eventType)
     }
 

@@ -87,6 +87,11 @@ export type Tag = Prisma.TagModel
  */
 export type Listing = Prisma.ListingModel
 /**
+ * Model ListingPlacement
+ * 
+ */
+export type ListingPlacement = Prisma.ListingPlacementModel
+/**
  * Model ListingSocialMedia
  * 
  */
