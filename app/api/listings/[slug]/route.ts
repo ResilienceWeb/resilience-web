@@ -34,7 +34,7 @@ export async function GET(
       },
     }
 
-    const listing = await prisma.listing.findFirst({
+    const listingRaw = await prisma.listing.findFirst({
       where: { placements: { some: placementWhere } },
       include: {
         socials: true,
@@ -42,9 +42,8 @@ export async function GET(
         proposer: true,
         location: true,
         placements: {
-          where: placementWhere,
           include: {
-            web: true,
+            web: { select: { id: true, slug: true, title: true } },
             category: {
               select: { id: true, color: true, label: true },
             },
@@ -65,16 +64,38 @@ export async function GET(
       },
     })
 
-    if (!listing) {
+    if (!listingRaw) {
       return Response.json({ listing: null })
     }
 
-    const flattened = flattenListingPlacement(listing)
-    const listingWithoutRedundantFields = exclude(flattened, [
-      'createdAt',
-      'updatedAt',
-      'notes',
-    ])
+    // Pick the placement matching the current web context so flattenListingPlacement
+    // hoists the right slug/category/tags onto the listing.
+    const matchingPlacement = listingRaw.placements.find(
+      (p) =>
+        p.slug === slug && (!webSlug || p.web.slug.includes(webSlug)),
+    )
+    const otherPlacements = listingRaw.placements.filter(
+      (p) => p.id !== matchingPlacement?.id,
+    )
+
+    const flattened = flattenListingPlacement({
+      ...listingRaw,
+      placements: matchingPlacement ? [matchingPlacement] : [],
+    })
+
+    const listingWithoutRedundantFields = exclude(
+      {
+        ...flattened,
+        // For the admin form: which other webs this listing also lives in
+        // (used to show the "shared with N webs" banner).
+        sharedWith: otherPlacements.map((p) => ({
+          webId: p.webId,
+          slug: p.slug,
+          web: p.web,
+        })),
+      },
+      ['createdAt', 'updatedAt', 'notes'],
+    )
 
     return Response.json({
       listing: listingWithoutRedundantFields,

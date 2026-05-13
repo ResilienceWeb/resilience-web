@@ -15,10 +15,7 @@ const EditableList = ({ deleteListing, items }) => {
   const { selectedWebId, selectedWebSlug } = useAppContext()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState<Array<any>>([])
-  const [
-    isDeleteConfirmationOpenWithSlug,
-    setIsDeleteConfirmationOpenWithSlug,
-  ] = useState<any>()
+  const [itemToDelete, setItemToDelete] = useState<any>(null)
 
   const filteredItems = useMemo(() => {
     if (!items) return []
@@ -63,25 +60,37 @@ const EditableList = ({ deleteListing, items }) => {
     router.push('/admin/new-listing')
   }, [router])
 
-  const openRemoveDialog = useCallback((slug) => {
-    setIsDeleteConfirmationOpenWithSlug(slug)
-  }, [])
+  const openRemoveDialog = useCallback(
+    (slug) => {
+      const target = items?.find((i: any) => i.slug === slug) ?? { slug }
+      setItemToDelete(target)
+    },
+    [items],
+  )
   const closeRemoveDialog = useCallback(() => {
-    setIsDeleteConfirmationOpenWithSlug(null)
+    setItemToDelete(null)
   }, [])
 
   const handleRemove = useCallback(() => {
+    if (!itemToDelete) return
     deleteListing({
-      slug: isDeleteConfirmationOpenWithSlug,
+      slug: itemToDelete.slug,
       webId: selectedWebId,
     })
     closeRemoveDialog()
-  }, [
-    closeRemoveDialog,
-    deleteListing,
-    isDeleteConfirmationOpenWithSlug,
-    selectedWebId,
-  ])
+  }, [closeRemoveDialog, deleteListing, itemToDelete, selectedWebId])
+
+  const isShared = (itemToDelete?.sharedWith?.length ?? 0) > 0
+  const otherWebTitles: string[] = (itemToDelete?.sharedWith ?? []).map(
+    (s: any) => s.web?.title ?? s.web?.slug,
+  )
+  const dialogTitle = isShared
+    ? `Remove from ${selectedWebSlug}`
+    : 'Delete listing'
+  const dialogDescription = isShared
+    ? `Remove this listing from the ${selectedWebSlug} web? It will stay listed in ${otherWebTitles.join(', ')}.`
+    : "Are you sure you want to delete this listing? It can't be recovered once deleted."
+  const dialogButtonLabel = isShared ? 'Yes, remove' : 'Yes, delete'
 
   const handleSearchTermChange = useCallback((event) => {
     setSearchTerm(event.target.value)
@@ -147,11 +156,12 @@ const EditableList = ({ deleteListing, items }) => {
         </div>
       )}
       <DeleteConfirmationDialog
-        isOpen={isDeleteConfirmationOpenWithSlug}
+        isOpen={Boolean(itemToDelete)}
         onClose={closeRemoveDialog}
         handleRemove={handleRemove}
-        description="Are you sure you want to delete this listing? It can't be recovered once deleted."
-        buttonLabel="Yes, delete"
+        titleLabel={dialogTitle}
+        description={dialogDescription}
+        buttonLabel={dialogButtonLabel}
       />
     </>
   )

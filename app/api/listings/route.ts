@@ -33,9 +33,8 @@ export async function GET(request: NextRequest) {
           },
         },
         placements: {
-          where: placementWhere,
           include: {
-            web: true,
+            web: { select: { id: true, slug: true, title: true } },
             category: {
               select: { id: true, color: true, label: true },
             },
@@ -62,7 +61,26 @@ export async function GET(request: NextRequest) {
       orderBy: [{ id: 'asc' }],
     })
 
-    const flattened = listings.map(flattenListingPlacement)
+    // For each listing, pick the placement matching the current web context for flatten,
+    // and surface a list of OTHER webs so the admin's delete confirmation can show
+    // "stays in Cambridge, Durham" instead of pretending to delete the listing.
+    const flattened = listings.map((l) => {
+      const matching = l.placements.find((p) =>
+        web ? p.web.slug === web : true,
+      )
+      const others = l.placements
+        .filter((p) => p.id !== matching?.id)
+        .map((p) => ({
+          webId: p.webId,
+          slug: p.slug,
+          web: p.web,
+        }))
+      const flat = flattenListingPlacement({
+        ...l,
+        placements: matching ? [matching] : [],
+      })
+      return { ...flat, sharedWith: others }
+    })
     return Response.json({ listings: flattened })
   } catch (e) {
     console.error(`[RW] Unable to fetch listings - ${e}`)
