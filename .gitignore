@@ -36,10 +36,6 @@ yarn-error.log*
 # Mailpit
 data
 
-# vercel
-.vercel
-.aws
-
 # Sentry Auth Token
 .sentryclirc
 

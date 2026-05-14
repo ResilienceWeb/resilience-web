@@ -33,7 +33,6 @@ npm run trigger         # Start Trigger.dev development server
 # Build & deployment
 npm run build           # Production build
 npm start               # Start production server
-npx vercel deploy --target staging  # Deploy to Vercel staging
 ```
 
 ## Local Database Setup
