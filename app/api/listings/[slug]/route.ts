@@ -71,8 +71,7 @@ export async function GET(
     // Pick the placement matching the current web context so flattenListingPlacement
     // hoists the right slug/category/tags onto the listing.
     const matchingPlacement = listingRaw.placements.find(
-      (p) =>
-        p.slug === slug && (!webSlug || p.web.slug.includes(webSlug)),
+      (p) => p.slug === slug && (!webSlug || p.web.slug.includes(webSlug)),
     )
     const otherPlacements = listingRaw.placements.filter(
       (p) => p.id !== matchingPlacement?.id,
@@ -375,8 +374,8 @@ export async function PUT(request) {
       },
     })
 
-    const flattened = flattenListingPlacement(refreshed!)
-    const placement = refreshed!.placements[0]
+    const flattened = flattenListingPlacement(refreshed)
+    const placement = refreshed.placements[0]
 
     const isApprovingProposedListing = formData.get(
       'isApprovingProposedListing',

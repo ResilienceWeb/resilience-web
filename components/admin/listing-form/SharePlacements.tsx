@@ -71,14 +71,8 @@ export default function SharePlacements({
     let cancelled = false
     fetch(`/api/categories?web=${web.slug}`)
       .then((r) => r.json())
-      .then((d) => {
-        if (cancelled) return
-        setCategories(d?.data ?? [])
-      })
-      .catch(() => {
-        if (cancelled) return
-        setCategories([])
-      })
+      .then((d) => (cancelled ? null : setCategories(d?.data ?? [])))
+      .catch(() => (cancelled ? null : setCategories([])))
     return () => {
       cancelled = true
     }
