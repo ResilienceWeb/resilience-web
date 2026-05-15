@@ -89,17 +89,23 @@ export default async function getListing({
       slug: p.slug,
       web: p.web,
     })),
-    relations: relations.map((r) => {
-      const placementForCurrentWeb = r.placements[0]
-      return {
-        id: r.id,
-        title: r.title,
-        image: r.image,
-        slug: placementForCurrentWeb?.slug ?? null,
-        featured: placementForCurrentWeb?.featured ?? null,
-        category: placementForCurrentWeb?.category ?? null,
-      }
-    }),
+    // Only surface relations that ALSO live in the current web — relations without
+    // a placement here have no slug/category to render, and exposing them would link
+    // off into a 404.
+    relations: relations
+      .map((r) => {
+        const placementForCurrentWeb = r.placements[0]
+        if (!placementForCurrentWeb) return null
+        return {
+          id: r.id,
+          title: r.title,
+          image: r.image,
+          slug: placementForCurrentWeb.slug,
+          featured: placementForCurrentWeb.featured,
+          category: placementForCurrentWeb.category,
+        }
+      })
+      .filter((r): r is NonNullable<typeof r> => r !== null),
   }
 
   const listing = exclude(flattened, ['createdAt', 'updatedAt', 'notes'])

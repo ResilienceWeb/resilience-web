@@ -190,7 +190,7 @@ export default function SharePlacements({
               <SelectTrigger className="bg-white">
                 <SelectValue placeholder="Pick a web" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="z-1001">
                 {eligibleWebs.map((w: any) => (
                   <SelectItem key={w.id} value={String(w.id)}>
                     {w.title}
@@ -219,7 +219,7 @@ export default function SharePlacements({
                   }
                 />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="z-1001">
                 {categories.map((c) => (
                   <SelectItem key={c.id} value={String(c.id)}>
                     {c.label}
