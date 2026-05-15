@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { sendEmail } from '@helpers/email'
+import { flattenListingPlacement } from '@helpers/flattenPlacement'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingCreatedEmail from '@components/emails/ListingCreatedEmail'
@@ -14,20 +15,13 @@ export async function GET(request: NextRequest) {
   const web = searchParams.get('web')
 
   try {
+    const placementWhere = web
+      ? { web: { slug: web, deletedAt: null } }
+      : { web: { deletedAt: null } }
+
     const listings = await prisma.listing.findMany({
       where: {
-        ...(web
-          ? {
-              web: {
-                slug: web,
-                deletedAt: null,
-              },
-            }
-          : {
-              web: {
-                deletedAt: null,
-              },
-            }),
+        placements: { some: placementWhere },
       },
       include: {
         location: {
@@ -38,26 +32,22 @@ export async function GET(request: NextRequest) {
             noPhysicalLocation: true,
           },
         },
-        category: {
-          select: {
-            id: true,
-            color: true,
-            label: true,
-          },
-        },
-        web: true,
-        tags: {
-          select: {
-            label: true,
+        placements: {
+          include: {
+            web: { select: { id: true, slug: true, title: true } },
+            category: {
+              select: { id: true, color: true, label: true },
+            },
+            tags: { select: { id: true, label: true } },
           },
         },
         relations: {
           include: {
-            category: {
-              select: {
-                id: true,
-                color: true,
-                label: true,
+            placements: {
+              include: {
+                category: {
+                  select: { id: true, color: true, label: true },
+                },
               },
             },
           },
@@ -68,15 +58,30 @@ export async function GET(request: NextRequest) {
           },
         },
       },
-      orderBy: [
-        {
-          id: 'asc',
-        },
-      ],
+      orderBy: [{ id: 'asc' }],
     })
-    return Response.json({
-      listings,
+
+    // For each listing, pick the placement matching the current web context for flatten,
+    // and surface a list of OTHER webs so the admin's delete confirmation can show
+    // "stays in Cambridge, Durham" instead of pretending to delete the listing.
+    const flattened = listings.map((l) => {
+      const matching = l.placements.find((p) =>
+        web ? p.web.slug === web : true,
+      )
+      const others = l.placements
+        .filter((p) => p.id !== matching?.id)
+        .map((p) => ({
+          webId: p.webId,
+          slug: p.slug,
+          web: p.web,
+        }))
+      const flat = flattenListingPlacement({
+        ...l,
+        placements: matching ? [matching] : [],
+      })
+      return { ...flat, sharedWith: others }
     })
+    return Response.json({ listings: flattened })
   } catch (e) {
     console.error(`[RW] Unable to fetch listings - ${e}`)
     Sentry.captureException(e)
@@ -127,16 +132,6 @@ export async function POST(request) {
 
     const newData: Prisma.ListingCreateInput = {
       title: title,
-      category: {
-        connect: {
-          id: category,
-        },
-      },
-      web: {
-        connect: {
-          id: webId,
-        },
-      },
       description: description,
       email: email,
       website: website,
@@ -163,8 +158,6 @@ export async function POST(request) {
           : {}),
       },
       seekingVolunteers: stringToBoolean(seekingVolunteers),
-      featured: isProposedListing ? null : featuredDate,
-      slug: slug,
       location: {
         ...(latitude && longitude && locationDescription
           ? {
@@ -176,14 +169,20 @@ export async function POST(request) {
             }
           : {}),
       },
-      tags: {
-        connect: tagsToConnect,
-      },
       relations: {
         connect: relationsToConnect,
       },
       relationOf: {
         connect: relationsToConnect,
+      },
+      placements: {
+        create: {
+          web: { connect: { id: webId } },
+          slug: slug as string,
+          ...(category ? { category: { connect: { id: category } } } : {}),
+          featured: isProposedListing ? null : featuredDate,
+          ...(tagsToConnect.length > 0 && { tags: { connect: tagsToConnect } }),
+        },
       },
     }
 
@@ -198,6 +197,9 @@ export async function POST(request) {
 
     const listing = await prisma.listing.create({
       data: newData,
+      include: {
+        placements: { where: { webId }, include: { web: true } },
+      },
     })
 
     const selectedWeb = await prisma.web.findFirst({
@@ -214,8 +216,9 @@ export async function POST(request) {
       },
     })
 
+    const placementSlug = listing.placements[0]?.slug ?? ''
     if (listing.email && selectedWeb?.contactEmail) {
-      const listingUrl = `https://${selectedWeb.slug}.resilienceweb.org.uk/${listing.slug}`
+      const listingUrl = `https://${selectedWeb.slug}.resilienceweb.org.uk/${placementSlug}`
       sendEmail({
         to: listing.email,
         subject: `A listing for ${listing.title} has been created on ${selectedWeb.title} Resilience Web`,
@@ -256,7 +259,7 @@ export async function POST(request) {
 
     return Response.json(
       {
-        listing,
+        listing: flattenListingPlacement(listing),
       },
       {
         status: 201,

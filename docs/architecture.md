@@ -208,19 +208,16 @@ Listing 1──* ListingSocialMedia
 ## Deployment Architecture
 
 ### Hosting
-- **Platform**: Vercel (serverless)
+- **Platform**: Netlify (serverless)
 - **Environments**: Production + Staging
 - **Edge Functions**: Not currently used
-- **Region**: Configured per Vercel settings
 
 ### CI/CD
 - Automatic deployments on git push (production)
-- Manual staging deployments via Vercel CLI
 
 ### Configuration
-- API route timeout: 30 seconds (vercel.json)
 - Build-time Prisma client generation
-- Environment variables via Vercel dashboard or `.env` locally
+- Environment variables via `.env` locally
 
 ## Security Considerations
 
@@ -237,7 +234,7 @@ Listing 1──* ListingSocialMedia
 
 ### Current Approach
 - Multi-tenant shared database (cost-effective for small-medium scale)
-- Serverless functions on Vercel (auto-scaling)
+- Serverless functions on Netlify (auto-scaling)
 - CDN-backed static assets via Supabase Storage
 - ISR for popular pages (reduces database load)
 

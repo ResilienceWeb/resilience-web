@@ -59,89 +59,55 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  // Support limiting the number of pages generated at build time
   const limit = process.env.NEXT_BUILD_STATIC_LIMIT
     ? parseInt(process.env.NEXT_BUILD_STATIC_LIMIT, 10)
     : undefined
 
-  // Fetch all listings with complete data (matching getListing query structure)
-  // This single query replaces thousands of individual queries during build
-  const listings = await prisma.listing.findMany({
+  // One row per (listing, web). Each one becomes a /<webSlug>/<placementSlug> page.
+  const placements = await prisma.listingPlacement.findMany({
     where: {
-      // Only generate pages for active listings with a category
-      inactive: false,
       categoryId: { not: null },
-      web: {
-        deletedAt: null,
-      },
+      web: { deletedAt: null },
+      listing: { inactive: false },
     },
     include: {
-      socials: true,
-      actions: true,
-      location: {
-        select: {
-          latitude: true,
-          longitude: true,
-          description: true,
-        },
-      },
-      category: {
-        select: {
-          id: true,
-          color: true,
-          label: true,
-        },
-      },
-      tags: {
-        select: {
-          id: true,
-          label: true,
-        },
-      },
-      relations: {
-        select: {
-          id: true,
-          slug: true,
-          title: true,
-          featured: true,
-          image: true,
-          category: {
-            select: {
-              id: true,
-              color: true,
-              label: true,
-            },
+      web: { select: { slug: true, title: true } },
+      category: { select: { id: true, color: true, label: true } },
+      tags: { select: { id: true, label: true } },
+      listing: {
+        include: {
+          socials: true,
+          actions: true,
+          location: {
+            select: { latitude: true, longitude: true, description: true },
           },
-        },
-      },
-      edits: {
-        select: {
-          id: true,
-        },
-      },
-      web: {
-        select: {
-          slug: true,
+          edits: { select: { id: true } },
         },
       },
     },
-    // Prioritize featured and recently updated listings
     orderBy: [{ featured: 'desc' }, { updatedAt: 'desc' }],
-    // Apply limit if configured
     take: limit,
   })
 
-  // Initialize build cache with fetched data
-  // This allows getListing() to use cached data instead of making DB queries
-  initializeBuildCache(listings as any)
+  // Pre-flatten into listing-shaped objects keyed by (webSlug, slug) so getListing()
+  // can hit the cache during build.
+  const flattenedForCache = placements.map((p) => ({
+    ...p.listing,
+    slug: p.slug,
+    featured: p.featured,
+    category: p.category,
+    tags: p.tags,
+    web: p.web,
+  }))
+  initializeBuildCache(flattenedForCache as any)
 
   console.log(
-    `[Build] Statically generating ${listings.length} listing pages${limit ? ` (limited by NEXT_BUILD_STATIC_LIMIT=${limit})` : ''}`,
+    `[Build] Statically generating ${placements.length} listing pages${limit ? ` (limited by NEXT_BUILD_STATIC_LIMIT=${limit})` : ''}`,
   )
 
-  return listings.map((l) => ({
-    subdomain: l.web.slug,
-    slug: l.slug,
+  return placements.map((p) => ({
+    subdomain: p.web.slug,
+    slug: p.slug,
   }))
 }
 

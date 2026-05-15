@@ -9,7 +9,6 @@ export default async function getListing({
   webSlug: string
   listingSlug: string
 }) {
-  // During build, try cache first
   if (isBuildTime()) {
     const cached = getListingFromCache(webSlug, listingSlug)
     if (cached) {
@@ -17,80 +16,93 @@ export default async function getListing({
     }
   }
 
-  // Fallback to DB query (runtime or cache miss)
-  const listingData = await prisma.listing.findFirst({
+  const placement = await prisma.listingPlacement.findFirst({
     where: {
       slug: listingSlug,
       web: {
         deletedAt: null,
-        ...(webSlug
-          ? {
-              slug: {
-                contains: webSlug,
-              },
-            }
-          : {}),
+        ...(webSlug ? { slug: { contains: webSlug } } : {}),
       },
     },
     include: {
-      socials: true,
-      actions: true,
-      location: {
-        select: {
-          latitude: true,
-          longitude: true,
-          description: true,
-        },
-      },
-      category: {
-        select: {
-          id: true,
-          color: true,
-          label: true,
-        },
-      },
-      tags: {
-        select: {
-          id: true,
-          label: true,
-        },
-      },
-      relations: {
-        select: {
-          id: true,
-          slug: true,
-          title: true,
-          featured: true,
-          image: true,
-          category: {
+      web: { select: { id: true, slug: true, title: true } },
+      category: { select: { id: true, color: true, label: true } },
+      tags: { select: { id: true, label: true } },
+      listing: {
+        include: {
+          socials: true,
+          actions: true,
+          location: {
+            select: { latitude: true, longitude: true, description: true },
+          },
+          edits: { select: { id: true } },
+          // All other webs this listing also lives in — used for the "also in" link.
+          placements: {
+            where: {
+              webId: { not: undefined },
+              web: { deletedAt: null, slug: { not: webSlug } },
+            },
             select: {
-              id: true,
-              color: true,
-              label: true,
+              slug: true,
+              web: { select: { slug: true, title: true } },
             },
           },
-        },
-      },
-      edits: {
-        select: {
-          id: true,
-        },
-      },
-      web: {
-        select: {
-          slug: true,
-          title: true,
+          relations: {
+            select: {
+              id: true,
+              title: true,
+              image: true,
+              placements: {
+                where: { web: { slug: { contains: webSlug } } },
+                select: {
+                  slug: true,
+                  featured: true,
+                  category: {
+                    select: { id: true, color: true, label: true },
+                  },
+                },
+                take: 1,
+              },
+            },
+          },
         },
       },
     },
   })
 
-  if (!listingData) {
+  if (!placement) {
     console.log(`[RW] Listing not found for slugs ${webSlug}, ${listingSlug}`)
     return null
   }
 
-  const listing = exclude(listingData, ['createdAt', 'updatedAt', 'notes'])
+  const { listing: rawListing, ...placementFields } = placement
+  const { placements: alsoIn, relations, ...listingCore } = rawListing
+
+  const flattened = {
+    ...listingCore,
+    slug: placementFields.slug,
+    featured: placementFields.featured,
+    category: placementFields.category,
+    tags: placementFields.tags,
+    web: placementFields.web,
+    alsoListedIn: alsoIn.map((p) => ({
+      slug: p.slug,
+      web: p.web,
+    })),
+    relations: relations.map((r) => {
+      const placementForCurrentWeb = r.placements[0]
+      return {
+        id: r.id,
+        title: r.title,
+        image: r.image,
+        slug: placementForCurrentWeb?.slug ?? null,
+        featured: placementForCurrentWeb?.featured ?? null,
+        category: placementForCurrentWeb?.category ?? null,
+      }
+    }),
+  }
+
+  const listing = exclude(flattened, ['createdAt', 'updatedAt', 'notes'])
 
   return listing as Listing
 }

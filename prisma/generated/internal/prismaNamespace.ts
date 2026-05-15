@@ -393,6 +393,7 @@ export const ModelName = {
   Category: 'Category',
   Tag: 'Tag',
   Listing: 'Listing',
+  ListingPlacement: 'ListingPlacement',
   ListingSocialMedia: 'ListingSocialMedia',
   ListingAction: 'ListingAction',
   ListingEdit: 'ListingEdit',
@@ -419,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "account" | "user" | "session" | "verification" | "verificationToken" | "web" | "category" | "tag" | "listing" | "listingSocialMedia" | "listingAction" | "listingEdit" | "listingLocation" | "webLocation" | "permission" | "ownership" | "webAccess" | "webFeature" | "listingAnalyticsDaily" | "webAnalyticsDaily"
+    modelProps: "account" | "user" | "session" | "verification" | "verificationToken" | "web" | "category" | "tag" | "listing" | "listingPlacement" | "listingSocialMedia" | "listingAction" | "listingEdit" | "listingLocation" | "webLocation" | "permission" | "ownership" | "webAccess" | "webFeature" | "listingAnalyticsDaily" | "webAnalyticsDaily"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1086,6 +1087,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ListingCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ListingCountAggregateOutputType> | number
+        }
+      }
+    }
+    ListingPlacement: {
+      payload: Prisma.$ListingPlacementPayload<ExtArgs>
+      fields: Prisma.ListingPlacementFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ListingPlacementFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingPlacementPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ListingPlacementFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingPlacementPayload>
+        }
+        findFirst: {
+          args: Prisma.ListingPlacementFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingPlacementPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ListingPlacementFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingPlacementPayload>
+        }
+        findMany: {
+          args: Prisma.ListingPlacementFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingPlacementPayload>[]
+        }
+        create: {
+          args: Prisma.ListingPlacementCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingPlacementPayload>
+        }
+        createMany: {
+          args: Prisma.ListingPlacementCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ListingPlacementCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingPlacementPayload>[]
+        }
+        delete: {
+          args: Prisma.ListingPlacementDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingPlacementPayload>
+        }
+        update: {
+          args: Prisma.ListingPlacementUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingPlacementPayload>
+        }
+        deleteMany: {
+          args: Prisma.ListingPlacementDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ListingPlacementUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ListingPlacementUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingPlacementPayload>[]
+        }
+        upsert: {
+          args: Prisma.ListingPlacementUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ListingPlacementPayload>
+        }
+        aggregate: {
+          args: Prisma.ListingPlacementAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateListingPlacement>
+        }
+        groupBy: {
+          args: Prisma.ListingPlacementGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ListingPlacementGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ListingPlacementCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ListingPlacementCountAggregateOutputType> | number
         }
       }
     }
@@ -2063,17 +2138,27 @@ export const ListingScalarFieldEnum = {
   notes: 'notes',
   inactive: 'inactive',
   seekingVolunteers: 'seekingVolunteers',
-  categoryId: 'categoryId',
   image: 'image',
-  slug: 'slug',
-  webId: 'webId',
   pending: 'pending',
   proposerId: 'proposerId',
-  featured: 'featured',
   locationId: 'locationId'
 } as const
 
 export type ListingScalarFieldEnum = (typeof ListingScalarFieldEnum)[keyof typeof ListingScalarFieldEnum]
+
+
+export const ListingPlacementScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  listingId: 'listingId',
+  webId: 'webId',
+  slug: 'slug',
+  categoryId: 'categoryId',
+  featured: 'featured'
+} as const
+
+export type ListingPlacementScalarFieldEnum = (typeof ListingPlacementScalarFieldEnum)[keyof typeof ListingPlacementScalarFieldEnum]
 
 
 export const ListingSocialMediaScalarFieldEnum = {
@@ -2107,6 +2192,7 @@ export const ListingEditScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   listingId: 'listingId',
+  webId: 'webId',
   title: 'title',
   website: 'website',
   description: 'description',
@@ -2194,6 +2280,7 @@ export type WebFeatureScalarFieldEnum = (typeof WebFeatureScalarFieldEnum)[keyof
 export const ListingAnalyticsDailyScalarFieldEnum = {
   id: 'id',
   listingId: 'listingId',
+  webId: 'webId',
   date: 'date',
   eventType: 'eventType',
   count: 'count'
@@ -2438,6 +2525,7 @@ export type GlobalOmitConfig = {
   category?: Prisma.CategoryOmit
   tag?: Prisma.TagOmit
   listing?: Prisma.ListingOmit
+  listingPlacement?: Prisma.ListingPlacementOmit
   listingSocialMedia?: Prisma.ListingSocialMediaOmit
   listingAction?: Prisma.ListingActionOmit
   listingEdit?: Prisma.ListingEditOmit

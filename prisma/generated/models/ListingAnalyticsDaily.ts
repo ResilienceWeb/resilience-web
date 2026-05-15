@@ -29,18 +29,21 @@ export type AggregateListingAnalyticsDaily = {
 export type ListingAnalyticsDailyAvgAggregateOutputType = {
   id: number | null
   listingId: number | null
+  webId: number | null
   count: number | null
 }
 
 export type ListingAnalyticsDailySumAggregateOutputType = {
   id: number | null
   listingId: number | null
+  webId: number | null
   count: number | null
 }
 
 export type ListingAnalyticsDailyMinAggregateOutputType = {
   id: number | null
   listingId: number | null
+  webId: number | null
   date: Date | null
   eventType: string | null
   count: number | null
@@ -49,6 +52,7 @@ export type ListingAnalyticsDailyMinAggregateOutputType = {
 export type ListingAnalyticsDailyMaxAggregateOutputType = {
   id: number | null
   listingId: number | null
+  webId: number | null
   date: Date | null
   eventType: string | null
   count: number | null
@@ -57,6 +61,7 @@ export type ListingAnalyticsDailyMaxAggregateOutputType = {
 export type ListingAnalyticsDailyCountAggregateOutputType = {
   id: number
   listingId: number
+  webId: number
   date: number
   eventType: number
   count: number
@@ -67,18 +72,21 @@ export type ListingAnalyticsDailyCountAggregateOutputType = {
 export type ListingAnalyticsDailyAvgAggregateInputType = {
   id?: true
   listingId?: true
+  webId?: true
   count?: true
 }
 
 export type ListingAnalyticsDailySumAggregateInputType = {
   id?: true
   listingId?: true
+  webId?: true
   count?: true
 }
 
 export type ListingAnalyticsDailyMinAggregateInputType = {
   id?: true
   listingId?: true
+  webId?: true
   date?: true
   eventType?: true
   count?: true
@@ -87,6 +95,7 @@ export type ListingAnalyticsDailyMinAggregateInputType = {
 export type ListingAnalyticsDailyMaxAggregateInputType = {
   id?: true
   listingId?: true
+  webId?: true
   date?: true
   eventType?: true
   count?: true
@@ -95,6 +104,7 @@ export type ListingAnalyticsDailyMaxAggregateInputType = {
 export type ListingAnalyticsDailyCountAggregateInputType = {
   id?: true
   listingId?: true
+  webId?: true
   date?: true
   eventType?: true
   count?: true
@@ -190,6 +200,7 @@ export type ListingAnalyticsDailyGroupByArgs<ExtArgs extends runtime.Types.Exten
 export type ListingAnalyticsDailyGroupByOutputType = {
   id: number
   listingId: number
+  webId: number
   date: Date
   eventType: string
   count: number
@@ -221,37 +232,44 @@ export type ListingAnalyticsDailyWhereInput = {
   NOT?: Prisma.ListingAnalyticsDailyWhereInput | Prisma.ListingAnalyticsDailyWhereInput[]
   id?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
   listingId?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
+  webId?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
   date?: Prisma.DateTimeFilter<"ListingAnalyticsDaily"> | Date | string
   eventType?: Prisma.StringFilter<"ListingAnalyticsDaily"> | string
   count?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
   listing?: Prisma.XOR<Prisma.ListingScalarRelationFilter, Prisma.ListingWhereInput>
+  web?: Prisma.XOR<Prisma.WebScalarRelationFilter, Prisma.WebWhereInput>
 }
 
 export type ListingAnalyticsDailyOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   count?: Prisma.SortOrder
   listing?: Prisma.ListingOrderByWithRelationInput
+  web?: Prisma.WebOrderByWithRelationInput
 }
 
 export type ListingAnalyticsDailyWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  listing_date_event?: Prisma.ListingAnalyticsDailyListing_date_eventCompoundUniqueInput
+  listing_web_date_event?: Prisma.ListingAnalyticsDailyListing_web_date_eventCompoundUniqueInput
   AND?: Prisma.ListingAnalyticsDailyWhereInput | Prisma.ListingAnalyticsDailyWhereInput[]
   OR?: Prisma.ListingAnalyticsDailyWhereInput[]
   NOT?: Prisma.ListingAnalyticsDailyWhereInput | Prisma.ListingAnalyticsDailyWhereInput[]
   listingId?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
+  webId?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
   date?: Prisma.DateTimeFilter<"ListingAnalyticsDaily"> | Date | string
   eventType?: Prisma.StringFilter<"ListingAnalyticsDaily"> | string
   count?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
   listing?: Prisma.XOR<Prisma.ListingScalarRelationFilter, Prisma.ListingWhereInput>
-}, "id" | "listing_date_event">
+  web?: Prisma.XOR<Prisma.WebScalarRelationFilter, Prisma.WebWhereInput>
+}, "id" | "listing_web_date_event">
 
 export type ListingAnalyticsDailyOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   count?: Prisma.SortOrder
@@ -268,6 +286,7 @@ export type ListingAnalyticsDailyScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ListingAnalyticsDailyScalarWhereWithAggregatesInput | Prisma.ListingAnalyticsDailyScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"ListingAnalyticsDaily"> | number
   listingId?: Prisma.IntWithAggregatesFilter<"ListingAnalyticsDaily"> | number
+  webId?: Prisma.IntWithAggregatesFilter<"ListingAnalyticsDaily"> | number
   date?: Prisma.DateTimeWithAggregatesFilter<"ListingAnalyticsDaily"> | Date | string
   eventType?: Prisma.StringWithAggregatesFilter<"ListingAnalyticsDaily"> | string
   count?: Prisma.IntWithAggregatesFilter<"ListingAnalyticsDaily"> | number
@@ -278,11 +297,13 @@ export type ListingAnalyticsDailyCreateInput = {
   eventType: string
   count?: number
   listing: Prisma.ListingCreateNestedOneWithoutAnalyticsDailyInput
+  web: Prisma.WebCreateNestedOneWithoutListingAnalyticsDailyInput
 }
 
 export type ListingAnalyticsDailyUncheckedCreateInput = {
   id?: number
   listingId: number
+  webId: number
   date: Date | string
   eventType: string
   count?: number
@@ -293,11 +314,13 @@ export type ListingAnalyticsDailyUpdateInput = {
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
   listing?: Prisma.ListingUpdateOneRequiredWithoutAnalyticsDailyNestedInput
+  web?: Prisma.WebUpdateOneRequiredWithoutListingAnalyticsDailyNestedInput
 }
 
 export type ListingAnalyticsDailyUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -306,6 +329,7 @@ export type ListingAnalyticsDailyUncheckedUpdateInput = {
 export type ListingAnalyticsDailyCreateManyInput = {
   id?: number
   listingId: number
+  webId: number
   date: Date | string
   eventType: string
   count?: number
@@ -320,6 +344,7 @@ export type ListingAnalyticsDailyUpdateManyMutationInput = {
 export type ListingAnalyticsDailyUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -335,8 +360,9 @@ export type ListingAnalyticsDailyOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type ListingAnalyticsDailyListing_date_eventCompoundUniqueInput = {
+export type ListingAnalyticsDailyListing_web_date_eventCompoundUniqueInput = {
   listingId: number
+  webId: number
   date: Date | string
   eventType: string
 }
@@ -344,6 +370,7 @@ export type ListingAnalyticsDailyListing_date_eventCompoundUniqueInput = {
 export type ListingAnalyticsDailyCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   count?: Prisma.SortOrder
@@ -352,12 +379,14 @@ export type ListingAnalyticsDailyCountOrderByAggregateInput = {
 export type ListingAnalyticsDailyAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   count?: Prisma.SortOrder
 }
 
 export type ListingAnalyticsDailyMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   count?: Prisma.SortOrder
@@ -366,6 +395,7 @@ export type ListingAnalyticsDailyMaxOrderByAggregateInput = {
 export type ListingAnalyticsDailyMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   date?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   count?: Prisma.SortOrder
@@ -374,7 +404,50 @@ export type ListingAnalyticsDailyMinOrderByAggregateInput = {
 export type ListingAnalyticsDailySumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   listingId?: Prisma.SortOrder
+  webId?: Prisma.SortOrder
   count?: Prisma.SortOrder
+}
+
+export type ListingAnalyticsDailyCreateNestedManyWithoutWebInput = {
+  create?: Prisma.XOR<Prisma.ListingAnalyticsDailyCreateWithoutWebInput, Prisma.ListingAnalyticsDailyUncheckedCreateWithoutWebInput> | Prisma.ListingAnalyticsDailyCreateWithoutWebInput[] | Prisma.ListingAnalyticsDailyUncheckedCreateWithoutWebInput[]
+  connectOrCreate?: Prisma.ListingAnalyticsDailyCreateOrConnectWithoutWebInput | Prisma.ListingAnalyticsDailyCreateOrConnectWithoutWebInput[]
+  createMany?: Prisma.ListingAnalyticsDailyCreateManyWebInputEnvelope
+  connect?: Prisma.ListingAnalyticsDailyWhereUniqueInput | Prisma.ListingAnalyticsDailyWhereUniqueInput[]
+}
+
+export type ListingAnalyticsDailyUncheckedCreateNestedManyWithoutWebInput = {
+  create?: Prisma.XOR<Prisma.ListingAnalyticsDailyCreateWithoutWebInput, Prisma.ListingAnalyticsDailyUncheckedCreateWithoutWebInput> | Prisma.ListingAnalyticsDailyCreateWithoutWebInput[] | Prisma.ListingAnalyticsDailyUncheckedCreateWithoutWebInput[]
+  connectOrCreate?: Prisma.ListingAnalyticsDailyCreateOrConnectWithoutWebInput | Prisma.ListingAnalyticsDailyCreateOrConnectWithoutWebInput[]
+  createMany?: Prisma.ListingAnalyticsDailyCreateManyWebInputEnvelope
+  connect?: Prisma.ListingAnalyticsDailyWhereUniqueInput | Prisma.ListingAnalyticsDailyWhereUniqueInput[]
+}
+
+export type ListingAnalyticsDailyUpdateManyWithoutWebNestedInput = {
+  create?: Prisma.XOR<Prisma.ListingAnalyticsDailyCreateWithoutWebInput, Prisma.ListingAnalyticsDailyUncheckedCreateWithoutWebInput> | Prisma.ListingAnalyticsDailyCreateWithoutWebInput[] | Prisma.ListingAnalyticsDailyUncheckedCreateWithoutWebInput[]
+  connectOrCreate?: Prisma.ListingAnalyticsDailyCreateOrConnectWithoutWebInput | Prisma.ListingAnalyticsDailyCreateOrConnectWithoutWebInput[]
+  upsert?: Prisma.ListingAnalyticsDailyUpsertWithWhereUniqueWithoutWebInput | Prisma.ListingAnalyticsDailyUpsertWithWhereUniqueWithoutWebInput[]
+  createMany?: Prisma.ListingAnalyticsDailyCreateManyWebInputEnvelope
+  set?: Prisma.ListingAnalyticsDailyWhereUniqueInput | Prisma.ListingAnalyticsDailyWhereUniqueInput[]
+  disconnect?: Prisma.ListingAnalyticsDailyWhereUniqueInput | Prisma.ListingAnalyticsDailyWhereUniqueInput[]
+  delete?: Prisma.ListingAnalyticsDailyWhereUniqueInput | Prisma.ListingAnalyticsDailyWhereUniqueInput[]
+  connect?: Prisma.ListingAnalyticsDailyWhereUniqueInput | Prisma.ListingAnalyticsDailyWhereUniqueInput[]
+  update?: Prisma.ListingAnalyticsDailyUpdateWithWhereUniqueWithoutWebInput | Prisma.ListingAnalyticsDailyUpdateWithWhereUniqueWithoutWebInput[]
+  updateMany?: Prisma.ListingAnalyticsDailyUpdateManyWithWhereWithoutWebInput | Prisma.ListingAnalyticsDailyUpdateManyWithWhereWithoutWebInput[]
+  deleteMany?: Prisma.ListingAnalyticsDailyScalarWhereInput | Prisma.ListingAnalyticsDailyScalarWhereInput[]
+}
+
+export type ListingAnalyticsDailyUncheckedUpdateManyWithoutWebNestedInput = {
+  create?: Prisma.XOR<Prisma.ListingAnalyticsDailyCreateWithoutWebInput, Prisma.ListingAnalyticsDailyUncheckedCreateWithoutWebInput> | Prisma.ListingAnalyticsDailyCreateWithoutWebInput[] | Prisma.ListingAnalyticsDailyUncheckedCreateWithoutWebInput[]
+  connectOrCreate?: Prisma.ListingAnalyticsDailyCreateOrConnectWithoutWebInput | Prisma.ListingAnalyticsDailyCreateOrConnectWithoutWebInput[]
+  upsert?: Prisma.ListingAnalyticsDailyUpsertWithWhereUniqueWithoutWebInput | Prisma.ListingAnalyticsDailyUpsertWithWhereUniqueWithoutWebInput[]
+  createMany?: Prisma.ListingAnalyticsDailyCreateManyWebInputEnvelope
+  set?: Prisma.ListingAnalyticsDailyWhereUniqueInput | Prisma.ListingAnalyticsDailyWhereUniqueInput[]
+  disconnect?: Prisma.ListingAnalyticsDailyWhereUniqueInput | Prisma.ListingAnalyticsDailyWhereUniqueInput[]
+  delete?: Prisma.ListingAnalyticsDailyWhereUniqueInput | Prisma.ListingAnalyticsDailyWhereUniqueInput[]
+  connect?: Prisma.ListingAnalyticsDailyWhereUniqueInput | Prisma.ListingAnalyticsDailyWhereUniqueInput[]
+  update?: Prisma.ListingAnalyticsDailyUpdateWithWhereUniqueWithoutWebInput | Prisma.ListingAnalyticsDailyUpdateWithWhereUniqueWithoutWebInput[]
+  updateMany?: Prisma.ListingAnalyticsDailyUpdateManyWithWhereWithoutWebInput | Prisma.ListingAnalyticsDailyUpdateManyWithWhereWithoutWebInput[]
+  deleteMany?: Prisma.ListingAnalyticsDailyScalarWhereInput | Prisma.ListingAnalyticsDailyScalarWhereInput[]
 }
 
 export type ListingAnalyticsDailyCreateNestedManyWithoutListingInput = {
@@ -419,14 +492,69 @@ export type ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput = 
   deleteMany?: Prisma.ListingAnalyticsDailyScalarWhereInput | Prisma.ListingAnalyticsDailyScalarWhereInput[]
 }
 
-export type ListingAnalyticsDailyCreateWithoutListingInput = {
+export type ListingAnalyticsDailyCreateWithoutWebInput = {
+  date: Date | string
+  eventType: string
+  count?: number
+  listing: Prisma.ListingCreateNestedOneWithoutAnalyticsDailyInput
+}
+
+export type ListingAnalyticsDailyUncheckedCreateWithoutWebInput = {
+  id?: number
+  listingId: number
   date: Date | string
   eventType: string
   count?: number
 }
 
+export type ListingAnalyticsDailyCreateOrConnectWithoutWebInput = {
+  where: Prisma.ListingAnalyticsDailyWhereUniqueInput
+  create: Prisma.XOR<Prisma.ListingAnalyticsDailyCreateWithoutWebInput, Prisma.ListingAnalyticsDailyUncheckedCreateWithoutWebInput>
+}
+
+export type ListingAnalyticsDailyCreateManyWebInputEnvelope = {
+  data: Prisma.ListingAnalyticsDailyCreateManyWebInput | Prisma.ListingAnalyticsDailyCreateManyWebInput[]
+  skipDuplicates?: boolean
+}
+
+export type ListingAnalyticsDailyUpsertWithWhereUniqueWithoutWebInput = {
+  where: Prisma.ListingAnalyticsDailyWhereUniqueInput
+  update: Prisma.XOR<Prisma.ListingAnalyticsDailyUpdateWithoutWebInput, Prisma.ListingAnalyticsDailyUncheckedUpdateWithoutWebInput>
+  create: Prisma.XOR<Prisma.ListingAnalyticsDailyCreateWithoutWebInput, Prisma.ListingAnalyticsDailyUncheckedCreateWithoutWebInput>
+}
+
+export type ListingAnalyticsDailyUpdateWithWhereUniqueWithoutWebInput = {
+  where: Prisma.ListingAnalyticsDailyWhereUniqueInput
+  data: Prisma.XOR<Prisma.ListingAnalyticsDailyUpdateWithoutWebInput, Prisma.ListingAnalyticsDailyUncheckedUpdateWithoutWebInput>
+}
+
+export type ListingAnalyticsDailyUpdateManyWithWhereWithoutWebInput = {
+  where: Prisma.ListingAnalyticsDailyScalarWhereInput
+  data: Prisma.XOR<Prisma.ListingAnalyticsDailyUpdateManyMutationInput, Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutWebInput>
+}
+
+export type ListingAnalyticsDailyScalarWhereInput = {
+  AND?: Prisma.ListingAnalyticsDailyScalarWhereInput | Prisma.ListingAnalyticsDailyScalarWhereInput[]
+  OR?: Prisma.ListingAnalyticsDailyScalarWhereInput[]
+  NOT?: Prisma.ListingAnalyticsDailyScalarWhereInput | Prisma.ListingAnalyticsDailyScalarWhereInput[]
+  id?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
+  listingId?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
+  webId?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
+  date?: Prisma.DateTimeFilter<"ListingAnalyticsDaily"> | Date | string
+  eventType?: Prisma.StringFilter<"ListingAnalyticsDaily"> | string
+  count?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
+}
+
+export type ListingAnalyticsDailyCreateWithoutListingInput = {
+  date: Date | string
+  eventType: string
+  count?: number
+  web: Prisma.WebCreateNestedOneWithoutListingAnalyticsDailyInput
+}
+
 export type ListingAnalyticsDailyUncheckedCreateWithoutListingInput = {
   id?: number
+  webId: number
   date: Date | string
   eventType: string
   count?: number
@@ -458,19 +586,40 @@ export type ListingAnalyticsDailyUpdateManyWithWhereWithoutListingInput = {
   data: Prisma.XOR<Prisma.ListingAnalyticsDailyUpdateManyMutationInput, Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingInput>
 }
 
-export type ListingAnalyticsDailyScalarWhereInput = {
-  AND?: Prisma.ListingAnalyticsDailyScalarWhereInput | Prisma.ListingAnalyticsDailyScalarWhereInput[]
-  OR?: Prisma.ListingAnalyticsDailyScalarWhereInput[]
-  NOT?: Prisma.ListingAnalyticsDailyScalarWhereInput | Prisma.ListingAnalyticsDailyScalarWhereInput[]
-  id?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
-  listingId?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
-  date?: Prisma.DateTimeFilter<"ListingAnalyticsDaily"> | Date | string
-  eventType?: Prisma.StringFilter<"ListingAnalyticsDaily"> | string
-  count?: Prisma.IntFilter<"ListingAnalyticsDaily"> | number
+export type ListingAnalyticsDailyCreateManyWebInput = {
+  id?: number
+  listingId: number
+  date: Date | string
+  eventType: string
+  count?: number
+}
+
+export type ListingAnalyticsDailyUpdateWithoutWebInput = {
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  count?: Prisma.IntFieldUpdateOperationsInput | number
+  listing?: Prisma.ListingUpdateOneRequiredWithoutAnalyticsDailyNestedInput
+}
+
+export type ListingAnalyticsDailyUncheckedUpdateWithoutWebInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  count?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type ListingAnalyticsDailyUncheckedUpdateManyWithoutWebInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  count?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ListingAnalyticsDailyCreateManyListingInput = {
   id?: number
+  webId: number
   date: Date | string
   eventType: string
   count?: number
@@ -480,10 +629,12 @@ export type ListingAnalyticsDailyUpdateWithoutListingInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
+  web?: Prisma.WebUpdateOneRequiredWithoutListingAnalyticsDailyNestedInput
 }
 
 export type ListingAnalyticsDailyUncheckedUpdateWithoutListingInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -491,6 +642,7 @@ export type ListingAnalyticsDailyUncheckedUpdateWithoutListingInput = {
 
 export type ListingAnalyticsDailyUncheckedUpdateManyWithoutListingInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
@@ -501,57 +653,69 @@ export type ListingAnalyticsDailyUncheckedUpdateManyWithoutListingInput = {
 export type ListingAnalyticsDailySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   listingId?: boolean
+  webId?: boolean
   date?: boolean
   eventType?: boolean
   count?: boolean
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["listingAnalyticsDaily"]>
 
 export type ListingAnalyticsDailySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   listingId?: boolean
+  webId?: boolean
   date?: boolean
   eventType?: boolean
   count?: boolean
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["listingAnalyticsDaily"]>
 
 export type ListingAnalyticsDailySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   listingId?: boolean
+  webId?: boolean
   date?: boolean
   eventType?: boolean
   count?: boolean
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["listingAnalyticsDaily"]>
 
 export type ListingAnalyticsDailySelectScalar = {
   id?: boolean
   listingId?: boolean
+  webId?: boolean
   date?: boolean
   eventType?: boolean
   count?: boolean
 }
 
-export type ListingAnalyticsDailyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "listingId" | "date" | "eventType" | "count", ExtArgs["result"]["listingAnalyticsDaily"]>
+export type ListingAnalyticsDailyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "listingId" | "webId" | "date" | "eventType" | "count", ExtArgs["result"]["listingAnalyticsDaily"]>
 export type ListingAnalyticsDailyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
 }
 export type ListingAnalyticsDailyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
 }
 export type ListingAnalyticsDailyIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   listing?: boolean | Prisma.ListingDefaultArgs<ExtArgs>
+  web?: boolean | Prisma.WebDefaultArgs<ExtArgs>
 }
 
 export type $ListingAnalyticsDailyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ListingAnalyticsDaily"
   objects: {
     listing: Prisma.$ListingPayload<ExtArgs>
+    web: Prisma.$WebPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     listingId: number
+    webId: number
     date: Date
     eventType: string
     count: number
@@ -950,6 +1114,7 @@ readonly fields: ListingAnalyticsDailyFieldRefs;
 export interface Prisma__ListingAnalyticsDailyClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   listing<T extends Prisma.ListingDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ListingDefaultArgs<ExtArgs>>): Prisma.Prisma__ListingClient<runtime.Types.Result.GetResult<Prisma.$ListingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  web<T extends Prisma.WebDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WebDefaultArgs<ExtArgs>>): Prisma.Prisma__WebClient<runtime.Types.Result.GetResult<Prisma.$WebPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -981,6 +1146,7 @@ export interface Prisma__ListingAnalyticsDailyClient<T, Null = never, ExtArgs ex
 export interface ListingAnalyticsDailyFieldRefs {
   readonly id: Prisma.FieldRef<"ListingAnalyticsDaily", 'Int'>
   readonly listingId: Prisma.FieldRef<"ListingAnalyticsDaily", 'Int'>
+  readonly webId: Prisma.FieldRef<"ListingAnalyticsDaily", 'Int'>
   readonly date: Prisma.FieldRef<"ListingAnalyticsDaily", 'DateTime'>
   readonly eventType: Prisma.FieldRef<"ListingAnalyticsDaily", 'String'>
   readonly count: Prisma.FieldRef<"ListingAnalyticsDaily", 'Int'>

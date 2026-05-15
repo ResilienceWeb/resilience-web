@@ -24,16 +24,16 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import {
+  MultiSelect,
+  type MultiSelectOption,
+} from '@components/ui/multi-select'
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select'
-import {
-  MultiSelect,
-  type MultiSelectOption,
-} from '@components/ui/multi-select'
 import { Separator } from '@components/ui/separator'
 import useListings from '@hooks/listings/useListings'
 import useCreateTag from '@hooks/tags/useCreateTag'
@@ -42,6 +42,7 @@ import useWeb from '@hooks/webs/useWeb'
 import { useAppContext } from '@store/hooks'
 import Actions from './Actions'
 import ImageUpload from './ImageUpload'
+import SharePlacements from './SharePlacements'
 import SocialMedia from './SocialMedia'
 
 const SetLocationMap = dynamic(
@@ -105,7 +106,6 @@ interface Props {
   handleSubmit: (data: any) => void
   isSubmitting?: boolean
 }
-
 
 const SlugField = ({ isEditMode, register, watch, setValue, errors }) => {
   const { selectedWebSlug } = useAppContext()
@@ -236,6 +236,7 @@ const ListingForm = ({
     const data = {
       ...submittedData,
       category: Number(submittedData.category),
+      ...(web?.id ? { webId: web.id } : {}),
     }
 
     const isNewImage = data.image instanceof File
@@ -267,6 +268,8 @@ const ListingForm = ({
     onSubmit(data)
   }
 
+  const sharedWith = (listing as any)?.sharedWith ?? []
+
   return (
     <FormProvider {...methods}>
       <Form {...methods}>
@@ -275,6 +278,21 @@ const ListingForm = ({
           encType="multipart/form-data"
           className="p-4 sm:p-6"
         >
+          {sharedWith.length > 0 && (
+            <div className="mb-6 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+              <p className="font-medium">
+                Shared with {sharedWith.length} other{' '}
+                {sharedWith.length === 1 ? 'web:' : 'webs:'}{' '}
+                {sharedWith.map((s: any) => s.web.title).join(', ')}
+              </p>
+              <p className="mt-1">
+                Edits to title, description, location, image, social links and
+                actions apply everywhere this listing is shown. Category, tags,
+                slug and featured state are per-web.
+              </p>
+            </div>
+          )}
+
           <FormField
             control={methods.control}
             name="title"
@@ -408,7 +426,9 @@ const ListingForm = ({
               options={tagOptions}
               placeholder="Select or start typing to create tag..."
               value={tagsValues}
-              onChange={(newValue) => setValue('tags', newValue as { value: number; label: string }[])}
+              onChange={(newValue) =>
+                setValue('tags', newValue as { value: number; label: string }[])
+              }
               creatable
               onCreateOption={async (inputValue) => {
                 const newTag = await createTag({
@@ -429,7 +449,12 @@ const ListingForm = ({
             <MultiSelect
               options={relationOptions}
               value={relationsValues}
-              onChange={(newValue) => setValue('relations', newValue as { value: number; label: string }[])}
+              onChange={(newValue) =>
+                setValue(
+                  'relations',
+                  newValue as { value: number; label: string }[],
+                )
+              }
             />
           </div>
 
@@ -509,6 +534,17 @@ const ListingForm = ({
                 locationDescription={listing?.location?.description}
               />
             </div>
+          )}
+
+          {listing && web?.id && (
+            <SharePlacements
+              listingId={listing.id}
+              listingTitle={listing.title}
+              currentWebId={web.id}
+              currentWebTitle={web.title}
+              currentSlug={(listing as any).slug ?? ''}
+              sharedWith={sharedWith}
+            />
           )}
 
           <div className="mt-6 flex justify-end">

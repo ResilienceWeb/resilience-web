@@ -115,7 +115,7 @@ function wrapLabel(
   return lines
 }
 
-const Network = ({ data, selectedId, setSelectedId }) => {
+const Network = ({ data, selectedId, setSelectedId, webId }) => {
   const router = useRouter()
   const [isFullScreen, setIsFullScreen] = useState(false)
   const [hoveredNode, setHoveredNode] = useState<NodeType | null>(null)
@@ -192,12 +192,12 @@ const Network = ({ data, selectedId, setSelectedId }) => {
           typeof node.id === 'string'
             ? Number(node.id.replace('listing-', ''))
             : node.id
-        if (!Number.isNaN(listingId)) {
-          trackListingEvent(listingId, 'view')
+        if (!Number.isNaN(listingId) && webId) {
+          trackListingEvent(listingId, webId, 'view')
         }
       }
     },
-    [router, setSelectedId],
+    [router, setSelectedId, webId],
   )
 
   const handleNodeHover = useCallback((node: NodeType | null) => {

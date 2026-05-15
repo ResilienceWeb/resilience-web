@@ -347,6 +347,7 @@ const Web = ({
             data={filteredNetworkData}
             selectedId={selectedId}
             setSelectedId={setSelectedId}
+            webId={webId}
           />
         )}
 
