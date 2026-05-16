@@ -96,7 +96,7 @@ const ContactDialog = ({
       } catch (error) {
         toast.error('Error', {
           description:
-            'There was an error. Please try again or email directly at info@resilienceweb.org.uk',
+            'There was an error. Please try again or email us at info@resilienceweb.org.uk',
           duration: 5000,
         })
       }

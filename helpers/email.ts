@@ -6,7 +6,7 @@ const mailerSend = new MailerSend({
   apiKey: process.env.MAILERSEND_API_KEY,
 })
 
-const sentFrom = new Sender('info@resilienceweb.org.uk', 'Resilience Web')
+const sentFrom = new Sender('noreply@resilienceweb.org.uk', 'Resilience Web')
 
 export const sendEmail = async ({
   to,
