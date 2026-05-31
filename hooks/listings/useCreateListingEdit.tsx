@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 async function createListingEditRequest(listingData) {
   const formData = new FormData()
   Object.keys(listingData).forEach((key) => {
-    if (key === 'socials' || key === 'actions') {
+    if (key === 'socials' || key === 'actions' || key === 'tags') {
       formData.append(key, JSON.stringify(listingData[key]))
     } else if (key === 'image') {
       if (listingData[key] === null) {
@@ -16,10 +16,13 @@ async function createListingEditRequest(listingData) {
     }
   })
 
-  const response = await fetch(`/api/listings/${listingData.slug}/edit`, {
-    method: 'POST',
-    body: formData,
-  })
+  const response = await fetch(
+    `/api/listings/${listingData.slug}/edit?web=${listingData.webSlug}`,
+    {
+      method: 'POST',
+      body: formData,
+    },
+  )
 
   const data = await response.json()
   const { listing } = data

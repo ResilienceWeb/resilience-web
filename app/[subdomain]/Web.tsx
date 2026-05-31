@@ -1,11 +1,14 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, memo, useState } from 'react'
+import { HiOutlineShare } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
+import NextLink from 'next/link'
 import '@styles/font-awesome.css'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts'
 import { trackWebEvent } from '@helpers/analytics'
+import { REMOTE_URL } from '@helpers/config'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import {
   removeNonAlphaNumeric,
@@ -18,6 +21,7 @@ import Events from '@components/events'
 import Header from '@components/header'
 import { License, LicenseTransition } from '@components/license'
 import MainList from '@components/main-list'
+import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
 import useIsMobile from '@hooks/application/useIsMobile'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
@@ -286,9 +290,22 @@ const Web = ({
     [data?.edges, filteredItems, filteredDescriptiveNodes],
   )
 
+  const totalListingsCount = useMemo(
+    () =>
+      data?.nodes.filter(
+        (item) =>
+          item.group !== 'category' &&
+          item.group !== 'central-node' &&
+          item.group !== 'related-web',
+      ).length ?? 0,
+    [data?.nodes],
+  )
+
+  const isWebEmpty = filteredItems.length === 0
+
   return (
     <>
-      {!isMobile && (
+      <div className="hidden md:block">
         <Drawer
           categories={categories}
           selectedCategories={selectedCategories}
@@ -306,7 +323,7 @@ const Web = ({
           webSlug={webSlug}
           isTransitionMode={isTransitionMode}
         />
-      )}
+      </div>
       <div
         className={`relative flex flex-col md:ml-75 ${
           activeTab === 'web' || activeTab === 'map'
@@ -342,14 +359,49 @@ const Web = ({
           onTabChange={handleTabChange}
         />
 
-        {activeTab === 'web' && (
-          <NetworkComponent
-            data={filteredNetworkData}
-            selectedId={selectedId}
-            setSelectedId={setSelectedId}
-            webId={webId}
-          />
-        )}
+        {activeTab === 'web' &&
+          (isWebEmpty ? (
+            <div className="flex flex-1 flex-col items-center justify-center gap-4 px-4 py-12 text-center">
+              <div className="bg-primary/10 text-primary flex h-16 w-16 items-center justify-center rounded-full">
+                <HiOutlineShare className="h-8 w-8" />
+              </div>
+              {totalListingsCount === 0 ? (
+                <>
+                  <h2 className="text-xl font-semibold">
+                    This web doesn't have any listings yet
+                  </h2>
+                  <p className="text-muted-foreground max-w-105 text-balance">
+                    Once listings are added they'll appear here as an
+                    interconnected web. Know a group that belongs here? Propose
+                    it and help {webName} Resilience Web grow.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-xl font-semibold">No listings to show</h2>
+                  <p className="text-muted-foreground max-w-105">
+                    No listings match your current filters or search. Try
+                    clearing them, or propose a listing to the maintainers.
+                  </p>
+                </>
+              )}
+              <NextLink href={`${REMOTE_URL}/new-listing/${webSlug}`}>
+                <Button
+                  variant="default"
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  Propose new listing
+                </Button>
+              </NextLink>
+            </div>
+          ) : (
+            <NetworkComponent
+              data={filteredNetworkData}
+              selectedId={selectedId}
+              setSelectedId={setSelectedId}
+              webId={webId}
+            />
+          ))}
 
         {activeTab === 'list' && (
           <MainList filteredItems={filteredItems} webSlug={webSlug} />

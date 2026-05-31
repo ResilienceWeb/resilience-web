@@ -10,7 +10,11 @@ const useAllowedWebs = () => {
     isPending: isLoadingWebs,
     isFetching: isFetchingWebs,
   } = useWebs()
-  const { accessibleWebs, isPending: isLoadingWebAccess } = useMyWebAccess()
+  const {
+    accessibleWebs,
+    isPending: isLoadingWebAccess,
+    isFetching: isFetchingWebAccess,
+  } = useMyWebAccess()
 
   const allowedWebIds = useMemo(() => {
     return accessibleWebs?.map((web) => web.id) ?? []
@@ -33,7 +37,7 @@ const useAllowedWebs = () => {
   return {
     allowedWebs: allAllowedWebs,
     isLoadingWebs: isLoadingWebs || isFetchingWebs,
-    isLoading: isLoadingWebAccess || isFetchingWebs,
+    isLoading: isLoadingWebAccess || isFetchingWebs || isFetchingWebAccess,
   }
 }
 

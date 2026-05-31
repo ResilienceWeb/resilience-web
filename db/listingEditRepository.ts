@@ -34,6 +34,12 @@ export const getListingEdits = async (listingSlug: string, webSlug?: string) => 
     include: {
       socials: true,
       actions: true,
+      tags: {
+        select: {
+          id: true,
+          label: true,
+        },
+      },
       category: {
         select: {
           id: true,

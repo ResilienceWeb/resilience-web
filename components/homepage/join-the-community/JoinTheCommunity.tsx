@@ -2,14 +2,13 @@ import { FaDiscord } from 'react-icons/fa'
 import Link from 'next/link'
 import SignupForm from '@components/signup-form'
 import { Button } from '@components/ui/button'
-import useIsMobile from '@hooks/application/useIsMobile'
 
 const JoinTheCommunity = () => {
-  const isMobile = useIsMobile()
-
   return (
     <div className="my-12 flex w-full max-w-7xl justify-start">
-      {!isMobile && <CommunityIcon />}
+      <div className="hidden md:block">
+        <CommunityIcon />
+      </div>
       <div className="flex flex-col items-start justify-start px-0 md:px-4">
         <p className="text-base font-medium text-gray-500">
           Want to get involved?

@@ -7,6 +7,7 @@ import useDeleteListingEdit from '@hooks/listings/useDeleteListingEdit'
 import ActionEdits from './ActionEdits'
 import Diff from './Diff'
 import SocialMediaEdits from './SocialMediaEdits'
+import TagEdits from './TagEdits'
 
 const ListingMap = dynamic(() => import('@components/listing-map'), {
   ssr: false,
@@ -145,6 +146,8 @@ const ListingEditReview = ({
       <SocialMediaEdits listing={listing} editedListing={editedListing} />
 
       <ActionEdits listing={listing} editedListing={editedListing} />
+
+      <TagEdits listing={listing} editedListing={editedListing} />
 
       {listing.location?.description !==
         editedListing.location?.description && (
