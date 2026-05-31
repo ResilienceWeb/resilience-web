@@ -1,8 +1,6 @@
 import type { NextRequest } from 'next/server'
 import prisma from '@prisma-rw'
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 export async function POST(request: NextRequest) {
   let body: unknown
   try {
@@ -13,15 +11,11 @@ export async function POST(request: NextRequest) {
 
   const rawEmail = (body as { email?: unknown })?.email
 
-  if (typeof rawEmail !== 'string') {
+  if (typeof rawEmail !== 'string' || rawEmail.trim() === '') {
     return Response.json({ error: 'Email is required' }, { status: 400 })
   }
 
   const email = rawEmail.trim().toLowerCase()
-
-  if (!EMAIL_REGEX.test(email)) {
-    return Response.json({ error: 'A valid email is required' }, { status: 400 })
-  }
 
   const user = await prisma.user.findUnique({
     where: { email },
