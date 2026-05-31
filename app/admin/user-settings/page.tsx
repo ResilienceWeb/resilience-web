@@ -168,21 +168,33 @@ export default function UserSettingsPage() {
           {isLoadingWebAccess ? (
             <Spinner />
           ) : (
-            <div>
+            <div className="flex flex-col gap-6">
               <div>
-                <h3 className="text-sm mb-3 font-semibold">Owner of</h3>
+                <h3 className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Owner of
+                  {ownedWebs && ownedWebs.length > 0 && (
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                      {ownedWebs.length}
+                    </span>
+                  )}
+                </h3>
                 {ownedWebs && ownedWebs.length > 0 ? (
                   <ul className="flex flex-col gap-2">
                     {ownedWebs.map((web) => (
                       <li
                         key={web.id}
-                        className="flex items-center justify-between pb-2"
+                        className="flex items-center justify-between gap-3 rounded-lg border bg-card px-4 py-3 transition-colors hover:bg-accent/50"
                       >
-                        <div className="flex-1">
-                          <p>{web.title}</p>
+                        <div className="min-w-0">
+                          <p className="truncate font-medium">{web.title}</p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {getWebUrl(web.slug).replace(/^https?:\/\//, '')}
+                          </p>
                         </div>
                         <Link href={getWebUrl(web.slug)} target="_blank">
-                          <Button variant="outline">View</Button>
+                          <Button variant="outline" size="sm">
+                            View
+                          </Button>
                         </Link>
                       </li>
                     ))}
@@ -195,19 +207,31 @@ export default function UserSettingsPage() {
               </div>
 
               <div>
-                <h3 className="text-sm mt-4 mb-3 font-semibold">Editor of</h3>
+                <h3 className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Editor of
+                  {editableWebs && editableWebs.length > 0 && (
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                      {editableWebs.length}
+                    </span>
+                  )}
+                </h3>
                 {editableWebs && editableWebs.length > 0 ? (
                   <ul className="flex flex-col gap-2">
                     {editableWebs.map((web) => (
                       <li
                         key={web.id}
-                        className="flex items-center justify-between pb-2"
+                        className="flex items-center justify-between gap-3 rounded-lg border bg-card px-4 py-3 transition-colors hover:bg-accent/50"
                       >
-                        <div className="flex-1">
-                          <p>{web.title}</p>
+                        <div className="min-w-0">
+                          <p className="truncate font-medium">{web.title}</p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {getWebUrl(web.slug).replace(/^https?:\/\//, '')}
+                          </p>
                         </div>
                         <Link href={getWebUrl(web.slug)} target="_blank">
-                          <Button variant="outline">View</Button>
+                          <Button variant="outline" size="sm">
+                            View
+                          </Button>
                         </Link>
                       </li>
                     ))}
