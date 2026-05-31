@@ -96,17 +96,52 @@ const CategoryForm = ({
         <FormField
           control={form.control}
           name="color"
+          rules={{
+            required: 'Category color is required',
+            pattern: {
+              value: /^[0-9a-fA-F]{6}$/,
+              message: 'Enter a valid 6-digit hex color code',
+            },
+          }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Category color</FormLabel>
               <FormControl>
-                <HexColorPicker
-                  color={field.value}
-                  onChange={(value) => {
-                    setColor(value.substring(1))
-                    field.onChange(value.substring(1))
-                  }}
-                />
+                <div className="flex flex-col gap-3">
+                  <HexColorPicker
+                    color={`#${field.value}`}
+                    onChange={(value) => {
+                      const hex = value.replace('#', '')
+                      setColor(hex)
+                      field.onChange(hex)
+                    }}
+                  />
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="size-9 shrink-0 rounded-md border"
+                      style={{ backgroundColor: `#${field.value}` }}
+                    />
+                    <div className="relative w-32">
+                      <span className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 select-none">
+                        #
+                      </span>
+                      <Input
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const hex = e.target.value
+                            .replace(/[^0-9a-fA-F]/g, '')
+                            .slice(0, 6)
+                          setColor(hex)
+                          field.onChange(hex)
+                        }}
+                        maxLength={6}
+                        placeholder="000000"
+                        className="bg-white pl-7 font-mono uppercase"
+                      />
+                    </div>
+                  </div>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
