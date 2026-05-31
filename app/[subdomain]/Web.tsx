@@ -305,7 +305,7 @@ const Web = ({
 
   return (
     <>
-      {!isMobile && (
+      <div className="hidden md:block">
         <Drawer
           categories={categories}
           selectedCategories={selectedCategories}
@@ -323,7 +323,7 @@ const Web = ({
           webSlug={webSlug}
           isTransitionMode={isTransitionMode}
         />
-      )}
+      </div>
       <div
         className={`relative flex flex-col md:ml-75 ${
           activeTab === 'web' || activeTab === 'map'
