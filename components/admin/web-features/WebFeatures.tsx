@@ -26,9 +26,11 @@ export default function WebFeatures({ web }: WebFeaturesProps) {
   const handleFeatureToggle = (featureKey: string, enabled: boolean) => {
     try {
       setFeatures((prevFeatures) =>
-        prevFeatures.map((f) =>
-          f.feature === featureKey ? { ...f, enabled } : f,
-        ),
+        prevFeatures.some((f) => f.feature === featureKey)
+          ? prevFeatures.map((f) =>
+              f.feature === featureKey ? { ...f, enabled } : f,
+            )
+          : [...prevFeatures, { id: -1, feature: featureKey, enabled }],
       )
 
       updateWebFeature({

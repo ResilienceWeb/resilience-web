@@ -11,6 +11,10 @@ const lastOnesOnHomepage = [
   'University of Cambridge',
 ]
 
+// Determines which webs are shown on the homepage. Kept as a shared helper so
+// the hero count reflects exactly what's displayed below.
+export const isWebDisplayedOnHomepage = (web) => Boolean(web.image)
+
 // Function to check if a web was created less than 4 months ago
 const isNewWeb = (createdAt) => {
   if (!createdAt) return false
@@ -30,12 +34,7 @@ const WebCards = ({ webs }) => {
       </h2>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {webs
-          ?.filter(
-            (web) =>
-              Boolean(web.image) &&
-              web.slug !== 'ctrlshift' &&
-              web.slug !== 'transition-uk',
-          )
+          ?.filter(isWebDisplayedOnHomepage)
           .sort((a, b) => {
             const aIsLast = lastOnesOnHomepage.includes(a.title)
             const bIsLast = lastOnesOnHomepage.includes(b.title)
