@@ -71,6 +71,9 @@ export default function SignIn() {
                 }
 
                 sessionStorage.setItem('otp-email', email)
+                // Signing in never sets a name; clear any stale value from a
+                // previously abandoned signup so it isn't applied here.
+                sessionStorage.removeItem('otp-name')
                 setError('')
 
                 const verifyUrl = redirectTo
@@ -99,7 +102,7 @@ export default function SignIn() {
                 type="email"
                 id="email"
                 name="email"
-                placeholder="Enter your email address"
+                placeholder="e.g. jane@example.com"
               />
             </div>
             <Button type="submit" className="mt-4 w-full">
