@@ -65,7 +65,7 @@ const WebCreatedEmail = ({ webTitle, url }: props) => {
             </Link>
             .
           </Text>
-          <Text>
+          <Text style={paragraph}>
             You can also visit{' '}
             <Link href="https://knowledgebase.resilienceweb.org.uk/">
               our knowledgebase
