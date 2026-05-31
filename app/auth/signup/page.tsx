@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
@@ -26,6 +26,12 @@ export default function SignUp() {
 
   const isUserAttemptingEdit = redirectTo?.includes('/edit')
   const isUserAttemptingPropose = redirectTo?.includes('/new-listing')
+
+  // Clear any name left over from an abandoned signup so it can't be
+  // applied to an unrelated session later on.
+  useEffect(() => {
+    sessionStorage.removeItem('otp-name')
+  }, [])
 
   return (
     <div className={styles.root}>
@@ -58,7 +64,26 @@ export default function SignUp() {
               try {
                 e.preventDefault()
                 const formData = new FormData(e.currentTarget)
+                const name = (formData.get('name') as string)?.trim()
                 const email = formData.get('email') as string
+
+                const checkResponse = await fetch(
+                  '/api/users/check-email',
+                  {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                  },
+                )
+                const { exists } = await checkResponse.json()
+
+                if (exists) {
+                  setError(
+                    'An account with this email already exists. Please sign in instead.',
+                  )
+                  return
+                }
+
                 const { error } = await authClient.emailOtp.sendVerificationOtp(
                   {
                     email,
@@ -74,6 +99,11 @@ export default function SignUp() {
                 }
 
                 sessionStorage.setItem('otp-email', email)
+                if (name) {
+                  sessionStorage.setItem('otp-name', name)
+                } else {
+                  sessionStorage.removeItem('otp-name')
+                }
                 setError('')
                 const verifyUrl = redirectTo
                   ? `/auth/verify-otp?redirectTo=${encodeURIComponent(redirectTo)}`
@@ -92,6 +122,23 @@ export default function SignUp() {
           >
             <div className="flex flex-col gap-1">
               <label
+                htmlFor="name"
+                className="text-sm font-medium text-gray-700 sm:text-base"
+              >
+                Name{' '}
+                <span className="text-xs font-normal text-gray-400">
+                  (optional)
+                </span>
+              </label>
+              <Input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="e.g. Jane Smith"
+              />
+            </div>
+            <div className="mt-3 flex flex-col gap-1">
+              <label
                 htmlFor="email"
                 className="text-sm font-medium text-gray-700 sm:text-base"
               >
@@ -101,7 +148,8 @@ export default function SignUp() {
                 type="email"
                 id="email"
                 name="email"
-                placeholder="Enter your email address"
+                placeholder="e.g. jane@example.com"
+                required
               />
             </div>
             <Button type="submit" className="mt-4 w-full">

@@ -77,6 +77,25 @@ export default function VerifyOTP() {
         return
       }
 
+      // If signing up with a name, update the user's name
+      const name = sessionStorage.getItem('otp-name')
+      if (name) {
+        const { error: updateError } = await authClient.updateUser({ name })
+        sessionStorage.removeItem('otp-name')
+        if (updateError) {
+          Sentry.captureException(
+            new Error(updateError.message ?? 'Failed to set user name on signup'),
+            {
+              extra: {
+                email,
+                code: updateError.code,
+                status: updateError.status,
+              },
+            },
+          )
+        }
+      }
+
       // Clear session storage on success
       sessionStorage.removeItem('otp-email')
       posthog.capture('user-signed-in')
