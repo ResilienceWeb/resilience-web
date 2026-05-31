@@ -141,14 +141,14 @@ const ListingFormSimplified = ({
   isEditMode = false,
   webSlug,
 }: Props) => {
-  const { tags } = useTags()
+  const { tags } = useTags({ webSlug })
   const form = useForm({
     resolver: zodResolver(listingFormSchema),
     defaultValues: {
       id: listing?.id || null,
       title: listing?.title ?? '',
       description: listing?.description || '',
-      category: listing?.categoryId || undefined,
+      category: listing?.category?.id || listing?.categoryId || undefined,
       email: listing?.email || '',
       website: listing?.website || '',
       socials: listing?.socials || [],
@@ -156,7 +156,7 @@ const ListingFormSimplified = ({
       seekingVolunteers: listing?.seekingVolunteers || false,
       image: listing?.image,
       slug: listing?.slug || '',
-      tags: [],
+      tags: listing?.tags?.map((t) => ({ value: t.id, label: t.label })) || [],
       noPhysicalLocation: listing?.location?.noPhysicalLocation || false,
       location:
         listing?.location?.latitude && listing?.location?.longitude

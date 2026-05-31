@@ -33,6 +33,7 @@ export async function POST(
         user: true,
         socials: true,
         actions: true,
+        tags: true,
         category: true,
         location: true,
         web: true,
@@ -141,6 +142,12 @@ export async function POST(
         data: {
           ...(listingEdit.categoryId
             ? { category: { connect: { id: listingEdit.categoryId } } }
+            : {}),
+          // Only overwrite tags when the edit actually carried some, so that
+          // approving legacy edits (created before tag support) doesn't wipe
+          // the placement's existing tags.
+          ...(listingEdit.tags.length > 0
+            ? { tags: { set: listingEdit.tags.map((t) => ({ id: t.id })) } }
             : {}),
         },
       }),

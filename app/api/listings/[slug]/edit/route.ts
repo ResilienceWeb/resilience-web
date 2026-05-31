@@ -70,6 +70,8 @@ export async function POST(request, props) {
     const socialsData = socials ? JSON.parse(socials) : []
     const actions = formData.get('actions')
     const actionsData = actions ? JSON.parse(actions) : []
+    const tags = formData.get('tags')
+    const tagsData: number[] = tags ? JSON.parse(tags) : []
     const latitude = formData.get('latitude')
     const longitude = formData.get('longitude')
     const locationDescription = formData.get('locationDescription')
@@ -153,6 +155,9 @@ export async function POST(request, props) {
           type: action.type,
           url: action.url,
         })),
+      },
+      tags: {
+        connect: tagsData.map((id) => ({ id })),
       },
       location: locationData,
     }

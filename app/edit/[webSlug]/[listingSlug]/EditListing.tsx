@@ -28,6 +28,7 @@ export default function EditListing({ listing, webSlug }) {
   const handleSubmit = useCallback(
     (data) => {
       data.webId = web?.id
+      data.webSlug = webSlug
       data.listingId = listing.id
       data.inactive = false
       data.relations = []
@@ -39,7 +40,7 @@ export default function EditListing({ listing, webSlug }) {
         }
       }, 1000)
     },
-    [web?.id, listing.id, createListingEdit],
+    [web?.id, webSlug, listing.id, createListingEdit],
   )
 
   if (isCategoriesLoading || isLoadingEdits) {
