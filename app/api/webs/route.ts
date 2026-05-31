@@ -94,9 +94,12 @@ export async function GET(request: NextRequest) {
   } catch (e) {
     console.error(`[RW] Unable to fetch webs - ${e}`)
     Sentry.captureException(e)
-    return new Response(`Unable to fetch webs - ${e}`, {
-      status: 500,
-    })
+    return Response.json(
+      { error: `Unable to fetch webs - ${e}` },
+      {
+        status: 500,
+      },
+    )
   }
 }
 
@@ -170,7 +173,7 @@ export async function POST(request: NextRequest) {
       to: REMOTE_HOSTNAME.includes('localhost')
         ? 'ismail.diner+rw@gmail.com'
         : 'info@resilienceweb.org.uk',
-      subject: `New resilience web created 🎉: ${web.title}`,
+      subject: `New web created 🎉: ${web.title}`,
       email: webCreatedAdminEmailComponent,
     })
 
@@ -185,8 +188,8 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     if (error.code === 'P2002') {
-      return new Response(
-        'Sorry, a web with the same title or link already exists',
+      return Response.json(
+        { error: 'A web with the same title or link already exists.' },
         {
           status: 409,
         },
@@ -194,9 +197,12 @@ export async function POST(request: NextRequest) {
     } else {
       console.error(`[RW] Unable to create web - ${error}`)
       Sentry.captureException(error)
-      return new Response(`Unable to create web - ${error}`, {
-        status: 500,
-      })
+      return Response.json(
+        { error: `Unable to create web - ${error}` },
+        {
+          status: 500,
+        },
+      )
     }
   }
 }

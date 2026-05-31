@@ -28,15 +28,11 @@ export type AggregateListing = {
 
 export type ListingAvgAggregateOutputType = {
   id: number | null
-  categoryId: number | null
-  webId: number | null
   locationId: number | null
 }
 
 export type ListingSumAggregateOutputType = {
   id: number | null
-  categoryId: number | null
-  webId: number | null
   locationId: number | null
 }
 
@@ -51,13 +47,9 @@ export type ListingMinAggregateOutputType = {
   notes: string | null
   inactive: boolean | null
   seekingVolunteers: boolean | null
-  categoryId: number | null
   image: string | null
-  slug: string | null
-  webId: number | null
   pending: boolean | null
   proposerId: string | null
-  featured: Date | null
   locationId: number | null
 }
 
@@ -72,13 +64,9 @@ export type ListingMaxAggregateOutputType = {
   notes: string | null
   inactive: boolean | null
   seekingVolunteers: boolean | null
-  categoryId: number | null
   image: string | null
-  slug: string | null
-  webId: number | null
   pending: boolean | null
   proposerId: string | null
-  featured: Date | null
   locationId: number | null
 }
 
@@ -93,13 +81,9 @@ export type ListingCountAggregateOutputType = {
   notes: number
   inactive: number
   seekingVolunteers: number
-  categoryId: number
   image: number
-  slug: number
-  webId: number
   pending: number
   proposerId: number
-  featured: number
   locationId: number
   _all: number
 }
@@ -107,15 +91,11 @@ export type ListingCountAggregateOutputType = {
 
 export type ListingAvgAggregateInputType = {
   id?: true
-  categoryId?: true
-  webId?: true
   locationId?: true
 }
 
 export type ListingSumAggregateInputType = {
   id?: true
-  categoryId?: true
-  webId?: true
   locationId?: true
 }
 
@@ -130,13 +110,9 @@ export type ListingMinAggregateInputType = {
   notes?: true
   inactive?: true
   seekingVolunteers?: true
-  categoryId?: true
   image?: true
-  slug?: true
-  webId?: true
   pending?: true
   proposerId?: true
-  featured?: true
   locationId?: true
 }
 
@@ -151,13 +127,9 @@ export type ListingMaxAggregateInputType = {
   notes?: true
   inactive?: true
   seekingVolunteers?: true
-  categoryId?: true
   image?: true
-  slug?: true
-  webId?: true
   pending?: true
   proposerId?: true
-  featured?: true
   locationId?: true
 }
 
@@ -172,13 +144,9 @@ export type ListingCountAggregateInputType = {
   notes?: true
   inactive?: true
   seekingVolunteers?: true
-  categoryId?: true
   image?: true
-  slug?: true
-  webId?: true
   pending?: true
   proposerId?: true
-  featured?: true
   locationId?: true
   _all?: true
 }
@@ -280,13 +248,9 @@ export type ListingGroupByOutputType = {
   notes: string | null
   inactive: boolean
   seekingVolunteers: boolean | null
-  categoryId: number | null
   image: string | null
-  slug: string
-  webId: number
   pending: boolean
   proposerId: string | null
-  featured: Date | null
   locationId: number | null
   _count: ListingCountAggregateOutputType | null
   _avg: ListingAvgAggregateOutputType | null
@@ -324,19 +288,12 @@ export type ListingWhereInput = {
   notes?: Prisma.StringNullableFilter<"Listing"> | string | null
   inactive?: Prisma.BoolFilter<"Listing"> | boolean
   seekingVolunteers?: Prisma.BoolNullableFilter<"Listing"> | boolean | null
-  categoryId?: Prisma.IntNullableFilter<"Listing"> | number | null
   image?: Prisma.StringNullableFilter<"Listing"> | string | null
-  slug?: Prisma.StringFilter<"Listing"> | string
-  webId?: Prisma.IntFilter<"Listing"> | number
   pending?: Prisma.BoolFilter<"Listing"> | boolean
   proposerId?: Prisma.StringNullableFilter<"Listing"> | string | null
-  featured?: Prisma.DateTimeNullableFilter<"Listing"> | Date | string | null
   locationId?: Prisma.IntNullableFilter<"Listing"> | number | null
   socials?: Prisma.ListingSocialMediaListRelationFilter
-  web?: Prisma.XOR<Prisma.WebNullableScalarRelationFilter, Prisma.WebWhereInput> | null
-  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   permissions?: Prisma.PermissionListRelationFilter
-  tags?: Prisma.TagListRelationFilter
   relations?: Prisma.ListingListRelationFilter
   relationOf?: Prisma.ListingListRelationFilter
   proposer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -344,6 +301,7 @@ export type ListingWhereInput = {
   edits?: Prisma.ListingEditListRelationFilter
   actions?: Prisma.ListingActionListRelationFilter
   analyticsDaily?: Prisma.ListingAnalyticsDailyListRelationFilter
+  placements?: Prisma.ListingPlacementListRelationFilter
 }
 
 export type ListingOrderByWithRelationInput = {
@@ -357,19 +315,12 @@ export type ListingOrderByWithRelationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   inactive?: Prisma.SortOrder
   seekingVolunteers?: Prisma.SortOrderInput | Prisma.SortOrder
-  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
-  slug?: Prisma.SortOrder
-  webId?: Prisma.SortOrder
   pending?: Prisma.SortOrder
   proposerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  featured?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   socials?: Prisma.ListingSocialMediaOrderByRelationAggregateInput
-  web?: Prisma.WebOrderByWithRelationInput
-  category?: Prisma.CategoryOrderByWithRelationInput
   permissions?: Prisma.PermissionOrderByRelationAggregateInput
-  tags?: Prisma.TagOrderByRelationAggregateInput
   relations?: Prisma.ListingOrderByRelationAggregateInput
   relationOf?: Prisma.ListingOrderByRelationAggregateInput
   proposer?: Prisma.UserOrderByWithRelationInput
@@ -377,12 +328,12 @@ export type ListingOrderByWithRelationInput = {
   edits?: Prisma.ListingEditOrderByRelationAggregateInput
   actions?: Prisma.ListingActionOrderByRelationAggregateInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyOrderByRelationAggregateInput
+  placements?: Prisma.ListingPlacementOrderByRelationAggregateInput
 }
 
 export type ListingWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   locationId?: number
-  webId_slug?: Prisma.ListingWebIdSlugCompoundUniqueInput
   AND?: Prisma.ListingWhereInput | Prisma.ListingWhereInput[]
   OR?: Prisma.ListingWhereInput[]
   NOT?: Prisma.ListingWhereInput | Prisma.ListingWhereInput[]
@@ -395,18 +346,11 @@ export type ListingWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"Listing"> | string | null
   inactive?: Prisma.BoolFilter<"Listing"> | boolean
   seekingVolunteers?: Prisma.BoolNullableFilter<"Listing"> | boolean | null
-  categoryId?: Prisma.IntNullableFilter<"Listing"> | number | null
   image?: Prisma.StringNullableFilter<"Listing"> | string | null
-  slug?: Prisma.StringFilter<"Listing"> | string
-  webId?: Prisma.IntFilter<"Listing"> | number
   pending?: Prisma.BoolFilter<"Listing"> | boolean
   proposerId?: Prisma.StringNullableFilter<"Listing"> | string | null
-  featured?: Prisma.DateTimeNullableFilter<"Listing"> | Date | string | null
   socials?: Prisma.ListingSocialMediaListRelationFilter
-  web?: Prisma.XOR<Prisma.WebNullableScalarRelationFilter, Prisma.WebWhereInput> | null
-  category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   permissions?: Prisma.PermissionListRelationFilter
-  tags?: Prisma.TagListRelationFilter
   relations?: Prisma.ListingListRelationFilter
   relationOf?: Prisma.ListingListRelationFilter
   proposer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -414,7 +358,8 @@ export type ListingWhereUniqueInput = Prisma.AtLeast<{
   edits?: Prisma.ListingEditListRelationFilter
   actions?: Prisma.ListingActionListRelationFilter
   analyticsDaily?: Prisma.ListingAnalyticsDailyListRelationFilter
-}, "id" | "locationId" | "webId_slug">
+  placements?: Prisma.ListingPlacementListRelationFilter
+}, "id" | "locationId">
 
 export type ListingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -427,13 +372,9 @@ export type ListingOrderByWithAggregationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   inactive?: Prisma.SortOrder
   seekingVolunteers?: Prisma.SortOrderInput | Prisma.SortOrder
-  categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
-  slug?: Prisma.SortOrder
-  webId?: Prisma.SortOrder
   pending?: Prisma.SortOrder
   proposerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  featured?: Prisma.SortOrderInput | Prisma.SortOrder
   locationId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ListingCountOrderByAggregateInput
   _avg?: Prisma.ListingAvgOrderByAggregateInput
@@ -456,13 +397,9 @@ export type ListingScalarWhereWithAggregatesInput = {
   notes?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
   inactive?: Prisma.BoolWithAggregatesFilter<"Listing"> | boolean
   seekingVolunteers?: Prisma.BoolNullableWithAggregatesFilter<"Listing"> | boolean | null
-  categoryId?: Prisma.IntNullableWithAggregatesFilter<"Listing"> | number | null
   image?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
-  slug?: Prisma.StringWithAggregatesFilter<"Listing"> | string
-  webId?: Prisma.IntWithAggregatesFilter<"Listing"> | number
   pending?: Prisma.BoolWithAggregatesFilter<"Listing"> | boolean
   proposerId?: Prisma.StringNullableWithAggregatesFilter<"Listing"> | string | null
-  featured?: Prisma.DateTimeNullableWithAggregatesFilter<"Listing"> | Date | string | null
   locationId?: Prisma.IntNullableWithAggregatesFilter<"Listing"> | number | null
 }
 
@@ -477,14 +414,9 @@ export type ListingCreateInput = {
   inactive?: boolean
   seekingVolunteers?: boolean | null
   image?: string | null
-  slug: string
   pending?: boolean
-  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
   proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
@@ -492,6 +424,7 @@ export type ListingCreateInput = {
   edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementCreateNestedManyWithoutListingInput
 }
 
 export type ListingUncheckedCreateInput = {
@@ -505,22 +438,18 @@ export type ListingUncheckedCreateInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
   edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutListingInput
 }
 
 export type ListingUpdateInput = {
@@ -534,14 +463,9 @@ export type ListingUpdateInput = {
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
   proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
@@ -549,6 +473,7 @@ export type ListingUpdateInput = {
   edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateInput = {
@@ -562,22 +487,18 @@ export type ListingUncheckedUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
   edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUncheckedUpdateManyWithoutListingNestedInput
 }
 
 export type ListingCreateManyInput = {
@@ -591,13 +512,9 @@ export type ListingCreateManyInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: Date | string | null
   locationId?: number | null
 }
 
@@ -612,9 +529,7 @@ export type ListingUpdateManyMutationInput = {
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ListingUncheckedUpdateManyInput = {
@@ -628,13 +543,9 @@ export type ListingUncheckedUpdateManyInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -648,11 +559,6 @@ export type ListingOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type ListingWebIdSlugCompoundUniqueInput = {
-  webId: number
-  slug: string
-}
-
 export type ListingCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -664,20 +570,14 @@ export type ListingCountOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   inactive?: Prisma.SortOrder
   seekingVolunteers?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   image?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
-  webId?: Prisma.SortOrder
   pending?: Prisma.SortOrder
   proposerId?: Prisma.SortOrder
-  featured?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
 }
 
 export type ListingAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
-  webId?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
 }
 
@@ -692,13 +592,9 @@ export type ListingMaxOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   inactive?: Prisma.SortOrder
   seekingVolunteers?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   image?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
-  webId?: Prisma.SortOrder
   pending?: Prisma.SortOrder
   proposerId?: Prisma.SortOrder
-  featured?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
 }
 
@@ -713,31 +609,25 @@ export type ListingMinOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   inactive?: Prisma.SortOrder
   seekingVolunteers?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
   image?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
-  webId?: Prisma.SortOrder
   pending?: Prisma.SortOrder
   proposerId?: Prisma.SortOrder
-  featured?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
 }
 
 export type ListingSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
-  webId?: Prisma.SortOrder
   locationId?: Prisma.SortOrder
-}
-
-export type ListingNullableScalarRelationFilter = {
-  is?: Prisma.ListingWhereInput | null
-  isNot?: Prisma.ListingWhereInput | null
 }
 
 export type ListingScalarRelationFilter = {
   is?: Prisma.ListingWhereInput
   isNot?: Prisma.ListingWhereInput
+}
+
+export type ListingNullableScalarRelationFilter = {
+  is?: Prisma.ListingWhereInput | null
+  isNot?: Prisma.ListingWhereInput | null
 }
 
 export type ListingCreateNestedManyWithoutProposerInput = {
@@ -779,128 +669,6 @@ export type ListingUncheckedUpdateManyWithoutProposerNestedInput = {
   connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
   update?: Prisma.ListingUpdateWithWhereUniqueWithoutProposerInput | Prisma.ListingUpdateWithWhereUniqueWithoutProposerInput[]
   updateMany?: Prisma.ListingUpdateManyWithWhereWithoutProposerInput | Prisma.ListingUpdateManyWithWhereWithoutProposerInput[]
-  deleteMany?: Prisma.ListingScalarWhereInput | Prisma.ListingScalarWhereInput[]
-}
-
-export type ListingCreateNestedManyWithoutWebInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutWebInput, Prisma.ListingUncheckedCreateWithoutWebInput> | Prisma.ListingCreateWithoutWebInput[] | Prisma.ListingUncheckedCreateWithoutWebInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutWebInput | Prisma.ListingCreateOrConnectWithoutWebInput[]
-  createMany?: Prisma.ListingCreateManyWebInputEnvelope
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-}
-
-export type ListingUncheckedCreateNestedManyWithoutWebInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutWebInput, Prisma.ListingUncheckedCreateWithoutWebInput> | Prisma.ListingCreateWithoutWebInput[] | Prisma.ListingUncheckedCreateWithoutWebInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutWebInput | Prisma.ListingCreateOrConnectWithoutWebInput[]
-  createMany?: Prisma.ListingCreateManyWebInputEnvelope
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-}
-
-export type ListingUpdateManyWithoutWebNestedInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutWebInput, Prisma.ListingUncheckedCreateWithoutWebInput> | Prisma.ListingCreateWithoutWebInput[] | Prisma.ListingUncheckedCreateWithoutWebInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutWebInput | Prisma.ListingCreateOrConnectWithoutWebInput[]
-  upsert?: Prisma.ListingUpsertWithWhereUniqueWithoutWebInput | Prisma.ListingUpsertWithWhereUniqueWithoutWebInput[]
-  createMany?: Prisma.ListingCreateManyWebInputEnvelope
-  set?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  disconnect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  delete?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  update?: Prisma.ListingUpdateWithWhereUniqueWithoutWebInput | Prisma.ListingUpdateWithWhereUniqueWithoutWebInput[]
-  updateMany?: Prisma.ListingUpdateManyWithWhereWithoutWebInput | Prisma.ListingUpdateManyWithWhereWithoutWebInput[]
-  deleteMany?: Prisma.ListingScalarWhereInput | Prisma.ListingScalarWhereInput[]
-}
-
-export type ListingUncheckedUpdateManyWithoutWebNestedInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutWebInput, Prisma.ListingUncheckedCreateWithoutWebInput> | Prisma.ListingCreateWithoutWebInput[] | Prisma.ListingUncheckedCreateWithoutWebInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutWebInput | Prisma.ListingCreateOrConnectWithoutWebInput[]
-  upsert?: Prisma.ListingUpsertWithWhereUniqueWithoutWebInput | Prisma.ListingUpsertWithWhereUniqueWithoutWebInput[]
-  createMany?: Prisma.ListingCreateManyWebInputEnvelope
-  set?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  disconnect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  delete?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  update?: Prisma.ListingUpdateWithWhereUniqueWithoutWebInput | Prisma.ListingUpdateWithWhereUniqueWithoutWebInput[]
-  updateMany?: Prisma.ListingUpdateManyWithWhereWithoutWebInput | Prisma.ListingUpdateManyWithWhereWithoutWebInput[]
-  deleteMany?: Prisma.ListingScalarWhereInput | Prisma.ListingScalarWhereInput[]
-}
-
-export type ListingCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutCategoryInput, Prisma.ListingUncheckedCreateWithoutCategoryInput> | Prisma.ListingCreateWithoutCategoryInput[] | Prisma.ListingUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutCategoryInput | Prisma.ListingCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.ListingCreateManyCategoryInputEnvelope
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-}
-
-export type ListingUncheckedCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutCategoryInput, Prisma.ListingUncheckedCreateWithoutCategoryInput> | Prisma.ListingCreateWithoutCategoryInput[] | Prisma.ListingUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutCategoryInput | Prisma.ListingCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.ListingCreateManyCategoryInputEnvelope
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-}
-
-export type ListingUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutCategoryInput, Prisma.ListingUncheckedCreateWithoutCategoryInput> | Prisma.ListingCreateWithoutCategoryInput[] | Prisma.ListingUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutCategoryInput | Prisma.ListingCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.ListingUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ListingUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.ListingCreateManyCategoryInputEnvelope
-  set?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  disconnect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  delete?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  update?: Prisma.ListingUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ListingUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.ListingUpdateManyWithWhereWithoutCategoryInput | Prisma.ListingUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.ListingScalarWhereInput | Prisma.ListingScalarWhereInput[]
-}
-
-export type ListingUncheckedUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutCategoryInput, Prisma.ListingUncheckedCreateWithoutCategoryInput> | Prisma.ListingCreateWithoutCategoryInput[] | Prisma.ListingUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutCategoryInput | Prisma.ListingCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.ListingUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ListingUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.ListingCreateManyCategoryInputEnvelope
-  set?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  disconnect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  delete?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  update?: Prisma.ListingUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ListingUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.ListingUpdateManyWithWhereWithoutCategoryInput | Prisma.ListingUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.ListingScalarWhereInput | Prisma.ListingScalarWhereInput[]
-}
-
-export type ListingCreateNestedManyWithoutTagsInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutTagsInput, Prisma.ListingUncheckedCreateWithoutTagsInput> | Prisma.ListingCreateWithoutTagsInput[] | Prisma.ListingUncheckedCreateWithoutTagsInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutTagsInput | Prisma.ListingCreateOrConnectWithoutTagsInput[]
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-}
-
-export type ListingUncheckedCreateNestedManyWithoutTagsInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutTagsInput, Prisma.ListingUncheckedCreateWithoutTagsInput> | Prisma.ListingCreateWithoutTagsInput[] | Prisma.ListingUncheckedCreateWithoutTagsInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutTagsInput | Prisma.ListingCreateOrConnectWithoutTagsInput[]
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-}
-
-export type ListingUpdateManyWithoutTagsNestedInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutTagsInput, Prisma.ListingUncheckedCreateWithoutTagsInput> | Prisma.ListingCreateWithoutTagsInput[] | Prisma.ListingUncheckedCreateWithoutTagsInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutTagsInput | Prisma.ListingCreateOrConnectWithoutTagsInput[]
-  upsert?: Prisma.ListingUpsertWithWhereUniqueWithoutTagsInput | Prisma.ListingUpsertWithWhereUniqueWithoutTagsInput[]
-  set?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  disconnect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  delete?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  update?: Prisma.ListingUpdateWithWhereUniqueWithoutTagsInput | Prisma.ListingUpdateWithWhereUniqueWithoutTagsInput[]
-  updateMany?: Prisma.ListingUpdateManyWithWhereWithoutTagsInput | Prisma.ListingUpdateManyWithWhereWithoutTagsInput[]
-  deleteMany?: Prisma.ListingScalarWhereInput | Prisma.ListingScalarWhereInput[]
-}
-
-export type ListingUncheckedUpdateManyWithoutTagsNestedInput = {
-  create?: Prisma.XOR<Prisma.ListingCreateWithoutTagsInput, Prisma.ListingUncheckedCreateWithoutTagsInput> | Prisma.ListingCreateWithoutTagsInput[] | Prisma.ListingUncheckedCreateWithoutTagsInput[]
-  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutTagsInput | Prisma.ListingCreateOrConnectWithoutTagsInput[]
-  upsert?: Prisma.ListingUpsertWithWhereUniqueWithoutTagsInput | Prisma.ListingUpsertWithWhereUniqueWithoutTagsInput[]
-  set?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  disconnect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  delete?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  connect?: Prisma.ListingWhereUniqueInput | Prisma.ListingWhereUniqueInput[]
-  update?: Prisma.ListingUpdateWithWhereUniqueWithoutTagsInput | Prisma.ListingUpdateWithWhereUniqueWithoutTagsInput[]
-  updateMany?: Prisma.ListingUpdateManyWithWhereWithoutTagsInput | Prisma.ListingUpdateManyWithWhereWithoutTagsInput[]
   deleteMany?: Prisma.ListingScalarWhereInput | Prisma.ListingScalarWhereInput[]
 }
 
@@ -982,6 +750,20 @@ export type ListingUncheckedUpdateManyWithoutRelationsNestedInput = {
   update?: Prisma.ListingUpdateWithWhereUniqueWithoutRelationsInput | Prisma.ListingUpdateWithWhereUniqueWithoutRelationsInput[]
   updateMany?: Prisma.ListingUpdateManyWithWhereWithoutRelationsInput | Prisma.ListingUpdateManyWithWhereWithoutRelationsInput[]
   deleteMany?: Prisma.ListingScalarWhereInput | Prisma.ListingScalarWhereInput[]
+}
+
+export type ListingCreateNestedOneWithoutPlacementsInput = {
+  create?: Prisma.XOR<Prisma.ListingCreateWithoutPlacementsInput, Prisma.ListingUncheckedCreateWithoutPlacementsInput>
+  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutPlacementsInput
+  connect?: Prisma.ListingWhereUniqueInput
+}
+
+export type ListingUpdateOneRequiredWithoutPlacementsNestedInput = {
+  create?: Prisma.XOR<Prisma.ListingCreateWithoutPlacementsInput, Prisma.ListingUncheckedCreateWithoutPlacementsInput>
+  connectOrCreate?: Prisma.ListingCreateOrConnectWithoutPlacementsInput
+  upsert?: Prisma.ListingUpsertWithoutPlacementsInput
+  connect?: Prisma.ListingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ListingUpdateToOneWithWhereWithoutPlacementsInput, Prisma.ListingUpdateWithoutPlacementsInput>, Prisma.ListingUncheckedUpdateWithoutPlacementsInput>
 }
 
 export type ListingCreateNestedOneWithoutSocialsInput = {
@@ -1125,20 +907,16 @@ export type ListingCreateWithoutProposerInput = {
   inactive?: boolean
   seekingVolunteers?: boolean | null
   image?: string | null
-  slug: string
   pending?: boolean
-  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingInput
   edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementCreateNestedManyWithoutListingInput
 }
 
 export type ListingUncheckedCreateWithoutProposerInput = {
@@ -1152,21 +930,17 @@ export type ListingUncheckedCreateWithoutProposerInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
-  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
   edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutListingInput
 }
 
 export type ListingCreateOrConnectWithoutProposerInput = {
@@ -1209,252 +983,10 @@ export type ListingScalarWhereInput = {
   notes?: Prisma.StringNullableFilter<"Listing"> | string | null
   inactive?: Prisma.BoolFilter<"Listing"> | boolean
   seekingVolunteers?: Prisma.BoolNullableFilter<"Listing"> | boolean | null
-  categoryId?: Prisma.IntNullableFilter<"Listing"> | number | null
   image?: Prisma.StringNullableFilter<"Listing"> | string | null
-  slug?: Prisma.StringFilter<"Listing"> | string
-  webId?: Prisma.IntFilter<"Listing"> | number
   pending?: Prisma.BoolFilter<"Listing"> | boolean
   proposerId?: Prisma.StringNullableFilter<"Listing"> | string | null
-  featured?: Prisma.DateTimeNullableFilter<"Listing"> | Date | string | null
   locationId?: Prisma.IntNullableFilter<"Listing"> | number | null
-}
-
-export type ListingCreateWithoutWebInput = {
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  title: string
-  website?: string | null
-  description?: string | null
-  email?: string | null
-  notes?: string | null
-  inactive?: boolean
-  seekingVolunteers?: boolean | null
-  image?: string | null
-  slug: string
-  pending?: boolean
-  featured?: Date | string | null
-  socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
-  permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
-  relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
-  relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
-  proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
-  location?: Prisma.ListingLocationCreateNestedOneWithoutListingInput
-  edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
-  actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
-}
-
-export type ListingUncheckedCreateWithoutWebInput = {
-  id?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  title: string
-  website?: string | null
-  description?: string | null
-  email?: string | null
-  notes?: string | null
-  inactive?: boolean
-  seekingVolunteers?: boolean | null
-  categoryId?: number | null
-  image?: string | null
-  slug: string
-  pending?: boolean
-  proposerId?: string | null
-  featured?: Date | string | null
-  locationId?: number | null
-  socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
-  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
-  relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
-  relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
-  edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
-  actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
-}
-
-export type ListingCreateOrConnectWithoutWebInput = {
-  where: Prisma.ListingWhereUniqueInput
-  create: Prisma.XOR<Prisma.ListingCreateWithoutWebInput, Prisma.ListingUncheckedCreateWithoutWebInput>
-}
-
-export type ListingCreateManyWebInputEnvelope = {
-  data: Prisma.ListingCreateManyWebInput | Prisma.ListingCreateManyWebInput[]
-  skipDuplicates?: boolean
-}
-
-export type ListingUpsertWithWhereUniqueWithoutWebInput = {
-  where: Prisma.ListingWhereUniqueInput
-  update: Prisma.XOR<Prisma.ListingUpdateWithoutWebInput, Prisma.ListingUncheckedUpdateWithoutWebInput>
-  create: Prisma.XOR<Prisma.ListingCreateWithoutWebInput, Prisma.ListingUncheckedCreateWithoutWebInput>
-}
-
-export type ListingUpdateWithWhereUniqueWithoutWebInput = {
-  where: Prisma.ListingWhereUniqueInput
-  data: Prisma.XOR<Prisma.ListingUpdateWithoutWebInput, Prisma.ListingUncheckedUpdateWithoutWebInput>
-}
-
-export type ListingUpdateManyWithWhereWithoutWebInput = {
-  where: Prisma.ListingScalarWhereInput
-  data: Prisma.XOR<Prisma.ListingUpdateManyMutationInput, Prisma.ListingUncheckedUpdateManyWithoutWebInput>
-}
-
-export type ListingCreateWithoutCategoryInput = {
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  title: string
-  website?: string | null
-  description?: string | null
-  email?: string | null
-  notes?: string | null
-  inactive?: boolean
-  seekingVolunteers?: boolean | null
-  image?: string | null
-  slug: string
-  pending?: boolean
-  featured?: Date | string | null
-  socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
-  relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
-  relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
-  proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
-  location?: Prisma.ListingLocationCreateNestedOneWithoutListingInput
-  edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
-  actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
-}
-
-export type ListingUncheckedCreateWithoutCategoryInput = {
-  id?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  title: string
-  website?: string | null
-  description?: string | null
-  email?: string | null
-  notes?: string | null
-  inactive?: boolean
-  seekingVolunteers?: boolean | null
-  image?: string | null
-  slug: string
-  webId: number
-  pending?: boolean
-  proposerId?: string | null
-  featured?: Date | string | null
-  locationId?: number | null
-  socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
-  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
-  relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
-  relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
-  edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
-  actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
-}
-
-export type ListingCreateOrConnectWithoutCategoryInput = {
-  where: Prisma.ListingWhereUniqueInput
-  create: Prisma.XOR<Prisma.ListingCreateWithoutCategoryInput, Prisma.ListingUncheckedCreateWithoutCategoryInput>
-}
-
-export type ListingCreateManyCategoryInputEnvelope = {
-  data: Prisma.ListingCreateManyCategoryInput | Prisma.ListingCreateManyCategoryInput[]
-  skipDuplicates?: boolean
-}
-
-export type ListingUpsertWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.ListingWhereUniqueInput
-  update: Prisma.XOR<Prisma.ListingUpdateWithoutCategoryInput, Prisma.ListingUncheckedUpdateWithoutCategoryInput>
-  create: Prisma.XOR<Prisma.ListingCreateWithoutCategoryInput, Prisma.ListingUncheckedCreateWithoutCategoryInput>
-}
-
-export type ListingUpdateWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.ListingWhereUniqueInput
-  data: Prisma.XOR<Prisma.ListingUpdateWithoutCategoryInput, Prisma.ListingUncheckedUpdateWithoutCategoryInput>
-}
-
-export type ListingUpdateManyWithWhereWithoutCategoryInput = {
-  where: Prisma.ListingScalarWhereInput
-  data: Prisma.XOR<Prisma.ListingUpdateManyMutationInput, Prisma.ListingUncheckedUpdateManyWithoutCategoryInput>
-}
-
-export type ListingCreateWithoutTagsInput = {
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  title: string
-  website?: string | null
-  description?: string | null
-  email?: string | null
-  notes?: string | null
-  inactive?: boolean
-  seekingVolunteers?: boolean | null
-  image?: string | null
-  slug: string
-  pending?: boolean
-  featured?: Date | string | null
-  socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
-  permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
-  relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
-  proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
-  location?: Prisma.ListingLocationCreateNestedOneWithoutListingInput
-  edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
-  actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
-}
-
-export type ListingUncheckedCreateWithoutTagsInput = {
-  id?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  title: string
-  website?: string | null
-  description?: string | null
-  email?: string | null
-  notes?: string | null
-  inactive?: boolean
-  seekingVolunteers?: boolean | null
-  categoryId?: number | null
-  image?: string | null
-  slug: string
-  webId: number
-  pending?: boolean
-  proposerId?: string | null
-  featured?: Date | string | null
-  locationId?: number | null
-  socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
-  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
-  relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
-  edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
-  actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
-}
-
-export type ListingCreateOrConnectWithoutTagsInput = {
-  where: Prisma.ListingWhereUniqueInput
-  create: Prisma.XOR<Prisma.ListingCreateWithoutTagsInput, Prisma.ListingUncheckedCreateWithoutTagsInput>
-}
-
-export type ListingUpsertWithWhereUniqueWithoutTagsInput = {
-  where: Prisma.ListingWhereUniqueInput
-  update: Prisma.XOR<Prisma.ListingUpdateWithoutTagsInput, Prisma.ListingUncheckedUpdateWithoutTagsInput>
-  create: Prisma.XOR<Prisma.ListingCreateWithoutTagsInput, Prisma.ListingUncheckedCreateWithoutTagsInput>
-}
-
-export type ListingUpdateWithWhereUniqueWithoutTagsInput = {
-  where: Prisma.ListingWhereUniqueInput
-  data: Prisma.XOR<Prisma.ListingUpdateWithoutTagsInput, Prisma.ListingUncheckedUpdateWithoutTagsInput>
-}
-
-export type ListingUpdateManyWithWhereWithoutTagsInput = {
-  where: Prisma.ListingScalarWhereInput
-  data: Prisma.XOR<Prisma.ListingUpdateManyMutationInput, Prisma.ListingUncheckedUpdateManyWithoutTagsInput>
 }
 
 export type ListingCreateWithoutRelationOfInput = {
@@ -1468,20 +1000,16 @@ export type ListingCreateWithoutRelationOfInput = {
   inactive?: boolean
   seekingVolunteers?: boolean | null
   image?: string | null
-  slug: string
   pending?: boolean
-  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
   proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingInput
   edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementCreateNestedManyWithoutListingInput
 }
 
 export type ListingUncheckedCreateWithoutRelationOfInput = {
@@ -1495,21 +1023,17 @@ export type ListingUncheckedCreateWithoutRelationOfInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
   edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutListingInput
 }
 
 export type ListingCreateOrConnectWithoutRelationOfInput = {
@@ -1528,20 +1052,16 @@ export type ListingCreateWithoutRelationsInput = {
   inactive?: boolean
   seekingVolunteers?: boolean | null
   image?: string | null
-  slug: string
   pending?: boolean
-  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
   relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
   proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingInput
   edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementCreateNestedManyWithoutListingInput
 }
 
 export type ListingUncheckedCreateWithoutRelationsInput = {
@@ -1555,21 +1075,17 @@ export type ListingUncheckedCreateWithoutRelationsInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
   relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
   edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutListingInput
 }
 
 export type ListingCreateOrConnectWithoutRelationsInput = {
@@ -1609,6 +1125,116 @@ export type ListingUpdateManyWithWhereWithoutRelationsInput = {
   data: Prisma.XOR<Prisma.ListingUpdateManyMutationInput, Prisma.ListingUncheckedUpdateManyWithoutRelationsInput>
 }
 
+export type ListingCreateWithoutPlacementsInput = {
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  title: string
+  website?: string | null
+  description?: string | null
+  email?: string | null
+  notes?: string | null
+  inactive?: boolean
+  seekingVolunteers?: boolean | null
+  image?: string | null
+  pending?: boolean
+  socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
+  permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
+  relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
+  relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
+  proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
+  location?: Prisma.ListingLocationCreateNestedOneWithoutListingInput
+  edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
+  actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
+  analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
+}
+
+export type ListingUncheckedCreateWithoutPlacementsInput = {
+  id?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  title: string
+  website?: string | null
+  description?: string | null
+  email?: string | null
+  notes?: string | null
+  inactive?: boolean
+  seekingVolunteers?: boolean | null
+  image?: string | null
+  pending?: boolean
+  proposerId?: string | null
+  locationId?: number | null
+  socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
+  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
+  relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
+  relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
+  edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
+  actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
+  analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
+}
+
+export type ListingCreateOrConnectWithoutPlacementsInput = {
+  where: Prisma.ListingWhereUniqueInput
+  create: Prisma.XOR<Prisma.ListingCreateWithoutPlacementsInput, Prisma.ListingUncheckedCreateWithoutPlacementsInput>
+}
+
+export type ListingUpsertWithoutPlacementsInput = {
+  update: Prisma.XOR<Prisma.ListingUpdateWithoutPlacementsInput, Prisma.ListingUncheckedUpdateWithoutPlacementsInput>
+  create: Prisma.XOR<Prisma.ListingCreateWithoutPlacementsInput, Prisma.ListingUncheckedCreateWithoutPlacementsInput>
+  where?: Prisma.ListingWhereInput
+}
+
+export type ListingUpdateToOneWithWhereWithoutPlacementsInput = {
+  where?: Prisma.ListingWhereInput
+  data: Prisma.XOR<Prisma.ListingUpdateWithoutPlacementsInput, Prisma.ListingUncheckedUpdateWithoutPlacementsInput>
+}
+
+export type ListingUpdateWithoutPlacementsInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
+  permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
+  relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
+  relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
+  proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
+  location?: Prisma.ListingLocationUpdateOneWithoutListingNestedInput
+  edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
+  actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
+  analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
+}
+
+export type ListingUncheckedUpdateWithoutPlacementsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
+  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
+  relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
+  relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
+  edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
+  actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
+  analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
+}
+
 export type ListingCreateWithoutSocialsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1620,13 +1246,8 @@ export type ListingCreateWithoutSocialsInput = {
   inactive?: boolean
   seekingVolunteers?: boolean | null
   image?: string | null
-  slug: string
   pending?: boolean
-  featured?: Date | string | null
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
   proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
@@ -1634,6 +1255,7 @@ export type ListingCreateWithoutSocialsInput = {
   edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementCreateNestedManyWithoutListingInput
 }
 
 export type ListingUncheckedCreateWithoutSocialsInput = {
@@ -1647,21 +1269,17 @@ export type ListingUncheckedCreateWithoutSocialsInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: Date | string | null
   locationId?: number | null
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
   edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutListingInput
 }
 
 export type ListingCreateOrConnectWithoutSocialsInput = {
@@ -1691,13 +1309,8 @@ export type ListingUpdateWithoutSocialsInput = {
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
   proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
@@ -1705,6 +1318,7 @@ export type ListingUpdateWithoutSocialsInput = {
   edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateWithoutSocialsInput = {
@@ -1718,21 +1332,17 @@ export type ListingUncheckedUpdateWithoutSocialsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
   edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUncheckedUpdateManyWithoutListingNestedInput
 }
 
 export type ListingCreateWithoutActionsInput = {
@@ -1746,20 +1356,16 @@ export type ListingCreateWithoutActionsInput = {
   inactive?: boolean
   seekingVolunteers?: boolean | null
   image?: string | null
-  slug: string
   pending?: boolean
-  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
   proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingInput
   edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementCreateNestedManyWithoutListingInput
 }
 
 export type ListingUncheckedCreateWithoutActionsInput = {
@@ -1773,21 +1379,17 @@ export type ListingUncheckedCreateWithoutActionsInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
   edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutListingInput
 }
 
 export type ListingCreateOrConnectWithoutActionsInput = {
@@ -1817,20 +1419,16 @@ export type ListingUpdateWithoutActionsInput = {
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
   proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingNestedInput
   edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateWithoutActionsInput = {
@@ -1844,21 +1442,17 @@ export type ListingUncheckedUpdateWithoutActionsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
   edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUncheckedUpdateManyWithoutListingNestedInput
 }
 
 export type ListingCreateWithoutEditsInput = {
@@ -1872,20 +1466,16 @@ export type ListingCreateWithoutEditsInput = {
   inactive?: boolean
   seekingVolunteers?: boolean | null
   image?: string | null
-  slug: string
   pending?: boolean
-  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
   proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementCreateNestedManyWithoutListingInput
 }
 
 export type ListingUncheckedCreateWithoutEditsInput = {
@@ -1899,21 +1489,17 @@ export type ListingUncheckedCreateWithoutEditsInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutListingInput
 }
 
 export type ListingCreateOrConnectWithoutEditsInput = {
@@ -1943,20 +1529,16 @@ export type ListingUpdateWithoutEditsInput = {
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
   proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateWithoutEditsInput = {
@@ -1970,21 +1552,17 @@ export type ListingUncheckedUpdateWithoutEditsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUncheckedUpdateManyWithoutListingNestedInput
 }
 
 export type ListingCreateWithoutLocationInput = {
@@ -1998,20 +1576,16 @@ export type ListingCreateWithoutLocationInput = {
   inactive?: boolean
   seekingVolunteers?: boolean | null
   image?: string | null
-  slug: string
   pending?: boolean
-  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
   proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
   edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementCreateNestedManyWithoutListingInput
 }
 
 export type ListingUncheckedCreateWithoutLocationInput = {
@@ -2025,21 +1599,17 @@ export type ListingUncheckedCreateWithoutLocationInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
   edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutListingInput
 }
 
 export type ListingCreateOrConnectWithoutLocationInput = {
@@ -2069,20 +1639,16 @@ export type ListingUpdateWithoutLocationInput = {
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
   proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
   edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateWithoutLocationInput = {
@@ -2096,21 +1662,17 @@ export type ListingUncheckedUpdateWithoutLocationInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
   edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUncheckedUpdateManyWithoutListingNestedInput
 }
 
 export type ListingCreateWithoutPermissionsInput = {
@@ -2124,13 +1686,8 @@ export type ListingCreateWithoutPermissionsInput = {
   inactive?: boolean
   seekingVolunteers?: boolean | null
   image?: string | null
-  slug: string
   pending?: boolean
-  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
   proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
@@ -2138,6 +1695,7 @@ export type ListingCreateWithoutPermissionsInput = {
   edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementCreateNestedManyWithoutListingInput
 }
 
 export type ListingUncheckedCreateWithoutPermissionsInput = {
@@ -2151,21 +1709,17 @@ export type ListingUncheckedCreateWithoutPermissionsInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
   edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutListingInput
 }
 
 export type ListingCreateOrConnectWithoutPermissionsInput = {
@@ -2200,20 +1754,16 @@ export type ListingCreateWithoutAnalyticsDailyInput = {
   inactive?: boolean
   seekingVolunteers?: boolean | null
   image?: string | null
-  slug: string
   pending?: boolean
-  featured?: Date | string | null
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingInput
-  web?: Prisma.WebCreateNestedOneWithoutListingsInput
-  category?: Prisma.CategoryCreateNestedOneWithoutListingsInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingCreateNestedManyWithoutRelationsInput
   proposer?: Prisma.UserCreateNestedOneWithoutProposedListingsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingInput
   edits?: Prisma.ListingEditCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementCreateNestedManyWithoutListingInput
 }
 
 export type ListingUncheckedCreateWithoutAnalyticsDailyInput = {
@@ -2227,21 +1777,17 @@ export type ListingUncheckedCreateWithoutAnalyticsDailyInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
   proposerId?: string | null
-  featured?: Date | string | null
   locationId?: number | null
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutListingsInput
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingsInput
   relations?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationOfInput
   relationOf?: Prisma.ListingUncheckedCreateNestedManyWithoutRelationsInput
   edits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutListingInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingInput
+  placements?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutListingInput
 }
 
 export type ListingCreateOrConnectWithoutAnalyticsDailyInput = {
@@ -2271,20 +1817,16 @@ export type ListingUpdateWithoutAnalyticsDailyInput = {
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
   proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingNestedInput
   edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateWithoutAnalyticsDailyInput = {
@@ -2298,21 +1840,17 @@ export type ListingUncheckedUpdateWithoutAnalyticsDailyInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
   edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUncheckedUpdateManyWithoutListingNestedInput
 }
 
 export type ListingCreateManyProposerInput = {
@@ -2326,12 +1864,8 @@ export type ListingCreateManyProposerInput = {
   notes?: string | null
   inactive?: boolean
   seekingVolunteers?: boolean | null
-  categoryId?: number | null
   image?: string | null
-  slug: string
-  webId: number
   pending?: boolean
-  featured?: Date | string | null
   locationId?: number | null
 }
 
@@ -2346,20 +1880,16 @@ export type ListingUpdateWithoutProposerInput = {
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingNestedInput
   edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateWithoutProposerInput = {
@@ -2373,21 +1903,17 @@ export type ListingUncheckedUpdateWithoutProposerInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
   edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUncheckedUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateManyWithoutProposerInput = {
@@ -2401,278 +1927,8 @@ export type ListingUncheckedUpdateManyWithoutProposerInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-}
-
-export type ListingCreateManyWebInput = {
-  id?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  title: string
-  website?: string | null
-  description?: string | null
-  email?: string | null
-  notes?: string | null
-  inactive?: boolean
-  seekingVolunteers?: boolean | null
-  categoryId?: number | null
-  image?: string | null
-  slug: string
-  pending?: boolean
-  proposerId?: string | null
-  featured?: Date | string | null
-  locationId?: number | null
-}
-
-export type ListingUpdateWithoutWebInput = {
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
-  permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
-  relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
-  relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
-  proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
-  location?: Prisma.ListingLocationUpdateOneWithoutListingNestedInput
-  edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
-  actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
-}
-
-export type ListingUncheckedUpdateWithoutWebInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
-  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
-  relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
-  relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
-  edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
-  actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
-}
-
-export type ListingUncheckedUpdateManyWithoutWebInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-}
-
-export type ListingCreateManyCategoryInput = {
-  id?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  title: string
-  website?: string | null
-  description?: string | null
-  email?: string | null
-  notes?: string | null
-  inactive?: boolean
-  seekingVolunteers?: boolean | null
-  image?: string | null
-  slug: string
-  webId: number
-  pending?: boolean
-  proposerId?: string | null
-  featured?: Date | string | null
-  locationId?: number | null
-}
-
-export type ListingUpdateWithoutCategoryInput = {
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
-  relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
-  relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
-  proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
-  location?: Prisma.ListingLocationUpdateOneWithoutListingNestedInput
-  edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
-  actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
-}
-
-export type ListingUncheckedUpdateWithoutCategoryInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
-  pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
-  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
-  relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
-  relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
-  edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
-  actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
-}
-
-export type ListingUncheckedUpdateManyWithoutCategoryInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
-  pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-}
-
-export type ListingUpdateWithoutTagsInput = {
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
-  permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
-  relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
-  proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
-  location?: Prisma.ListingLocationUpdateOneWithoutListingNestedInput
-  edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
-  actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
-}
-
-export type ListingUncheckedUpdateWithoutTagsInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
-  pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
-  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
-  relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
-  edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
-  actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
-  analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
-}
-
-export type ListingUncheckedUpdateManyWithoutTagsInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
-  pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -2687,20 +1943,16 @@ export type ListingUpdateWithoutRelationOfInput = {
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
   proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingNestedInput
   edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateWithoutRelationOfInput = {
@@ -2714,21 +1966,17 @@ export type ListingUncheckedUpdateWithoutRelationOfInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
   edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUncheckedUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateManyWithoutRelationOfInput = {
@@ -2742,13 +1990,9 @@ export type ListingUncheckedUpdateManyWithoutRelationOfInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -2763,20 +2007,16 @@ export type ListingUpdateWithoutRelationsInput = {
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
   relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
   proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingNestedInput
   edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateWithoutRelationsInput = {
@@ -2790,21 +2030,17 @@ export type ListingUncheckedUpdateWithoutRelationsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutListingsNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
   relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
   edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUncheckedUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateManyWithoutRelationsInput = {
@@ -2818,13 +2054,9 @@ export type ListingUncheckedUpdateManyWithoutRelationsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -2839,13 +2071,8 @@ export type ListingUpdateWithoutPermissionsInput = {
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingNestedInput
-  web?: Prisma.WebUpdateOneWithoutListingsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUpdateManyWithoutRelationsNestedInput
   proposer?: Prisma.UserUpdateOneWithoutProposedListingsNestedInput
@@ -2853,6 +2080,7 @@ export type ListingUpdateWithoutPermissionsInput = {
   edits?: Prisma.ListingEditUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateWithoutPermissionsInput = {
@@ -2866,21 +2094,17 @@ export type ListingUncheckedUpdateWithoutPermissionsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingNestedInput
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingsNestedInput
   relations?: Prisma.ListingUncheckedUpdateManyWithoutRelationOfNestedInput
   relationOf?: Prisma.ListingUncheckedUpdateManyWithoutRelationsNestedInput
   edits?: Prisma.ListingEditUncheckedUpdateManyWithoutListingNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingNestedInput
   analyticsDaily?: Prisma.ListingAnalyticsDailyUncheckedUpdateManyWithoutListingNestedInput
+  placements?: Prisma.ListingPlacementUncheckedUpdateManyWithoutListingNestedInput
 }
 
 export type ListingUncheckedUpdateManyWithoutPermissionsInput = {
@@ -2894,13 +2118,9 @@ export type ListingUncheckedUpdateManyWithoutPermissionsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inactive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   seekingVolunteers?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
   pending?: Prisma.BoolFieldUpdateOperationsInput | boolean
   proposerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  featured?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -2912,23 +2132,23 @@ export type ListingUncheckedUpdateManyWithoutPermissionsInput = {
 export type ListingCountOutputType = {
   socials: number
   permissions: number
-  tags: number
   relations: number
   relationOf: number
   edits: number
   actions: number
   analyticsDaily: number
+  placements: number
 }
 
 export type ListingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   socials?: boolean | ListingCountOutputTypeCountSocialsArgs
   permissions?: boolean | ListingCountOutputTypeCountPermissionsArgs
-  tags?: boolean | ListingCountOutputTypeCountTagsArgs
   relations?: boolean | ListingCountOutputTypeCountRelationsArgs
   relationOf?: boolean | ListingCountOutputTypeCountRelationOfArgs
   edits?: boolean | ListingCountOutputTypeCountEditsArgs
   actions?: boolean | ListingCountOutputTypeCountActionsArgs
   analyticsDaily?: boolean | ListingCountOutputTypeCountAnalyticsDailyArgs
+  placements?: boolean | ListingCountOutputTypeCountPlacementsArgs
 }
 
 /**
@@ -2953,13 +2173,6 @@ export type ListingCountOutputTypeCountSocialsArgs<ExtArgs extends runtime.Types
  */
 export type ListingCountOutputTypeCountPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PermissionWhereInput
-}
-
-/**
- * ListingCountOutputType without action
- */
-export type ListingCountOutputTypeCountTagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.TagWhereInput
 }
 
 /**
@@ -2997,6 +2210,13 @@ export type ListingCountOutputTypeCountAnalyticsDailyArgs<ExtArgs extends runtim
   where?: Prisma.ListingAnalyticsDailyWhereInput
 }
 
+/**
+ * ListingCountOutputType without action
+ */
+export type ListingCountOutputTypeCountPlacementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ListingPlacementWhereInput
+}
+
 
 export type ListingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3009,19 +2229,12 @@ export type ListingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   notes?: boolean
   inactive?: boolean
   seekingVolunteers?: boolean
-  categoryId?: boolean
   image?: boolean
-  slug?: boolean
-  webId?: boolean
   pending?: boolean
   proposerId?: boolean
-  featured?: boolean
   locationId?: boolean
   socials?: boolean | Prisma.Listing$socialsArgs<ExtArgs>
-  web?: boolean | Prisma.Listing$webArgs<ExtArgs>
-  category?: boolean | Prisma.Listing$categoryArgs<ExtArgs>
   permissions?: boolean | Prisma.Listing$permissionsArgs<ExtArgs>
-  tags?: boolean | Prisma.Listing$tagsArgs<ExtArgs>
   relations?: boolean | Prisma.Listing$relationsArgs<ExtArgs>
   relationOf?: boolean | Prisma.Listing$relationOfArgs<ExtArgs>
   proposer?: boolean | Prisma.Listing$proposerArgs<ExtArgs>
@@ -3029,6 +2242,7 @@ export type ListingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   edits?: boolean | Prisma.Listing$editsArgs<ExtArgs>
   actions?: boolean | Prisma.Listing$actionsArgs<ExtArgs>
   analyticsDaily?: boolean | Prisma.Listing$analyticsDailyArgs<ExtArgs>
+  placements?: boolean | Prisma.Listing$placementsArgs<ExtArgs>
   _count?: boolean | Prisma.ListingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["listing"]>
 
@@ -3043,16 +2257,10 @@ export type ListingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   notes?: boolean
   inactive?: boolean
   seekingVolunteers?: boolean
-  categoryId?: boolean
   image?: boolean
-  slug?: boolean
-  webId?: boolean
   pending?: boolean
   proposerId?: boolean
-  featured?: boolean
   locationId?: boolean
-  web?: boolean | Prisma.Listing$webArgs<ExtArgs>
-  category?: boolean | Prisma.Listing$categoryArgs<ExtArgs>
   proposer?: boolean | Prisma.Listing$proposerArgs<ExtArgs>
   location?: boolean | Prisma.Listing$locationArgs<ExtArgs>
 }, ExtArgs["result"]["listing"]>
@@ -3068,16 +2276,10 @@ export type ListingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   notes?: boolean
   inactive?: boolean
   seekingVolunteers?: boolean
-  categoryId?: boolean
   image?: boolean
-  slug?: boolean
-  webId?: boolean
   pending?: boolean
   proposerId?: boolean
-  featured?: boolean
   locationId?: boolean
-  web?: boolean | Prisma.Listing$webArgs<ExtArgs>
-  category?: boolean | Prisma.Listing$categoryArgs<ExtArgs>
   proposer?: boolean | Prisma.Listing$proposerArgs<ExtArgs>
   location?: boolean | Prisma.Listing$locationArgs<ExtArgs>
 }, ExtArgs["result"]["listing"]>
@@ -3093,23 +2295,16 @@ export type ListingSelectScalar = {
   notes?: boolean
   inactive?: boolean
   seekingVolunteers?: boolean
-  categoryId?: boolean
   image?: boolean
-  slug?: boolean
-  webId?: boolean
   pending?: boolean
   proposerId?: boolean
-  featured?: boolean
   locationId?: boolean
 }
 
-export type ListingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "title" | "website" | "description" | "email" | "notes" | "inactive" | "seekingVolunteers" | "categoryId" | "image" | "slug" | "webId" | "pending" | "proposerId" | "featured" | "locationId", ExtArgs["result"]["listing"]>
+export type ListingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "title" | "website" | "description" | "email" | "notes" | "inactive" | "seekingVolunteers" | "image" | "pending" | "proposerId" | "locationId", ExtArgs["result"]["listing"]>
 export type ListingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   socials?: boolean | Prisma.Listing$socialsArgs<ExtArgs>
-  web?: boolean | Prisma.Listing$webArgs<ExtArgs>
-  category?: boolean | Prisma.Listing$categoryArgs<ExtArgs>
   permissions?: boolean | Prisma.Listing$permissionsArgs<ExtArgs>
-  tags?: boolean | Prisma.Listing$tagsArgs<ExtArgs>
   relations?: boolean | Prisma.Listing$relationsArgs<ExtArgs>
   relationOf?: boolean | Prisma.Listing$relationOfArgs<ExtArgs>
   proposer?: boolean | Prisma.Listing$proposerArgs<ExtArgs>
@@ -3117,17 +2312,14 @@ export type ListingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   edits?: boolean | Prisma.Listing$editsArgs<ExtArgs>
   actions?: boolean | Prisma.Listing$actionsArgs<ExtArgs>
   analyticsDaily?: boolean | Prisma.Listing$analyticsDailyArgs<ExtArgs>
+  placements?: boolean | Prisma.Listing$placementsArgs<ExtArgs>
   _count?: boolean | Prisma.ListingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ListingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  web?: boolean | Prisma.Listing$webArgs<ExtArgs>
-  category?: boolean | Prisma.Listing$categoryArgs<ExtArgs>
   proposer?: boolean | Prisma.Listing$proposerArgs<ExtArgs>
   location?: boolean | Prisma.Listing$locationArgs<ExtArgs>
 }
 export type ListingIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  web?: boolean | Prisma.Listing$webArgs<ExtArgs>
-  category?: boolean | Prisma.Listing$categoryArgs<ExtArgs>
   proposer?: boolean | Prisma.Listing$proposerArgs<ExtArgs>
   location?: boolean | Prisma.Listing$locationArgs<ExtArgs>
 }
@@ -3136,10 +2328,7 @@ export type $ListingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Listing"
   objects: {
     socials: Prisma.$ListingSocialMediaPayload<ExtArgs>[]
-    web: Prisma.$WebPayload<ExtArgs> | null
-    category: Prisma.$CategoryPayload<ExtArgs> | null
     permissions: Prisma.$PermissionPayload<ExtArgs>[]
-    tags: Prisma.$TagPayload<ExtArgs>[]
     relations: Prisma.$ListingPayload<ExtArgs>[]
     relationOf: Prisma.$ListingPayload<ExtArgs>[]
     proposer: Prisma.$UserPayload<ExtArgs> | null
@@ -3147,6 +2336,7 @@ export type $ListingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     edits: Prisma.$ListingEditPayload<ExtArgs>[]
     actions: Prisma.$ListingActionPayload<ExtArgs>[]
     analyticsDaily: Prisma.$ListingAnalyticsDailyPayload<ExtArgs>[]
+    placements: Prisma.$ListingPlacementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -3159,13 +2349,9 @@ export type $ListingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     notes: string | null
     inactive: boolean
     seekingVolunteers: boolean | null
-    categoryId: number | null
     image: string | null
-    slug: string
-    webId: number
     pending: boolean
     proposerId: string | null
-    featured: Date | null
     locationId: number | null
   }, ExtArgs["result"]["listing"]>
   composites: {}
@@ -3562,10 +2748,7 @@ readonly fields: ListingFieldRefs;
 export interface Prisma__ListingClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   socials<T extends Prisma.Listing$socialsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$socialsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListingSocialMediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  web<T extends Prisma.Listing$webArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$webArgs<ExtArgs>>): Prisma.Prisma__WebClient<runtime.Types.Result.GetResult<Prisma.$WebPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  category<T extends Prisma.Listing$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   permissions<T extends Prisma.Listing$permissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$permissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  tags<T extends Prisma.Listing$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   relations<T extends Prisma.Listing$relationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$relationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   relationOf<T extends Prisma.Listing$relationOfArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$relationOfArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   proposer<T extends Prisma.Listing$proposerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$proposerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -3573,6 +2756,7 @@ export interface Prisma__ListingClient<T, Null = never, ExtArgs extends runtime.
   edits<T extends Prisma.Listing$editsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$editsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListingEditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   actions<T extends Prisma.Listing$actionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$actionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListingActionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   analyticsDaily<T extends Prisma.Listing$analyticsDailyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$analyticsDailyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListingAnalyticsDailyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  placements<T extends Prisma.Listing$placementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Listing$placementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListingPlacementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3612,13 +2796,9 @@ export interface ListingFieldRefs {
   readonly notes: Prisma.FieldRef<"Listing", 'String'>
   readonly inactive: Prisma.FieldRef<"Listing", 'Boolean'>
   readonly seekingVolunteers: Prisma.FieldRef<"Listing", 'Boolean'>
-  readonly categoryId: Prisma.FieldRef<"Listing", 'Int'>
   readonly image: Prisma.FieldRef<"Listing", 'String'>
-  readonly slug: Prisma.FieldRef<"Listing", 'String'>
-  readonly webId: Prisma.FieldRef<"Listing", 'Int'>
   readonly pending: Prisma.FieldRef<"Listing", 'Boolean'>
   readonly proposerId: Prisma.FieldRef<"Listing", 'String'>
-  readonly featured: Prisma.FieldRef<"Listing", 'DateTime'>
   readonly locationId: Prisma.FieldRef<"Listing", 'Int'>
 }
     
@@ -4045,44 +3225,6 @@ export type Listing$socialsArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * Listing.web
- */
-export type Listing$webArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Web
-   */
-  select?: Prisma.WebSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Web
-   */
-  omit?: Prisma.WebOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WebInclude<ExtArgs> | null
-  where?: Prisma.WebWhereInput
-}
-
-/**
- * Listing.category
- */
-export type Listing$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Category
-   */
-  select?: Prisma.CategorySelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Category
-   */
-  omit?: Prisma.CategoryOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CategoryInclude<ExtArgs> | null
-  where?: Prisma.CategoryWhereInput
-}
-
-/**
  * Listing.permissions
  */
 export type Listing$permissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4104,30 +3246,6 @@ export type Listing$permissionsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.PermissionScalarFieldEnum | Prisma.PermissionScalarFieldEnum[]
-}
-
-/**
- * Listing.tags
- */
-export type Listing$tagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Tag
-   */
-  select?: Prisma.TagSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Tag
-   */
-  omit?: Prisma.TagOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TagInclude<ExtArgs> | null
-  where?: Prisma.TagWhereInput
-  orderBy?: Prisma.TagOrderByWithRelationInput | Prisma.TagOrderByWithRelationInput[]
-  cursor?: Prisma.TagWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.TagScalarFieldEnum | Prisma.TagScalarFieldEnum[]
 }
 
 /**
@@ -4286,6 +3404,30 @@ export type Listing$analyticsDailyArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.ListingAnalyticsDailyScalarFieldEnum | Prisma.ListingAnalyticsDailyScalarFieldEnum[]
+}
+
+/**
+ * Listing.placements
+ */
+export type Listing$placementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ListingPlacement
+   */
+  select?: Prisma.ListingPlacementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ListingPlacement
+   */
+  omit?: Prisma.ListingPlacementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ListingPlacementInclude<ExtArgs> | null
+  where?: Prisma.ListingPlacementWhereInput
+  orderBy?: Prisma.ListingPlacementOrderByWithRelationInput | Prisma.ListingPlacementOrderByWithRelationInput[]
+  cursor?: Prisma.ListingPlacementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ListingPlacementScalarFieldEnum | Prisma.ListingPlacementScalarFieldEnum[]
 }
 
 /**

@@ -56,11 +56,21 @@ export const deleteWebBySlug = async (slug: string) => {
     throw new Error('Web not found')
   }
 
-  await prisma.listing.deleteMany({
+  // Drop listings whose only placement was in this web; the others survive via cascade
+  // detach when we delete the web below.
+  const orphanedListings = await prisma.listing.findMany({
     where: {
-      webId: web.id,
+      placements: {
+        every: { webId: web.id },
+      },
     },
+    select: { id: true },
   })
+  if (orphanedListings.length > 0) {
+    await prisma.listing.deleteMany({
+      where: { id: { in: orphanedListings.map((l) => l.id) } },
+    })
+  }
 
   await prisma.category.deleteMany({
     where: {

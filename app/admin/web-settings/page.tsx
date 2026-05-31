@@ -7,7 +7,6 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form'
-import type { MultiValue, ActionMeta } from 'react-select'
 import dynamic from 'next/dynamic'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
@@ -27,12 +26,14 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { Spinner } from '@components/ui/spinner'
+import {
+  MultiSelect,
+  type MultiSelectOption,
+} from '@components/ui/multi-select'
 import useUpdateWeb from '@hooks/webs/useUpdateWeb'
 import useWeb from '@hooks/webs/useWeb'
 import useWebs from '@hooks/webs/useWebs'
 import { useAppContext } from '@store/hooks'
-
-const Select = dynamic(() => import('react-select'), { ssr: false })
 
 const SetLocationMap = dynamic(
   () => import('@components/admin/set-location-map'),
@@ -63,11 +64,6 @@ const webSettingsSchema = z.object({
 
 type WebSettingsForm = z.infer<typeof webSettingsSchema>
 
-type WebOption = {
-  value: string | number
-  label: string
-}
-
 function WebsSelect({ selectedWebSlug }: { selectedWebSlug: string }) {
   const { webs, isPending } = useWebs()
   const { control, setValue, watch } = useFormContext<WebSettingsForm>()
@@ -75,7 +71,7 @@ function WebsSelect({ selectedWebSlug }: { selectedWebSlug: string }) {
   const currentWebs = watch('relatedWebs') || []
 
   const currentWebIds = currentWebs.map((web) => web.value)
-  const options: WebOption[] =
+  const options: MultiSelectOption[] =
     webs
       ?.filter((web) => web.slug !== selectedWebSlug)
       ?.filter((web) => !currentWebIds.includes(web.id))
@@ -84,11 +80,8 @@ function WebsSelect({ selectedWebSlug }: { selectedWebSlug: string }) {
         label: web.title,
       })) || []
 
-  const handleChange = (
-    newValue: MultiValue<WebOption>,
-    _actionMeta: ActionMeta<WebOption>,
-  ) => {
-    setValue('relatedWebs', newValue as WebOption[], { shouldDirty: true })
+  const handleChange = (newValue: MultiSelectOption[]) => {
+    setValue('relatedWebs', newValue, { shouldDirty: true })
   }
 
   if (isPending) return <Spinner />
@@ -97,16 +90,13 @@ function WebsSelect({ selectedWebSlug }: { selectedWebSlug: string }) {
     <FormField
       control={control}
       name="relatedWebs"
-      render={({ field: _field }) => (
+      render={() => (
         <FormItem>
-          <Select
-            isMulti
+          <MultiSelect
             options={options}
-            value={currentWebs}
+            value={currentWebs as MultiSelectOption[]}
             placeholder="Select related webs..."
-            isSearchable
             onChange={handleChange}
-            menuPlacement="auto"
           />
         </FormItem>
       )}

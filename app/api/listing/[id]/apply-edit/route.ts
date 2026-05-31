@@ -25,7 +25,6 @@ export async function POST(
     const listingId = params.id
     const { listingEditId } = await request.json()
 
-    // Get the listing edit with related user and listing info
     const listingEdit = await prisma.listingEdit.findUnique({
       where: {
         id: listingEditId,
@@ -34,13 +33,11 @@ export async function POST(
         user: true,
         socials: true,
         actions: true,
+        tags: true,
         category: true,
         location: true,
-        listing: {
-          include: {
-            web: true,
-          },
-        },
+        web: true,
+        listing: true,
       },
     })
 
@@ -48,12 +45,28 @@ export async function POST(
       return new Response('Listing edit not found', { status: 404 })
     }
 
+    const placement = await prisma.listingPlacement.findUnique({
+      where: {
+        listingPlacementPair: {
+          listingId: listingEdit.listingId,
+          webId: listingEdit.webId,
+        },
+      },
+      include: { web: true },
+    })
+
+    if (!placement) {
+      return new Response(
+        'Placement for this edit no longer exists',
+        { status: 404 },
+      )
+    }
+
     const currentListing = await prisma.listing.findUnique({
       where: {
         id: parseInt(listingId),
       },
       include: {
-        category: true,
         location: true,
       },
     })
@@ -63,11 +76,6 @@ export async function POST(
       description: listingEdit.description,
       website: listingEdit.website,
       email: listingEdit.email,
-      category: {
-        connect: {
-          id: listingEdit.category.id,
-        },
-      },
       socials: {
         deleteMany: {},
         create: listingEdit.socials.map((social) => ({
@@ -124,34 +132,43 @@ export async function POST(
       }
     }
 
-    // Update the listing with the edited values
-    const updatedListing = await prisma.listing.update({
-      where: {
-        id: parseInt(listingId),
-      },
-      data: newData,
-      include: {
-        web: true,
-      },
-    })
+    const [updatedListing] = await prisma.$transaction([
+      prisma.listing.update({
+        where: { id: parseInt(listingId) },
+        data: newData,
+      }),
+      prisma.listingPlacement.update({
+        where: { id: placement.id },
+        data: {
+          ...(listingEdit.categoryId
+            ? { category: { connect: { id: listingEdit.categoryId } } }
+            : {}),
+          // Only overwrite tags when the edit actually carried some, so that
+          // approving legacy edits (created before tag support) doesn't wipe
+          // the placement's existing tags.
+          ...(listingEdit.tags.length > 0
+            ? { tags: { set: listingEdit.tags.map((t) => ({ id: t.id })) } }
+            : {}),
+        },
+      }),
+    ])
 
-    // Send email to the user who proposed the edit
     if (listingEdit.user?.email) {
       await sendEmail({
         to: listingEdit.user.email,
         subject: `Your edit to ${listingEdit.title || updatedListing.title} has been accepted`,
         email: ListingEditAcceptedEmail({
-          webTitle: listingEdit.listing.web.title,
+          webTitle: placement.web.title,
           listingTitle: listingEdit.title || updatedListing.title,
-          listingSlug: listingEdit.listing.slug,
-          webSlug: listingEdit.listing.web.slug,
+          listingSlug: placement.slug,
+          webSlug: placement.web.slug,
         }),
       })
     }
 
     await markListingEditAsAccepted(listingEditId)
 
-    revalidatePath(`/${updatedListing.web.slug}`)
+    revalidatePath(`/${placement.web.slug}`)
 
     return Response.json({
       listing: updatedListing,

@@ -40,8 +40,10 @@ const ListingMap = dynamic(() => import('@components/listing-map'), {
 
 function Listing({ listing }) {
   useEffect(() => {
-    trackListingEvent(listing.id, 'view')
-  }, [listing.id])
+    if (listing.web?.id) {
+      trackListingEvent(listing.id, listing.web.id, 'view')
+    }
+  }, [listing.id, listing.web?.id])
 
   const websiteSanitized = useMemo(
     () => sanitizeLink(listing.website),
@@ -253,8 +255,10 @@ function Listing({ listing }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() =>
+                      listing.web?.id &&
                       trackListingEvent(
                         listing.id,
+                        listing.web.id,
                         `action_${action.type.toLowerCase()}`,
                       )
                     }
@@ -340,6 +344,23 @@ function Listing({ listing }) {
                 </Link>
               )
             })}
+          </div>
+        )}
+
+        {listing.alsoListedIn?.length > 0 && (
+          <div className="mt-8 text-sm text-gray-500">
+            Also listed in:{' '}
+            {listing.alsoListedIn.map((entry, index) => (
+              <span key={entry.web.slug}>
+                {index > 0 && ', '}
+                <a
+                  href={`${getWebUrl(entry.web.slug)}/${entry.slug}`}
+                  className="font-medium text-gray-700 underline-offset-2 hover:underline"
+                >
+                  {entry.web.title}
+                </a>
+              </span>
+            ))}
           </div>
         )}
       </div>

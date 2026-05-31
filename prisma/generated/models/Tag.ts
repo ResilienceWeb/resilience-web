@@ -217,7 +217,7 @@ export type TagWhereInput = {
   webId?: Prisma.IntNullableFilter<"Tag"> | number | null
   listingEditId?: Prisma.IntNullableFilter<"Tag"> | number | null
   web?: Prisma.XOR<Prisma.WebNullableScalarRelationFilter, Prisma.WebWhereInput> | null
-  listings?: Prisma.ListingListRelationFilter
+  listings?: Prisma.ListingPlacementListRelationFilter
   ListingEdit?: Prisma.XOR<Prisma.ListingEditNullableScalarRelationFilter, Prisma.ListingEditWhereInput> | null
 }
 
@@ -227,7 +227,7 @@ export type TagOrderByWithRelationInput = {
   webId?: Prisma.SortOrderInput | Prisma.SortOrder
   listingEditId?: Prisma.SortOrderInput | Prisma.SortOrder
   web?: Prisma.WebOrderByWithRelationInput
-  listings?: Prisma.ListingOrderByRelationAggregateInput
+  listings?: Prisma.ListingPlacementOrderByRelationAggregateInput
   ListingEdit?: Prisma.ListingEditOrderByWithRelationInput
 }
 
@@ -241,7 +241,7 @@ export type TagWhereUniqueInput = Prisma.AtLeast<{
   webId?: Prisma.IntNullableFilter<"Tag"> | number | null
   listingEditId?: Prisma.IntNullableFilter<"Tag"> | number | null
   web?: Prisma.XOR<Prisma.WebNullableScalarRelationFilter, Prisma.WebWhereInput> | null
-  listings?: Prisma.ListingListRelationFilter
+  listings?: Prisma.ListingPlacementListRelationFilter
   ListingEdit?: Prisma.XOR<Prisma.ListingEditNullableScalarRelationFilter, Prisma.ListingEditWhereInput> | null
 }, "id" | "tagIdentifier">
 
@@ -270,7 +270,7 @@ export type TagScalarWhereWithAggregatesInput = {
 export type TagCreateInput = {
   label: string
   web?: Prisma.WebCreateNestedOneWithoutTagsInput
-  listings?: Prisma.ListingCreateNestedManyWithoutTagsInput
+  listings?: Prisma.ListingPlacementCreateNestedManyWithoutTagsInput
   ListingEdit?: Prisma.ListingEditCreateNestedOneWithoutTagsInput
 }
 
@@ -279,13 +279,13 @@ export type TagUncheckedCreateInput = {
   label: string
   webId?: number | null
   listingEditId?: number | null
-  listings?: Prisma.ListingUncheckedCreateNestedManyWithoutTagsInput
+  listings?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutTagsInput
 }
 
 export type TagUpdateInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   web?: Prisma.WebUpdateOneWithoutTagsNestedInput
-  listings?: Prisma.ListingUpdateManyWithoutTagsNestedInput
+  listings?: Prisma.ListingPlacementUpdateManyWithoutTagsNestedInput
   ListingEdit?: Prisma.ListingEditUpdateOneWithoutTagsNestedInput
 }
 
@@ -294,7 +294,7 @@ export type TagUncheckedUpdateInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   webId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   listingEditId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  listings?: Prisma.ListingUncheckedUpdateManyWithoutTagsNestedInput
+  listings?: Prisma.ListingPlacementUncheckedUpdateManyWithoutTagsNestedInput
 }
 
 export type TagCreateManyInput = {
@@ -487,7 +487,7 @@ export type TagUncheckedUpdateManyWithoutListingEditNestedInput = {
 
 export type TagCreateWithoutWebInput = {
   label: string
-  listings?: Prisma.ListingCreateNestedManyWithoutTagsInput
+  listings?: Prisma.ListingPlacementCreateNestedManyWithoutTagsInput
   ListingEdit?: Prisma.ListingEditCreateNestedOneWithoutTagsInput
 }
 
@@ -495,7 +495,7 @@ export type TagUncheckedCreateWithoutWebInput = {
   id?: number
   label: string
   listingEditId?: number | null
-  listings?: Prisma.ListingUncheckedCreateNestedManyWithoutTagsInput
+  listings?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutTagsInput
 }
 
 export type TagCreateOrConnectWithoutWebInput = {
@@ -571,14 +571,14 @@ export type TagUpdateManyWithWhereWithoutListingsInput = {
 export type TagCreateWithoutListingEditInput = {
   label: string
   web?: Prisma.WebCreateNestedOneWithoutTagsInput
-  listings?: Prisma.ListingCreateNestedManyWithoutTagsInput
+  listings?: Prisma.ListingPlacementCreateNestedManyWithoutTagsInput
 }
 
 export type TagUncheckedCreateWithoutListingEditInput = {
   id?: number
   label: string
   webId?: number | null
-  listings?: Prisma.ListingUncheckedCreateNestedManyWithoutTagsInput
+  listings?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutTagsInput
 }
 
 export type TagCreateOrConnectWithoutListingEditInput = {
@@ -615,7 +615,7 @@ export type TagCreateManyWebInput = {
 
 export type TagUpdateWithoutWebInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
-  listings?: Prisma.ListingUpdateManyWithoutTagsNestedInput
+  listings?: Prisma.ListingPlacementUpdateManyWithoutTagsNestedInput
   ListingEdit?: Prisma.ListingEditUpdateOneWithoutTagsNestedInput
 }
 
@@ -623,7 +623,7 @@ export type TagUncheckedUpdateWithoutWebInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   listingEditId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  listings?: Prisma.ListingUncheckedUpdateManyWithoutTagsNestedInput
+  listings?: Prisma.ListingPlacementUncheckedUpdateManyWithoutTagsNestedInput
 }
 
 export type TagUncheckedUpdateManyWithoutWebInput = {
@@ -661,14 +661,14 @@ export type TagCreateManyListingEditInput = {
 export type TagUpdateWithoutListingEditInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   web?: Prisma.WebUpdateOneWithoutTagsNestedInput
-  listings?: Prisma.ListingUpdateManyWithoutTagsNestedInput
+  listings?: Prisma.ListingPlacementUpdateManyWithoutTagsNestedInput
 }
 
 export type TagUncheckedUpdateWithoutListingEditInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   webId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  listings?: Prisma.ListingUncheckedUpdateManyWithoutTagsNestedInput
+  listings?: Prisma.ListingPlacementUncheckedUpdateManyWithoutTagsNestedInput
 }
 
 export type TagUncheckedUpdateManyWithoutListingEditInput = {
@@ -704,7 +704,7 @@ export type TagCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensio
  * TagCountOutputType without action
  */
 export type TagCountOutputTypeCountListingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ListingWhereInput
+  where?: Prisma.ListingPlacementWhereInput
 }
 
 
@@ -764,7 +764,7 @@ export type $TagPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   name: "Tag"
   objects: {
     web: Prisma.$WebPayload<ExtArgs> | null
-    listings: Prisma.$ListingPayload<ExtArgs>[]
+    listings: Prisma.$ListingPlacementPayload<ExtArgs>[]
     ListingEdit: Prisma.$ListingEditPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1167,7 +1167,7 @@ readonly fields: TagFieldRefs;
 export interface Prisma__TagClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   web<T extends Prisma.Tag$webArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tag$webArgs<ExtArgs>>): Prisma.Prisma__WebClient<runtime.Types.Result.GetResult<Prisma.$WebPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  listings<T extends Prisma.Tag$listingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tag$listingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  listings<T extends Prisma.Tag$listingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tag$listingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListingPlacementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ListingEdit<T extends Prisma.Tag$ListingEditArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tag$ListingEditArgs<ExtArgs>>): Prisma.Prisma__ListingEditClient<runtime.Types.Result.GetResult<Prisma.$ListingEditPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1626,23 +1626,23 @@ export type Tag$webArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
  */
 export type Tag$listingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Listing
+   * Select specific fields to fetch from the ListingPlacement
    */
-  select?: Prisma.ListingSelect<ExtArgs> | null
+  select?: Prisma.ListingPlacementSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Listing
+   * Omit specific fields from the ListingPlacement
    */
-  omit?: Prisma.ListingOmit<ExtArgs> | null
+  omit?: Prisma.ListingPlacementOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ListingInclude<ExtArgs> | null
-  where?: Prisma.ListingWhereInput
-  orderBy?: Prisma.ListingOrderByWithRelationInput | Prisma.ListingOrderByWithRelationInput[]
-  cursor?: Prisma.ListingWhereUniqueInput
+  include?: Prisma.ListingPlacementInclude<ExtArgs> | null
+  where?: Prisma.ListingPlacementWhereInput
+  orderBy?: Prisma.ListingPlacementOrderByWithRelationInput | Prisma.ListingPlacementOrderByWithRelationInput[]
+  cursor?: Prisma.ListingPlacementWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ListingScalarFieldEnum | Prisma.ListingScalarFieldEnum[]
+  distinct?: Prisma.ListingPlacementScalarFieldEnum | Prisma.ListingPlacementScalarFieldEnum[]
 }
 
 /**

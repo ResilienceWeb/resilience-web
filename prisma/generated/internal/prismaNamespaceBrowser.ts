@@ -60,6 +60,7 @@ export const ModelName = {
   Category: 'Category',
   Tag: 'Tag',
   Listing: 'Listing',
+  ListingPlacement: 'ListingPlacement',
   ListingSocialMedia: 'ListingSocialMedia',
   ListingAction: 'ListingAction',
   ListingEdit: 'ListingEdit',
@@ -210,17 +211,27 @@ export const ListingScalarFieldEnum = {
   notes: 'notes',
   inactive: 'inactive',
   seekingVolunteers: 'seekingVolunteers',
-  categoryId: 'categoryId',
   image: 'image',
-  slug: 'slug',
-  webId: 'webId',
   pending: 'pending',
   proposerId: 'proposerId',
-  featured: 'featured',
   locationId: 'locationId'
 } as const
 
 export type ListingScalarFieldEnum = (typeof ListingScalarFieldEnum)[keyof typeof ListingScalarFieldEnum]
+
+
+export const ListingPlacementScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  listingId: 'listingId',
+  webId: 'webId',
+  slug: 'slug',
+  categoryId: 'categoryId',
+  featured: 'featured'
+} as const
+
+export type ListingPlacementScalarFieldEnum = (typeof ListingPlacementScalarFieldEnum)[keyof typeof ListingPlacementScalarFieldEnum]
 
 
 export const ListingSocialMediaScalarFieldEnum = {
@@ -254,6 +265,7 @@ export const ListingEditScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   listingId: 'listingId',
+  webId: 'webId',
   title: 'title',
   website: 'website',
   description: 'description',
@@ -341,6 +353,7 @@ export type WebFeatureScalarFieldEnum = (typeof WebFeatureScalarFieldEnum)[keyof
 export const ListingAnalyticsDailyScalarFieldEnum = {
   id: 'id',
   listingId: 'listingId',
+  webId: 'webId',
   date: 'date',
   eventType: 'eventType',
   count: 'count'

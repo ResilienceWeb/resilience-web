@@ -126,7 +126,7 @@ const ListingDialog = ({
           <DialogTitle className="flex items-center">
             {item.label}
             <HiOutlineLink
-              className="ml-1 cursor-pointer text-xl transition-colors duration-200 hover:text-[#2B8257]"
+              className="ml-1 cursor-pointer text-xl transition-colors duration-200 hover:text-primary"
               onClick={handleShareButtonClick}
             />
           </DialogTitle>
@@ -160,7 +160,7 @@ const ListingDialog = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <p className="text-[#2B8257]">
+                    <p className="text-primary">
                       Seeking volunteers <HiUserGroup className="inline" />
                     </p>
                   </TooltipTrigger>
@@ -242,7 +242,7 @@ const ListingDialog = ({
             <Link href={individualListingLink}>
               <Button
                 variant="default"
-                className="mt-2 bg-[#2B8257] hover:bg-[#236c47]"
+                className="mt-2 bg-primary hover:bg-primary/90"
               >
                 Go to listing page
               </Button>

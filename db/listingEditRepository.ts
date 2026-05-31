@@ -11,27 +11,35 @@ export const markListingEditAsAccepted = async (listingEditId: number) => {
   })
 }
 
-export const getListingEdits = async (listingSlug, webSlug) => {
+export const getListingEdits = async (listingSlug: string, webSlug?: string) => {
+  const placement = await prisma.listingPlacement.findFirst({
+    where: {
+      slug: listingSlug,
+      web: {
+        deletedAt: null,
+        ...(webSlug ? { slug: { contains: webSlug } } : {}),
+      },
+    },
+    select: { listingId: true, webId: true },
+  })
+
+  if (!placement) return []
+
   const listingEdits = await prisma.listingEdit.findMany({
     where: {
       accepted: false,
-      listing: {
-        slug: listingSlug,
-        web: {
-          ...(webSlug
-            ? {
-                slug: {
-                  contains: webSlug,
-                },
-              }
-            : {}),
-          deletedAt: null,
-        },
-      },
+      listingId: placement.listingId,
+      webId: placement.webId,
     },
     include: {
       socials: true,
       actions: true,
+      tags: {
+        select: {
+          id: true,
+          label: true,
+        },
+      },
       category: {
         select: {
           id: true,
@@ -51,17 +59,13 @@ export const getListingEditStats = async () => {
   const [proposed, accepted] = await Promise.all([
     prisma.listingEdit.count({
       where: {
-        listing: {
-          web: { deletedAt: null },
-        },
+        web: { deletedAt: null },
       },
     }),
     prisma.listingEdit.count({
       where: {
         accepted: true,
-        listing: {
-          web: { deletedAt: null },
-        },
+        web: { deletedAt: null },
       },
     }),
   ])
@@ -76,11 +80,9 @@ export const getListingEditsByWeb = async (
   const listingEdits = await prisma.listingEdit.findMany({
     where: {
       accepted: includeAccepted ? undefined : false,
-      listing: {
-        web: {
-          slug: webSlug,
-          deletedAt: null,
-        },
+      web: {
+        slug: webSlug,
+        deletedAt: null,
       },
     },
     include: {
@@ -98,8 +100,12 @@ export const getListingEditsByWeb = async (
       listing: {
         select: {
           id: true,
-          slug: true,
           title: true,
+          placements: {
+            where: { web: { slug: webSlug } },
+            select: { slug: true },
+            take: 1,
+          },
         },
       },
     },
@@ -108,5 +114,12 @@ export const getListingEditsByWeb = async (
     },
   })
 
-  return listingEdits
+  return listingEdits.map((edit) => ({
+    ...edit,
+    listing: {
+      id: edit.listing.id,
+      title: edit.listing.title,
+      slug: edit.listing.placements[0]?.slug ?? null,
+    },
+  }))
 }

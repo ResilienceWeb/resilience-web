@@ -10,7 +10,7 @@ import {
   Section,
   Text,
   Link,
-} from '@react-email/components'
+} from 'react-email'
 import {
   main,
   container,
@@ -65,7 +65,7 @@ const WebCreatedEmail = ({ webTitle, url }: props) => {
             </Link>
             .
           </Text>
-          <Text>
+          <Text style={paragraph}>
             You can also visit{' '}
             <Link href="https://knowledgebase.resilienceweb.org.uk/">
               our knowledgebase

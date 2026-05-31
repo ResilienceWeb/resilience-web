@@ -16,7 +16,7 @@ const INITIAL_STATE: PageTrackerState = {
 export const pageTrackerStore = {
   state: {
     ...INITIAL_STATE,
-  } as PageTrackerState,
+  },
   listeners: new Set<() => void>(),
 
   getState(): PageTrackerState {
@@ -31,7 +31,7 @@ export const pageTrackerStore = {
     pageTrackerStore.state = {
       ...pageTrackerStore.state,
       ...newState,
-    } as PageTrackerState
+    }
     requestAnimationFrame(() => {
       pageTrackerStore.listeners.forEach((listener) => listener())
     })

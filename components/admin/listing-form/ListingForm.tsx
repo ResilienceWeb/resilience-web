@@ -3,10 +3,6 @@
 import { useEffect, useMemo } from 'react'
 import { useForm, FormProvider, useWatch } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
-import type { Options } from 'react-select'
-import type { StylesConfig } from 'react-select'
-import ReactSelect from 'react-select'
-import CreatableSelect from 'react-select/creatable'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -28,6 +24,10 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import {
+  MultiSelect,
+  type MultiSelectOption,
+} from '@components/ui/multi-select'
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -42,6 +42,7 @@ import useWeb from '@hooks/webs/useWeb'
 import { useAppContext } from '@store/hooks'
 import Actions from './Actions'
 import ImageUpload from './ImageUpload'
+import SharePlacements from './SharePlacements'
 import SocialMedia from './SocialMedia'
 
 const SetLocationMap = dynamic(
@@ -106,26 +107,6 @@ interface Props {
   isSubmitting?: boolean
 }
 
-const customMultiSelectStyles: StylesConfig<TagOption, true> = {
-  container: (baseStyles) => ({
-    ...baseStyles,
-    width: '100%',
-  }),
-  menuPortal: (baseStyles) => ({
-    ...baseStyles,
-    zIndex: 10,
-  }),
-  menu: (baseStyles) => ({
-    ...baseStyles,
-    zIndex: 10000,
-  }),
-}
-
-type TagOption = {
-  value: number
-  label: string
-}
-
 const SlugField = ({ isEditMode, register, watch, setValue, errors }) => {
   const { selectedWebSlug } = useAppContext()
   const title = watch('title')
@@ -169,7 +150,7 @@ const ListingForm = ({
   const { mutateAsync: createTag } = useCreateTag()
   const { listings } = useListings()
 
-  const tagOptions: Options<TagOption> = useMemo(() => {
+  const tagOptions: MultiSelectOption[] = useMemo(() => {
     if (!tags) return []
     return tags.map((t) => ({
       value: t.id,
@@ -177,7 +158,7 @@ const ListingForm = ({
     }))
   }, [tags])
 
-  const relationOptions: Options<TagOption> = useMemo(() => {
+  const relationOptions: MultiSelectOption[] = useMemo(() => {
     if (!listings) return []
     return listings
       .filter((l) => l.title !== listing?.title)
@@ -255,6 +236,7 @@ const ListingForm = ({
     const data = {
       ...submittedData,
       category: Number(submittedData.category),
+      ...(web?.id ? { webId: web.id } : {}),
     }
 
     const isNewImage = data.image instanceof File
@@ -286,6 +268,8 @@ const ListingForm = ({
     onSubmit(data)
   }
 
+  const sharedWith = (listing as any)?.sharedWith ?? []
+
   return (
     <FormProvider {...methods}>
       <Form {...methods}>
@@ -294,6 +278,21 @@ const ListingForm = ({
           encType="multipart/form-data"
           className="p-4 sm:p-6"
         >
+          {sharedWith.length > 0 && (
+            <div className="mb-6 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+              <p className="font-medium">
+                Shared with {sharedWith.length} other{' '}
+                {sharedWith.length === 1 ? 'web:' : 'webs:'}{' '}
+                {sharedWith.map((s: any) => s.web.title).join(', ')}
+              </p>
+              <p className="mt-1">
+                Edits to title, description, location, image, social links and
+                actions apply everywhere this listing is shown. Category, tags,
+                slug and featured state are per-web.
+              </p>
+            </div>
+          )}
+
           <FormField
             control={methods.control}
             name="title"
@@ -423,14 +422,14 @@ const ListingForm = ({
 
           <div className="mt-4">
             <FormLabel className="font-semibold">Tags</FormLabel>
-            <CreatableSelect
-              isMulti
-              name="tags"
+            <MultiSelect
               options={tagOptions}
-              styles={customMultiSelectStyles}
               placeholder="Select or start typing to create tag..."
               value={tagsValues}
-              onChange={(newValue) => setValue('tags', [...newValue])}
+              onChange={(newValue) =>
+                setValue('tags', newValue as { value: number; label: string }[])
+              }
+              creatable
               onCreateOption={async (inputValue) => {
                 const newTag = await createTag({
                   label: inputValue,
@@ -447,13 +446,15 @@ const ListingForm = ({
 
           <div className="mt-4">
             <FormLabel className="font-semibold">Related listings</FormLabel>
-            <ReactSelect
-              isMulti
-              name="relations"
+            <MultiSelect
               options={relationOptions}
-              styles={customMultiSelectStyles}
               value={relationsValues}
-              onChange={(newValue) => setValue('relations', [...newValue])}
+              onChange={(newValue) =>
+                setValue(
+                  'relations',
+                  newValue as { value: number; label: string }[],
+                )
+              }
             />
           </div>
 
@@ -533,6 +534,17 @@ const ListingForm = ({
                 locationDescription={listing?.location?.description}
               />
             </div>
+          )}
+
+          {listing && web?.id && (
+            <SharePlacements
+              listingId={listing.id}
+              listingTitle={listing.title}
+              currentWebId={web.id}
+              currentWebTitle={web.title}
+              currentSlug={(listing as any).slug ?? ''}
+              sharedWith={sharedWith}
+            />
           )}
 
           <div className="mt-6 flex justify-end">

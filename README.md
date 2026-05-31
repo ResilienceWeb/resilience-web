@@ -63,12 +63,6 @@ npx prisma db seed
 
 ## Deploying
 
-### To the staging environment
-
-- Follow instructions [here](https://vercel.com/docs/cli) to set up Vercel CLI (you need to have an account in our Vercel team)
-- Run `npx vercel deploy -- target staging`
-
-
 ## Contributing
 
 If you'd like to contribute to the project, get in touch at info@resilienceweb.org.uk. We welcome anyone who wants to contribute code, documendation or testing efforts.

@@ -2,11 +2,10 @@
 
 import { memo } from 'react'
 import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
-import Select from 'react-select'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import Link from 'next/link'
-import customMultiSelectStyles from '@styles/select-styles'
+import { MultiSelect } from '@components/ui/multi-select'
 import { REMOTE_URL } from '@helpers/config'
 import DonateButton from '@components/donate-button'
 import RichText from '@components/rich-text'
@@ -54,39 +53,21 @@ const Drawer = ({
   return (
     <div className="fixed z-3 h-screen w-[300px] bg-white shadow-xl">
       <div className="flex h-full flex-col overflow-hidden">
-        <NextLink href={REMOTE_URL} className="block shrink-0">
-          <div className="my-2 flex cursor-pointer justify-center px-4">
-            <Image
-              alt="Resilience Web CIC logo"
-              src={LogoImage}
-              width="268"
-              priority
-            />
-          </div>
-        </NextLink>
-        <Separator />
-        <div className="min-h-0 flex-1 overflow-y-auto pb-4">
-          {!isTransitionMode && (
-            <>
-              <div className="p-4">
-                <a href={`${REMOTE_URL}/new-listing/${webSlug}`}>
-                  <Button
-                    size="lg"
-                    variant="default"
-                    className="w-full bg-[#2B8257] hover:bg-[#236c47]"
-                  >
-                    Propose new listing
-                  </Button>
-                </a>
-                <p className="mt-1 text-sm text-gray-600">
-                  Know something that isn't yet listed? Let us know! 🙏
-                </p>
-              </div>
-              <Separator />
-            </>
-          )}
-          <div className="my-5 flex flex-col items-center gap-5">
-            <div className="relative w-full max-w-[280px]">
+        {/* Tier 1: Logo + Filters (pinned top) */}
+        <div className="shrink-0">
+          <NextLink href={REMOTE_URL} className="block">
+            <div className="my-2 flex cursor-pointer justify-center px-4">
+              <Image
+                alt="Resilience Web CIC logo"
+                src={LogoImage}
+                width="268"
+                priority
+              />
+            </div>
+          </NextLink>
+          <Separator />
+          <div className="flex flex-col items-center gap-3 px-2.5 py-4">
+            <div className="relative w-full">
               <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-500">
                 <HiOutlineSearch className="h-5 w-5" />
               </div>
@@ -107,30 +88,23 @@ const Drawer = ({
                 </button>
               )}
             </div>
-            <div className="w-full max-w-[280px]">
-              <Select
+            <div className="w-full">
+              <MultiSelect
                 id="category-select"
-                isMulti
-                isSearchable={false}
-                menuPortalTarget={document.body}
+                searchable={false}
                 onChange={handleCategorySelection}
                 options={categories}
                 placeholder="Category"
-                styles={customMultiSelectStyles}
                 value={selectedCategories}
               />
             </div>
             {tags.length > 0 && (
-              <div className="w-full max-w-[280px]">
-                <Select
-                  id="tag-select"
-                  isMulti
-                  isSearchable={false}
-                  menuPortalTarget={document.body}
+              <div className="w-full">
+                <MultiSelect
+                  searchable={false}
                   onChange={handleTagSelection}
                   options={tags}
                   placeholder="Tag"
-                  styles={customMultiSelectStyles}
                   value={selectedTags}
                 />
               </div>
@@ -142,48 +116,71 @@ const Drawer = ({
               />
             )}
           </div>
+        </div>
 
-          <Separator />
-          <div className="mx-2 mt-4">
-            {webDescription && webDescription.length < 100 && (
-              <>
-                <h2 className="text-lg">About this web</h2>
-                <div className="prose prose-sm">
-                  <RichText html={webDescription} />
-                </div>
-              </>
+        {/* Tier 2: Context + CTA (scrollable middle) */}
+        <div className="min-h-0 flex-1 overflow-y-auto border-t px-3 py-4">
+          <div className="flex flex-col gap-4">
+            {webDescription && (
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900">
+                  About this web
+                </h3>
+                {webDescription.length < 100 ? (
+                  <div className="prose prose-sm mt-1">
+                    <RichText html={webDescription} />
+                  </div>
+                ) : (
+                  <Link href="/web" className="mt-1 inline-block">
+                    <Button variant="outline" size="sm">
+                      Read more
+                    </Button>
+                  </Link>
+                )}
+              </div>
             )}
 
-            {webDescription && webDescription.length >= 100 && (
-              <Link href="/web">
-                <Button variant="outline">About this web</Button>
-              </Link>
+            {webContactEmail && (
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900">
+                  Contact
+                </h3>
+                <p className="mt-0.5 text-sm">
+                  <a
+                    href={`mailto:${webContactEmail}`}
+                    className="text-primary hover:underline"
+                  >
+                    {webContactEmail}
+                  </a>
+                </p>
+              </div>
+            )}
+
+            {!isTransitionMode && (
+              <div>
+                <a href={`${REMOTE_URL}/new-listing/${webSlug}`}>
+                  <Button variant="outline" className="w-full">
+                    Propose new listing
+                  </Button>
+                </a>
+                <p className="mt-1 text-xs text-gray-500">
+                  Know a group that isn't listed? Let the maintainers know.
+                </p>
+              </div>
             )}
           </div>
         </div>
-        {webContactEmail && (
-          <div className="m-2">
-            <h2>Contact email</h2>
-            <p className="text-sm">
-              <a href={`mailto:${webContactEmail}`}>{webContactEmail}</a>
-            </p>
-          </div>
-        )}
 
-        <div className="shrink-0 border-t bg-white p-4">
-          <h2 className="text-lg font-semibold">Like what you see?</h2>
-          {isTransitionMode ? (
-            <p className="text-sm mb-3 text-gray-600">
-              If you can, please support the technology behind this with a small
-              donation.
-            </p>
-          ) : (
-            <p className="text-sm mb-3 text-gray-600">
-              Consider making a donation to help us host and develop the
-              Resilience Web platform 🙏🏼
-            </p>
-          )}
-          <DonateButton />
+        {/* Tier 3: Donate (pinned footer, visually quiet) */}
+        <div className="shrink-0 border-t bg-gray-50 px-3 py-3">
+          <p className="text-xs text-gray-500">
+            {isTransitionMode
+              ? 'Support the technology behind this with a donation.'
+              : 'Help us host and develop Resilience Web.'}
+          </p>
+          <div className="mt-2">
+            <DonateButton />
+          </div>
         </div>
       </div>
     </div>

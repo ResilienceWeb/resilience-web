@@ -25,12 +25,11 @@ const Layout = ({ children, webs, hideBorder = false }: LayoutProps) => {
           <AlertBanner
             content="Join our online monthly Assembly. Click here to read more."
             type="info"
+            colorScheme="rw"
             url="https://www.eventbrite.com/e/resilience-web-monthly-assembly-tickets-1220916868219?aff=oddtdtcreator"
           />
         )}
-        <div
-          className={`flex w-full max-w-6xl flex-col items-center justify-center px-4 pt-4 pb-8} `}
-        >
+        <div className="flex w-full max-w-6xl flex-col items-center justify-center px-4 pt-4 pb-8">
           {children}
         </div>
       </main>

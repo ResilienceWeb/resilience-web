@@ -3,8 +3,6 @@
 import { memo, useEffect, useMemo } from 'react'
 import { useForm, useFormContext, useWatch } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
-import ReactSelect from 'react-select'
-import type { Options } from 'react-select'
 import dynamic from 'next/dynamic'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Category } from '@prisma-client'
@@ -31,6 +29,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select'
+import {
+  MultiSelect,
+  type MultiSelectOption,
+} from '@components/ui/multi-select'
 import { Separator } from '@components/ui/separator'
 import useTags from '@hooks/tags/useTags'
 import Actions from './Actions'
@@ -81,28 +83,12 @@ const SlugField = ({ webSlug }) => {
   )
 }
 
-const customMultiSelectStyles = {
-  container: (baseStyles) => ({
-    ...baseStyles,
-    width: '100%',
-  }),
-  menuPortal: (baseStyles) => ({
-    ...baseStyles,
-    zIndex: 10,
-  }),
-}
-
 interface Props {
   listing?: Listing
   categories: Category[]
   handleSubmit: (data: any) => void
   isEditMode: boolean
   webSlug: string
-}
-
-type TagOption = {
-  value: number
-  label: string
 }
 
 const socialItemSchema = z.object({
@@ -155,14 +141,14 @@ const ListingFormSimplified = ({
   isEditMode = false,
   webSlug,
 }: Props) => {
-  const { tags } = useTags()
+  const { tags } = useTags({ webSlug })
   const form = useForm({
     resolver: zodResolver(listingFormSchema),
     defaultValues: {
       id: listing?.id || null,
       title: listing?.title ?? '',
       description: listing?.description || '',
-      category: listing?.categoryId || undefined,
+      category: listing?.category?.id || listing?.categoryId || undefined,
       email: listing?.email || '',
       website: listing?.website || '',
       socials: listing?.socials || [],
@@ -170,7 +156,7 @@ const ListingFormSimplified = ({
       seekingVolunteers: listing?.seekingVolunteers || false,
       image: listing?.image,
       slug: listing?.slug || '',
-      tags: [],
+      tags: listing?.tags?.map((t) => ({ value: t.id, label: t.label })) || [],
       noPhysicalLocation: listing?.location?.noPhysicalLocation || false,
       location:
         listing?.location?.latitude && listing?.location?.longitude
@@ -193,7 +179,7 @@ const ListingFormSimplified = ({
     name: 'noPhysicalLocation',
   })
 
-  const tagOptions: Options<TagOption> = useMemo(() => {
+  const tagOptions: MultiSelectOption[] = useMemo(() => {
     if (!tags) return []
 
     return tags.map((t) => ({
@@ -329,13 +315,10 @@ const ListingFormSimplified = ({
                 <FormItem>
                   <FormLabel className="font-semibold">Tags</FormLabel>
                   <FormControl>
-                    <ReactSelect
-                      isMulti
-                      name="tags"
+                    <MultiSelect
                       options={tagOptions}
-                      styles={customMultiSelectStyles}
                       value={field.value}
-                      onChange={(newValue) => field.onChange([...newValue])}
+                      onChange={(newValue) => field.onChange(newValue)}
                     />
                   </FormControl>
                   <FormMessage />

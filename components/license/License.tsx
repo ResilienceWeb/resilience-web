@@ -1,6 +1,6 @@
 function License() {
   return (
-    <div className="pb-2 pl-4">
+    <div className="bg-white py-2 pl-4">
       <p className="text-sm text-gray-600">
         Content on this site is in the public domain under a{' '}
         <a

@@ -101,7 +101,6 @@ See [docs/architecture.md](../docs/architecture.md#key-architectural-patterns) f
 - **Commit Style**: Semantic commits (inferred from git history)
 - **Deployment**:
   - Production: Automatic on push to main
-  - Staging: Manual via `npx vercel deploy --target staging`
 
 ## Domain Context
 
@@ -136,7 +135,6 @@ Each "web" (community/organization) operates independently:
 ### Technical Constraints
 
 - **Development Port**: 4000 (not 3000)
-- **API Timeout**: 30 seconds (configured in `vercel.json`)
 - **React Strict Mode**: Disabled in `next.config.js`
 - **Prisma Client**: Generated to `prisma/generated/` (non-default location)
 - **Build Tool**: Turbopack for development builds
@@ -163,7 +161,7 @@ Each "web" (community/organization) operates independently:
 - **PostHog**: Product analytics and feature flags
 - **Trigger.dev**: Background job orchestration
 - **Better Auth**: Email OTP authentication provider
-- **Vercel**: Hosting platform (serverless)
+- **Netlify**: Hosting platform (serverless)
 
 ### Development Services
 
@@ -180,7 +178,6 @@ Each "web" (community/organization) operates independently:
 ### Configuration Files
 
 - `.env`: Environment variables (copy from `.env.example`)
-- `vercel.json`: API timeout configuration
 - `next.config.js`: Next.js config, remote image patterns, Sentry integration
 - `tsconfig.json`: TypeScript path aliases
 - `components.json`: Shadcn/ui configuration

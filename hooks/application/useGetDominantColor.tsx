@@ -146,6 +146,7 @@ async function extractDominantColors(
     }
 
     img.onerror = function (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
       reject(error as unknown as Error)
     }
 

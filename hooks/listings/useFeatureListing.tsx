@@ -1,9 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAppContext } from '@store/hooks'
+import useWeb from '@hooks/webs/useWeb'
 
-const featureListingRequest = async (id) => {
+const featureListingRequest = async ({
+  id,
+  webId,
+}: {
+  id: number
+  webId: number
+}) => {
   const response = await fetch(`api/listing/${id}/feature`, {
     method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ webId }),
   })
 
   const data = await response.json()
@@ -11,9 +20,17 @@ const featureListingRequest = async (id) => {
   return listing
 }
 
-export const unfeatureListingRequest = async (id) => {
+export const unfeatureListingRequest = async ({
+  id,
+  webId,
+}: {
+  id: number
+  webId: number
+}) => {
   const response = await fetch(`api/listing/${id}/unfeature`, {
     method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ webId }),
   })
 
   const data = await response.json()
@@ -24,9 +41,11 @@ export const unfeatureListingRequest = async (id) => {
 export default function useFeatureListing() {
   const queryClient = useQueryClient()
   const { selectedWebSlug: webSlug } = useAppContext()
+  const { web } = useWeb({ webSlug })
 
   const { mutate: featureListing } = useMutation({
-    mutationFn: featureListingRequest,
+    mutationFn: (id: number) =>
+      featureListingRequest({ id, webId: web?.id }),
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ['listings', 'list', { webSlug }],
@@ -35,7 +54,8 @@ export default function useFeatureListing() {
   })
 
   const { mutate: unfeatureListing } = useMutation({
-    mutationFn: unfeatureListingRequest,
+    mutationFn: (id: number) =>
+      unfeatureListingRequest({ id, webId: web?.id }),
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ['listings', 'list', { webSlug }],

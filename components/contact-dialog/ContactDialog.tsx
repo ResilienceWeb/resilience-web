@@ -96,7 +96,7 @@ const ContactDialog = ({
       } catch (error) {
         toast.error('Error', {
           description:
-            'There was an error. Please try again or email directly at info@resilienceweb.org.uk',
+            'There was an error. Please try again or email us at info@resilienceweb.org.uk',
           duration: 5000,
         })
       }
@@ -190,7 +190,7 @@ const ContactDialog = ({
               <Button
                 type="submit"
                 disabled={form.formState.isSubmitting}
-                className="bg-[#2B8257] hover:bg-[#236c47]"
+                className="bg-primary hover:bg-primary/90"
               >
                 Send message
               </Button>

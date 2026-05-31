@@ -8,7 +8,7 @@ import {
   Preview,
   Text,
   Link,
-} from '@react-email/components'
+} from 'react-email'
 import {
   main,
   container,

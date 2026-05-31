@@ -163,25 +163,19 @@ export async function POST(request: NextRequest) {
             }
           }
 
-          // Generate unique slug for this listing
           const slug = await generateUniqueSlug(row.name, webId)
 
-          // Create listing with all relations
           const listingId = await createListingWithRelations({
             listing: {
               title: row.name,
               description: row.description,
               email: row.email,
               website: row.website,
-              slug,
               pending: false,
-              ...(categoryId && {
-                category: {
-                  connect: { id: categoryId },
-                },
-              }),
             },
             webId,
+            slug,
+            categoryId,
             location,
             socialMedia: row.socialMedia,
           })
@@ -249,12 +243,8 @@ async function generateUniqueSlug(
 ): Promise<string> {
   const baseSlug = generateBaseSlug(name)
 
-  // Check if base slug is available
-  const existingWithBase = await prisma.listing.findFirst({
-    where: {
-      webId,
-      slug: baseSlug,
-    },
+  const existingWithBase = await prisma.listingPlacement.findUnique({
+    where: { webSlug: { webId, slug: baseSlug } },
     select: { slug: true },
   })
 
@@ -262,17 +252,12 @@ async function generateUniqueSlug(
     return baseSlug
   }
 
-  // Base slug exists, find the next available number
   let counter = 2
   while (counter < 100) {
-    // Reasonable limit to prevent infinite loops
     const candidateSlug = `${baseSlug}-${counter}`
 
-    const existing = await prisma.listing.findFirst({
-      where: {
-        webId,
-        slug: candidateSlug,
-      },
+    const existing = await prisma.listingPlacement.findUnique({
+      where: { webSlug: { webId, slug: candidateSlug } },
       select: { slug: true },
     })
 
@@ -283,6 +268,5 @@ async function generateUniqueSlug(
     counter++
   }
 
-  // Fallback to timestamp if we can't find a unique slug with numbers
   return `${baseSlug}-${Date.now()}`
 }

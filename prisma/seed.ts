@@ -281,7 +281,6 @@ async function populateSeedData() {
       },
     })
 
-    // Create location first if available
     let locationId: number | undefined = undefined
     if (listing.location) {
       const location = await prisma.listingLocation.create({
@@ -297,13 +296,17 @@ async function populateSeedData() {
     await prisma.listing.create({
       data: {
         title: listing.title,
-        slug: listing.slug,
         description: listing.description,
         website: listing.website,
         image: listing.image,
-        webId: newWebCambridge.id,
-        categoryId: category.id,
         locationId: locationId,
+        placements: {
+          create: {
+            webId: newWebCambridge.id,
+            slug: listing.slug,
+            categoryId: category.id,
+          },
+        },
       },
     })
   }
@@ -332,13 +335,17 @@ async function populateSeedData() {
       await prisma.listing.create({
         data: {
           title: listing.title,
-          slug: listing.slug,
           description: listing.description,
           website: listing.website,
           image: listing.image,
-          webId: newWebDurham.id,
-          categoryId: category.id,
           locationId: locationId,
+          placements: {
+            create: {
+              webId: newWebDurham.id,
+              slug: listing.slug,
+              categoryId: category.id,
+            },
+          },
         },
       })
     }

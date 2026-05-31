@@ -41,7 +41,7 @@ const AlertBanner: React.FC<IAlertProps> = ({
 
   const getColorClasses = () => {
     if (colorScheme === 'rw') {
-      return 'bg-green-600 text-white'
+      return 'bg-primary text-primary-foreground'
     }
 
     switch (type) {

@@ -1,1 +1,1 @@
-export { default } from './WebCards'
+export { default, isWebDisplayedOnHomepage } from './WebCards'

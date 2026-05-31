@@ -45,7 +45,7 @@ const MainList = ({ filteredItems, webSlug }: MainListProps) => {
               <NextLink href={`${REMOTE_URL}/new-listing/${webSlug}`}>
                 <Button
                   variant="default"
-                  className="bg-[#2B8257] hover:bg-[#236c47]"
+                  className="bg-primary hover:bg-primary/90"
                 >
                   Propose new listing
                 </Button>

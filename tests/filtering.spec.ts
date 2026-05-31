@@ -58,22 +58,16 @@ test('Category filtering works correctly', async ({ page }) => {
     .filter({ hasText: /^Environment$/ })
     .click()
 
-  // Only Environment category listings should be visible
-  await expect(page.getByText('Cambridge Carbon Footprint')).toBeVisible()
-  await expect(page.getByText('Cambridge Sustainable Food')).toBeVisible()
-
-  // Other category listings should be hidden
-  await expect(page.getByText('Cambridge Cycling Campaign')).not.toBeVisible()
-  await expect(page.getByText('Cambridge Community Kitchen')).not.toBeVisible()
-
-  // Select Transportation category additionally
-  await page.locator('#category-select').click()
+  // Select Transportation category additionally (popover stays open for multi-select)
   await page
     .locator('div[role="option"]')
     .filter({ hasText: /^Transportation$/ })
     .click()
 
-  // Now both Environment and Transportation listings should be visible
+  // Close the dropdown
+  await page.keyboard.press('Escape')
+
+  // Environment and Transportation listings should be visible
   await expect(page.getByText('Cambridge Carbon Footprint')).toBeVisible()
   await expect(page.getByText('Cambridge Sustainable Food')).toBeVisible()
   await expect(page.getByText('Cambridge Cycling Campaign')).toBeVisible()
@@ -82,9 +76,7 @@ test('Category filtering works correctly', async ({ page }) => {
   await expect(page.getByText('Cambridge Community Kitchen')).not.toBeVisible()
 
   // Clear filters by removing selected categories
-  // First remove Environment
   await page.getByLabel('Remove Environment').click()
-  // Then remove Transportation
   await page.getByLabel('Remove Transportation').click()
 
   // All listings should be visible again
@@ -116,6 +108,7 @@ test('Combined search and category filtering works correctly', async ({
     .locator('div[role="option"]')
     .filter({ hasText: /^Environment$/ })
     .click()
+  await page.keyboard.press('Escape')
 
   // Only Environment listings with "cambridge" in name should be visible
   await expect(page.getByText('Cambridge Carbon Footprint')).toBeVisible()

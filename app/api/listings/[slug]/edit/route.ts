@@ -41,13 +41,22 @@ export async function GET(
   }
 }
 
-export async function POST(request) {
+export async function POST(request, props) {
+  const params = await props.params
   try {
     const session = await auth.api.getSession({
       headers: request.headers,
     })
     if (!session?.user) {
       return new Response('Not authorized', { status: 401 })
+    }
+
+    const placementSlug = params.slug
+    const searchParams = request.nextUrl.searchParams
+    const webSlug = searchParams.get('web')
+
+    if (!webSlug) {
+      return new Response('Missing required query parameter: web', { status: 400 })
     }
 
     const formData = await request.formData()
@@ -61,12 +70,27 @@ export async function POST(request) {
     const socialsData = socials ? JSON.parse(socials) : []
     const actions = formData.get('actions')
     const actionsData = actions ? JSON.parse(actions) : []
+    const tags = formData.get('tags')
+    const tagsData: number[] = tags ? JSON.parse(tags) : []
     const latitude = formData.get('latitude')
     const longitude = formData.get('longitude')
     const locationDescription = formData.get('locationDescription')
     const noPhysicalLocation = stringToBoolean(
       formData.get('noPhysicalLocation'),
     )
+
+    const placement = await prisma.listingPlacement.findFirst({
+      where: {
+        slug: placementSlug,
+        listingId,
+        web: { slug: webSlug, deletedAt: null },
+      },
+      include: { web: true },
+    })
+
+    if (!placement) {
+      return new Response('Listing not found in this web', { status: 404 })
+    }
 
     const currentListing = await prisma.listing.findUnique({
       where: {
@@ -98,11 +122,14 @@ export async function POST(request) {
 
     const listingEditData: Prisma.ListingEditCreateInput = {
       title,
-      slug: currentListing.slug,
+      slug: placement.slug,
       listing: {
         connect: {
           id: listingId,
         },
+      },
+      web: {
+        connect: { id: placement.webId },
       },
       user: {
         connect: {
@@ -129,6 +156,9 @@ export async function POST(request) {
           url: action.url,
         })),
       },
+      tags: {
+        connect: tagsData.map((id) => ({ id })),
+      },
       location: locationData,
     }
 
@@ -149,21 +179,20 @@ export async function POST(request) {
     const listingEdit = await prisma.listingEdit.create({
       data: listingEditData,
       include: {
-        listing: {
+        listing: { select: { id: true, title: true } },
+        web: {
           include: {
-            web: {
-              include: {
-                webAccess: true,
-              },
-            },
+            webAccess: { include: { user: true } },
           },
         },
       },
     })
 
-    const web = listingEdit.listing.web
+    const web = listingEdit.web
 
-    const ownerAndEditorEmails = web.webAccess.map((access) => access.email)
+    const ownerAndEditorEmails = web.webAccess
+      .filter((access) => access.user?.emailVerified)
+      .map((access) => access.email)
 
     await sendMultipleEmails({
       toEmails: ownerAndEditorEmails,
@@ -207,19 +236,22 @@ export async function DELETE(request, props) {
     const searchParams = request.nextUrl.searchParams
     const webSlug = searchParams.get('web')
 
-    // Find the listing edit to delete
+    const placement = await prisma.listingPlacement.findFirst({
+      where: {
+        slug,
+        ...(webSlug ? { web: { slug: webSlug } } : {}),
+      },
+      select: { listingId: true, webId: true },
+    })
+
+    if (!placement) {
+      return new Response('Listing not found', { status: 404 })
+    }
+
     const listingEdit = await prisma.listingEdit.findFirst({
       where: {
-        listing: {
-          slug,
-          ...(webSlug
-            ? {
-                web: {
-                  slug: webSlug,
-                },
-              }
-            : {}),
-        },
+        listingId: placement.listingId,
+        webId: placement.webId,
       },
     })
 

@@ -1,7 +1,11 @@
-export function trackListingEvent(listingId: number, eventType: string) {
+export function trackListingEvent(
+  listingId: number,
+  webId: number,
+  eventType: string,
+) {
   fetch('/api/analytics/track', {
     method: 'POST',
-    body: JSON.stringify({ listingId, eventType }),
+    body: JSON.stringify({ listingId, webId, eventType }),
     keepalive: true,
   }).catch(() => {})
 }

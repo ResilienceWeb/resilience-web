@@ -33,7 +33,6 @@ npm run trigger         # Start Trigger.dev development server
 # Build & deployment
 npm run build           # Production build
 npm start               # Start production server
-npx vercel deploy --target staging  # Deploy to Vercel staging
 ```
 
 ## Local Database Setup
@@ -142,7 +141,6 @@ Images stored on **Supabase Storage** (S3-compatible) (soon to move to Supabase)
 - **Production**: Mailersend (via [helpers/email.ts](helpers/email.ts))
 - **Local**: Mailpit (Docker container on port 8025)
 - **Templates**: React Email components in [components/emails/](components/emails/)
-- **Rendering**: @react-email/render
 
 ### Map Visualization
 

@@ -7,7 +7,7 @@ import {
   Preview,
   Section,
   Text,
-} from '@react-email/components'
+} from 'react-email'
 import { main, container, logo, paragraph } from './styles'
 
 export type OTPEmailProps = {
