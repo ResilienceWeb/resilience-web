@@ -7,7 +7,9 @@ const createShareActions = () => {
       toast.success(`Successfully copied ${text} to clipboard`)
     } catch (error) {
       console.error('Error copying to clipboard:', error)
-      toast.error('Error copying to clipboard')
+      toast.error("Couldn't copy that to your clipboard", {
+        description: 'Please try selecting and copying the link manually.',
+      })
     }
   }
 
@@ -25,7 +27,6 @@ const createShareActions = () => {
       }
     } else {
       console.error('Web Share API not supported')
-      toast.error('Web Share API not supported')
       copy(url)
     }
   }

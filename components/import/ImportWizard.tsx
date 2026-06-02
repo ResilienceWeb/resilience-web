@@ -103,7 +103,11 @@ export function ImportWizard({ webSlug, webId }: ImportWizardProps) {
       setImportSummary(result.summary)
       toast.success('Import completed successfully')
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Import failed')
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "We couldn't complete the import. Your existing listings are unchanged — please review and try again.",
+      )
       setCurrentStep(3) // Go back to preview on error
     }
   }

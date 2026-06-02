@@ -50,7 +50,10 @@ export default function ListingEditsPage({ params }) {
       router.push(`/admin/listings/${slug}?editApplied=true`)
     }
     if (isError) {
-      toast.error('Failed to apply listing edit')
+      toast.error("Couldn't apply this edit", {
+        description:
+          "The listing hasn't changed. Please try again in a moment.",
+      })
     }
   }, [isSuccess, isError, router, slug])
 

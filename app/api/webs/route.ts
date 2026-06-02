@@ -95,7 +95,9 @@ export async function GET(request: NextRequest) {
     console.error(`[RW] Unable to fetch webs - ${e}`)
     Sentry.captureException(e)
     return Response.json(
-      { error: `Unable to fetch webs - ${e}` },
+      {
+        error: "We couldn't load Webs right now. Please try again in a moment.",
+      },
       {
         status: 500,
       },
@@ -171,7 +173,7 @@ export async function POST(request: NextRequest) {
 
     await sendEmail({
       to: REMOTE_HOSTNAME.includes('localhost')
-        ? 'ismail.diner+rw@gmail.com'
+        ? process.env.RW_LOCAL_ADMIN_EMAIL
         : 'info@resilienceweb.org.uk',
       subject: `New web created 🎉: ${web.title}`,
       email: webCreatedAdminEmailComponent,
@@ -198,7 +200,10 @@ export async function POST(request: NextRequest) {
       console.error(`[RW] Unable to create web - ${error}`)
       Sentry.captureException(error)
       return Response.json(
-        { error: `Unable to create web - ${error}` },
+        {
+          error:
+            "We couldn't create your Web right now. Please try again in a moment.",
+        },
         {
           status: 500,
         },

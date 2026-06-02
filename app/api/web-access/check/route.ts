@@ -70,7 +70,10 @@ export async function GET(request: NextRequest) {
     console.error(`[RW] Unable to check web access - ${e}`)
     Sentry.captureException(e)
     return Response.json(
-      { error: `Unable to check web access - ${e}` },
+      {
+        error:
+          "We couldn't check your access right now. Please try again in a moment.",
+      },
       { status: 500 },
     )
   }

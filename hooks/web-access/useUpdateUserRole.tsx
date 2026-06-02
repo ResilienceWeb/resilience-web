@@ -20,7 +20,9 @@ async function updateUserRoleRequest(params: UpdateUserRoleParams) {
 
   if (!response.ok) {
     const error = await response.json()
-    throw new Error(error.error || 'Failed to update user role')
+    throw new Error(
+      error.error || "We couldn't update this person's role. Please try again.",
+    )
   }
 
   return response.json()
@@ -43,8 +45,10 @@ export default function useUpdateUserRole() {
       queryClient.invalidateQueries({ queryKey: ['web-access-check'] })
     },
     onError: (error: Error) => {
-      toast.error('Error', {
-        description: error.message || 'Failed to update user role',
+      toast.error("Couldn't update role", {
+        description:
+          error.message ||
+          "We couldn't update this person's role. Please try again.",
         duration: 5000,
       })
     },

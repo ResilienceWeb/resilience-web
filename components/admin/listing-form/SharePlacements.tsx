@@ -83,7 +83,7 @@ export default function SharePlacements({
   const handleShare = async () => {
     setError(null)
     if (!targetWebId || !slug.trim()) {
-      setError('Pick a web and provide a slug')
+      setError('Please pick a web and enter a slug first.')
       return
     }
     setIsWorking(true)
@@ -99,7 +99,9 @@ export default function SharePlacements({
       })
       if (!response.ok) {
         const body = await response.json().catch(() => ({}))
-        setError(body.error ?? 'Share failed')
+        setError(
+          body.error ?? "We couldn't share this listing. Please try again.",
+        )
         return
       }
       // Refresh page so the new placement appears in the form's sharedWith list.
@@ -125,7 +127,10 @@ export default function SharePlacements({
       )
       if (!response.ok) {
         const body = await response.json().catch(() => ({}))
-        setError(body.error ?? 'Detach failed')
+        setError(
+          body.error ??
+            "We couldn't remove this listing from that web. Please try again.",
+        )
         return
       }
       window.location.reload()

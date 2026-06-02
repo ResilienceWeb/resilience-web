@@ -94,9 +94,9 @@ const ContactDialog = ({
           throw new Error(result.error)
         }
       } catch (error) {
-        toast.error('Error', {
+        toast.error("Couldn't send your message", {
           description:
-            'There was an error. Please try again or email us at info@resilienceweb.org.uk',
+            'Please try again, or email us directly at info@resilienceweb.org.uk.',
           duration: 5000,
         })
       }

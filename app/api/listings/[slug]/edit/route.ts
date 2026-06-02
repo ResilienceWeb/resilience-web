@@ -35,9 +35,12 @@ export async function GET(
   } catch (e) {
     console.error(`[RW] Unable to get listing edits - ${e}`)
     Sentry.captureException(e)
-    return new Response(`Unable to get listing edits - ${e}`, {
-      status: 500,
-    })
+    return new Response(
+      "We couldn't load the edits for this listing right now. Please try again in a moment.",
+      {
+        status: 500,
+      },
+    )
   }
 }
 
@@ -56,7 +59,9 @@ export async function POST(request, props) {
     const webSlug = searchParams.get('web')
 
     if (!webSlug) {
-      return new Response('Missing required query parameter: web', { status: 400 })
+      return new Response('Missing required query parameter: web', {
+        status: 400,
+      })
     }
 
     const formData = await request.formData()
@@ -216,9 +221,12 @@ export async function POST(request, props) {
       `[RW] Unable to create listing edit - ${JSON.stringify(e, ['message', 'arguments', 'type', 'name'])}`,
     )
     Sentry.captureException(e)
-    return new Response(`Unable to create listing edit - ${e}`, {
-      status: 500,
-    })
+    return new Response(
+      "We couldn't save your proposed edit right now. Please try again in a moment.",
+      {
+        status: 500,
+      },
+    )
   }
 }
 

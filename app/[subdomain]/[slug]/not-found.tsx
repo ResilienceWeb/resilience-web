@@ -5,7 +5,7 @@ export default function NotFoundPage() {
   return (
     <Layout>
       <h1>
-        Oops, no listing found with that url. Go back to the Web{' '}
+        We couldn&apos;t find a listing at that address. Head back to the Web{' '}
         <Link href="/" className="text-green-800 hover:underline">
           here
         </Link>

@@ -90,7 +90,10 @@ export async function POST(
   } catch (e) {
     console.error(`[RW] Unable to share listing - ${e}`)
     Sentry.captureException(e)
-    return new Response(`Unable to share listing - ${e}`, { status: 500 })
+    return new Response(
+      "We couldn't share this listing right now. Please try again in a moment.",
+      { status: 500 },
+    )
   }
 }
 
@@ -135,8 +138,7 @@ export async function DELETE(
     if (totalPlacements <= 1) {
       return Response.json(
         {
-          error:
-            'Cannot detach the only placement; delete the listing instead',
+          error: 'Cannot detach the only placement; delete the listing instead',
         },
         { status: 400 },
       )
@@ -152,6 +154,9 @@ export async function DELETE(
   } catch (e) {
     console.error(`[RW] Unable to detach listing - ${e}`)
     Sentry.captureException(e)
-    return new Response(`Unable to detach listing - ${e}`, { status: 500 })
+    return new Response(
+      "We couldn't remove this listing from that web right now. Please try again in a moment.",
+      { status: 500 },
+    )
   }
 }

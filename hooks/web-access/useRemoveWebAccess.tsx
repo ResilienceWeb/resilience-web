@@ -18,7 +18,10 @@ async function removeWebAccessRequest(params: RemoveWebAccessParams) {
 
   if (!response.ok) {
     const error = await response.json()
-    throw new Error(error.error || 'Failed to remove user from web')
+    throw new Error(
+      error.error ||
+        "We couldn't remove this person from the web. Please try again.",
+    )
   }
 
   return response.json()
@@ -49,8 +52,10 @@ export default function useRemoveWebAccess() {
       })
     },
     onError: (error: Error) => {
-      toast.error('Error', {
-        description: error.message || 'Failed to remove user from web',
+      toast.error("Couldn't remove person", {
+        description:
+          error.message ||
+          "We couldn't remove this person from the web. Please try again.",
         duration: 5000,
       })
     },

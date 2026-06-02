@@ -43,7 +43,9 @@ export default function WebFeatures({ web }: WebFeaturesProps) {
       toast.success('Feature updated successfully')
     } catch (error) {
       console.error('Failed to update feature:', error)
-      toast.error('Failed to update feature')
+      toast.error("Couldn't update this setting", {
+        description: "We've left it unchanged. Please try again.",
+      })
       // Revert on error
       setFeatures(web.features)
     }

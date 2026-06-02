@@ -51,7 +51,10 @@ export async function GET(request: NextRequest) {
     console.error(`[RW] Unable to fetch web access - ${e}`)
     Sentry.captureException(e)
     return Response.json(
-      { error: `Unable to fetch web access - ${e}` },
+      {
+        error:
+          "We couldn't load team access right now. Please try again in a moment.",
+      },
       { status: 500 },
     )
   }
@@ -138,7 +141,10 @@ export async function DELETE(request: NextRequest) {
     console.error(`[RW] Unable to remove user from web - ${e}`)
     Sentry.captureException(e)
     return Response.json(
-      { error: `Unable to remove user from web - ${e}` },
+      {
+        error:
+          "We couldn't remove this person from the web. Please try again in a moment.",
+      },
       { status: 500 },
     )
   }

@@ -94,9 +94,9 @@ export default function TeamPage() {
           throw new Error('Failed to send invite')
         }
       } catch (error) {
-        toast.error('Error', {
+        toast.error("Couldn't send the invite", {
           description:
-            'There was an error. Please try again or contact the developers.',
+            'Please double-check the email address and try again. If it keeps happening, email us at info@resilienceweb.org.uk.',
           duration: 5000,
         })
       }

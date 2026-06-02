@@ -46,7 +46,7 @@ const NotificationsFeed = () => {
             <div className="flex items-center justify-center py-6 text-xs text-red-600">
               {error instanceof Error
                 ? error.message
-                : 'Failed to load notifications'}
+                : "We couldn't load your notifications. Please try again."}
             </div>
           ) : items?.length === 0 ? (
             <div className="flex items-center justify-center py-6 text-sm text-muted-foreground">

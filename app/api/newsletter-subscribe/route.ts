@@ -7,7 +7,10 @@ export async function POST(request: NextRequest) {
   const { email, recaptchaToken } = await request.json()
 
   if (!email || !email.length) {
-    return Response.json({ error: 'Forgot to add your email' }, { status: 400 })
+    return Response.json(
+      { error: 'Please enter your email address.' },
+      { status: 400 },
+    )
   }
 
   const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`
@@ -18,7 +21,7 @@ export async function POST(request: NextRequest) {
     return Response.json(
       {
         error:
-          "Our automated checks think you're a bot 😬. If that's not right, please get in touch via the Get in Touch button at the top of the website and we can add you to the mailing list manually. Sorry!",
+          "We couldn't verify this request automatically. If you're not a bot, please get in touch using the 'Get in touch' button at the top of the page and we'll add you to the mailing list manually.",
       },
       { status: 403 },
     )
@@ -51,7 +54,7 @@ export async function POST(request: NextRequest) {
     return Response.json(
       {
         error:
-          'Oops, something went wrong. Please send an email to info@resilienceweb.org.uk and we can add you to the list.',
+          "Something went wrong on our end and we couldn't add you to the list. Please email info@resilienceweb.org.uk and we'll sort it out for you.",
       },
       { status: 400 },
     )
