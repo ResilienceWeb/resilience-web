@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Search, X } from 'lucide-react'
 import { useDebounceValue } from 'usehooks-ts'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
+import { getLastActivityDate, isWebActive } from '@helpers/webActivity'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
@@ -19,7 +20,6 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table'
-import useAdminStats from '@hooks/useAdminStats'
 import useWebs from '@hooks/webs/useWebs'
 
 const columns = [
@@ -35,42 +35,6 @@ const columns = [
   },
 ]
 
-const getLatestListingUpdate = (listings) => {
-  if (!listings?.length) return null
-
-  let latestDate = null
-  for (const listing of listings) {
-    if (!listing.updatedAt) continue
-    const date = new Date(listing.updatedAt)
-    if (!latestDate || date > latestDate) {
-      latestDate = date
-    }
-  }
-  return latestDate
-}
-
-const getLastActivityDate = (web) => {
-  const webLastUpdated = web.updatedAt ? new Date(web.updatedAt) : null
-  const listingsLastUpdated = getLatestListingUpdate(web.listings)
-
-  if (!webLastUpdated) return listingsLastUpdated
-  if (!listingsLastUpdated) return webLastUpdated
-
-  return new Date(
-    Math.max(webLastUpdated.getTime(), listingsLastUpdated.getTime()),
-  )
-}
-
-const isWebActive = (web) => {
-  const threeMonthsAgo = new Date()
-  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3)
-
-  const lastActivity = getLastActivityDate(web)
-  if (!lastActivity) return false
-
-  return lastActivity > threeMonthsAgo
-}
-
 const formatDate = (date) => {
   return Intl.DateTimeFormat('en-GB', {
     dateStyle: 'long',
@@ -80,7 +44,6 @@ const formatDate = (date) => {
 export default function DashboardPage() {
   const router = useRouter()
   const { isPending: isLoadingWebs, webs } = useWebs({ withAdminInfo: true })
-  const { stats: adminStats } = useAdminStats()
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearch] = useDebounceValue(searchInput, 300)
 
@@ -109,24 +72,19 @@ export default function DashboardPage() {
     return <Spinner />
   }
 
-  const totalWebs = webs.length
-  const publishedWebs = webs.filter((web) => web.published).length
-  const inactiveWebs = webs.filter((web) => !isWebActive(web)).length
   const isSearching = debouncedSearch.trim().length > 0
 
   return (
     <div className="mb-6 flex flex-col gap-4">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Manage webs</h1>
           <p className="text-muted-foreground">
-            {isSearching ? (
+            {isSearching && (
               <>
                 Search results for &quot;{debouncedSearch}&quot; (
                 {filteredWebs.length} found)
               </>
-            ) : (
-              <>Manage Resilience Web instances</>
             )}
           </p>
         </div>
@@ -149,37 +107,6 @@ export default function DashboardPage() {
               <X className="h-3 w-3" />
             </Button>
           )}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-muted-foreground text-sm font-medium">
-            Total Webs
-          </div>
-          <div className="mt-2 text-2xl font-bold">{totalWebs}</div>
-        </div>
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-muted-foreground text-sm font-medium">
-            Published
-          </div>
-          <div className="mt-2 text-2xl font-bold">{publishedWebs}</div>
-        </div>
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-muted-foreground text-sm font-medium">
-            Inactive Webs
-          </div>
-          <div className="mt-2 text-2xl font-bold">{inactiveWebs}</div>
-        </div>
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-muted-foreground text-sm font-medium">
-            Listing Edits (accepted / proposed)
-          </div>
-          <div className="mt-2 text-2xl font-bold">
-            {adminStats?.listingEdits
-              ? `${adminStats.listingEdits.accepted}/${adminStats.listingEdits.proposed}`
-              : '-'}
-          </div>
         </div>
       </div>
 

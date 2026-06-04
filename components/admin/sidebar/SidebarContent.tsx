@@ -12,6 +12,7 @@ import {
   HiX,
   HiUpload,
   HiChartBar,
+  HiChartPie,
 } from 'react-icons/hi'
 import { LuBook, LuUserRoundSearch } from 'react-icons/lu'
 import Image from 'next/image'
@@ -281,6 +282,12 @@ export default function SidebarContent({ closeMenu, ...rest }) {
         href: '/admin/users',
         icon: <LuUserRoundSearch />,
         iconColor: 'text-orange-500',
+      },
+      {
+        label: 'Platform stats',
+        href: '/admin/stats',
+        icon: <HiChartPie />,
+        iconColor: 'text-cyan-500',
       },
     ]
   }, [session?.user.role])
