@@ -144,7 +144,7 @@ export default function DashboardPage() {
                     key={web.id}
                     className="hover:bg-muted/50 cursor-pointer"
                     onClick={() => {
-                      router.push(`/admin/dashboard/${web.slug}`)
+                      router.push(`/admin/manage-webs/${web.slug}`)
                     }}
                   >
                     <TableCell>

@@ -273,7 +273,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     return [
       {
         label: 'Manage webs',
-        href: '/admin/dashboard',
+        href: '/admin/manage-webs',
         icon: <GrOverview />,
         iconColor: 'text-indigo-500',
       },
