@@ -280,6 +280,15 @@ const ChartLegendContent = ({
     return null
   }
 
+  // Order the legend items to match the `config` key order so the legend is
+  // consistent regardless of how Recharts builds its payload.
+  const configKeys = Object.keys(config)
+  const orderedPayload = [...payload].sort((a, b) => {
+    const aKey = `${nameKey || a.dataKey || 'value'}`
+    const bKey = `${nameKey || b.dataKey || 'value'}`
+    return configKeys.indexOf(aKey) - configKeys.indexOf(bKey)
+  })
+
   return (
     <div
       className={cn(
@@ -288,7 +297,7 @@ const ChartLegendContent = ({
         className,
       )}
     >
-      {payload.map((item) => {
+      {orderedPayload.map((item) => {
         const key = `${nameKey || item.dataKey || 'value'}`
         const itemConfig = getPayloadConfigFromPayload(config, item, key)
 

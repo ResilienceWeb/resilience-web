@@ -197,7 +197,7 @@ export default function AnalyticsSummary({
                   <Area
                     key={t.key}
                     dataKey={t.key}
-                    type="monotone"
+                    type="linear"
                     fill={`url(#fill-${t.key})`}
                     stroke={chartConfig[t.key].color}
                     strokeWidth={2}
