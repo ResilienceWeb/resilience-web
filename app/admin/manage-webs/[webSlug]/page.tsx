@@ -19,6 +19,7 @@ import {
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs'
 import useDeleteWeb from '@hooks/webs/useDeleteWeb'
 import usePublishWeb from '@hooks/webs/usePublishWeb'
 import useUnpublishWeb from '@hooks/webs/useUnpublishWeb'
@@ -177,138 +178,149 @@ export default function WebDashboardPage({ params }) {
         )}
       </div>
 
-      {listingStats && (
-        <div className="mt-6 flex flex-col gap-2">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="rounded border border-gray-200 bg-white p-3">
-              <div className="text-lg font-medium">Listings with images</div>
-              <div className="flex items-end gap-2">
-                <span className="text-2xl font-bold">
-                  {listingStats.withImagesPercent}%
-                </span>
-                <span className="text-muted-foreground text-sm">
-                  ({listingStats.withImages} of {listingStats.totalListings})
-                </span>
-              </div>
-              <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
-                <div
-                  className="bg-primary h-full"
-                  style={{ width: `${listingStats.withImagesPercent}%` }}
-                ></div>
+      <Tabs defaultValue="overview" className="mt-6">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="flex flex-col gap-2">
+          {listingStats && (
+            <div className="mt-4 flex flex-col gap-2">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="rounded border border-gray-200 bg-white p-3">
+                  <div className="text-lg font-medium">
+                    Listings with images
+                  </div>
+                  <div className="flex items-end gap-2">
+                    <span className="text-2xl font-bold">
+                      {listingStats.withImagesPercent}%
+                    </span>
+                    <span className="text-muted-foreground text-sm">
+                      ({listingStats.withImages} of {listingStats.totalListings}
+                      )
+                    </span>
+                  </div>
+                  <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
+                    <div
+                      className="bg-primary h-full"
+                      style={{ width: `${listingStats.withImagesPercent}%` }}
+                    ></div>
+                  </div>
+                </div>
+                <div className="rounded border border-gray-200 bg-white p-3">
+                  <div className="text-lg font-medium">
+                    Listings with locations
+                  </div>
+                  <div className="flex items-end gap-2">
+                    <span className="text-2xl font-bold">
+                      {listingStats.withLocationPercent}%
+                    </span>
+                    <span className="text-muted-foreground text-sm">
+                      ({listingStats.withLocation} of{' '}
+                      {listingStats.totalListings})
+                    </span>
+                  </div>
+                  <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
+                    <div
+                      className="bg-primary h-full"
+                      style={{ width: `${listingStats.withLocationPercent}%` }}
+                    ></div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="rounded border border-gray-200 bg-white p-3">
-              <div className="text-lg font-medium">Listings with locations</div>
-              <div className="flex items-end gap-2">
-                <span className="text-2xl font-bold">
-                  {listingStats.withLocationPercent}%
-                </span>
-                <span className="text-muted-foreground text-sm">
-                  ({listingStats.withLocation} of {listingStats.totalListings})
-                </span>
-              </div>
-              <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
-                <div
-                  className="bg-primary h-full"
-                  style={{ width: `${listingStats.withLocationPercent}%` }}
-                ></div>
-              </div>
-            </div>
+          )}
+
+          <div className="mt-6">
+            <WebFeatures key={web.id} web={web} />
           </div>
-        </div>
-      )}
 
-      <div className="mt-6">
-        <h3 className="text-lg font-semibold">Analytics</h3>
-        <p className="text-sm text-muted-foreground mb-2">
-          View counts and engagement for this web
-        </p>
-        <AnalyticsSummary webSlug={webSlug} compact />
-      </div>
+          {web.webAccess?.length > 0 && (
+            <div className="mt-4 flex flex-col gap-2">
+              <h2 className="text-lg font-bold">Team</h2>
+              <WebAccessTable
+                webAccess={web.webAccess}
+                webId={web.id}
+                isInAdminSection
+              />
+              <Button variant="outline" asChild className="self-start">
+                <a href={`mailto:${mailToEmails}`}>
+                  Send email to owners and editors
+                </a>
+              </Button>
+            </div>
+          )}
 
-      <div className="mt-6">
-        <WebFeatures key={web.id} web={web} />
-      </div>
-
-      {web.webAccess?.length > 0 && (
-        <div className="mt-4 flex flex-col gap-2">
-          <h2 className="text-lg font-bold">Team</h2>
-          <WebAccessTable
-            webAccess={web.webAccess}
-            webId={web.id}
-            isInAdminSection
-          />
-          <Button variant="outline" asChild className="self-start">
-            <a href={`mailto:${mailToEmails}`}>
-              Send email to owners and editors
-            </a>
-          </Button>
-        </div>
-      )}
-
-      {listingEmails.length > 0 && (
-        <div className="mt-4 flex flex-col gap-2">
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="contact-emails">
-              <AccordionTrigger className="py-2">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-bold">Contact emails</h2>
-                  <Badge variant="outline" className="ml-2">
-                    {listingEmails.length}
-                  </Badge>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="mt-2 rounded-lg bg-gray-50 p-3">
-                  <div className="mb-3 flex items-center justify-between">
-                    <div className="text-muted-foreground text-sm">
-                      In case we want to send an email to all the contact emails
-                      from a particular web
+          {listingEmails.length > 0 && (
+            <div className="mt-4 flex flex-col gap-2">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="contact-emails">
+                  <AccordionTrigger className="py-2">
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-xl font-bold">Contact emails</h2>
+                      <Badge variant="outline" className="ml-2">
+                        {listingEmails.length}
+                      </Badge>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleCopyEmails}
-                      className="flex items-center gap-1"
-                    >
-                      {copied ? (
-                        <>
-                          <HiOutlineClipboardCheck className="h-4 w-4" />
-                          <span>Copied!</span>
-                        </>
-                      ) : (
-                        <>
-                          <HiOutlineClipboard className="h-4 w-4" />
-                          <span>Copy to clipboard</span>
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                  <div className="rounded border border-gray-200 bg-white p-2 text-sm break-all">
-                    {listingEmails.join('; ')}
-                  </div>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
-      )}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="mt-2 rounded-lg bg-gray-50 p-3">
+                      <div className="mb-3 flex items-center justify-between">
+                        <div className="text-muted-foreground text-sm">
+                          In case we want to send an email to all the contact
+                          emails from a particular web
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleCopyEmails}
+                          className="flex items-center gap-1"
+                        >
+                          {copied ? (
+                            <>
+                              <HiOutlineClipboardCheck className="h-4 w-4" />
+                              <span>Copied!</span>
+                            </>
+                          ) : (
+                            <>
+                              <HiOutlineClipboard className="h-4 w-4" />
+                              <span>Copy to clipboard</span>
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                      <div className="rounded border border-gray-200 bg-white p-2 text-sm break-all">
+                        {listingEmails.join('; ')}
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          )}
 
-      <div className="my-8 border-t border-gray-200 pt-6">
-        <h2 className="text-2xl font-bold text-destructive mb-2">Delete</h2>
-        <p className="text-muted-foreground mb-4">
-          Note that this is a soft delete. This will mark the web as deleted but
-          the web is still recoverable in case this was a mistake.
-        </p>
-        <Button
-          variant="destructive"
-          onClick={() => setIsDeleteDialogOpen(true)}
-          disabled={isDeletingWeb}
-        >
-          {isDeletingWeb ? <Spinner /> : null}
-          Delete Web
-        </Button>
-      </div>
+          <div className="my-8 border-t border-gray-200 pt-6">
+            <h2 className="text-2xl font-bold text-destructive mb-2">Delete</h2>
+            <p className="text-muted-foreground mb-4">
+              Note that this is a soft delete. This will mark the web as deleted
+              but the web is still recoverable in case this was a mistake.
+            </p>
+            <Button
+              variant="destructive"
+              onClick={() => setIsDeleteDialogOpen(true)}
+              disabled={isDeletingWeb}
+            >
+              {isDeletingWeb ? <Spinner /> : null}
+              Delete Web
+            </Button>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="analytics" className="mt-4">
+          <AnalyticsSummary webSlug={webSlug} />
+        </TabsContent>
+      </Tabs>
 
       <DeleteConfirmationDialog
         isOpen={isDeleteDialogOpen}

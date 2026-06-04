@@ -12,6 +12,7 @@ import {
   HiX,
   HiUpload,
   HiChartBar,
+  HiChartPie,
 } from 'react-icons/hi'
 import { LuBook, LuUserRoundSearch } from 'react-icons/lu'
 import Image from 'next/image'
@@ -272,7 +273,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     return [
       {
         label: 'Manage webs',
-        href: '/admin/dashboard',
+        href: '/admin/manage-webs',
         icon: <GrOverview />,
         iconColor: 'text-indigo-500',
       },
@@ -281,6 +282,12 @@ export default function SidebarContent({ closeMenu, ...rest }) {
         href: '/admin/users',
         icon: <LuUserRoundSearch />,
         iconColor: 'text-orange-500',
+      },
+      {
+        label: 'Platform stats',
+        href: '/admin/stats',
+        icon: <HiChartPie />,
+        iconColor: 'text-cyan-500',
       },
     ]
   }, [session?.user.role])

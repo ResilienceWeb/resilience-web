@@ -69,7 +69,9 @@ const WebSelector = () => {
 
   const hideWebSelector = useMemo(
     () =>
-      pathname?.includes('/admin/dashboard') ||
+      pathname?.includes('/admin/manage-webs') ||
+      pathname?.includes('/admin/users') ||
+      pathname?.includes('/admin/stats') ||
       pathname?.includes('/admin/user-settings'),
     [pathname],
   )
@@ -86,7 +88,7 @@ const WebSelector = () => {
 
   return (
     <Select value={selectedWebSlug} onValueChange={handleWebChange}>
-      <SelectTrigger className="min-w-45 rounded-[10px]">
+      <SelectTrigger className="min-w-45 rounded-[10px] bg-white">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>

@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import { auth } from '@auth'
 import {
+  getDailyAnalyticsForWeb,
   getListingAnalyticsForWeb,
   getWebAnalytics,
 } from '@db/analyticsRepository'
@@ -51,15 +52,17 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const [listings, webAnalytics] = await Promise.all([
+    const [listings, webAnalytics, daily] = await Promise.all([
       getListingAnalyticsForWeb(web.id, period),
       getWebAnalytics(web.id, period),
+      getDailyAnalyticsForWeb(web.id, period),
     ])
 
     return Response.json({
       data: {
         listings,
         web: webAnalytics,
+        daily,
       },
     })
   } catch (e) {
