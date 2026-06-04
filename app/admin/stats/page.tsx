@@ -1,6 +1,8 @@
 'use client'
 
 import { isWebActive } from '@helpers/webActivity'
+import ListingsCreatedChart from '@components/admin/platform-stats/ListingsCreatedChart'
+import PlatformAnalyticsChart from '@components/admin/platform-stats/PlatformAnalyticsChart'
 import UserSignupsChart from '@components/admin/platform-stats/UserSignupsChart'
 import { Spinner } from '@components/ui/spinner'
 import useAdminStats from '@hooks/useAdminStats'
@@ -59,6 +61,8 @@ export default function StatsPage() {
       </div>
 
       <UserSignupsChart />
+      <PlatformAnalyticsChart />
+      <ListingsCreatedChart />
     </div>
   )
 }
