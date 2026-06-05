@@ -8,6 +8,7 @@ import '@styles/font-awesome.css'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts'
 import { trackWebEvent } from '@helpers/analytics'
+import { decompressJson } from '@helpers/compression'
 import { REMOTE_URL } from '@helpers/config'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import {
@@ -40,11 +41,14 @@ const ListingsMap = dynamic(() => import('@components/listings-map'), {
 
 export const CENTRAL_NODE_ID = 999
 
+type NetworkData = {
+  nodes: ListingNodeType[]
+  edges: any[]
+}
+
 type Props = {
-  data: {
-    nodes: ListingNodeType[]
-    edges: any[]
-  }
+  // gzip+base64 compressed NetworkData, decompressed on the client below.
+  data: string
   events?: any[]
   features: any
   webId: number
@@ -57,7 +61,7 @@ type Props = {
 }
 
 const Web = ({
-  data,
+  data: compressedData,
   events,
   features,
   webId,
@@ -68,6 +72,11 @@ const Web = ({
   webContactEmail,
   webSlug,
 }: Props) => {
+  const data = useMemo<NetworkData | null>(
+    () => (compressedData ? decompressJson<NetworkData>(compressedData) : null),
+    [compressedData],
+  )
+
   const isMobile = useIsMobile()
   const [isVolunteer, setIsVolunteer] = useState(false)
   const defaultTab = isMobile ? 'list' : 'web'

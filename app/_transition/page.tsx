@@ -5,6 +5,7 @@ import {
   HydrationBoundary,
 } from '@tanstack/react-query'
 import { groupBy } from 'es-toolkit'
+import { compressJson } from '@helpers/compression'
 import { FEATURES } from '@helpers/features'
 import { generateSlug } from '@helpers/utils'
 import Web, { CENTRAL_NODE_ID } from '../[subdomain]/Web'
@@ -42,7 +43,10 @@ export default async function TransitionPage() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Web
-        data={data}
+        // Web reads only nodes/edges; compress to match its prop and keep the
+        // payload small across the wire (categories/tags/features are passed
+        // separately via React Query prefetch and the features prop).
+        data={compressJson({ nodes: data.nodes, edges: data.edges })}
         webId={0}
         webName="Transition UK"
         webIsPublished
