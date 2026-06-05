@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { GraphQLClient } from 'graphql-request'
 import prisma from '@prisma-rw'
+import { compressJson } from '@helpers/compression'
 import { getIconUnicode } from '@helpers/icons'
 import { getAllWebs, getWebBySlug } from '@db/webRepository'
 import Web from './Web'
@@ -25,15 +26,11 @@ export default async function WebPage(props) {
     return notFound()
   }
 
-  const data = (rawData as any).compressed
-    ? JSON.parse(Buffer.from((rawData as any).data, 'base64').toString())
-    : rawData
-
-  const { transformedData, webData } = data
+  const { data, webData } = rawData
 
   return (
     <Web
-      data={transformedData}
+      data={data}
       events={events}
       features={webData.features}
       webId={webData.id}
@@ -77,35 +74,21 @@ export async function generateStaticParams() {
   return subdomains
 }
 
-type DataType =
-  | {
-      transformedData: {
-        nodes: ListingNodeType[]
-        edges: any[]
-      }
-      webData: {
-        title: string
-        description: string
-        published: boolean
-        image: string
-        slug: string
-        features: Record<string, any>
-        contactEmail: string
-      }
-    }
-  | {
-      compressed: true
-      data: string
-      webData: {
-        title: string
-        description: string
-        published: boolean
-        image: string
-        slug: string
-        features: Record<string, any>
-        contactEmail: string
-      }
-    }
+type DataType = {
+  // gzip+base64 compressed network visualization data ({ nodes, edges }).
+  // Kept compressed across the wire and decompressed on the client in Web.tsx.
+  data: string
+  webData: {
+    id: number
+    title: string
+    description: string
+    published: boolean
+    image: string
+    slug: string
+    features: Record<string, any>
+    contactEmail: string
+  }
+}
 
 async function getData({ webSlug }): Promise<DataType> {
   const webData = await prisma.web.findFirst({
@@ -395,16 +378,11 @@ async function getData({ webSlug }): Promise<DataType> {
     })
   }
 
-  const result = {
-    transformedData,
-    // @ts-ignore
-    webData,
-  }
-
-  const compressed = Buffer.from(JSON.stringify(result)).toString('base64')
   return {
-    compressed: true,
-    data: compressed,
+    // Compress only the network visualization data — it's the large payload.
+    // webData is small and is consumed directly for props/metadata.
+    data: compressJson(transformedData),
+    // @ts-ignore
     webData,
   }
 }

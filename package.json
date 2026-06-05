@@ -50,6 +50,7 @@
     "diff": "9.0.0",
     "driver.js": "1.4.0",
     "es-toolkit": "1.47.0",
+    "fflate": "0.8.3",
     "graphql": "16.14.0",
     "graphql-request": "7.4.0",
     "input-otp": "1.4.2",

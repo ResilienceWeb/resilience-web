@@ -207,9 +207,11 @@ The `Web` model uses soft deletes:
 
 ### Data Compression
 
-Large page data (network visualization) compressed using base64 encoding:
-- See [app/[subdomain]/page.tsx](app/[subdomain]/page.tsx) `getData()` function
-- Reduces initial page load payload
+Large page data (network visualization) is gzip-compressed (then base64-encoded) on the server and stays compressed across the wire, decompressed on the client:
+- Compressed in [app/[subdomain]/page.tsx](app/[subdomain]/page.tsx) `getData()` via `compressJson()`
+- Decompressed in [app/[subdomain]/Web.tsx](app/[subdomain]/Web.tsx) via `decompressJson()`
+- Isomorphic gzip helpers (fflate-based): [helpers/compression.ts](helpers/compression.ts)
+- Reduces the initial page load / RSC payload for webs with many listings
 
 ### Static Generation
 
