@@ -10,12 +10,16 @@
 
 interface BuildCache {
   listings: Map<string, any>
+  newsPosts: Map<string, any>
   initialized: boolean
+  newsInitialized: boolean
 }
 
 const buildCache: BuildCache = {
   listings: new Map<string, any>(),
+  newsPosts: new Map<string, any>(),
   initialized: false,
+  newsInitialized: false,
 }
 
 /**
@@ -88,12 +92,72 @@ export function getListingFromCache(
 }
 
 /**
+ * Initializes the build cache with Hygraph news posts
+ * This should be called once in the news generateStaticParams() with all fetched posts.
+ *
+ * Caching full post data here means the per-page render and generateMetadata() can read
+ * from memory instead of each issuing its own Hygraph request, which previously caused
+ * bursts of concurrent requests and HTTP 429 rate limiting during build.
+ *
+ * @param posts - Array of news post objects keyed by their slug
+ */
+export function initializeNewsBuildCache(posts: any[]): void {
+  if (!isBuildTime()) {
+    console.log(
+      '[Build Cache] Not in build time, skipping news cache initialization',
+    )
+    return
+  }
+
+  buildCache.newsPosts.clear()
+
+  for (const post of posts) {
+    if (post?.slug) {
+      buildCache.newsPosts.set(post.slug, post)
+    }
+  }
+
+  buildCache.newsInitialized = true
+
+  console.log(
+    `[Build Cache] Initialized with ${buildCache.newsPosts.size} news posts`,
+  )
+}
+
+/**
+ * Retrieves a news post from the build cache
+ *
+ * @param slug - The news post slug
+ * @returns The cached post or null if not found
+ */
+export function getNewsPostFromCache(
+  slug: string,
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+): any | null {
+  if (!isBuildTime() || !buildCache.newsInitialized) {
+    return null
+  }
+
+  const post = buildCache.newsPosts.get(slug)
+
+  if (post) {
+    console.log(`[Build Cache] News cache hit for ${slug}`)
+  } else {
+    console.log(`[Build Cache] News cache miss for ${slug}`)
+  }
+
+  return post || null
+}
+
+/**
  * Clears the build cache
  * This is called after the build process completes to free memory
  */
 export function clearBuildCache(): void {
   buildCache.listings.clear()
+  buildCache.newsPosts.clear()
   buildCache.initialized = false
+  buildCache.newsInitialized = false
   console.log('[Build Cache] Cache cleared')
 }
 
