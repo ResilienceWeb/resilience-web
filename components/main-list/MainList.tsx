@@ -28,10 +28,11 @@ const MainList = ({ filteredItems, webSlug }: MainListProps) => {
         <div className="mt-4 w-full max-w-[1400px]">
           {filteredItems.length > 0 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {filteredItems.map((item) => (
+              {filteredItems.map((item, index) => (
                 <Item
                   categoriesIndexes={categoriesIndexes}
                   dataItem={item}
+                  index={index}
                   key={item.id}
                 />
               ))}

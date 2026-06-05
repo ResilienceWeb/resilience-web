@@ -19,7 +19,12 @@ const FormSchema = z.object({
   }),
 })
 
-const SignupForm = () => {
+type Props = {
+  /** Called on first interaction so the reCAPTCHA script can be loaded lazily. */
+  onInteract?: () => void
+}
+
+const SignupForm = ({ onInteract }: Props) => {
   const { executeRecaptcha } = useReCaptcha()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -74,6 +79,7 @@ const SignupForm = () => {
                   placeholder="Your email address"
                   autoCapitalize="off"
                   autoCorrect="off"
+                  onFocus={onInteract}
                 />
               </FormControl>
               <FormMessage />

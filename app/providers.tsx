@@ -8,7 +8,6 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { ReCaptchaProvider } from 'next-recaptcha-v3'
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
 
@@ -74,7 +73,7 @@ export default function Providers({ children }) {
     <PostHogProvider client={posthog}>
       <QueryClientProvider client={queryClient}>
         <PostHogPageView />
-        <ReCaptchaProvider>{children}</ReCaptchaProvider>
+        {children}
         <ReactQueryDevtools buttonPosition="bottom-right" />
       </QueryClientProvider>
     </PostHogProvider>

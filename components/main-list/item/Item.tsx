@@ -19,13 +19,23 @@ import {
 } from '@components/ui/tooltip'
 import ImagePlaceholder from './image-placeholder'
 
+// Number of leading cards treated as above-the-fold. Their images are fetched
+// eagerly (priority) so the LCP image gets fetchpriority=high and isn't lazy-loaded.
+const ABOVE_THE_FOLD_COUNT = 3
+
 type Props = {
   categoriesIndexes: Record<string, number>
   dataItem: ListingNodeType
   simplified?: boolean
+  index?: number
 }
 
-const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
+const Item = ({
+  categoriesIndexes,
+  dataItem,
+  simplified = false,
+  index,
+}: Props) => {
   const { subdomain } = useParams<{ subdomain: string }>()
   const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
     useState<boolean>(true)
@@ -58,6 +68,13 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
       new Date(dataItem.featured).getTime() > Date.now(),
     [dataItem.featured],
   )
+
+  // Above-the-fold cards prioritise their image (eager + fetchpriority=high) so the
+  // LCP image isn't lazy-loaded. Cards without an index keep the in-view behaviour.
+  const shouldPrioritizeImage =
+    index !== undefined
+      ? index < ABOVE_THE_FOLD_COUNT
+      : inView && isWithinAFewSecondsOfRender
 
   return (
     <Link
@@ -94,7 +111,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
           alt={`${dataItem.label} cover image`}
           src={dataItem.image}
           sizes="(max-width: 768px) 90vw, 300px"
-          priority={inView && isWithinAFewSecondsOfRender}
+          priority={shouldPrioritizeImage}
         />
       ) : (
         categoryIndex !== null &&
