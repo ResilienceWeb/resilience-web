@@ -123,6 +123,7 @@ export async function DELETE(request: NextRequest) {
       const webPermissionsRevokedEmail = WebPermissionsRevokedEmail({
         webTitle: selectedWeb.title,
         webOwnerEmail: session.user.email,
+        webOwnerName: session.user.name,
       })
 
       sendEmail({
