@@ -1,9 +1,30 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { GraphQLClient } from 'graphql-request'
 import { remark } from 'remark'
 import html from 'remark-html'
+import {
+  isBuildTime,
+  initializeNewsBuildCache,
+  getNewsPostFromCache,
+} from '../../../lib/build-cache'
+import { getHygraphClient } from '../../../lib/hygraph'
 import NewsItem from './NewsItem'
+
+const POST_FIELDS = `
+  slug
+  title
+  author {
+    name
+  }
+  date
+  excerpt
+  displayInBlogSection
+  coverImage {
+    url
+  }
+  content {
+    markdown
+  }`
 
 export default async function NewsItemPage(props) {
   const params = await props.params
@@ -39,13 +60,21 @@ export async function generateMetadata(props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL)
+  const graphcms = getHygraphClient()
 
-  const { pages } = await graphcms.request<{ pages: [] }>(`{
+  // Fetch full post data (not just slugs) and seed the build cache with it, so the
+  // per-page render and generateMetadata() read posts from memory instead of each
+  // issuing its own Hygraph request. Together these collapse the build down to this
+  // single bulk request and avoid the concurrent-request bursts that were triggering
+  // HTTP 429 rate limiting. (graphql-request POSTs aren't deduped by Next's fetch
+  // cache, so the cache is what makes the bulk fetch pay off.)
+  const { pages } = await graphcms.request<{ pages: any[] }>(`{
     pages {
-      slug
-      }
-    }`)
+      ${POST_FIELDS}
+    }
+  }`)
+
+  initializeNewsBuildCache(pages)
 
   return pages.map(({ slug }) => ({
     slug,
@@ -53,32 +82,23 @@ export async function generateStaticParams() {
 }
 
 async function getNewsItem({ slug }): Promise<any> {
-  const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL)
+  let page = isBuildTime() ? getNewsPostFromCache(slug) : null
 
-  const { page } = await graphcms.request<{ page: any }>(
-    `
+  if (!page) {
+    const graphcms = getHygraphClient()
+    const response = await graphcms.request<{ page: any }>(
+      `
       query NewsPostQuery($slug: String!){
         page(where: {slug: $slug}) {
-          slug
-          title
-          author {
-            name
-          }
-          date
-          excerpt
-          displayInBlogSection
-          coverImage {
-            url
-          }
-          content {
-            markdown
-          }
+          ${POST_FIELDS}
         }
       }`,
-    {
-      slug: slug,
-    },
-  )
+      {
+        slug: slug,
+      },
+    )
+    page = response.page
+  }
 
   if (!page) {
     return notFound()

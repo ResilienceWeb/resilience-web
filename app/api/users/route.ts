@@ -2,6 +2,11 @@ import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
+import {
+  getSubscriber,
+  upsertSubscriber,
+  forgetSubscriber,
+} from '@helpers/mailerlite'
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,20 +24,8 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    let subscribedToMailingList = false
-    const response = await fetch(
-      `https://connect.mailerlite.com/api/subscribers/${session?.user.email}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}`,
-        },
-      },
-    )
-    const responseJson = await response.json()
-
-    if (responseJson.data?.status === 'active') {
-      subscribedToMailingList = true
-    }
+    const subscriber = await getSubscriber(session.user.email)
+    const subscribedToMailingList = subscriber?.status === 'active'
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
@@ -76,23 +69,10 @@ export async function PATCH(request: NextRequest) {
     })
 
     if (requestBody.subscribed) {
-      const response = await fetch(
-        'https://connect.mailerlite.com/api/subscribers',
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            email: session.user.email,
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}`,
-          },
-        },
-      )
-      const data = await response.json()
-      if (data.error) {
-        return Response.json({ error: data.error }, { status: 400 })
-      }
+      await upsertSubscriber({
+        email: session.user.email,
+        fields: updatedUser.name ? { name: updatedUser.name } : undefined,
+      })
 
       return Response.json({
         data: {
@@ -101,36 +81,9 @@ export async function PATCH(request: NextRequest) {
         },
       })
     } else {
-      const response = await fetch(
-        `https://connect.mailerlite.com/api/subscribers/${session?.user.email}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}`,
-          },
-        },
-      )
-      const responseJson = await response.json()
-      const subscriberId = responseJson.data.id
-      if (responseJson.error) {
-        return Response.json({ error: responseJson.error }, { status: 400 })
-      }
-
-      const unsubscribeResponse = await fetch(
-        `https://connect.mailerlite.com/api/subscribers/${subscriberId}/forget`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}`,
-          },
-        },
-      )
-      const unsubscribeResponseJson = await unsubscribeResponse.json()
-
-      if (unsubscribeResponseJson.error) {
-        return Response.json(
-          { error: unsubscribeResponseJson.error },
-          { status: 400 },
-        )
+      const subscriber = await getSubscriber(session.user.email)
+      if (subscriber) {
+        await forgetSubscriber(subscriber.id)
       }
 
       return Response.json({

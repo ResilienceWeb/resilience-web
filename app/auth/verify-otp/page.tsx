@@ -96,6 +96,18 @@ export default function VerifyOTP() {
         }
       }
 
+      // If the user opted in during signup, subscribe them to the newsletter
+      const wantsNewsletter = sessionStorage.getItem('otp-newsletter') === 'true'
+      if (wantsNewsletter) {
+        try {
+          await fetch('/api/users/newsletter-subscribe', { method: 'POST' })
+        } catch (subscribeError) {
+          // Don't block sign-in if the newsletter subscription fails
+          Sentry.captureException(subscribeError, { extra: { email } })
+        }
+      }
+      sessionStorage.removeItem('otp-newsletter')
+
       // Clear session storage on success
       sessionStorage.removeItem('otp-email')
       posthog.capture('user-signed-in')

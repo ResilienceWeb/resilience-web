@@ -8,6 +8,7 @@ import * as Sentry from '@sentry/nextjs'
 import { authClient } from '@auth-client'
 import { ERROR_MESSAGES } from '@auth-client'
 import { Button } from '@components/ui/button'
+import { Checkbox } from '@components/ui/checkbox'
 import { Input } from '@components/ui/input'
 import LogoImage from '../../../public/logo.png'
 import styles from '../auth.module.css'
@@ -15,12 +16,13 @@ import styles from '../auth.module.css'
 export default function SignUp() {
   const router = useRouter()
   const [error, setError] = useState('')
+  const [subscribeToNewsletter, setSubscribeToNewsletter] = useState(false)
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo')
   const errorCode = searchParams.get('error')
 
   const errorFromParams = errorCode
-    ? (ERROR_MESSAGES[errorCode] || 'An error occurred. Please try again.')
+    ? ERROR_MESSAGES[errorCode] || 'An error occurred. Please try again.'
     : ''
   const displayError = error || errorFromParams
 
@@ -31,12 +33,13 @@ export default function SignUp() {
   // applied to an unrelated session later on.
   useEffect(() => {
     sessionStorage.removeItem('otp-name')
+    sessionStorage.removeItem('otp-newsletter')
   }, [])
 
   return (
     <div className={styles.root}>
       <div className="flex min-h-screen flex-col items-center justify-center px-4">
-        <div className="mb-6 w-full max-w-[500px] rounded-xl bg-white p-6 sm:mb-8 sm:p-10">
+        <div className="mb-6 w-full max-w-125 rounded-xl bg-white p-6 sm:mb-8 sm:p-10">
           <div className="mb-4 flex justify-center">
             <div className="relative h-[70px] w-[206px] sm:h-[104px] sm:w-[306px]">
               <Image alt="Resilience Web logo" src={LogoImage} priority />
@@ -67,14 +70,11 @@ export default function SignUp() {
                 const name = (formData.get('name') as string)?.trim()
                 const email = formData.get('email') as string
 
-                const checkResponse = await fetch(
-                  '/api/users/check-email',
-                  {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email }),
-                  },
-                )
+                const checkResponse = await fetch('/api/users/check-email', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ email }),
+                })
                 const { exists } = await checkResponse.json()
 
                 if (exists) {
@@ -103,6 +103,11 @@ export default function SignUp() {
                   sessionStorage.setItem('otp-name', name)
                 } else {
                   sessionStorage.removeItem('otp-name')
+                }
+                if (subscribeToNewsletter) {
+                  sessionStorage.setItem('otp-newsletter', 'true')
+                } else {
+                  sessionStorage.removeItem('otp-newsletter')
                 }
                 setError('')
                 const verifyUrl = redirectTo
@@ -152,10 +157,29 @@ export default function SignUp() {
                 required
               />
             </div>
+            <div className="mt-4 flex items-start gap-2">
+              <Checkbox
+                id="newsletter"
+                checked={subscribeToNewsletter}
+                onCheckedChange={(checked) =>
+                  setSubscribeToNewsletter(checked === true)
+                }
+                className="mt-0.5"
+              />
+              <label
+                htmlFor="newsletter"
+                className="text-sm leading-snug text-gray-700 cursor-pointer"
+              >
+                Subscribe to our newsletter to keep up with news and updates
+                from Resilience Web.
+              </label>
+            </div>
             <Button type="submit" className="mt-4 w-full">
               Sign up
             </Button>
-            {displayError && <p className="mt-3 text-sm text-red-600">{displayError}</p>}
+            {displayError && (
+              <p className="mt-3 text-sm text-red-600">{displayError}</p>
+            )}
           </form>
         </div>
 

@@ -23,10 +23,6 @@ const columns = [
     Header: 'Permissions',
     accessor: 'permissions',
   },
-  {
-    Header: 'Actions',
-    accessor: 'actions',
-  },
 ]
 
 type Props = {
@@ -50,6 +46,10 @@ const WebAccessTable = ({
   ] = useState<{ userEmail: string }>()
   const { mutate: removeWebAccess } = useRemoveWebAccess()
 
+  const canManageTeam = isOwner || session?.user?.role === 'admin'
+  const showActionsColumn =
+    canManageTeam && webAccess.some((p) => p.role !== 'OWNER')
+
   const handleRemove = () => {
     const { userEmail } = isRemoveConfirmationDialogOpenWithUserEmail
     removeWebAccess({ userEmail, webId })
@@ -72,9 +72,7 @@ const WebAccessTable = ({
               {columns.map((column, index) => (
                 <TableHead key={`heading-${index}`}>{column.Header}</TableHead>
               ))}
-              {isOwner && webAccess.some((p) => p.role !== 'OWNER') && (
-                <TableHead>Actions</TableHead>
-              )}
+              {showActionsColumn && <TableHead>Actions</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -142,11 +140,11 @@ const WebAccessTable = ({
                     }
                   })}
 
-                  {isOwner ||
-                    (session?.user.role === 'admin' &&
-                      session?.user?.email !== webAccess.email &&
-                      !webAccess.owner && (
-                        <TableCell>
+                  {showActionsColumn && (
+                    <TableCell>
+                      {canManageTeam &&
+                        session?.user?.email !== webAccess.email &&
+                        webAccess.role !== 'OWNER' && (
                           <Button
                             variant="destructive"
                             size="sm"
@@ -159,8 +157,9 @@ const WebAccessTable = ({
                           >
                             Remove
                           </Button>
-                        </TableCell>
-                      ))}
+                        )}
+                    </TableCell>
+                  )}
                 </TableRow>
               )
             })}

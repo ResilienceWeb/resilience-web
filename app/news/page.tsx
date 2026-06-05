@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { GraphQLClient } from 'graphql-request'
+import { getHygraphClient } from '../../lib/hygraph'
 import News from './News'
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default async function NewsPage() {
 }
 
 async function getData(): Promise<any> {
-  const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL)
+  const graphcms = getHygraphClient()
 
   const { pages } = await graphcms.request<{ pages: [] }>(`
     {
