@@ -7,7 +7,7 @@ interface HeroProps {
 export default function Hero({ webCount }: HeroProps) {
   return (
     <div className="relative w-full">
-      <div className="mx-auto max-w-7xl px-4 pt-6 pb-2 md:pt-10">
+      <div className="mx-auto max-w-7xl pt-6 pb-2 md:pt-10">
         <div className="flex flex-col items-center gap-8 md:gap-10">
           <div className="items-left animate-fade-in flex flex-col gap-5 md:items-center md:gap-6">
             <h1 className="w-full max-w-[20ch] text-left text-4xl leading-[1.15] font-bold tracking-tight md:text-center md:text-5xl lg:text-6xl lg:leading-[1.1]">

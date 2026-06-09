@@ -185,6 +185,14 @@
     p:last-child {
       margin-bottom: 0;
     }
+
+    /* Some CMS markdown closes an italic/bold run immediately before a link
+       (e.g. `_…our_[link]`), which renders as `</em><a>` with no space. Insert
+       one; any existing whitespace collapses, so it never double-spaces. */
+    em:has(+ a)::after,
+    strong:has(+ a)::after {
+      content: ' ';
+    }
   }
 
   a:hover {
