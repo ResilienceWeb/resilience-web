@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, type Ref } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useReCaptcha } from 'next-recaptcha-v3'
@@ -20,11 +20,13 @@ const FormSchema = z.object({
 })
 
 type Props = {
-  /** Called on first interaction so the reCAPTCHA script can be loaded lazily. */
+  /** Attached to the form element so its visibility can be observed for lazy reCAPTCHA loading. */
+  formRef?: Ref<HTMLFormElement>
+  /** Called on first interaction as a fallback trigger for loading reCAPTCHA. */
   onInteract?: () => void
 }
 
-const SignupForm = ({ onInteract }: Props) => {
+const SignupForm = ({ formRef, onInteract }: Props) => {
   const { executeRecaptcha } = useReCaptcha()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -62,6 +64,7 @@ const SignupForm = ({ onInteract }: Props) => {
   return (
     <Form {...form}>
       <form
+        ref={formRef}
         className="flex w-full items-start md:w-[450px]"
         onSubmit={form.handleSubmit(onSubmit)}
       >
