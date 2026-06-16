@@ -7,6 +7,17 @@ import { withSentryConfig } from '@sentry/nextjs'
  */
 const nextConfig = {
   reactStrictMode: false,
+  // Keep sharp out of the bundler so it's loaded from node_modules at runtime
+  serverExternalPackages: ['sharp'],
+  // Force the Linux native binary + libvips shared object to be traced into the
+  // deployed function bundle. Without this, Netlify's file tracing misses the
+  // dynamically-required libvips-cpp.so and sharp fails to load at runtime.
+  outputFileTracingIncludes: {
+    '/api/**': [
+      './node_modules/@img/sharp-linux-x64/**/*',
+      './node_modules/@img/sharp-libvips-linux-x64/**/*',
+    ],
+  },
   images: {
     qualities: [80],
     remotePatterns: [
