@@ -8,7 +8,7 @@ import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet/dist/leaflet.css'
-import { createCustomIcon } from '@helpers/map'
+import { createCustomIcon, createClusterIcon } from '@helpers/map'
 import Item from '@components/main-list/item'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
@@ -31,7 +31,10 @@ function MarkerClusterGroup({ items }: { items: any[] }) {
         spiderfyOnMaxZoom: true,
         showCoverageOnHover: false,
         zoomToBoundsOnClick: true,
-        maxClusterRadius: 20,
+        // Only group markers that are practically on top of each other, so
+        // listings show as individual icons instead of number badges.
+        maxClusterRadius: 1,
+        iconCreateFunction: createClusterIcon,
       })
 
       clusterRef.current = clusterGroup
@@ -48,6 +51,9 @@ function MarkerClusterGroup({ items }: { items: any[] }) {
           ],
           { icon: markerIcon },
         )
+
+        // Expose the category so cluster icons can render its members.
+        ;(marker as any).itemCategory = item.category
 
         const popupContent = `
           <div class="flex flex-col gap-2 p-2">
