@@ -157,13 +157,13 @@ const CategoryForm = ({
                     variant="destructive"
                     className="opacity-85"
                     onClick={onDelete}
-                    disabled={category?.listings?.length > 0}
+                    disabled={category?._count?.listings > 0}
                     type="button"
                   >
                     Remove
                   </Button>
                 </TooltipTrigger>
-                {category?.listings?.length > 0 && (
+                {category?._count?.listings > 0 && (
                   <TooltipContent className="z-200">
                     To delete this category, first ensure there are no listings
                     associated with it

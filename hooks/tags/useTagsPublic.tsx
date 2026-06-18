@@ -5,7 +5,7 @@ async function fetchTagsRequest({ queryKey }) {
   const [_key, { webSlug }] = queryKey
   const response = await fetch(`/api/tags?web=${webSlug}`)
   const { data: tags } = await response.json()
-  return tags.filter((tag) => tag.listings.length > 0)
+  return tags.filter((tag) => tag._count.listings > 0)
 }
 
 export default function useTagsPublic({ webSlug }) {

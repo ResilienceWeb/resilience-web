@@ -89,25 +89,25 @@ model VerificationToken {
 }
 
 model Web {
-  createdAt    DateTime     @default(now()) @map("created_at")
-  updatedAt    DateTime     @default(now()) @updatedAt @map("updated_at")
-  id           Int          @id @default(autoincrement())
-  title        String       @unique
-  slug         String       @unique
-  description  String?
-  contactEmail String?      @map("contact_email")
-  categories   Category[]
-  listings     ListingPlacement[]
-  tags         Tag[]
-  published    Boolean      @default(false)
-  image        String?
-  permissions  Permission[]
-  ownerships   Ownership[]
-  features     WebFeature[]
-  relations    Web[]        @relation("related_webs")
-  relationOf   Web[]        @relation("related_webs")
-  location     WebLocation? @relation(fields: [locationId], references: [id])
-  locationId   Int?         @unique
+  createdAt             DateTime                @default(now()) @map("created_at")
+  updatedAt             DateTime                @default(now()) @updatedAt @map("updated_at")
+  id                    Int                     @id @default(autoincrement())
+  title                 String                  @unique
+  slug                  String                  @unique
+  description           String?
+  contactEmail          String?                 @map("contact_email")
+  categories            Category[]
+  listings              ListingPlacement[]
+  tags                  Tag[]
+  published             Boolean                 @default(false)
+  image                 String?
+  permissions           Permission[]
+  ownerships            Ownership[]
+  features              WebFeature[]
+  relations             Web[]                   @relation("related_webs")
+  relationOf            Web[]                   @relation("related_webs")
+  location              WebLocation?            @relation(fields: [locationId], references: [id])
+  locationId            Int?                    @unique
   webAccess             WebAccess[]
   deletedAt             DateTime?               @map("deleted_at")
   analyticsDaily        WebAnalyticsDaily[]
@@ -118,55 +118,57 @@ model Web {
 }
 
 model Category {
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @default(now()) @updatedAt @map("updated_at")
+  createdAt   DateTime           @default(now()) @map("created_at")
+  updatedAt   DateTime           @default(now()) @updatedAt @map("updated_at")
   label       String
-  color       String        @default("f1f1f1")
-  icon        String        @default("default")
-  id          Int           @id @default(autoincrement())
+  color       String             @default("f1f1f1")
+  icon        String             @default("default")
+  id          Int                @id @default(autoincrement())
   webId       Int?
-  web         Web?          @relation(fields: [webId], references: [id])
+  web         Web?               @relation(fields: [webId], references: [id])
   listings    ListingPlacement[]
   ListingEdit ListingEdit[]
 
   @@unique([webId, label], name: "categoryIdentifier")
+  @@index([webId, id])
   @@map("categories")
 }
 
 model Tag {
-  id            Int          @id @default(autoincrement())
+  id            Int                @id @default(autoincrement())
   label         String
   webId         Int?
-  web           Web?         @relation(fields: [webId], references: [id])
+  web           Web?               @relation(fields: [webId], references: [id])
   listings      ListingPlacement[]
-  ListingEdit   ListingEdit? @relation(fields: [listingEditId], references: [id])
+  ListingEdit   ListingEdit?       @relation(fields: [listingEditId], references: [id])
   listingEditId Int?
 
   @@unique([webId, label], name: "tagIdentifier")
+  @@index([webId, id])
   @@map("tags")
 }
 
 model Listing {
-  id                Int                  @id @default(autoincrement())
-  createdAt         DateTime             @default(now()) @map("created_at")
-  updatedAt         DateTime             @default(now()) @updatedAt @map("updated_at")
+  id                Int                     @id @default(autoincrement())
+  createdAt         DateTime                @default(now()) @map("created_at")
+  updatedAt         DateTime                @default(now()) @updatedAt @map("updated_at")
   title             String
   website           String?
   description       String?
   socials           ListingSocialMedia[]
   email             String?
   notes             String?
-  inactive          Boolean              @default(false)
-  seekingVolunteers Boolean?             @map("seeking_volunteers")
+  inactive          Boolean                 @default(false)
+  seekingVolunteers Boolean?                @map("seeking_volunteers")
   image             String?
   permissions       Permission[]
-  relations         Listing[]            @relation("related")
-  relationOf        Listing[]            @relation("related")
-  pending           Boolean              @default(false)
-  proposer          User?                @relation(fields: [proposerId], references: [id])
+  relations         Listing[]               @relation("related")
+  relationOf        Listing[]               @relation("related")
+  pending           Boolean                 @default(false)
+  proposer          User?                   @relation(fields: [proposerId], references: [id])
   proposerId        String?
-  location          ListingLocation?     @relation(fields: [locationId], references: [id])
-  locationId        Int?                 @unique
+  location          ListingLocation?        @relation(fields: [locationId], references: [id])
+  locationId        Int?                    @unique
   edits             ListingEdit[]
   actions           ListingAction[]
   analyticsDaily    ListingAnalyticsDaily[]

@@ -1,6 +1,5 @@
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
-import type { Category } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
@@ -9,7 +8,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const web = searchParams.get('web')
 
-    const categories: Category[] = await prisma.category.findMany({
+    const categories = await prisma.category.findMany({
       where: {
         web: {
           slug: {
@@ -18,8 +17,19 @@ export async function GET(request: NextRequest) {
           deletedAt: null,
         },
       },
-      include: {
-        listings: true,
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        label: true,
+        color: true,
+        icon: true,
+        webId: true,
+        _count: {
+          select: {
+            listings: true,
+          },
+        },
       },
       orderBy: [
         {

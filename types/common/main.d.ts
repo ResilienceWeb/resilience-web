@@ -32,7 +32,16 @@ declare global {
   }
 
   type CategoryWithListings = Prisma.CategoryGetPayload<{
-    include: { listings: true }
+    select: {
+      id: true
+      createdAt: true
+      updatedAt: true
+      label: true
+      color: true
+      icon: true
+      webId: true
+      _count: { select: { listings: true } }
+    }
   }>
 
   type TagWithListings = Prisma.TagGetPayload<{

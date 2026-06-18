@@ -1,6 +1,5 @@
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
-import type { Tag } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
@@ -9,9 +8,17 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const web = searchParams.get('web')
 
-    const tags: Tag[] = await prisma.tag.findMany({
-      include: {
-        listings: true,
+    const tags = await prisma.tag.findMany({
+      select: {
+        id: true,
+        label: true,
+        webId: true,
+        listingEditId: true,
+        _count: {
+          select: {
+            listings: true,
+          },
+        },
       },
       where: {
         web: {
