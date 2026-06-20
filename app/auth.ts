@@ -14,8 +14,15 @@ export const auth = betterAuth({
   logger: {
     level: 'warn',
     log: (level, message, ...args) => {
-      if (level === 'error' || level === 'warn') {
-        Sentry.captureException({ level, message, args })
+      if (level === 'error') {
+        Sentry.captureException(new Error(`[better-auth] ${message}`), {
+          extra: { args },
+        })
+      } else if (level === 'warn') {
+        Sentry.captureMessage(`[better-auth] ${message}`, {
+          level: 'warning',
+          extra: { args },
+        })
       }
     },
   },
