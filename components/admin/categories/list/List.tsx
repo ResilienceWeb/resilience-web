@@ -93,7 +93,7 @@ const List = ({ categories }) => {
                   if (column.accessor === 'listings') {
                     return (
                       <TableCell key={index}>
-                        <strong>{cell.length}</strong>
+                        <strong>{row._count?.listings ?? 0}</strong>
                       </TableCell>
                     )
                   }
