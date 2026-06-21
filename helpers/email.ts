@@ -1,12 +1,10 @@
 import { render } from 'react-email'
-import { MailerSend, EmailParams, Sender, Recipient } from 'mailersend'
 import { createTransport } from 'nodemailer'
+import { Resend } from 'resend'
 
-const mailerSend = new MailerSend({
-  apiKey: process.env.MAILERSEND_API_KEY,
-})
+const resend = new Resend(process.env.RESEND_API_KEY)
 
-const sentFrom = new Sender('noreply@resilienceweb.org.uk', 'Resilience Web')
+const sentFrom = 'Resilience Web <noreply@resilienceweb.org.uk>'
 
 export const sendEmail = async ({
   to,
@@ -46,18 +44,14 @@ export const sendEmail = async ({
     return
   }
 
-  const recipients = [new Recipient(to)]
-  const replyToSender = new Sender(replyTo ?? process.env.EMAIL_FROM)
-
-  const emailParams = new EmailParams()
-    .setFrom(sentFrom)
-    .setTo(recipients)
-    .setReplyTo(replyToSender)
-    .setSubject(subject)
-    .setHtml(emailHtml)
-    .setText(emailText)
-
-  await mailerSend.email.send(emailParams)
+  await resend.emails.send({
+    from: sentFrom,
+    to,
+    replyTo: replyTo ?? process.env.EMAIL_FROM,
+    subject,
+    html: emailHtml,
+    text: emailText,
+  })
 }
 
 export const sendMultipleEmails = async ({ toEmails, subject, email }) => {
