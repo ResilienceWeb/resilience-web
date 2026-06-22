@@ -3,105 +3,139 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Web, WebLocation } from '@prisma-client'
+import { ArrowRight, MapPin, Mail } from 'lucide-react'
 import Layout from '@components/layout'
 import RichText from '@components/rich-text'
 import { Button } from '@components/ui/button'
-import { Separator } from '@components/ui/separator'
 
 interface WebHomeProps {
   webData: Web & {
     location?: WebLocation | null
   }
+  listingsCount: number
+  categoriesCount: number
 }
 
-const WebHome = ({ webData }: WebHomeProps) => {
+const WebHome = ({
+  webData,
+  listingsCount,
+  categoriesCount,
+}: WebHomeProps) => {
+  const heading = `${webData.title} Resilience Web`
+  const hasInfo = Boolean(webData.location || webData.contactEmail)
+
   return (
     <Layout>
-      {webData.image && (
-        <>
-          <div className="w-screen relative h-[400px] mt-[-24px]">
-            <Image
-              src={webData.image}
-              alt={webData.title}
-              fill
-              className="object-cover"
-              priority
-            />
+      {webData.image ? (
+        <header className="relative -mt-4 h-[clamp(240px,42vw,420px)] w-full overflow-hidden rounded-b-2xl [margin-inline:calc(50%-50vw)] md:rounded-b-3xl">
+          <Image
+            src={webData.image}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+          />
+          {/* Dark scrim anchors the title with WCAG-safe contrast */}
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent"
+            aria-hidden
+          />
+          <div className="absolute inset-x-0 bottom-0">
+            <div className="mx-auto max-w-6xl px-4 pb-4">
+              <h1 className="text-3xl font-semibold tracking-tight text-balance text-white drop-shadow-sm md:text-4xl">
+                {heading}
+              </h1>
+            </div>
           </div>
-          <div className="w-full bg-[#3A8159] mt-[-30px] z-10 p-4 rounded-xl">
-            <h1 className="text-3xl text-white">
-              {webData.title} Resilience Web
+        </header>
+      ) : (
+        <header className="-mt-4 bg-primary py-10 [margin-inline:calc(50%-50vw)]">
+          <div className="mx-auto max-w-6xl px-4">
+            <h1 className="text-3xl font-semibold tracking-tight text-balance text-white md:text-4xl">
+              {heading}
             </h1>
           </div>
-        </>
+        </header>
       )}
 
-      {!webData.image && (
-        <h1 className="text-3xl">{webData.title} Resilience Web</h1>
-      )}
-
-      {/* Mobile layout - location and contact at top */}
-      <div className="md:hidden mt-6">
-        <div className="w-full flex flex-col gap-4">
-          {webData.location && (
-            <div>
-              <h3 className="text-xl">Location</h3>
-              <p className="text-md">{webData.location.description}</p>
-            </div>
+      <div className="mt-8 flex w-full flex-col gap-8 md:flex-row md:gap-12">
+        <div className="min-w-0 md:flex-1">
+          {(listingsCount > 0 || categoriesCount > 0) && (
+            <p className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+              <span>
+                <strong className="font-semibold text-foreground">
+                  {listingsCount}
+                </strong>{' '}
+                {listingsCount === 1 ? 'group' : 'groups'}
+              </span>
+              <span aria-hidden>·</span>
+              <span>
+                <strong className="font-semibold text-foreground">
+                  {categoriesCount}
+                </strong>{' '}
+                {categoriesCount === 1 ? 'category' : 'categories'}
+              </span>
+            </p>
           )}
 
-          {webData.contactEmail && (
-            <div>
-              <h3 className="text-xl">Contact Email</h3>
-              <a
-                href={`mailto:${webData.contactEmail}`}
-                className="text-md text-green-800 hover:underline"
-              >
-                {webData.contactEmail}
-              </a>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Desktop and mobile layout for main content */}
-      <div className="flex flex-col md:flex-row mt-6">
-        <div className="w-full md:w-2/3 prose max-w-none md:pr-8">
-          <RichText html={webData.description} />
+          <RichText className="prose max-w-[68ch]" html={webData.description} />
 
           <div className="mt-8">
-            <Link href={`/`}>
-              <Button size="lg">Explore {webData.title} Resilience Web</Button>
-            </Link>
+            <Button asChild size="lg" className="group">
+              <Link href="/">
+                Explore {webData.title} Resilience Web
+                <ArrowRight className="transition-transform duration-200 ease-out group-hover:translate-x-0.5 motion-reduce:transition-none" />
+              </Link>
+            </Button>
           </div>
         </div>
 
-        {/* Vertical separator - only visible on desktop */}
-        <div className="hidden md:block">
-          <Separator orientation="vertical" className="h-full mx-4" />
-        </div>
+        {hasInfo && (
+          <aside className="order-first md:order-none md:w-72 md:shrink-0 lg:w-80">
+            <dl className="flex flex-col gap-5 rounded-xl border border-primary/10 bg-primary/5 p-5">
+              {webData.location && (
+                <div className="flex gap-3">
+                  <MapPin
+                    className="mt-0.5 size-5 shrink-0 text-primary"
+                    aria-hidden
+                  />
+                  <div className="min-w-0">
+                    <dt className="text-xs font-semibold text-[var(--primary-green)]">
+                      Location
+                    </dt>
+                    <dd className="mt-1 text-sm text-foreground">
+                      {webData.location.description}
+                    </dd>
+                  </div>
+                </div>
+              )}
 
-        {/* Desktop layout for location and contact */}
-        <div className="hidden md:flex md:w-1/3 flex-col gap-4">
-          {webData.location && (
-            <div>
-              <h3 className="text-xl">Location</h3>
-              <p className="text-md">{webData.location.description}</p>
-            </div>
-          )}
 
-          {webData.contactEmail && (
-            <div>
-              <h3 className="text-xl">Contact Email</h3>
-              <a
-                href={`mailto:${webData.contactEmail}`}
-                className="text-md text-green-800 hover:underline"
-              >
-                {webData.contactEmail}
-              </a>
-            </div>
-          )}
-        </div>
+              {webData.contactEmail && (
+                <div className="flex gap-3">
+                  <Mail
+                    className="mt-0.5 size-5 shrink-0 text-primary"
+                    aria-hidden
+                  />
+                  <div className="min-w-0">
+                    <dt className="text-xs font-semibold text-[var(--primary-green)]">
+                      Contact
+                    </dt>
+                    <dd className="mt-1">
+                      <a
+                        href={`mailto:${webData.contactEmail}`}
+                        className="rounded-sm text-sm font-medium break-words text-[var(--primary-green)] underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-hidden"
+                      >
+                        {webData.contactEmail}
+                      </a>
+                    </dd>
+                  </div>
+                </div>
+              )}
+            </dl>
+          </aside>
+        )}
       </div>
     </Layout>
   )

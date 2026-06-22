@@ -14,7 +14,13 @@ export default async function WebHomePage(props) {
     return notFound()
   }
 
-  return <WebHome webData={data.webData} />
+  return (
+    <WebHome
+      webData={data.webData}
+      listingsCount={data.listingsCount}
+      categoriesCount={data.categoriesCount}
+    />
+  )
 }
 
 export async function generateMetadata(props): Promise<Metadata> {
@@ -55,6 +61,8 @@ type Data = {
   webData: Web & {
     location?: WebLocation | null
   }
+  listingsCount: number
+  categoriesCount: number
 }
 
 async function getData({ webSlug }): Promise<Data> {
@@ -74,7 +82,21 @@ async function getData({ webSlug }): Promise<Data> {
     return null
   }
 
+  const [listingsCount, categoriesCount] = await Promise.all([
+    prisma.listingPlacement.count({
+      where: {
+        webId: webData.id,
+        listing: { inactive: false, pending: false },
+      },
+    }),
+    prisma.category.count({
+      where: { webId: webData.id },
+    }),
+  ])
+
   return {
     webData,
+    listingsCount,
+    categoriesCount,
   }
 }
