@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useSession } from '@auth-client'
@@ -15,7 +15,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@components/ui/alert-dialog'
-import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
 import {
@@ -31,15 +30,6 @@ import {
   useDeleteNotification,
   type AdminNotification,
 } from '@hooks/notifications/useAdminNotifications'
-
-const severityVariant: Record<
-  AdminNotification['severity'],
-  'default' | 'secondary' | 'destructive'
-> = {
-  info: 'secondary',
-  warning: 'default',
-  critical: 'destructive',
-}
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
   dateStyle: 'medium',
@@ -85,15 +75,6 @@ export default function NotificationsAdminPage() {
     })
   }
 
-  const totals = useMemo(() => {
-    const totalSeen = notifications.reduce((acc, n) => acc + n.seenCount, 0)
-    const totalClicked = notifications.reduce(
-      (acc, n) => acc + n.clickedCount,
-      0,
-    )
-    return { count: notifications.length, totalSeen, totalClicked }
-  }, [notifications])
-
   if (!isAdmin) {
     return (
       <p className="text-muted-foreground">
@@ -117,25 +98,6 @@ export default function NotificationsAdminPage() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-muted-foreground text-sm font-medium">Sent</div>
-          <div className="mt-2 text-2xl font-bold">{totals.count}</div>
-        </div>
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-muted-foreground text-sm font-medium">
-            Total views
-          </div>
-          <div className="mt-2 text-2xl font-bold">{totals.totalSeen}</div>
-        </div>
-        <div className="bg-card rounded-lg border p-4">
-          <div className="text-muted-foreground text-sm font-medium">
-            Total clicks
-          </div>
-          <div className="mt-2 text-2xl font-bold">{totals.totalClicked}</div>
-        </div>
-      </div>
-
       {isPending ? (
         <Spinner />
       ) : isError ? (
@@ -155,7 +117,7 @@ export default function NotificationsAdminPage() {
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Seen</TableHead>
                 <TableHead className="text-right">Clicked</TableHead>
-                <TableHead className="text-right">CTR</TableHead>
+                <TableHead className="text-right">Click Through Rate</TableHead>
                 <TableHead>Sent</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -169,12 +131,7 @@ export default function NotificationsAdminPage() {
                 return (
                   <TableRow key={n.id}>
                     <TableCell className="max-w-xs">
-                      <div className="flex items-center gap-2">
-                        <Badge variant={severityVariant[n.severity]}>
-                          {n.severity}
-                        </Badge>
-                        <span className="truncate font-medium">{n.title}</span>
-                      </div>
+                      <span className="truncate font-medium">{n.title}</span>
                       <p className="mt-1 line-clamp-1 text-xs text-muted-foreground">
                         {n.body}
                       </p>

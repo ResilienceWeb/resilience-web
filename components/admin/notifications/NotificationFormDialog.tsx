@@ -25,13 +25,6 @@ import {
   FormMessage,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@components/ui/select'
 import { Textarea } from '@components/ui/textarea'
 import {
   useCreateNotification,
@@ -51,7 +44,6 @@ const formSchema = z
       .optional()
       .or(z.literal('')),
     urlLabel: z.string().trim().max(60).optional().or(z.literal('')),
-    severity: z.enum(['info', 'warning', 'critical']),
     publishAt: z.string().optional().or(z.literal('')),
     expiresAt: z.string().optional().or(z.literal('')),
   })
@@ -103,7 +95,6 @@ export default function NotificationFormDialog({
       body: '',
       url: '',
       urlLabel: '',
-      severity: 'info',
       publishAt: '',
       expiresAt: '',
     },
@@ -116,7 +107,6 @@ export default function NotificationFormDialog({
         body: notification?.body ?? '',
         url: notification?.url ?? '',
         urlLabel: notification?.urlLabel ?? '',
-        severity: notification?.severity ?? 'info',
         publishAt: toLocalInput(notification?.publishAt),
         expiresAt: toLocalInput(notification?.expiresAt),
       })
@@ -129,7 +119,9 @@ export default function NotificationFormDialog({
       body: data.body,
       url: data.url || undefined,
       urlLabel: data.urlLabel || undefined,
-      severity: data.severity,
+      // Severity is hidden from the UI but kept in the DB; preserve any existing
+      // value when editing, default to 'info' for new notifications.
+      severity: notification?.severity ?? 'info',
       audience: 'ALL',
       publishAt: toIso(data.publishAt),
       expiresAt: toIso(data.expiresAt),
@@ -233,29 +225,6 @@ export default function NotificationFormDialog({
                 )}
               />
             </div>
-
-            <FormField
-              control={form.control}
-              name="severity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Severity</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="info">Info</SelectItem>
-                      <SelectItem value="warning">Warning</SelectItem>
-                      <SelectItem value="critical">Critical</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <FormField

@@ -172,30 +172,26 @@ export async function deleteNotification(id: number) {
   return prisma.notification.delete({ where: { id } })
 }
 
-// The number of users eligible to receive a notification, used as the
-// denominator for the "seen" stat. Because users only see notifications that
-// went live after they signed up, the denominator counts users who had joined
-// by the time the notification went live (`liveAt`). v1 only uses ALL.
+// The number of users the notification counts against for the "seen" stat.
+// This is the current dashboard-user population, so the seen count (one receipt
+// per user, max) can never exceed it. v1 only uses ALL.
 async function getAudienceSize(
   audience: string,
   targetWebIds: number[],
-  liveAt: Date,
 ): Promise<number> {
   if (audience === 'ADMINS') {
-    return prisma.user.count({
-      where: { role: 'admin', createdAt: { lte: liveAt } },
-    })
+    return prisma.user.count({ where: { role: 'admin' } })
   }
   if (audience === 'WEB' && targetWebIds.length > 0) {
     const rows = await prisma.webAccess.findMany({
-      where: { webId: { in: targetWebIds }, createdAt: { lte: liveAt } },
+      where: { webId: { in: targetWebIds } },
       select: { email: true },
       distinct: ['email'],
     })
     return rows.length
   }
-  // ALL: every user who had an account when the notification went live.
-  return prisma.user.count({ where: { createdAt: { lte: liveAt } } })
+  // ALL: every user who can log into the dashboard.
+  return prisma.user.count()
 }
 
 // Admin view: all notifications with aggregated seen/clicked counts and the
@@ -213,16 +209,18 @@ export async function listNotificationsWithStats() {
   return Promise.all(
     notifications.map(async (n) => {
       const targetWebIds = n.targetWebs.map((t) => t.webId)
-      const liveAt = n.publishAt ?? n.createdAt
-      const [seenCount, clickedCount, audienceSize] = await Promise.all([
+      const [seenCount, clickedCount, rawAudienceSize] = await Promise.all([
         prisma.notificationReceipt.count({
           where: { notificationId: n.id, seenAt: { not: null } },
         }),
         prisma.notificationReceipt.count({
           where: { notificationId: n.id, clickedAt: { not: null } },
         }),
-        getAudienceSize(n.audience, targetWebIds, liveAt),
+        getAudienceSize(n.audience, targetWebIds),
       ])
+      // Guard against the denominator ever being smaller than the seen count
+      // (e.g. legacy receipts from before the targeting rules existed).
+      const audienceSize = Math.max(rawAudienceSize, seenCount)
 
       return {
         id: n.id,

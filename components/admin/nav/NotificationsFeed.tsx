@@ -105,42 +105,29 @@ const NotificationsFeed = () => {
                     notification.url ? `Open ${notification.title}` : undefined
                   }
                 >
-                  <div className="flex items-start gap-2">
-                    <span
-                      aria-hidden
-                      className={
-                        'mt-1 inline-block h-2 w-2 rounded-full ' +
-                        (notification.severity === 'critical'
-                          ? 'bg-red-500'
-                          : notification.severity === 'warning'
-                            ? 'bg-amber-500'
-                            : 'bg-emerald-500')
-                      }
-                    />
-                    <div className="min-w-0 flex-1">
-                      <div>
-                        <span className="truncate font-medium">
-                          {notification.title}
-                        </span>
-                      </div>
-                      {notification.body && (
-                        <p className="mt-1 whitespace-pre-wrap text-[13px] leading-snug text-gray-600">
-                          {notification.body}
-                        </p>
-                      )}
-                      {notification.url && (
-                        <span className="mt-1 inline-block text-[13px] font-medium text-blue-600">
-                          {notification.urlLabel || 'Learn more'}
-                        </span>
-                      )}
-                      {notification.createdAt && (
-                        <span className="flex justify-end text-xs text-gray-500">
-                          {new Intl.DateTimeFormat('en-GB').format(
-                            new Date(notification.createdAt),
-                          )}
-                        </span>
-                      )}
+                  <div className="min-w-0 flex-1">
+                    <div>
+                      <span className="truncate font-medium">
+                        {notification.title}
+                      </span>
                     </div>
+                    {notification.body && (
+                      <p className="mt-1 whitespace-pre-wrap text-[13px] leading-snug text-gray-600">
+                        {notification.body}
+                      </p>
+                    )}
+                    {notification.url && (
+                      <span className="mt-1 inline-block text-[13px] font-medium text-blue-600">
+                        {notification.urlLabel || 'Learn more'}
+                      </span>
+                    )}
+                    {notification.createdAt && (
+                      <span className="flex justify-end text-xs text-gray-500">
+                        {new Intl.DateTimeFormat('en-GB', {
+                          dateStyle: 'medium',
+                        }).format(new Date(notification.createdAt))}
+                      </span>
+                    )}
                   </div>
                 </li>
               ))}
