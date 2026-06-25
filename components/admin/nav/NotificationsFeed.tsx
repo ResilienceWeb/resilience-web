@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Bell } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Bell, Check } from 'lucide-react'
+import { cn } from '@components/lib/utils'
 import { Button } from '@components/ui/button'
 import {
   Popover as PopoverRoot,
@@ -14,6 +15,8 @@ import useNotifications, {
   type NotificationItem,
 } from '@hooks/notifications/useNotifications'
 import useTrackNotificationClick from '@hooks/notifications/useTrackNotificationClick'
+
+const dateFormatter = new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium' })
 
 const NotificationsFeed = () => {
   const { items, isPending, isError, error, unreadCount } = useNotifications()
@@ -50,87 +53,119 @@ const NotificationsFeed = () => {
         <Button
           variant="outline"
           size="icon"
-          aria-label="Open notifications"
+          aria-label={
+            unreadCount > 0
+              ? `Notifications, ${unreadCount} unread`
+              : 'Notifications'
+          }
           className="relative"
         >
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
             <span className="absolute -right-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-semibold leading-none text-white">
-              {unreadCount}
+              {unreadCount > 9 ? '9+' : unreadCount}
             </span>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-80 p-0">
-        <div className="max-h-80 overflow-auto p-3">
-          <div className="mb-2 flex items-center justify-between px-1">
-            <h3 className="text-sm font-semibold">Notifications</h3>
-          </div>
+      <PopoverContent
+        align="end"
+        className="w-96 max-w-[calc(100vw-2rem)] overflow-hidden p-0"
+      >
+        <header className="flex items-center justify-between border-b px-4 py-3">
+          <h3 className="text-sm font-semibold">Notifications</h3>
+          {unreadCount > 0 && (
+            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary/10 px-1.5 text-xs font-medium text-primary">
+              {unreadCount} new
+            </span>
+          )}
+        </header>
+
+        <div className="max-h-[24rem] overflow-y-auto overscroll-contain">
           {isPending ? (
-            <div className="flex items-center justify-center py-6 text-sm text-muted-foreground">
-              Loading...
-            </div>
+            <ul className="divide-y divide-border">
+              {[0, 1, 2].map((i) => (
+                <li key={i} className="flex flex-col gap-2 px-4 py-3.5">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="h-3.5 w-1/2 animate-pulse rounded bg-muted" />
+                    <span className="h-3 w-12 animate-pulse rounded bg-muted" />
+                  </div>
+                  <span className="h-3 w-4/5 animate-pulse rounded bg-muted" />
+                </li>
+              ))}
+            </ul>
           ) : isError ? (
-            <div className="flex items-center justify-center py-6 text-xs text-red-600">
+            <div className="px-4 py-8 text-center text-xs text-red-600">
               {error instanceof Error
                 ? error.message
                 : "We couldn't load your notifications. Please try again."}
             </div>
-          ) : items?.length === 0 ? (
-            <div className="flex items-center justify-center py-6 text-sm text-muted-foreground">
-              No notifications yet
+          ) : items.length === 0 ? (
+            <div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-muted-foreground">
+                <Check className="h-5 w-5" />
+              </span>
+              <p className="text-sm font-medium">You&apos;re all caught up</p>
+              <p className="text-xs text-muted-foreground">
+                New announcements will show up here.
+              </p>
             </div>
           ) : (
-            <ul className="flex flex-col gap-2">
-              {items.map((notification) => (
-                <li
-                  key={notification.id}
-                  className={
-                    'rounded-md border p-3 text-sm ' +
-                    (notification.url
-                      ? 'cursor-pointer hover:bg-gray-50 focus-within:bg-gray-50'
-                      : '')
-                  }
-                  onClick={() => handleActivate(notification)}
-                  onKeyDown={(e) => {
-                    if (!notification.url) return
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      handleActivate(notification)
+            <ul className="divide-y divide-border">
+              {items.map((notification) => {
+                const isLink = Boolean(notification.url)
+                const isExternal =
+                  !!notification.url && /^https?:\/\//i.test(notification.url)
+                const LinkIcon = isExternal ? ArrowUpRight : ArrowRight
+                return (
+                  <li
+                    key={notification.id}
+                    className={cn(
+                      'group px-4 py-3.5 transition-colors',
+                      isLink &&
+                        'cursor-pointer hover:bg-accent focus-visible:bg-accent focus-visible:outline-none',
+                    )}
+                    onClick={() => handleActivate(notification)}
+                    onKeyDown={(e) => {
+                      if (!isLink) return
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        handleActivate(notification)
+                      }
+                    }}
+                    role={isLink ? 'button' : undefined}
+                    tabIndex={isLink ? 0 : undefined}
+                    aria-label={
+                      isLink ? `Open ${notification.title}` : undefined
                     }
-                  }}
-                  role={notification.url ? 'button' : undefined}
-                  tabIndex={notification.url ? 0 : -1}
-                  aria-label={
-                    notification.url ? `Open ${notification.title}` : undefined
-                  }
-                >
-                  <div className="min-w-0 flex-1">
-                    <div>
-                      <span className="truncate font-medium">
+                  >
+                    <div className="flex items-baseline justify-between gap-3">
+                      <p className="text-sm font-medium leading-snug text-foreground">
                         {notification.title}
-                      </span>
+                      </p>
+                      <time
+                        dateTime={notification.createdAt}
+                        className="shrink-0 text-xs tabular-nums text-muted-foreground"
+                      >
+                        {dateFormatter.format(new Date(notification.createdAt))}
+                      </time>
                     </div>
+
                     {notification.body && (
-                      <p className="mt-1 whitespace-pre-wrap text-[13px] leading-snug text-gray-600">
+                      <p className="mt-1 line-clamp-3 whitespace-pre-wrap text-[13px] leading-relaxed text-muted-foreground">
                         {notification.body}
                       </p>
                     )}
-                    {notification.url && (
-                      <span className="mt-1 inline-block text-[13px] font-medium text-blue-600">
+
+                    {isLink && (
+                      <span className="mt-2 inline-flex items-center gap-1 text-[13px] font-medium text-primary">
                         {notification.urlLabel || 'Learn more'}
+                        <LinkIcon className="h-3.5 w-3.5 motion-safe:transition-transform motion-safe:group-hover:translate-x-0.5" />
                       </span>
                     )}
-                    {notification.createdAt && (
-                      <span className="flex justify-end text-xs text-gray-500">
-                        {new Intl.DateTimeFormat('en-GB', {
-                          dateStyle: 'medium',
-                        }).format(new Date(notification.createdAt))}
-                      </span>
-                    )}
-                  </div>
-                </li>
-              ))}
+                  </li>
+                )
+              })}
             </ul>
           )}
         </div>
