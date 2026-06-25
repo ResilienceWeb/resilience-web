@@ -122,3 +122,18 @@ export type ListingAnalyticsDaily = Prisma.ListingAnalyticsDailyModel
  * 
  */
 export type WebAnalyticsDaily = Prisma.WebAnalyticsDailyModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model NotificationReceipt
+ * 
+ */
+export type NotificationReceipt = Prisma.NotificationReceiptModel
+/**
+ * Model NotificationWeb
+ * 
+ */
+export type NotificationWeb = Prisma.NotificationWebModel

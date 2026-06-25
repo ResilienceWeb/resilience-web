@@ -1,41 +1,60 @@
-import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
+import prisma from '@prisma-rw'
 import { auth } from '@auth'
+import { getNotificationsForViewer } from '@db/notificationRepository'
 
 export async function GET(request: NextRequest) {
-  const notifications = []
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  })
-
-  let subscribedToMailingList = false
-  const response = await fetch(
-    `https://connect.mailerlite.com/api/subscribers/${session?.user.email}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}`,
-      },
-    },
-  )
-  const responseJson = await response.json()
-
-  if (responseJson.data?.status === 'active') {
-    subscribedToMailingList = true
-  }
-
-  if (!subscribedToMailingList) {
-    notifications.push({
-      id: 'subscribe-to-mailing-list',
-      type: 'system',
-      title: 'Subscribe to our mailing list',
-      body: 'Subscribe to receive updates about our platform.',
-      severity: 'info',
-      createdAt: null,
-      readAt: null as string | null,
-      dismissedAt: null as string | null,
-      link: '/admin/user-settings',
+  try {
+    const session = await auth.api.getSession({
+      headers: request.headers,
     })
-  }
 
-  return NextResponse.json({ items: notifications })
+    if (!session?.user) {
+      return Response.json({ items: [] })
+    }
+
+    const dbUser = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: {
+        createdAt: true,
+        webAccess: { select: { webId: true } },
+      },
+    })
+
+    if (!dbUser) {
+      return Response.json({ items: [] })
+    }
+
+    const notifications = await getNotificationsForViewer({
+      id: session.user.id,
+      role: session.user.role,
+      webIds: dbUser.webAccess.map((w) => w.webId),
+      joinedAt: dbUser.createdAt,
+    })
+
+    const items = notifications.map((n) => {
+      const receipt = n.receipts[0]
+      return {
+        id: n.id,
+        title: n.title,
+        body: n.body,
+        url: n.url,
+        urlLabel: n.urlLabel,
+        severity: n.severity,
+        createdAt: n.createdAt,
+        seenAt: receipt?.seenAt ?? null,
+        clickedAt: receipt?.clickedAt ?? null,
+      }
+    })
+
+    return Response.json({ items })
+  } catch (e) {
+    console.error(`[RW] Unable to fetch notifications - ${e}`)
+    Sentry.captureException(e)
+    return Response.json(
+      { error: "We couldn't load your notifications right now." },
+      { status: 500 },
+    )
+  }
 }

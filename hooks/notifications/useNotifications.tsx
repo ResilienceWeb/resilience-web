@@ -2,15 +2,15 @@ import { useQuery } from '@tanstack/react-query'
 import { useSession } from '@auth-client'
 
 export type NotificationItem = {
-  id: string
-  type: 'announcement' | 'system'
+  id: number
   title: string
-  body?: string
+  body: string
+  url: string | null
+  urlLabel: string | null
   severity: 'info' | 'warning' | 'critical'
   createdAt: string
-  readAt: string | null
-  dismissedAt: string | null
-  link?: string
+  seenAt: string | null
+  clickedAt: string | null
 }
 
 async function fetchNotifications(): Promise<NotificationItem[]> {
@@ -31,7 +31,7 @@ export default function useNotifications() {
   })
 
   const items = data ?? []
-  const unreadCount = items.filter((n) => !n.readAt && !n.dismissedAt).length
+  const unreadCount = items.filter((n) => !n.seenAt).length
 
   return {
     items,
