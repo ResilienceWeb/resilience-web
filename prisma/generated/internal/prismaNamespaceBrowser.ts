@@ -71,7 +71,10 @@ export const ModelName = {
   WebAccess: 'WebAccess',
   WebFeature: 'WebFeature',
   ListingAnalyticsDaily: 'ListingAnalyticsDaily',
-  WebAnalyticsDaily: 'WebAnalyticsDaily'
+  WebAnalyticsDaily: 'WebAnalyticsDaily',
+  Notification: 'Notification',
+  NotificationReceipt: 'NotificationReceipt',
+  NotificationWeb: 'NotificationWeb'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -371,6 +374,45 @@ export const WebAnalyticsDailyScalarFieldEnum = {
 } as const
 
 export type WebAnalyticsDailyScalarFieldEnum = (typeof WebAnalyticsDailyScalarFieldEnum)[keyof typeof WebAnalyticsDailyScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  title: 'title',
+  body: 'body',
+  url: 'url',
+  urlLabel: 'urlLabel',
+  severity: 'severity',
+  audience: 'audience',
+  publishAt: 'publishAt',
+  expiresAt: 'expiresAt',
+  createdById: 'createdById'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const NotificationReceiptScalarFieldEnum = {
+  id: 'id',
+  notificationId: 'notificationId',
+  userId: 'userId',
+  seenAt: 'seenAt',
+  clickedAt: 'clickedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NotificationReceiptScalarFieldEnum = (typeof NotificationReceiptScalarFieldEnum)[keyof typeof NotificationReceiptScalarFieldEnum]
+
+
+export const NotificationWebScalarFieldEnum = {
+  notificationId: 'notificationId',
+  webId: 'webId'
+} as const
+
+export type NotificationWebScalarFieldEnum = (typeof NotificationWebScalarFieldEnum)[keyof typeof NotificationWebScalarFieldEnum]
 
 
 export const SortOrder = {

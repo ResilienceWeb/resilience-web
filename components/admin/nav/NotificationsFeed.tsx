@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Bell } from 'lucide-react'
 import { Button } from '@components/ui/button'
@@ -9,12 +9,40 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from '@components/ui/popover'
-import useNotifications from '@hooks/notifications/useNotifications'
+import useMarkNotificationsSeen from '@hooks/notifications/useMarkNotificationsSeen'
+import useNotifications, {
+  type NotificationItem,
+} from '@hooks/notifications/useNotifications'
+import useTrackNotificationClick from '@hooks/notifications/useTrackNotificationClick'
 
 const NotificationsFeed = () => {
   const { items, isPending, isError, error, unreadCount } = useNotifications()
+  const { markSeen } = useMarkNotificationsSeen()
+  const { trackClick } = useTrackNotificationClick()
   const router = useRouter()
   const [open, setOpen] = useState(false)
+
+  // When the panel opens, mark every currently-visible unread notification as
+  // seen (this is what powers the "seen" stat in the admin dashboard).
+  useEffect(() => {
+    if (!open) return
+    const unseenIds = items.filter((n) => !n.seenAt).map((n) => n.id)
+    if (unseenIds.length > 0) {
+      markSeen(unseenIds)
+    }
+  }, [open, items, markSeen])
+
+  const handleActivate = (notification: NotificationItem) => {
+    if (!notification.url) return
+    trackClick(notification.id)
+    setOpen(false)
+    const url = notification.url
+    if (/^https?:\/\//i.test(url)) {
+      window.open(url, '_blank', 'noopener')
+    } else {
+      router.push(url)
+    }
+  }
 
   return (
     <PopoverRoot open={open} onOpenChange={setOpen}>
@@ -59,37 +87,22 @@ const NotificationsFeed = () => {
                   key={notification.id}
                   className={
                     'rounded-md border p-3 text-sm ' +
-                    (notification.link
+                    (notification.url
                       ? 'cursor-pointer hover:bg-gray-50 focus-within:bg-gray-50'
                       : '')
                   }
-                  onClick={() => {
-                    if (!notification.link) return
-                    setOpen(false)
-                    const link = notification.link
-                    if (/^https?:\/\//i.test(link)) {
-                      window.open(link, '_blank', 'noopener')
-                    } else {
-                      router.push(link)
-                    }
-                  }}
+                  onClick={() => handleActivate(notification)}
                   onKeyDown={(e) => {
-                    if (!notification.link) return
+                    if (!notification.url) return
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault()
-                      setOpen(false)
-                      const link = notification.link
-                      if (/^https?:\/\//i.test(link)) {
-                        window.open(link, '_blank', 'noopener')
-                      } else {
-                        router.push(link)
-                      }
+                      handleActivate(notification)
                     }
                   }}
-                  role={notification.link ? 'button' : undefined}
-                  tabIndex={notification.link ? 0 : -1}
+                  role={notification.url ? 'button' : undefined}
+                  tabIndex={notification.url ? 0 : -1}
                   aria-label={
-                    notification.link ? `Open ${notification.title}` : undefined
+                    notification.url ? `Open ${notification.title}` : undefined
                   }
                 >
                   <div className="flex items-start gap-2">
@@ -114,6 +127,11 @@ const NotificationsFeed = () => {
                         <p className="mt-1 whitespace-pre-wrap text-[13px] leading-snug text-gray-600">
                           {notification.body}
                         </p>
+                      )}
+                      {notification.url && (
+                        <span className="mt-1 inline-block text-[13px] font-medium text-blue-600">
+                          {notification.urlLabel || 'Learn more'}
+                        </span>
                       )}
                       {notification.createdAt && (
                         <span className="flex justify-end text-xs text-gray-500">

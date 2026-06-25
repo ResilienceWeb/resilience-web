@@ -13,6 +13,7 @@ import {
   HiUpload,
   HiChartBar,
   HiChartPie,
+  HiBell,
 } from 'react-icons/hi'
 import { LuBook, LuUserRoundSearch } from 'react-icons/lu'
 import Image from 'next/image'
@@ -288,6 +289,12 @@ export default function SidebarContent({ closeMenu, ...rest }) {
         href: '/admin/stats',
         icon: <HiChartPie />,
         iconColor: 'text-cyan-500',
+      },
+      {
+        label: 'Notifications',
+        href: '/admin/notifications',
+        icon: <HiBell />,
+        iconColor: 'text-rose-500',
       },
     ]
   }, [session?.user.role])
