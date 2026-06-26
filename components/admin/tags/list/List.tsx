@@ -103,7 +103,9 @@ const List = ({ tags }) => {
                   if (column.accessor === 'listings') {
                     return (
                       <TableCell key={index}>
-                        <span className="font-bold">{cell.length}</span>
+                        <span className="font-bold">
+                          {row._count?.listings ?? 0}
+                        </span>
                         <Button
                           onClick={() =>
                             handleOpenAddTagToListingsDialog(row.id)
