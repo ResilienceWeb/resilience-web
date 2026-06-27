@@ -3,28 +3,45 @@ import prisma from '@prisma-rw'
 
 export async function GET() {
   try {
-    const listings = await prisma.listing.findMany({
+    // A listing can live in multiple webs via placements, and each placement is
+    // its own URL (web subdomain + placement slug), so we build the sitemap from
+    // placements rather than listings.
+    const placements = await prisma.listingPlacement.findMany({
       where: {
-        image: {
-          not: null,
-        },
-        description: {
-          not: '',
-        },
         web: {
           published: true,
+          deletedAt: null,
+        },
+        listing: {
+          image: {
+            not: null,
+          },
+          description: {
+            not: '',
+          },
         },
       },
       select: {
         slug: true,
-        updatedAt: true,
         web: {
           select: {
             slug: true,
           },
         },
+        listing: {
+          select: {
+            updatedAt: true,
+          },
+        },
       },
     })
+
+    const listings = placements.map((p) => ({
+      slug: p.slug,
+      updatedAt: p.listing.updatedAt,
+      web: p.web,
+    }))
+
     return Response.json({
       listings,
     })

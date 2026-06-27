@@ -57,6 +57,9 @@ export async function generateMetadata(props): Promise<Metadata> {
     openGraph: {
       title: `${webData.title} | Resilience Web`,
       images: [{ url: webData.image }],
+      description:
+        webData.description ??
+        'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
     },
     alternates: {
       canonical: `https://${webData.slug}.resilienceweb.org.uk`,

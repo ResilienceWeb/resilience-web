@@ -1,6 +1,7 @@
 /**
  * CSV Import API endpoint for bulk listing imports
  */
+import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import { generateSlug as generateBaseSlug } from '@/helpers/utils'
 import { geocodeAddress } from '@/lib/import/geocoder'
@@ -216,6 +217,11 @@ export async function POST(request: NextRequest) {
 
     // 10. Create summary
     const summary: ImportSummary = createImportSummary(batchResults)
+
+    // Imported listings are live, so refresh the web page if any succeeded.
+    if (summary.successCount > 0) {
+      revalidatePath(`/${web.slug}`)
+    }
 
     return Response.json({
       success: true,

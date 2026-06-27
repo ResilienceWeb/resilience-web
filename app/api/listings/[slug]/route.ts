@@ -420,6 +420,7 @@ export async function DELETE(
     const placement = await prisma.listingPlacement.findUnique({
       where: { webSlug: { webId, slug } },
       include: {
+        web: { select: { slug: true } },
         listing: { include: { placements: { select: { id: true } } } },
       },
     })
@@ -449,6 +450,11 @@ export async function DELETE(
     } else {
       // Other webs still hold this listing — just detach this placement.
       await prisma.listingPlacement.delete({ where: { id: placement.id } })
+    }
+
+    if (placement.web) {
+      revalidatePath(`/${placement.web.slug}/${slug}`)
+      revalidatePath(`/${placement.web.slug}`)
     }
 
     return Response.json({ listing: listingFields })

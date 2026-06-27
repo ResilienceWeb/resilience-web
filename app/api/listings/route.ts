@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
@@ -246,7 +247,9 @@ export async function POST(request) {
       })
 
       const emails = selectedWeb.webAccess
-        .filter((access) => access.role === 'OWNER' && access.user?.emailVerified)
+        .filter(
+          (access) => access.role === 'OWNER' && access.user?.emailVerified,
+        )
         .map((access) => access.email)
       emails.forEach((email) => {
         sendEmail({
@@ -255,6 +258,11 @@ export async function POST(request) {
           email: listingProposedEmailComponent,
         })
       })
+    }
+
+    if (!isProposedListing && selectedWeb) {
+      revalidatePath(`/${selectedWeb.slug}`)
+      revalidatePath(`/${selectedWeb.slug}/${placementSlug}`)
     }
 
     return Response.json(

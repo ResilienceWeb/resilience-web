@@ -124,6 +124,14 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
   const logoImageRef = useRef<HTMLImageElement | null>(null)
   const [_logoLoaded, setLogoLoaded] = useState(false)
   const dragStartPosRef = useRef<{ x: number; y: number } | null>(null)
+  // Tracks the start of a single-finger touch so we can detect taps on mobile,
+  // and dedupes against the library's own onNodeClick to avoid double-handling.
+  const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(
+    null,
+  )
+  const lastHandledRef = useRef<{ id: string | number; time: number } | null>(
+    null,
+  )
 
   const { width = 0, height = 0 } = useResizeObserver({ ref: graphRef })
 
@@ -179,6 +187,18 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
 
   const handleNodeClick = useCallback(
     (node: NodeType) => {
+      // Guard against the same node being handled twice in quick succession
+      // (e.g. our touch handler firing alongside the library's onNodeClick).
+      const now = Date.now()
+      if (
+        lastHandledRef.current &&
+        lastHandledRef.current.id === node.id &&
+        now - lastHandledRef.current.time < 500
+      ) {
+        return
+      }
+      lastHandledRef.current = { id: node.id, time: now }
+
       if (typeof node.id === 'string' && node.id.includes('related-web')) {
         const webSlug = node.id.match(/related-web-(.*)/)?.[1] || ''
         router.push(getWebUrl(webSlug))
@@ -234,6 +254,65 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
       }
     },
     [handleNodeClick],
+  )
+
+  // On touch devices the library's onNodeClick is unreliable: a single-finger
+  // touch is often interpreted as a pan, which suppresses the click. We detect
+  // taps ourselves and hit-test the tapped node against the graph coordinates.
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length !== 1) {
+      touchStartRef.current = null
+      return
+    }
+    const touch = e.touches[0]
+    touchStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+      time: Date.now(),
+    }
+  }, [])
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      const start = touchStartRef.current
+      touchStartRef.current = null
+      if (!start || !fgRef.current || !graphRef.current) return
+
+      const touch = e.changedTouches[0]
+      if (!touch) return
+
+      // Ignore pans (moved too far) and long presses.
+      const movedX = touch.clientX - start.x
+      const movedY = touch.clientY - start.y
+      const moved = Math.sqrt(movedX * movedX + movedY * movedY)
+      if (moved > 10 || Date.now() - start.time > 500) return
+
+      const rect = graphRef.current.getBoundingClientRect()
+      const { x, y } = fgRef.current.screen2GraphCoords(
+        touch.clientX - rect.left,
+        touch.clientY - rect.top,
+      )
+
+      // Find the closest node whose visual radius contains the tap. This mirrors
+      // the radius used in nodePointerAreaPaint (Math.sqrt(val) * 2).
+      let closest: NodeType | null = null
+      let closestDist = Infinity
+      for (const node of graphData.nodes) {
+        const nx = node.x ?? 0
+        const ny = node.y ?? 0
+        const radius = Math.sqrt(node.val || 8) * 2
+        const dist = Math.sqrt((nx - x) ** 2 + (ny - y) ** 2)
+        if (dist <= radius && dist < closestDist) {
+          closest = node
+          closestDist = dist
+        }
+      }
+
+      if (closest) {
+        handleNodeClick(closest)
+      }
+    },
+    [graphData, handleNodeClick],
   )
 
   const selectedItem = useMemo(
@@ -593,7 +672,12 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
           content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      <div className={styles.graph} ref={graphRef}>
+      <div
+        className={styles.graph}
+        ref={graphRef}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <Button
           variant="outline"
           onClick={toggleFullScreen}

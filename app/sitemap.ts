@@ -1,25 +1,36 @@
-// import type { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next'
 
-export default function sitemap() {
-  // const response = await fetch(
-  //   `https://resilienceweb.org.uk/api/listings/for-sitemap`,
-  // )
-  // const data = await response.json()
-  // const { listings } = data
-  // const listingPathItems = listings.map((l) => ({
-  //   url: `https://${l.web.slug}.resilienceweb.org.uk/${l.slug}`,
-  //   lastModified: l.updatedAt,
-  // }))
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  let listingPathItems: MetadataRoute.Sitemap = []
+  let webPathItems: MetadataRoute.Sitemap = []
 
-  // const websResponse = await fetch(
-  //   `https://resilienceweb.org.uk/api/webs/for-sitemap`,
-  // )
-  // const websData = await websResponse.json()
-  // const { webs } = websData
-  // const webPathItems = webs.map((w) => ({
-  //   url: `https://${w.slug}.resilienceweb.org.uk/web`,
-  //   lastModified: w.updatedAt,
-  // }))
+  try {
+    const response = await fetch(
+      `https://resilienceweb.org.uk/api/listings/for-sitemap`,
+    )
+    const data = await response.json()
+    const { listings } = data
+    listingPathItems = listings.map((l) => ({
+      url: `https://${l.web.slug}.resilienceweb.org.uk/${l.slug}`,
+      lastModified: l.updatedAt,
+    }))
+  } catch {
+    // Degrade gracefully: keep the static entries even if listings can't be fetched.
+  }
+
+  try {
+    const websResponse = await fetch(
+      `https://resilienceweb.org.uk/api/webs/for-sitemap`,
+    )
+    const websData = await websResponse.json()
+    const { webs } = websData
+    webPathItems = webs.map((w) => ({
+      url: `https://${w.slug}.resilienceweb.org.uk/web`,
+      lastModified: w.updatedAt,
+    }))
+  } catch {
+    // Degrade gracefully: keep the static entries even if webs can't be fetched.
+  }
 
   return [
     {
@@ -31,7 +42,7 @@ export default function sitemap() {
     {
       url: 'https://resilienceweb.org.uk/news',
     },
-    // ...webPathItems,
-    // ...listingPathItems,
+    ...webPathItems,
+    ...listingPathItems,
   ]
 }

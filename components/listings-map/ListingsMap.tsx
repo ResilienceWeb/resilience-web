@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 import { BsArrowsFullscreen } from 'react-icons/bs'
 import { HiChevronDown, HiChevronUp } from 'react-icons/hi'
-import { MapContainer, TileLayer, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, useMap, ZoomControl } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
@@ -276,8 +276,10 @@ function ListingsMap({ items = [], webSlug }: MapProps) {
               center={defaultCenter as [number, number]}
               zoom={defaultZoom}
               scrollWheelZoom={true}
+              zoomControl={false}
               style={{ height: '100%', width: '100%' }}
             >
+              <ZoomControl position="bottomleft" />
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
