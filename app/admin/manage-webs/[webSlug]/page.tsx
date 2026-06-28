@@ -3,8 +3,10 @@
 import { useCallback, useMemo, use, useState } from 'react'
 import { HiArrowLeft } from 'react-icons/hi'
 import { HiOutlineClipboard, HiOutlineClipboardCheck } from 'react-icons/hi'
+import { ExternalLink } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import type { WebAccess } from '@prisma-client'
+import { useAppContext } from '@store/hooks'
 import { getWebUrl, REMOTE_HOSTNAME } from '@helpers/config'
 import AnalyticsSummary from '@components/admin/analytics-summary/AnalyticsSummary'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
@@ -29,6 +31,7 @@ export default function WebDashboardPage({ params }) {
   // @ts-ignore
   const { webSlug } = use(params)
   const router = useRouter()
+  const { setSelectedWebSlug } = useAppContext()
   const { web, isPending: isLoadingWeb } = useWeb({
     webSlug,
     withAdminInfo: true,
@@ -44,6 +47,11 @@ export default function WebDashboardPage({ params }) {
   const goBack = useCallback(() => {
     router.back()
   }, [router])
+
+  const handleOpenAdminView = useCallback(() => {
+    setSelectedWebSlug(webSlug)
+    router.push('/admin')
+  }, [setSelectedWebSlug, webSlug, router])
 
   const mailToEmails = useMemo(() => {
     if (!web || !web.webAccess) {
@@ -149,6 +157,15 @@ export default function WebDashboardPage({ params }) {
             </span>{' '}
             listings
           </p>
+          <Button
+            variant="outline"
+            size="sm"
+            className="mt-3 gap-1"
+            onClick={handleOpenAdminView}
+          >
+            <ExternalLink className="h-3.5 w-3.5" />
+            Open admin view
+          </Button>
         </div>
         {web.published ? (
           <div className="flex flex-col items-end gap-4">

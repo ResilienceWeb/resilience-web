@@ -1,10 +1,11 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { PiWarningCircleBold } from 'react-icons/pi'
 import { SlGlobe } from 'react-icons/sl'
 import { useRouter } from 'next/navigation'
-import { Search, X } from 'lucide-react'
+import { ExternalLink, Search, X } from 'lucide-react'
+import { useAppContext } from '@store/hooks'
 import { useDebounceValue } from 'usehooks-ts'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import { getLastActivityDate, isWebActive } from '@helpers/webActivity'
@@ -33,6 +34,9 @@ const columns = [
   {
     Header: '',
   },
+  {
+    Header: '',
+  },
 ]
 
 const formatDate = (date) => {
@@ -43,9 +47,18 @@ const formatDate = (date) => {
 
 export default function DashboardPage() {
   const router = useRouter()
+  const { setSelectedWebSlug } = useAppContext()
   const { isPending: isLoadingWebs, webs } = useWebs({ withAdminInfo: true })
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearch] = useDebounceValue(searchInput, 300)
+
+  const handleOpenAdminView = useCallback(
+    (slug: string) => {
+      setSelectedWebSlug(slug)
+      router.push('/admin')
+    },
+    [setSelectedWebSlug, router],
+  )
 
   const sortedWebs = useMemo(() => {
     if (!webs) return []
@@ -122,7 +135,7 @@ export default function DashboardPage() {
           <TableBody>
             {filteredWebs.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={3} className="py-8 text-center">
+                <TableCell colSpan={4} className="py-8 text-center">
                   <div className="text-muted-foreground">
                     {isSearching ? (
                       <>No webs found matching &quot;{debouncedSearch}&quot;</>
@@ -218,6 +231,20 @@ export default function DashboardPage() {
                           </span>
                         </div>
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="gap-1"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleOpenAdminView(web.slug)
+                        }}
+                      >
+                        <ExternalLink className="h-3.5 w-3.5" />
+                        Open admin view
+                      </Button>
                     </TableCell>
                   </TableRow>
                 )

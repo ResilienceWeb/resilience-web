@@ -16,26 +16,41 @@ const useAllowedWebs = () => {
     isFetching: isFetchingWebAccess,
   } = useMyWebAccess()
 
+  const isAdmin = session?.user.role === 'admin'
+
   const allowedWebIds = useMemo(() => {
     return accessibleWebs?.map((web) => web.id) ?? []
   }, [accessibleWebs])
 
+  // Webs the user has explicit WebAccess to. Drives the web selector dropdown
+  // for everyone, including admins.
+  const myWebs = useMemo(() => {
+    if (!webs) {
+      return null
+    }
+
+    return webs.filter((web) => allowedWebIds.includes(web.id))
+  }, [webs, allowedWebIds])
+
+  // Webs the user is permitted to select/view. Admins can access any web; this
+  // is used for permission/validation rather than what's shown in the dropdown.
   const allAllowedWebs = useMemo(() => {
     if (!webs) {
       return null
     }
 
     // Admin users can access all webs
-    if (session?.user.role === 'admin') {
+    if (isAdmin) {
       return webs
     }
 
-    // Filter webs based on user's web access
-    return webs.filter((web) => allowedWebIds.includes(web.id))
-  }, [webs, allowedWebIds, session?.user.role])
+    return myWebs
+  }, [webs, myWebs, isAdmin])
 
   return {
     allowedWebs: allAllowedWebs,
+    myWebs,
+    isAdmin,
     isLoadingWebs: isLoadingWebs || isFetchingWebs,
     isLoading: isLoadingWebAccess || isFetchingWebs || isFetchingWebAccess,
   }

@@ -1,9 +1,10 @@
 import { memo, useMemo, useCallback, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select'
@@ -15,57 +16,85 @@ type WebOption = {
   label: string
 }
 
+// Sentinel value for the "Browse all webs" action so it can live inside the
+// Radix Select (which requires every item to carry a value).
+const BROWSE_ALL_VALUE = '__browse_all_webs__'
+
 const WebSelector = () => {
   const pathname = usePathname()
+  const router = useRouter()
   const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
-  const { allowedWebs, isLoading: isLoadingAllowedWebs } = useAllowedWebs()
+  const {
+    myWebs,
+    allowedWebs,
+    isAdmin,
+    isLoading: isLoadingAllowedWebs,
+  } = useAllowedWebs()
 
   const webOptions: WebOption[] = useMemo(() => {
-    if (!allowedWebs) return []
+    if (!myWebs) return []
 
-    return allowedWebs
-      ?.sort((a, b) => a.title.localeCompare(b.title))
+    return myWebs
+      .slice()
+      .sort((a, b) => a.title.localeCompare(b.title))
       .map((s) => ({
         value: s.slug,
         label: s.title,
       }))
-  }, [allowedWebs])
+  }, [myWebs])
+
+  // When an admin is viewing a web they don't have explicit access to, surface
+  // it as an extra option at the top so the trigger renders and it's clear
+  // they're outside their own webs.
+  const impersonatedOption: WebOption | null = useMemo(() => {
+    if (!selectedWebSlug || !allowedWebs) return null
+    if (webOptions.some((o) => o.value === selectedWebSlug)) return null
+
+    const web = allowedWebs.find((w) => w.slug === selectedWebSlug)
+    if (!web) return null
+
+    return { value: web.slug, label: `${web.title} (viewing as admin)` }
+  }, [selectedWebSlug, allowedWebs, webOptions])
 
   const handleWebChange = useCallback(
     (value: string) => {
+      if (value === BROWSE_ALL_VALUE) {
+        router.push('/admin/manage-webs')
+        return
+      }
       setSelectedWebSlug(value)
     },
-    [setSelectedWebSlug],
+    [router, setSelectedWebSlug],
   )
 
+  // Default selection + reconcile invalid selections. Admins may keep any slug
+  // (they can view any web); non-admins are reset to their first web if the
+  // current selection isn't one they have access to.
   useEffect(() => {
-    const allowedWebSlugs = allowedWebs?.map((w) => w.slug)
-    if (!isLoadingAllowedWebs && !allowedWebSlugs.includes(selectedWebSlug)) {
-      if (webOptions.length > 0) {
-        setSelectedWebSlug(webOptions[0].value)
-      }
-    }
-  }, [
-    allowedWebs,
-    isLoadingAllowedWebs,
-    selectedWebSlug,
-    setSelectedWebSlug,
-    webOptions,
-  ])
-
-  useEffect(() => {
-    if (selectedWebSlug) {
+    if (isLoadingAllowedWebs || webOptions.length === 0) {
       return
     }
 
-    if (isLoadingAllowedWebs) {
+    if (!selectedWebSlug) {
+      setSelectedWebSlug(webOptions[0].value)
       return
     }
 
-    if (selectedWebSlug === undefined && webOptions.length > 0) {
+    if (isAdmin) {
+      return
+    }
+
+    const isSelectionValid = webOptions.some((o) => o.value === selectedWebSlug)
+    if (!isSelectionValid) {
       setSelectedWebSlug(webOptions[0].value)
     }
-  }, [webOptions, setSelectedWebSlug, isLoadingAllowedWebs, selectedWebSlug])
+  }, [
+    webOptions,
+    selectedWebSlug,
+    setSelectedWebSlug,
+    isLoadingAllowedWebs,
+    isAdmin,
+  ])
 
   const hideWebSelector = useMemo(
     () =>
@@ -76,13 +105,18 @@ const WebSelector = () => {
     [pathname],
   )
 
-  if (webOptions.length === 1) {
+  // A single web and no admin powers: nothing to switch between.
+  if (webOptions.length === 1 && !impersonatedOption && !isAdmin) {
     return (
       <p className="text-lg font-bold text-gray-700">{webOptions[0].label}</p>
     )
   }
 
-  if (webOptions.length === 0 || !selectedWebSlug || hideWebSelector) {
+  if (
+    (webOptions.length === 0 && !impersonatedOption) ||
+    !selectedWebSlug ||
+    hideWebSelector
+  ) {
     return null
   }
 
@@ -92,11 +126,25 @@ const WebSelector = () => {
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
+        {impersonatedOption && (
+          <SelectItem
+            key={impersonatedOption.value}
+            value={impersonatedOption.value}
+          >
+            {impersonatedOption.label}
+          </SelectItem>
+        )}
         {webOptions.map((option) => (
           <SelectItem key={option.value} value={option.value}>
             {option.label}
           </SelectItem>
         ))}
+        {isAdmin && (
+          <>
+            <SelectSeparator />
+            <SelectItem value={BROWSE_ALL_VALUE}>Browse all webs…</SelectItem>
+          </>
+        )}
       </SelectContent>
     </Select>
   )
