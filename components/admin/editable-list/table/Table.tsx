@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import Link from 'next/link'
 import { FaStar, FaRegStar } from 'react-icons/fa'
 import { PiWarningCircleBold } from 'react-icons/pi'
 import CategoryTag from '@components/category-tag'
@@ -14,7 +15,7 @@ import {
 } from '@components/ui/table'
 import useFeatureListing from '@hooks/listings/useFeatureListing'
 
-const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
+const TableContent = ({ items, removeItem }) => {
   const { featureListing, unfeatureListing } = useFeatureListing()
   if (!items) return null
 
@@ -146,16 +147,18 @@ const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
                       {item.edits?.length > 0 && (
                         <Button
                           variant="default"
-                          onClick={() => goToProposedEdits(item)}
+                          asChild
                           size="sm"
                           className="bg-purple-600 hover:bg-purple-700"
                         >
-                          View suggested edit
+                          <Link href={`/admin/listings/${item.slug}/edits`}>
+                            View suggested edit
+                          </Link>
                         </Button>
                       )}
                       <Button
                         variant="default"
-                        onClick={() => goToEdit(item)}
+                        asChild
                         size="sm"
                         className={
                           item.pending
@@ -163,7 +166,9 @@ const TableContent = ({ goToEdit, goToProposedEdits, items, removeItem }) => {
                             : 'bg-blue-600 hover:bg-blue-700'
                         }
                       >
-                        {item.pending ? 'Review' : 'Edit'}
+                        <Link href={`/admin/listings/${item.slug}`}>
+                          {item.pending ? 'Review' : 'Edit'}
+                        </Link>
                       </Button>
                       <Button
                         variant="destructive"

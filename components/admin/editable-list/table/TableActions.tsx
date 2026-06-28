@@ -1,5 +1,6 @@
 import { memo, useMemo } from 'react'
 import { HiOutlineSearch, HiPlus } from 'react-icons/hi'
+import { icons } from '@helpers/icons'
 import { MultiSelect } from '@components/ui/multi-select'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
@@ -20,11 +21,20 @@ const TableActions = ({
   const categories = useMemo(() => {
     if (!fetchedCategories) return []
 
-    return fetchedCategories.map((c) => ({
-      value: c.label,
-      label: c.label,
-      color: `#${c.color}`,
-    }))
+    return fetchedCategories.map((c) => {
+      const color = `#${c.color}`
+      const IconComponent =
+        c.icon && c.icon !== 'default'
+          ? icons.find((i) => i.name === c.icon)?.icon
+          : undefined
+
+      return {
+        value: c.label,
+        label: c.label,
+        color,
+        icon: IconComponent ? <IconComponent style={{ color }} /> : undefined,
+      }
+    })
   }, [fetchedCategories])
 
   return (

@@ -11,6 +11,7 @@ import { trackWebEvent } from '@helpers/analytics'
 import { decompressJson } from '@helpers/compression'
 import { REMOTE_URL } from '@helpers/config'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
+import { icons } from '@helpers/icons'
 import {
   removeNonAlphaNumeric,
   sortStringsFunc,
@@ -121,11 +122,20 @@ const Web = ({
 
   const categories = useMemo(() => {
     if (!fetchedCategories) return []
-    return fetchedCategories.map((c) => ({
-      value: c.label,
-      label: c.label,
-      color: `#${c.color}`,
-    }))
+    return fetchedCategories.map((c) => {
+      const color = `#${c.color}`
+      const IconComponent =
+        c.icon && c.icon !== 'default'
+          ? icons.find((i) => i.name === c.icon)?.icon
+          : undefined
+
+      return {
+        value: c.label,
+        label: c.label,
+        color,
+        icon: IconComponent ? <IconComponent style={{ color }} /> : undefined,
+      }
+    })
   }, [fetchedCategories])
 
   const tags = useMemo(() => {

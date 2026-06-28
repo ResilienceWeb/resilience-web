@@ -39,30 +39,37 @@ const categoriesCambridge = [
   {
     label: 'Environment',
     color: '7ed957',
+    icon: 'Leaf',
   },
   {
     label: 'Housing',
     color: 'cb6ce6',
+    icon: 'Home',
   },
   {
     label: 'Social business',
     color: '778ffc',
+    icon: 'HandsHelping',
   },
   {
     label: 'Transportation',
     color: '737373',
+    icon: 'Bus',
   },
   {
     label: 'Community',
     color: 'ff66c4',
+    icon: 'City',
   },
   {
     label: 'Animal rights',
     color: '008037',
+    icon: 'Paw',
   },
   {
     label: 'Social justice',
     color: 'ff5757',
+    icon: 'BalanceScale',
   },
 ]
 
@@ -70,10 +77,12 @@ const categoriesDurham = [
   {
     label: 'Policy',
     color: '000000',
+    icon: 'BalanceScale',
   },
   {
     label: 'Infrastructure',
     color: 'ff5757',
+    icon: 'Tools',
   },
 ]
 

@@ -39,20 +39,6 @@ const EditableList = ({ deleteListing, items }) => {
       .sort((a, b) => b.edits.length - a.edits.length)
   }, [items, searchTerm, selectedCategories])
 
-  const goToEdit = useCallback(
-    (dataItem) => {
-      router.push(`/admin/listings/${dataItem.slug}`)
-    },
-    [router],
-  )
-
-  const goToProposedEdits = useCallback(
-    (dataItem) => {
-      router.push(`/admin/listings/${dataItem.slug}/edits`)
-    },
-    [router],
-  )
-
   const goToCreateListing = useCallback(() => {
     if (tour.isActive) {
       tour.moveNext()
@@ -135,12 +121,7 @@ const EditableList = ({ deleteListing, items }) => {
         selectedCategories={selectedCategories}
       />
       {filteredItems.length > 0 ? (
-        <Table
-          goToEdit={goToEdit}
-          goToProposedEdits={goToProposedEdits}
-          items={filteredItems}
-          removeItem={openRemoveDialog}
-        />
+        <Table items={filteredItems} removeItem={openRemoveDialog} />
       ) : (
         <div className="my-12 flex justify-center">
           <p className="font-semibold">

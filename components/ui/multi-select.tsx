@@ -19,6 +19,7 @@ export type MultiSelectOption = {
   value: string | number
   label: string
   color?: string
+  icon?: React.ReactNode
 }
 
 interface MultiSelectProps {
@@ -162,11 +163,17 @@ function MultiSelect({
                   className="justify-between"
                 >
                   <div className="flex items-center">
-                    {option.color && (
-                      <span
-                        className="mr-2 inline-block h-3 w-3 rounded-full"
-                        style={{ backgroundColor: option.color }}
-                      />
+                    {option.icon ? (
+                      <span className="mr-2 flex h-3.5 w-3.5 items-center justify-center">
+                        {option.icon}
+                      </span>
+                    ) : (
+                      option.color && (
+                        <span
+                          className="mr-2 inline-block h-3 w-3 rounded-full"
+                          style={{ backgroundColor: option.color }}
+                        />
+                      )
                     )}
                     {option.label}
                   </div>
