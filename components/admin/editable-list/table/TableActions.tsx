@@ -11,7 +11,7 @@ const TableActions = ({
   searchTerm,
   handleSearchTermChange,
   handleSelectedCategoriesChange,
-  selectedCategories,
+  selectedCategoryLabels,
   goToCreateListing,
 }) => {
   const { canEdit: canEditWeb } = useCanEditWeb()
@@ -36,6 +36,14 @@ const TableActions = ({
       }
     })
   }, [fetchedCategories])
+
+  const selectedCategories = useMemo(
+    () =>
+      categories.filter((category) =>
+        selectedCategoryLabels?.includes(category.value),
+      ),
+    [categories, selectedCategoryLabels],
+  )
 
   return (
     <div className="flex flex-1 flex-col justify-start gap-4 md:flex-row">

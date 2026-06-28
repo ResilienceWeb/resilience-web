@@ -1,6 +1,11 @@
 'use client'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import StoreProvider from '@store/StoreProvider'
 
 export default function Providers({ children }) {
-  return <StoreProvider>{children}</StoreProvider>
+  return (
+    <NuqsAdapter>
+      <StoreProvider>{children}</StoreProvider>
+    </NuqsAdapter>
+  )
 }

@@ -31,7 +31,14 @@ export default function ListingPage({ params }) {
   }, [showSuccessMessage])
 
   const goBack = useCallback(() => {
-    router.push('/admin')
+    // Return to the previous page so the listings filters (query params) are
+    // preserved. Fall back to /admin when there's no in-app history to go back
+    // to (e.g. the edit page was opened directly in a new tab).
+    if (window.history.length > 1) {
+      router.back()
+    } else {
+      router.push('/admin')
+    }
   }, [router])
 
   const handleSubmit = useCallback(

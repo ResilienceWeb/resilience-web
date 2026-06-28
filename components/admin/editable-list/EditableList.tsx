@@ -1,6 +1,7 @@
 import { useCallback, useState, useMemo, memo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
 import { getWebUrl, REMOTE_HOSTNAME } from '@helpers/config'
 import { removeNonAlphaNumeric } from '@helpers/utils'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
@@ -14,7 +15,10 @@ const EditableList = ({ deleteListing, items }) => {
   const router = useRouter()
   const { selectedWebId, selectedWebSlug } = useAppContext()
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategories, setSelectedCategories] = useState<Array<any>>([])
+  const [categoriesParam, setCategoriesParam] = useQueryState(
+    'categories',
+    parseAsArrayOf(parseAsString).withDefault([]),
+  )
   const [itemToDelete, setItemToDelete] = useState<any>(null)
 
   const filteredItems = useMemo(() => {
@@ -26,10 +30,9 @@ const EditableList = ({ deleteListing, items }) => {
         .includes(searchTerm.toLowerCase()),
     )
 
-    if (selectedCategories.length > 0) {
-      const categories = selectedCategories.map((c) => c.label)
+    if (categoriesParam.length > 0) {
       results = results.filter((item) =>
-        categories.includes(item.category.label),
+        categoriesParam.includes(item.category.label),
       )
     }
 
@@ -37,7 +40,7 @@ const EditableList = ({ deleteListing, items }) => {
       .sort((a, b) => a.title.localeCompare(b.title))
       .sort((a, b) => b.pending - a.pending)
       .sort((a, b) => b.edits.length - a.edits.length)
-  }, [items, searchTerm, selectedCategories])
+  }, [items, searchTerm, categoriesParam])
 
   const goToCreateListing = useCallback(() => {
     if (tour.isActive) {
@@ -82,9 +85,12 @@ const EditableList = ({ deleteListing, items }) => {
     setSearchTerm(event.target.value)
   }, [])
 
-  const handleSelectedCategoriesChange = useCallback((value) => {
-    setSelectedCategories(value)
-  }, [])
+  const handleSelectedCategoriesChange = useCallback(
+    (value) => {
+      setCategoriesParam(value.map((c) => c.value))
+    },
+    [setCategoriesParam],
+  )
 
   if (!filteredItems) {
     return null
@@ -118,7 +124,7 @@ const EditableList = ({ deleteListing, items }) => {
         handleSearchTermChange={handleSearchTermChange}
         goToCreateListing={goToCreateListing}
         handleSelectedCategoriesChange={handleSelectedCategoriesChange}
-        selectedCategories={selectedCategories}
+        selectedCategoryLabels={categoriesParam}
       />
       {filteredItems.length > 0 ? (
         <Table items={filteredItems} removeItem={openRemoveDialog} />
