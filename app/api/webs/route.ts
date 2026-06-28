@@ -6,6 +6,7 @@ import prisma from '@prisma-rw'
 import { auth } from '@auth'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { sendEmail } from '@helpers/email'
+import { FEATURES } from '@helpers/features'
 import { stringToBoolean } from '@helpers/utils'
 import WebCreatedAdminEmail from '@components/emails/WebCreatedAdminEmail'
 import WebCreatedEmail from '@components/emails/WebCreatedEmail'
@@ -133,6 +134,12 @@ export async function POST(request: NextRequest) {
         published: false,
         categories: {
           create: defaultCategories,
+        },
+        features: {
+          create: {
+            feature: FEATURES.showMap,
+            enabled: true,
+          },
         },
         webAccess: {
           create: {

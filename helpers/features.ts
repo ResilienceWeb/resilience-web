@@ -1,6 +1,7 @@
 export const FEATURES = {
   showMap: 'show-map',
   showAnalytics: 'show-analytics',
+  shareListings: 'share-listings',
 } as const
 export type Feature = (typeof FEATURES)[keyof typeof FEATURES]
 

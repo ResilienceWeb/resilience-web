@@ -1,5 +1,6 @@
 import { WebRole } from '@prisma-client'
 import prisma from '@prisma-rw'
+import { FEATURES } from '@helpers/features'
 import { syncSubscriberSegmentationSafe } from '@helpers/syncSubscriberSegmentation'
 import { getWebBySlug } from './webRepository'
 
@@ -194,6 +195,53 @@ export async function canUserEditWeb(
   })
 
   return access?.role === 'OWNER' || access?.role === 'EDITOR'
+}
+
+/**
+ * Determine whether a user may share a listing across webs.
+ *
+ * Allowed if the listing is placed in at least one web that the user can edit
+ * (OWNER/EDITOR) and that web has the share-listings feature enabled. Global
+ * admins are handled separately by the caller and bypass this check.
+ */
+export async function canUserShareListing(
+  email: string,
+  listingId: number,
+): Promise<boolean> {
+  const placements = await prisma.listingPlacement.findMany({
+    where: { listingId },
+    select: { webId: true },
+  })
+  if (placements.length === 0) {
+    return false
+  }
+
+  const editableWebIds = (
+    await prisma.webAccess.findMany({
+      where: {
+        email,
+        webId: { in: placements.map((p) => p.webId) },
+        role: { in: [WebRole.OWNER, WebRole.EDITOR] },
+      },
+      select: { webId: true },
+    })
+  ).map((a) => a.webId)
+  if (editableWebIds.length === 0) {
+    return false
+  }
+
+  const enabledWeb = await prisma.web.findFirst({
+    where: {
+      id: { in: editableWebIds },
+      deletedAt: null,
+      features: {
+        some: { feature: FEATURES.shareListings, enabled: true },
+      },
+    },
+    select: { id: true },
+  })
+
+  return Boolean(enabledWeb)
 }
 
 /**

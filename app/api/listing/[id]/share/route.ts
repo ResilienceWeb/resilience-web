@@ -3,10 +3,13 @@ import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { auth } from '@auth'
+import { canUserShareListing } from '@db/webAccessRepository'
 
 /**
  * POST /api/listing/[id]/share
- * Superadmin-only. Adds an existing listing to another web by creating a new placement.
+ * Adds an existing listing to another web by creating a new placement.
+ * Available to global admins, or to editors of a web that has the
+ * share-listings feature enabled and that the listing is placed in.
  * Body: { webId: number, slug: string, categoryId?: number }
  */
 export async function POST(
@@ -19,11 +22,16 @@ export async function POST(
       headers: request.headers,
     })
 
-    if (session?.user?.role !== 'admin') {
+    const listingId = Number(params.id)
+
+    const email = session?.user?.email
+    const canShare =
+      session?.user?.role === 'admin' ||
+      (email ? await canUserShareListing(email, listingId) : false)
+    if (!canShare) {
       return new Response('Unauthorized', { status: 403 })
     }
 
-    const listingId = Number(params.id)
     const { webId, slug, categoryId } = await request.json()
 
     if (!webId || !slug) {
@@ -99,9 +107,11 @@ export async function POST(
 
 /**
  * DELETE /api/listing/[id]/share?webId=N
- * Superadmin-only. Removes a placement (detaches the listing from one web).
- * If it was the only placement, the listing itself remains alive — superadmin must
- * use the regular delete flow to remove the listing entirely.
+ * Removes a placement (detaches the listing from one web). Available to global
+ * admins, or to editors of a web that has the share-listings feature enabled
+ * and that the listing is placed in.
+ * If it was the only placement, the listing itself remains alive — use the
+ * regular delete flow to remove the listing entirely.
  */
 export async function DELETE(
   request: NextRequest,
@@ -113,11 +123,16 @@ export async function DELETE(
       headers: request.headers,
     })
 
-    if (session?.user?.role !== 'admin') {
+    const listingId = Number(params.id)
+
+    const email = session?.user?.email
+    const canShare =
+      session?.user?.role === 'admin' ||
+      (email ? await canUserShareListing(email, listingId) : false)
+    if (!canShare) {
       return new Response('Unauthorized', { status: 403 })
     }
 
-    const listingId = Number(params.id)
     const webId = Number(request.nextUrl.searchParams.get('webId'))
 
     if (!webId) {

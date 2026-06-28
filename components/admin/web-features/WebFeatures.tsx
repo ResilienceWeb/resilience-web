@@ -94,6 +94,7 @@ function getFeatureLabel(feature: string): string {
   const labels: Record<string, string> = {
     [FEATURES.showMap]: 'Show map',
     [FEATURES.showAnalytics]: 'Show analytics',
+    [FEATURES.shareListings]: 'Share listings across webs',
   }
 
   return labels[feature] || feature
@@ -104,6 +105,8 @@ function getFeatureDescription(feature: string): string {
     [FEATURES.showMap]: 'Display the interactive map on the web',
     [FEATURES.showAnalytics]:
       'Display listing and web analytics in the admin dashboard',
+    [FEATURES.shareListings]:
+      "Let this web's editors place its listings into other webs",
   }
 
   return descriptions[feature] || 'No description available'

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { HiTrash } from 'react-icons/hi'
 import { useSession } from '@auth-client'
+import { FEATURES, isFeatureEnabled } from '@helpers/features'
 import { generateSlug } from '@helpers/utils'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
@@ -42,6 +43,14 @@ export default function SharePlacements({
   const isAdmin = session?.user?.role === 'admin'
 
   const { webs } = useWebs()
+
+  const currentWeb = useMemo(
+    () => (webs ?? []).find((w: any) => w.id === currentWebId),
+    [webs, currentWebId],
+  )
+  const canShare =
+    isAdmin ||
+    isFeatureEnabled(FEATURES.shareListings, currentWeb?.features ?? [])
   const [targetWebId, setTargetWebId] = useState<string>('')
   const [slug, setSlug] = useState<string>(generateSlug(listingTitle))
   const [categoryId, setCategoryId] = useState<string>('')
@@ -78,7 +87,7 @@ export default function SharePlacements({
     }
   }, [targetWebId, webs])
 
-  if (!isAdmin) return null
+  if (!canShare) return null
 
   const handleShare = async () => {
     setError(null)
@@ -142,7 +151,7 @@ export default function SharePlacements({
   return (
     <div className="mt-8 rounded-md border border-gray-200 bg-gray-50 p-4">
       <div className="mb-3 flex items-baseline justify-between">
-        <h3 className="font-semibold text-gray-900">Webs (admin only)</h3>
+        <h3 className="font-semibold text-gray-900">Webs</h3>
         <span className="text-xs text-gray-500">
           Share this listing across multiple webs.
         </span>
