@@ -218,7 +218,7 @@ export async function POST(request) {
     })
 
     const placementSlug = listing.placements[0]?.slug ?? ''
-    if (listing.email && selectedWeb?.contactEmail) {
+    if (!isProposedListing && listing.email && selectedWeb?.contactEmail) {
       const listingUrl = `https://${selectedWeb.slug}.resilienceweb.org.uk/${placementSlug}`
       sendEmail({
         to: listing.email,

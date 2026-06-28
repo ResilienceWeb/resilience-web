@@ -9,6 +9,7 @@ import { flattenListingPlacement } from '@helpers/flattenPlacement'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingProposedAcceptedEmail from '@components/emails/ListingProposedAcceptedEmail'
+import ListingCreatedEmail from '@components/emails/ListingCreatedEmail'
 
 function exclude(data, keys) {
   return Object.fromEntries(
@@ -391,6 +392,20 @@ export async function PUT(request) {
           webSlug: placement.web.slug,
         }),
       })
+
+      if (listing.email && placement.web.contactEmail) {
+        const listingUrl = `https://${placement.web.slug}.resilienceweb.org.uk/${placement.slug}`
+        await sendEmail({
+          to: listing.email,
+          subject: `A listing for ${listing.title} has been created on ${placement.web.title} Resilience Web`,
+          email: ListingCreatedEmail({
+            listingTitle: listing.title,
+            webTitle: placement.web.title,
+            listingUrl,
+          }),
+          replyTo: placement.web.contactEmail,
+        })
+      }
     }
 
     if (placement?.web) {
