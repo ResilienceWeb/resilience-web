@@ -21,12 +21,16 @@ interface MapProps {
 
 function MarkerClusterGroup({ items }: { items: any[] }) {
   const map = useMap()
-  const clusterRef = useRef<any>(null)
 
   useEffect(() => {
+    let clusterGroup: any = null
+    let cancelled = false
+
     // eslint-disable-next-line promise/catch-or-return
     import('leaflet.markercluster').then(() => {
-      const clusterGroup = new (L as any).MarkerClusterGroup({
+      if (cancelled) return
+
+      clusterGroup = new (L as any).MarkerClusterGroup({
         chunkedLoading: true,
         spiderfyOnMaxZoom: true,
         showCoverageOnHover: false,
@@ -36,8 +40,6 @@ function MarkerClusterGroup({ items }: { items: any[] }) {
         maxClusterRadius: 1,
         iconCreateFunction: createClusterIcon,
       })
-
-      clusterRef.current = clusterGroup
 
       items.forEach((item) => {
         const markerIcon = item.category?.icon
@@ -83,13 +85,14 @@ function MarkerClusterGroup({ items }: { items: any[] }) {
       })
 
       map.addLayer(clusterGroup)
-
-      return () => {
-        if (clusterRef.current) {
-          map.removeLayer(clusterRef.current)
-        }
-      }
     })
+
+    return () => {
+      cancelled = true
+      if (clusterGroup) {
+        map.removeLayer(clusterGroup)
+      }
+    }
   }, [map, items])
 
   return null
