@@ -15,15 +15,15 @@ const lastOnesOnHomepage = [
 // the hero count reflects exactly what's displayed below.
 export const isWebDisplayedOnHomepage = (web) => Boolean(web.image)
 
-// Function to check if a web was created less than 4 months ago
-const isNewWeb = (createdAt) => {
-  if (!createdAt) return false
+// Function to check if a web was published less than 4 months ago
+const isNewWeb = (publishedAt) => {
+  if (!publishedAt) return false
 
-  const creationDate = new Date(createdAt)
-  const oneMonthAgo = new Date()
-  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 4)
+  const publicationDate = new Date(publishedAt)
+  const fourMonthsAgo = new Date()
+  fourMonthsAgo.setMonth(fourMonthsAgo.getMonth() - 4)
 
-  return creationDate > oneMonthAgo
+  return publicationDate > fourMonthsAgo
 }
 
 const WebCards = ({ webs }) => {
@@ -41,8 +41,8 @@ const WebCards = ({ webs }) => {
             return Number(aIsLast) - Number(bIsLast)
           })
           .sort((a, b) => {
-            const aIsNew = isNewWeb(a.createdAt)
-            const bIsNew = isNewWeb(b.createdAt)
+            const aIsNew = isNewWeb(a.publishedAt)
+            const bIsNew = isNewWeb(b.publishedAt)
             return Number(bIsNew) - Number(aIsNew)
           })
           .map((web) => (
@@ -58,7 +58,7 @@ const WebCards = ({ webs }) => {
 export default WebCards
 
 const Card = ({ web }) => {
-  const isNew = isNewWeb(web.createdAt)
+  const isNew = isNewWeb(web.publishedAt)
 
   return (
     <Link href={getWebUrl(web.slug)}>

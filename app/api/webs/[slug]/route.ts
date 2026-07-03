@@ -180,6 +180,19 @@ export async function PUT(request, props) {
       data: newData,
     })
 
+    if (updatedWeb.published) {
+      // Only set publishedAt on first publish, so re-publishing doesn't reset it
+      await prisma.web.updateMany({
+        where: {
+          slug,
+          publishedAt: null,
+        },
+        data: {
+          publishedAt: new Date(),
+        },
+      })
+    }
+
     revalidatePath(`/${params.slug}`)
     revalidatePath('/')
     return Response.json({

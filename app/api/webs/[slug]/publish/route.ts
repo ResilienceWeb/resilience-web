@@ -28,6 +28,16 @@ export async function POST(
         published: true,
       },
     })
+    // Only set publishedAt on first publish, so re-publishing doesn't reset it
+    await prisma.web.updateMany({
+      where: {
+        slug: params.slug,
+        publishedAt: null,
+      },
+      data: {
+        publishedAt: new Date(),
+      },
+    })
     revalidatePath('/')
     revalidatePath(`/${params.slug}`)
 

@@ -2321,6 +2321,7 @@ export const WebScalarFieldEnum = {
   description: 'description',
   contactEmail: 'contactEmail',
   published: 'published',
+  publishedAt: 'publishedAt',
   image: 'image',
   locationId: 'locationId',
   deletedAt: 'deletedAt'
