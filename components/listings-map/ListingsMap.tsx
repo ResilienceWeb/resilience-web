@@ -26,8 +26,8 @@ function MarkerClusterGroup({ items }: { items: any[] }) {
     let clusterGroup: any = null
     let cancelled = false
 
-    // eslint-disable-next-line promise/catch-or-return
-    import('leaflet.markercluster').then(() => {
+    const setupClusterGroup = async () => {
+      await import('leaflet.markercluster')
       if (cancelled) return
 
       clusterGroup = new (L as any).MarkerClusterGroup({
@@ -85,7 +85,9 @@ function MarkerClusterGroup({ items }: { items: any[] }) {
       })
 
       map.addLayer(clusterGroup)
-    })
+    }
+
+    setupClusterGroup()
 
     return () => {
       cancelled = true
