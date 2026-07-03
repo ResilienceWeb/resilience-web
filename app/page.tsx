@@ -34,7 +34,7 @@ async function getData(): Promise<any> {
       title: true,
       slug: true,
       image: true,
-      createdAt: true,
+      publishedAt: true,
       location: {
         select: {
           latitude: true,

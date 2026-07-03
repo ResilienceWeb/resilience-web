@@ -103,6 +103,7 @@ model Web {
   listings              ListingPlacement[]
   tags                  Tag[]
   published             Boolean                 @default(false)
+  publishedAt           DateTime?               @map("published_at")
   image                 String?
   permissions           Permission[]
   ownerships            Ownership[]

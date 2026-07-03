@@ -237,6 +237,7 @@ async function populateSeedData() {
       title: 'Cambridge',
       slug: 'cambridge',
       published: true,
+      publishedAt: new Date(),
       image:
         'https://kdfprvggsvdbybtdpojv.supabase.co/storage/v1/object/public/resilienceweb-images/d395de3529d0bb86b05ee6503.jpg',
       features: {
@@ -262,6 +263,7 @@ async function populateSeedData() {
       title: 'Durham',
       slug: 'durham',
       published: true,
+      publishedAt: new Date(),
       image:
         'https://kdfprvggsvdbybtdpojv.supabase.co/storage/v1/object/public/resilienceweb-images/f0b36873107d6cef9da5f2400.webp',
       features: {
