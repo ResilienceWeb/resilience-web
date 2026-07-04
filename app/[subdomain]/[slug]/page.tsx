@@ -72,7 +72,7 @@ export async function generateStaticParams() {
     },
     include: {
       web: { select: { slug: true, title: true } },
-      category: { select: { id: true, color: true, label: true } },
+      category: { select: { id: true, color: true, label: true, icon: true } },
       tags: { select: { id: true, label: true } },
       listing: {
         include: {

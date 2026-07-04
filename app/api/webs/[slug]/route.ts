@@ -41,7 +41,7 @@ export async function GET(
     include.listings = {
       include: {
         listing: { include: { location: true } },
-        category: { select: { id: true, color: true, label: true } },
+        category: { select: { id: true, color: true, label: true, icon: true } },
         tags: { select: { id: true, label: true } },
       },
     }

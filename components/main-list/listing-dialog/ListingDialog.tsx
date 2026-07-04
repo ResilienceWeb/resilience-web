@@ -134,7 +134,10 @@ const ListingDialog = ({
 
         <div className="overflow-y-auto flex-1 pr-2">
           <div className="flex justify-between">
-            <CategoryTag colorHex={item.category.color}>
+            <CategoryTag
+              colorHex={item.category.color}
+              iconName={item.category.icon}
+            >
               {item.category.label}
             </CategoryTag>
           </div>

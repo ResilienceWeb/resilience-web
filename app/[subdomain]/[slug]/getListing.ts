@@ -26,7 +26,7 @@ export default async function getListing({
     },
     include: {
       web: { select: { id: true, slug: true, title: true } },
-      category: { select: { id: true, color: true, label: true } },
+      category: { select: { id: true, color: true, label: true, icon: true } },
       tags: { select: { id: true, label: true } },
       listing: {
         include: {
@@ -58,7 +58,7 @@ export default async function getListing({
                   slug: true,
                   featured: true,
                   category: {
-                    select: { id: true, color: true, label: true },
+                    select: { id: true, color: true, label: true, icon: true },
                   },
                 },
                 take: 1,

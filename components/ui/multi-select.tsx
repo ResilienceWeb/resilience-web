@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { Check, ChevronsUpDown, X } from 'lucide-react'
-import chroma from 'chroma-js'
+import { selectMoreAccessibleColor } from '@helpers/colors'
 import { cn } from '@components/lib/utils'
 import { Badge } from '@components/ui/badge'
 import {
@@ -113,12 +113,25 @@ function MultiSelect({
                 style={
                   item.color
                     ? {
-                        backgroundColor: chroma(item.color).alpha(0.75).css(),
+                        backgroundColor: item.color,
                         borderColor: 'transparent',
+                        color: selectMoreAccessibleColor(
+                          item.color,
+                          '#3f3f40',
+                          '#fff',
+                        ),
                       }
                     : undefined
                 }
               >
+                {item.icon && (
+                  // Icons come tinted with the category color for the white
+                  // dropdown; on the color-filled pill force them to match the
+                  // label text so they stay legible
+                  <span className="mr-0.5 flex h-3 w-3 items-center justify-center [&_svg]:[color:currentColor]!">
+                    {item.icon}
+                  </span>
+                )}
                 {item.label}
                 <span
                   role="button"

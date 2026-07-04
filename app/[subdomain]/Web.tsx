@@ -148,10 +148,12 @@ const Web = ({
 
   const selectedCategories = useMemo(() => {
     return categoriesParam.map((categoryLabel) => {
+      const category = categories.find((c) => c.label === categoryLabel)
       return {
         value: categoryLabel,
         label: categoryLabel,
-        color: categories.find((c) => c.label === categoryLabel)?.color,
+        color: category?.color,
+        icon: category?.icon,
       }
     })
   }, [categories, categoriesParam])

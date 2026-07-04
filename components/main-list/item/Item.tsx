@@ -86,6 +86,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
         className="absolute top-1 left-1 z-10 min-w-min shadow-md"
         alpha={1}
         colorHex={dataItem.category.color}
+        iconName={dataItem.category.icon}
       >
         {dataItem.category.label}
       </CategoryTag>

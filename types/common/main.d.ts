@@ -60,6 +60,7 @@ declare global {
     category: {
       color: string
       label: string
+      icon?: string
     }
     slug: string
     tags: any[]

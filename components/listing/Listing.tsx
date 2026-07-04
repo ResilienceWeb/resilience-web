@@ -150,6 +150,7 @@ function Listing({ listing }) {
             >
               <CategoryTag
                 colorHex={listing.category.color}
+                iconName={listing.category.icon}
                 className="hover:opacity-90"
               >
                 {listing.category.label}
@@ -161,7 +162,7 @@ function Listing({ listing }) {
                 href={listingWebsite}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 text-xs text-gray-700 transition-colors hover:bg-gray-200 md:gap-1.5 md:px-3 md:text-sm"
+                className="inline-flex items-center gap-1 rounded-full border border-transparent bg-gray-100 px-2.5 py-0.5 text-xs text-gray-700 transition-colors hover:bg-gray-200 md:gap-1.5 md:px-3"
               >
                 <HiExternalLink className="h-3 w-3 md:h-3.5 md:w-3.5" />
                 <span className="max-w-45 truncate md:max-w-70">
@@ -174,7 +175,7 @@ function Listing({ listing }) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="inline-flex cursor-help items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 md:gap-1.5 md:px-3 md:text-sm">
+                    <span className="inline-flex cursor-help items-center gap-1 rounded-full border border-transparent bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-700 md:gap-1.5 md:px-3">
                       <HiUserGroup className="h-3 w-3 md:h-3.5 md:w-3.5" />
                       Seeking volunteers
                     </span>

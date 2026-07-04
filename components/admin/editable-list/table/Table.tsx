@@ -84,6 +84,7 @@ const TableContent = ({ items, removeItem }) => {
                       <CategoryTag
                         className="text-xs"
                         colorHex={item.category.color}
+                        iconName={item.category.icon}
                       >
                         {item.category.label}
                       </CategoryTag>
