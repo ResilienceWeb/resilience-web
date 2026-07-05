@@ -33,6 +33,59 @@ export function createCustomIcon(iconName: string, color: string) {
   })
 }
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+// Resilience Web logo in a white circle with the web's name underneath,
+// matching how related webs appear on the network (web) view
+export function createRelatedWebIcon(title: string) {
+  const html = `
+    <div style="position: relative; width: 36px; height: 36px; cursor: pointer;">
+      <img
+        src="/logo-circle.png"
+        alt=""
+        style="
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background-color: white;
+          border: 1px solid rgba(0,0,0,0.12);
+          box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+        "
+      />
+      <div style="
+        position: absolute;
+        top: 38px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        font-family: Inter, system-ui, sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        color: #333;
+        text-shadow:
+          0 0 3px white,
+          0 0 3px white,
+          0 0 4px white,
+          0 1px 2px white;
+      ">${escapeHtml(title)}</div>
+    </div>
+  `
+
+  return L.divIcon({
+    html,
+    className: 'related-web-icon',
+    iconSize: [36, 36],
+    iconAnchor: [18, 18],
+  })
+}
+
 const DEFAULT_MARKER_UNICODE = '' // map-marker
 const DEFAULT_MARKER_COLOR = '#3388ff'
 

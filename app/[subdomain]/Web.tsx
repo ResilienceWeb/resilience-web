@@ -47,6 +47,15 @@ type NetworkData = {
   edges: any[]
 }
 
+export type RelatedWeb = {
+  slug: string
+  title: string
+  location: {
+    latitude: number
+    longitude: number
+  }
+}
+
 type Props = {
   // gzip+base64 compressed NetworkData, decompressed on the client below.
   data: string
@@ -59,6 +68,7 @@ type Props = {
   webContactEmail?: string
   isTransitionMode?: boolean
   webSlug: string
+  relatedWebs?: RelatedWeb[]
 }
 
 const Web = ({
@@ -72,6 +82,7 @@ const Web = ({
   isTransitionMode = false,
   webContactEmail,
   webSlug,
+  relatedWebs = [],
 }: Props) => {
   const data = useMemo<NetworkData | null>(
     () => (compressedData ? decompressJson<NetworkData>(compressedData) : null),
@@ -101,13 +112,22 @@ const Web = ({
     undefined,
     { initializeWithValue: false },
   )
-  const [viewParam, setViewParam] = useQueryState(
-    'view',
-    parseAsString.withDefault(defaultTab),
-  )
+  const [viewParam, setViewParam] = useQueryState('view', parseAsString)
 
-  // Use viewParam as the source of truth, sync with localStorage after mount
-  const activeTab = storedTab ?? viewParam
+  // An explicit ?view= in the URL wins (so links can open a specific tab),
+  // then the tab remembered in localStorage, then the device default.
+  // Map and events tabs only exist for some webs, so fall back to the
+  // default if the requested tab isn't available here
+  const requestedTab = viewParam ?? storedTab ?? defaultTab
+  const availableTabs = useMemo(() => {
+    const tabs = ['web', 'list']
+    if (isGeoMappingEnabled) tabs.push('map')
+    if (events?.length > 0) tabs.push('events')
+    return tabs
+  }, [isGeoMappingEnabled, events])
+  const activeTab = availableTabs.includes(requestedTab)
+    ? requestedTab
+    : defaultTab
 
   const [searchTerm, setSearchTerm] = useState('')
   const [searchTermValue] = useDebounceValue(searchTerm, 500)
@@ -428,7 +448,11 @@ const Web = ({
           <MainList filteredItems={filteredItems} webSlug={webSlug} />
         )}
         {activeTab === 'map' && (
-          <ListingsMap items={filteredItems} webSlug={webSlug} />
+          <ListingsMap
+            items={filteredItems}
+            webSlug={webSlug}
+            relatedWebs={relatedWebs}
+          />
         )}
         {activeTab === 'events' && <Events items={events} webSlug={webSlug} />}
 

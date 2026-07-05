@@ -30,31 +30,8 @@ const SocialMedia = () => {
 
   return (
     <div className="mt-4">
-      <div className="flex items-center justify-between pb-2">
+      <div className="pb-2">
         <FormLabel className="font-semibold">Social Media</FormLabel>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="flex items-center gap-1"
-          onClick={() => {
-            const currentSocials = methods.getValues('socials') || []
-            const unusedPlatforms = socialMediaPlatforms.filter(
-              (platform) =>
-                !currentSocials.some((item) => item.platform === platform.id),
-            )
-
-            if (unusedPlatforms.length > 0) {
-              append({ platform: unusedPlatforms[0].id, url: '' })
-            }
-          }}
-          disabled={
-            methods.getValues('socials')?.length >= socialMediaPlatforms.length
-          }
-        >
-          <AiOutlinePlus className="mr-1" />
-          Add Social Media link
-        </Button>
       </div>
 
       <div className="flex flex-col gap-1">

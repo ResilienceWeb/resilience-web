@@ -47,7 +47,9 @@ const webSettingsSchema = z.object({
   title: z.string().min(1, { error: 'Title is required' }),
   published: z.boolean(),
   description: z.string(),
-  contactEmail: z.email({ error: 'Please enter a valid email' }),
+  contactEmail: z
+    .email({ error: 'Please enter a valid email' })
+    .or(z.literal('')),
   image: z.any().nullable(),
   relatedWebs: z.array(
     z.object({ value: z.union([z.string(), z.number()]), label: z.string() }),
@@ -251,6 +253,7 @@ export default function WebSettingsPage() {
                 </FormDescription>
                 <Input
                   name="title"
+                  aria-invalid={Boolean(errors.title)}
                   value={title ?? ''}
                   onChange={(e) =>
                     setValue('title', e.target.value, { shouldDirty: true })
@@ -274,6 +277,7 @@ export default function WebSettingsPage() {
                 <Input
                   name="contactEmail"
                   type="email"
+                  aria-invalid={Boolean(errors.contactEmail)}
                   value={contactEmail ?? ''}
                   onChange={(e) =>
                     setValue('contactEmail', e.target.value, {

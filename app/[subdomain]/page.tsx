@@ -39,6 +39,7 @@ export default async function WebPage(props) {
       webIsPublished={webData.published}
       webContactEmail={webData.contactEmail}
       webSlug={webSlug}
+      relatedWebs={webData.relations?.filter((w) => w.published && w.location)}
     />
   )
 }
@@ -90,6 +91,12 @@ type DataType = {
     slug: string
     features: Record<string, any>
     contactEmail: string
+    relations?: Array<{
+      slug: string
+      title: string
+      published: boolean
+      location: { latitude: number; longitude: number } | null
+    }>
   }
 }
 
@@ -106,7 +113,16 @@ async function getData({ webSlug }): Promise<DataType> {
           enabled: true,
         },
       },
-      relations: true,
+      relations: {
+        select: {
+          slug: true,
+          title: true,
+          published: true,
+          location: {
+            select: { latitude: true, longitude: true },
+          },
+        },
+      },
     },
   })
 

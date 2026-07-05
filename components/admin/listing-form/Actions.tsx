@@ -31,29 +31,8 @@ const Actions = () => {
 
   return (
     <div className="mt-4">
-      <div className="flex items-center justify-between pb-2">
+      <div className="pb-2">
         <FormLabel className="font-semibold">Action Buttons</FormLabel>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="flex items-center gap-1"
-          onClick={() => {
-            const currentActions = methods.getValues('actions') || []
-            const unusedTypes = actionTypes.filter(
-              (actionType) =>
-                !currentActions.some((item) => item.type === actionType.id),
-            )
-
-            if (unusedTypes.length > 0) {
-              append({ type: unusedTypes[0].id, url: '' })
-            }
-          }}
-          disabled={methods.getValues('actions')?.length >= actionTypes.length}
-        >
-          <AiOutlinePlus className="mr-1" />
-          Add Action Button
-        </Button>
       </div>
 
       <div className="flex flex-col gap-1">

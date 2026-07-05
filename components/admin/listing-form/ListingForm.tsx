@@ -360,6 +360,10 @@ const ListingForm = ({
             render={() => (
               <FormItem className="mt-4">
                 <FormLabel className="font-semibold">Description*</FormLabel>
+                <FormDescription>
+                  Please don't include phone numbers or email addresses in the
+                  description.
+                </FormDescription>
                 <FormControl>
                   <RichTextEditor name="description" />
                 </FormControl>

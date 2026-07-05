@@ -3,20 +3,41 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 import { BsArrowsFullscreen } from 'react-icons/bs'
 import { HiChevronDown, HiChevronUp } from 'react-icons/hi'
-import { MapContainer, TileLayer, useMap, ZoomControl } from 'react-leaflet'
+import {
+  MapContainer,
+  Marker,
+  TileLayer,
+  useMap,
+  ZoomControl,
+} from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet/dist/leaflet.css'
-import { createCustomIcon, createClusterIcon } from '@helpers/map'
+import { getWebUrl } from '@helpers/config'
+import {
+  createCustomIcon,
+  createClusterIcon,
+  createRelatedWebIcon,
+} from '@helpers/map'
 import Item from '@components/main-list/item'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
 import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 
+interface RelatedWeb {
+  slug: string
+  title: string
+  location: {
+    latitude: number
+    longitude: number
+  }
+}
+
 interface MapProps {
   items?: any[]
   webSlug: string
+  relatedWebs?: RelatedWeb[]
 }
 
 function MarkerClusterGroup({ items }: { items: any[] }) {
@@ -115,7 +136,7 @@ function FitBoundsToMarkers({ markers }: { markers: [number, number][] }) {
   return null
 }
 
-function ListingsMap({ items = [], webSlug }: MapProps) {
+function ListingsMap({ items = [], webSlug, relatedWebs = [] }: MapProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isFullScreen, setIsFullScreen] = useState(false)
   const [isUnmappedPanelOpen, setIsUnmappedPanelOpen] = useState(false)
@@ -295,6 +316,22 @@ function ListingsMap({ items = [], webSlug }: MapProps) {
               )}
 
               <MarkerClusterGroup items={listingsWithCoordinates} />
+
+              {relatedWebs.map((web) => (
+                <Marker
+                  key={web.slug}
+                  position={[
+                    Number(web.location.latitude),
+                    Number(web.location.longitude),
+                  ]}
+                  icon={createRelatedWebIcon(web.title)}
+                  eventHandlers={{
+                    click: () => {
+                      window.location.assign(`${getWebUrl(web.slug)}?view=map`)
+                    },
+                  }}
+                />
+              ))}
             </MapContainer>
           </div>
         </>
