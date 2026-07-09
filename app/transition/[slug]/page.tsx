@@ -2,7 +2,11 @@ import type { Metadata } from 'next'
 import truncate from 'lodash.truncate'
 import { generateSlug } from '@helpers/utils'
 import Listing from '../../[subdomain]/[slug]/Listing'
-import { CATEGORY_COLOR_MAPPING, TAG_COLOR_MAPPING } from '../utils'
+import {
+  CATEGORY_COLOR_MAPPING,
+  TAG_COLOR_MAPPING,
+  getRegionFromCountries,
+} from '../utils'
 
 export default async function TransitionListingPage(props) {
   const params = await props.params
@@ -105,10 +109,7 @@ async function getListing({ listingSlug }): Promise<any> {
 
 function transformAndFindListing(data: any[], listingSlug: string) {
   const cleanedData = data.map((item) => {
-    const categoryLabel = item.countries
-      .replace(/&amp;/g, '&')
-      .replace(' | United Kingdom', '')
-      .replace('United Kingdom | ', '')
+    const categoryLabel = getRegionFromCountries(item.countries)
 
     const itemTags = []
     item.tags?.forEach((tagLabel) => {

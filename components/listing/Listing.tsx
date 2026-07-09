@@ -145,17 +145,26 @@ function Listing({ listing }) {
           </h1>
 
           <div className="mt-3 flex flex-wrap items-center gap-2 md:mt-4 md:gap-3">
-            <Link
-              href={`${getWebUrl(listing.web.slug)}?categories=${encodeURIComponent(listing.category.label).replace(/%20/g, '+')}`}
-            >
+            {listing.web?.slug ? (
+              <Link
+                href={`${getWebUrl(listing.web.slug)}?categories=${encodeURIComponent(listing.category.label).replace(/%20/g, '+')}`}
+              >
+                <CategoryTag
+                  colorHex={listing.category.color}
+                  iconName={listing.category.icon}
+                  className="hover:opacity-90"
+                >
+                  {listing.category.label}
+                </CategoryTag>
+              </Link>
+            ) : (
               <CategoryTag
                 colorHex={listing.category.color}
                 iconName={listing.category.icon}
-                className="hover:opacity-90"
               >
                 {listing.category.label}
               </CategoryTag>
-            </Link>
+            )}
 
             {listing.website && (
               <a
@@ -331,18 +340,23 @@ function Listing({ listing }) {
           <div className="mt-8 flex flex-wrap gap-2">
             {listing.tags.map((tag) => {
               const urlEncodedTag = tag.label.replace(' ', '+')
-              return (
+              const badge = (
+                <Badge
+                  className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
+                  style={{ backgroundColor: tag.color ?? '#718096' }}
+                >
+                  #{tag.label}
+                </Badge>
+              )
+              return listing.web?.slug ? (
                 <Link
                   key={tag.id}
                   href={`${getWebUrl(listing.web.slug)}?tags=${urlEncodedTag}`}
                 >
-                  <Badge
-                    className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
-                    style={{ backgroundColor: tag.color ?? '#718096' }}
-                  >
-                    #{tag.label}
-                  </Badge>
+                  {badge}
                 </Link>
+              ) : (
+                <span key={tag.id}>{badge}</span>
               )
             })}
           </div>

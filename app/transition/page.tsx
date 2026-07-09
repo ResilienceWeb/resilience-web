@@ -9,7 +9,11 @@ import { compressJson } from '@helpers/compression'
 import { FEATURES } from '@helpers/features'
 import { generateSlug } from '@helpers/utils'
 import Web, { CENTRAL_NODE_ID } from '../[subdomain]/Web'
-import { CATEGORY_COLOR_MAPPING, TAG_COLOR_MAPPING } from './utils'
+import {
+  CATEGORY_COLOR_MAPPING,
+  TAG_COLOR_MAPPING,
+  getRegionFromCountries,
+} from './utils'
 
 export const metadata: Metadata = {
   title: 'Transition UK',
@@ -25,7 +29,7 @@ export default async function TransitionPage() {
   const data = await getData()
 
   await queryClient.prefetchQuery({
-    queryKey: ['categories', { webSlug: 'transition' }, data.categories],
+    queryKey: ['categories', { webSlug: 'transition' }],
     queryFn: () => {
       return data.categories
     },
@@ -33,7 +37,7 @@ export default async function TransitionPage() {
   })
 
   await queryClient.prefetchQuery({
-    queryKey: ['tags', { webSlug: 'transition', public: true }, data.tags],
+    queryKey: ['tags', { webSlug: 'transition', public: true }],
     queryFn: () => {
       return data.tags
     },
@@ -120,10 +124,7 @@ function transformData(data) {
   const tags = []
 
   data.forEach((item) => {
-    const categoryLabel = item.countries
-      .replace(/&amp;/g, '&')
-      .replace(' | United Kingdom', '')
-      .replace('United Kingdom | ', '')
+    const categoryLabel = getRegionFromCountries(item.countries)
     if (!categories.some((c) => c.label === categoryLabel)) {
       categories.push({
         label: categoryLabel,

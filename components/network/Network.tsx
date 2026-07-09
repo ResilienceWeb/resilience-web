@@ -604,7 +604,7 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
       const start = link.source
       const end = link.target
 
-      if (!start.x || !start.y || !end.x || !end.y) return
+      if (!start?.x || !start?.y || !end?.x || !end?.y) return
 
       ctx.beginPath()
       ctx.moveTo(start.x, start.y)

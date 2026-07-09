@@ -8,6 +8,22 @@ export const CATEGORY_COLOR_MAPPING = {
   'United Kingdom': '#737373',
 }
 
+// The API's `countries` field is a pipe-separated list that usually includes
+// 'United Kingdom' alongside the actual region, and occasionally stray
+// countries (e.g. 'Anguilla') or multiple regions. Pick the first known
+// region, falling back to 'United Kingdom' when there is none.
+export function getRegionFromCountries(countries: string): string {
+  const regions = countries
+    .replace(/&amp;/g, '&')
+    .split('|')
+    .map((entry) => entry.trim())
+    .filter(
+      (entry) => entry !== 'United Kingdom' && entry in CATEGORY_COLOR_MAPPING,
+    )
+
+  return regions[0] ?? 'United Kingdom'
+}
+
 export const TAG_COLOR_MAPPING = {
   'Transition Group': '#737373',
   'Community Growing': '#2cb868',

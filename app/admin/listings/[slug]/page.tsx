@@ -7,9 +7,11 @@ import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import ListingForm from '@components/admin/listing-form'
 import { Alert, AlertTitle } from '@components/ui/alert'
+import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
 import useCategories from '@hooks/categories/useCategories'
 import useListing from '@hooks/listings/useListing'
+import useListingEdits from '@hooks/listings/useListingEdits'
 import useUpdateListing from '@hooks/listings/useUpdateListing'
 import { useAppContext } from '@store/hooks'
 
@@ -55,9 +57,40 @@ export default function ListingPage({ params }) {
   )
 
   const { listing, isPending } = useListing(slug)
+  const { listingEdits, isPending: isLoadingListingEdits } = useListingEdits(
+    slug,
+    selectedWebSlug,
+  )
 
-  if (!categories || !listing || isPending) {
+  if (!categories || !listing || isPending || isLoadingListingEdits) {
     return <Spinner />
+  }
+
+  if (listingEdits && listingEdits.length > 0) {
+    return (
+      <div className="mx-auto max-w-5xl px-0 py-4 pb-16 md:px-10">
+        <button
+          className="mb-2 ml-2 flex items-center gap-2 text-gray-700 hover:text-gray-900"
+          onClick={goBack}
+        >
+          <HiArrowLeft className="h-4 w-4" />
+          Back
+        </button>
+
+        <div className="mt-4 flex flex-col items-center gap-4">
+          <div className="flex items-center gap-3 rounded-md bg-blue-50 p-4 text-blue-700">
+            <PiInfoBold className="h-5 w-5 shrink-0" />
+            This listing cannot be edited while it has a suggested edit awaiting
+            review. Please review the suggested edit first.
+          </div>
+          <Button asChild>
+            <NextLink href={`/admin/listings/${slug}/edits`}>
+              Review suggested edit
+            </NextLink>
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   return (
