@@ -20,15 +20,15 @@ export const loggerProvider = new LoggerProvider({
   processors:
     isProduction && posthogApiKey
       ? [
-          new BatchLogRecordProcessor(
-            new OTLPLogExporter({
+          new BatchLogRecordProcessor({
+            exporter: new OTLPLogExporter({
               url: `${posthogHost}/i/v1/logs`,
               headers: {
                 Authorization: `Bearer ${posthogApiKey}`,
                 'Content-Type': 'application/json',
               },
             }),
-          ),
+          }),
         ]
       : [],
 })
