@@ -133,50 +133,47 @@ const ListingDialog = ({
         </DialogHeader>
 
         <div className="overflow-y-auto flex-1 pr-2">
-          <div className="flex justify-between">
+          <div className="flex flex-wrap items-center gap-2">
             <CategoryTag
               colorHex={item.category.color}
               iconName={item.category.icon}
             >
               {item.category.label}
             </CategoryTag>
-          </div>
-          <br />
 
-          {item.website && (
-            <div className="flex items-start gap-1">
-              <p className="font-semibold text-gray-700">Website:</p>
+            {item.website && (
               <a
                 href={listingWebsite}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-0.5 text-blue-400 hover:text-blue-500"
+                className="inline-flex items-center gap-1 rounded-full border border-transparent bg-gray-100 px-2 py-0.5 text-xs text-gray-700 transition-colors hover:bg-gray-200 md:gap-1.5 md:px-2.5"
               >
-                <span>{websiteSanitized}</span>
-                <HiExternalLink />
+                <HiExternalLink className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                <span className="max-w-45 truncate md:max-w-70">
+                  {websiteSanitized}
+                </span>
               </a>
-            </div>
-          )}
+            )}
 
-          {item.seekingVolunteers && (
-            <div className="mt-2">
+            {item.seekingVolunteers && (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <p className="text-primary">
-                      Seeking volunteers <HiUserGroup className="inline" />
-                    </p>
+                    <span className="inline-flex cursor-help items-center gap-1 rounded-full border border-transparent bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-700 md:gap-1.5 md:px-3">
+                      <HiUserGroup className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                      Seeking volunteers
+                    </span>
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>
+                  <TooltipContent side="bottom" className="max-w-50">
+                    <p className="text-center text-sm">
                       This group is seeking volunteers or members. Get in touch
                       with them if you'd like to help.
                     </p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-            </div>
-          )}
+            )}
+          </div>
 
           {isMobile && (
             <div className="mt-4 flex justify-between">{socialLinks}</div>

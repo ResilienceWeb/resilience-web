@@ -207,6 +207,10 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
         node.group !== 'central-node' &&
         node.group !== 'related-web'
       ) {
+        // The dialog covers the canvas, so no hover event will fire to reset
+        // the pointer cursor set by handleNodeHover — reset it here.
+        setHoveredNode(null)
+        document.body.style.cursor = 'default'
         setSelectedId(node.id)
         const listingId =
           typeof node.id === 'string'
@@ -343,6 +347,14 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
             `Error attempting to exit full-screen mode: ${err.message} (${err.name})`,
           )
         })
+    }
+  }, [])
+
+  // The hover handler sets the cursor on document.body, which outlives this
+  // component — reset it on unmount (e.g. switching to the List/Map view).
+  useEffect(() => {
+    return () => {
+      document.body.style.cursor = 'default'
     }
   }, [])
 
@@ -642,6 +654,24 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
         }
         // Normal distance for category-to-listing links
         return 50
+      })
+      // Listing-to-listing relation links (dashed) are decorative: keep their
+      // pull weak so they don't drag related listings out of their categories.
+      // Non-dashed links keep d3's default strength (1 / min degree of ends).
+      const degree: Record<string | number, number> = {}
+      graphData.links.forEach((link: any) => {
+        const sourceId = link.source?.id ?? link.source
+        const targetId = link.target?.id ?? link.target
+        degree[sourceId] = (degree[sourceId] || 0) + 1
+        degree[targetId] = (degree[targetId] || 0) + 1
+      })
+      fgRef.current.d3Force('link')?.strength((link: any) => {
+        if (link.dashes) {
+          return 0.05
+        }
+        const sourceId = link.source?.id ?? link.source
+        const targetId = link.target?.id ?? link.target
+        return 1 / Math.min(degree[sourceId] || 1, degree[targetId] || 1)
       })
       // Add radial force to keep categories at consistent distance from center
       const radial = forceRadial(120, 0, 0).strength((node: any) => {

@@ -52,7 +52,7 @@ export default function SharePlacements({
     isAdmin ||
     isFeatureEnabled(FEATURES.shareListings, currentWeb?.features ?? [])
   const [targetWebId, setTargetWebId] = useState<string>('')
-  const [slug, setSlug] = useState<string>(generateSlug(listingTitle))
+  const [slug, setSlug] = useState<string>(() => generateSlug(listingTitle))
   const [categoryId, setCategoryId] = useState<string>('')
   const [categories, setCategories] = useState<
     Array<{ id: number; label: string }>
@@ -69,21 +69,27 @@ export default function SharePlacements({
     return webs.filter((w: any) => !placedWebIds.has(w.id))
   }, [webs, placedWebIds])
 
+  const handleTargetWebChange = (value: string) => {
+    setTargetWebId(value)
+    setCategoryId('')
+    setCategories([])
+  }
+
   useEffect(() => {
-    if (!targetWebId) {
-      setCategories([])
-      setCategoryId('')
-      return
-    }
+    if (!targetWebId) return
     const web = (webs ?? []).find((w: any) => String(w.id) === targetWebId)
     if (!web) return
-    let cancelled = false
-    fetch(`/api/categories?web=${web.slug}`)
+    const controller = new AbortController()
+    fetch(`/api/categories?web=${web.slug}`, { signal: controller.signal })
       .then((r) => r.json())
-      .then((d) => (cancelled ? null : setCategories(d?.data ?? [])))
-      .catch(() => (cancelled ? null : setCategories([])))
+      .then((d) => setCategories(d?.data ?? []))
+      .catch(() => {
+        if (!controller.signal.aborted) {
+          setCategories([])
+        }
+      })
     return () => {
-      cancelled = true
+      controller.abort()
     }
   }, [targetWebId, webs])
 
@@ -200,7 +206,7 @@ export default function SharePlacements({
             Add to another web
           </p>
           <div className="grid gap-2 sm:grid-cols-3">
-            <Select value={targetWebId} onValueChange={setTargetWebId}>
+            <Select value={targetWebId} onValueChange={handleTargetWebChange}>
               <SelectTrigger className="bg-white">
                 <SelectValue placeholder="Pick a web" />
               </SelectTrigger>

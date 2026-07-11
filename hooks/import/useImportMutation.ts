@@ -1,11 +1,4 @@
-/**
- * Hook for importing listings via API
- */
-import type {
-  ImportRequest,
-  ImportSummary,
-  ColumnMapping,
-} from '@/lib/import/types'
+import type { ImportSummary, ColumnMapping } from '@/lib/import/types'
 import { useMutation } from '@tanstack/react-query'
 
 interface ImportData {

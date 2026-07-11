@@ -295,9 +295,13 @@ async function getData({ webSlug }): Promise<DataType> {
       transformedData.nodes.push(transformedNode)
 
       relations.map((relation) => {
+        // Only link to related listings that are part of this web
+        if (relation.placements.length === 0) {
+          return
+        }
         const newEdge = {
-          from: listingId,
-          to: relation.id,
+          from: `listing-${listingId}`,
+          to: `listing-${relation.id}`,
           dashes: true,
           physics: false,
           smooth: {

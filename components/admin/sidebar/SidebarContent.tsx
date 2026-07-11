@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState, useEffect, useCallback } from 'react'
+import { useMemo, useCallback } from 'react'
 import type { ReactElement } from 'react'
 import { BiCategory } from 'react-icons/bi'
 import { GrAnnounce, GrOverview } from 'react-icons/gr'
@@ -19,6 +19,7 @@ import { LuBook, LuUserRoundSearch } from 'react-icons/lu'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useLocalStorage } from 'usehooks-ts'
 import { useSession } from '@auth-client'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import DonateButton from '@components/donate-button'
@@ -140,22 +141,17 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     web?.features ?? [],
   )
 
-  const [advancedCollapsed, setAdvancedCollapsed] = useState(true)
-
-  useEffect(() => {
-    const stored = localStorage.getItem(ADVANCED_COLLAPSED_KEY)
-    if (stored !== null) {
-      setAdvancedCollapsed(stored === 'true')
-    }
-  }, [])
+  // initializeWithValue: false keeps the server render and first client render
+  // in sync (both use the default), then the stored value applies after mount.
+  const [advancedCollapsed, setAdvancedCollapsed] = useLocalStorage(
+    ADVANCED_COLLAPSED_KEY,
+    true,
+    { initializeWithValue: false },
+  )
 
   const toggleAdvanced = useCallback(() => {
-    setAdvancedCollapsed((prev) => {
-      const next = !prev
-      localStorage.setItem(ADVANCED_COLLAPSED_KEY, String(next))
-      return next
-    })
-  }, [])
+    setAdvancedCollapsed((prev) => !prev)
+  }, [setAdvancedCollapsed])
 
   const navGroups = useMemo(() => {
     const groups: NavGroup[] = []

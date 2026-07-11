@@ -28,21 +28,15 @@ export default async function TransitionPage() {
   const queryClient = new QueryClient()
   const data = await getData()
 
-  await queryClient.prefetchQuery({
-    queryKey: ['categories', { webSlug: 'transition' }],
-    queryFn: () => {
-      return data.categories
-    },
-    staleTime: Infinity,
-  })
+  queryClient.setQueryData(
+    ['categories', { webSlug: 'transition' }],
+    data.categories,
+  )
 
-  await queryClient.prefetchQuery({
-    queryKey: ['tags', { webSlug: 'transition', public: true }],
-    queryFn: () => {
-      return data.tags
-    },
-    staleTime: Infinity,
-  })
+  queryClient.setQueryData(
+    ['tags', { webSlug: 'transition', public: true }],
+    data.tags,
+  )
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
