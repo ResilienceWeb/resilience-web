@@ -1,4 +1,4 @@
-import { memo, useMemo, useCallback, useEffect } from 'react'
+import { memo, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   Select,
@@ -31,7 +31,7 @@ const WebSelector = () => {
     isLoading: isLoadingAllowedWebs,
   } = useAllowedWebs()
 
-  const webOptions: WebOption[] = useMemo(() => {
+  const webOptions: WebOption[] = (() => {
     if (!myWebs) return []
 
     return myWebs
@@ -41,12 +41,12 @@ const WebSelector = () => {
         value: s.slug,
         label: s.title,
       }))
-  }, [myWebs])
+  })()
 
   // When an admin is viewing a web they don't have explicit access to, surface
   // it as an extra option at the top so the trigger renders and it's clear
   // they're outside their own webs.
-  const impersonatedOption: WebOption | null = useMemo(() => {
+  const impersonatedOption: WebOption | null = (() => {
     if (!selectedWebSlug || !allowedWebs) return null
     if (webOptions.some((o) => o.value === selectedWebSlug)) return null
 
@@ -54,18 +54,15 @@ const WebSelector = () => {
     if (!web) return null
 
     return { value: web.slug, label: `${web.title} (viewing as admin)` }
-  }, [selectedWebSlug, allowedWebs, webOptions])
+  })()
 
-  const handleWebChange = useCallback(
-    (value: string) => {
-      if (value === BROWSE_ALL_VALUE) {
-        router.push('/admin/manage-webs')
-        return
-      }
-      setSelectedWebSlug(value)
-    },
-    [router, setSelectedWebSlug],
-  )
+  const handleWebChange = (value: string) => {
+    if (value === BROWSE_ALL_VALUE) {
+      router.push('/admin/manage-webs')
+      return
+    }
+    setSelectedWebSlug(value)
+  }
 
   // Default selection + reconcile invalid selections. Admins may keep any slug
   // (they can view any web); non-admins are reset to their first web if the
@@ -96,14 +93,11 @@ const WebSelector = () => {
     isAdmin,
   ])
 
-  const hideWebSelector = useMemo(
-    () =>
-      pathname?.includes('/admin/manage-webs') ||
-      pathname?.includes('/admin/users') ||
-      pathname?.includes('/admin/stats') ||
-      pathname?.includes('/admin/user-settings'),
-    [pathname],
-  )
+  const hideWebSelector =
+    pathname?.includes('/admin/manage-webs') ||
+    pathname?.includes('/admin/users') ||
+    pathname?.includes('/admin/stats') ||
+    pathname?.includes('/admin/user-settings')
 
   // A single web and no admin powers: nothing to switch between.
   if (webOptions.length === 1 && !impersonatedOption && !isAdmin) {

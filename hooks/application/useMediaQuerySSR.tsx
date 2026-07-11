@@ -6,7 +6,7 @@
  *
  * Return Boolean, based on query params
  */
-import { useLayoutEffect, useEffect, useState, useCallback } from 'react'
+import { useLayoutEffect, useEffect, useState } from 'react'
 
 const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -17,9 +17,9 @@ const useMediaQuerySSR = (queryStr) => {
     return window.matchMedia(queryStr).matches
   })
 
-  const updateTarget = useCallback((e) => {
+  const updateTarget = (e) => {
     setTargetW(e.matches)
-  }, [])
+  }
 
   useIsomorphicLayoutEffect(() => {
     const media = window.matchMedia(queryStr)

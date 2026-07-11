@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { useLocalStorage } from 'usehooks-ts'
 import useAllowedWebs from '@hooks/webs/useAllowedWebs'
 import { AppContext } from './AppContext'
@@ -11,20 +10,17 @@ const StoreProvider = ({ children }) => {
 
   const { allowedWebs } = useAllowedWebs()
 
-  const selectedWebId = useMemo(() => {
+  const selectedWebId = (() => {
     if (allowedWebs) {
       return allowedWebs.find((web) => web.slug === selectedWebSlug)?.id
     }
-  }, [selectedWebSlug, allowedWebs])
+  })()
 
-  const value = useMemo(
-    () => ({
-      selectedWebSlug,
-      setSelectedWebSlug,
-      selectedWebId,
-    }),
-    [selectedWebId, selectedWebSlug, setSelectedWebSlug],
-  )
+  const value = {
+    selectedWebSlug,
+    setSelectedWebSlug,
+    selectedWebId,
+  }
 
   return <AppContext value={value}>{children}</AppContext>
 }

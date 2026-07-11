@@ -1,6 +1,5 @@
 'use client'
 
-import { useMemo, useCallback } from 'react'
 import type { ReactElement } from 'react'
 import { BiCategory } from 'react-icons/bi'
 import { GrAnnounce, GrOverview } from 'react-icons/gr'
@@ -149,123 +148,115 @@ export default function SidebarContent({ closeMenu, ...rest }) {
     { initializeWithValue: false },
   )
 
-  const toggleAdvanced = useCallback(() => {
+  const toggleAdvanced = () => {
     setAdvancedCollapsed((prev) => !prev)
-  }, [setAdvancedCollapsed])
+  }
 
-  const navGroups = useMemo(() => {
-    const groups: NavGroup[] = []
+  const groups: NavGroup[] = []
 
-    // Content
-    const contentItems: NavLinkItem[] = []
-    if (selectedWebId) {
-      contentItems.push({
-        label: 'Listings',
-        href: '/admin',
-        icon: <HiViewList />,
-        iconColor: 'text-blue-500',
-        tourId: 'nav-listings',
-      })
-    }
-    if (selectedWebId && canEditWeb) {
-      contentItems.push({
-        label: 'Categories & Tags',
-        href: '/admin/categories',
-        icon: <BiCategory />,
-        iconColor: 'text-violet-500',
-        tourId: 'nav-categories',
-      })
-    }
-    if (contentItems.length > 0) {
-      groups.push({ label: 'Content', items: contentItems })
-    }
-
-    // Web Management
-    const managementItems: NavLinkItem[] = []
-    if (selectedWebId && canEditWeb) {
-      managementItems.push({
-        label: 'Team',
-        href: '/admin/team',
-        icon: <HiUserGroup />,
-        iconColor: 'text-amber-500',
-        tourId: 'nav-team',
-      })
-      if (isAnalyticsEnabled) {
-        managementItems.push({
-          label: 'Analytics',
-          href: '/admin/analytics',
-          icon: <HiChartBar />,
-          iconColor: 'text-emerald-500',
-          tourId: 'nav-analytics',
-        })
-      }
-    }
-    if (isOwner || session?.user.role === 'admin') {
-      managementItems.push({
-        label: 'Web Settings',
-        href: '/admin/web-settings',
-        icon: <HiOutlineCog className="text-xl" />,
-        iconColor: 'text-gray-500',
-        tourId: 'nav-websettings',
-      })
-    }
-    if (managementItems.length > 0) {
-      groups.push({ label: 'Web Management', items: managementItems })
-    }
-
-    // Help & Resources
-    const helpItems: NavLinkItem[] = []
-    if (selectedWebId) {
-      helpItems.push({
-        label: 'Resources',
-        href: '/admin/resources',
-        icon: <GrAnnounce />,
-        iconColor: 'text-rose-500',
-        tourId: 'nav-resources',
-      })
-    }
-    helpItems.push({
-      label: (
-        <span className="flex items-center gap-1">
-          Knowledgebase <HiExternalLink className="text-sm text-gray-400" />
-        </span>
-      ),
-      href: 'https://knowledgebase.resilienceweb.org.uk',
-      icon: <LuBook />,
-      iconColor: 'text-teal-500',
-      external: true,
+  // Content
+  const contentItems: NavLinkItem[] = []
+  if (selectedWebId) {
+    contentItems.push({
+      label: 'Listings',
+      href: '/admin',
+      icon: <HiViewList />,
+      iconColor: 'text-blue-500',
+      tourId: 'nav-listings',
     })
-    groups.push({ label: 'Help & Resources', items: helpItems })
+  }
+  if (selectedWebId && canEditWeb) {
+    contentItems.push({
+      label: 'Categories & Tags',
+      href: '/admin/categories',
+      icon: <BiCategory />,
+      iconColor: 'text-violet-500',
+      tourId: 'nav-categories',
+    })
+  }
+  if (contentItems.length > 0) {
+    groups.push({ label: 'Content', items: contentItems })
+  }
 
-    // Advanced (collapsible)
-    const advancedItems: NavLinkItem[] = []
-    if (selectedWebId && canEditWeb) {
-      advancedItems.push({
-        label: 'Import from CSV',
-        href: '/admin/import',
-        icon: <HiUpload />,
-        iconColor: 'text-sky-500',
-        tourId: 'nav-import',
+  // Web Management
+  const managementItems: NavLinkItem[] = []
+  if (selectedWebId && canEditWeb) {
+    managementItems.push({
+      label: 'Team',
+      href: '/admin/team',
+      icon: <HiUserGroup />,
+      iconColor: 'text-amber-500',
+      tourId: 'nav-team',
+    })
+    if (isAnalyticsEnabled) {
+      managementItems.push({
+        label: 'Analytics',
+        href: '/admin/analytics',
+        icon: <HiChartBar />,
+        iconColor: 'text-emerald-500',
+        tourId: 'nav-analytics',
       })
     }
-    if (advancedItems.length > 0) {
-      groups.push({
-        label: 'Advanced',
-        collapsible: true,
-        items: advancedItems,
-      })
-    }
+  }
+  if (isOwner || session?.user.role === 'admin') {
+    managementItems.push({
+      label: 'Web Settings',
+      href: '/admin/web-settings',
+      icon: <HiOutlineCog className="text-xl" />,
+      iconColor: 'text-gray-500',
+      tourId: 'nav-websettings',
+    })
+  }
+  if (managementItems.length > 0) {
+    groups.push({ label: 'Web Management', items: managementItems })
+  }
 
-    return groups
-  }, [
-    canEditWeb,
-    isAnalyticsEnabled,
-    isOwner,
-    selectedWebId,
-    session?.user.role,
-  ])
+  // Help & Resources
+  const helpItems: NavLinkItem[] = []
+  if (selectedWebId) {
+    helpItems.push({
+      label: 'Resources',
+      href: '/admin/resources',
+      icon: <GrAnnounce />,
+      iconColor: 'text-rose-500',
+      tourId: 'nav-resources',
+    })
+  }
+  helpItems.push({
+    label: (
+      <span className="flex items-center gap-1">
+        Knowledgebase <HiExternalLink className="text-sm text-gray-400" />
+      </span>
+    ),
+    href: 'https://knowledgebase.resilienceweb.org.uk',
+    icon: <LuBook />,
+    iconColor: 'text-teal-500',
+    external: true,
+  })
+  groups.push({ label: 'Help & Resources', items: helpItems })
 
-  const adminNavLinks = useMemo(() => {
+  // Advanced (collapsible)
+  const advancedItems: NavLinkItem[] = []
+  if (selectedWebId && canEditWeb) {
+    advancedItems.push({
+      label: 'Import from CSV',
+      href: '/admin/import',
+      icon: <HiUpload />,
+      iconColor: 'text-sky-500',
+      tourId: 'nav-import',
+    })
+  }
+  if (advancedItems.length > 0) {
+    groups.push({
+      label: 'Advanced',
+      collapsible: true,
+      items: advancedItems,
+    })
+  }
+
+  const navGroups = groups
+
+  const adminNavLinks = (() => {
     if (session?.user.role !== 'admin') return []
     return [
       {
@@ -293,7 +284,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
         iconColor: 'text-rose-500',
       },
     ]
-  }, [session?.user.role])
+  })()
 
   return (
     <div

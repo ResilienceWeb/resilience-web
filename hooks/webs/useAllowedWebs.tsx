@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { useSession } from '@auth-client'
 import useMyWebAccess from '@hooks/web-access/useMyWebAccess'
 import useWebs from '@hooks/webs/useWebs'
@@ -18,23 +17,21 @@ const useAllowedWebs = () => {
 
   const isAdmin = session?.user.role === 'admin'
 
-  const allowedWebIds = useMemo(() => {
-    return accessibleWebs?.map((web) => web.id) ?? []
-  }, [accessibleWebs])
+  const allowedWebIds = accessibleWebs?.map((web) => web.id) ?? []
 
   // Webs the user has explicit WebAccess to. Drives the web selector dropdown
   // for everyone, including admins.
-  const myWebs = useMemo(() => {
+  const myWebs = (() => {
     if (!webs) {
       return null
     }
 
     return webs.filter((web) => allowedWebIds.includes(web.id))
-  }, [webs, allowedWebIds])
+  })()
 
   // Webs the user is permitted to select/view. Admins can access any web; this
   // is used for permission/validation rather than what's shown in the dropdown.
-  const allAllowedWebs = useMemo(() => {
+  const allAllowedWebs = (() => {
     if (!webs) {
       return null
     }
@@ -45,7 +42,7 @@ const useAllowedWebs = () => {
     }
 
     return myWebs
-  }, [webs, myWebs, isAdmin])
+  })()
 
   return {
     allowedWebs: allAllowedWebs,

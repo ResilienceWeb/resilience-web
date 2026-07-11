@@ -1,6 +1,5 @@
 'use client'
 
-import { useMemo } from 'react'
 import CategoriesHeader from '@components/admin/categories/header'
 import CategoriesList from '@components/admin/categories/list'
 import TagsHeader from '@components/admin/tags/header'
@@ -14,9 +13,9 @@ export default function CategoriesPage() {
   const { tags, isPending: isTagsPending } = useTags()
   const { categories, isPending: isCategoriesPending } = useCategories()
 
-  const orderedCategories = useMemo(() => {
-    return categories?.sort((a, b) => a.label.localeCompare(b.label))
-  }, [categories])
+  const orderedCategories = categories?.sort((a, b) =>
+    a.label.localeCompare(b.label),
+  )
 
   if (isCategoriesPending) {
     return <Spinner />

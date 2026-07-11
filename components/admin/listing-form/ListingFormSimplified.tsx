@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useEffect, useMemo } from 'react'
+import { memo, useEffect } from 'react'
 import { useForm, useFormContext, useWatch } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
@@ -23,16 +23,16 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import {
+  MultiSelect,
+  type MultiSelectOption,
+} from '@components/ui/multi-select'
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select'
-import {
-  MultiSelect,
-  type MultiSelectOption,
-} from '@components/ui/multi-select'
 import { Separator } from '@components/ui/separator'
 import useTags from '@hooks/tags/useTags'
 import Actions from './Actions'
@@ -179,14 +179,14 @@ const ListingFormSimplified = ({
     name: 'noPhysicalLocation',
   })
 
-  const tagOptions: MultiSelectOption[] = useMemo(() => {
+  const tagOptions: MultiSelectOption[] = (() => {
     if (!tags) return []
 
     return tags.map((t) => ({
       value: t.id,
       label: t.label,
     }))
-  }, [tags])
+  })()
 
   const handleSubmitForm = (data: any) => {
     if (!data.noPhysicalLocation && data.location) {

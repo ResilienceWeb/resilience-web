@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo, memo } from 'react'
+import { useState, memo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
@@ -21,7 +21,7 @@ const EditableList = ({ deleteListing, items }) => {
   )
   const [itemToDelete, setItemToDelete] = useState<any>(null)
 
-  const filteredItems = useMemo(() => {
+  const filteredItems = (() => {
     if (!items) return []
 
     let results = items.filter((item) =>
@@ -40,34 +40,31 @@ const EditableList = ({ deleteListing, items }) => {
       .sort((a, b) => a.title.localeCompare(b.title))
       .sort((a, b) => b.pending - a.pending)
       .sort((a, b) => b.edits.length - a.edits.length)
-  }, [items, searchTerm, categoriesParam])
+  })()
 
-  const goToCreateListing = useCallback(() => {
+  const goToCreateListing = () => {
     if (tour.isActive) {
       tour.moveNext()
     }
     router.push('/admin/new-listing')
-  }, [router])
+  }
 
-  const openRemoveDialog = useCallback(
-    (slug) => {
-      const target = items?.find((i: any) => i.slug === slug) ?? { slug }
-      setItemToDelete(target)
-    },
-    [items],
-  )
-  const closeRemoveDialog = useCallback(() => {
+  const openRemoveDialog = (slug) => {
+    const target = items?.find((i: any) => i.slug === slug) ?? { slug }
+    setItemToDelete(target)
+  }
+  const closeRemoveDialog = () => {
     setItemToDelete(null)
-  }, [])
+  }
 
-  const handleRemove = useCallback(() => {
+  const handleRemove = () => {
     if (!itemToDelete) return
     deleteListing({
       slug: itemToDelete.slug,
       webId: selectedWebId,
     })
     closeRemoveDialog()
-  }, [closeRemoveDialog, deleteListing, itemToDelete, selectedWebId])
+  }
 
   const isShared = (itemToDelete?.sharedWith?.length ?? 0) > 0
   const otherWebTitles: string[] = (itemToDelete?.sharedWith ?? []).map(
@@ -81,16 +78,13 @@ const EditableList = ({ deleteListing, items }) => {
     : "Are you sure you want to delete this listing? It can't be recovered once deleted."
   const dialogButtonLabel = isShared ? 'Yes, remove' : 'Yes, delete'
 
-  const handleSearchTermChange = useCallback((event) => {
+  const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value)
-  }, [])
+  }
 
-  const handleSelectedCategoriesChange = useCallback(
-    (value) => {
-      setCategoriesParam(value.map((c) => c.value))
-    },
-    [setCategoriesParam],
-  )
+  const handleSelectedCategoriesChange = (value) => {
+    setCategoriesParam(value.map((c) => c.value))
+  }
 
   if (!filteredItems) {
     return null

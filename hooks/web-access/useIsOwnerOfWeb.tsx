@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from '@auth-client'
 import { useAppContext } from '@store/hooks'
@@ -41,10 +40,10 @@ export default function useIsOwnerOfWeb(webSlug?: string, webId?: number) {
     refetchOnWindowFocus: false,
   })
 
-  const hasOwnerAccess = useMemo(() => {
+  const hasOwnerAccess = (() => {
     if (session?.user?.role === 'admin') return true
     return isOwner || false
-  }, [isOwner, session?.user?.role])
+  })()
 
   return {
     isOwner: hasOwnerAccess,

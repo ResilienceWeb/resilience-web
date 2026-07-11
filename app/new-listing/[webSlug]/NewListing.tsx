@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { PiInfoBold } from 'react-icons/pi'
 import Link from 'next/link'
 import { useSession } from '@auth-client'
@@ -22,23 +22,20 @@ export default function NewListing({ webSlug }: { webSlug: string }) {
   const { mutate: createListing } = useCreateListing()
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const handleSubmit = useCallback(
-    (data) => {
-      data.webId = web?.id
-      data.pending = true
-      data.inactive = false
-      data.relations = []
-      data.proposerId = session?.user.id
-      createListing(data)
-      setTimeout(() => {
-        setIsSubmitted(true)
-        if (window) {
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        }
-      }, 1000)
-    },
-    [createListing, web?.id, session?.user.id],
-  )
+  const handleSubmit = (data) => {
+    data.webId = web?.id
+    data.pending = true
+    data.inactive = false
+    data.relations = []
+    data.proposerId = session?.user.id
+    createListing(data)
+    setTimeout(() => {
+      setIsSubmitted(true)
+      if (window) {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    }, 1000)
+  }
 
   if (isCategoriesLoading) {
     return (

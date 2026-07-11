@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, memo } from 'react'
+import { memo } from 'react'
 import Link from 'next/link'
 import { Clock, MapPin, Timer, Globe } from 'lucide-react'
 import Footer from '@components/footer'
@@ -97,7 +97,7 @@ type Props = {
 }
 
 const Events = ({ items, webSlug }: Props) => {
-  const groups = useMemo(() => {
+  const groups = (() => {
     if (!items || items.length === 0)
       return [] as { key: string; date: Date; events: EventItem[] }[]
 
@@ -118,7 +118,7 @@ const Events = ({ items, webSlug }: Props) => {
     return Array.from(map.entries())
       .sort((a, b) => a[1].date.getTime() - b[1].date.getTime())
       .map(([key, value]) => ({ key, date: value.date, events: value.events }))
-  }, [items])
+  })()
 
   return (
     <>
@@ -206,7 +206,6 @@ const Events = ({ items, webSlug }: Props) => {
             </ul>
           </div>
         ))}
-
       </div>
       <Footer hideBorder />
     </>

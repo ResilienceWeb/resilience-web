@@ -1,6 +1,5 @@
 'use client'
 
-import { useCallback } from 'react'
 import { BsPersonCircle } from 'react-icons/bs'
 import { FiChevronDown } from 'react-icons/fi'
 import { RxHamburgerMenu } from 'react-icons/rx'
@@ -31,7 +30,7 @@ const Nav = ({ onOpen }) => {
   const { selectedWebSlug } = useAppContext()
   const { web } = useWeb({ webSlug: selectedWebSlug })
 
-  const handleSignOut = useCallback(async () => {
+  const handleSignOut = async () => {
     await signOut({
       fetchOptions: {
         onSuccess: () => {
@@ -41,7 +40,7 @@ const Nav = ({ onOpen }) => {
         },
       },
     })
-  }, [router])
+  }
 
   return (
     <div className="max-w-[100vw] flex-1 border-b border-gray-200 bg-[#fafafa] px-4">
@@ -60,7 +59,10 @@ const Nav = ({ onOpen }) => {
           </div>
 
           <div className="flex items-center gap-2">
-            <GetInTouchButton userEmail={session?.user?.email} webName={web?.title} />
+            <GetInTouchButton
+              userEmail={session?.user?.email}
+              webName={web?.title}
+            />
             <NotificationsFeed />
 
             <DropdownMenu>

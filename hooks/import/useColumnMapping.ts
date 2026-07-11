@@ -1,7 +1,7 @@
 /**
  * Hook for managing column mapping state and validation
  */
-import { useState, useCallback, useMemo } from 'react'
+import { useState } from 'react'
 import {
   applyAutoMapping,
   isMappingValid,
@@ -46,31 +46,22 @@ export function useColumnMapping({
     setColumnMapping(applyAutoMapping(headers))
   }
 
-  const updateMapping = useCallback(
-    (csvColumn: string, field: ListingField | null) => {
-      setColumnMapping((prev) => ({
-        ...prev,
-        [csvColumn]: field,
-      }))
-    },
-    [],
-  )
+  const updateMapping = (csvColumn: string, field: ListingField | null) => {
+    setColumnMapping((prev) => ({
+      ...prev,
+      [csvColumn]: field,
+    }))
+  }
 
-  const resetMapping = useCallback(() => {
+  const resetMapping = () => {
     setColumnMapping(applyAutoMapping(headers))
-  }, [headers])
+  }
 
-  const isValid = useMemo(() => isMappingValid(columnMapping), [columnMapping])
+  const isValid = isMappingValid(columnMapping)
 
-  const unmappedRequiredFields = useMemo(
-    () => getUnmappedRequiredFields(columnMapping),
-    [columnMapping],
-  )
+  const unmappedRequiredFields = getUnmappedRequiredFields(columnMapping)
 
-  const mappedRows = useMemo(
-    () => mapRows(rows, columnMapping),
-    [rows, columnMapping],
-  )
+  const mappedRows = mapRows(rows, columnMapping)
 
   return {
     columnMapping,

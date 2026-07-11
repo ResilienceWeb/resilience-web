@@ -1,12 +1,11 @@
 'use client'
 
-import { useCallback, useMemo, use, useState } from 'react'
+import { use, useState } from 'react'
 import { HiArrowLeft } from 'react-icons/hi'
 import { HiOutlineClipboard, HiOutlineClipboardCheck } from 'react-icons/hi'
-import { ExternalLink } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import type { WebAccess } from '@prisma-client'
-import { useAppContext } from '@store/hooks'
+import { ExternalLink } from 'lucide-react'
 import { getWebUrl, REMOTE_HOSTNAME } from '@helpers/config'
 import AnalyticsSummary from '@components/admin/analytics-summary/AnalyticsSummary'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
@@ -26,6 +25,7 @@ import useDeleteWeb from '@hooks/webs/useDeleteWeb'
 import usePublishWeb from '@hooks/webs/usePublishWeb'
 import useUnpublishWeb from '@hooks/webs/useUnpublishWeb'
 import useWeb from '@hooks/webs/useWeb'
+import { useAppContext } from '@store/hooks'
 
 export default function WebDashboardPage({ params }) {
   // @ts-ignore
@@ -44,16 +44,16 @@ export default function WebDashboardPage({ params }) {
   const [copied, setCopied] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
-  const goBack = useCallback(() => {
+  const goBack = () => {
     router.back()
-  }, [router])
+  }
 
-  const handleOpenAdminView = useCallback(() => {
+  const handleOpenAdminView = () => {
     setSelectedWebSlug(webSlug)
     router.push('/admin')
-  }, [setSelectedWebSlug, webSlug, router])
+  }
 
-  const mailToEmails = useMemo(() => {
+  const mailToEmails = (() => {
     if (!web || !web.webAccess) {
       return []
     }
@@ -63,9 +63,9 @@ export default function WebDashboardPage({ params }) {
       .filter(Boolean)
 
     return emails.join(',')
-  }, [web])
+  })()
 
-  const listingEmails = useMemo(() => {
+  const listingEmails = (() => {
     if (!web || !web.listings) {
       return []
     }
@@ -78,9 +78,9 @@ export default function WebDashboardPage({ params }) {
       .sort() // Sort alphabetically
 
     return emails
-  }, [web])
+  })()
 
-  const listingStats = useMemo(() => {
+  const listingStats = (() => {
     if (!web || !web.listings || web.listings.length === 0) {
       return null
     }
@@ -98,9 +98,9 @@ export default function WebDashboardPage({ params }) {
       withImagesPercent: Math.round((withImages / totalListings) * 100),
       withLocationPercent: Math.round((withLocation / totalListings) * 100),
     }
-  }, [web])
+  })()
 
-  const handleCopyEmails = useCallback(() => {
+  const handleCopyEmails = () => {
     const emailsText = listingEmails.join(';')
     navigator.clipboard
       .writeText(emailsText)
@@ -113,16 +113,16 @@ export default function WebDashboardPage({ params }) {
         console.error('Failed to copy emails:', error)
         return false
       })
-  }, [listingEmails])
+  }
 
-  const handleDeleteWeb = useCallback(() => {
+  const handleDeleteWeb = () => {
     deleteWeb(undefined, {
       onSuccess: () => {
         router.push('/admin/webs')
       },
     })
     setIsDeleteDialogOpen(false)
-  }, [deleteWeb, router])
+  }
 
   if (isLoadingWeb) {
     return <Spinner />

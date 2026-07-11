@@ -1,9 +1,9 @@
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import { HiOutlineSearch, HiPlus } from 'react-icons/hi'
 import { icons } from '@helpers/icons'
-import { MultiSelect } from '@components/ui/multi-select'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
+import { MultiSelect } from '@components/ui/multi-select'
 import useCategories from '@hooks/categories/useCategories'
 import useCanEditWeb from '@hooks/web-access/useCanEditWeb'
 
@@ -18,7 +18,7 @@ const TableActions = ({
 
   const { categories: fetchedCategories } = useCategories()
 
-  const categories = useMemo(() => {
+  const categories = (() => {
     if (!fetchedCategories) return []
 
     return fetchedCategories.map((c) => {
@@ -35,14 +35,10 @@ const TableActions = ({
         icon: IconComponent ? <IconComponent style={{ color }} /> : undefined,
       }
     })
-  }, [fetchedCategories])
+  })()
 
-  const selectedCategories = useMemo(
-    () =>
-      categories.filter((category) =>
-        selectedCategoryLabels?.includes(category.value),
-      ),
-    [categories, selectedCategoryLabels],
+  const selectedCategories = categories.filter((category) =>
+    selectedCategoryLabels?.includes(category.value),
   )
 
   return (

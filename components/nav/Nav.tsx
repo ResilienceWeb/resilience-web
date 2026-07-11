@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, memo, useState } from 'react'
+import { memo, useState } from 'react'
 import { HiChevronRight, HiOutlineX } from 'react-icons/hi'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import Image from 'next/image'
@@ -33,44 +33,40 @@ export default function MainNav({ webs }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
 
-  const navItems = useMemo(() => {
-    return [
-      {
-        label: 'Webs',
-        href: '/#web-cards',
-        children: webs
-          ?.filter(
-            (web) => web.slug !== 'ctrlshift' && web.slug !== 'transition',
-          )
-          .map((web) => ({
-            label: web.title,
-            href: getWebUrl(web.slug),
-          }))
-          .concat({
-            label: 'Create your own web',
-            href: '/auth/signup',
-          }),
-      },
-      {
-        label: 'About',
-        href: `${REMOTE_URL}/about`,
-      },
-      {
-        label: 'News',
-        href: `${REMOTE_URL}/news`,
-      },
-      {
-        label: 'Knowledgebase',
-        href: 'https://knowledgebase.resilienceweb.org.uk',
-        isExternal: true,
-      },
-      {
-        label: 'Donate',
-        href: 'https://opencollective.com/resilience-web',
-        isExternal: true,
-      },
-    ]
-  }, [webs])
+  const navItems = [
+    {
+      label: 'Webs',
+      href: '/#web-cards',
+      children: webs
+        ?.filter((web) => web.slug !== 'ctrlshift' && web.slug !== 'transition')
+        .map((web) => ({
+          label: web.title,
+          href: getWebUrl(web.slug),
+        }))
+        .concat({
+          label: 'Create your own web',
+          href: '/auth/signup',
+        }),
+    },
+    {
+      label: 'About',
+      href: `${REMOTE_URL}/about`,
+    },
+    {
+      label: 'News',
+      href: `${REMOTE_URL}/news`,
+    },
+    {
+      label: 'Knowledgebase',
+      href: 'https://knowledgebase.resilienceweb.org.uk',
+      isExternal: true,
+    },
+    {
+      label: 'Donate',
+      href: 'https://opencollective.com/resilience-web',
+      isExternal: true,
+    },
+  ]
 
   return (
     <>

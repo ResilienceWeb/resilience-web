@@ -1,6 +1,7 @@
 import eslint from '@eslint/js'
 import tanstackQueryPlugin from '@tanstack/eslint-plugin-query'
 import eslintReact from '@eslint-react/eslint-plugin'
+import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import promisePlugin from 'eslint-plugin-promise'
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
 import globals from 'globals'
@@ -15,6 +16,7 @@ export default tseslint.config([
     plugins: {
       '@next/next': nextPlugin,
       'jsx-a11y': jsxA11yPlugin,
+      'react-hooks': reactHooksPlugin,
     },
     settings: {
       react: {
@@ -62,6 +64,8 @@ export default tseslint.config([
       ],
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs['core-web-vitals'].rules,
+      // Canonical hooks + React Compiler rules from the React team
+      ...reactHooksPlugin.configs.recommended.rules,
     }
   },
   {
@@ -110,6 +114,17 @@ export default tseslint.config([
       "@eslint-react/unsupported-syntax": 0,
       "@eslint-react/dom-no-dangerously-set-innerhtml": 0,
       "@eslint-react/no-array-index-key": 0,
+      // Hooks/compiler checks are owned by eslint-plugin-react-hooks (the
+      // React team's canonical implementations), so disable @eslint-react's
+      // ports of the same rules to avoid double-reporting.
+      "@eslint-react/rules-of-hooks": 0,
+      "@eslint-react/exhaustive-deps": 0,
+      "@eslint-react/purity": 0,
+      "@eslint-react/set-state-in-effect": 0,
+      "@eslint-react/set-state-in-render": 0,
+      "@eslint-react/static-components": 0,
+      "@eslint-react/use-memo": 0,
+      "@eslint-react/error-boundaries": 0,
     }
   },
   {
