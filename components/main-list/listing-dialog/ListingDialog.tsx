@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useCallback, useMemo } from 'react'
+import { memo } from 'react'
 import { HiUserGroup, HiOutlineLink, HiExternalLink } from 'react-icons/hi'
 import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
@@ -44,24 +44,21 @@ const ListingDialog = ({
 }: DialogProps) => {
   const { subdomain } = useParams<{ subdomain: string }>()
 
-  const websiteSanitized = useMemo(
-    () => sanitizeLink(item.website),
-    [item.website],
-  )
+  const websiteSanitized = sanitizeLink(item.website)
 
-  const showCopiedToClipboardToast = useCallback(() => {
+  const showCopiedToClipboardToast = () => {
     toast.info('Copied to clipboard', {
       description:
         'The link to this listing is copied to your clipboard and ready to be shared.',
       duration: 4000,
     })
-  }, [])
+  }
 
   const individualListingLink = `${getWebUrl(subdomain)}/${item.slug}`
-  const handleShareButtonClick = useCallback(() => {
+  const handleShareButtonClick = () => {
     void navigator.clipboard.writeText(individualListingLink)
     showCopiedToClipboardToast()
-  }, [showCopiedToClipboardToast, individualListingLink])
+  }
 
   const socialLinks = (
     <div className="mt-2 flex items-center gap-2">
@@ -92,7 +89,7 @@ const ListingDialog = ({
     </div>
   )
 
-  const listingWebsite = useMemo(() => {
+  const listingWebsite = (() => {
     if (!item?.website) {
       return null
     }
@@ -102,7 +99,7 @@ const ListingDialog = ({
     }
 
     return `//${item.website}`
-  }, [item.website])
+  })()
 
   const searchParams = useSearchParams()
   const webSearchParam = searchParams.get('web')

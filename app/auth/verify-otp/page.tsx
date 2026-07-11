@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useSearchParams, useRouter } from 'next/navigation'
 import * as Sentry from '@sentry/nextjs'
-import posthog from 'posthog-js'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
+import posthog from 'posthog-js'
 import { authClient, ERROR_MESSAGES } from '@auth-client'
 import type { AUTH_ERROR_CODE } from '@auth-client'
 import { Button } from '@components/ui/button'
@@ -19,12 +19,12 @@ export default function VerifyOTP() {
   const redirectTo = searchParams.get('redirectTo')
 
   const [otp, setOtp] = useState('')
-  const email = useMemo(() => {
+  const email = (() => {
     if (typeof window !== 'undefined') {
       return sessionStorage.getItem('otp-email') || ''
     }
     return ''
-  }, [])
+  })()
   const [error, setError] = useState('')
   const [isVerifying, setIsVerifying] = useState(false)
   const [isResending, setIsResending] = useState(false)
@@ -84,7 +84,9 @@ export default function VerifyOTP() {
         sessionStorage.removeItem('otp-name')
         if (updateError) {
           Sentry.captureException(
-            new Error(updateError.message ?? 'Failed to set user name on signup'),
+            new Error(
+              updateError.message ?? 'Failed to set user name on signup',
+            ),
             {
               extra: {
                 email,
@@ -97,7 +99,8 @@ export default function VerifyOTP() {
       }
 
       // If the user opted in during signup, subscribe them to the newsletter
-      const wantsNewsletter = sessionStorage.getItem('otp-newsletter') === 'true'
+      const wantsNewsletter =
+        sessionStorage.getItem('otp-newsletter') === 'true'
       if (wantsNewsletter) {
         try {
           await fetch('/api/users/newsletter-subscribe', { method: 'POST' })

@@ -1,4 +1,4 @@
-import { memo, useState, useCallback, useEffect, useMemo, useRef } from 'react'
+import { memo, useState, useEffect, useRef } from 'react'
 import ForceGraph2D, { type ForceGraphMethods } from 'react-force-graph-2d'
 import { BsArrowsFullscreen } from 'react-icons/bs'
 import Head from 'next/head'
@@ -139,7 +139,7 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
   const isOpen = Boolean(selectedId)
 
   // Transform vis-network data format to react-force-graph format
-  const graphData: GraphData = useMemo(() => {
+  const graphData: GraphData = (() => {
     if (!data) return { nodes: [], links: [] }
 
     // Transform nodes with appropriate sizing based on group
@@ -183,48 +183,45 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
       }))
 
     return { nodes, links }
-  }, [data])
+  })()
 
-  const handleNodeClick = useCallback(
-    (node: NodeType) => {
-      // Guard against the same node being handled twice in quick succession
-      // (e.g. our touch handler firing alongside the library's onNodeClick).
-      const now = Date.now()
-      if (
-        lastHandledRef.current &&
-        lastHandledRef.current.id === node.id &&
-        now - lastHandledRef.current.time < 500
-      ) {
-        return
+  const handleNodeClick = (node: NodeType) => {
+    // Guard against the same node being handled twice in quick succession
+    // (e.g. our touch handler firing alongside the library's onNodeClick).
+    const now = Date.now()
+    if (
+      lastHandledRef.current &&
+      lastHandledRef.current.id === node.id &&
+      now - lastHandledRef.current.time < 500
+    ) {
+      return
+    }
+    lastHandledRef.current = { id: node.id, time: now }
+
+    if (typeof node.id === 'string' && node.id.includes('related-web')) {
+      const webSlug = node.id.match(/related-web-(.*)/)?.[1] || ''
+      router.push(getWebUrl(webSlug))
+    } else if (
+      node.group !== 'category' &&
+      node.group !== 'central-node' &&
+      node.group !== 'related-web'
+    ) {
+      // The dialog covers the canvas, so no hover event will fire to reset
+      // the pointer cursor set by handleNodeHover — reset it here.
+      setHoveredNode(null)
+      document.body.style.cursor = 'default'
+      setSelectedId(node.id)
+      const listingId =
+        typeof node.id === 'string'
+          ? Number(node.id.replace('listing-', ''))
+          : node.id
+      if (!Number.isNaN(listingId) && webId) {
+        trackListingEvent(listingId, webId, 'view')
       }
-      lastHandledRef.current = { id: node.id, time: now }
+    }
+  }
 
-      if (typeof node.id === 'string' && node.id.includes('related-web')) {
-        const webSlug = node.id.match(/related-web-(.*)/)?.[1] || ''
-        router.push(getWebUrl(webSlug))
-      } else if (
-        node.group !== 'category' &&
-        node.group !== 'central-node' &&
-        node.group !== 'related-web'
-      ) {
-        // The dialog covers the canvas, so no hover event will fire to reset
-        // the pointer cursor set by handleNodeHover — reset it here.
-        setHoveredNode(null)
-        document.body.style.cursor = 'default'
-        setSelectedId(node.id)
-        const listingId =
-          typeof node.id === 'string'
-            ? Number(node.id.replace('listing-', ''))
-            : node.id
-        if (!Number.isNaN(listingId) && webId) {
-          trackListingEvent(listingId, webId, 'view')
-        }
-      }
-    },
-    [router, setSelectedId, webId],
-  )
-
-  const handleNodeHover = useCallback((node: NodeType | null) => {
+  const handleNodeHover = (node: NodeType | null) => {
     if (node && (node.group === 'category' || node.group === 'central-node')) {
       setHoveredNode(null)
       document.body.style.cursor = 'default'
@@ -233,37 +230,34 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
       setHoveredNode(node)
       document.body.style.cursor = node ? 'pointer' : 'default'
     }
-  }, [])
+  }
 
   // Track drag start position for tap detection on mobile
-  const handleNodeDrag = useCallback((node: NodeType) => {
+  const handleNodeDrag = (node: NodeType) => {
     // Record position on first drag event
     if (!dragStartPosRef.current) {
       dragStartPosRef.current = { x: node.x || 0, y: node.y || 0 }
     }
-  }, [])
+  }
 
   // Detect taps on mobile (minimal movement during drag)
-  const handleNodeDragEnd = useCallback(
-    (node: NodeType) => {
-      if (dragStartPosRef.current) {
-        const dx = (node.x || 0) - dragStartPosRef.current.x
-        const dy = (node.y || 0) - dragStartPosRef.current.y
-        const distance = Math.sqrt(dx * dx + dy * dy)
-        // If node moved less than 5 units, treat as a tap
-        if (distance < 5) {
-          handleNodeClick(node)
-        }
-        dragStartPosRef.current = null
+  const handleNodeDragEnd = (node: NodeType) => {
+    if (dragStartPosRef.current) {
+      const dx = (node.x || 0) - dragStartPosRef.current.x
+      const dy = (node.y || 0) - dragStartPosRef.current.y
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      // If node moved less than 5 units, treat as a tap
+      if (distance < 5) {
+        handleNodeClick(node)
       }
-    },
-    [handleNodeClick],
-  )
+      dragStartPosRef.current = null
+    }
+  }
 
   // On touch devices the library's onNodeClick is unreliable: a single-finger
   // touch is often interpreted as a pan, which suppresses the click. We detect
   // taps ourselves and hit-test the tapped node against the graph coordinates.
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+  const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length !== 1) {
       touchStartRef.current = null
       return
@@ -274,61 +268,55 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
       y: touch.clientY,
       time: Date.now(),
     }
-  }, [])
+  }
 
-  const handleTouchEnd = useCallback(
-    (e: React.TouchEvent) => {
-      const start = touchStartRef.current
-      touchStartRef.current = null
-      if (!start || !fgRef.current || !graphRef.current) return
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStartRef.current
+    touchStartRef.current = null
+    if (!start || !fgRef.current || !graphRef.current) return
 
-      const touch = e.changedTouches[0]
-      if (!touch) return
+    const touch = e.changedTouches[0]
+    if (!touch) return
 
-      // Ignore pans (moved too far) and long presses.
-      const movedX = touch.clientX - start.x
-      const movedY = touch.clientY - start.y
-      const moved = Math.sqrt(movedX * movedX + movedY * movedY)
-      if (moved > 10 || Date.now() - start.time > 500) return
+    // Ignore pans (moved too far) and long presses.
+    const movedX = touch.clientX - start.x
+    const movedY = touch.clientY - start.y
+    const moved = Math.sqrt(movedX * movedX + movedY * movedY)
+    if (moved > 10 || Date.now() - start.time > 500) return
 
-      const rect = graphRef.current.getBoundingClientRect()
-      const { x, y } = fgRef.current.screen2GraphCoords(
-        touch.clientX - rect.left,
-        touch.clientY - rect.top,
-      )
+    const rect = graphRef.current.getBoundingClientRect()
+    const { x, y } = fgRef.current.screen2GraphCoords(
+      touch.clientX - rect.left,
+      touch.clientY - rect.top,
+    )
 
-      // Find the closest node whose visual radius contains the tap. This mirrors
-      // the radius used in nodePointerAreaPaint (Math.sqrt(val) * 2).
-      let closest: NodeType | null = null
-      let closestDist = Infinity
-      for (const node of graphData.nodes) {
-        const nx = node.x ?? 0
-        const ny = node.y ?? 0
-        const radius = Math.sqrt(node.val || 8) * 2
-        const dist = Math.sqrt((nx - x) ** 2 + (ny - y) ** 2)
-        if (dist <= radius && dist < closestDist) {
-          closest = node
-          closestDist = dist
-        }
+    // Find the closest node whose visual radius contains the tap. This mirrors
+    // the radius used in nodePointerAreaPaint (Math.sqrt(val) * 2).
+    let closest: NodeType | null = null
+    let closestDist = Infinity
+    for (const node of graphData.nodes) {
+      const nx = node.x ?? 0
+      const ny = node.y ?? 0
+      const radius = Math.sqrt(node.val || 8) * 2
+      const dist = Math.sqrt((nx - x) ** 2 + (ny - y) ** 2)
+      if (dist <= radius && dist < closestDist) {
+        closest = node
+        closestDist = dist
       }
+    }
 
-      if (closest) {
-        handleNodeClick(closest)
-      }
-    },
-    [graphData, handleNodeClick],
-  )
+    if (closest) {
+      handleNodeClick(closest)
+    }
+  }
 
-  const selectedItem = useMemo(
-    () => data?.nodes.find((node) => node.id === selectedId),
-    [data?.nodes, selectedId],
-  )
+  const selectedItem = data?.nodes.find((node) => node.id === selectedId)
 
-  const onCloseDialog = useCallback(() => {
+  const onCloseDialog = () => {
     setSelectedId(null)
-  }, [setSelectedId])
+  }
 
-  const toggleFullScreen = useCallback(() => {
+  const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
       graphRef.current
         ?.requestFullscreen()
@@ -348,7 +336,7 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
           )
         })
     }
-  }, [])
+  }
 
   // The hover handler sets the cursor on document.body, which outlives this
   // component — reset it on unmount (e.g. switching to the List/Map view).
@@ -378,263 +366,261 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
     img.src = '/logo-circle.png'
   }, [])
 
-  const nodeCanvasObject = useCallback(
-    (node: NodeType, ctx: CanvasRenderingContext2D, globalScale: number) => {
-      const label = node.label
-      const fontSize = 3.5
+  const nodeCanvasObject = (
+    node: NodeType,
+    ctx: CanvasRenderingContext2D,
+    globalScale: number,
+  ) => {
+    const label = node.label
+    const fontSize = 3.5
 
-      if (node.group === 'central-node') {
-        const { w, h, label: displayLabel } = getCentralNodeSize(node, ctx)
-        const x = (node.x || 0) - w / 2
-        const y = (node.y || 0) - h / 2
+    if (node.group === 'central-node') {
+      const { w, h, label: displayLabel } = getCentralNodeSize(node, ctx)
+      const x = (node.x || 0) - w / 2
+      const y = (node.y || 0) - h / 2
 
-        ctx.save()
+      ctx.save()
 
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.14)'
-        ctx.shadowBlur = 8
-        ctx.shadowOffsetY = 2
-        ctx.shadowOffsetX = 0
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.14)'
+      ctx.shadowBlur = 8
+      ctx.shadowOffsetY = 2
+      ctx.shadowOffsetX = 0
 
-        roundRect(ctx, x, y, w, h, CENTRAL_RADIUS)
-        ctx.fillStyle = '#93c5e9'
-        ctx.fill()
-
-        ctx.shadowColor = 'transparent'
-        ctx.shadowBlur = 0
-        ctx.shadowOffsetY = 0
-        ctx.shadowOffsetX = 0
-
-        ctx.strokeStyle =
-          hoveredNode?.id === node.id ? '#1e3a5f' : 'rgba(0, 0, 0, 0.08)'
-        ctx.lineWidth = hoveredNode?.id === node.id ? 2 / globalScale : 1
-        roundRect(ctx, x, y, w, h, CENTRAL_RADIUS)
-        ctx.stroke()
-
-        ctx.font = CENTRAL_LABEL_FONT
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
-        ctx.fillStyle = '#2c3e50'
-        ctx.fillText(displayLabel, node.x || 0, node.y || 0)
-
-        ctx.restore()
-        return
-      }
-
-      if (node.group === 'related-web') {
-        const cx = node.x || 0
-        const cy = node.y || 0
-        const r = RELATED_WEB_RADIUS
-
-        ctx.save()
-
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.12)'
-        ctx.shadowBlur = 4
-        ctx.shadowOffsetY = 1
-        ctx.shadowOffsetX = 0
-
-        ctx.beginPath()
-        ctx.arc(cx, cy, r, 0, 2 * Math.PI)
-        ctx.fillStyle = '#ffffff'
-        ctx.fill()
-
-        ctx.shadowColor = 'transparent'
-        ctx.shadowBlur = 0
-        ctx.shadowOffsetY = 0
-        ctx.shadowOffsetX = 0
-
-        ctx.strokeStyle =
-          hoveredNode?.id === node.id ? '#1e3a5f' : 'rgba(0, 0, 0, 0.12)'
-        ctx.lineWidth = hoveredNode?.id === node.id ? 2 / globalScale : 1
-        ctx.stroke()
-
-        const img = logoImageRef.current
-        if (img?.complete && img.naturalWidth) {
-          const inset = 2
-          const iconR = r - inset
-          ctx.save()
-          ctx.beginPath()
-          ctx.arc(cx, cy, iconR, 0, 2 * Math.PI)
-          ctx.clip()
-          ctx.drawImage(
-            img,
-            0,
-            0,
-            img.naturalWidth,
-            img.naturalHeight,
-            cx - iconR,
-            cy - iconR,
-            iconR * 2,
-            iconR * 2,
-          )
-          ctx.restore()
-        }
-
-        const labelLines = wrapLabel(ctx, label, 50, '7px Inter, sans-serif')
-        const lineHeight = 10
-        const labelTop = cy + r + 4
-        ctx.font = '7px Inter, sans-serif'
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'top'
-        ctx.fillStyle = '#333'
-        labelLines.forEach((line, i) => {
-          ctx.fillText(line, cx, labelTop + i * lineHeight)
-        })
-
-        ctx.restore()
-        return
-      }
-
-      // Calculate node radius based on val
-      const nodeRadius = Math.sqrt(node.val || 8) * 2
-
-      // Draw node circle
-      ctx.beginPath()
-      ctx.arc(node.x || 0, node.y || 0, nodeRadius, 0, 2 * Math.PI, false)
-
-      // Fill color based on group or category
-      if (node.group === 'category') {
-        ctx.fillStyle = '#ffffff'
-        ctx.strokeStyle = '#c3c4c7'
-        ctx.lineWidth = 2 / globalScale
-      } else {
-        ctx.fillStyle = node.color || '#999'
-      }
-
+      roundRect(ctx, x, y, w, h, CENTRAL_RADIUS)
+      ctx.fillStyle = '#93c5e9'
       ctx.fill()
 
-      // Add subtle border
+      ctx.shadowColor = 'transparent'
+      ctx.shadowBlur = 0
+      ctx.shadowOffsetY = 0
+      ctx.shadowOffsetX = 0
+
       ctx.strokeStyle =
-        hoveredNode?.id === node.id ? '#000' : 'rgba(0, 0, 0, 0.2)'
-      ctx.lineWidth = hoveredNode?.id === node.id ? 2 / globalScale : 0.5
-
-      // Override border to be thicker for categories
-      if (node.group === 'category') {
-        ctx.strokeStyle = '#999'
-        ctx.lineWidth = 1.5 / globalScale
-      }
-
+        hoveredNode?.id === node.id ? '#1e3a5f' : 'rgba(0, 0, 0, 0.08)'
+      ctx.lineWidth = hoveredNode?.id === node.id ? 2 / globalScale : 1
+      roundRect(ctx, x, y, w, h, CENTRAL_RADIUS)
       ctx.stroke()
 
-      // Draw icon inside the circle
-      // For listings: comes as object with code
-      // For categories: comes as string name, need to look up
-      const iconCode =
-        node.icon?.code ||
-        (node.group === 'category' ? getIconUnicode(node.icon) : null)
-
-      if (
-        iconCode &&
-        node.group !== 'central-node' &&
-        node.group !== 'related-web'
-      ) {
-        const iconSize = nodeRadius * 1.0
-        ctx.font = `900 ${iconSize}px "Font Awesome 5 Free"`
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
-        ctx.fillStyle = node.group === 'category' ? '#666' : '#fff'
-        ctx.fillText(iconCode, node.x || 0, node.y || 0)
-      }
-
-      // Draw label underneath the circle
+      ctx.font = CENTRAL_LABEL_FONT
       ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillStyle = '#2c3e50'
+      ctx.fillText(displayLabel, node.x || 0, node.y || 0)
 
-      // Truncate label if too long
-      const maxLabelLength = node.group === 'central-node' ? 30 : 28
-      const displayLabel =
-        label.length > maxLabelLength
-          ? label.substring(0, maxLabelLength) + '...'
-          : label
+      ctx.restore()
+      return
+    }
 
-      // Position label below the node
-      const labelY = (node.y || 0) + nodeRadius + 3
+    if (node.group === 'related-web') {
+      const cx = node.x || 0
+      const cy = node.y || 0
+      const r = RELATED_WEB_RADIUS
 
-      // Text styling based on group
-      if (node.group === 'category') {
-        ctx.textBaseline = 'top'
-        ctx.font = `600 ${fontSize * 1.2}px Inter, sans-serif`
-        ctx.fillStyle = '#333'
-      } else {
-        ctx.textBaseline = 'middle'
-        // Listing nodes - draw text with background for readability
-        ctx.font = `${fontSize}px Inter, sans-serif`
-        const textMetrics = ctx.measureText(displayLabel)
-        const textWidth = textMetrics.width
-        const textHeight = fontSize * 1.2 // Account for actual text height with some spacing
+      ctx.save()
 
-        // Draw background rectangle
-        ctx.fillStyle = 'rgba(50, 50, 50, 0.8)'
-        const padding = 2
-        const borderRadius = 3
-        const rectX = (node.x || 0) - textWidth / 2 - padding
-        const rectY = labelY - textHeight / 2 - padding / 2
-        const rectWidth = textWidth + padding * 2
-        const rectHeight = textHeight + padding
-
-        // Rounded rectangle
-        ctx.beginPath()
-        ctx.moveTo(rectX + borderRadius, rectY)
-        ctx.lineTo(rectX + rectWidth - borderRadius, rectY)
-        ctx.quadraticCurveTo(
-          rectX + rectWidth,
-          rectY,
-          rectX + rectWidth,
-          rectY + borderRadius,
-        )
-        ctx.lineTo(rectX + rectWidth, rectY + rectHeight - borderRadius)
-        ctx.quadraticCurveTo(
-          rectX + rectWidth,
-          rectY + rectHeight,
-          rectX + rectWidth - borderRadius,
-          rectY + rectHeight,
-        )
-        ctx.lineTo(rectX + borderRadius, rectY + rectHeight)
-        ctx.quadraticCurveTo(
-          rectX,
-          rectY + rectHeight,
-          rectX,
-          rectY + rectHeight - borderRadius,
-        )
-        ctx.lineTo(rectX, rectY + borderRadius)
-        ctx.quadraticCurveTo(rectX, rectY, rectX + borderRadius, rectY)
-        ctx.closePath()
-        ctx.fill()
-
-        ctx.fillStyle = '#fff'
-      }
-
-      ctx.fillText(displayLabel, node.x || 0, labelY)
-    },
-    [hoveredNode],
-  )
-
-  // Custom link rendering for dashed lines
-  const linkCanvasObject = useCallback(
-    (
-      link: LinkType & { source: NodeType; target: NodeType },
-      ctx: CanvasRenderingContext2D,
-    ) => {
-      const start = link.source
-      const end = link.target
-
-      if (!start?.x || !start?.y || !end?.x || !end?.y) return
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.12)'
+      ctx.shadowBlur = 4
+      ctx.shadowOffsetY = 1
+      ctx.shadowOffsetX = 0
 
       ctx.beginPath()
-      ctx.moveTo(start.x, start.y)
-      ctx.lineTo(end.x, end.y)
-      ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)'
-      ctx.lineWidth = 1
+      ctx.arc(cx, cy, r, 0, 2 * Math.PI)
+      ctx.fillStyle = '#ffffff'
+      ctx.fill()
 
-      if (link.dashes) {
-        ctx.setLineDash([5, 5])
-      } else {
-        ctx.setLineDash([])
+      ctx.shadowColor = 'transparent'
+      ctx.shadowBlur = 0
+      ctx.shadowOffsetY = 0
+      ctx.shadowOffsetX = 0
+
+      ctx.strokeStyle =
+        hoveredNode?.id === node.id ? '#1e3a5f' : 'rgba(0, 0, 0, 0.12)'
+      ctx.lineWidth = hoveredNode?.id === node.id ? 2 / globalScale : 1
+      ctx.stroke()
+
+      const img = logoImageRef.current
+      if (img?.complete && img.naturalWidth) {
+        const inset = 2
+        const iconR = r - inset
+        ctx.save()
+        ctx.beginPath()
+        ctx.arc(cx, cy, iconR, 0, 2 * Math.PI)
+        ctx.clip()
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          img.naturalWidth,
+          img.naturalHeight,
+          cx - iconR,
+          cy - iconR,
+          iconR * 2,
+          iconR * 2,
+        )
+        ctx.restore()
       }
 
-      ctx.stroke()
-      ctx.setLineDash([]) // Reset dash
-    },
-    [],
-  )
+      const labelLines = wrapLabel(ctx, label, 50, '7px Inter, sans-serif')
+      const lineHeight = 10
+      const labelTop = cy + r + 4
+      ctx.font = '7px Inter, sans-serif'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'top'
+      ctx.fillStyle = '#333'
+      labelLines.forEach((line, i) => {
+        ctx.fillText(line, cx, labelTop + i * lineHeight)
+      })
+
+      ctx.restore()
+      return
+    }
+
+    // Calculate node radius based on val
+    const nodeRadius = Math.sqrt(node.val || 8) * 2
+
+    // Draw node circle
+    ctx.beginPath()
+    ctx.arc(node.x || 0, node.y || 0, nodeRadius, 0, 2 * Math.PI, false)
+
+    // Fill color based on group or category
+    if (node.group === 'category') {
+      ctx.fillStyle = '#ffffff'
+      ctx.strokeStyle = '#c3c4c7'
+      ctx.lineWidth = 2 / globalScale
+    } else {
+      ctx.fillStyle = node.color || '#999'
+    }
+
+    ctx.fill()
+
+    // Add subtle border
+    ctx.strokeStyle =
+      hoveredNode?.id === node.id ? '#000' : 'rgba(0, 0, 0, 0.2)'
+    ctx.lineWidth = hoveredNode?.id === node.id ? 2 / globalScale : 0.5
+
+    // Override border to be thicker for categories
+    if (node.group === 'category') {
+      ctx.strokeStyle = '#999'
+      ctx.lineWidth = 1.5 / globalScale
+    }
+
+    ctx.stroke()
+
+    // Draw icon inside the circle
+    // For listings: comes as object with code
+    // For categories: comes as string name, need to look up
+    const iconCode =
+      node.icon?.code ||
+      (node.group === 'category' ? getIconUnicode(node.icon) : null)
+
+    if (
+      iconCode &&
+      node.group !== 'central-node' &&
+      node.group !== 'related-web'
+    ) {
+      const iconSize = nodeRadius * 1.0
+      ctx.font = `900 ${iconSize}px "Font Awesome 5 Free"`
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillStyle = node.group === 'category' ? '#666' : '#fff'
+      ctx.fillText(iconCode, node.x || 0, node.y || 0)
+    }
+
+    // Draw label underneath the circle
+    ctx.textAlign = 'center'
+
+    // Truncate label if too long
+    const maxLabelLength = node.group === 'central-node' ? 30 : 28
+    const displayLabel =
+      label.length > maxLabelLength
+        ? label.substring(0, maxLabelLength) + '...'
+        : label
+
+    // Position label below the node
+    const labelY = (node.y || 0) + nodeRadius + 3
+
+    // Text styling based on group
+    if (node.group === 'category') {
+      ctx.textBaseline = 'top'
+      ctx.font = `600 ${fontSize * 1.2}px Inter, sans-serif`
+      ctx.fillStyle = '#333'
+    } else {
+      ctx.textBaseline = 'middle'
+      // Listing nodes - draw text with background for readability
+      ctx.font = `${fontSize}px Inter, sans-serif`
+      const textMetrics = ctx.measureText(displayLabel)
+      const textWidth = textMetrics.width
+      const textHeight = fontSize * 1.2 // Account for actual text height with some spacing
+
+      // Draw background rectangle
+      ctx.fillStyle = 'rgba(50, 50, 50, 0.8)'
+      const padding = 2
+      const borderRadius = 3
+      const rectX = (node.x || 0) - textWidth / 2 - padding
+      const rectY = labelY - textHeight / 2 - padding / 2
+      const rectWidth = textWidth + padding * 2
+      const rectHeight = textHeight + padding
+
+      // Rounded rectangle
+      ctx.beginPath()
+      ctx.moveTo(rectX + borderRadius, rectY)
+      ctx.lineTo(rectX + rectWidth - borderRadius, rectY)
+      ctx.quadraticCurveTo(
+        rectX + rectWidth,
+        rectY,
+        rectX + rectWidth,
+        rectY + borderRadius,
+      )
+      ctx.lineTo(rectX + rectWidth, rectY + rectHeight - borderRadius)
+      ctx.quadraticCurveTo(
+        rectX + rectWidth,
+        rectY + rectHeight,
+        rectX + rectWidth - borderRadius,
+        rectY + rectHeight,
+      )
+      ctx.lineTo(rectX + borderRadius, rectY + rectHeight)
+      ctx.quadraticCurveTo(
+        rectX,
+        rectY + rectHeight,
+        rectX,
+        rectY + rectHeight - borderRadius,
+      )
+      ctx.lineTo(rectX, rectY + borderRadius)
+      ctx.quadraticCurveTo(rectX, rectY, rectX + borderRadius, rectY)
+      ctx.closePath()
+      ctx.fill()
+
+      ctx.fillStyle = '#fff'
+    }
+
+    ctx.fillText(displayLabel, node.x || 0, labelY)
+  }
+
+  // Custom link rendering for dashed lines
+  const linkCanvasObject = (
+    link: LinkType & { source: NodeType; target: NodeType },
+    ctx: CanvasRenderingContext2D,
+  ) => {
+    const start = link.source
+    const end = link.target
+
+    if (!start?.x || !start?.y || !end?.x || !end?.y) return
+
+    ctx.beginPath()
+    ctx.moveTo(start.x, start.y)
+    ctx.lineTo(end.x, end.y)
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)'
+    ctx.lineWidth = 1
+
+    if (link.dashes) {
+      ctx.setLineDash([5, 5])
+    } else {
+      ctx.setLineDash([])
+    }
+
+    ctx.stroke()
+    ctx.setLineDash([]) // Reset dash
+  }
 
   // Configure forces for better spacing
   useEffect(() => {

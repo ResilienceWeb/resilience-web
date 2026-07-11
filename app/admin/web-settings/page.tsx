@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import {
   useForm,
   FormProvider,
@@ -25,11 +25,11 @@ import {
   FormControl,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
-import { Spinner } from '@components/ui/spinner'
 import {
   MultiSelect,
   type MultiSelectOption,
 } from '@components/ui/multi-select'
+import { Spinner } from '@components/ui/spinner'
 import useUpdateWeb from '@hooks/webs/useUpdateWeb'
 import useWeb from '@hooks/webs/useWeb'
 import useWebs from '@hooks/webs/useWebs'
@@ -159,31 +159,28 @@ export default function WebSettingsPage() {
     }
   }, [isSuccess])
 
-  const onSubmit = useCallback(
-    (data: WebSettingsForm) => {
-      const dataToSubmit: any = {
-        title: data.title,
-        description: data.description,
-        contactEmail: data.contactEmail,
-        published: data.published,
-        slug: webData?.slug,
-        relatedWebIds: data.relatedWebs?.map((web) => web.value) || [],
-      }
+  const onSubmit = (data: WebSettingsForm) => {
+    const dataToSubmit: any = {
+      title: data.title,
+      description: data.description,
+      contactEmail: data.contactEmail,
+      published: data.published,
+      slug: webData?.slug,
+      relatedWebIds: data.relatedWebs?.map((web) => web.value) || [],
+    }
 
-      if (typeof data.image !== 'string') {
-        dataToSubmit.image = data.image
-      }
+    if (typeof data.image !== 'string') {
+      dataToSubmit.image = data.image
+    }
 
-      if (data.location) {
-        dataToSubmit.latitude = data.location.latitude
-        dataToSubmit.longitude = data.location.longitude
-        dataToSubmit.locationDescription = data.location.description
-      }
+    if (data.location) {
+      dataToSubmit.latitude = data.location.latitude
+      dataToSubmit.longitude = data.location.longitude
+      dataToSubmit.locationDescription = data.location.description
+    }
 
-      updateWeb(dataToSubmit)
-    },
-    [updateWeb, webData?.slug],
-  )
+    updateWeb(dataToSubmit)
+  }
 
   const isPublished = useWatch({ control, name: 'published' })
   const title = useWatch({ control, name: 'title' })

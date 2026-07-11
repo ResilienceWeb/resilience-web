@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import Link from 'next/link'
@@ -72,12 +72,9 @@ export default function UserSettingsPage() {
     }
   }, [isSuccess])
 
-  const onSubmit = useCallback(
-    (data: FormValues) => {
-      updateUser({ name: data.name, subscribed: data.subscribed })
-    },
-    [updateUser],
-  )
+  const onSubmit = (data: FormValues) => {
+    updateUser({ name: data.name, subscribed: data.subscribed })
+  }
 
   if (!user || !session) {
     return <Spinner />

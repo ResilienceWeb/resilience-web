@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { useSearchParams, useRouter, redirect } from 'next/navigation'
 import * as Sentry from '@sentry/nextjs'
 import 'driver.js/dist/driver.css'
@@ -30,12 +30,12 @@ export default function AdminPage() {
   const { listings, isPending: isLoadingListings } = useListings()
   const { mutate: deleteListing } = useDeleteListing()
 
-  const allowedListings = useMemo(() => {
+  const allowedListings = (() => {
     if (isLoadingListings || isCheckingEditAccess) return null
     if (canEditCurrentWeb) return listings
 
     return null
-  }, [isLoadingListings, listings, canEditCurrentWeb, isCheckingEditAccess])
+  })()
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'production' && session?.user) {
@@ -60,7 +60,7 @@ export default function AdminPage() {
       }, 2000)
       return () => clearTimeout(timeout)
     }
-    // eslint-disable-next-line @eslint-react/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstTime])
 
   if (

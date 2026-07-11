@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useEffect, useState, memo } from 'react'
+import { useEffect, useState, memo } from 'react'
 import { FaStar } from 'react-icons/fa'
 import { HiUserGroup } from 'react-icons/hi'
 import { useInView } from 'react-intersection-observer'
@@ -42,22 +42,16 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
     ? `/${subdomain}/${dataItem.slug}`
     : `/${dataItem.slug}`
 
-  const categoryBackgroundColor = useMemo(
-    () => chroma(dataItem.category.color).alpha(0.5).css(),
-    [dataItem.category.color],
-  )
+  const categoryBackgroundColor = chroma(dataItem.category.color)
+    .alpha(0.5)
+    .css()
 
-  const categoryIndex = useMemo(
-    () => categoriesIndexes?.[dataItem.category.label],
-    [categoriesIndexes, dataItem.category.label],
-  )
+  const categoryIndex = categoriesIndexes?.[dataItem.category.label]
 
-  const isFeatured = useMemo(
-    () =>
-      Boolean(dataItem.featured) &&
-      new Date(dataItem.featured).getTime() > Date.now(),
-    [dataItem.featured],
-  )
+  // Frozen at mount so the featured check stays pure during render
+  const [now] = useState(() => Date.now())
+  const isFeatured =
+    Boolean(dataItem.featured) && new Date(dataItem.featured).getTime() > now
 
   return (
     <Link

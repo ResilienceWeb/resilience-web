@@ -1,13 +1,13 @@
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import { HiOutlineSearch, HiHome, HiOutlineX, HiPlus } from 'react-icons/hi'
-import { Share2, List, MapPin, CalendarDays } from 'lucide-react'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import { MultiSelect } from '@components/ui/multi-select'
+import { Share2, List, MapPin, CalendarDays } from 'lucide-react'
 import { REMOTE_URL } from '@helpers/config'
 import { cn } from '@components/lib/utils'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
+import { MultiSelect } from '@components/ui/multi-select'
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs'
 import LogoImage from '../../public/logo.png'
 
@@ -56,11 +56,11 @@ const Header = ({
     onTabChange?.(value)
   }
 
-  const colsClass = useMemo(() => {
+  const colsClass = (() => {
     if (hasEvents && isGeoMappingEnabled) return 'grid-cols-4'
     if (hasEvents || isGeoMappingEnabled) return 'grid-cols-3'
     return 'grid-cols-2'
-  }, [hasEvents, isGeoMappingEnabled])
+  })()
 
   if (isMobile) {
     return (

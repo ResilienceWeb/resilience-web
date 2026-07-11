@@ -7,6 +7,7 @@ import { withSentryConfig } from '@sentry/nextjs'
  */
 const nextConfig = {
   reactStrictMode: false,
+  reactCompiler: true,
   // Keep sharp out of the bundler so it's loaded from node_modules at runtime
   serverExternalPackages: ['sharp'],
   // Force the Linux native binary + libvips shared object to be traced into the

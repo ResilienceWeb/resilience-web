@@ -1,4 +1,4 @@
-import { useCallback, useState, type Ref } from 'react'
+import { useState, type Ref } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useReCaptcha } from 'next-recaptcha-v3'
@@ -38,28 +38,25 @@ const SignupForm = ({ formRef, onInteract }: Props) => {
   const [isSuccess, setIsSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState()
 
-  const onSubmit = useCallback(
-    async (data) => {
-      const recaptchaToken = await executeRecaptcha('form_submit')
+  const onSubmit = async (data) => {
+    const recaptchaToken = await executeRecaptcha('form_submit')
 
-      const response = await fetch('/api/newsletter-subscribe', {
-        method: 'POST',
-        body: JSON.stringify({ email: data.email, recaptchaToken }),
-        headers: { 'Content-Type': 'application/json' },
-      })
-      if (response.status === 201) {
-        setIsSuccess(true)
-      } else {
-        setIsSuccess(false)
+    const response = await fetch('/api/newsletter-subscribe', {
+      method: 'POST',
+      body: JSON.stringify({ email: data.email, recaptchaToken }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    if (response.status === 201) {
+      setIsSuccess(true)
+    } else {
+      setIsSuccess(false)
 
-        const responseJson = await response.json()
-        if (response.status === 400 || response.status === 403) {
-          setErrorMessage(responseJson.error)
-        }
+      const responseJson = await response.json()
+      if (response.status === 400 || response.status === 403) {
+        setErrorMessage(responseJson.error)
       }
-    },
-    [executeRecaptcha],
-  )
+    }
+  }
 
   return (
     <Form {...form}>

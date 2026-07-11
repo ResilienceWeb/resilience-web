@@ -1,5 +1,4 @@
 'use client'
-import { useCallback } from 'react'
 import { HiArrowLeft } from 'react-icons/hi'
 import { useRouter } from 'next/navigation'
 import ListingForm from '@components/admin/listing-form'
@@ -15,19 +14,16 @@ export default function NewListingPage() {
   const { mutate: createListing } = useCreateListing()
   const { selectedWebId } = useAppContext()
 
-  const goBack = useCallback(() => {
+  const goBack = () => {
     router.back()
-  }, [router])
+  }
 
-  const handleSubmit = useCallback(
-    (data) => {
-      data.webId = selectedWebId
-      data.pending = false
-      createListing(data)
-      goBack()
-    },
-    [createListing, goBack, selectedWebId],
-  )
+  const handleSubmit = (data) => {
+    data.webId = selectedWebId
+    data.pending = false
+    createListing(data)
+    goBack()
+  }
 
   if (!categories || isCategoriesPending) {
     return <Spinner />

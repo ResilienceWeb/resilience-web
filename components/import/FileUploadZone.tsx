@@ -3,7 +3,7 @@
 /**
  * File upload zone with drag-and-drop support
  */
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { Upload, FileText, X, Download } from 'lucide-react'
 import { cn } from '@components/lib/utils'
 
@@ -49,55 +49,49 @@ export function FileUploadZone({
   const [isDragging, setIsDragging] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
-  const handleDragEnter = useCallback((e: React.DragEvent) => {
+  const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
     setIsDragging(true)
-  }, [])
+  }
 
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
+  const handleDragLeave = (e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
     setIsDragging(false)
-  }, [])
+  }
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
-  }, [])
+  }
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault()
-      e.stopPropagation()
-      setIsDragging(false)
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
 
-      const files = Array.from(e.dataTransfer.files)
-      const csvFile = files.find((file) => file.name.endsWith('.csv'))
+    const files = Array.from(e.dataTransfer.files)
+    const csvFile = files.find((file) => file.name.endsWith('.csv'))
 
-      if (csvFile) {
-        setSelectedFile(csvFile)
-        onFileSelect(csvFile)
-      }
-    },
-    [onFileSelect],
-  )
+    if (csvFile) {
+      setSelectedFile(csvFile)
+      onFileSelect(csvFile)
+    }
+  }
 
-  const handleFileInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0]
-      if (file) {
-        setSelectedFile(file)
-        onFileSelect(file)
-      }
-    },
-    [onFileSelect],
-  )
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setSelectedFile(file)
+      onFileSelect(file)
+    }
+  }
 
-  const handleClearFile = useCallback((e: React.MouseEvent) => {
+  const handleClearFile = (e: React.MouseEvent) => {
     e.stopPropagation()
     setSelectedFile(null)
-  }, [])
+  }
 
   return (
     <div className="w-full">

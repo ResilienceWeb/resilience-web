@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, use, useEffect } from 'react'
+import { use, useEffect } from 'react'
 import { HiArrowLeft } from 'react-icons/hi'
 import { PiInfoBold } from 'react-icons/pi'
 import NextLink from 'next/link'
@@ -32,7 +32,7 @@ export default function ListingPage({ params }) {
     }
   }, [showSuccessMessage])
 
-  const goBack = useCallback(() => {
+  const goBack = () => {
     // Return to the previous page so the listings filters (query params) are
     // preserved. Fall back to /admin when there's no in-app history to go back
     // to (e.g. the edit page was opened directly in a new tab).
@@ -41,20 +41,17 @@ export default function ListingPage({ params }) {
     } else {
       router.push('/admin')
     }
-  }, [router])
+  }
 
-  const handleSubmit = useCallback(
-    (data) => {
-      if (data.id) {
-        if (data.pending) {
-          data.isApprovingProposedListing = true
-        }
-        updateListing(data)
+  const handleSubmit = (data) => {
+    if (data.id) {
+      if (data.pending) {
+        data.isApprovingProposedListing = true
       }
-      goBack()
-    },
-    [updateListing, goBack],
-  )
+      updateListing(data)
+    }
+    goBack()
+  }
 
   const { listing, isPending } = useListing(slug)
   const { listingEdits, isPending: isLoadingListingEdits } = useListingEdits(

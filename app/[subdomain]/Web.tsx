@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, memo, useState } from 'react'
+import { useEffect, memo, useState } from 'react'
 import { HiOutlineShare } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
@@ -84,10 +84,9 @@ const Web = ({
   webSlug,
   relatedWebs = [],
 }: Props) => {
-  const data = useMemo<NetworkData | null>(
-    () => (compressedData ? decompressJson<NetworkData>(compressedData) : null),
-    [compressedData],
-  )
+  const data: NetworkData | null = compressedData
+    ? decompressJson<NetworkData>(compressedData)
+    : null
 
   const isMobile = useIsMobile()
   const [isVolunteer, setIsVolunteer] = useState(false)
@@ -119,28 +118,23 @@ const Web = ({
   // Map and events tabs only exist for some webs, so fall back to the
   // default if the requested tab isn't available here
   const requestedTab = viewParam ?? storedTab ?? defaultTab
-  const availableTabs = useMemo(() => {
-    const tabs = ['web', 'list']
-    if (isGeoMappingEnabled) tabs.push('map')
-    if (events?.length > 0) tabs.push('events')
-    return tabs
-  }, [isGeoMappingEnabled, events])
+  const tabs = ['web', 'list']
+  if (isGeoMappingEnabled) tabs.push('map')
+  if (events?.length > 0) tabs.push('events')
+  const availableTabs = tabs
   const activeTab = availableTabs.includes(requestedTab)
     ? requestedTab
     : defaultTab
 
   const [searchTerm, setSearchTerm] = useState('')
   const [searchTermValue] = useDebounceValue(searchTerm, 500)
-  const handleSearchTermChange = useCallback(
-    (event) => setSearchTerm(event.target.value),
-    [],
-  )
-  const handleClearSearchTermValue = useCallback(() => setSearchTerm(''), [])
+  const handleSearchTermChange = (event) => setSearchTerm(event.target.value)
+  const handleClearSearchTermValue = () => setSearchTerm('')
 
   const { categories: fetchedCategories } = useCategoriesPublic({ webSlug })
   const { tags: fetchedTags } = useTagsPublic({ webSlug })
 
-  const categories = useMemo(() => {
+  const categories = (() => {
     if (!fetchedCategories) return []
     return fetchedCategories.map((c) => {
       const color = `#${c.color}`
@@ -156,90 +150,70 @@ const Web = ({
         icon: IconComponent ? <IconComponent style={{ color }} /> : undefined,
       }
     })
-  }, [fetchedCategories])
+  })()
 
-  const tags = useMemo(() => {
+  const tags = (() => {
     if (!fetchedTags) return []
     return fetchedTags.map((t) => ({
       value: t.label,
       label: t.label,
     }))
-  }, [fetchedTags])
+  })()
 
-  const selectedCategories = useMemo(() => {
-    return categoriesParam.map((categoryLabel) => {
-      const category = categories.find((c) => c.label === categoryLabel)
-      return {
-        value: categoryLabel,
-        label: categoryLabel,
-        color: category?.color,
-        icon: category?.icon,
-      }
-    })
-  }, [categories, categoriesParam])
+  const selectedCategories = categoriesParam.map((categoryLabel) => {
+    const category = categories.find((c) => c.label === categoryLabel)
+    return {
+      value: categoryLabel,
+      label: categoryLabel,
+      color: category?.color,
+      icon: category?.icon,
+    }
+  })
 
-  const selectedTags = useMemo(() => {
-    return tagsParam.map((tagLabel) => ({
-      value: tagLabel,
-      label: tagLabel,
-    }))
-  }, [tagsParam])
+  const selectedTags = tagsParam.map((tagLabel) => ({
+    value: tagLabel,
+    label: tagLabel,
+  }))
 
   const [selectedId, setSelectedId] = useState()
 
-  const handleCategorySelection = useCallback(
-    (value) => {
-      const categoryLabels = value.map((c) => c.label)
-      setCategoriesParam(categoryLabels)
-    },
-    [setCategoriesParam],
-  )
+  const handleCategorySelection = (value) => {
+    const categoryLabels = value.map((c) => c.label)
+    setCategoriesParam(categoryLabels)
+  }
 
-  const handleTagSelection = useCallback(
-    (value) => {
-      const tagsLabels = value.map((t) => t.value)
-      setTagsParam(tagsLabels)
-    },
-    [setTagsParam],
-  )
+  const handleTagSelection = (value) => {
+    const tagsLabels = value.map((t) => t.value)
+    setTagsParam(tagsLabels)
+  }
 
-  const handleVolunteerSwitchChange = useCallback(
-    (value) => {
-      setSelectedId(null)
-      setIsVolunteer(value)
-    },
-    [setIsVolunteer],
-  )
+  const handleVolunteerSwitchChange = (value) => {
+    setSelectedId(null)
+    setIsVolunteer(value)
+  }
 
-  const handleTabChange = useCallback(
-    (value: string) => {
-      setStoredTab(value)
-      setViewParam(value)
-    },
-    [setStoredTab, setViewParam],
-  )
+  const handleTabChange = (value: string) => {
+    setStoredTab(value)
+    setViewParam(value)
+  }
 
-  const descriptiveNodes = useMemo(
-    () =>
-      data
-        ? data.nodes
-            .filter(
-              (item) =>
-                item.group === 'category' ||
-                item.group === 'related-web' ||
-                item.group === 'central-node',
-            )
-            .filter(
-              (item) =>
-                item.id === CENTRAL_NODE_ID ||
-                categoriesParam.length === 0 ||
-                categoriesParam.some((l) => l === item.label),
-            )
-        : [],
-    [data, categoriesParam],
-  )
+  const descriptiveNodes = data
+    ? data.nodes
+        .filter(
+          (item) =>
+            item.group === 'category' ||
+            item.group === 'related-web' ||
+            item.group === 'central-node',
+        )
+        .filter(
+          (item) =>
+            item.id === CENTRAL_NODE_ID ||
+            categoriesParam.length === 0 ||
+            categoriesParam.some((l) => l === item.label),
+        )
+    : []
 
-  const [filteredItems, filteredDescriptiveNodes] = useMemo(() => {
+  const [filteredItems, filteredDescriptiveNodes] = (() => {
     if (!data) return []
     let results: any[] = data?.nodes
       .filter(
@@ -314,33 +288,20 @@ const Web = ({
     )
 
     return [results, filteredDescriptiveNodes]
-  }, [
-    data,
-    descriptiveNodes,
-    isVolunteer,
-    categoriesParam,
-    tagsParam,
-    searchTermValue,
-  ])
+  })()
 
-  const filteredNetworkData = useMemo(
-    () => ({
-      edges: data?.edges,
-      nodes: [...filteredItems, ...filteredDescriptiveNodes],
-    }),
-    [data?.edges, filteredItems, filteredDescriptiveNodes],
-  )
+  const filteredNetworkData = {
+    edges: data?.edges,
+    nodes: [...filteredItems, ...filteredDescriptiveNodes],
+  }
 
-  const totalListingsCount = useMemo(
-    () =>
-      data?.nodes.filter(
-        (item) =>
-          item.group !== 'category' &&
-          item.group !== 'central-node' &&
-          item.group !== 'related-web',
-      ).length ?? 0,
-    [data?.nodes],
-  )
+  const totalListingsCount =
+    data?.nodes.filter(
+      (item) =>
+        item.group !== 'category' &&
+        item.group !== 'central-node' &&
+        item.group !== 'related-web',
+    ).length ?? 0
 
   const isWebEmpty = filteredItems.length === 0
 

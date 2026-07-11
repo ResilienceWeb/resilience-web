@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useState } from 'react'
 import { icons } from '@helpers/icons'
 import CategoryTag from '@components/category-tag'
 import { Button } from '@components/ui/button'
@@ -48,23 +48,20 @@ const List = ({ categories }) => {
     setIsOpen(true)
   }
 
-  const handleClose = useCallback(() => setIsOpen(false), [])
+  const handleClose = () => setIsOpen(false)
 
-  const handleSubmit = useCallback(
-    (data) => {
-      handleClose()
-      updateCategory({
-        ...data,
-        id: selectedCategoryId,
-      })
-    },
-    [handleClose, updateCategory, selectedCategoryId],
-  )
+  const handleSubmit = (data) => {
+    handleClose()
+    updateCategory({
+      ...data,
+      id: selectedCategoryId,
+    })
+  }
 
-  const handleDelete = useCallback(() => {
+  const handleDelete = () => {
     handleClose()
     deleteCategory({ id: selectedCategoryId })
-  }, [deleteCategory, handleClose, selectedCategoryId])
+  }
 
   if (!categories) {
     return null

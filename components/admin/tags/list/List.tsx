@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react'
+import { memo, useState } from 'react'
 import { useToggle } from 'usehooks-ts'
 import { Button } from '@components/ui/button'
 import {
@@ -46,21 +46,18 @@ const List = ({ tags }) => {
     setIsUpdateTagDialogOpen(true)
   }
 
-  const handleSubmit = useCallback(
-    (data) => {
-      setIsUpdateTagDialogOpen(false)
-      updateTag({
-        ...data,
-        id: selectedTagId,
-      })
-    },
-    [setIsUpdateTagDialogOpen, updateTag, selectedTagId],
-  )
+  const handleSubmit = (data) => {
+    setIsUpdateTagDialogOpen(false)
+    updateTag({
+      ...data,
+      id: selectedTagId,
+    })
+  }
 
-  const handleDelete = useCallback(() => {
+  const handleDelete = () => {
     setIsUpdateTagDialogOpen(false)
     deleteTag({ id: selectedTagId })
-  }, [deleteTag, setIsUpdateTagDialogOpen, selectedTagId])
+  }
 
   const handleOpenAddTagToListingsDialog = (tagId) => {
     setSelectedTagId(tagId)

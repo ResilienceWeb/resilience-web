@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@components/ui/button'
 import { Checkbox } from '@components/ui/checkbox'
 import {
@@ -16,9 +16,7 @@ export default function AddTagToListingsDialog({
   onClose,
   onSubmit,
 }) {
-  const linkedListingsIds = useMemo(() => {
-    return tag.listings.map((listing) => listing.id)
-  }, [tag.listings])
+  const linkedListingsIds = tag.listings.map((listing) => listing.id)
 
   const [selectedListings, setSelectedListings] = useState(
     () => new Set(linkedListingsIds),

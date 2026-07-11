@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, use, useEffect } from 'react'
+import { use, useEffect } from 'react'
 import { HiArrowLeft } from 'react-icons/hi'
 import { PiInfoBold } from 'react-icons/pi'
 import NextLink from 'next/link'
@@ -34,16 +34,16 @@ export default function ListingEditsPage({ params }) {
     selectedWebSlug,
   )
 
-  const goBack = useCallback(() => {
+  const goBack = () => {
     router.push('/admin/')
-  }, [router])
+  }
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = () => {
     applyListingEdit({
       listingId: listing?.id,
       listingEditId: listingEdits[0]?.id,
     })
-  }, [applyListingEdit, listing?.id, listingEdits])
+  }
 
   useEffect(() => {
     if (isSuccess) {

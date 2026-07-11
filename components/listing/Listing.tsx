@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useEffect, useMemo } from 'react'
+import { memo, useEffect } from 'react'
 import { FiEdit, FiMapPin } from 'react-icons/fi'
 import { HiArrowLeft, HiUserGroup, HiExternalLink } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
@@ -45,20 +45,14 @@ function Listing({ listing }) {
     }
   }, [listing.id, listing.web?.id])
 
-  const websiteSanitized = useMemo(
-    () => sanitizeLink(listing.website),
-    [listing.website],
-  )
+  const websiteSanitized = sanitizeLink(listing.website)
 
   const { categories } = useCategoriesPublic({ webSlug: listing.web?.slug })
-  const categoriesIndexes = useMemo(() => {
-    const categoriesIndexesObj = {}
-    categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))
+  const categoriesIndexesObj = {}
+  categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))
+  const categoriesIndexes = categoriesIndexesObj
 
-    return categoriesIndexesObj
-  }, [categories])
-
-  const listingWebsite = useMemo(() => {
+  const listingWebsite = (() => {
     if (!listing?.website) {
       return null
     }
@@ -68,7 +62,7 @@ function Listing({ listing }) {
     }
 
     return `//${listing.website}`
-  }, [listing.website])
+  })()
 
   return (
     <div className="w-full max-w-3xl mx-auto px-0 lg:px-8 pb-10">

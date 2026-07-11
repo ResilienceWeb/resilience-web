@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { PiInfoBold } from 'react-icons/pi'
 import { useRouter } from 'next/navigation'
 import ListingFormSimplified from '@components/admin/listing-form/ListingFormSimplified'
@@ -25,23 +25,20 @@ export default function EditListing({ listing, webSlug }) {
     webSlug,
   )
 
-  const handleSubmit = useCallback(
-    (data) => {
-      data.webId = web?.id
-      data.webSlug = webSlug
-      data.listingId = listing.id
-      data.inactive = false
-      data.relations = []
-      createListingEdit(data)
-      setTimeout(() => {
-        setIsSubmitted(true)
-        if (window) {
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        }
-      }, 1000)
-    },
-    [web?.id, webSlug, listing.id, createListingEdit],
-  )
+  const handleSubmit = (data) => {
+    data.webId = web?.id
+    data.webSlug = webSlug
+    data.listingId = listing.id
+    data.inactive = false
+    data.relations = []
+    createListingEdit(data)
+    setTimeout(() => {
+      setIsSubmitted(true)
+      if (window) {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    }, 1000)
+  }
 
   if (isCategoriesLoading || isLoadingEdits) {
     return (

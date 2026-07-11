@@ -1,11 +1,10 @@
 'use client'
 
-import { useCallback, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { PiWarningCircleBold } from 'react-icons/pi'
 import { SlGlobe } from 'react-icons/sl'
 import { useRouter } from 'next/navigation'
 import { ExternalLink, Search, X } from 'lucide-react'
-import { useAppContext } from '@store/hooks'
 import { useDebounceValue } from 'usehooks-ts'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import { getLastActivityDate, isWebActive } from '@helpers/webActivity'
@@ -22,6 +21,7 @@ import {
   TableRow,
 } from '@components/ui/table'
 import useWebs from '@hooks/webs/useWebs'
+import { useAppContext } from '@store/hooks'
 
 const columns = [
   {
@@ -52,15 +52,12 @@ export default function DashboardPage() {
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearch] = useDebounceValue(searchInput, 300)
 
-  const handleOpenAdminView = useCallback(
-    (slug: string) => {
-      setSelectedWebSlug(slug)
-      router.push('/admin')
-    },
-    [setSelectedWebSlug, router],
-  )
+  const handleOpenAdminView = (slug: string) => {
+    setSelectedWebSlug(slug)
+    router.push('/admin')
+  }
 
-  const sortedWebs = useMemo(() => {
+  const sortedWebs = (() => {
     if (!webs) return []
     return [...webs].sort((web1, web2) => {
       if (web1.published !== web2.published) {
@@ -73,13 +70,13 @@ export default function DashboardPage() {
       if (!date2) return -1
       return date2.getTime() - date1.getTime()
     })
-  }, [webs])
+  })()
 
-  const filteredWebs = useMemo(() => {
+  const filteredWebs = (() => {
     const search = debouncedSearch.trim().toLowerCase()
     if (!search) return sortedWebs
     return sortedWebs.filter((web) => web.title.toLowerCase().includes(search))
-  }, [sortedWebs, debouncedSearch])
+  })()
 
   if (isLoadingWebs) {
     return <Spinner />

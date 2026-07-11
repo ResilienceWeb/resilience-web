@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo } from 'react'
 import { HiPlus } from 'react-icons/hi'
 import { useToggle } from 'usehooks-ts'
 import { Button } from '@components/ui/button'
@@ -11,16 +11,13 @@ const Header = () => {
   const { mutate: createCategory } = useCreateCategory()
   const { selectedWebId } = useAppContext()
 
-  const handleSubmit = useCallback(
-    (data) => {
-      setIsOpen(false)
-      createCategory({
-        ...data,
-        webId: selectedWebId,
-      })
-    },
-    [createCategory, setIsOpen, selectedWebId],
-  )
+  const handleSubmit = (data) => {
+    setIsOpen(false)
+    createCategory({
+      ...data,
+      webId: selectedWebId,
+    })
+  }
 
   return (
     <>

@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import NextLink from 'next/link'
 import { REMOTE_URL } from '@helpers/config'
 import Footer from '@components/footer'
@@ -15,12 +15,9 @@ interface MainListProps {
 
 const MainList = ({ filteredItems, webSlug }: MainListProps) => {
   const { categories } = useCategoriesPublic({ webSlug })
-  const categoriesIndexes = useMemo(() => {
-    const categoriesIndexesObj = {}
-    categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))
-
-    return categoriesIndexesObj
-  }, [categories])
+  const categoriesIndexesObj = {}
+  categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))
+  const categoriesIndexes = categoriesIndexesObj
 
   return (
     <>

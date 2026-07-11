@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { useForm, FormProvider, useWatch } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
@@ -150,15 +150,15 @@ const ListingForm = ({
   const { mutateAsync: createTag } = useCreateTag()
   const { listings } = useListings()
 
-  const tagOptions: MultiSelectOption[] = useMemo(() => {
+  const tagOptions: MultiSelectOption[] = (() => {
     if (!tags) return []
     return tags.map((t) => ({
       value: t.id,
       label: t.label,
     }))
-  }, [tags])
+  })()
 
-  const relationOptions: MultiSelectOption[] = useMemo(() => {
+  const relationOptions: MultiSelectOption[] = (() => {
     if (!listings) return []
     return listings
       .filter((l) => l.title !== listing?.title)
@@ -166,7 +166,7 @@ const ListingForm = ({
         value: l.id,
         label: l.title,
       }))
-  }, [listing?.title, listings])
+  })()
 
   const getFormValues = (listing: Listing | undefined): FormValues => ({
     id: listing?.id || null,

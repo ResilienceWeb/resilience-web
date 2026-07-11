@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from '@auth-client'
 import { useAppContext } from '@store/hooks'
@@ -41,10 +40,10 @@ export default function useCanEditWeb(webSlug?: string, webId?: number) {
     refetchOnWindowFocus: false,
   })
 
-  const hasEditAccess = useMemo(() => {
+  const hasEditAccess = (() => {
     if (session?.user?.role === 'admin') return true
     return canEdit || false
-  }, [canEdit, session?.user?.role])
+  })()
 
   return {
     canEdit: hasEditAccess,

@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, X } from 'lucide-react'
 import { useDebounceValue } from 'usehooks-ts'
@@ -39,9 +39,7 @@ export default function UsersPage() {
     error,
   } = useUsers(debouncedSearch)
 
-  const users = useMemo(() => {
-    return data?.pages.flatMap((page) => page.users) ?? []
-  }, [data])
+  const users = data?.pages.flatMap((page) => page.users) ?? []
 
   const totalUsers = data?.pages[0]?.total ?? 0
   const isSearching = debouncedSearch.trim().length > 0

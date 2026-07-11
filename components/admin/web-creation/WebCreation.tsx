@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
@@ -146,12 +146,9 @@ const WebCreation = () => {
     }
   }, [isSuccess, router])
 
-  const onSubmit = useCallback(
-    (data: FormValues) => {
-      createWeb(data)
-    },
-    [createWeb],
-  )
+  const onSubmit = (data: FormValues) => {
+    createWeb(data)
+  }
 
   return (
     <div className="flex flex-col gap-8">
