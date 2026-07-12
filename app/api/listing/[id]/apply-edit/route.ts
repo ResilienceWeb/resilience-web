@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import type { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import deleteImage from '@helpers/deleteImage'
 import { sendEmail } from '@helpers/email'
 import ListingEditAcceptedEmail from '@components/emails/ListingEditAcceptedEmail'
@@ -15,9 +15,7 @@ export async function POST(
 ) {
   const params = await props.params
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
     if (!session?.user) {
       return new Response('Not authorized', { status: 401 })
     }
@@ -56,10 +54,9 @@ export async function POST(
     })
 
     if (!placement) {
-      return new Response(
-        'Placement for this edit no longer exists',
-        { status: 404 },
-      )
+      return new Response('Placement for this edit no longer exists', {
+        status: 404,
+      })
     }
 
     const currentListing = await prisma.listing.findUnique({

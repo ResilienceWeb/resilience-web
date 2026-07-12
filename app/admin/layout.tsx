@@ -7,7 +7,7 @@ import {
   dehydrate,
   HydrationBoundary,
 } from '@tanstack/react-query'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
 import LayoutContainer from '@components/admin/layout-container'
 import Providers from './providers'
@@ -30,9 +30,7 @@ async function fetchMyWebAccessHydrate() {
 }
 
 export default async function Layout({ children }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  })
+  const session = await getSessionSafe(await headers())
   if (!session) {
     redirect('/auth/signin')
   }

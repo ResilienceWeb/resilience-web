@@ -1,14 +1,12 @@
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import { getNotificationsForViewer } from '@db/notificationRepository'
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
 
     if (!session?.user) {
       return Response.json({ items: [] })

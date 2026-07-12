@@ -1,15 +1,13 @@
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import { getUserSignupsByDay } from '@db/platformStatsRepository'
 
 const VALID_PERIODS = [30, 90, 365]
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
     if (session?.user?.role !== 'admin') {
       return Response.json(
         { error: "You don't have enough permissions to perform this action." },

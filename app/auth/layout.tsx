@@ -1,11 +1,9 @@
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 
 export default async function Layout({ children }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  })
+  const session = await getSessionSafe(await headers())
   if (session) {
     redirect('/admin')
   }

@@ -3,7 +3,7 @@ import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import checkWebInactiveTask from '@trigger/check-web-inactive'
 import prisma from '@prisma-rw'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import { PROTOCOL, REMOTE_HOSTNAME } from '@helpers/config'
 import { sendEmail } from '@helpers/email'
 import { FEATURES } from '@helpers/features'
@@ -108,9 +108,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
     if (!session?.user) {
       return Response.json(
         {

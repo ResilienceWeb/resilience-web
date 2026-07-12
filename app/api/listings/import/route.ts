@@ -1,6 +1,3 @@
-/**
- * CSV Import API endpoint for bulk listing imports
- */
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import { generateSlug as generateBaseSlug } from '@/helpers/utils'
@@ -23,7 +20,7 @@ import type {
 import { validateRows } from '@/lib/import/validator'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import {
   getAllListingNamesInWeb,
   createListingWithRelations,
@@ -31,16 +28,9 @@ import {
 import { canUserEditWeb } from '@db/webAccessRepository'
 import { getWebBySlug } from '@db/webRepository'
 
-/**
- * POST /api/listings/import
- * Import listings from CSV data
- */
 export async function POST(request: NextRequest) {
   try {
-    // 1. Authentication check
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
 
     if (!session?.user?.email) {
       return Response.json(
@@ -49,7 +39,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 2. Parse request body
     const body: ImportRequest = await request.json()
     const { webId, columnMapping, rows } = body
 
@@ -60,7 +49,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 3. Get web and verify authorization
     const searchParams = request.nextUrl.searchParams
     const webSlug = searchParams.get('web')
 
@@ -76,7 +64,6 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: 'Web not found' }, { status: 404 })
     }
 
-    // Check if user can edit this web (OWNER or EDITOR)
     const canEdit = await canUserEditWeb(session.user.email, webId)
     if (!canEdit) {
       return Response.json(
@@ -85,10 +72,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 4. Map CSV rows to listing data
     const mappedRows = mapRows(rows, columnMapping)
 
-    // 5. Validate mapped data
     const validationResult = validateRows(mappedRows)
     if (!validationResult.valid) {
       return Response.json(
@@ -101,17 +86,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 6. Get existing listing names for duplicate detection
     const existingNames = await getAllListingNamesInWeb(webId)
     const existingNamesSet = createNameSet(existingNames)
 
-    // 7. Filter out duplicates
     const { unique: uniqueRows, duplicates: duplicateRows } = filterDuplicates(
       validationResult.validRows,
       existingNamesSet,
     )
 
-    // 8. Process imports in batches
     const batches = createBatches(uniqueRows, DEFAULT_BATCH_SIZE)
     const batchResults = []
 
@@ -200,7 +182,6 @@ export async function POST(request: NextRequest) {
       batchResults.push(processBatchResults(results, i + 1))
     }
 
-    // 9. Add skipped duplicates to results
     const duplicateResults = duplicateRows.map((row) =>
       createRowResult(row.rowNumber, {
         success: false,
@@ -215,10 +196,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 10. Create summary
     const summary: ImportSummary = createImportSummary(batchResults)
 
-    // Imported listings are live, so refresh the web page if any succeeded.
     if (summary.successCount > 0) {
       revalidatePath(`/${web.slug}`)
     }
@@ -239,10 +218,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-/**
- * Generate a unique URL-safe slug for a listing within a web
- * Checks database for existing slugs and appends numeric suffix if needed
- */
 async function generateUniqueSlug(
   name: string,
   webId: number,

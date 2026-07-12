@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import { markNotificationClicked } from '@db/notificationRepository'
 
 export async function POST(
@@ -8,9 +8,7 @@ export async function POST(
   props: { params: Promise<{ id: string }> },
 ) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
 
     if (!session?.user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })

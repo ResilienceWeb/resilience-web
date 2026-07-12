@@ -4,7 +4,7 @@ import { Prisma } from '@prisma-client'
 import type { Web } from '@prisma/browser'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 
@@ -41,7 +41,9 @@ export async function GET(
     include.listings = {
       include: {
         listing: { include: { location: true } },
-        category: { select: { id: true, color: true, label: true, icon: true } },
+        category: {
+          select: { id: true, color: true, label: true, icon: true },
+        },
         tags: { select: { id: true, label: true } },
       },
     }
@@ -91,9 +93,7 @@ export async function GET(
 
 export async function PUT(request, props) {
   const params = await props.params
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  })
+  const session = await getSessionSafe(request.headers)
 
   if (!session?.user) {
     return new Response('Unauthorized', {
@@ -209,9 +209,7 @@ export async function PUT(request, props) {
 
 export async function PATCH(request, props) {
   const params = await props.params
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  })
+  const session = await getSessionSafe(request.headers)
 
   if (session?.user.role !== 'admin') {
     return new Response('Unauthorized', {

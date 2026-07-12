@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
 
 export const metadata: Metadata = {
@@ -21,9 +21,7 @@ export default async function Layout(props) {
     redirect(REMOTE_URL)
   }
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  })
+  const session = await getSessionSafe(await headers())
 
   if (!session) {
     redirect(

@@ -2,16 +2,14 @@ import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 
 export async function POST(
   request: NextRequest,
   props: { params: Promise<{ slug: string }> },
 ) {
   const params = await props.params
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  })
+  const session = await getSessionSafe(request.headers)
 
   if (session?.user.role !== 'admin') {
     return new Response('Unauthorized', {

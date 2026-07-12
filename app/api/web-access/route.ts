@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import { sendEmail } from '@helpers/email'
 import WebPermissionsRevokedEmail from '@components/emails/WebPermissionsRevokedEmail'
 import {
@@ -14,9 +14,7 @@ import { getWebById, getWebBySlug } from '@db/webRepository'
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
 
     if (!session?.user) {
       return Response.json(
@@ -62,9 +60,7 @@ export async function GET(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
 
     if (!session?.user) {
       return Response.json(

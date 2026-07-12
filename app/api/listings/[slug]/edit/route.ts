@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import deleteImage from '@helpers/deleteImage'
 import { sendMultipleEmails } from '@helpers/email'
 import uploadImage from '@helpers/uploadImage'
@@ -16,9 +16,7 @@ export async function GET(
 ) {
   const params = await props.params
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
     if (!session?.user) {
       return new Response('Not authorized', { status: 401 })
     }
@@ -47,9 +45,7 @@ export async function GET(
 export async function POST(request, props) {
   const params = await props.params
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
     if (!session?.user) {
       return new Response('Not authorized', { status: 401 })
     }
@@ -233,9 +229,7 @@ export async function POST(request, props) {
 export async function DELETE(request, props) {
   const params = await props.params
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
     if (!session) {
       return new Response('Not authorized', { status: 401 })
     }

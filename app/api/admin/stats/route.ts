@@ -1,13 +1,11 @@
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import { getListingEditStats } from '@db/listingEditRepository'
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
     if (!session?.user) {
       return Response.json(
         { error: "You don't have enough permissions to perform this action." },

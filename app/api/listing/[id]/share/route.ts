@@ -2,7 +2,7 @@ import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import { canUserShareListing } from '@db/webAccessRepository'
 
 /**
@@ -18,9 +18,7 @@ export async function POST(
 ) {
   const params = await props.params
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
 
     const listingId = Number(params.id)
 
@@ -119,9 +117,7 @@ export async function DELETE(
 ) {
   const params = await props.params
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    })
+    const session = await getSessionSafe(request.headers)
 
     const listingId = Number(params.id)
 

@@ -1,11 +1,9 @@
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 
 export async function POST(request: NextRequest) {
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  })
+  const session = await getSessionSafe(request.headers)
 
   if (!session?.user?.email) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })

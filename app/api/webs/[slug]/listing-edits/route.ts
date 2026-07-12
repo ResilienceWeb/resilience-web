@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
-import { auth } from '@auth'
+import { getSessionSafe } from '@auth'
 import { stringToBoolean } from '@helpers/utils'
 import { getListingEditsByWeb } from '@db/listingEditRepository'
 
@@ -11,9 +11,7 @@ export async function GET(
   const params = await props.params
   const slug = params.slug
 
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  })
+  const session = await getSessionSafe(request.headers)
 
   if (!session?.user) {
     return new Response('Unauthorized', {

@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/nextjs'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
+import { isAPIError } from 'better-auth/api'
 import { betterAuth } from 'better-auth/minimal'
 import { emailOTP, admin } from 'better-auth/plugins'
 import prisma from '@prisma-rw'
@@ -76,3 +77,20 @@ export const auth = betterAuth({
     modelName: 'Verification',
   },
 })
+
+/**
+ * Like auth.api.getSession, but returns null instead of throwing when the
+ * session becomes invalid mid-request (Better Auth throws an UNAUTHORIZED
+ * APIError if the session row is deleted between its read and its rolling
+ * refresh, e.g. by a concurrent sign-out).
+ */
+export async function getSessionSafe(headers: Headers) {
+  try {
+    return await auth.api.getSession({ headers })
+  } catch (error) {
+    if (isAPIError(error) && error.statusCode === 401) {
+      return null
+    }
+    throw error
+  }
+}
