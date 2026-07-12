@@ -1,4 +1,4 @@
-import { useFormContext } from 'react-hook-form'
+import { useController, useFormContext } from 'react-hook-form'
 import { Editor } from '@tinymce/tinymce-react'
 
 interface RichTextEditorProps {
@@ -11,13 +11,11 @@ const RichTextEditor = ({
   label,
   ...otherProps
 }: RichTextEditorProps) => {
-  const { register, setValue, getValues } = useFormContext()
-
-  register(name)
-
-  const handleEditorChange = (value: string) => {
-    setValue(name, value, { shouldDirty: true })
-  }
+  const { control } = useFormContext()
+  // Subscribes to the field value as state. Reading it via getValues() during
+  // render breaks with the React Compiler: getValues is not pure, so the
+  // compiler caches its first result and the editor's value prop goes stale.
+  const { field } = useController({ name, control })
 
   return (
     <>
@@ -27,8 +25,9 @@ const RichTextEditor = ({
       <Editor
         {...otherProps}
         apiKey={process.env.NEXT_PUBLIC_TINY_MCE_APIKEY}
-        value={getValues(name)}
-        onEditorChange={handleEditorChange}
+        value={field.value ?? ''}
+        onEditorChange={field.onChange}
+        onBlur={field.onBlur}
         init={{
           height: 300,
           menubar: 'edit view insert format tc help',
