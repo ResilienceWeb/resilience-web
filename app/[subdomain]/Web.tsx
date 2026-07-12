@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, memo, useState } from 'react'
+import { useEffect, memo, useMemo, useState } from 'react'
 import { HiOutlineShare } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
@@ -84,9 +84,15 @@ const Web = ({
   webSlug,
   relatedWebs = [],
 }: Props) => {
-  const data: NetworkData | null = compressedData
-    ? decompressJson<NetworkData>(compressedData)
-    : null
+  // Deliberately a manual useMemo: without it the React Compiler merges this
+  // value and the filter pipeline below into a single memo scope, which then
+  // spans the hook calls in between and gets discarded entirely — so `data`
+  // (and filteredNetworkData) would be rebuilt on every render, remounting the
+  // network graph whenever unrelated state changes (e.g. the listing dialog).
+  const data: NetworkData | null = useMemo(
+    () => (compressedData ? decompressJson<NetworkData>(compressedData) : null),
+    [compressedData],
+  )
 
   const isMobile = useIsMobile()
   const [isVolunteer, setIsVolunteer] = useState(false)
