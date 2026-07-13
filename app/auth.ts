@@ -12,6 +12,14 @@ export const auth = betterAuth({
     provider: 'postgresql',
   }),
   trustedOrigins: ['http://localhost:4000', 'http://*.localhost:4000'],
+  advanced: {
+    ipAddress: {
+      // Set by Netlify's proxy from the real client connection; the default
+      // x-forwarded-for arrives as a multi-IP chain, which Better Auth
+      // rejects as untrusted unless trustedProxies is configured
+      ipAddressHeaders: ['x-nf-client-connection-ip'],
+    },
+  },
   logger: {
     level: 'warn',
     log: (level, message, ...args) => {
