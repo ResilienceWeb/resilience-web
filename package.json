@@ -2,7 +2,7 @@
   "name": "resilience-web",
   "version": "0.1.0",
   "type": "module",
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "scripts": {
     "dev": "next dev --turbopack -H 0.0.0.0 -p 4000",
     "trigger": "npx trigger.dev@latest dev",

@@ -77,7 +77,9 @@ I wrote a blog post that goes through technical choices that I made for this pro
 
 ## License
 
-[Attribution 4.0 International](LICENSE.md)
+The source code of this project is licensed under the [GNU Affero General Public License v3.0](LICENSE.md) (AGPL-3.0). If you run a modified version of this software as a network service, you must make your modified source code available to its users.
+
+The content on Resilience Web sites (listings, descriptions and other directory data) is licensed under [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/) (CC BY-SA 4.0).
 
 
 ## Acknowledgements
