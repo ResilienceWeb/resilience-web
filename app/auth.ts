@@ -16,9 +16,16 @@ export const auth = betterAuth({
     level: 'warn',
     log: (level, message, ...args) => {
       if (level === 'error') {
-        Sentry.captureException(new Error(`[better-auth] ${message}`), {
-          extra: { args },
-        })
+        // Better Auth passes the underlying error as an arg; capture it
+        // directly so Sentry gets its real stack trace, not just the
+        // generic message (e.g. "INTERNAL_SERVER_ERROR")
+        const underlyingError = args.find((arg) => arg instanceof Error)
+        Sentry.captureException(
+          underlyingError ?? new Error(`[better-auth] ${message}`),
+          {
+            extra: { betterAuthMessage: message, args },
+          },
+        )
       } else if (level === 'warn') {
         Sentry.captureMessage(`[better-auth] ${message}`, {
           level: 'warning',
