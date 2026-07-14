@@ -41,7 +41,7 @@ export default function ListingEditsPage({ params }) {
   const handleSubmit = () => {
     applyListingEdit({
       listingId: listing?.id,
-      listingEditId: listingEdits[0]?.id,
+      listingEditId: listingEdits?.[0]?.id,
     })
   }
 
