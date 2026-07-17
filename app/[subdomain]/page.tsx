@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import { GraphQLClient } from 'graphql-request'
 import prisma from '@prisma-rw'
 import { compressJson } from '@helpers/compression'
-import { getIconUnicode } from '@helpers/icons'
 import { getAllWebs, getWebBySlug } from '@db/webRepository'
 import Web from './Web'
 
@@ -267,10 +266,9 @@ async function getData({ webSlug }): Promise<DataType> {
         },
         slug,
         tags,
-        // below are for vis-network node styling and data
+        // below are for network node styling and data
         label: title,
         color: `#${category.color}`,
-        icon: undefined,
         website,
       }
 
@@ -278,14 +276,6 @@ async function getData({ webSlug }): Promise<DataType> {
         transformedNode.new = isNew
       }
 
-      if (category.icon !== 'default') {
-        transformedNode.icon = {
-          face: '"Font Awesome 5 Free"',
-          code: getIconUnicode(category.icon),
-          color: 'white',
-          weight: 700,
-        }
-      }
       if (seekingVolunteers) {
         transformedNode.seekingVolunteers = true
       }

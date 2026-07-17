@@ -251,6 +251,6 @@ Key variables (see [.env.example](.env.example)):
 - React Strict Mode disabled in [next.config.js](next.config.js)
 - Turbopack used for faster dev builds
 - Prisma client generated to `prisma/generated/` (not default location)
-- Font Awesome 5 Free used for category icons via CSS classes
+- Category icons come from the react-icons catalog in [helpers/icons.ts](helpers/icons.ts); canvas (network view) and Leaflet markers render them via [helpers/icon-render.ts](helpers/icon-render.ts) (SVG → cached image) — no icon webfont is shipped
 - Node version specified in [.nvmrc](.nvmrc)
 - Repository uses semantic commits from git history

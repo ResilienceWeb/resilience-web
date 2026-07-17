@@ -1,5 +1,5 @@
 import { memo, useState } from 'react'
-import { icons } from '@helpers/icons'
+import { getIcon } from '@helpers/icons'
 import CategoryTag from '@components/category-tag'
 import { Button } from '@components/ui/button'
 import {
@@ -104,9 +104,7 @@ const List = ({ categories }) => {
                   }
 
                   if (column.accessor === 'icon') {
-                    const DisplayIcon = icons.find(
-                      (icon) => icon.name === cell,
-                    )?.icon
+                    const DisplayIcon = getIcon(cell)?.icon
 
                     if (!DisplayIcon) {
                       return (

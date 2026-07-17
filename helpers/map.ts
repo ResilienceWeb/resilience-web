@@ -1,8 +1,14 @@
 import L from 'leaflet'
-import { getIconUnicode } from '@helpers/icons'
+import { renderIconSvg } from '@helpers/icon-render'
+
+const DEFAULT_MARKER_COLOR = '#3388ff'
 
 export function createCustomIcon(iconName: string, color: string) {
-  const iconUnicode = getIconUnicode(iconName) ?? '\uf3c5' // Default to map-marker if not found
+  const markerColor = color || DEFAULT_MARKER_COLOR
+  // Fall back to the default map-marker icon if the name is not found
+  const iconSvg =
+    renderIconSvg(iconName, markerColor, 16) ??
+    renderIconSvg('default', markerColor, 16)
 
   const iconHtml = `
     <div style="
@@ -10,18 +16,12 @@ export function createCustomIcon(iconName: string, color: string) {
       border-radius: 50%;
       height: 32px;
       width: 32px;
-      line-height: 26px;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       box-shadow: 0 1px 5px rgba(0,0,0,0.2);
-      border: 2px solid ${color || '#3388ff'};
-    ">
-      <span style="
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        font-size: 16px;
-        color: ${color || '#3388ff'};
-      ">${iconUnicode}</span>
-    </div>
+      border: 2px solid ${markerColor};
+    ">${iconSvg}</div>
   `
 
   return L.divIcon({
@@ -86,18 +86,16 @@ export function createRelatedWebIcon(title: string) {
   })
 }
 
-const DEFAULT_MARKER_UNICODE = '' // map-marker
-const DEFAULT_MARKER_COLOR = '#3388ff'
-
 function clusterMiniIcon(
   iconName: string | undefined,
   color: string,
   offset: number,
   zIndex: number,
 ) {
-  const iconUnicode = iconName
-    ? (getIconUnicode(iconName) ?? DEFAULT_MARKER_UNICODE)
-    : DEFAULT_MARKER_UNICODE
+  // Fall back to the default map-marker icon if the name is not found
+  const iconSvg =
+    (iconName ? renderIconSvg(iconName, color, 13) : null) ??
+    renderIconSvg('default', color, 13)
 
   return `
     <div style="
@@ -114,14 +112,7 @@ function clusterMiniIcon(
       display: flex;
       align-items: center;
       justify-content: center;
-    ">
-      <span style="
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        font-size: 13px;
-        color: ${color};
-      ">${iconUnicode}</span>
-    </div>
+    ">${iconSvg}</div>
   `
 }
 

@@ -1,3 +1,4 @@
+import type { IconType } from 'react-icons'
 import {
   FaLeaf,
   FaTree,
@@ -34,116 +35,76 @@ import {
   FaGlobe,
 } from 'react-icons/fa'
 
-export const icons = [
+export type IconEntry = {
+  icon: IconType
+  name: string
+  category: string
+}
+
+export const icons: IconEntry[] = [
   // Environment
-  { icon: FaLeaf, name: 'Leaf', category: 'Environment', unicode: '\uf06c' },
-  { icon: FaTree, name: 'Tree', category: 'Environment', unicode: '\uf1bb' },
+  { icon: FaLeaf, name: 'Leaf', category: 'Environment' },
+  { icon: FaTree, name: 'Tree', category: 'Environment' },
 
   // Housing
-  { icon: FaHome, name: 'Home', category: 'Housing', unicode: '\uf015' },
-  {
-    icon: FaBuilding,
-    name: 'Building',
-    category: 'Housing',
-    unicode: '\uf1ad',
-  },
-  { icon: FaCity, name: 'City', category: 'Other', unicode: '\uf64f' },
+  { icon: FaHome, name: 'Home', category: 'Housing' },
+  { icon: FaBuilding, name: 'Building', category: 'Housing' },
+  { icon: FaCity, name: 'City', category: 'Other' },
 
   // Transportation
-  { icon: FaCar, name: 'Car', category: 'Transportation', unicode: '\uf1b9' },
-  { icon: FaBus, name: 'Bus', category: 'Transportation', unicode: '\uf207' },
-  {
-    icon: FaBicycle,
-    name: 'Bicycle',
-    category: 'Transportation',
-    unicode: '\uf206',
-  },
+  { icon: FaCar, name: 'Car', category: 'Transportation' },
+  { icon: FaBus, name: 'Bus', category: 'Transportation' },
+  { icon: FaBicycle, name: 'Bicycle', category: 'Transportation' },
 
   // Energy
-  { icon: FaWind, name: 'Wind', category: 'Energy', unicode: '\uf72e' },
-  {
-    icon: FaSolarPanel,
-    name: 'SolarPanel',
-    category: 'Energy',
-    unicode: '\uf5ba',
-  },
-  { icon: FaFire, name: 'Fire', category: 'Energy', unicode: '\uf06d' },
+  { icon: FaWind, name: 'Wind', category: 'Energy' },
+  { icon: FaSolarPanel, name: 'SolarPanel', category: 'Energy' },
+  { icon: FaFire, name: 'Fire', category: 'Energy' },
 
   // Social Justice
-  {
-    icon: FaHandsHelping,
-    name: 'HandsHelping',
-    category: 'Social Justice',
-    unicode: '\uf4c4',
-  },
-  {
-    icon: FaBalanceScale,
-    name: 'BalanceScale',
-    category: 'Social Justice',
-    unicode: '\uf24e',
-  },
+  { icon: FaHandsHelping, name: 'HandsHelping', category: 'Social Justice' },
+  { icon: FaBalanceScale, name: 'BalanceScale', category: 'Social Justice' },
   {
     icon: FaHandHoldingHeart,
     name: 'HandHoldingHeart',
     category: 'Social Justice',
-    unicode: '\uf4be',
   },
-  {
-    icon: FaFistRaised,
-    name: 'FistRaised',
-    category: 'Social Justice',
-    unicode: '\uf6de',
-  },
-  {
-    icon: FaHeart,
-    name: 'Heart',
-    category: 'Social Justice',
-    unicode: '\uf004',
-  },
+  { icon: FaFistRaised, name: 'FistRaised', category: 'Social Justice' },
+  { icon: FaHeart, name: 'Heart', category: 'Social Justice' },
 
   // Food
-  { icon: FaAppleAlt, name: 'Apple', category: 'Food', unicode: '\uf5d1' },
-  { icon: FaCarrot, name: 'Carrot', category: 'Food', unicode: '\uf787' },
-  { icon: FaSeedling, name: 'Seedling', category: 'Food', unicode: '\uf4d8' },
+  { icon: FaAppleAlt, name: 'Apple', category: 'Food' },
+  { icon: FaCarrot, name: 'Carrot', category: 'Food' },
+  { icon: FaSeedling, name: 'Seedling', category: 'Food' },
 
   // Other
-  { icon: FaTools, name: 'Tools', category: 'Other', unicode: '\uf7d9' },
-  {
-    icon: FaGraduationCap,
-    name: 'Education',
-    category: 'Other',
-    unicode: '\uf19d',
-  },
-  { icon: FaDrum, name: 'Drum', category: 'Other', unicode: '\uf569' },
-  { icon: FaFish, name: 'Fish', category: 'Other', unicode: '\uf578' },
-  { icon: FaPaw, name: 'Paw', category: 'Other', unicode: '\uf1b0' },
-  { icon: FaBlind, name: 'Blind', category: 'Other', unicode: '\uf29d' },
-  { icon: FaCapsules, name: 'Capsules', category: 'Other', unicode: '\uf46b' },
-  {
-    icon: FaBabyCarriage,
-    name: 'BabyCarriage',
-    category: 'Other',
-    unicode: '\uf77d',
-  },
-  { icon: FaBacteria, name: 'Bacteria', category: 'Other', unicode: '\ue059' },
-  { icon: FaCoffee, name: 'Coffee', category: 'Other', unicode: '\uf0f4' },
-  { icon: FaFlask, name: 'Flask', category: 'Other', unicode: '\uf0c3' },
-  { icon: FaPalette, name: 'Palette', category: 'Other', unicode: '\uf53f' },
-  { icon: FaGlobe, name: 'Globe', category: 'Other', unicode: '\uf0ac' },
+  { icon: FaTools, name: 'Tools', category: 'Other' },
+  { icon: FaGraduationCap, name: 'Education', category: 'Other' },
+  { icon: FaDrum, name: 'Drum', category: 'Other' },
+  { icon: FaFish, name: 'Fish', category: 'Other' },
+  { icon: FaPaw, name: 'Paw', category: 'Other' },
+  { icon: FaBlind, name: 'Blind', category: 'Other' },
+  { icon: FaCapsules, name: 'Capsules', category: 'Other' },
+  { icon: FaBabyCarriage, name: 'BabyCarriage', category: 'Other' },
+  { icon: FaBacteria, name: 'Bacteria', category: 'Other' },
+  { icon: FaCoffee, name: 'Coffee', category: 'Other' },
+  { icon: FaFlask, name: 'Flask', category: 'Other' },
+  { icon: FaPalette, name: 'Palette', category: 'Other' },
+  { icon: FaGlobe, name: 'Globe', category: 'Other' },
 
   // Default
-  {
-    icon: FaMapMarkerAlt,
-    name: 'default',
-    category: 'Other',
-    unicode: '\uf3c5',
-  },
+  { icon: FaMapMarkerAlt, name: 'default', category: 'Other' },
 ]
 
 // Group icons by category
 export const categories = [...new Set(icons.map((icon) => icon.category))]
 
-export const getIconUnicode = (name: string) => {
-  const icon = icons.find((icon) => icon.name === name)
-  return icon?.unicode
+// Icon names are stored in the database (Category.icon) as plain names like
+// 'Leaf'. Names may also be namespaced by icon set (e.g. 'fa:Leaf') so that
+// additional sets can be added later; bare names resolve to the Font Awesome
+// set for backwards compatibility.
+export const getIcon = (name?: string | null): IconEntry | undefined => {
+  if (!name) return undefined
+  const bareName = name.startsWith('fa:') ? name.slice(3) : name
+  return icons.find((icon) => icon.name === bareName)
 }
