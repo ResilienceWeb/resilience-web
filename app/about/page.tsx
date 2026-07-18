@@ -13,6 +13,9 @@ export const metadata = {
       'A platform that weaves together groups working on social and environmental change in order to foster collaboration and fuel social change.',
     url: 'https://resilienceweb.org.uk/about',
   },
+  alternates: {
+    canonical: 'https://resilienceweb.org.uk/about',
+  },
 }
 
 export default async function AboutPage() {

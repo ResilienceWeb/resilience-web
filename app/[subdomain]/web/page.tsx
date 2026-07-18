@@ -54,6 +54,9 @@ export async function generateMetadata(props): Promise<Metadata> {
       description: truncatedDescription,
       images: [{ url: webData.image }],
     },
+    alternates: {
+      canonical: `https://${webData.slug}.resilienceweb.org.uk/web`,
+    },
   }
 }
 

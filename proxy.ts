@@ -39,6 +39,36 @@ export default function middleware(req: NextRequest) {
     })
   }
 
+  // Permanently redirect alternate hostnames to the primary domain so search
+  // engines only ever see one host per page (www, the Netlify alias and the
+  // legacy Cambridge domain used to serve identical content via rewrites).
+  const PRIMARY_DOMAIN = 'resilienceweb.org.uk'
+  let redirectHost: string | null = null
+  if (
+    hostname === `www.${PRIMARY_DOMAIN}` ||
+    hostname === 'resilienceweb.netlify.app' ||
+    hostname === 'cambridgeresilienceweb.org.uk' ||
+    hostname === 'www.cambridgeresilienceweb.org.uk'
+  ) {
+    redirectHost = PRIMARY_DOMAIN
+  } else if (hostname.endsWith('.cambridgeresilienceweb.org.uk')) {
+    const subdomain = hostname.replace('.cambridgeresilienceweb.org.uk', '')
+    redirectHost = `${subdomain}.${PRIMARY_DOMAIN}`
+  }
+  if (redirectHost) {
+    return NextResponse.redirect(
+      `https://${redirectHost}${pathname}${req.nextUrl.search}`,
+      301,
+    )
+  }
+
+  // Old /index URLs should resolve to the homepage rather than being treated
+  // as a web called "index" by the [subdomain] route.
+  if (pathname === '/index') {
+    url.pathname = '/'
+    return NextResponse.redirect(url, 301)
+  }
+
   let currentHost
   if (hostname.includes('staging.')) {
     currentHost = hostname.replace(`.staging.resilienceweb.org.uk`, '')

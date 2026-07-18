@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   twitter: {
     site: '@ResilienceWeb',
   },
+  alternates: {
+    canonical: 'https://resilienceweb.org.uk',
+  },
 }
 
 export default async function Home() {

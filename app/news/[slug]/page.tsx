@@ -56,6 +56,9 @@ export async function generateMetadata(props): Promise<Metadata> {
       description: post.excerpt,
       images: [{ url: post.coverImage?.url }],
     },
+    alternates: {
+      canonical: `https://resilienceweb.org.uk/news/${params.slug}`,
+    },
   }
 }
 

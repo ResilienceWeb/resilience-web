@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     title: 'News | Resilience Web',
     description: 'News & updates from the Resilience Web team',
   },
+  alternates: {
+    canonical: 'https://resilienceweb.org.uk/news',
+  },
 }
 
 export default async function NewsPage() {
