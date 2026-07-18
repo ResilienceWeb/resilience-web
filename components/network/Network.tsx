@@ -7,7 +7,7 @@ import { forceRadial } from 'd3-force'
 import { useResizeObserver } from 'usehooks-ts'
 import { trackListingEvent } from '@helpers/analytics'
 import { getWebUrl } from '@helpers/config'
-import { getIconUnicode } from '@helpers/icons'
+import { getIconImage } from '@helpers/icon-render'
 import ListingDialog from '@components/main-list/listing-dialog'
 import { Button } from '@components/ui/button'
 import styles from './Network.module.css'
@@ -20,6 +20,7 @@ type NodeType = {
   category?: {
     color: string
     label: string
+    icon?: string
   }
   val?: number
   x?: number
@@ -366,6 +367,21 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
     img.src = '/logo-circle.png'
   }, [])
 
+  // Icon images load asynchronously; preload them and bump state as each one
+  // becomes ready so the canvas repaints even after the simulation has cooled.
+  const [_iconsReady, setIconsReady] = useState(0)
+  useEffect(() => {
+    if (!data) return
+    const repaint = () => setIconsReady((count) => count + 1)
+    data.nodes.forEach((node) => {
+      if (node.group === 'category') {
+        if (node.icon) getIconImage(node.icon, '#666', repaint)
+      } else if (node.category?.icon && node.category.icon !== 'default') {
+        getIconImage(node.category.icon, '#fff', repaint)
+      }
+    })
+  }, [data])
+
   const nodeCanvasObject = (
     node: NodeType,
     ctx: CanvasRenderingContext2D,
@@ -506,24 +522,28 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
 
     ctx.stroke()
 
-    // Draw icon inside the circle
-    // For listings: comes as object with code
-    // For categories: comes as string name, need to look up
-    const iconCode =
-      node.icon?.code ||
-      (node.group === 'category' ? getIconUnicode(node.icon) : null)
+    // Draw icon inside the circle. Category nodes carry the icon name
+    // directly; listing nodes use their category's icon.
+    const iconName =
+      node.group === 'category'
+        ? node.icon
+        : node.category?.icon !== 'default'
+          ? node.category?.icon
+          : null
 
-    if (
-      iconCode &&
-      node.group !== 'central-node' &&
-      node.group !== 'related-web'
-    ) {
-      const iconSize = nodeRadius * 1.0
-      ctx.font = `900 ${iconSize}px "Font Awesome 5 Free"`
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-      ctx.fillStyle = node.group === 'category' ? '#666' : '#fff'
-      ctx.fillText(iconCode, node.x || 0, node.y || 0)
+    if (iconName) {
+      const iconColor = node.group === 'category' ? '#666' : '#fff'
+      const iconImage = getIconImage(iconName, iconColor)
+      if (iconImage) {
+        const iconSize = nodeRadius
+        ctx.drawImage(
+          iconImage,
+          (node.x || 0) - iconSize / 2,
+          (node.y || 0) - iconSize / 2,
+          iconSize,
+          iconSize,
+        )
+      }
     }
 
     // Draw label underneath the circle

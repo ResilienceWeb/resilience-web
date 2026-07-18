@@ -4,14 +4,13 @@ import { useEffect, memo, useMemo, useState } from 'react'
 import { HiOutlineShare } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
-import '@styles/font-awesome.css'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts'
 import { trackWebEvent } from '@helpers/analytics'
 import { decompressJson } from '@helpers/compression'
 import { REMOTE_URL } from '@helpers/config'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
-import { icons } from '@helpers/icons'
+import { getIcon } from '@helpers/icons'
 import {
   removeNonAlphaNumeric,
   sortStringsFunc,
@@ -145,9 +144,7 @@ const Web = ({
     return fetchedCategories.map((c) => {
       const color = `#${c.color}`
       const IconComponent =
-        c.icon && c.icon !== 'default'
-          ? icons.find((i) => i.name === c.icon)?.icon
-          : undefined
+        c.icon && c.icon !== 'default' ? getIcon(c.icon)?.icon : undefined
 
       return {
         value: c.label,

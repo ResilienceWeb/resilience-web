@@ -1,6 +1,6 @@
 import chroma from 'chroma-js'
 import { selectMoreAccessibleColor } from '@helpers/colors'
-import { icons } from '@helpers/icons'
+import { getIcon } from '@helpers/icons'
 import { cn } from '@components/lib/utils'
 import { Badge } from '@components/ui/badge'
 
@@ -28,9 +28,7 @@ const CategoryTag = ({
   )
 
   const IconComponent =
-    iconName && iconName !== 'default'
-      ? icons.find((i) => i.name === iconName)?.icon
-      : undefined
+    iconName && iconName !== 'default' ? getIcon(iconName)?.icon : undefined
 
   return (
     <Badge

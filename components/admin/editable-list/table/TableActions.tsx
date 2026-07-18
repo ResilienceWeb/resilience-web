@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { HiOutlineSearch, HiPlus } from 'react-icons/hi'
-import { icons } from '@helpers/icons'
+import { getIcon } from '@helpers/icons'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import { MultiSelect } from '@components/ui/multi-select'
@@ -24,9 +24,7 @@ const TableActions = ({
     return fetchedCategories.map((c) => {
       const color = `#${c.color}`
       const IconComponent =
-        c.icon && c.icon !== 'default'
-          ? icons.find((i) => i.name === c.icon)?.icon
-          : undefined
+        c.icon && c.icon !== 'default' ? getIcon(c.icon)?.icon : undefined
 
       return {
         value: c.label,

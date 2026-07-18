@@ -36,7 +36,7 @@ Resilience Web is an interactive directory platform for local environmental and 
 ### UI & Styling
 - **Tailwind CSS 4**
 - **Shadcn/ui** (Radix UI primitives)
-- **Font Awesome 5 Free** (category icons)
+- **react-icons** (category icons, rendered as SVG everywhere incl. canvas/Leaflet via helpers/icon-render.ts)
 - **Sonner** (toast notifications)
 
 ### Visualization
@@ -75,7 +75,7 @@ Resilience Web is an interactive directory platform for local environmental and 
   - `@auth`, `@auth-client`, `@prisma-rw`, `@prisma-client`
 - **Formatting**: Prettier with Tailwind CSS class sorting plugin
 - **Linting**: ESLint with TypeScript, React, Next.js, and accessibility plugins
-- **Naming**: Use semantic naming; Font Awesome 5 Free CSS classes for category icons
+- **Naming**: Use semantic naming; category icons resolved by name via helpers/icons.ts
 
 ### Architecture Patterns
 
@@ -117,7 +117,7 @@ Each "web" (community/organization) operates independently:
 - **Web**: Organization/community with subdomain, location, team, settings
 - **Listing**: Directory entry with description, location, images, social links
 - **ListingEdit**: Pending edit proposals requiring approval from web editors/owners
-- **Category**: Per-web categorization with colors and Font Awesome icons
+- **Category**: Per-web categorization with colors and icons (react-icons catalog)
 - **Tag**: Per-web tagging system
 - **User**: Email OTP authenticated accounts
 - **WebAccess**: Team member roles (OWNER, EDITOR)

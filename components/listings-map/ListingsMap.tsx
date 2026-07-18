@@ -174,13 +174,6 @@ function ListingsMap({ items = [], webSlug, relatedWebs = [] }: MapProps) {
   useEffect(() => {
     import('./leaflet-icon-fix')
 
-    // Load Font Awesome for icons (if using FontAwesome in custom markers)
-    const link = document.createElement('link')
-    link.rel = 'stylesheet'
-    link.href =
-      'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'
-    document.head.appendChild(link)
-
     // Simulate loading time for map initialization
     const timer = setTimeout(() => {
       setIsLoading(false)
@@ -188,7 +181,6 @@ function ListingsMap({ items = [], webSlug, relatedWebs = [] }: MapProps) {
 
     return () => {
       clearTimeout(timer)
-      document.head.removeChild(link)
     }
   }, [])
 

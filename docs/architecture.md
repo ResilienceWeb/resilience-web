@@ -184,7 +184,7 @@ The `Web` model implements soft deletes:
 - **Web**: Organization/community with subdomain, location, team, settings
 - **Listing**: Directory entry with description, location, images, social links
 - **ListingEdit**: Pending edit proposals requiring approval
-- **Category**: Per-web categorization with colors and Font Awesome icons
+- **Category**: Per-web categorization with colors and icons (react-icons catalog)
 - **Tag**: Per-web tagging system for listings
 - **User**: User accounts authenticated via email OTP
 - **WebAccess**: Junction table for team member roles (OWNER, EDITOR)

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { icons, categories } from '@helpers/icons'
+import { icons, categories, getIcon } from '@helpers/icons'
 import { Button } from '@components/ui/button'
 import {
   Dialog,
@@ -28,10 +28,7 @@ export default function IconSelector({
     ? icons.filter((icon) => icon.category === selectedCategory)
     : icons.filter((icon) => icon.name !== 'default')
 
-  const DisplayIcon =
-    value && value !== 'default'
-      ? icons.find((icon) => icon.name === value)?.icon
-      : null
+  const DisplayIcon = value && value !== 'default' ? getIcon(value)?.icon : null
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
