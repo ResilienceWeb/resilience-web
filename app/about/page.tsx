@@ -11,10 +11,10 @@ export const metadata = {
     title: 'About | Resilience Web',
     description:
       'A platform that weaves together groups working on social and environmental change in order to foster collaboration and fuel social change.',
-    url: 'https://resilienceweb.org.uk/about',
+    url: 'https://www.resilienceweb.org.uk/about',
   },
   alternates: {
-    canonical: 'https://resilienceweb.org.uk/about',
+    canonical: 'https://www.resilienceweb.org.uk/about',
   },
 }
 

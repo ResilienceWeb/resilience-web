@@ -39,21 +39,22 @@ export default function middleware(req: NextRequest) {
     })
   }
 
-  // Permanently redirect alternate hostnames to the primary domain so search
-  // engines only ever see one host per page (www, the Netlify alias and the
-  // legacy Cambridge domain used to serve identical content via rewrites).
-  const PRIMARY_DOMAIN = 'resilienceweb.org.uk'
+  // Permanently redirect alternate hostnames so search engines only ever see
+  // one host per page. www.resilienceweb.org.uk is the Netlify primary domain
+  // (required for subdomain routing), so the root site canonical host is www;
+  // Netlify's edge already 301s the apex to www. Web subdomains stay on the
+  // apex form (e.g. cambridge.resilienceweb.org.uk). Do NOT redirect www to
+  // the apex here — that fights the Netlify edge redirect and causes a loop.
   let redirectHost: string | null = null
   if (
-    hostname === `www.${PRIMARY_DOMAIN}` ||
     hostname === 'resilienceweb.netlify.app' ||
     hostname === 'cambridgeresilienceweb.org.uk' ||
     hostname === 'www.cambridgeresilienceweb.org.uk'
   ) {
-    redirectHost = PRIMARY_DOMAIN
+    redirectHost = 'www.resilienceweb.org.uk'
   } else if (hostname.endsWith('.cambridgeresilienceweb.org.uk')) {
     const subdomain = hostname.replace('.cambridgeresilienceweb.org.uk', '')
-    redirectHost = `${subdomain}.${PRIMARY_DOMAIN}`
+    redirectHost = `${subdomain}.resilienceweb.org.uk`
   }
   if (redirectHost) {
     return NextResponse.redirect(

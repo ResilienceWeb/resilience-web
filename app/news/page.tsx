@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description: 'News & updates from the Resilience Web team',
   },
   alternates: {
-    canonical: 'https://resilienceweb.org.uk/news',
+    canonical: 'https://www.resilienceweb.org.uk/news',
   },
 }
 

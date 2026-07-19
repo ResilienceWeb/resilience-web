@@ -6,7 +6,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const response = await fetch(
-      `https://resilienceweb.org.uk/api/listings/for-sitemap`,
+      `https://www.resilienceweb.org.uk/api/listings/for-sitemap`,
     )
     const data = await response.json()
     const { listings } = data
@@ -20,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const websResponse = await fetch(
-      `https://resilienceweb.org.uk/api/webs/for-sitemap`,
+      `https://www.resilienceweb.org.uk/api/webs/for-sitemap`,
     )
     const websData = await websResponse.json()
     const { webs } = websData
@@ -34,13 +34,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: 'https://resilienceweb.org.uk',
+      url: 'https://www.resilienceweb.org.uk',
     },
     {
-      url: 'https://resilienceweb.org.uk/about',
+      url: 'https://www.resilienceweb.org.uk/about',
     },
     {
-      url: 'https://resilienceweb.org.uk/news',
+      url: 'https://www.resilienceweb.org.uk/news',
     },
     ...webPathItems,
     ...listingPathItems,

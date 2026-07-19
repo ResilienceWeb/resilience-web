@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     site: '@ResilienceWeb',
   },
   alternates: {
-    canonical: 'https://resilienceweb.org.uk',
+    canonical: 'https://www.resilienceweb.org.uk',
   },
 }
 
