@@ -108,17 +108,20 @@ const ContactDialog = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle>Get in touch</DialogTitle>
+          <DialogTitle>Contact the Resilience Web team</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          Use this form to send us feedback or any questions you may have.
+          Use this form to send feedback or questions to the team behind the
+          Resilience Web platform.
         </DialogDescription>
+        {/* webName is only set in the admin dashboard, where the sender is a
+            web team member and this mis-send warning is just noise */}
         {!webName && (
-          <p className="text-sm text-muted-foreground italic">
-            Note: This form contacts the Resilience Web platform team. If you
-            have a question about a specific local web, please use the Contact
-            info section in the side menu on that web's page instead.
-          </p>
+          <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+            Trying to reach a group or organisation listed on a web? This form
+            won't reach them — please use the website and social media links on
+            their listing page instead.
+          </div>
         )}
 
         <Form {...form}>

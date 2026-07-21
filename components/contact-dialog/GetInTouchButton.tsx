@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { HiOutlineChatBubbleLeft } from 'react-icons/hi2'
+import { MdOutlineQuestionMark } from 'react-icons/md'
 import { Button } from '@components/ui/button'
 import {
   Tooltip,
@@ -34,20 +34,23 @@ const GetInTouchButton = ({
                 className="text-xl"
                 onClick={() => setIsContactDialogOpen(true)}
               >
-                <HiOutlineChatBubbleLeft className="h-5 w-5" />
-                <span className="sr-only">Get in touch</span>
+                <MdOutlineQuestionMark className="h-5 w-5" />
+                <span className="sr-only">Help & feedback</span>
               </Button>
             ) : (
               <Button
                 variant="outline"
                 onClick={() => setIsContactDialogOpen(true)}
               >
-                Get in touch
+                Help & feedback
               </Button>
             )}
           </TooltipTrigger>
           <TooltipContent>
-            <p>Need help? Want to provide feedback? Get in touch here</p>
+            <p>
+              Questions or feedback about the Resilience Web platform? Contact
+              the team here
+            </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
