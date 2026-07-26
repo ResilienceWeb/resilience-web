@@ -199,6 +199,9 @@ model ListingPlacement {
   @@unique([listingId, webId], name: "listingPlacementPair")
   @@unique([webId, slug], name: "webSlug")
   @@index([webId])
+  // Serves the per-web category listing counts in /api/categories as an
+  // index-only scan
+  @@index([webId, categoryId])
   @@map("listing_placements")
 }
 
