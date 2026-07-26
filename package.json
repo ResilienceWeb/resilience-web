@@ -124,14 +124,14 @@
     "typescript": "6.0.3"
   },
   "allowScripts": {
-    "@prisma/engines@7.8.0": true,
+    "@prisma/engines@7.9.0": true,
     "@sentry/cli@2.58.6": true,
     "esbuild@0.28.1": true,
     "fsevents@2.3.2": true,
     "fsevents@2.3.3": true,
     "sharp@0.34.5": true,
     "sharp@0.35.3": true,
-    "prisma@7.8.0": true,
+    "prisma@7.9.0": true,
     "protobufjs@7.6.5": true,
     "unrs-resolver@1.12.2": true,
     "core-js": false
