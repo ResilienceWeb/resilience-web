@@ -6,16 +6,33 @@ import prisma from '@prisma-rw'
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
-    const web = searchParams.get('web')
+    const webSlug = searchParams.get('web')
+
+    if (!webSlug) {
+      return Response.json({ data: [] })
+    }
+
+    // Resolve the web up front so the listing count below can be scoped to it.
+    // Filtering the count by `webId` is what keeps the query fast: without it
+    // Postgres aggregates the entire listing_placements table (every web) on
+    // every request, then throws away all but this web's categories.
+    const web = await prisma.web.findFirst({
+      where: {
+        slug: webSlug,
+        deletedAt: null,
+      },
+      select: {
+        id: true,
+      },
+    })
+
+    if (!web) {
+      return Response.json({ data: [] })
+    }
 
     const categories = await prisma.category.findMany({
       where: {
-        web: {
-          slug: {
-            equals: web,
-          },
-          deletedAt: null,
-        },
+        webId: web.id,
       },
       select: {
         id: true,
@@ -25,9 +42,15 @@ export async function GET(request: NextRequest) {
         color: true,
         icon: true,
         webId: true,
+        // A category only ever belongs to one web, so scoping by webId does not
+        // change the count - it just lets the aggregate use the webId index
         _count: {
           select: {
-            listings: true,
+            listings: {
+              where: {
+                webId: web.id,
+              },
+            },
           },
         },
       },
