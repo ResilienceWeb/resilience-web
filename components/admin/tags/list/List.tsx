@@ -79,7 +79,7 @@ const List = ({ tags }) => {
 
   return (
     <>
-      <div className="rounded-lg border">
+      <div className="overflow-hidden rounded-lg border">
         <Table>
           <TableHeader className="bg-muted">
             <TableRow>

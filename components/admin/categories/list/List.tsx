@@ -69,7 +69,7 @@ const List = ({ categories }) => {
 
   return (
     <>
-      <div className="mb-8 rounded-lg border bg-white">
+      <div className="mb-8 overflow-hidden rounded-lg border bg-white">
         <Table>
           <TableHeader className="bg-gray-50">
             <TableRow>

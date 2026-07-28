@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 import { useSession } from '@auth-client'
 import { getWebUrl } from '@helpers/config'
+import Faq from '@components/faq'
 import { Button } from '@components/ui/button'
 import {
   Card,
@@ -31,6 +32,24 @@ import { Spinner } from '@components/ui/spinner'
 import useCurrentUser from '@hooks/user/useCurrentUser'
 import useUpdateUser from '@hooks/user/useUpdateUser'
 import useMyWebAccess from '@hooks/web-access/useMyWebAccess'
+
+const faqs = [
+  {
+    question: 'Can I change the email address I sign in with?',
+    answer:
+      'Not from this page. Your email address is how your account and web access are identified, so if you need to change it, please get in touch at info@resilienceweb.org.uk.',
+  },
+  {
+    question: 'I was invited to a web but I cannot see it here. Why?',
+    answer:
+      'Make sure you signed in with the same email address the invite was sent to. If the web still does not appear, ask the web owner to send the invite again or get in touch with us.',
+  },
+  {
+    question: 'How do I delete my account?',
+    answer:
+      'Please get in touch at info@resilienceweb.org.uk and we will delete your account for you.',
+  },
+]
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -243,6 +262,11 @@ export default function UserSettingsPage() {
           )}
         </CardContent>
       </Card>
+
+      <div className="mt-4 mb-8">
+        <h3 className="mb-4 text-2xl font-bold">FAQs</h3>
+        <Faq content={faqs} />
+      </div>
     </div>
   )
 }
