@@ -65,7 +65,7 @@ const WebAccessTable = ({
 
   return (
     <>
-      <div className="bg-card mb-8 rounded-lg border">
+      <div className="bg-card mb-8 overflow-hidden rounded-lg border">
         <Table>
           <TableHeader className="bg-muted/50">
             <TableRow>

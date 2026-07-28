@@ -1,6 +1,7 @@
 'use client'
 
 import { PiCheckCircleBold, PiClockBold } from 'react-icons/pi'
+import Faq from '@components/faq'
 import { Badge } from '@components/ui/badge'
 import { Spinner } from '@components/ui/spinner'
 import {
@@ -13,6 +14,29 @@ import {
 } from '@components/ui/table'
 import useListingEditsForWeb from '@hooks/listings/useListingEditsForWeb'
 import { useAppContext } from '@store/hooks'
+
+const faqs = [
+  {
+    question: 'Where do suggested edits come from?',
+    answer:
+      'Anyone can suggest changes to a listing using the Edit listing button on its public page. The suggestions are listed here for your team to review.',
+  },
+  {
+    question: 'How do I review a suggested edit?',
+    answer:
+      'Go to the Listings page and press the "View suggested edit" button on the listing. You can compare the suggested changes with the current version, then accept or reject them.',
+  },
+  {
+    question: 'Why can a listing only have one suggested edit at a time?',
+    answer:
+      'A listing can only have one suggestion in progress at a time, to avoid conflicting changes. Once you accept or reject the pending suggestion, people can suggest changes again.',
+  },
+  {
+    question: 'Is the person who suggested the edit notified?',
+    answer:
+      'Yes — if you accept their changes, they receive an email confirmation letting them know.',
+  },
+]
 
 export default function ListingEditsPage() {
   const { selectedWebSlug } = useAppContext()
@@ -52,7 +76,7 @@ export default function ListingEditsPage() {
           </p>
         </div>
       ) : (
-        <div className="rounded-lg border">
+        <div className="overflow-hidden rounded-lg border">
           <Table>
             <TableHeader className="bg-muted/50">
               <TableRow>
@@ -112,6 +136,11 @@ export default function ListingEditsPage() {
           </Table>
         </div>
       )}
+
+      <div className="mt-8 mb-8">
+        <h3 className="mb-4 text-2xl font-bold">FAQs</h3>
+        <Faq content={faqs} />
+      </div>
     </div>
   )
 }

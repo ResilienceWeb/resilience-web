@@ -13,6 +13,7 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 import { scrollToFormError } from '@helpers/scrollToFormError'
 import ImageUpload from '@components/admin/listing-form/ImageUpload'
+import Faq from '@components/faq'
 import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
 import { Checkbox } from '@components/ui/checkbox'
@@ -42,6 +43,29 @@ const SetLocationMap = dynamic(
     loading: () => <div className="pt-5 text-center">Loading…</div>,
   },
 )
+
+const faqs = [
+  {
+    question: 'How do I publish my web?',
+    answer:
+      'We review each web before it goes live, so publishing is not automatic. When your web has at least 10 listings with complete information and images, a cover image and a contact email, get in touch at info@resilienceweb.org.uk and we will review and publish it for you.',
+  },
+  {
+    question: 'Can I change the web address (e.g. york.resilienceweb.org.uk)?',
+    answer:
+      'Not from the dashboard. If you need to change it, get in touch at info@resilienceweb.org.uk and we can do it for you.',
+  },
+  {
+    question: 'Where is the image used?',
+    answer:
+      'The image is displayed on the card for your web on the resilienceweb.org.uk homepage, so choose a picture that represents your community well.',
+  },
+  {
+    question: 'Why can other team members not see this page?',
+    answer:
+      'Web Settings is only accessible to web owners. Editors can manage listings, categories and tags, but cannot change web-level settings.',
+  },
+]
 
 const webSettingsSchema = z.object({
   title: z.string().min(1, { error: 'Title is required' }),
@@ -345,6 +369,11 @@ export default function WebSettingsPage() {
               </div>
             </form>
           </FormProvider>
+        </div>
+
+        <div className="mt-8 mb-8">
+          <h3 className="mb-4 text-2xl font-bold">FAQs</h3>
+          <Faq content={faqs} />
         </div>
       </div>
     </div>

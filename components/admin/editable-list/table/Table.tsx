@@ -1,7 +1,7 @@
 import { memo } from 'react'
-import Link from 'next/link'
 import { FaStar, FaRegStar } from 'react-icons/fa'
 import { PiWarningCircleBold } from 'react-icons/pi'
+import Link from 'next/link'
 import CategoryTag from '@components/category-tag'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
@@ -20,8 +20,8 @@ const TableContent = ({ items, removeItem }) => {
   if (!items) return null
 
   return (
-    <section className="w-full overflow-x-auto py-4">
-      <div className="rounded-[10px] border border-solid">
+    <section className="w-full py-4">
+      <div className="overflow-x-auto rounded-[10px] border border-solid">
         <Table>
           <TableHeader>
             <TableRow>
