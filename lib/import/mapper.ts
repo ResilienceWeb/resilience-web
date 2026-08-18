@@ -10,11 +10,29 @@ import type {
 } from './types'
 import { sanitizeString, sanitizeUrl, isEmpty } from './validator'
 
+type Confidence = ColumnSuggestion['confidence']
+
+interface FieldPattern {
+  pattern: RegExp
+  confidence: Confidence
+}
+
 /**
- * Auto-detection patterns for common column names
- * Maps variations of column names to listing fields
+ * Marks a pattern that is plausible but easily wrong — a short or generic word
+ * that could just as well be a column about something else entirely.
  */
-const FIELD_PATTERNS: Record<ListingField, RegExp[]> = {
+const loose = (pattern: RegExp): FieldPattern => ({
+  pattern,
+  confidence: 'medium',
+})
+
+/**
+ * Auto-detection patterns for common column names.
+ * Maps variations of column names to listing fields. A bare RegExp is a
+ * hand-curated, unambiguous spelling and yields high confidence; wrap it in
+ * `loose()` to downgrade it.
+ */
+const FIELD_PATTERNS: Record<ListingField, (RegExp | FieldPattern)[]> = {
   name: [
     /^name$/i,
     /^org[a-z]*\s*name$/i, // organization name, org name
@@ -26,9 +44,9 @@ const FIELD_PATTERNS: Record<ListingField, RegExp[]> = {
     /^description$/i,
     /^desc$/i,
     /^about$/i,
-    /^details$/i,
-    /^info$/i,
-    /^information$/i,
+    loose(/^details$/i),
+    loose(/^info$/i),
+    loose(/^information$/i),
   ],
   email: [/^email$/i, /^e-?mail$/i, /^contact\s*email$/i, /^email\s*address$/i],
   website: [
@@ -36,9 +54,10 @@ const FIELD_PATTERNS: Record<ListingField, RegExp[]> = {
     /^web\s*site$/i,
     /^url$/i,
     /^web\s*url$/i,
-    /^site$/i,
-    /^web$/i,
+    /^web\s*address$/i,
     /^homepage$/i,
+    loose(/^site$/i),
+    loose(/^web$/i),
   ],
   address: [
     /^address$/i,
@@ -46,18 +65,27 @@ const FIELD_PATTERNS: Record<ListingField, RegExp[]> = {
     /^street\s*address$/i,
     /^full\s*address$/i,
   ],
-  category: [/^category$/i, /^cat$/i, /^type$/i, /^group$/i, /^sector$/i],
+  category: [
+    /^category$/i,
+    /^cat$/i,
+    /^sector$/i,
+    loose(/^type$/i),
+    loose(/^group$/i),
+  ],
   facebook: [/^facebook$/i, /^fb$/i, /^facebook\s*url$/i, /^facebook\s*link$/i],
   twitter: [
     /^twitter$/i,
-    /^x$/i, // X (formerly Twitter)
     /^twitter\s*url$/i,
     /^twitter\s*handle$/i,
+    loose(/^x$/i), // X (formerly Twitter)
   ],
   instagram: [/^instagram$/i, /^ig$/i, /^insta$/i, /^instagram\s*url$/i],
   linkedin: [/^linkedin$/i, /^linked\s*in$/i, /^linkedin\s*url$/i],
   youtube: [/^youtube$/i, /^yt$/i, /^youtube\s*url$/i, /^youtube\s*channel$/i],
 }
+
+const normalisePattern = (entry: RegExp | FieldPattern): FieldPattern =>
+  entry instanceof RegExp ? { pattern: entry, confidence: 'high' } : entry
 
 /**
  * Auto-detect field mapping from CSV headers
@@ -71,28 +99,17 @@ export function autoDetectMapping(headers: string[]): ColumnSuggestion[] {
 
     // Try to match against known patterns
     for (const [field, patterns] of Object.entries(FIELD_PATTERNS)) {
-      for (const pattern of patterns) {
-        if (pattern.test(cleaned)) {
-          // Determine confidence based on pattern specificity
-          let confidence: 'high' | 'medium' | 'low' = 'medium'
+      for (const entry of patterns) {
+        const { pattern, confidence } = normalisePattern(entry)
+        if (!pattern.test(cleaned)) continue
 
-          // Exact matches get high confidence
-          if (
-            pattern.test(cleaned) &&
-            cleaned.length === pattern.source.length - 4
-          ) {
-            // Adjust for regex markers
-            confidence = 'high'
-          }
+        suggestions.push({
+          csvColumn: header,
+          suggestedField: field as ListingField,
+          confidence,
+        })
 
-          suggestions.push({
-            csvColumn: header,
-            suggestedField: field as ListingField,
-            confidence,
-          })
-
-          return // Stop after first match
-        }
+        return // Stop after first match
       }
     }
   })

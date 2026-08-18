@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
+  applyAutoMapping,
   autoDetectMapping,
   mapRow,
   mapRows,
@@ -97,17 +98,25 @@ describe('autoDetectMapping', () => {
     ).toBe('website')
   })
 
-  it('should return null for unrecognized headers', () => {
+  it('should not suggest a field for unrecognized headers', () => {
     const headers = ['Random Column', 'Another Unknown']
     const suggestions = autoDetectMapping(headers)
 
-    expect(
-      suggestions.find((s) => s.csvColumn === 'Random Column')?.suggestedField,
-    ).toBeNull()
-    expect(
-      suggestions.find((s) => s.csvColumn === 'Another Unknown')
-        ?.suggestedField,
-    ).toBeNull()
+    expect(suggestions).toHaveLength(0)
+  })
+
+  it('should map unrecognized headers to null via applyAutoMapping', () => {
+    const mapping = applyAutoMapping(['Name', 'Random Column'])
+
+    expect(mapping['Name']).toBe('name')
+    expect(mapping['Random Column']).toBeNull()
+  })
+
+  it('should downgrade confidence for generic aliases', () => {
+    // 'Type' could be almost anything, so it should not be presented with the
+    // same certainty as a column literally called 'Category'.
+    expect(autoDetectMapping(['Category'])[0]?.confidence).toBe('high')
+    expect(autoDetectMapping(['Type'])[0]?.confidence).toBe('medium')
   })
 
   it('should assign confidence levels', () => {
