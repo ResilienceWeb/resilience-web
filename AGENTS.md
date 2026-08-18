@@ -330,6 +330,13 @@ Key variables (see [.env.example](.env.example)):
 - **Stylelint** - CSS linting
 - **TypeScript** - Strict mode disabled, but `noUncheckedIndexedAccess` enabled
 
+## Working Agreements
+
+- **Never run `git commit` unless explicitly asked to.** Leave finished work in
+  the working tree and say what you changed; the decision about what becomes a
+  commit, and when, is the user's. The same goes for `git push`, opening a PR,
+  and any other outward-facing or hard-to-reverse action.
+
 ## Important Notes
 
 - Port 4000 for development (not 3000)
