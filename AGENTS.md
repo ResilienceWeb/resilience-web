@@ -268,8 +268,8 @@ How it works:
   `@prisma-rw` singleton that route handlers import is already pointed at the
   test database.
 - Outbound edges (email, MailerLite, image upload, `revalidatePath`) are stubbed
-  globally in [test/setup/external-mocks.ts](test/setup/external-mocks.ts). Tests
-  never send email or upload anything.
+  in [test/setup/integration.ts](test/setup/integration.ts) alongside the
+  per-test reset. Tests never send email or upload anything.
 
 Writing one:
 

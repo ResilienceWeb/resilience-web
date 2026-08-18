@@ -22,8 +22,6 @@
     "tsc": "tsc",
     "test": "vitest run --project unit --project components",
     "test:watch": "vitest --project unit --project components",
-    "test:unit": "vitest run --project unit",
-    "test:components": "vitest run --project components",
     "test:integration": "vitest run --project integration",
     "test:all": "vitest run",
     "quality:dry": "npm run stylelint:dry && npm run eslint:dry && npm run format:dry && npm run tsc && npm run test",

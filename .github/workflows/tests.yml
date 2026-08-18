@@ -2,9 +2,6 @@ name: Unit & Integration Tests
 permissions:
   contents: read
 on:
-  # No `branches:` filter, so a pull request gets the same checks whichever
-  # branch it targets. Restricting this to `main` meant a PR stacked on another
-  # PR ran no CI at all, which is exactly when you most want it.
   pull_request:
 jobs:
   test:
