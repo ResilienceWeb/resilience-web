@@ -185,20 +185,42 @@ export async function isCurrentUserOwnerOfWeb(
 }
 
 /**
- * Check if a user can edit a specific web (OWNER or EDITOR)
+ * Check if a user can edit a specific web (OWNER or EDITOR).
+ *
+ * A soft-deleted web is never editable, matching `canUserShareListing` and
+ * `isCurrentUserOwnerOfWeb`. Without that filter, access records outlive the
+ * web they point at and keep granting rights over it.
  */
 export async function canUserEditWeb(
   email: string,
   webId: number,
 ): Promise<boolean> {
-  const access = await prisma.webAccess.findUnique({
+  const access = await prisma.webAccess.findFirst({
     where: {
-      user_web_access: { email, webId },
+      email,
+      webId,
+      web: { deletedAt: null },
     },
     select: { role: true },
   })
 
   return access?.role === 'OWNER' || access?.role === 'EDITOR'
+}
+
+/**
+ * Check if a user can edit a web identified by slug (OWNER or EDITOR).
+ *
+ * Resolves through `getWebBySlug`, so a soft-deleted web is never editable.
+ */
+export async function canUserEditWebBySlug(
+  email: string,
+  webSlug: string,
+): Promise<boolean> {
+  const web = await getWebBySlug(webSlug)
+  if (!web) {
+    return false
+  }
+  return await canUserEditWeb(email, web.id)
 }
 
 /**

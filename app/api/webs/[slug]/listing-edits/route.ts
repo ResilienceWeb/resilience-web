@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/nextjs'
 import { getSessionSafe } from '@auth'
 import { stringToBoolean } from '@helpers/utils'
 import { getListingEditsByWeb } from '@db/listingEditRepository'
+import { canUserEditWebBySlug } from '@db/webAccessRepository'
 
 export async function GET(
   request: NextRequest,
@@ -14,6 +15,18 @@ export async function GET(
   const session = await getSessionSafe(request.headers)
 
   if (!session?.user) {
+    return new Response('Unauthorized', {
+      status: 403,
+    })
+  }
+
+  // Pending edits are this web's private moderation queue, so scope the read to
+  // people who can actually act on them rather than to anyone with an account.
+  const isAllowed =
+    session.user.role === 'admin' ||
+    (await canUserEditWebBySlug(session.user.email, slug))
+
+  if (!isAllowed) {
     return new Response('Unauthorized', {
       status: 403,
     })
