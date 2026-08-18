@@ -33,7 +33,8 @@ export const usePageTrackerHandler = ({
       const state = event.state as HistoryCustomState
       const statePageIndex =
         state.__REACT_PAGE_TRACKER_INTERNAL__?.pageIndex ?? 0
-      const pageEvent = pageIndexRef.current > statePageIndex ? 'back' : 'forward'
+      const pageEvent =
+        pageIndexRef.current > statePageIndex ? 'back' : 'forward'
       if (pageEvent === 'forward') {
         pageIndexRef.current++
       } else {

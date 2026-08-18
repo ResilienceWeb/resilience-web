@@ -10,7 +10,9 @@ async function fetchTagsRequest({ queryKey }) {
   return tags
 }
 
-export default function useTags({ webSlug: webSlugOverride }: { webSlug?: string } = {}) {
+export default function useTags({
+  webSlug: webSlugOverride,
+}: { webSlug?: string } = {}) {
   const { selectedWebSlug } = useAppContext()
   const webSlug = webSlugOverride ?? selectedWebSlug
   const {

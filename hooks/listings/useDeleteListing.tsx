@@ -21,7 +21,10 @@ export default function useDeleteListing() {
   return useMutation({
     mutationFn: deleteListingRequest,
     onSuccess: (_data, variables) => {
-      posthog.capture('listing-deleted', { listingSlug: variables.slug, webSlug })
+      posthog.capture('listing-deleted', {
+        listingSlug: variables.slug,
+        webSlug,
+      })
       void queryClient.invalidateQueries({
         queryKey: ['listings'],
       })

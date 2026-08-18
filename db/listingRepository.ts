@@ -161,7 +161,9 @@ export async function createListingWithRelations(data: {
           create: {
             webId: data.webId,
             slug: data.slug,
-            ...(data.categoryId !== undefined && { categoryId: data.categoryId }),
+            ...(data.categoryId !== undefined && {
+              categoryId: data.categoryId,
+            }),
           },
         },
       },

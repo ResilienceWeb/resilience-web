@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useAppContext } from '@store/hooks'
 import useWeb from '@hooks/webs/useWeb'
+import { useAppContext } from '@store/hooks'
 
 const featureListingRequest = async ({
   id,
@@ -44,8 +44,7 @@ export default function useFeatureListing() {
   const { web } = useWeb({ webSlug })
 
   const { mutate: featureListing } = useMutation({
-    mutationFn: (id: number) =>
-      featureListingRequest({ id, webId: web?.id }),
+    mutationFn: (id: number) => featureListingRequest({ id, webId: web?.id }),
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ['listings', 'list', { webSlug }],
@@ -54,8 +53,7 @@ export default function useFeatureListing() {
   })
 
   const { mutate: unfeatureListing } = useMutation({
-    mutationFn: (id: number) =>
-      unfeatureListingRequest({ id, webId: web?.id }),
+    mutationFn: (id: number) => unfeatureListingRequest({ id, webId: web?.id }),
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ['listings', 'list', { webSlug }],

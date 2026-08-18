@@ -4,7 +4,9 @@ import dynamic from 'next/dynamic'
 import Features from '@components/homepage/features'
 import Hero from '@components/homepage/hero'
 import JoinTheCommunity from '@components/homepage/join-the-community'
-import WebCards, { isWebDisplayedOnHomepage } from '@components/homepage/web-cards'
+import WebCards, {
+  isWebDisplayedOnHomepage,
+} from '@components/homepage/web-cards'
 import Layout from '@components/layout'
 
 const WebsMap = dynamic(() => import('@components/homepage/webs-map'), {

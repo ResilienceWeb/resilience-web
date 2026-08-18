@@ -19,7 +19,7 @@ export default function SignIn() {
   const errorCode = searchParams.get('error')
 
   const errorFromParams = errorCode
-    ? (ERROR_MESSAGES[errorCode] || 'An error occurred. Please try again.')
+    ? ERROR_MESSAGES[errorCode] || 'An error occurred. Please try again.'
     : ''
   const displayError = error || errorFromParams
 
@@ -108,7 +108,9 @@ export default function SignIn() {
             <Button type="submit" className="mt-4 w-full">
               Sign in
             </Button>
-            {displayError && <p className="mt-3 text-sm text-red-600">{displayError}</p>}
+            {displayError && (
+              <p className="mt-3 text-sm text-red-600">{displayError}</p>
+            )}
           </form>
         </div>
         <div className="w-full max-w-[490px] rounded-xl bg-white p-4 text-sm sm:p-6 sm:text-base">

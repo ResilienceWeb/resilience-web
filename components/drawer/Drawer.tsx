@@ -5,12 +5,12 @@ import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import Link from 'next/link'
-import { MultiSelect } from '@components/ui/multi-select'
 import { REMOTE_URL } from '@helpers/config'
 import DonateButton from '@components/donate-button'
 import RichText from '@components/rich-text'
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
+import { MultiSelect } from '@components/ui/multi-select'
 import { Separator } from '@components/ui/separator'
 import VolunteerSwitch from '@components/volunteer-switch'
 import LogoImage from '../../public/logo.png'
@@ -142,9 +142,7 @@ const Drawer = ({
 
             {webContactEmail && (
               <div>
-                <h3 className="text-sm font-semibold text-gray-900">
-                  Contact
-                </h3>
+                <h3 className="text-sm font-semibold text-gray-900">Contact</h3>
                 <p className="mt-0.5 text-sm">
                   <a
                     href={`mailto:${webContactEmail}`}

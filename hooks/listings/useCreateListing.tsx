@@ -37,7 +37,10 @@ export default function useCreateListing() {
       queryClient.setQueryData(['listings'], context?.previousListings)
     },
     onSuccess: (listing) => {
-      posthog.capture('listing-created', { listingSlug: listing?.slug, webSlug })
+      posthog.capture('listing-created', {
+        listingSlug: listing?.slug,
+        webSlug,
+      })
     },
     onSettled: () => {
       queryClient.invalidateQueries({

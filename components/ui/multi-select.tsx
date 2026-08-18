@@ -61,10 +61,7 @@ function MultiSelect({
     }
   }
 
-  const handleRemove = (
-    e: React.MouseEvent,
-    optionValue: string | number,
-  ) => {
+  const handleRemove = (e: React.MouseEvent, optionValue: string | number) => {
     e.preventDefault()
     e.stopPropagation()
     onChange?.(value.filter((v) => v.value !== optionValue))
@@ -154,7 +151,10 @@ function MultiSelect({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+      <PopoverContent
+        className="w-[--radix-popover-trigger-width] p-0"
+        align="start"
+      >
         <Command shouldFilter={searchable}>
           {searchable && (
             <CommandInput

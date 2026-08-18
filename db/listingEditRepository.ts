@@ -11,7 +11,10 @@ export const markListingEditAsAccepted = async (listingEditId: number) => {
   })
 }
 
-export const getListingEdits = async (listingSlug: string, webSlug?: string) => {
+export const getListingEdits = async (
+  listingSlug: string,
+  webSlug?: string,
+) => {
   const placement = await prisma.listingPlacement.findFirst({
     where: {
       slug: listingSlug,
