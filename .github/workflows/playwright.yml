@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: postgresql://postgres:password@localhost:5432/postgres?schema=public&sslmode=disable
+      # helpers/email.ts constructs the Resend client at module scope, so
+      # anything importing @auth (the sign-in endpoint, every /admin page)
+      # throws at import time without a key. Nothing is ever sent: the only
+      # test that authenticates writes its own OTP straight to the database.
+      RESEND_API_KEY: re_ci_placeholder_never_used
+      BETTER_AUTH_SECRET: ci-secret-not-used-for-anything-real
     services:
       postgres:
         image: postgres:17
