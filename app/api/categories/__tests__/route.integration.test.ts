@@ -1,12 +1,12 @@
-import { describe, expect, it } from 'vitest'
-import prisma from '@prisma-rw'
 import {
   createCategory,
   createListing,
   createTag,
   createWeb,
-} from '../../../../test/factories/index.ts'
-import { request } from '../../../../test/http.ts'
+} from '@/test/factories'
+import { request } from '@/test/http'
+import { describe, expect, it } from 'vitest'
+import prisma from '@prisma-rw'
 import { GET as getTags } from '../../tags/route.ts'
 import { GET as getCategories, POST as postCategory } from '../route.ts'
 

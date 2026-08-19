@@ -1,10 +1,12 @@
+import { PrismaClient } from '@prisma-client'
 import { PrismaPg } from '@prisma/adapter-pg'
-import { PrismaClient } from '../../prisma/generated/client.ts'
 
 /**
- * A Prisma client for the Playwright process. Deliberately built here rather
- * than imported from `@prisma-rw`, so the e2e suite doesn't depend on the
- * app's path aliases resolving inside Playwright's transpiler.
+ * A Prisma client for the Playwright process.
+ *
+ * Built here rather than reusing the `@prisma-rw` singleton: that one is shaped
+ * for the running server (pooled, cached across hot reloads), and the e2e suite
+ * only needs a short-lived connection to seed a sign-in.
  */
 export const prisma = new PrismaClient({
   adapter: new PrismaPg({

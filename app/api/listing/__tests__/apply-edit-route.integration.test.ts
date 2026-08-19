@@ -1,6 +1,3 @@
-import { describe, expect, it } from 'vitest'
-import prisma from '@prisma-rw'
-import { sendEmail } from '@helpers/email'
 import {
   createCategory,
   createListing,
@@ -8,9 +5,12 @@ import {
   createTag,
   createUser,
   createWeb,
-} from '../../../../test/factories/index.ts'
-import { params, request } from '../../../../test/http.ts'
-import { signInAs } from '../../../../test/session.ts'
+} from '@/test/factories'
+import { params, request } from '@/test/http'
+import { signInAs, signOut } from '@/test/session'
+import { describe, expect, it } from 'vitest'
+import prisma from '@prisma-rw'
+import { sendEmail } from '@helpers/email'
 import { GET as getListingEdits } from '../../webs/[slug]/listing-edits/route.ts'
 import { POST as applyEdit } from '../[id]/apply-edit/route.ts'
 
@@ -41,7 +41,6 @@ describe('POST /api/listing/[id]/apply-edit', () => {
   it('rejects an anonymous caller', async () => {
     const { listing, web, proposer } = await scenario()
     const edit = await createListingEdit(web.id, listing.id, proposer.id)
-    const { signOut } = await import('../../../../test/session.ts')
     signOut()
 
     expect((await apply(listing.id, edit.id)).status).toBe(401)
@@ -245,7 +244,6 @@ describe('POST /api/listing/[id]/apply-edit', () => {
 describe('GET /api/webs/[slug]/listing-edits', () => {
   it('rejects an anonymous caller', async () => {
     await scenario()
-    const { signOut } = await import('../../../../test/session.ts')
     signOut()
 
     const response = await getListingEdits(

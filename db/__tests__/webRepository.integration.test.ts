@@ -1,10 +1,6 @@
+import { createCategory, createListing, createWeb } from '@/test/factories'
 import { describe, expect, it } from 'vitest'
 import prisma from '@prisma-rw'
-import {
-  createCategory,
-  createListing,
-  createWeb,
-} from '../../test/factories/index.ts'
 import {
   deleteWebBySlug,
   getWebById,

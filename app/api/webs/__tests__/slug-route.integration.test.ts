@@ -1,14 +1,14 @@
-import { WebRole } from '@prisma-client'
-import { describe, expect, it } from 'vitest'
-import prisma from '@prisma-rw'
 import {
   createListing,
   createUser,
   createUserWithWebAccess,
   createWeb,
-} from '../../../../test/factories/index.ts'
-import { params, request } from '../../../../test/http.ts'
-import { signInAs } from '../../../../test/session.ts'
+} from '@/test/factories'
+import { params, request } from '@/test/http'
+import { signInAs } from '@/test/session'
+import { WebRole } from '@prisma-client'
+import { describe, expect, it } from 'vitest'
+import prisma from '@prisma-rw'
 import { GET, PATCH, PUT } from '../[slug]/route.ts'
 
 const webForm = (fields: Record<string, string> = {}) => {

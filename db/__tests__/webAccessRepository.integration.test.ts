@@ -1,14 +1,14 @@
-import { WebRole } from '@prisma-client'
-import { describe, expect, it } from 'vitest'
-import prisma from '@prisma-rw'
-import { FEATURES } from '@helpers/features'
 import {
   createListing,
   createUser,
   createUserWithWebAccess,
   createWeb,
   grantWebAccess,
-} from '../../test/factories/index.ts'
+} from '@/test/factories'
+import { WebRole } from '@prisma-client'
+import { describe, expect, it } from 'vitest'
+import prisma from '@prisma-rw'
+import { FEATURES } from '@helpers/features'
 import {
   addUserToWeb,
   canUserEditWeb,
