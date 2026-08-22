@@ -27,7 +27,7 @@ export default defineConfig({
           name: 'components',
           environment: 'jsdom',
           include: ['{app,components,hooks,store}/**/*.test.tsx'],
-          setupFiles: ['./test/setup/components.ts'],
+          setupFiles: ['./test/setup/components.tsx'],
         },
       },
       {

@@ -1,0 +1,223 @@
+import { webData } from '@/test/fixtures/web'
+import { stubCategories, stubTags } from '@/test/msw/handlers'
+import { server } from '@/test/msw/server'
+import { renderPage } from '@/test/render'
+import { screen, waitFor } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import Web from '../Web.tsx'
+
+vi.mock('@helpers/analytics', () => ({ trackWebEvent: vi.fn() }))
+
+const LISTINGS = [
+  { title: 'Community Kitchen', category: 'Community' },
+  { title: 'Carbon Footprint', category: 'Environment' },
+  { title: 'Sustainable Food', category: 'Environment' },
+  { title: 'Cycling Campaign', category: 'Transportation' },
+]
+
+/** Renders the web page already on the list tab, which is what these tests drive. */
+function renderWeb() {
+  return renderPage(
+    <Web
+      data={webData(LISTINGS)}
+      features={[]}
+      webId={1}
+      webName="Bristol"
+      webIsPublished
+      webSlug="bristol"
+    />,
+    { searchParams: { view: 'list' } },
+  )
+}
+
+/**
+ * A listing is rendered as a link whose accessible name contains its title,
+ * which is how a visitor picks one out of the grid.
+ */
+const listing = (title: string) =>
+  screen.queryByRole('link', { name: new RegExp(title, 'i') })
+
+/** The search box is debounced by 500ms, so every assertion has to settle. */
+const SETTLE = { timeout: 3000 }
+
+const expectVisible = (titles: string[]) =>
+  waitFor(
+    () => titles.forEach((title) => expect(listing(title)).toBeInTheDocument()),
+    SETTLE,
+  )
+
+const expectHidden = (titles: string[]) =>
+  waitFor(
+    () => titles.forEach((title) => expect(listing(title)).toBeNull()),
+    SETTLE,
+  )
+
+const ALL_TITLES = LISTINGS.map((l) => l.title)
+
+beforeEach(() => {
+  server.use(
+    stubCategories([
+      { id: 1, label: 'Community' },
+      { id: 2, label: 'Environment' },
+      { id: 3, label: 'Transportation' },
+    ]),
+    stubTags([{ id: 1, label: 'Volunteer-run' }]),
+  )
+})
+
+describe('the web page listing filters', () => {
+  it('shows every listing before anything is filtered', async () => {
+    renderWeb()
+
+    await expectVisible(ALL_TITLES)
+  })
+
+  it('narrows the list as the visitor types, and restores it when cleared', async () => {
+    const { user } = renderWeb()
+    await expectVisible(ALL_TITLES)
+
+    await user.type(await screen.findByPlaceholderText('Search'), 'food')
+
+    await expectVisible(['Sustainable Food'])
+    await expectHidden([
+      'Community Kitchen',
+      'Carbon Footprint',
+      'Cycling Campaign',
+    ])
+
+    await user.click(screen.getByRole('button', { name: /clear search/i }))
+
+    await expectVisible(ALL_TITLES)
+  })
+
+  it('matches on description as well as title', async () => {
+    const { user } = renderPage(
+      <Web
+        data={webData([
+          { title: 'Bike Kitchen', category: 'Transportation' },
+          {
+            title: 'Repair Cafe',
+            category: 'Community',
+            description: 'Volunteers fix bicycles every Sunday',
+          },
+        ])}
+        features={[]}
+        webId={1}
+        webName="Bristol"
+        webIsPublished
+        webSlug="bristol"
+      />,
+      { searchParams: { view: 'list' } },
+    )
+
+    await user.type(await screen.findByPlaceholderText('Search'), 'bicycles')
+
+    await expectVisible(['Repair Cafe'])
+    await expectHidden(['Bike Kitchen'])
+  })
+
+  it('offers to propose a listing when nothing matches', async () => {
+    const { user } = renderWeb()
+    await expectVisible(ALL_TITLES)
+
+    await user.type(
+      await screen.findByPlaceholderText('Search'),
+      'nothing matches this',
+    )
+
+    expect(
+      await screen.findByText(/No listings were found/i, {}, SETTLE),
+    ).toBeInTheDocument()
+    // The drawer offers the same call to action, so there is more than one.
+    expect(
+      screen.getAllByRole('link', { name: /propose new listing/i }).length,
+    ).toBeGreaterThan(0)
+    await expectHidden(ALL_TITLES)
+  })
+})
+
+describe('the web page category filter', () => {
+  /**
+   * Opens the category combobox and ticks each label. The popover stays open
+   * between selections, which is how multi-select behaves for a real visitor,
+   * so they are all picked in one session and it is dismissed at the end.
+   */
+  async function chooseCategories(
+    user: ReturnType<typeof renderPage>['user'],
+    ...labels: string[]
+  ) {
+    const [trigger] = await screen.findAllByRole('combobox')
+    await user.click(trigger)
+
+    for (const label of labels) {
+      await user.click(await screen.findByRole('option', { name: label }))
+    }
+
+    await user.keyboard('{Escape}')
+  }
+
+  it('shows only listings in the chosen category', async () => {
+    const { user } = renderWeb()
+    await expectVisible(ALL_TITLES)
+
+    await chooseCategories(user, 'Environment')
+
+    await expectVisible(['Carbon Footprint', 'Sustainable Food'])
+    await expectHidden(['Community Kitchen', 'Cycling Campaign'])
+  })
+
+  it('adds a second category rather than replacing the first', async () => {
+    const { user } = renderWeb()
+    await expectVisible(ALL_TITLES)
+
+    await chooseCategories(user, 'Environment', 'Transportation')
+
+    await expectVisible([
+      'Carbon Footprint',
+      'Sustainable Food',
+      'Cycling Campaign',
+    ])
+    await expectHidden(['Community Kitchen'])
+  })
+
+  it('restores the full list when a category is removed again', async () => {
+    const { user } = renderWeb()
+    await chooseCategories(user, 'Environment')
+    await expectHidden(['Community Kitchen'])
+
+    await user.click(
+      await screen.findByRole('button', { name: 'Remove Environment' }),
+    )
+
+    await expectVisible(ALL_TITLES)
+  })
+
+  it('combines the category filter with the search box', async () => {
+    const { user } = renderWeb()
+
+    await chooseCategories(user, 'Environment')
+    await expectVisible(['Carbon Footprint', 'Sustainable Food'])
+
+    await user.type(await screen.findByPlaceholderText('Search'), 'carbon')
+
+    await expectVisible(['Carbon Footprint'])
+    await expectHidden(['Sustainable Food', 'Community Kitchen'])
+  })
+
+  it('starts filtered when the URL already names a category', async () => {
+    renderPage(
+      <Web
+        data={webData(LISTINGS)}
+        features={[]}
+        webId={1}
+        webName="Bristol"
+        webIsPublished
+        webSlug="bristol"
+      />,
+      { searchParams: { view: 'list', categories: 'Transportation' } },
+    )
+
+    await expectVisible(['Cycling Campaign'])
+    await expectHidden(['Community Kitchen', 'Carbon Footprint'])
+  })
+})
