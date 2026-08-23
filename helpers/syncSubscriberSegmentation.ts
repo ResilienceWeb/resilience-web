@@ -78,13 +78,15 @@ export async function syncSubscriberSegmentation(email: string): Promise<void> {
   }
 
   const groupEntries = await Promise.all(
-    (Object.keys(SEGMENTATION_GROUPS) as Array<keyof typeof SEGMENTATION_GROUPS>).map(
-      async (key) => ({
-        key,
-        id: await getOrCreateGroupId(SEGMENTATION_GROUPS[key]),
-        shouldBeMember: membership[key],
-      }),
-    ),
+    (
+      Object.keys(SEGMENTATION_GROUPS) as Array<
+        keyof typeof SEGMENTATION_GROUPS
+      >
+    ).map(async (key) => ({
+      key,
+      id: await getOrCreateGroupId(SEGMENTATION_GROUPS[key]),
+      shouldBeMember: membership[key],
+    })),
   )
 
   const groupsToAdd = groupEntries

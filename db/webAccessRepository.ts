@@ -54,7 +54,9 @@ export async function getWebAllUserAccess(webId: number) {
       web: true,
     },
     orderBy: [
-      { role: 'desc' }, // OWNER first, then EDITOR
+      // OWNER first, then EDITOR: the WebRole enum declares OWNER first, so
+      // ascending is the order that matches the declaration.
+      { role: 'asc' },
       { createdAt: 'asc' },
     ],
   })
@@ -73,7 +75,9 @@ export async function getWebAllUserAccessBySlug(webSlug: string) {
       web: true,
     },
     orderBy: [
-      { role: 'desc' }, // OWNER first, then EDITOR
+      // OWNER first, then EDITOR: the WebRole enum declares OWNER first, so
+      // ascending is the order that matches the declaration.
+      { role: 'asc' },
       { createdAt: 'asc' },
     ],
   })

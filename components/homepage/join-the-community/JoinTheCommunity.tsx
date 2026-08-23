@@ -14,8 +14,7 @@ const JoinTheCommunity = () => {
           Want to get involved?
         </p>
         <h2 className="mt-1 text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
-          Keep up to date with new features, and help us with feedback and
-          ideas
+          Keep up to date with new features, and help us with feedback and ideas
         </h2>
 
         <ol className="mt-8 flex flex-col gap-6">

@@ -226,10 +226,26 @@ describe('validateRow', () => {
 describe('validateRows', () => {
   it('should separate valid and invalid rows', () => {
     const rows: MappedRow[] = [
-      { name: 'Valid Org 1', description: 'Desc 1', category: 'Community', rowNumber: 1 },
+      {
+        name: 'Valid Org 1',
+        description: 'Desc 1',
+        category: 'Community',
+        rowNumber: 1,
+      },
       { name: '', description: 'Desc 2', category: 'Community', rowNumber: 2 }, // Invalid: empty name
-      { name: 'Valid Org 2', description: 'Desc 3', category: 'Community', rowNumber: 3 },
-      { name: 'Org 3', description: 'Desc 4', category: 'Community', email: 'bad-email', rowNumber: 4 }, // Invalid email
+      {
+        name: 'Valid Org 2',
+        description: 'Desc 3',
+        category: 'Community',
+        rowNumber: 3,
+      },
+      {
+        name: 'Org 3',
+        description: 'Desc 4',
+        category: 'Community',
+        email: 'bad-email',
+        rowNumber: 4,
+      }, // Invalid email
     ]
 
     const result = validateRows(rows)
@@ -241,8 +257,19 @@ describe('validateRows', () => {
 
   it('should return valid=true when all rows are valid', () => {
     const rows: MappedRow[] = [
-      { name: 'Org 1', description: 'Desc 1', category: 'Community', rowNumber: 1 },
-      { name: 'Org 2', description: 'Desc 2', category: 'Community', email: 'test@example.com', rowNumber: 2 },
+      {
+        name: 'Org 1',
+        description: 'Desc 1',
+        category: 'Community',
+        rowNumber: 1,
+      },
+      {
+        name: 'Org 2',
+        description: 'Desc 2',
+        category: 'Community',
+        email: 'test@example.com',
+        rowNumber: 2,
+      },
     ]
 
     const result = validateRows(rows)

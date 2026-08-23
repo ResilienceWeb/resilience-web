@@ -3,13 +3,23 @@ permissions:
   contents: read
 on:
   pull_request:
-    branches: [main]
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: postgresql://postgres:password@localhost:5432/postgres?schema=public&sslmode=disable
+      # helpers/email.ts constructs the Resend client at module scope, so
+      # anything importing @auth (the sign-in endpoint, every /admin page)
+      # throws at import time without a key. Nothing is ever sent: the only
+      # test that authenticates writes its own OTP straight to the database.
+      RESEND_API_KEY: re_ci_placeholder_never_used
+      BETTER_AUTH_SECRET: ci-secret-not-used-for-anything-real
+      # lib/supabase-storage.ts calls createClient() at module scope, which
+      # throws on an empty URL. Only image upload and public image URLs use it,
+      # and no test uploads, so a placeholder host is enough.
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      SUPABASE_SECRET_KEY: ci-placeholder-never-used
     services:
       postgres:
         image: postgres:17

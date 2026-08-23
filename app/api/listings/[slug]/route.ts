@@ -8,8 +8,8 @@ import { sendEmail } from '@helpers/email'
 import { flattenListingPlacement } from '@helpers/flattenPlacement'
 import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
-import ListingProposedAcceptedEmail from '@components/emails/ListingProposedAcceptedEmail'
 import ListingCreatedEmail from '@components/emails/ListingCreatedEmail'
+import ListingProposedAcceptedEmail from '@components/emails/ListingProposedAcceptedEmail'
 
 function exclude(data, keys) {
   return Object.fromEntries(

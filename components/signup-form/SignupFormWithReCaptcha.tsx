@@ -24,7 +24,9 @@ const SignupFormWithReCaptcha = () => {
   // `inView` stays true once triggered (triggerOnce), so this stays true too.
   const shouldLoadReCaptcha = inView || interacted
 
-  const form = <SignupForm formRef={ref} onInteract={() => setInteracted(true)} />
+  const form = (
+    <SignupForm formRef={ref} onInteract={() => setInteracted(true)} />
+  )
 
   if (!shouldLoadReCaptcha) {
     return form

@@ -16,11 +16,7 @@ interface WebHomeProps {
   categoriesCount: number
 }
 
-const WebHome = ({
-  webData,
-  listingsCount,
-  categoriesCount,
-}: WebHomeProps) => {
+const WebHome = ({ webData, listingsCount, categoriesCount }: WebHomeProps) => {
   const heading = `${webData.title} Resilience Web`
   const hasInfo = Boolean(webData.location || webData.contactEmail)
 
@@ -110,7 +106,6 @@ const WebHome = ({
                   </div>
                 </div>
               )}
-
 
               {webData.contactEmail && (
                 <div className="flex gap-3">

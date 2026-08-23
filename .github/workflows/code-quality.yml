@@ -1,7 +1,6 @@
 name: Code Quality Tests
 on:
   pull_request:
-    branches: [main]
 jobs:
   test:
     permissions:

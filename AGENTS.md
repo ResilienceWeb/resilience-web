@@ -25,7 +25,9 @@ npm run quality:fix     # Auto-fix linting and formatting issues
 npm run tsc             # TypeScript type checking
 
 # Testing
-npm run test:e2e        # Run Playwright tests in UI mode
+npm run test            # Unit + component (fast, no database)
+npm run test:integration # Route handlers against real Postgres
+npm run test:e2e        # Playwright, headless
 
 # Background jobs
 npm run trigger         # Start Trigger.dev development server
@@ -221,10 +223,136 @@ Large page data (network visualization) is gzip-compressed (then base64-encoded)
 
 ## Testing
 
-- **Playwright** - E2E tests
-  - Config: [playwright.config.ts](playwright.config.ts)
-  - Run with UI: `npm run test:e2e`
-- Seed script creates test data: [prisma/seed.ts](prisma/seed.ts)
+Three layers, in the order you should reach for them.
+
+```bash
+npm run test              # unit + component (fast, no database)
+npm run test:watch        # the same, in watch mode
+npm run test:integration  # route handlers + repositories against real Postgres
+npm run test:all          # all three Vitest projects
+npm run test:e2e          # Playwright, headless
+npm run test:e2e:ui       # Playwright, interactive UI mode
+```
+
+`npm run quality:dry` runs lint, format, tsc, and `npm run test`.
+
+### 1. Unit — Vitest, `node` environment
+
+Pure logic with no I/O: [lib/import/](lib/import/), [helpers/](helpers/).
+Files are `*.test.ts` under a `__tests__/` folder next to the code.
+
+### 2. Component — Vitest, `jsdom` + Testing Library
+
+**This is where user-facing behaviour is tested.** Files are `*.test.tsx`.
+Render the real component and drive it as a visitor would — type, click, select
+— then assert on what they would see. Don't re-implement the component's logic
+in the test, and don't assert on props or internal state.
+
+Setup lives in [test/setup/components.tsx](test/setup/components.tsx). It stubs
+the browser APIs Radix needs (`ResizeObserver`, pointer capture), and the three
+Next modules that have no implementation under jsdom:
+
+- `next/navigation` — backed by [test/next-navigation.ts](test/next-navigation.ts),
+  so a test can `setRoute()` or assert on `router.push`
+- `next/image` and `next/link` — rendered as the plain `<img>` / `<a>` they
+  become in the browser
+
+Keeping all of that in the setup file is deliberate: **the tests themselves
+contain no Next-specific code**, so they survive a change of framework.
+
+Writing one:
+
+- Render with `renderPage()` from [test/render.tsx](test/render.tsx), which
+  provides React Query and nuqs and hands back a `user`. Pass `searchParams` to
+  start the test on a particular URL state.
+- Stub the API with **MSW**, not by mocking hooks — see
+  [test/msw/handlers.ts](test/msw/handlers.ts) and the `stubCategories()` /
+  `stubTags()` helpers. Intercepting HTTP keeps the React Query hooks, their
+  caching and their error handling real. An unstubbed request fails the test
+  rather than resolving to something unexpected.
+- Build page props with the fixtures in [test/fixtures/](test/fixtures/) —
+  `webData([{ title, category }])` returns the compressed payload the web page
+  expects.
+
+```tsx
+const { user } = renderPage(<Web data={webData(LISTINGS)} webSlug="bristol" />, {
+  searchParams: { view: 'list' },
+})
+
+await user.type(await screen.findByPlaceholderText('Search'), 'food')
+
+expect(screen.queryByRole('link', { name: /Sustainable Food/i })).toBeInTheDocument()
+```
+
+When a test passes, check it fails for the right reason: break the behaviour it
+covers and confirm it goes red. An assertion on an element that never existed
+(`queryByRole('list')` where nothing renders that role) passes forever.
+
+### 3. Integration — Vitest against real Postgres
+
+**This is the default place to test business logic.** Files are
+`*.integration.test.ts`. Prefer testing **API route handlers** by importing the
+exported `GET`/`POST` and calling them directly — that covers the same path the
+browser takes (params, auth, Prisma, response shape) without a browser. Test
+repositories directly only for logic that isn't reachable through one route,
+such as the permission helpers in [db/webAccessRepository.ts](db/webAccessRepository.ts).
+
+How it works:
+
+- A separate `resilience_web_test` database on the Docker Postgres that
+  `npm run db:up` starts. Created and migrated automatically by
+  [test/setup/integration-global.ts](test/setup/integration-global.ts) on first run.
+- [test/db/testDatabaseUrl.ts](test/db/testDatabaseUrl.ts) derives the URL from
+  `DATABASE_URL` and **refuses to run against a non-local host or a database
+  whose name doesn't end in `_test`**. Override with `TEST_DATABASE_URL`.
+- Every table is truncated before each test ([test/db/reset.ts](test/db/reset.ts)),
+  so tests start from an empty database rather than the seed.
+- `DATABASE_URL` is redirected in [vitest.config.ts](vitest.config.ts), so the
+  `@prisma-rw` singleton that route handlers import is already pointed at the
+  test database.
+- Outbound edges (email, MailerLite, image upload, `revalidatePath`) are stubbed
+  in [test/setup/integration.ts](test/setup/integration.ts) alongside the
+  per-test reset. Tests never send email or upload anything.
+
+Writing one:
+
+- Build data with the factories in [test/factories/](test/factories/) —
+  `createWeb`, `createListing`, `createUserWithWebAccess`, `createListingEdit`, …
+- Build requests with `request()` and `params()` from [test/http.ts](test/http.ts).
+- Set the caller with `signInAs()` from [test/session.ts](test/session.ts).
+  Sessions reset to anonymous before each test.
+
+```ts
+const web = await createWeb({ slug: 'bristol' })
+const { user } = await createUserWithWebAccess(web.id, WebRole.EDITOR)
+signInAs({ id: user.id, email: user.email })
+
+const response = await PUT(
+  request('/api/webs/bristol', { method: 'PUT', body: form }),
+  params({ slug: 'bristol' }),
+)
+expect(response.status).toBe(403)
+```
+
+Integration tests run one file at a time (they share a database), so keep them
+lean — the whole suite should stay in single-digit seconds.
+
+### 4. End-to-end — Playwright
+
+A thin smoke layer for journeys that genuinely need a browser. Specs live in
+[tests/](tests/) and run against the dev server, which Playwright starts itself,
+using the **dev** database — so run `npx prisma migrate reset` first if the seed
+data is missing.
+
+- `*.spec.ts` runs logged out.
+- `*.authed.spec.ts` runs signed in as the seeded Cambridge owner/admin.
+  [tests/auth.setup.ts](tests/auth.setup.ts) writes a one-time passcode straight
+  into the `verifications` table and posts it to the real sign-in endpoint, then
+  saves the session to `playwright/.auth/`. The cookie is genuine; only the
+  email round trip is skipped.
+- Browsers need installing once: `npx playwright install chromium`.
+
+Seed script creates test data: [prisma/seed.ts](prisma/seed.ts)
 
 ## Environment Variables
 
@@ -245,6 +373,13 @@ Key variables (see [.env.example](.env.example)):
 - **Stylelint** - CSS linting
 - **TypeScript** - Strict mode disabled, but `noUncheckedIndexedAccess` enabled
 
+## Working Agreements
+
+- **Never run `git commit` unless explicitly asked to.** Leave finished work in
+  the working tree and say what you changed; the decision about what becomes a
+  commit, and when, is the user's. The same goes for `git push`, opening a PR,
+  and any other outward-facing or hard-to-reverse action.
+
 ## Important Notes
 
 - Port 4000 for development (not 3000)
@@ -254,3 +389,13 @@ Key variables (see [.env.example](.env.example)):
 - Category icons come from the react-icons catalog in [helpers/icons.ts](helpers/icons.ts); canvas (network view) and Leaflet markers render them via [helpers/icon-render.ts](helpers/icon-render.ts) (SVG → cached image) — no icon webfont is shipped
 - Node version specified in [.nvmrc](.nvmrc)
 - Repository uses semantic commits from git history
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
