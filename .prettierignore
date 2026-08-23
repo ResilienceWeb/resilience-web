@@ -13,3 +13,4 @@ trigger.config.js
 postcss.config.js
 next.config.js
 eslint.config.js
+next-env.d.ts

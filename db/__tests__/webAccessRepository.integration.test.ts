@@ -12,6 +12,7 @@ import { FEATURES } from '@helpers/features'
 import {
   addUserToWeb,
   canUserEditWeb,
+  canUserEditWebBySlug,
   canUserShareListing,
   getUserAccessibleWebs,
   getUserAllWebAccess,
@@ -97,6 +98,38 @@ describe('role checks', () => {
     const { user } = await createUserWithWebAccess(web.id, WebRole.OWNER)
 
     expect(await isCurrentUserOwnerOfWeb(user.email, 'bristol')).toBe(false)
+  })
+})
+
+describe('canUserEditWebBySlug', () => {
+  it('resolves access through the slug for both roles', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const { user: owner } = await createUserWithWebAccess(web.id, WebRole.OWNER)
+    const { user: editor } = await createUserWithWebAccess(
+      web.id,
+      WebRole.EDITOR,
+    )
+
+    expect(await canUserEditWebBySlug(owner.email, 'bristol')).toBe(true)
+    expect(await canUserEditWebBySlug(editor.email, 'bristol')).toBe(true)
+  })
+
+  it('denies a user with no access, and an unknown slug', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const stranger = await createUser()
+    const { user } = await createUserWithWebAccess(web.id, WebRole.OWNER)
+
+    expect(await canUserEditWebBySlug(stranger.email, 'bristol')).toBe(false)
+    expect(await canUserEditWebBySlug(user.email, 'no-such-web')).toBe(false)
+  })
+
+  it('denies access to a soft-deleted web', async () => {
+    const web = await createWeb({ slug: 'bristol', deletedAt: new Date() })
+    const { user } = await createUserWithWebAccess(web.id, WebRole.OWNER)
+
+    expect(await canUserEditWebBySlug(user.email, 'bristol')).toBe(false)
+    // ...and the id-based helper agrees, so access records cannot outlive the web.
+    expect(await canUserEditWeb(user.email, web.id)).toBe(false)
   })
 })
 

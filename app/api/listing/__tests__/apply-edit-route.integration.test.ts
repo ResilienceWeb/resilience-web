@@ -4,17 +4,24 @@ import {
   createListingEdit,
   createTag,
   createUser,
+  createUserWithWebAccess,
   createWeb,
 } from '@/test/factories'
 import { params, request } from '@/test/http'
 import { signInAs, signOut } from '@/test/session'
+import { WebRole } from '@prisma-client'
 import { describe, expect, it } from 'vitest'
 import prisma from '@prisma-rw'
 import { sendEmail } from '@helpers/email'
 import { GET as getListingEdits } from '../../webs/[slug]/listing-edits/route.ts'
 import { POST as applyEdit } from '../[id]/apply-edit/route.ts'
 
-/** A web, a published listing in it, and a member who proposes edits. */
+/**
+ * A web, a published listing in it, and a member who proposes edits.
+ *
+ * Signs in as a global admin, so tests about the merge behaviour don't each
+ * have to set up permissions. Authorization has its own describe block.
+ */
 async function scenario() {
   const web = await createWeb({ slug: 'bristol' })
   const listing = await createListing(web.id, {
@@ -241,6 +248,90 @@ describe('POST /api/listing/[id]/apply-edit', () => {
   })
 })
 
+describe('POST /api/listing/[id]/apply-edit authorization', () => {
+  /** A pending edit on `bristol`, proposed by someone with no special rights. */
+  async function pendingEdit() {
+    const web = await createWeb({ slug: 'bristol' })
+    const listing = await createListing(web.id, {
+      slug: 'food-hub',
+      title: 'Food Hub',
+    })
+    const proposer = await createUser()
+    const edit = await createListingEdit(web.id, listing.id, proposer.id, {
+      title: 'Approved title',
+    })
+    return { web, listing, edit }
+  }
+
+  const titleOf = async (id: number) =>
+    (await prisma.listing.findUnique({ where: { id } }))?.title
+
+  it('rejects a logged-in user with no access to the web', async () => {
+    const { listing, edit } = await pendingEdit()
+    const outsider = await createUser()
+    signInAs({ id: outsider.id, email: outsider.email })
+
+    const response = await apply(listing.id, edit.id)
+
+    expect(response.status).toBe(403)
+    expect(await titleOf(listing.id)).toBe('Food Hub')
+    expect(
+      (await prisma.listingEdit.findUnique({ where: { id: edit.id } }))
+        ?.accepted,
+    ).toBe(false)
+  })
+
+  it('rejects an editor of a different web', async () => {
+    const { listing, edit } = await pendingEdit()
+    const otherWeb = await createWeb({ slug: 'cambridge' })
+    const { user } = await createUserWithWebAccess(otherWeb.id, WebRole.EDITOR)
+    signInAs({ id: user.id, email: user.email })
+
+    const response = await apply(listing.id, edit.id)
+
+    expect(response.status).toBe(403)
+    expect(await titleOf(listing.id)).toBe('Food Hub')
+  })
+
+  it('allows an editor of the web the edit belongs to', async () => {
+    const { web, listing, edit } = await pendingEdit()
+    const { user } = await createUserWithWebAccess(web.id, WebRole.EDITOR)
+    signInAs({ id: user.id, email: user.email })
+
+    expect((await apply(listing.id, edit.id)).status).toBe(200)
+    expect(await titleOf(listing.id)).toBe('Approved title')
+  })
+
+  it('allows an owner of the web', async () => {
+    const { web, listing, edit } = await pendingEdit()
+    const { user } = await createUserWithWebAccess(web.id, WebRole.OWNER)
+    signInAs({ id: user.id, email: user.email })
+
+    expect((await apply(listing.id, edit.id)).status).toBe(200)
+  })
+
+  it('allows a global admin with no web access', async () => {
+    const { listing, edit } = await pendingEdit()
+    const admin = await createUser({ role: 'admin' })
+    signInAs({ id: admin.id, email: admin.email, role: 'admin' })
+
+    expect((await apply(listing.id, edit.id)).status).toBe(200)
+  })
+
+  it('rejects an editor whose web has since been soft-deleted', async () => {
+    const { web, listing, edit } = await pendingEdit()
+    const { user } = await createUserWithWebAccess(web.id, WebRole.EDITOR)
+    await prisma.web.update({
+      where: { id: web.id },
+      data: { deletedAt: new Date() },
+    })
+    signInAs({ id: user.id, email: user.email })
+
+    expect((await apply(listing.id, edit.id)).status).toBe(403)
+    expect(await titleOf(listing.id)).toBe('Food Hub')
+  })
+})
+
 describe('GET /api/webs/[slug]/listing-edits', () => {
   it('rejects an anonymous caller', async () => {
     await scenario()
@@ -282,6 +373,50 @@ describe('GET /api/webs/[slug]/listing-edits', () => {
       params({ slug: 'bristol' }),
     )
 
+    expect((await response.json()).listingEdits).toHaveLength(1)
+  })
+
+  it('rejects a logged-in user with no access to the web', async () => {
+    const { web, listing, proposer } = await scenario()
+    await createListingEdit(web.id, listing.id, proposer.id)
+    const outsider = await createUser()
+    signInAs({ id: outsider.id, email: outsider.email })
+
+    const response = await getListingEdits(
+      request('/api/webs/bristol/listing-edits'),
+      params({ slug: 'bristol' }),
+    )
+
+    expect(response.status).toBe(403)
+  })
+
+  it('rejects an editor of a different web', async () => {
+    const { web, listing, proposer } = await scenario()
+    await createListingEdit(web.id, listing.id, proposer.id)
+    const otherWeb = await createWeb({ slug: 'cambridge' })
+    const { user } = await createUserWithWebAccess(otherWeb.id, WebRole.EDITOR)
+    signInAs({ id: user.id, email: user.email })
+
+    const response = await getListingEdits(
+      request('/api/webs/bristol/listing-edits'),
+      params({ slug: 'bristol' }),
+    )
+
+    expect(response.status).toBe(403)
+  })
+
+  it('allows an editor of the web to read its queue', async () => {
+    const { web, listing, proposer } = await scenario()
+    await createListingEdit(web.id, listing.id, proposer.id)
+    const { user } = await createUserWithWebAccess(web.id, WebRole.EDITOR)
+    signInAs({ id: user.id, email: user.email })
+
+    const response = await getListingEdits(
+      request('/api/webs/bristol/listing-edits'),
+      params({ slug: 'bristol' }),
+    )
+
+    expect(response.status).toBe(200)
     expect((await response.json()).listingEdits).toHaveLength(1)
   })
 

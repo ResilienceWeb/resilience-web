@@ -8,6 +8,7 @@ import deleteImage from '@helpers/deleteImage'
 import { sendEmail } from '@helpers/email'
 import ListingEditAcceptedEmail from '@components/emails/ListingEditAcceptedEmail'
 import { markListingEditAsAccepted } from '@db/listingEditRepository'
+import { canUserEditWeb } from '@db/webAccessRepository'
 
 export async function POST(
   request: NextRequest,
@@ -41,6 +42,16 @@ export async function POST(
 
     if (!listingEdit) {
       return new Response('Listing edit not found', { status: 404 })
+    }
+
+    // Approving an edit publishes someone else's content to a web, so the
+    // caller has to be able to edit *that* web — a session alone is not enough.
+    const isAllowed =
+      session.user.role === 'admin' ||
+      (await canUserEditWeb(session.user.email, listingEdit.webId))
+
+    if (!isAllowed) {
+      return new Response('Unauthorized', { status: 403 })
     }
 
     const placement = await prisma.listingPlacement.findUnique({
