@@ -25,7 +25,9 @@ npm run quality:fix     # Auto-fix linting and formatting issues
 npm run tsc             # TypeScript type checking
 
 # Testing
-npm run test:e2e        # Run Playwright tests in UI mode
+npm run test            # Unit + component (fast, no database)
+npm run test:integration # Route handlers against real Postgres
+npm run test:e2e        # Playwright, headless
 
 # Background jobs
 npm run trigger         # Start Trigger.dev development server
@@ -241,9 +243,50 @@ Files are `*.test.ts` under a `__tests__/` folder next to the code.
 
 ### 2. Component — Vitest, `jsdom` + Testing Library
 
-Files are `*.test.tsx`. Setup lives in [test/setup/components.ts](test/setup/components.ts),
-which stubs the browser APIs Radix needs (`ResizeObserver`, pointer capture, etc.).
-Render the real component — don't re-implement its logic in the test.
+**This is where user-facing behaviour is tested.** Files are `*.test.tsx`.
+Render the real component and drive it as a visitor would — type, click, select
+— then assert on what they would see. Don't re-implement the component's logic
+in the test, and don't assert on props or internal state.
+
+Setup lives in [test/setup/components.tsx](test/setup/components.tsx). It stubs
+the browser APIs Radix needs (`ResizeObserver`, pointer capture), and the three
+Next modules that have no implementation under jsdom:
+
+- `next/navigation` — backed by [test/next-navigation.ts](test/next-navigation.ts),
+  so a test can `setRoute()` or assert on `router.push`
+- `next/image` and `next/link` — rendered as the plain `<img>` / `<a>` they
+  become in the browser
+
+Keeping all of that in the setup file is deliberate: **the tests themselves
+contain no Next-specific code**, so they survive a change of framework.
+
+Writing one:
+
+- Render with `renderPage()` from [test/render.tsx](test/render.tsx), which
+  provides React Query and nuqs and hands back a `user`. Pass `searchParams` to
+  start the test on a particular URL state.
+- Stub the API with **MSW**, not by mocking hooks — see
+  [test/msw/handlers.ts](test/msw/handlers.ts) and the `stubCategories()` /
+  `stubTags()` helpers. Intercepting HTTP keeps the React Query hooks, their
+  caching and their error handling real. An unstubbed request fails the test
+  rather than resolving to something unexpected.
+- Build page props with the fixtures in [test/fixtures/](test/fixtures/) —
+  `webData([{ title, category }])` returns the compressed payload the web page
+  expects.
+
+```tsx
+const { user } = renderPage(<Web data={webData(LISTINGS)} webSlug="bristol" />, {
+  searchParams: { view: 'list' },
+})
+
+await user.type(await screen.findByPlaceholderText('Search'), 'food')
+
+expect(screen.queryByRole('link', { name: /Sustainable Food/i })).toBeInTheDocument()
+```
+
+When a test passes, check it fails for the right reason: break the behaviour it
+covers and confirm it goes red. An assertion on an element that never existed
+(`queryByRole('list')` where nothing renders that role) passes forever.
 
 ### 3. Integration — Vitest against real Postgres
 
