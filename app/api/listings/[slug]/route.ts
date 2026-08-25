@@ -1,5 +1,6 @@
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
+import { requireWebEditor } from '@/lib/api-authorization'
 import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -109,10 +110,59 @@ export async function GET(
   }
 }
 
+/**
+ * `prisma.listing.update` is keyed on the listing alone, so the placement has to
+ * be established before the caller can be checked against anything.
+ */
+async function resolvePlacementWebId(
+  listingId: number,
+  requestedWebId: number | undefined,
+) {
+  const existing = await prisma.listing.findUnique({
+    where: { id: listingId },
+    select: { placements: { select: { webId: true } } },
+  })
+
+  if (!existing) {
+    return { error: new Response('Listing not found', { status: 404 }) }
+  }
+
+  if (requestedWebId === undefined) {
+    if (existing.placements.length !== 1) {
+      return {
+        error: new Response(
+          'Listing exists in multiple webs; webId is required to disambiguate',
+          { status: 400 },
+        ),
+      }
+    }
+    return { webId: existing.placements[0].webId }
+  }
+
+  if (!existing.placements.some((p) => p.webId === requestedWebId)) {
+    return {
+      error: new Response('Listing not found in this web', { status: 404 }),
+    }
+  }
+
+  return { webId: requestedWebId }
+}
+
 export async function PUT(request) {
   try {
     const formData = await request.formData()
     const listingId = formData.get('id')
+
+    const formWebId = formData.get('webId')
+    const { webId: placementWebId, error } = await resolvePlacementWebId(
+      Number(listingId),
+      formWebId ? Number(formWebId) : undefined,
+    )
+    if (error) return error
+
+    const denied = await requireWebEditor(request, placementWebId)
+    if (denied) return denied
+
     const tags = formData.get('tags')
     const removedTags = formData.get('removedTags')
     const relations = formData.get('relations')
@@ -265,28 +315,6 @@ export async function PUT(request) {
       newData.image = null
     }
 
-    const formWebId = formData.get('webId')
-    let placementWebId: number | undefined = formWebId
-      ? Number(formWebId)
-      : undefined
-
-    if (placementWebId === undefined) {
-      const existing = await prisma.listing.findUnique({
-        where: { id: Number(listingId) },
-        select: { placements: { select: { webId: true }, take: 2 } },
-      })
-      if (!existing) {
-        return new Response('Listing not found', { status: 404 })
-      }
-      if (existing.placements.length !== 1) {
-        return new Response(
-          'Listing exists in multiple webs; webId is required to disambiguate',
-          { status: 400 },
-        )
-      }
-      placementWebId = existing.placements[0].webId
-    }
-
     const placementUpdate: Prisma.ListingPlacementUpdateInput = {
       slug: slug as string,
       featured: featuredDate,
@@ -431,6 +459,13 @@ export async function DELETE(
   try {
     const slug = params.slug
     const { webId } = await request.json()
+
+    if (!Number.isInteger(webId)) {
+      return Response.json({ error: 'webId is required' }, { status: 400 })
+    }
+
+    const denied = await requireWebEditor(request, webId)
+    if (denied) return denied
 
     const placement = await prisma.listingPlacement.findUnique({
       where: { webSlug: { webId, slug } },

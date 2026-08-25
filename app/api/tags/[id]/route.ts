@@ -1,22 +1,36 @@
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
+import { requireWebEditor } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { findTagWebId } from '../authorization.ts'
 
 export async function PATCH(
   request: NextRequest,
   props: { params: Promise<{ id: string }> },
 ) {
   const params = await props.params
-  const tagId = params.id
+  const tagId = Number(params.id)
   const body = await request.json()
 
+  const webId = await findTagWebId(tagId)
+  if (webId === null) {
+    return Response.json({ error: 'Tag not found' }, { status: 404 })
+  }
+
+  const denied = await requireWebEditor(request, webId)
+  if (denied) return denied
+
   try {
+    // Enumerated, not spread: `data: body` would let the caller move the tag
+    // to a web they have no rights over.
     const tag = await prisma.tag.update({
       where: {
-        id: Number(tagId),
+        id: tagId,
       },
-      data: body,
+      data: {
+        ...(body.label !== undefined ? { label: body.label } : {}),
+      },
       include: {
         web: {
           select: {
@@ -39,16 +53,24 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   props: { params: Promise<{ id: string }> },
 ) {
   const params = await props.params
-  const id = params.id
+  const tagId = Number(params.id)
+
+  const webId = await findTagWebId(tagId)
+  if (webId === null) {
+    return Response.json({ error: 'Tag not found' }, { status: 404 })
+  }
+
+  const denied = await requireWebEditor(request, webId)
+  if (denied) return denied
 
   try {
     const tag = await prisma.tag.delete({
       where: {
-        id: Number(id),
+        id: tagId,
       },
     })
 

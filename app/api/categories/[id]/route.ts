@@ -1,22 +1,49 @@
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
+import { requireWebEditor } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+
+/** The web a category belongs to is what the caller needs rights over. */
+async function findCategoryWebId(categoryId: number) {
+  if (!Number.isInteger(categoryId)) {
+    return null
+  }
+  const category = await prisma.category.findUnique({
+    where: { id: categoryId },
+    select: { webId: true },
+  })
+  return category?.webId ?? null
+}
 
 export async function PATCH(
   request: NextRequest,
   props: { params: Promise<{ id: string }> },
 ) {
   const params = await props.params
-  const categoryId = params.id
+  const categoryId = Number(params.id)
   const body = await request.json()
 
+  const webId = await findCategoryWebId(categoryId)
+  if (webId === null) {
+    return Response.json({ error: 'Category not found' }, { status: 404 })
+  }
+
+  const denied = await requireWebEditor(request, webId)
+  if (denied) return denied
+
   try {
+    // Enumerated, not spread: `data: body` would let the caller move the
+    // category to a web they have no rights over.
     const category = await prisma.category.update({
       where: {
-        id: Number(categoryId),
+        id: categoryId,
       },
-      data: body,
+      data: {
+        ...(body.label !== undefined ? { label: body.label } : {}),
+        ...(body.color !== undefined ? { color: body.color } : {}),
+        ...(body.icon !== undefined ? { icon: body.icon } : {}),
+      },
       include: {
         web: {
           select: {
@@ -39,16 +66,24 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   props: { params: Promise<{ id: string }> },
 ) {
   const params = await props.params
-  const categoryId = params.id
+  const categoryId = Number(params.id)
+
+  const webId = await findCategoryWebId(categoryId)
+  if (webId === null) {
+    return Response.json({ error: 'Category not found' }, { status: 404 })
+  }
+
+  const denied = await requireWebEditor(request, webId)
+  if (denied) return denied
 
   try {
     const category = await prisma.category.delete({
       where: {
-        id: Number(categoryId),
+        id: categoryId,
       },
     })
 
