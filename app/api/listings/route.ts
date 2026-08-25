@@ -1,5 +1,6 @@
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
+import { callerCanEditWeb, getCaller } from '@/lib/api-authorization'
 import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -92,13 +93,18 @@ export async function GET(request: NextRequest) {
   }
 }
 
+/**
+ * Deliberately reachable without a session: this backs the propose-a-listing
+ * form anonymous visitors use. The admin form posts here too with
+ * `pending=false`, so every field that decides whether a listing goes live comes
+ * from the caller's rights over `webId`, never from the body.
+ */
 export async function POST(request) {
   try {
     const formData = await request.formData()
     const tags = formData.get('tags')
     const relations = formData.get('relations')
     const pending = formData.get('pending')
-    const proposerId = formData.get('proposerId')
     const webId = parseInt(formData.get('webId'))
     const category = parseInt(formData.get('category'))
     const title = formData.get('title')
@@ -115,21 +121,62 @@ export async function POST(request) {
     const socials = formData.get('socials')
     const actions = formData.get('actions')
 
-    // Prepare tags
-    const tagsArray = tags !== '' ? tags.split(',') : []
-    const tagsToConnect = tagsArray.map((tagId) => ({
-      id: Number(tagId),
-    }))
+    if (!Number.isInteger(webId)) {
+      return Response.json({ error: 'webId is required' }, { status: 400 })
+    }
 
-    // Prepare relations
-    const relationsArray = relations !== '' ? relations.split(',') : []
-    const relationsToConnect = relationsArray.map((relationId) => ({
-      id: Number(relationId),
-    }))
+    const web = await prisma.web.findFirst({
+      where: { id: webId, deletedAt: null },
+      select: { id: true },
+    })
+    if (!web) {
+      return Response.json({ error: 'Web not found' }, { status: 404 })
+    }
 
-    const isProposedListing = stringToBoolean(pending)
+    const caller = await getCaller(request)
+    const callerIsEditor = await callerCanEditWeb(caller, webId)
+
+    // Everyone else gets a proposal, whatever the form said.
+    const isProposedListing = callerIsEditor ? stringToBoolean(pending) : true
+
+    // Whoever is signed in, never whoever the body names. Anonymous proposals
+    // are allowed and simply have none.
+    const proposerId = caller?.id
+
     const socialsData = socials ? JSON.parse(socials) : []
     const actionsData = actions ? JSON.parse(actions) : []
+
+    // Tags and categories are per-web, so only this web's may be attached.
+    const requestedTagIds = (
+      typeof tags === 'string' && tags !== '' ? tags.split(',') : []
+    )
+      .map(Number)
+      .filter(Number.isInteger)
+    const tagsToConnect =
+      requestedTagIds.length > 0
+        ? await prisma.tag.findMany({
+            where: { id: { in: requestedTagIds }, webId },
+            select: { id: true },
+          })
+        : []
+
+    const categoryInThisWeb = Number.isInteger(category)
+      ? await prisma.category.findFirst({
+          where: { id: category, webId },
+          select: { id: true },
+        })
+      : null
+
+    // Relating writes to the *other* listing too, so it stays an editor action.
+    const relationsToConnect = callerIsEditor
+      ? (typeof relations === 'string' && relations !== ''
+          ? relations.split(',')
+          : []
+        )
+          .map(Number)
+          .filter(Number.isInteger)
+          .map((id) => ({ id }))
+      : []
 
     const newData: Prisma.ListingCreateInput = {
       title: title,
@@ -180,7 +227,9 @@ export async function POST(request) {
         create: {
           web: { connect: { id: webId } },
           slug: slug as string,
-          ...(category ? { category: { connect: { id: category } } } : {}),
+          ...(categoryInThisWeb
+            ? { category: { connect: { id: categoryInThisWeb.id } } }
+            : {}),
           featured: isProposedListing ? null : featuredDate,
           ...(tagsToConnect.length > 0 && { tags: { connect: tagsToConnect } }),
         },
@@ -233,11 +282,13 @@ export async function POST(request) {
     }
 
     if (isProposedListing && selectedWeb) {
-      const proposer = await prisma.user.findUnique({
-        where: {
-          id: proposerId,
-        },
-      })
+      const proposer = proposerId
+        ? await prisma.user.findUnique({
+            where: {
+              id: proposerId,
+            },
+          })
+        : null
 
       const listingProposedEmailComponent = ListingProposedAdminEmail({
         proposedListingTitle: listing.title,

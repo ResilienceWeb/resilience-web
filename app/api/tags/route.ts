@@ -1,5 +1,6 @@
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
+import { requireWebEditor } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
@@ -70,9 +71,23 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
+  const webId = Number(body?.webId)
+
+  if (!Number.isInteger(webId)) {
+    return Response.json({ error: 'webId is required' }, { status: 400 })
+  }
+
+  const denied = await requireWebEditor(request, webId)
+  if (denied) return denied
+
   try {
+    // Enumerated, not spread: `data: body` would let the caller set `webId`
+    // past the check above, or reach other webs through `listings`.
     const tag = await prisma.tag.create({
-      data: body,
+      data: {
+        webId,
+        label: body.label,
+      },
       include: {
         web: {
           select: {

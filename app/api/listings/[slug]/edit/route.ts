@@ -1,4 +1,5 @@
 import type { NextRequest } from 'next/server'
+import { requireWebEditor } from '@/lib/api-authorization'
 import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -42,6 +43,11 @@ export async function GET(
   }
 }
 
+/**
+ * Deliberately open to any signed-in visitor: proposing an edit publishes
+ * nothing. It lands in `ListingEdit` and reaches the listing only once an editor
+ * approves it, which is where the web-scoped check lives.
+ */
 export async function POST(request, props) {
   const params = await props.params
   try {
@@ -226,6 +232,7 @@ export async function POST(request, props) {
   }
 }
 
+/** Rejecting an edit is the mirror of approving it, so it takes the same rights. */
 export async function DELETE(request, props) {
   const params = await props.params
   try {
@@ -249,6 +256,9 @@ export async function DELETE(request, props) {
     if (!placement) {
       return new Response('Listing not found', { status: 404 })
     }
+
+    const denied = await requireWebEditor(request, placement.webId)
+    if (denied) return denied
 
     const listingEdit = await prisma.listingEdit.findFirst({
       where: {

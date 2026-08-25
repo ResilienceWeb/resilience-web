@@ -1,5 +1,6 @@
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
+import { requireWebEditor } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
@@ -18,6 +19,9 @@ export async function PATCH(
         { status: 400 },
       )
     }
+
+    const denied = await requireWebEditor(request, Number(webId))
+    if (denied) return denied
 
     const featuredUntil = new Date()
     featuredUntil.setDate(featuredUntil.getDate() + 7)

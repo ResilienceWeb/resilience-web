@@ -1,4 +1,5 @@
 import type { NextRequest } from 'next/server'
+import { requireWebOwner } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { getSessionSafe } from '@auth'
@@ -41,6 +42,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Owner, not editor: this grants access, and the admin UI only offers the
+    // invite form to owners.
+    const denied = await requireWebOwner(request, Number(webId))
+    if (denied) return denied
+
+    const selectedWeb = await prisma.web.findFirst({
+      where: { id: Number(webId), deletedAt: null },
+    })
+
+    if (!selectedWeb) {
+      return Response.json({ error: 'Web not found' }, { status: 404 })
+    }
+
     if (asOwner) {
       await addUserToWeb(email, webId, 'OWNER')
     } else {
@@ -49,12 +63,6 @@ export async function POST(request: NextRequest) {
 
     const emailEncoded = encodeURIComponent(email)
     const callToActionButtonUrl = `${REMOTE_URL}/activate?email=${emailEncoded}`
-
-    const selectedWeb = await prisma.web.findUnique({
-      where: {
-        id: webId,
-      },
-    })
 
     const inviteEmailComponent = InviteEmail({
       webTitle: `${selectedWeb.title}`,
