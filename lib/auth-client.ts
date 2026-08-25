@@ -1,9 +1,23 @@
 import { adminClient, emailOTPClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/react'
+import type { auth } from '@auth'
 
 export const authClient = createAuthClient({
   plugins: [adminClient(), emailOTPClient()],
 })
+
+/**
+ * The session as the browser sees it.
+ *
+ * Better Auth types its client by walking the server's route table, and each
+ * step of that walk tests an endpoint's `options.metadata` against shapes like
+ * `{ isAction: false }`. With `strictNullChecks` off (see tsconfig.json) an
+ * absent `metadata` satisfies every one of those shapes, so all the endpoints
+ * are discarded as non-callable and `authClient.useSession().data` collapses
+ * to `never`. The server instance infers the same session — plugin fields and
+ * all — without going through the route table, so take the shape from there.
+ */
+export type Session = typeof auth.$Infer.Session
 
 export type AUTH_ERROR_CODE = keyof typeof authClient.$ERROR_CODES
 
@@ -55,4 +69,9 @@ export const ERROR_MESSAGES: Partial<Record<AUTH_ERROR_CODE, string>> = {
   OTP_EXPIRED: 'This code has expired. Please request a new one.',
 }
 
-export const { signIn, signOut, useSession } = authClient
+export const { signIn, signOut } = authClient
+
+export const useSession: () => Omit<
+  ReturnType<typeof authClient.useSession>,
+  'data'
+> & { data: Session | null } = authClient.useSession
