@@ -74,7 +74,9 @@ const SlugField = ({ webSlug }) => {
             <span className="inline-flex shrink-0 items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
               {`${webSlug}.resilienceweb.org.uk/`}
             </span>
-            <Input {...field} className="rounded-l-none" />
+            <FormControl>
+              <Input {...field} className="rounded-l-none" />
+            </FormControl>
           </div>
           <FormMessage />
         </FormItem>
