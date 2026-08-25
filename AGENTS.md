@@ -249,13 +249,20 @@ Render the real component and drive it as a visitor would — type, click, selec
 in the test, and don't assert on props or internal state.
 
 Setup lives in [test/setup/components.tsx](test/setup/components.tsx). It stubs
-the browser APIs Radix needs (`ResizeObserver`, pointer capture), and the three
-Next modules that have no implementation under jsdom:
+the browser APIs Radix needs (`ResizeObserver`, pointer capture), and the
+modules that have no implementation under jsdom:
 
 - `next/navigation` — backed by [test/next-navigation.ts](test/next-navigation.ts),
   so a test can `setRoute()` or assert on `router.push`
 - `next/image` and `next/link` — rendered as the plain `<img>` / `<a>` they
   become in the browser
+- `@auth-client` — Better Auth keeps the session in the browser, so `useSession`
+  reads from [test/session.ts](test/session.ts) instead; a test signs in with
+  `signInAs()`, the same helper the integration tests use
+- `@tinymce/tinymce-react` — the rich text editor downloads itself from a CDN,
+  so it renders as the text box it stands in for and a test types into it
+- `posthog-js` — analytics is an outbound edge; tests drive real journeys and
+  must not report them anywhere
 
 Keeping all of that in the setup file is deliberate: **the tests themselves
 contain no Next-specific code**, so they survive a change of framework.
@@ -264,15 +271,21 @@ Writing one:
 
 - Render with `renderPage()` from [test/render.tsx](test/render.tsx), which
   provides React Query and nuqs and hands back a `user`. Pass `searchParams` to
-  start the test on a particular URL state.
+  start the test on a particular URL state, and `selectedWeb` to put an admin
+  screen inside a particular web — that is what every one of them reads through
+  `useAppContext`.
 - Stub the API with **MSW**, not by mocking hooks — see
-  [test/msw/handlers.ts](test/msw/handlers.ts) and the `stubCategories()` /
-  `stubTags()` helpers. Intercepting HTTP keeps the React Query hooks, their
+  [test/msw/handlers.ts](test/msw/handlers.ts) and the `stub*` helpers
+  (`stubCategories`, `stubTags`, `stubListings`, `stubWeb`, `stubListingEdits`,
+  `stubCanEditWeb`). Intercepting HTTP keeps the React Query hooks, their
   caching and their error handling real. An unstubbed request fails the test
   rather than resolving to something unexpected.
-- Build page props with the fixtures in [test/fixtures/](test/fixtures/) —
+- Assert on the change a component asked for with `recordRequests()`, which
+  stubs a request and remembers what was sent — the URL and the body, whether
+  it went as JSON or as a form.
+- Build props with the fixtures in [test/fixtures/](test/fixtures/) —
   `webData([{ title, category }])` returns the compressed payload the web page
-  expects.
+  expects, and `listing({ title })` a listing in the shape the client sees it.
 
 ```tsx
 const { user } = renderPage(<Web data={webData(LISTINGS)} webSlug="bristol" />, {

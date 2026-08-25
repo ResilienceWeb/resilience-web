@@ -3,6 +3,7 @@ import { cleanup } from '@testing-library/react'
 import { afterAll, afterEach, beforeAll, vi } from 'vitest'
 import { server } from '../msw/server.ts'
 import { resetRoute, route, router } from '../next-navigation.ts'
+import { signOut } from '../session.ts'
 
 // Components read the current route from `next/navigation`, which has no
 // implementation under jsdom. Backed by `test/next-navigation.ts` so a test can
@@ -52,6 +53,54 @@ vi.mock('next/navigation', () => ({
   notFound: vi.fn(),
 }))
 
+// Better Auth keeps the session in the browser and there is no browser here,
+// so `useSession` reads from `test/session.ts` instead — the same store the
+// integration tests drive with `signInAs()`. This and `next/navigation` above
+// are the only two places the component suite knows what it is running on.
+vi.mock('@auth-client', async () => {
+  const { sessionStore } = await import('../session.ts')
+  return {
+    useSession: () => ({
+      data: sessionStore.current,
+      isPending: false,
+      error: null,
+    }),
+    signIn: vi.fn(),
+    signOut: vi.fn(),
+    authClient: {},
+    ERROR_MESSAGES: {},
+  }
+})
+
+// TinyMCE downloads its editor from a CDN and takes over a real document to
+// render into. It stands in for a text box, so that is what it renders as here
+// — a test types a description the same way a visitor does. The remaining props
+// are the id and labelling that `FormControl` hands down, so the field keeps
+// its accessible name.
+vi.mock('@tinymce/tinymce-react', () => ({
+  Editor: ({
+    value,
+    onEditorChange,
+    onBlur,
+    apiKey: _apiKey,
+    init: _init,
+    ...rest
+  }: Record<string, any>) => (
+    <textarea
+      {...rest}
+      value={value ?? ''}
+      onBlur={onBlur}
+      onChange={(event) => onEditorChange?.(event.target.value)}
+    />
+  ),
+}))
+
+// Analytics is an outbound edge: tests drive real user journeys and must not
+// report them anywhere.
+vi.mock('posthog-js', () => ({
+  default: { capture: vi.fn(), init: vi.fn(), identify: vi.fn() },
+}))
+
 // `error` so a request the tests forgot to stub fails loudly instead of
 // silently resolving to something unexpected.
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
@@ -60,6 +109,7 @@ afterEach(() => {
   cleanup()
   server.resetHandlers()
   resetRoute()
+  signOut()
 })
 
 afterAll(() => server.close())
@@ -105,6 +155,10 @@ if (!globalThis.IntersectionObserver) {
   } as unknown as typeof IntersectionObserver
 }
 /* eslint-enable no-empty-function */
+
+// jsdom defines scrollTo but throws from it, so this one is replaced outright
+// rather than filled in.
+window.scrollTo = vi.fn()
 
 /* eslint-disable @typescript-eslint/unbound-method -- assigning stubs onto the
    prototype is the point here; nothing is being detached and called. */

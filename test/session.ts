@@ -1,9 +1,10 @@
 /**
- * Controls the session that route handlers see.
+ * Controls who is signed in, for both test suites.
  *
- * Route handlers call `getSessionSafe()` from `@auth`; integration tests mock
- * that module (see `setup/external-mocks.ts`) to read from this store, so a
- * test can switch identity with `signInAs()` without re-mocking anything.
+ * Route handlers call `getSessionSafe()` from `@auth`, and components call
+ * `useSession()` from `@auth-client`. Each suite's setup file mocks its own
+ * side to read from this store, so either kind of test switches identity with
+ * `signInAs()` without re-mocking anything.
  */
 
 export interface TestSessionUser {

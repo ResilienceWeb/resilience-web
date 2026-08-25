@@ -125,6 +125,11 @@ const TableContent = ({ items, removeItem }) => {
                       title="Display this listing at the top of the web page for 7 days."
                     >
                       <button
+                        aria-label={
+                          isFeatured
+                            ? `Unfeature ${item.title}`
+                            : `Feature ${item.title}`
+                        }
                         className="rounded-full bg-gray-100 p-2 text-xl hover:bg-gray-200"
                         onClick={() => {
                           if (isFeatured) {
