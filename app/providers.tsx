@@ -1,19 +1,22 @@
 'use client'
 
-import { useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import {
   isServer,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import posthog from 'posthog-js'
-import { PostHogProvider } from 'posthog-js/react'
 
+// Dynamic so neither `posthog-js` nor its React bindings reach the entry chunk.
 const PostHogPageView = dynamic(() => import('./PostHogPageView'), {
   ssr: false,
 })
+
+const ReactQueryDevtools = dynamic(
+  () =>
+    import('@tanstack/react-query-devtools').then((m) => m.ReactQueryDevtools),
+  { ssr: false },
+)
 
 function makeQueryClient() {
   return new QueryClient({
@@ -50,32 +53,13 @@ export default function Providers({ children }) {
   //       render if it suspends and there is no boundary
   const queryClient = getQueryClient()
 
-  useEffect(() => {
-    if (process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-      posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-        api_host:
-          process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com',
-        ui_host: 'https://eu.posthog.com',
-        debug: false,
-        capture_pageview: false,
-        capture_pageleave: true,
-        persistence: 'localStorage',
-        capture_exceptions: true,
-        capture_performance: true,
-        session_recording: {
-          maskAllInputs: false,
-        },
-      })
-    }
-  }, [])
-
   return (
-    <PostHogProvider client={posthog}>
-      <QueryClientProvider client={queryClient}>
-        <PostHogPageView />
-        {children}
+    <QueryClientProvider client={queryClient}>
+      <PostHogPageView />
+      {children}
+      {process.env.NODE_ENV === 'development' && (
         <ReactQueryDevtools buttonPosition="bottom-right" />
-      </QueryClientProvider>
-    </PostHogProvider>
+      )}
+    </QueryClientProvider>
   )
 }

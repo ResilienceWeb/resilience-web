@@ -23,7 +23,6 @@ import {
 import Item from '@components/main-list/item'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
-import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 
 interface RelatedWeb {
   slug: string
@@ -36,8 +35,9 @@ interface RelatedWeb {
 
 interface MapProps {
   items?: any[]
-  webSlug: string
   relatedWebs?: RelatedWeb[]
+  /** Every category in this web, label-sorted. */
+  categories?: { label: string }[]
 }
 
 function MarkerClusterGroup({ items }: { items: any[] }) {
@@ -136,13 +136,12 @@ function FitBoundsToMarkers({ markers }: { markers: [number, number][] }) {
   return null
 }
 
-function ListingsMap({ items = [], webSlug, relatedWebs = [] }: MapProps) {
+function ListingsMap({ items = [], relatedWebs = [], categories }: MapProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isFullScreen, setIsFullScreen] = useState(false)
   const [isUnmappedPanelOpen, setIsUnmappedPanelOpen] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
 
-  const { categories } = useCategoriesPublic({ webSlug })
   const categoriesIndexes = useMemo(() => {
     const obj: Record<string, number> = {}
     categories?.map((c, i) => (obj[c.label] = i))

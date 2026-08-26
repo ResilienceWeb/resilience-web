@@ -24,7 +24,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip'
-import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 
 const ListingMap = dynamic(() => import('@components/listing-map'), {
   ssr: false,
@@ -38,7 +37,8 @@ const ListingMap = dynamic(() => import('@components/listing-map'), {
   ),
 })
 
-function Listing({ listing }) {
+/** `categories` is every category in this listing's web, label-sorted. */
+function Listing({ listing, categories }) {
   useEffect(() => {
     if (listing.web?.id) {
       trackListingEvent(listing.id, listing.web.id, 'view')
@@ -47,7 +47,6 @@ function Listing({ listing }) {
 
   const websiteSanitized = sanitizeLink(listing.website)
 
-  const { categories } = useCategoriesPublic({ webSlug: listing.web?.slug })
   const categoriesIndexesObj = {}
   categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))
   const categoriesIndexes = categoriesIndexesObj

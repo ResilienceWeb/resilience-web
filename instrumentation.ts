@@ -11,6 +11,9 @@ import * as Sentry from '@sentry/nextjs'
 const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build'
 const isProduction = process.env.NODE_ENV === 'production' && !isBuildPhase
 
+// Fraction of requests traced. Errors are captured whatever this is.
+const TRACES_SAMPLE_RATE = Number(process.env.SENTRY_TRACES_SAMPLE_RATE ?? 0.1)
+
 const posthogApiKey = process.env.NEXT_PUBLIC_POSTHOG_KEY
 const posthogHost =
   process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://eu.i.posthog.com'
@@ -65,7 +68,7 @@ export function register() {
     Sentry.init({
       dsn: 'https://a205584b48c84a7fbfcd3632479d33f7@o4505069644611584.ingest.sentry.io/4505069646643200',
       enabled: isProduction,
-      tracesSampleRate: 1,
+      tracesSampleRate: TRACES_SAMPLE_RATE,
       debug: false,
     })
 
@@ -76,7 +79,7 @@ export function register() {
     Sentry.init({
       dsn: 'https://a205584b48c84a7fbfcd3632479d33f7@o4505069644611584.ingest.sentry.io/4505069646643200',
       enabled: isProduction,
-      tracesSampleRate: 1,
+      tracesSampleRate: TRACES_SAMPLE_RATE,
       debug: false,
     })
   }

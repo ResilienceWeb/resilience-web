@@ -72,7 +72,18 @@ export async function DELETE(
       where: {
         id: tagId,
       },
+      include: {
+        web: {
+          select: {
+            slug: true,
+          },
+        },
+      },
     })
+
+    // The web page's tag filter is built server-side, so a deleted tag has to
+    // be rebuilt out of it.
+    revalidatePath(`/${tag.web.slug}`)
 
     return Response.json({ data: tag })
   } catch (e) {

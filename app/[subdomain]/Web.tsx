@@ -25,8 +25,6 @@ import MainList from '@components/main-list'
 import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
 import useIsMobile from '@hooks/application/useIsMobile'
-import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
-import useTagsPublic from '@hooks/tags/useTagsPublic'
 
 const NetworkComponent = dynamic(() => import('@components/network'), {
   ssr: false,
@@ -55,9 +53,15 @@ export type RelatedWeb = {
   }
 }
 
+export type WebCategory = { label: string; color: string; icon: string }
+export type WebTag = { id: number; label: string }
+
 type Props = {
   // gzip+base64 compressed NetworkData, decompressed on the client below.
   data: string
+  /** Every category and every in-use tag in this web, from the server render. */
+  categories?: WebCategory[]
+  tags?: WebTag[]
   events?: any[]
   features: any
   webId: number
@@ -72,6 +76,8 @@ type Props = {
 
 const Web = ({
   data: compressedData,
+  categories: webCategories = [],
+  tags: webTags = [],
   events,
   features,
   webId,
@@ -136,12 +142,8 @@ const Web = ({
   const handleSearchTermChange = (event) => setSearchTerm(event.target.value)
   const handleClearSearchTermValue = () => setSearchTerm('')
 
-  const { categories: fetchedCategories } = useCategoriesPublic({ webSlug })
-  const { tags: fetchedTags } = useTagsPublic({ webSlug })
-
   const categories = (() => {
-    if (!fetchedCategories) return []
-    return fetchedCategories.map((c) => {
+    return webCategories.map((c) => {
       const color = `#${c.color}`
       const IconComponent =
         c.icon && c.icon !== 'default' ? getIcon(c.icon)?.icon : undefined
@@ -156,8 +158,7 @@ const Web = ({
   })()
 
   const tags = (() => {
-    if (!fetchedTags) return []
-    return fetchedTags.map((t) => ({
+    return webTags.map((t) => ({
       value: t.label,
       label: t.label,
     }))
@@ -409,13 +410,17 @@ const Web = ({
           ))}
 
         {activeTab === 'list' && (
-          <MainList filteredItems={filteredItems} webSlug={webSlug} />
+          <MainList
+            filteredItems={filteredItems}
+            webSlug={webSlug}
+            categories={webCategories}
+          />
         )}
         {activeTab === 'map' && (
           <ListingsMap
             items={filteredItems}
-            webSlug={webSlug}
             relatedWebs={relatedWebs}
+            categories={webCategories}
           />
         )}
         {activeTab === 'events' && <Events items={events} webSlug={webSlug} />}

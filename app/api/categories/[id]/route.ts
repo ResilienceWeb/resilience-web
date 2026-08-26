@@ -85,7 +85,18 @@ export async function DELETE(
       where: {
         id: categoryId,
       },
+      include: {
+        web: {
+          select: {
+            slug: true,
+          },
+        },
+      },
     })
+
+    // The web page's category filter is built server-side, so a deleted
+    // category has to be rebuilt out of it.
+    revalidatePath(`/${category.web.slug}`)
 
     return Response.json({ data: category })
   } catch (e) {
