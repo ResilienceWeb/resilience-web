@@ -59,7 +59,6 @@ export type WebTag = { id: number; label: string }
 type Props = {
   // gzip+base64 compressed NetworkData, decompressed on the client below.
   data: string
-  /** Every category and every in-use tag in this web, from the server render. */
   categories?: WebCategory[]
   tags?: WebTag[]
   events?: any[]

@@ -83,9 +83,6 @@ type DataType = {
   // gzip+base64 compressed network visualization data ({ nodes, edges }).
   // Kept compressed across the wire and decompressed on the client in Web.tsx.
   data: string
-  // For the filter dropdowns. Fetching these from /api/categories and
-  // /api/tags after hydration cost every visitor to an otherwise fully static
-  // page two serverless invocations and four queries.
   categories: Array<{ label: string; color: string; icon: string }>
   tags: Array<{ id: number; label: string }>
   webData: {

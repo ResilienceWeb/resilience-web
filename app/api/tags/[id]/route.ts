@@ -22,8 +22,6 @@ export async function PATCH(
   if (denied) return denied
 
   try {
-    // Enumerated, not spread: `data: body` would let the caller move the tag
-    // to a web they have no rights over.
     const tag = await prisma.tag.update({
       where: {
         id: tagId,
@@ -81,8 +79,6 @@ export async function DELETE(
       },
     })
 
-    // The web page's tag filter is built server-side, so a deleted tag has to
-    // be rebuilt out of it.
     revalidatePath(`/${tag.web.slug}`)
 
     return Response.json({ data: tag })

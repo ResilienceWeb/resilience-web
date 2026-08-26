@@ -36,8 +36,6 @@ export default async function getListing({
       },
     },
     include: {
-      // `categories` rides along on the existing join rather than costing a
-      // /api/categories request per visitor to this otherwise static page.
       web: {
         select: {
           id: true,

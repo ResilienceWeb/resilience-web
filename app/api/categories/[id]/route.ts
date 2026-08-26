@@ -4,7 +4,6 @@ import { requireWebEditor } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 
-/** The web a category belongs to is what the caller needs rights over. */
 async function findCategoryWebId(categoryId: number) {
   if (!Number.isInteger(categoryId)) {
     return null
@@ -33,8 +32,6 @@ export async function PATCH(
   if (denied) return denied
 
   try {
-    // Enumerated, not spread: `data: body` would let the caller move the
-    // category to a web they have no rights over.
     const category = await prisma.category.update({
       where: {
         id: categoryId,
@@ -94,8 +91,6 @@ export async function DELETE(
       },
     })
 
-    // The web page's category filter is built server-side, so a deleted
-    // category has to be rebuilt out of it.
     revalidatePath(`/${category.web.slug}`)
 
     return Response.json({ data: category })
