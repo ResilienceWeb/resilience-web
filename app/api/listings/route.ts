@@ -16,8 +16,6 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const web = searchParams.get('web')
 
-  // Without a web this returned every listing in every web, with full
-  // descriptions and relations. Nothing asks for that.
   if (!web) {
     return Response.json({ error: 'web is required' }, { status: 400 })
   }
