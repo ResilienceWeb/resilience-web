@@ -11,7 +11,7 @@ import { signInAs } from '@/test/session'
 import { WebRole } from '@prisma-client'
 import { describe, expect, it } from 'vitest'
 import prisma from '@prisma-rw'
-import { POST } from '../route.ts'
+import { GET, POST } from '../route.ts'
 
 const newListingForm = (fields: Record<string, string> = {}) => {
   const form = new FormData()
@@ -29,6 +29,30 @@ const newListingForm = (fields: Record<string, string> = {}) => {
 
 const post = (form: FormData) =>
   POST(request('/api/listings', { method: 'POST', body: form }))
+
+describe('GET /api/listings', () => {
+  it('refuses to return every listing in every web', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    await createListing(web.id, { title: 'Food Hub', slug: 'food-hub' })
+
+    const response = await GET(request('/api/listings'))
+
+    expect(response.status).toBe(400)
+  })
+
+  it('returns the listings of the web it was asked for', async () => {
+    const bristol = await createWeb({ slug: 'bristol' })
+    const cambridge = await createWeb({ slug: 'cambridge' })
+    await createListing(bristol.id, { title: 'Food Hub', slug: 'food-hub' })
+    await createListing(cambridge.id, { title: 'Bike Kitchen' })
+
+    const response = await GET(request('/api/listings?web=bristol'))
+
+    expect(response.status).toBe(200)
+    const { listings } = await response.json()
+    expect(listings.map((l) => l.title)).toEqual(['Food Hub'])
+  })
+})
 
 describe('POST /api/listings', () => {
   it('accepts an anonymous proposal', async () => {

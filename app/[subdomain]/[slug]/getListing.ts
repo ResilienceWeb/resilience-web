@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import prisma from '@prisma-rw'
 import { exclude } from '@helpers/utils'
 import { isBuildTime, getListingFromCache } from '../../../lib/build-cache'
@@ -13,7 +14,11 @@ export function sortCategoriesByLabel<T extends { label: string }>(
   })
 }
 
-export default async function getListing({
+/**
+ * Wrapped in `cache()` because the page body and `generateMetadata` both ask
+ * for the same listing, and Next only dedupes `fetch`, not Prisma.
+ */
+const getListing = cache(async function getListing({
   webSlug,
   listingSlug,
 }: {
@@ -32,7 +37,7 @@ export default async function getListing({
       slug: listingSlug,
       web: {
         deletedAt: null,
-        ...(webSlug ? { slug: { contains: webSlug } } : {}),
+        ...(webSlug ? { slug: webSlug } : {}),
       },
     },
     include: {
@@ -71,7 +76,7 @@ export default async function getListing({
               title: true,
               image: true,
               placements: {
-                where: { web: { slug: { contains: webSlug } } },
+                where: { web: { slug: webSlug } },
                 select: {
                   slug: true,
                   featured: true,
@@ -132,4 +137,6 @@ export default async function getListing({
   const listing = exclude(flattened, ['createdAt', 'updatedAt', 'notes'])
 
   return listing as Listing
-}
+})
+
+export default getListing
