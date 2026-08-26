@@ -1,12 +1,19 @@
 import { webData } from '@/test/fixtures/web'
-import { stubCategories, stubTags } from '@/test/msw/handlers'
-import { server } from '@/test/msw/server'
 import { renderPage } from '@/test/render'
 import { screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import Web from '../Web.tsx'
 
 vi.mock('@helpers/analytics', () => ({ trackWebEvent: vi.fn() }))
+
+/** The server has these when it renders, so the filters never fetch them. */
+const CATEGORIES = [
+  { label: 'Community', color: 'b0e3c1', icon: 'default' },
+  { label: 'Environment', color: 'b0e3c1', icon: 'default' },
+  { label: 'Transportation', color: 'b0e3c1', icon: 'default' },
+]
+
+const TAGS = [{ id: 1, label: 'Volunteer-run' }]
 
 const LISTINGS = [
   { title: 'Community Kitchen', category: 'Community' },
@@ -20,6 +27,8 @@ function renderWeb() {
   return renderPage(
     <Web
       data={webData(LISTINGS)}
+      categories={CATEGORIES}
+      tags={TAGS}
       features={[]}
       webId={1}
       webName="Bristol"
@@ -53,17 +62,6 @@ const expectHidden = (titles: string[]) =>
   )
 
 const ALL_TITLES = LISTINGS.map((l) => l.title)
-
-beforeEach(() => {
-  server.use(
-    stubCategories([
-      { id: 1, label: 'Community' },
-      { id: 2, label: 'Environment' },
-      { id: 3, label: 'Transportation' },
-    ]),
-    stubTags([{ id: 1, label: 'Volunteer-run' }]),
-  )
-})
 
 describe('the web page listing filters', () => {
   it('shows every listing before anything is filtered', async () => {
@@ -101,6 +99,8 @@ describe('the web page listing filters', () => {
             description: 'Volunteers fix bicycles every Sunday',
           },
         ])}
+        categories={CATEGORIES}
+        tags={TAGS}
         features={[]}
         webId={1}
         webName="Bristol"
@@ -208,6 +208,8 @@ describe('the web page category filter', () => {
     renderPage(
       <Web
         data={webData(LISTINGS)}
+        categories={CATEGORIES}
+        tags={TAGS}
         features={[]}
         webId={1}
         webName="Bristol"

@@ -38,6 +38,61 @@ export async function recordListingEvent(
   })
 }
 
+export type AnalyticsEventInput = {
+  listingId?: number
+  webId: number
+  eventType: string
+  count: number
+}
+
+/** Applies a whole session's events in one transaction rather than one upsert per view. */
+export async function recordEvents(events: AnalyticsEventInput[]) {
+  if (events.length === 0) return
+
+  const today = new Date()
+  today.setUTCHours(0, 0, 0, 0)
+
+  const writes = events.map((event) =>
+    event.listingId
+      ? prisma.listingAnalyticsDaily.upsert({
+          where: {
+            listing_web_date_event: {
+              listingId: event.listingId,
+              webId: event.webId,
+              date: today,
+              eventType: event.eventType,
+            },
+          },
+          update: { count: { increment: event.count } },
+          create: {
+            listingId: event.listingId,
+            webId: event.webId,
+            date: today,
+            eventType: event.eventType,
+            count: event.count,
+          },
+        })
+      : prisma.webAnalyticsDaily.upsert({
+          where: {
+            web_date_event: {
+              webId: event.webId,
+              date: today,
+              eventType: event.eventType,
+            },
+          },
+          update: { count: { increment: event.count } },
+          create: {
+            webId: event.webId,
+            date: today,
+            eventType: event.eventType,
+            count: event.count,
+          },
+        }),
+  )
+
+  await prisma.$transaction(writes)
+}
+
 export async function recordWebEvent(webId: number, eventType: string) {
   const today = new Date()
   today.setUTCHours(0, 0, 0, 0)

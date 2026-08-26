@@ -5,7 +5,7 @@ import ListingDisplay from '@components/listing'
 export default function Listing({ listing }) {
   return (
     <Layout>
-      <ListingDisplay listing={listing} />
+      <ListingDisplay listing={listing} categories={listing.web?.categories} />
     </Layout>
   )
 }

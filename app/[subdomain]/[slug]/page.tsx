@@ -4,7 +4,7 @@ import truncate from 'lodash.truncate'
 import prisma from '@prisma-rw-build'
 import { initializeBuildCache } from '../../../lib/build-cache'
 import Listing from './Listing'
-import getListing from './getListing'
+import getListing, { sortCategoriesByLabel } from './getListing'
 
 type PageProps = {
   params: Promise<{
@@ -74,7 +74,13 @@ export async function generateStaticParams() {
       listing: { inactive: false },
     },
     include: {
-      web: { select: { slug: true, title: true } },
+      web: {
+        select: {
+          slug: true,
+          title: true,
+          categories: { select: { label: true } },
+        },
+      },
       category: { select: { id: true, color: true, label: true, icon: true } },
       tags: { select: { id: true, label: true } },
       listing: {
@@ -100,7 +106,10 @@ export async function generateStaticParams() {
     featured: p.featured,
     category: p.category,
     tags: p.tags,
-    web: p.web,
+    web: {
+      ...p.web,
+      categories: sortCategoriesByLabel(p.web.categories),
+    },
   }))
   initializeBuildCache(flattenedForCache as any)
 

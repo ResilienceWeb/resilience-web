@@ -2,6 +2,17 @@ import prisma from '@prisma-rw'
 import { exclude } from '@helpers/utils'
 import { isBuildTime, getListingFromCache } from '../../../lib/build-cache'
 
+/** Label-sorted, as the client hook sorted them. See `getData` in the web page. */
+export function sortCategoriesByLabel<T extends { label: string }>(
+  categories: T[] = [],
+): T[] {
+  return [...categories].sort((a, b) => {
+    if (a.label < b.label) return -1
+    if (a.label > b.label) return 1
+    return 0
+  })
+}
+
 export default async function getListing({
   webSlug,
   listingSlug,
@@ -25,7 +36,14 @@ export default async function getListing({
       },
     },
     include: {
-      web: { select: { id: true, slug: true, title: true } },
+      web: {
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          categories: { select: { label: true } },
+        },
+      },
       category: { select: { id: true, color: true, label: true, icon: true } },
       tags: { select: { id: true, label: true } },
       listing: {
@@ -84,7 +102,10 @@ export default async function getListing({
     featured: placementFields.featured,
     category: placementFields.category,
     tags: placementFields.tags,
-    web: placementFields.web,
+    web: {
+      ...placementFields.web,
+      categories: sortCategoriesByLabel(placementFields.web.categories),
+    },
     alsoListedIn: alsoIn.map((p) => ({
       slug: p.slug,
       web: p.web,

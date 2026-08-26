@@ -5,16 +5,16 @@ import NextLink from 'next/link'
 import { REMOTE_URL } from '@helpers/config'
 import Footer from '@components/footer'
 import { Button } from '@components/ui/button'
-import useCategoriesPublic from '@hooks/categories/useCategoriesPublic'
 import Item from './item'
 
 interface MainListProps {
   filteredItems: any[]
   webSlug: string
+  /** Every category in this web, label-sorted. */
+  categories?: { label: string }[]
 }
 
-const MainList = ({ filteredItems, webSlug }: MainListProps) => {
-  const { categories } = useCategoriesPublic({ webSlug })
+const MainList = ({ filteredItems, webSlug, categories }: MainListProps) => {
   const categoriesIndexesObj = {}
   categories?.map((c, i) => (categoriesIndexesObj[c.label] = i))
   const categoriesIndexes = categoriesIndexesObj

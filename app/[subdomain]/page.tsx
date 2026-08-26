@@ -25,11 +25,13 @@ export default async function WebPage(props) {
     return notFound()
   }
 
-  const { data, webData } = rawData
+  const { data, webData, categories, tags } = rawData
 
   return (
     <Web
       data={data}
+      categories={categories}
+      tags={tags}
       events={events}
       features={webData.features}
       webId={webData.id}
@@ -81,6 +83,8 @@ type DataType = {
   // gzip+base64 compressed network visualization data ({ nodes, edges }).
   // Kept compressed across the wire and decompressed on the client in Web.tsx.
   data: string
+  categories: Array<{ label: string; color: string; icon: string }>
+  tags: Array<{ id: number; label: string }>
   webData: {
     id: number
     title: string
@@ -391,10 +395,33 @@ async function getData({ webSlug }): Promise<DataType> {
     })
   }
 
+  // Label-sorted, as the client hook sorted them: the category's index here is
+  // what picks a listing's placeholder pattern.
+  const publicCategories = categories
+    .map(({ label, color, icon }) => ({ label, color, icon }))
+    .sort((a, b) => {
+      if (a.label < b.label) return -1
+      if (a.label > b.label) return 1
+      return 0
+    })
+
+  // Only tags carried by a visible listing are worth offering as a filter.
+  const tagsById = new Map<number, { id: number; label: string }>()
+  for (const category of categories) {
+    for (const placement of category.listings) {
+      for (const tag of placement.tags) {
+        tagsById.set(tag.id, { id: tag.id, label: tag.label })
+      }
+    }
+  }
+  const publicTags = [...tagsById.values()].sort((a, b) => a.id - b.id)
+
   return {
     // Compress only the network visualization data — it's the large payload.
     // webData is small and is consumed directly for props/metadata.
     data: compressJson(transformedData),
+    categories: publicCategories,
+    tags: publicTags,
     // @ts-ignore
     webData,
   }
