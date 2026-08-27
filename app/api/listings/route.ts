@@ -16,10 +16,12 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const web = searchParams.get('web')
 
+  if (!web) {
+    return Response.json({ error: 'web is required' }, { status: 400 })
+  }
+
   try {
-    const placementWhere = web
-      ? { web: { slug: web, deletedAt: null } }
-      : { web: { deletedAt: null } }
+    const placementWhere = { web: { slug: web, deletedAt: null } }
 
     const listings = await prisma.listing.findMany({
       where: {
@@ -58,6 +60,9 @@ export async function GET(request: NextRequest) {
           where: {
             accepted: false,
           },
+          // Only the count is read, and the full rows carry every proposed
+          // title, description and image.
+          select: { id: true },
         },
       },
       orderBy: [{ id: 'asc' }],

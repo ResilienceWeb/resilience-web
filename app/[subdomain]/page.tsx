@@ -1,9 +1,10 @@
+import { cache } from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { GraphQLClient } from 'graphql-request'
 import prisma from '@prisma-rw'
 import { compressJson } from '@helpers/compression'
-import { getAllWebs, getWebBySlug } from '@db/webRepository'
+import { getAllWebs } from '@db/webRepository'
 import Web from './Web'
 
 const CENTRAL_NODE_ID = 999
@@ -45,10 +46,41 @@ export default async function WebPage(props) {
   )
 }
 
+/**
+ * Wrapped in `cache()` because `getData` and `generateMetadata` both need the
+ * web, and Next only dedupes `fetch`, not Prisma.
+ */
+const getWebForPage = cache(async (webSlug: string) =>
+  prisma.web.findFirst({
+    where: {
+      slug: webSlug,
+      deletedAt: null,
+    },
+    include: {
+      features: {
+        select: {
+          feature: true,
+          enabled: true,
+        },
+      },
+      relations: {
+        select: {
+          slug: true,
+          title: true,
+          published: true,
+          location: {
+            select: { latitude: true, longitude: true },
+          },
+        },
+      },
+    },
+  }),
+)
+
 export async function generateMetadata(props): Promise<Metadata> {
   const params = await props.params
   const { subdomain: webSlug } = params
-  const webData = await getWebBySlug(webSlug)
+  const webData = await getWebForPage(webSlug)
 
   if (!webData) {
     return null
@@ -104,30 +136,7 @@ type DataType = {
 }
 
 async function getData({ webSlug }): Promise<DataType> {
-  const webData = await prisma.web.findFirst({
-    where: {
-      slug: webSlug,
-      deletedAt: null,
-    },
-    include: {
-      features: {
-        select: {
-          feature: true,
-          enabled: true,
-        },
-      },
-      relations: {
-        select: {
-          slug: true,
-          title: true,
-          published: true,
-          location: {
-            select: { latitude: true, longitude: true },
-          },
-        },
-      },
-    },
-  })
+  const webData = await getWebForPage(webSlug)
 
   if (!webData) {
     console.log(`[RW] Web not found for webSlug ${webSlug}`)
