@@ -12,12 +12,6 @@ import {
 } from '@components/ui/tooltip'
 import useIsMobile from '@hooks/application/useIsMobile'
 
-/**
- * The dialog is a Zod + react-hook-form form — ~42 KiB gzipped — and this
- * button sits in the nav of every page, so importing it statically put all of
- * that in the initial bundle for something almost nobody opens. It is fetched
- * on the first hint that someone is heading for it, and mounted on click.
- */
 const ContactDialog = dynamic(() => import('./ContactDialog'), { ssr: false })
 
 const warmContactDialog = () => {

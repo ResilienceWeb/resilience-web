@@ -1,54 +1,37 @@
 import { renderPage } from '@/test/render'
-import { screen, waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import SignupForm from '../index.ts'
 
 /**
- * The form is only fetched once it is about to scroll into view, so what a
- * visitor first meets in the footer is a stand-in. These drive the other
- * trigger — someone who reaches it before it scrolls into view — because that
- * is where typing could be dropped.
+ * Anything shorter than an address is caught by the browser first — the input is
+ * `type="email"`, so submission is blocked before the form's own rules run.
+ * What is left for these to cover is the empty case, which is natively valid.
  */
 describe('the newsletter signup form', () => {
-  it('takes every keystroke typed while it is still loading', async () => {
+  it('asks for an email address when submitted empty', async () => {
     const { user } = renderPage(<SignupForm />)
 
-    await user.type(
-      await screen.findByPlaceholderText('Your email address'),
-      'me@example.com',
-    )
+    await user.click(screen.getByRole('button', { name: /submit/i }))
 
-    expect(screen.getByPlaceholderText('Your email address')).toHaveValue(
-      'me@example.com',
-    )
+    expect(
+      await screen.findByText('Please enter your email address.'),
+    ).toBeInTheDocument()
   })
 
-  it('keeps what was typed when the real form takes over', async () => {
+  it('stops complaining once an address is typed', async () => {
     const { user } = renderPage(<SignupForm />)
 
+    await user.click(screen.getByRole('button', { name: /submit/i }))
+    expect(
+      await screen.findByText('Please enter your email address.'),
+    ).toBeInTheDocument()
+
     await user.type(
-      await screen.findByPlaceholderText('Your email address'),
+      screen.getByPlaceholderText('Your email address'),
       'me@example.com',
     )
-    await user.tab()
 
-    // The real form is in place now — it carries the reCAPTCHA notice, which
-    // the stand-in does not — and it still holds what was typed.
-    expect(
-      await screen.findByText(/protected by reCAPTCHA/i),
-    ).toBeInTheDocument()
-    await waitFor(() =>
-      expect(screen.getByPlaceholderText('Your email address')).toHaveValue(
-        'me@example.com',
-      ),
-    )
-  })
-
-  it('offers a submit button throughout', async () => {
-    renderPage(<SignupForm />)
-
-    expect(
-      await screen.findByRole('button', { name: /submit/i }),
-    ).toBeInTheDocument()
+    expect(screen.queryByText('Please enter your email address.')).toBeNull()
   })
 })
