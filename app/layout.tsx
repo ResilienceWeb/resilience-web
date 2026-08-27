@@ -1,10 +1,9 @@
 import type { Metadata } from 'next'
-import '@fontsource/poppins/400.css'
-import '@fontsource/poppins/600.css'
 import '@styles/styles.global.css'
 import { REMOTE_URL } from '@helpers/config'
 import { PageTracker } from '@helpers/page-tracker/PageTracker'
 import { Toaster } from '@components/ui/sonner'
+import { poppins } from './fonts'
 import Providers from './providers'
 
 export const metadata: Metadata = {
@@ -23,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="32x32" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
