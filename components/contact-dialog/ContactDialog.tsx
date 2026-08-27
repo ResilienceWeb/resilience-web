@@ -2,9 +2,7 @@
 
 import { memo, useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
-import * as z from 'zod'
 import { REMOTE_URL } from '@helpers/config'
 import { Button } from '@components/ui/button'
 import {
@@ -26,16 +24,27 @@ import {
 import { Input } from '@components/ui/input'
 import { Textarea } from '@components/ui/textarea'
 
-const formSchema = z.object({
-  email: z
-    .email({ error: 'Invalid email address' })
-    .min(1, { error: 'Email is required' }),
-  web: z.string().optional(),
-  message: z
-    .string()
-    .min(1, { error: 'Message is required' })
-    .max(1000, { error: 'Message must be less than 1000 characters' }),
-})
+type FormValues = {
+  email: string
+  web?: string
+  message: string
+}
+
+const EMAIL_PATTERN =
+  /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/
+
+const EMAIL_RULES = {
+  required: 'Email is required',
+  pattern: { value: EMAIL_PATTERN, message: 'Invalid email address' },
+}
+
+const MESSAGE_RULES = {
+  required: 'Message is required',
+  maxLength: {
+    value: 1000,
+    message: 'Message must be less than 1000 characters',
+  },
+}
 
 interface ContactDialogProps {
   isOpen: boolean
@@ -50,8 +59,7 @@ const ContactDialog = ({
   userEmail,
   webName,
 }: ContactDialogProps) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormValues>({
     defaultValues: {
       email: userEmail || '',
       web: webName || '',
@@ -72,7 +80,7 @@ const ContactDialog = ({
   }, [webName, form])
 
   const onFormSubmit = useCallback(
-    async (data: z.infer<typeof formSchema>) => {
+    async (data: FormValues) => {
       try {
         const response = await fetch(`${REMOTE_URL}/api/contact`, {
           method: 'POST',
@@ -132,6 +140,7 @@ const ContactDialog = ({
             <FormField
               control={form.control}
               name="email"
+              rules={EMAIL_RULES}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold">Email</FormLabel>
@@ -172,6 +181,7 @@ const ContactDialog = ({
             <FormField
               control={form.control}
               name="message"
+              rules={MESSAGE_RULES}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold">Message</FormLabel>

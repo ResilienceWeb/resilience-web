@@ -1,8 +1,6 @@
 import { useState, type Ref } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useReCaptcha } from 'next-recaptcha-v3'
-import { z } from 'zod'
 import { Button } from '@components/ui/button'
 import {
   Form,
@@ -13,23 +11,23 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 
-const FormSchema = z.object({
-  email: z.string().min(2, {
-    error: 'Please enter your email address.',
-  }),
-})
+type FormValues = {
+  email: string
+}
+
+const EMAIL_RULES = {
+  required: 'Please enter your email address.',
+  minLength: { value: 2, message: 'Please enter your email address.' },
+}
 
 type Props = {
   /** Attached to the form element so its visibility can be observed for lazy reCAPTCHA loading. */
   formRef?: Ref<HTMLFormElement>
-  /** Called on first interaction as a fallback trigger for loading reCAPTCHA. */
-  onInteract?: () => void
 }
 
-const SignupForm = ({ formRef, onInteract }: Props) => {
+const SignupForm = ({ formRef }: Props) => {
   const { executeRecaptcha } = useReCaptcha()
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<FormValues>({
     defaultValues: {
       email: '',
     },
@@ -68,6 +66,7 @@ const SignupForm = ({ formRef, onInteract }: Props) => {
         <FormField
           control={form.control}
           name="email"
+          rules={EMAIL_RULES}
           render={({ field }) => (
             <FormItem className="w-full md:w-[250px]">
               <FormControl>
@@ -79,7 +78,6 @@ const SignupForm = ({ formRef, onInteract }: Props) => {
                   placeholder="Your email address"
                   autoCapitalize="off"
                   autoCorrect="off"
-                  onFocus={onInteract}
                 />
               </FormControl>
               <FormMessage />
