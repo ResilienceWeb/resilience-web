@@ -1,4 +1,4 @@
-import { useState, type Ref } from 'react'
+import { useEffect, useState, type Ref } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useReCaptcha } from 'next-recaptcha-v3'
@@ -19,21 +19,34 @@ const FormSchema = z.object({
   }),
 })
 
-type Props = {
+export type SignupFormProps = {
   /** Attached to the form element so its visibility can be observed for lazy reCAPTCHA loading. */
   formRef?: Ref<HTMLFormElement>
   /** Called on first interaction as a fallback trigger for loading reCAPTCHA. */
   onInteract?: () => void
+  /** Anything typed into the placeholder before this form finished loading. */
+  defaultEmail?: string
+  /** Set when taking over from a placeholder the visitor was already typing into. */
+  takeFocus?: boolean
 }
 
-const SignupForm = ({ formRef, onInteract }: Props) => {
+const SignupForm = ({
+  formRef,
+  onInteract,
+  defaultEmail = '',
+  takeFocus = false,
+}: SignupFormProps) => {
   const { executeRecaptcha } = useReCaptcha()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: '',
+      email: defaultEmail,
     },
   })
+
+  useEffect(() => {
+    if (takeFocus) form.setFocus('email')
+  }, [takeFocus, form])
 
   const [isSuccess, setIsSuccess] = useState(false)
   const [errorMessage, setErrorMessage] = useState()

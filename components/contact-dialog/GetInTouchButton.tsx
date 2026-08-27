@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { MdOutlineQuestionMark } from 'react-icons/md'
+import dynamic from 'next/dynamic'
 import { Button } from '@components/ui/button'
 import {
   Tooltip,
@@ -10,7 +11,18 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip'
 import useIsMobile from '@hooks/application/useIsMobile'
-import ContactDialog from './ContactDialog'
+
+/**
+ * The dialog is a Zod + react-hook-form form — ~42 KiB gzipped — and this
+ * button sits in the nav of every page, so importing it statically put all of
+ * that in the initial bundle for something almost nobody opens. It is fetched
+ * on the first hint that someone is heading for it, and mounted on click.
+ */
+const ContactDialog = dynamic(() => import('./ContactDialog'), { ssr: false })
+
+const warmContactDialog = () => {
+  void import('./ContactDialog')
+}
 
 const GetInTouchButton = ({
   userEmail,
@@ -32,6 +44,8 @@ const GetInTouchButton = ({
                 variant="outline"
                 size="icon"
                 className="text-xl"
+                onPointerEnter={warmContactDialog}
+                onFocus={warmContactDialog}
                 onClick={() => setIsContactDialogOpen(true)}
               >
                 <MdOutlineQuestionMark className="h-5 w-5" />
@@ -40,6 +54,8 @@ const GetInTouchButton = ({
             ) : (
               <Button
                 variant="outline"
+                onPointerEnter={warmContactDialog}
+                onFocus={warmContactDialog}
                 onClick={() => setIsContactDialogOpen(true)}
               >
                 Help & feedback
@@ -55,12 +71,14 @@ const GetInTouchButton = ({
         </Tooltip>
       </TooltipProvider>
 
-      <ContactDialog
-        isOpen={isContactDialogOpen}
-        onClose={() => setIsContactDialogOpen(false)}
-        userEmail={userEmail}
-        webName={webName}
-      />
+      {isContactDialogOpen && (
+        <ContactDialog
+          isOpen
+          onClose={() => setIsContactDialogOpen(false)}
+          userEmail={userEmail}
+          webName={webName}
+        />
+      )}
     </>
   )
 }

@@ -101,14 +101,6 @@ export default withSentryConfig(
     authToken: process.env.SENTRY_AUTH_TOKEN,
     // Suppresses source map uploading logs during build
     silent: true,
-    // Session Replay isn't initialised on the client, so its recording
-    // machinery doesn't need to ship.
-    bundleSizeOptimizations: {
-      excludeDebugStatements: true,
-      excludeReplayShadowDom: true,
-      excludeReplayIframe: true,
-      excludeReplayWorker: true,
-    },
     // Upload a larger set of source maps for prettier stack traces (increases build time)
     widenClientFileUpload: false,
     // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
