@@ -30,7 +30,6 @@ type FormValues = {
   message: string
 }
 
-/** Zod's own email pattern, so what counts as an address here is unchanged. */
 const EMAIL_PATTERN =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/
 
