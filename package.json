@@ -30,7 +30,6 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
-    "@fontsource/poppins": "5.3.0",
     "@hookform/resolvers": "5.9.1",
     "@opentelemetry/api-logs": "0.221.0",
     "@opentelemetry/exporter-logs-otlp-http": "0.221.0",
