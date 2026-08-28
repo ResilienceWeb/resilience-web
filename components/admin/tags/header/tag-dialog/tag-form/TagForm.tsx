@@ -12,12 +12,7 @@ import {
   FormMessage,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 
 const formSchema = z.object({
   label: z.string().min(1, 'Label is required'),
@@ -67,29 +62,27 @@ const TagForm = ({
 
         <DialogFooter className="flex flex-col gap-2">
           {tag && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    disabled={tag?.listings?.length > 0}
-                    className="opacity-85"
-                    onClick={onDelete}
-                  >
-                    Remove
-                  </Button>
-                </TooltipTrigger>
-                {tag?.listings?.length > 0 && (
-                  <TooltipContent>
-                    <p>
-                      To delete this tag, first ensure there are no listings
-                      associated with it
-                    </p>
-                  </TooltipContent>
-                )}
-              </Tooltip>
-            </TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  disabled={tag?.listings?.length > 0}
+                  className="opacity-85"
+                  onClick={onDelete}
+                >
+                  Remove
+                </Button>
+              </TooltipTrigger>
+              {tag?.listings?.length > 0 && (
+                <TooltipContent>
+                  <p>
+                    To delete this tag, first ensure there are no listings
+                    associated with it
+                  </p>
+                </TooltipContent>
+              )}
+            </Tooltip>
           )}
           <Button type="submit" disabled={!form.formState.isValid}>
             {tag ? 'Update' : 'Create'}

@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, type RenderOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { NuqsTestingAdapter } from 'nuqs/adapters/testing'
+import { TooltipProvider } from '@components/ui/tooltip'
 import { AppContext } from '@store/AppContext'
 
 /**
@@ -26,6 +27,7 @@ export interface SelectedWeb {
  *    to start the test on a particular URL state
  *  - the selected web, which every admin screen reads to know what it is
  *    looking at; pass `selectedWeb` to put a test inside one
+ *  - the tooltip provider, which the app mounts once at the root
  *
  * Retries are off, otherwise a deliberately-failing request takes three
  * attempts before the component shows its error state.
@@ -54,7 +56,9 @@ export function renderPage(
   const Providers = ({ children }: { children: ReactNode }) => (
     <NuqsTestingAdapter searchParams={searchParams}>
       <QueryClientProvider client={queryClient}>
-        <AppContext value={appContext}>{children}</AppContext>
+        <TooltipProvider>
+          <AppContext value={appContext}>{children}</AppContext>
+        </TooltipProvider>
       </QueryClientProvider>
     </NuqsTestingAdapter>
   )

@@ -12,12 +12,7 @@ import {
   FormMessage,
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import IconSelector from './IconSelector'
 
 const randomHexColorCode = () => {
@@ -150,27 +145,25 @@ const CategoryForm = ({
 
         <DialogFooter className="flex flex-col gap-2">
           {category && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="destructive"
-                    className="opacity-85"
-                    onClick={onDelete}
-                    disabled={category?._count?.listings > 0}
-                    type="button"
-                  >
-                    Remove
-                  </Button>
-                </TooltipTrigger>
-                {category?._count?.listings > 0 && (
-                  <TooltipContent className="z-200">
-                    To delete this category, first ensure there are no listings
-                    associated with it
-                  </TooltipContent>
-                )}
-              </Tooltip>
-            </TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="destructive"
+                  className="opacity-85"
+                  onClick={onDelete}
+                  disabled={category?._count?.listings > 0}
+                  type="button"
+                >
+                  Remove
+                </Button>
+              </TooltipTrigger>
+              {category?._count?.listings > 0 && (
+                <TooltipContent className="z-200">
+                  To delete this category, first ensure there are no listings
+                  associated with it
+                </TooltipContent>
+              )}
+            </Tooltip>
           )}
 
           <Button

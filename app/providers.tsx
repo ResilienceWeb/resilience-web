@@ -6,6 +6,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import { TooltipProvider } from '@components/ui/tooltip'
 
 // Dynamic so neither `posthog-js` nor its React bindings reach the entry chunk.
 const PostHogPageView = dynamic(() => import('./PostHogPageView'), {
@@ -55,11 +56,19 @@ export default function Providers({ children }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <PostHogPageView />
-      {children}
-      {process.env.NODE_ENV === 'development' && (
-        <ReactQueryDevtools buttonPosition="bottom-right" />
-      )}
+      {/*
+        One provider for the whole app, as Radix intends. Mounting one per
+        tooltip meant a list of 500 listings mounted 1000 of them, and each was
+        its own scope — so moving between two tooltips always waited out the
+        open delay instead of skipping it.
+      */}
+      <TooltipProvider>
+        <PostHogPageView />
+        {children}
+        {process.env.NODE_ENV === 'development' && (
+          <ReactQueryDevtools buttonPosition="bottom-right" />
+        )}
+      </TooltipProvider>
     </QueryClientProvider>
   )
 }
