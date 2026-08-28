@@ -236,10 +236,6 @@ async function getData({ webSlug }): Promise<DataType> {
     edges: [],
   }
 
-  // Relations are symmetric, so every pair is met twice and only the first
-  // direction is kept. Remembering the ones already added makes that a lookup
-  // rather than a scan of every edge built so far, which grew with the square
-  // of the number of related listings in a web.
   const relationEdgeKeys = new Set<string>()
 
   // Calculate if web is older than 2 months
