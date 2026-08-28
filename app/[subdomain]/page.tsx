@@ -236,6 +236,8 @@ async function getData({ webSlug }): Promise<DataType> {
     edges: [],
   }
 
+  const relationEdgeKeys = new Set<string>()
+
   // Calculate if web is older than 2 months
   const twoMonthsAgo = new Date()
   twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2)
@@ -302,9 +304,17 @@ async function getData({ webSlug }): Promise<DataType> {
         if (relation.placements.length === 0) {
           return
         }
-        const newEdge = {
-          from: `listing-${listingId}`,
-          to: `listing-${relation.id}`,
+        const from = `listing-${listingId}`
+        const to = `listing-${relation.id}`
+
+        if (relationEdgeKeys.has(`${to}|${from}`)) {
+          return
+        }
+        relationEdgeKeys.add(`${from}|${to}`)
+
+        transformedData.edges.push({
+          from,
+          to,
           dashes: true,
           physics: false,
           smooth: {
@@ -312,14 +322,7 @@ async function getData({ webSlug }): Promise<DataType> {
             type: 'continuous',
             roundness: 0,
           },
-        }
-        if (
-          !transformedData.edges.find(
-            (e) => e.from === newEdge.to && e.to === newEdge.from,
-          )
-        ) {
-          transformedData.edges.push(newEdge)
-        }
+        })
       })
 
       transformedData.edges.push({
