@@ -18,12 +18,7 @@ import RichText from '@components/rich-text'
 import ShareButton from '@components/share-button'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 
 const ListingMap = dynamic(() => import('@components/listing-map'), {
   ssr: false,
@@ -174,22 +169,20 @@ function Listing({ listing, categories }) {
             )}
 
             {listing.seekingVolunteers && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span className="inline-flex cursor-help items-center gap-1 rounded-full border border-transparent bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-700 md:gap-1.5 md:px-3">
-                      <HiUserGroup className="h-3 w-3 md:h-3.5 md:w-3.5" />
-                      Seeking volunteers
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom" className="max-w-50">
-                    <p className="text-center text-sm">
-                      This group is seeking volunteers or members. Get in touch
-                      with them if you'd like to help.
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-flex cursor-help items-center gap-1 rounded-full border border-transparent bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-700 md:gap-1.5 md:px-3">
+                    <HiUserGroup className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                    Seeking volunteers
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-50">
+                  <p className="text-center text-sm">
+                    This group is seeking volunteers or members. Get in touch
+                    with them if you'd like to help.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
             )}
 
             {/* Mobile only: Social icons inline with badges */}

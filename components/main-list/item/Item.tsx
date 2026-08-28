@@ -11,12 +11,7 @@ import { isBranchDeploy } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
 import { Badge } from '@components/ui/badge'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import ImagePlaceholder from './image-placeholder'
 
 type Props = {
@@ -60,16 +55,14 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
       ref={ref}
     >
       {isFeatured && (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <FaStar className="absolute top-[140px] z-100 h-[26px] w-[26px] text-yellow-200 right-1 bottom-1" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Featured listing</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <FaStar className="absolute top-[140px] z-100 h-[26px] w-[26px] text-yellow-200 right-1 bottom-1" />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Featured listing</p>
+          </TooltipContent>
+        </Tooltip>
       )}
       {dataItem.new && (
         <Badge variant="secondary" className="absolute top-1 right-1 z-10">
@@ -108,21 +101,19 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
         </div>
         {dataItem.seekingVolunteers && !simplified && (
           <div className="flex">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <p className="text-sm text-primary">
-                    Seeking volunteers <HiUserGroup className="inline" />
-                  </p>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>
-                    This group is seeking volunteers or members. Get in touch
-                    with them if you'd like to help.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <p className="text-sm text-primary">
+                  Seeking volunteers <HiUserGroup className="inline" />
+                </p>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  This group is seeking volunteers or members. Get in touch with
+                  them if you'd like to help.
+                </p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         )}
       </div>

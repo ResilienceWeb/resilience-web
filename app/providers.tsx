@@ -2,10 +2,11 @@
 
 import dynamic from 'next/dynamic'
 import {
-  isServer,
+  environmentManager,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import { TooltipProvider } from '@components/ui/tooltip'
 
 // Dynamic so neither `posthog-js` nor its React bindings reach the entry chunk.
 const PostHogPageView = dynamic(() => import('./PostHogPageView'), {
@@ -33,7 +34,7 @@ function makeQueryClient() {
 let browserQueryClient: QueryClient | undefined = undefined
 
 function getQueryClient() {
-  if (isServer) {
+  if (environmentManager.isServer()) {
     // Server: always make a new query client
     return makeQueryClient()
   } else {
@@ -55,11 +56,13 @@ export default function Providers({ children }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <PostHogPageView />
-      {children}
-      {process.env.NODE_ENV === 'development' && (
-        <ReactQueryDevtools buttonPosition="bottom-right" />
-      )}
+      <TooltipProvider>
+        <PostHogPageView />
+        {children}
+        {process.env.NODE_ENV === 'development' && (
+          <ReactQueryDevtools buttonPosition="bottom-right" />
+        )}
+      </TooltipProvider>
     </QueryClientProvider>
   )
 }
