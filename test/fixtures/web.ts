@@ -9,6 +9,7 @@ import { compressJson } from '@helpers/compression'
 export interface ListingFixture {
   title: string
   category: string
+  image?: string
   description?: string
   tags?: string[]
   seekingVolunteers?: boolean
@@ -33,6 +34,7 @@ export function webData(
   const listingNodes = listings.map((listing, index) => ({
     id: index + 1,
     label: listing.title,
+    image: listing.image ?? '',
     description: listing.description ?? `About ${listing.title}`,
     group: 'listing',
     slug: listing.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),

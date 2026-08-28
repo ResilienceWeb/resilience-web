@@ -28,8 +28,18 @@ vi.mock('next/image', () => ({
     } = rest
     const resolved =
       typeof src === 'string' ? src : (src as { src?: string })?.src
-    // eslint-disable-next-line @next/next/no-img-element -- this is the stub that replaces next/image
-    return <img src={resolved} alt={alt as string} {...imgProps} />
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- this is the stub that replaces next/image
+      <img
+        src={resolved}
+        alt={alt as string}
+        // What `priority` turns into in the browser, so a test can see whether
+        // an image was asked for up front or left until it scrolls into view.
+        loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : undefined}
+        {...imgProps}
+      />
+    )
   },
 }))
 

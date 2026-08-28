@@ -223,3 +223,33 @@ describe('the web page category filter', () => {
     await expectHidden(['Community Kitchen', 'Carbon Footprint'])
   })
 })
+
+describe('the images in the list', () => {
+  it('asks for the first screenful up front and leaves the rest until they are scrolled to', async () => {
+    const withImages = Array.from({ length: 9 }, (_, i) => ({
+      title: `Listing ${i}`,
+      category: 'Community',
+      image: `https://example.com/${i}.png`,
+    }))
+
+    renderPage(
+      <Web
+        data={webData(withImages)}
+        categories={CATEGORIES}
+        tags={TAGS}
+        features={[]}
+        webId={1}
+        webName="Bristol"
+        webIsPublished
+        webSlug="bristol"
+      />,
+      { searchParams: { view: 'list' } },
+    )
+
+    const images = await screen.findAllByRole('img', { name: /cover image/i })
+    const eager = images.filter((i) => i.getAttribute('loading') === 'eager')
+
+    expect(images).toHaveLength(9)
+    expect(eager).toHaveLength(6)
+  })
+})
