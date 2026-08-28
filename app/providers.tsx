@@ -56,12 +56,6 @@ export default function Providers({ children }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/*
-        One provider for the whole app, as Radix intends. Mounting one per
-        tooltip meant a list of 500 listings mounted 1000 of them, and each was
-        its own scope — so moving between two tooltips always waited out the
-        open delay instead of skipping it.
-      */}
       <TooltipProvider>
         <PostHogPageView />
         {children}
