@@ -393,6 +393,14 @@ Key variables (see [.env.example](.env.example)):
   commit, and when, is the user's. The same goes for `git push`, opening a PR,
   and any other outward-facing or hard-to-reverse action.
 
+- **Don't write comments that restate the code.** A comment earns its place by
+  saying something the code cannot: why a constraint exists, what broke without
+  it, which alternative was rejected and why. `// fetch the user` above a line
+  that fetches the user is noise; a clearer name beats a comment explaining an
+  unclear one. Keep the ones you do write to a line or two — the reason, not an
+  essay about it. If a comment could be deleted without losing information,
+  delete it.
+
 ## Important Notes
 
 - Port 4000 for development (not 3000)
