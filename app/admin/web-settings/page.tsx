@@ -90,17 +90,20 @@ const webSettingsSchema = z.object({
 
 type WebSettingsForm = z.infer<typeof webSettingsSchema>
 
+const EMPTY_RELATED_WEBS: MultiSelectOption[] = []
+
 function WebsSelect({ selectedWebSlug }: { selectedWebSlug: string }) {
   const { webs, isPending } = useWebs()
-  const { control, setValue, watch } = useFormContext<WebSettingsForm>()
+  const { control, setValue } = useFormContext<WebSettingsForm>()
 
-  const currentWebs = watch('relatedWebs') || []
+  // useWatch, not watch(): the React Compiler caches watch('relatedWebs') on
+  // the stable `watch` reference, so the selection would never re-render.
+  const currentWebs =
+    useWatch({ control, name: 'relatedWebs' }) ?? EMPTY_RELATED_WEBS
 
-  const currentWebIds = currentWebs.map((web) => web.value)
   const options: MultiSelectOption[] =
     webs
       ?.filter((web) => web.slug !== selectedWebSlug)
-      ?.filter((web) => !currentWebIds.includes(web.id))
       .map((web) => ({
         value: web.id,
         label: web.title,

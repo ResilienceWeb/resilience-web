@@ -207,6 +207,45 @@
     color: #09622f !important;
   }
 
+  /* Slim scrollbar for panels that scroll inside the page. The thumb sits
+     inside a transparent border so it never touches the panel edge, and gains
+     contrast on hover — faint enough to stay out of the way, dark enough to
+     still read as a scrollbar. */
+  .scrollbar-slim {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.14) transparent;
+  }
+
+  .scrollbar-slim:hover {
+    scrollbar-color: rgba(0, 0, 0, 0.24) transparent;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-track,
+  .scrollbar-slim::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.14);
+    background-clip: padding-box;
+    border: 3px solid transparent;
+    border-radius: 9999px;
+    transition: background-color 0.15s ease;
+  }
+
+  .scrollbar-slim:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.24);
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.38);
+  }
+
   /* driver.js popover */
   .driver-popover {
     max-width: 360px;

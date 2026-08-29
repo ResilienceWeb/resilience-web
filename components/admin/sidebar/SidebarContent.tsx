@@ -292,7 +292,7 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       {...rest}
     >
       <div className="flex h-full flex-col justify-between">
-        <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="scrollbar-slim min-h-0 flex-1 overflow-y-auto">
           <div className="my-3 ml-2 flex h-20 items-center justify-between">
             <Image
               alt="Resilience Web CIC logo"
