@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma-client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
+import { sslFor } from './ssl'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient
@@ -26,9 +27,7 @@ const pool =
     idleTimeoutMillis: 10_000,
     // Wait for a free connection rather than hanging indefinitely.
     connectionTimeoutMillis: 15_000,
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    ssl: sslFor(process.env.DATABASE_URL),
   })
 
 if (process.env.NODE_ENV !== 'production') {
