@@ -64,9 +64,6 @@
       ],
       "@prisma-rw": [
         "./prisma/client"
-      ],
-      "@prisma-rw-build": [
-        "./prisma/build-client"
       ]
     },
     "typeRoots": [
