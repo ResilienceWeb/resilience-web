@@ -1,4 +1,5 @@
 import type { NextRequest } from 'next/server'
+import { callerIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import * as Sentry from '@sentry/nextjs'
 import type { AnalyticsEventInput } from '@db/analyticsRepository'
 import { isBot, recordEvents } from '@db/analyticsRepository'
@@ -42,6 +43,13 @@ export async function POST(request: NextRequest) {
     const userAgent = request.headers.get('user-agent')
     if (isBot(userAgent)) {
       return Response.json({ ok: true })
+    }
+
+    // Generous: a real session batches its events, so this only catches a
+    // caller trying to inflate a listing's numbers.
+    const limit = await rateLimit('analytics', callerIp(request), 120, 60)
+    if (!limit.ok) {
+      return tooManyRequests(limit, 'Too many events')
     }
 
     const body = await request.json()

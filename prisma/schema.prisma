@@ -433,3 +433,16 @@ model NotificationWeb {
   @@index([webId])
   @@map("notification_webs")
 }
+
+// Fixed-window counters for the unauthenticated endpoints. Kept in Postgres
+// rather than in memory because Netlify spreads requests across ephemeral
+// function instances, so a per-instance Map would cap at roughly
+// instances x limit — which is to say, not at all.
+model RateLimit {
+  key       String   @id
+  count     Int      @default(0)
+  expiresAt DateTime @map("expires_at")
+
+  @@index([expiresAt])
+  @@map("rate_limits")
+}

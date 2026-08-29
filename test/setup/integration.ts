@@ -23,6 +23,20 @@ import { signOut } from '../session.ts'
 // route handler is called directly rather than served.
 vi.mock('next/cache', () => ({ revalidatePath: vi.fn() }))
 
+// `after` needs that same request store. Only the scheduling is replaced —
+// everything else in next/server, NextRequest included, stays real.
+vi.mock('next/server', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('next/server')>()),
+  after: vi.fn(),
+}))
+
+// reCAPTCHA is an outbound call to Google. Tests drive the real routes and must
+// not depend on the network or a configured key; the verifier's own behaviour
+// is covered by its unit tests.
+vi.mock('@/lib/verify-recaptcha', () => ({
+  verifyRecaptcha: vi.fn().mockResolvedValue(true),
+}))
+
 vi.mock('@helpers/email', () => ({
   sendEmail: vi.fn().mockResolvedValue(undefined),
   sendMultipleEmails: vi.fn().mockResolvedValue(undefined),

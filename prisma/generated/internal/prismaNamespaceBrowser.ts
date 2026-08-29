@@ -74,7 +74,8 @@ export const ModelName = {
   WebAnalyticsDaily: 'WebAnalyticsDaily',
   Notification: 'Notification',
   NotificationReceipt: 'NotificationReceipt',
-  NotificationWeb: 'NotificationWeb'
+  NotificationWeb: 'NotificationWeb',
+  RateLimit: 'RateLimit'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,6 +415,15 @@ export const NotificationWebScalarFieldEnum = {
 } as const
 
 export type NotificationWebScalarFieldEnum = (typeof NotificationWebScalarFieldEnum)[keyof typeof NotificationWebScalarFieldEnum]
+
+
+export const RateLimitScalarFieldEnum = {
+  key: 'key',
+  count: 'count',
+  expiresAt: 'expiresAt'
+} as const
+
+export type RateLimitScalarFieldEnum = (typeof RateLimitScalarFieldEnum)[keyof typeof RateLimitScalarFieldEnum]
 
 
 export const SortOrder = {

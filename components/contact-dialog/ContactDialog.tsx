@@ -2,6 +2,7 @@
 
 import { memo, useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { ReCaptchaProvider, useReCaptcha } from 'next-recaptcha-v3'
 import { toast } from 'sonner'
 import { REMOTE_URL } from '@helpers/config'
 import { Button } from '@components/ui/button'
@@ -53,12 +54,13 @@ interface ContactDialogProps {
   webName?: string
 }
 
-const ContactDialog = ({
+const ContactDialogForm = ({
   isOpen,
   onClose,
   userEmail,
   webName,
 }: ContactDialogProps) => {
+  const { executeRecaptcha } = useReCaptcha()
   const form = useForm<FormValues>({
     defaultValues: {
       email: userEmail || '',
@@ -82,12 +84,14 @@ const ContactDialog = ({
   const onFormSubmit = useCallback(
     async (data: FormValues) => {
       try {
+        const recaptchaToken = await executeRecaptcha('contact_form')
+
         const response = await fetch(`${REMOTE_URL}/api/contact`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json;charset=utf-8',
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({ ...data, recaptchaToken }),
         })
         const result = await response.json()
 
@@ -104,12 +108,14 @@ const ContactDialog = ({
       } catch (error) {
         toast.error("Couldn't send your message", {
           description:
-            'Please try again, or email us directly at info@resilienceweb.org.uk.',
+            error instanceof Error && error.message
+              ? error.message
+              : 'Please try again, or email us directly at info@resilienceweb.org.uk.',
           duration: 5000,
         })
       }
     },
-    [form, onClose],
+    [form, onClose, executeRecaptcha],
   )
 
   return (
@@ -214,5 +220,11 @@ const ContactDialog = ({
     </Dialog>
   )
 }
+
+const ContactDialog = (props: ContactDialogProps) => (
+  <ReCaptchaProvider>
+    <ContactDialogForm {...props} />
+  </ReCaptchaProvider>
+)
 
 export default memo(ContactDialog)
