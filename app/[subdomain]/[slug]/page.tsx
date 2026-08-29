@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import truncate from 'lodash.truncate'
-import prisma from '@prisma-rw-build'
+import prisma from '@prisma-rw'
 import { initializeBuildCache } from '../../../lib/build-cache'
 import Listing from './Listing'
 import getListing, { sortCategoriesByLabel } from './getListing'

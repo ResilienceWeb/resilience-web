@@ -90,8 +90,7 @@ Resilience Web uses a **subdomain-based multi-tenancy** approach where each comm
 ### Database & ORM
 - **PostgreSQL 17** (via Docker for local dev)
 - **Prisma 7** (ORM with custom client path)
-  - Runtime client: `@prisma-rw`
-  - Build-time client: `@prisma-rw-build`
+  - Client: `@prisma-rw`
 
 ### Authentication & Authorization
 - **Better Auth** (Email OTP with 10-minute expiry)

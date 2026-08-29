@@ -72,9 +72,8 @@ Uses **Better Auth** with email OTP (one-time passcode) authentication:
 
 **Prisma 7** with PostgreSQL 17:
 - Schema: [prisma/schema.prisma](prisma/schema.prisma)
-- Client instances:
-  - `@prisma-rw` - Standard runtime client ([prisma/client.ts](prisma/client.ts))
-  - `@prisma-rw-build` - Build-time client ([prisma/build-client.ts](prisma/build-client.ts))
+- Client instance: `@prisma-rw` ([prisma/client.ts](prisma/client.ts)) - one pooled client, used
+  at build time and at runtime alike
 - Repositories: [db/](db/) directory contains data access functions
   - [db/webRepository.ts](db/webRepository.ts) - Web/organization queries
   - [db/webAccessRepository.ts](db/webAccessRepository.ts) - Team member access control
