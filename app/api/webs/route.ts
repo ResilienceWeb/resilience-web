@@ -1,4 +1,5 @@
 import type { NextRequest } from 'next/server'
+import { sanitizeRichText } from '@/lib/sanitize-rich-text'
 import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import checkWebInactiveTask from '@trigger/check-web-inactive'
@@ -127,7 +128,7 @@ export async function POST(request: NextRequest) {
       data: {
         title,
         slug,
-        description,
+        description: sanitizeRichText(description),
         contactEmail,
         published: false,
         categories: {

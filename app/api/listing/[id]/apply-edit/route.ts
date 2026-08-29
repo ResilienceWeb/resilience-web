@@ -1,5 +1,6 @@
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
+import { sanitizeRichText } from '@/lib/sanitize-rich-text'
 import type { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -81,7 +82,7 @@ export async function POST(
 
     const newData: Prisma.ListingUpdateInput = {
       title: listingEdit.title,
-      description: listingEdit.description,
+      description: sanitizeRichText(listingEdit.description),
       website: listingEdit.website,
       email: listingEdit.email,
       socials: {
