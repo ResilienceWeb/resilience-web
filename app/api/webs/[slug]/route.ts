@@ -1,5 +1,6 @@
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
+import { sanitizeRichText } from '@/lib/sanitize-rich-text'
 import { Prisma } from '@prisma-client'
 import type { Web } from '@prisma/browser'
 import * as Sentry from '@sentry/nextjs'
@@ -154,7 +155,7 @@ export async function PUT(request, props) {
       title: formData.get('title'),
       published: stringToBoolean(formData.get('published')),
       contactEmail: formData.get('contactEmail'),
-      description: formData.get('description'),
+      description: sanitizeRichText(formData.get('description')),
       relations: {
         set: relationsToConnect,
       },

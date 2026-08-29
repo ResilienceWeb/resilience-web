@@ -18,6 +18,7 @@ import type {
   ImportRowResult,
 } from '@/lib/import/types'
 import { validateRows } from '@/lib/import/validator'
+import { sanitizeRichText } from '@/lib/sanitize-rich-text'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { getSessionSafe } from '@auth'
@@ -151,7 +152,7 @@ export async function POST(request: NextRequest) {
           const listingId = await createListingWithRelations({
             listing: {
               title: row.name,
-              description: row.description,
+              description: sanitizeRichText(row.description),
               email: row.email,
               website: row.website,
               pending: false,

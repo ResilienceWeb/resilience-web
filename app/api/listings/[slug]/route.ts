@@ -1,6 +1,7 @@
 import { revalidatePath } from 'next/cache'
 import type { NextRequest } from 'next/server'
 import { requireWebEditor } from '@/lib/api-authorization'
+import { sanitizeRichText } from '@/lib/sanitize-rich-text'
 import { Prisma } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
@@ -170,7 +171,7 @@ export async function PUT(request) {
     const category = parseInt(formData.get('category'))
     const title = formData.get('title')
     const website = formData.get('website')
-    const description = formData.get('description')
+    const description = sanitizeRichText(formData.get('description'))
     const email = formData.get('email')
     const seekingVolunteers = formData.get('seekingVolunteers')
     const inactive = formData.get('inactive')
