@@ -1,9 +1,8 @@
 'use client'
 
-import { useEffect, useState, memo } from 'react'
+import { useState, memo } from 'react'
 import { FaStar } from 'react-icons/fa'
 import { HiUserGroup } from 'react-icons/hi'
-import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import chroma from 'chroma-js'
@@ -18,20 +17,17 @@ type Props = {
   categoriesIndexes: Record<string, number>
   dataItem: ListingNodeType
   simplified?: boolean
+  /** Loads the cover image eagerly. Only worth it above the fold. */
+  priority?: boolean
 }
 
-const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
+const Item = ({
+  categoriesIndexes,
+  dataItem,
+  simplified = false,
+  priority = false,
+}: Props) => {
   const { subdomain } = useParams<{ subdomain: string }>()
-  const [isWithinAFewSecondsOfRender, setIsWithinAFewSecondsOfRender] =
-    useState<boolean>(true)
-  const { ref, inView } = useInView()
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsWithinAFewSecondsOfRender(false)
-    }, 3000)
-    return () => clearTimeout(timeout)
-  }, [])
 
   const listingHref = isBranchDeploy()
     ? `/${subdomain}/${dataItem.slug}`
@@ -52,7 +48,6 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
     <Link
       href={listingHref}
       className="animate-in fade-in slide-in-from-bottom motion-reduce:animate-none relative block h-fit rounded-md bg-white shadow-md transition-all duration-200 ease-out hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      ref={ref}
     >
       {isFeatured && (
         <Tooltip>
@@ -82,7 +77,7 @@ const Item = ({ categoriesIndexes, dataItem, simplified = false }: Props) => {
           alt={`${dataItem.label} cover image`}
           src={dataItem.image}
           sizes="(max-width: 768px) 90vw, 300px"
-          priority={inView && isWithinAFewSecondsOfRender}
+          priority={priority}
         />
       ) : (
         categoryIndex !== null &&

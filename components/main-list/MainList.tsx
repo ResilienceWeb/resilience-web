@@ -7,6 +7,9 @@ import Footer from '@components/footer'
 import { Button } from '@components/ui/button'
 import Item from './item'
 
+/** Two rows of the three-column grid — about a desktop viewport. */
+const EAGERLY_LOADED_IMAGES = 6
+
 interface MainListProps {
   filteredItems: any[]
   webSlug: string
@@ -25,11 +28,12 @@ const MainList = ({ filteredItems, webSlug, categories }: MainListProps) => {
         <div className="mt-4 w-full max-w-[1400px]">
           {filteredItems.length > 0 ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {filteredItems.map((item) => (
+              {filteredItems.map((item, index) => (
                 <Item
                   categoriesIndexes={categoriesIndexes}
                   dataItem={item}
                   key={item.id}
+                  priority={index < EAGERLY_LOADED_IMAGES}
                 />
               ))}
             </div>
