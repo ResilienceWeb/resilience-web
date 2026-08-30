@@ -137,3 +137,8 @@ export type NotificationReceipt = Prisma.NotificationReceiptModel
  * 
  */
 export type NotificationWeb = Prisma.NotificationWebModel
+/**
+ * Model RateLimit
+ * 
+ */
+export type RateLimit = Prisma.RateLimitModel

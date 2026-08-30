@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
+import { callerIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
+import { verifyRecaptcha } from '@/lib/verify-recaptcha'
 import * as Sentry from '@sentry/nextjs'
-
-const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY
 
 export async function POST(request: NextRequest) {
   const { email, recaptchaToken } = await request.json()
@@ -13,11 +13,12 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`
-  const recaptchaRes = await fetch(verifyUrl, { method: 'POST' })
-  const recaptchaInfo = await recaptchaRes.json()
+  const limit = await rateLimit('newsletter', callerIp(request), 5, 60 * 60)
+  if (!limit.ok) {
+    return tooManyRequests(limit, 'Too many attempts. Please try again later.')
+  }
 
-  if (recaptchaInfo.score < 0.5) {
+  if (!(await verifyRecaptcha(recaptchaToken))) {
     return Response.json(
       {
         error:

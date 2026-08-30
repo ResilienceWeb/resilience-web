@@ -25,7 +25,11 @@ const contentSecurityPolicy = [
   // handler. Sanitising rich text is. What this does buy: unknown script
   // origins are blocked, and connect-src bounds where a payload could send
   // anything it managed to read.
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://cdn.tiny.cloud https://eu-assets.i.posthog.com`,
+  // browser.sentry-cdn.com serves the lazily loaded feedback widget
+  // (instrumentation-client.ts); google.com and gstatic.com serve reCAPTCHA,
+  // whose api.js pulls its runtime from gstatic. Both were found by this
+  // policy's own violation reports rather than by reading the code.
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://cdn.tiny.cloud https://eu-assets.i.posthog.com https://browser.sentry-cdn.com https://www.google.com https://www.gstatic.com`,
   "style-src 'self' 'unsafe-inline' https://cdn.tiny.cloud",
   "font-src 'self' data: https://cdn.tiny.cloud",
   // Listing descriptions embed images from arbitrary hosts by design, so an
@@ -40,9 +44,12 @@ const contentSecurityPolicy = [
     'https://*.ingest.de.sentry.io',
     'https://nominatim.openstreetmap.org',
     'https://cdn.tiny.cloud',
+    'https://browser.sentry-cdn.com',
+    'https://www.google.com',
   ].join(' '),
-  // TinyMCE renders its editor into a blob: iframe.
-  "frame-src 'self' blob:",
+  // TinyMCE renders its editor into a blob: iframe; reCAPTCHA renders its
+  // challenge into one served from google.com, invisible mode included.
+  "frame-src 'self' blob: https://www.google.com",
   "worker-src 'self' blob:",
   "manifest-src 'self'",
   'upgrade-insecure-requests',
