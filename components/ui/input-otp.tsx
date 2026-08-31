@@ -12,7 +12,7 @@ const InputOTP = ({
 }: React.ComponentPropsWithoutRef<typeof OTPInput>) => (
   <OTPInput
     containerClassName={cn(
-      'flex items-center gap-3 has-[:disabled]:opacity-50',
+      'flex w-full items-center gap-3 has-[:disabled]:opacity-50',
       containerClassName,
     )}
     className={cn('disabled:cursor-not-allowed', className)}
@@ -24,7 +24,10 @@ const InputOTPGroup = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'div'>) => (
-  <div className={cn('flex items-center', className)} {...props} />
+  <div
+    className={cn('flex w-full items-center justify-center', className)}
+    {...props}
+  />
 )
 
 const InputOTPSlot = ({
@@ -38,7 +41,7 @@ const InputOTPSlot = ({
   return (
     <div
       className={cn(
-        'relative flex h-17 w-17 items-center justify-center border-y border-r border-input text-2xl shadow-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md',
+        'relative flex aspect-square max-w-17 min-w-0 flex-1 items-center justify-center border-y border-r border-input text-xl shadow-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md sm:text-2xl',
         isActive && 'z-10 ring-1 ring-ring',
         className,
       )}
