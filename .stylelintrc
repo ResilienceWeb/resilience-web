@@ -24,6 +24,15 @@
         ]
       }
     ],
+    "at-rule-prelude-no-invalid": [
+      true,
+      {
+        "ignoreAtRules": [
+          "media",
+          "apply"
+        ]
+      }
+    ],
     "block-no-empty": null,
     "declaration-property-unit-allowed-list": null,
     "selector-class-pattern": null
