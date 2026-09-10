@@ -111,6 +111,16 @@ vi.mock('posthog-js', () => ({
   default: { capture: vi.fn(), init: vi.fn(), identify: vi.fn() },
 }))
 
+// The same goes for error reporting — and `@sentry/nextjs` reaches for its
+// webpack plugin on import, which throws outside a Next build.
+vi.mock('@sentry/nextjs', () => ({
+  captureException: vi.fn(),
+  captureMessage: vi.fn(),
+  setUser: vi.fn(),
+  setTag: vi.fn(),
+  addBreadcrumb: vi.fn(),
+}))
+
 // `error` so a request the tests forgot to stub fails loudly instead of
 // silently resolving to something unexpected.
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))

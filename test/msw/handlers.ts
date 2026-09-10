@@ -64,6 +64,41 @@ export function stubWeb(web: { id?: number; title?: string; slug?: string }) {
   )
 }
 
+export interface WebStub {
+  id: number
+  slug: string
+  title?: string
+}
+
+/** Every web on the platform, as `/api/webs` returns them. */
+export function stubWebs(webs: WebStub[]) {
+  return http.get('/api/webs', () =>
+    HttpResponse.json({
+      data: webs.map((w) => ({ title: w.slug, ...w })),
+    }),
+  )
+}
+
+/**
+ * The webs the signed-in user is a team member of, as `/api/web-access`
+ * returns them. This is what decides which webs the admin screens will let
+ * them near, and which one the web selector defaults to.
+ */
+export function stubMyWebAccess(
+  access: { web: WebStub; role?: 'OWNER' | 'EDITOR' }[],
+) {
+  return http.get('/api/web-access', () =>
+    HttpResponse.json({
+      webAccess: access.map(({ web, role = 'OWNER' }, index) => ({
+        id: index + 1,
+        role,
+        createdAt: new Date().toISOString(),
+        web: { title: web.slug, ...web },
+      })),
+    }),
+  )
+}
+
 /**
  * The answer to "may the signed-in user edit this web?", which the admin
  * screens ask before showing anything that changes it.

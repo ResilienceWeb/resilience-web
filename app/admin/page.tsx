@@ -42,24 +42,20 @@ const faqs = [
 export default function AdminPage() {
   const router = useRouter()
   const { data: session } = useSession()
-  const { selectedWebId } = useAppContext()
+  const { selectedWebSlug } = useAppContext()
   const { canEdit: canEditCurrentWeb, isPending: isCheckingEditAccess } =
     useCanEditWeb()
 
   const {
     allowedWebs,
+    myWebs,
     isLoadingWebs,
     isLoading: isLoadingAllowedWebs,
   } = useAllowedWebs()
   const { listings, isPending: isLoadingListings } = useListings()
   const { mutate: deleteListing } = useDeleteListing()
 
-  const allowedListings = (() => {
-    if (isLoadingListings || isCheckingEditAccess) return null
-    if (canEditCurrentWeb) return listings
-
-    return null
-  })()
+  const allowedListings = canEditCurrentWeb ? listings : null
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'production' && session?.user) {
@@ -87,17 +83,23 @@ export default function AdminPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstTime])
 
-  if (
-    isLoadingWebs ||
-    (selectedWebId && isLoadingListings) ||
-    isLoadingAllowedWebs ||
-    allowedWebs === null
-  ) {
-    return <Spinner />
-  }
-
   if (allowedWebs?.length === 0) {
     redirect('/admin/welcome')
+  }
+
+  // The web selector defaults the selection in an effect once the web list
+  // arrives, so someone who has webs but no slug yet is on their way to one.
+  // Falling through here is what made the dashboard flash "No listings yet".
+  const isAwaitingWebSelection = !selectedWebSlug && (myWebs?.length ?? 0) > 0
+
+  if (
+    isLoadingWebs ||
+    isLoadingAllowedWebs ||
+    allowedWebs === null ||
+    isAwaitingWebSelection ||
+    (selectedWebSlug && (isLoadingListings || isCheckingEditAccess))
+  ) {
+    return <Spinner />
   }
 
   return (

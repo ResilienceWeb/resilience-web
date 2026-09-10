@@ -20,7 +20,7 @@ async function fetchWebAccessCheckRequest({ queryKey }) {
 }
 
 export default function useCanEditWeb(webSlug?: string, webId?: number) {
-  const { data: session } = useSession()
+  const { data: session, isPending: isLoadingSession } = useSession()
   const { selectedWebSlug, selectedWebId } = useAppContext()
 
   const targetWebSlug = webSlug || selectedWebSlug
@@ -36,7 +36,11 @@ export default function useCanEditWeb(webSlug?: string, webId?: number) {
       { webSlug: targetWebSlug, webId: targetWebId },
     ],
     queryFn: fetchWebAccessCheckRequest,
-    enabled: Boolean(session && (targetWebSlug || targetWebId)),
+    // Not gated on the session: the route reads it from the cookie itself, and
+    // waiting for `useSession` to come back put this behind an extra round trip.
+    // Every caller lives under /admin, where the layout has already redirected
+    // anyone without one.
+    enabled: Boolean(targetWebSlug || targetWebId),
     refetchOnWindowFocus: false,
   })
 
@@ -47,7 +51,9 @@ export default function useCanEditWeb(webSlug?: string, webId?: number) {
 
   return {
     canEdit: hasEditAccess,
-    isPending,
+    // A global admin's access comes from the session's role rather than the
+    // check, so this isn't answered until the session has landed either.
+    isPending: isLoadingSession || isPending,
     isError,
   }
 }
