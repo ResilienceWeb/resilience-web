@@ -9,17 +9,19 @@ datasource db {
 }
 
 model Account {
-  id                String    @id @default(cuid())
-  userId            String    @map("user_id")
-  provider          String    @map("provider_id")
-  providerAccountId String    @map("provider_account_id")
-  refreshToken      String?   @map("refresh_token")
-  accessToken       String?   @map("access_token")
-  expires_in        DateTime? @map("access_token_expires")
-  expires_at        Int?
-  id_token          String?
-  scope             String?
-  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                    String    @id @default(cuid())
+  userId                String    @map("user_id")
+  providerId            String    @map("provider_id")
+  providerAccountId     String    @map("provider_account_id")
+  refreshToken          String?   @map("refresh_token")
+  accessToken           String?   @map("access_token")
+  accessTokenExpiresAt  DateTime? @map("access_token_expires")
+  refreshTokenExpiresAt DateTime? @map("refresh_token_expires")
+  password              String?
+  expires_at            Int?
+  idToken               String?   @map("id_token")
+  scope                 String?
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -57,13 +59,14 @@ model User {
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  userId       String   @map("user_id")
-  expires      DateTime
-  ipAddress    String?
-  userAgent    String?
-  sessionToken String?  @unique @map("session_token")
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             String   @id @default(cuid())
+  userId         String   @map("user_id")
+  expires        DateTime
+  ipAddress      String?
+  userAgent      String?
+  sessionToken   String?  @unique @map("session_token")
+  impersonatedBy String?
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -381,7 +384,7 @@ model Notification {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   title    String
-  body      String
+  body     String
   url      String?
   urlLabel String? @map("url_label")
   severity String  @default("info") // info | warning | critical

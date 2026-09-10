@@ -2333,13 +2333,15 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const AccountScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  provider: 'provider',
+  providerId: 'providerId',
   providerAccountId: 'providerAccountId',
   refreshToken: 'refreshToken',
   accessToken: 'accessToken',
-  expires_in: 'expires_in',
+  accessTokenExpiresAt: 'accessTokenExpiresAt',
+  refreshTokenExpiresAt: 'refreshTokenExpiresAt',
+  password: 'password',
   expires_at: 'expires_at',
-  id_token: 'id_token',
+  idToken: 'idToken',
   scope: 'scope',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -2372,6 +2374,7 @@ export const SessionScalarFieldEnum = {
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
   sessionToken: 'sessionToken',
+  impersonatedBy: 'impersonatedBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

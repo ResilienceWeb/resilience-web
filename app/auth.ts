@@ -65,31 +65,27 @@ export const auth = betterAuth({
       },
     }),
   ],
+  // `modelName` is the property Prisma exposes on the client (`prisma.session`),
+  // not the name of the model in schema.prisma. The two only differ in the
+  // first letter, and Prisma's client answers to either, so the capitalised
+  // names these used to carry worked at runtime — until Better Auth 1.7 began
+  // validating the schema and reported every one of these tables as missing.
+  // The defaults are already correct, so only genuine renames are listed.
   session: {
-    modelName: 'Session',
     fields: {
       expiresAt: 'expires',
       token: 'sessionToken',
     },
   },
   account: {
-    modelName: 'Account',
     fields: {
       accountId: 'providerAccountId',
-      refreshToken: 'refresh_token',
-      accessToken: 'access_token',
-      accessTokenExpiresAt: 'access_token_expires',
-      idToken: 'id_token',
     },
   },
   user: {
-    modelName: 'User',
     deleteUser: {
       enabled: true,
     },
-  },
-  verification: {
-    modelName: 'Verification',
   },
 })
 
