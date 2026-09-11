@@ -1,7 +1,12 @@
 'use client'
 
 import * as React from 'react'
-import { Controller, FormProvider, useFormContext } from 'react-hook-form'
+import {
+  Controller,
+  FormProvider,
+  useFormContext,
+  useFormState,
+} from 'react-hook-form'
 import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form'
 import { Label as LabelPrimitive, Slot as SlotPrimitive } from 'radix-ui'
 import { cn } from '@components/lib/utils'
@@ -36,7 +41,12 @@ const FormField = <
 const useFormField = () => {
   const fieldContext = React.use(FormFieldContext)
   const itemContext = React.use(FormItemContext)
-  const { getFieldState, formState } = useFormContext()
+  const { getFieldState } = useFormContext()
+  // Subscribing through `useFormState` re-renders whichever component asked for
+  // the field — reading `formState` off the context only re-renders the one
+  // that called `useForm`, and under the React Compiler its children keep the
+  // memoised markup they already had, so errors never appear.
+  const formState = useFormState({ name: fieldContext.name })
 
   const fieldState = getFieldState(fieldContext.name, formState)
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useFormContext, useFieldArray } from 'react-hook-form'
+import { useFormContext, useFieldArray, useWatch } from 'react-hook-form'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { FaShareAlt, FaTrash } from 'react-icons/fa'
 import { socialMediaPlatforms } from '@helpers/socials'
@@ -27,6 +27,10 @@ const SocialMedia = () => {
     control: methods.control,
     name: 'socials',
   })
+  // `useWatch` subscribes this component to the socials, where `watch()` only
+  // returns them: the React Compiler caches the returned value on the identity
+  // of `methods`, which never changes, so they would be read once and frozen.
+  const socials = useWatch({ control: methods.control, name: 'socials' })
 
   return (
     <div className="mt-4">
@@ -172,8 +176,7 @@ const SocialMedia = () => {
           )
         })}
 
-        {(!methods.watch('socials') ||
-          methods.watch('socials').length === 0) && (
+        {(!socials || socials.length === 0) && (
           <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-50 p-4 text-center">
             <div className="mb-2 rounded-full bg-gray-100 p-3">
               <FaShareAlt className="text-2xl text-gray-400" />
@@ -196,7 +199,7 @@ const SocialMedia = () => {
           </div>
         )}
 
-        {methods.watch('socials').length > 0 && (
+        {socials?.length > 0 && (
           <Button
             type="button"
             variant="outline"
