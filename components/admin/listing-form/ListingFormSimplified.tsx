@@ -48,9 +48,12 @@ const SetLocationMap = dynamic(
 )
 
 const SlugField = ({ webSlug }) => {
-  const { control, watch, setValue } = useFormContext()
+  const { control, setValue } = useFormContext()
 
-  const title = watch('title')
+  // `useWatch` subscribes this component to the title, where `watch()` only
+  // returns it: the React Compiler caches the returned value on the identity of
+  // `watch`, which never changes, so the title would be read once and frozen.
+  const title = useWatch({ control, name: 'title' })
 
   useEffect(() => {
     if (!title) {

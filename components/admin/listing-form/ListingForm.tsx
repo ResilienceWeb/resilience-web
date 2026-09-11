@@ -1,7 +1,13 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useForm, FormProvider, useWatch } from 'react-hook-form'
+import {
+  useForm,
+  useFormContext,
+  useFormState,
+  useWatch,
+  FormProvider,
+} from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -107,9 +113,14 @@ interface Props {
   isSubmitting?: boolean
 }
 
-const SlugField = ({ isEditMode, register, watch, setValue, errors }) => {
+const SlugField = ({ isEditMode }) => {
   const { selectedWebSlug } = useAppContext()
-  const title = watch('title')
+  const { register, setValue, control } = useFormContext<FormValues>()
+  // `useWatch` subscribes this component to the title, where `watch()` only
+  // returns it: the React Compiler caches the returned value on the identity of
+  // `watch`, which never changes, so the title would be read once and frozen.
+  const title = useWatch({ control, name: 'title' })
+  const { errors } = useFormState({ control, name: 'slug' })
 
   useEffect(() => {
     if (isEditMode) return
@@ -201,15 +212,7 @@ const ListingForm = ({
     defaultValues: getFormValues(listing),
   })
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    reset,
-    formState: { errors },
-    control,
-  } = methods
+  const { handleSubmit, setValue, reset, control } = methods
 
   useEffect(() => {
     if (listing) {
@@ -415,13 +418,7 @@ const ListingForm = ({
           <Actions />
 
           <div className="mt-4">
-            <SlugField
-              isEditMode={Boolean(listing)}
-              register={register}
-              watch={watch}
-              setValue={setValue}
-              errors={errors}
-            />
+            <SlugField isEditMode={Boolean(listing)} />
           </div>
 
           <div className="mt-4">

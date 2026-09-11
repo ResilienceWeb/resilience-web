@@ -1,6 +1,6 @@
 'use client'
 
-import { useFormContext, useFieldArray } from 'react-hook-form'
+import { useFormContext, useFieldArray, useWatch } from 'react-hook-form'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { FaMousePointer, FaTrash } from 'react-icons/fa'
 import { actionTypes } from '@helpers/actions'
@@ -28,6 +28,10 @@ const Actions = () => {
     control: methods.control,
     name: 'actions',
   })
+  // `useWatch` subscribes this component to the actions, where `watch()` only
+  // returns them: the React Compiler caches the returned value on the identity
+  // of `methods`, which never changes, so they would be read once and frozen.
+  const actions = useWatch({ control: methods.control, name: 'actions' })
 
   return (
     <div className="mt-4">
@@ -162,7 +166,7 @@ const Actions = () => {
                   </Button>
                 </div>
               </div>
-              {methods.watch(`actions.${index}.type`) === 'contact' && (
+              {actions?.[index]?.type === 'contact' && (
                 <FormDescription className="mt-2">
                   If you want to add a contact email address, please use the
                   "Contact email for organisation" field above. This field only
@@ -173,8 +177,7 @@ const Actions = () => {
           )
         })}
 
-        {(!methods.watch('actions') ||
-          methods.watch('actions').length === 0) && (
+        {(!actions || actions.length === 0) && (
           <div className="flex flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-50 p-4 text-center">
             <div className="mb-2 rounded-full bg-gray-100 p-3">
               <FaMousePointer className="text-2xl text-gray-400" />
@@ -197,7 +200,7 @@ const Actions = () => {
           </div>
         )}
 
-        {methods.watch('actions').length > 0 && (
+        {actions?.length > 0 && (
           <Button
             type="button"
             variant="outline"

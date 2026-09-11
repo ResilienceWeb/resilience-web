@@ -2,6 +2,7 @@ import react from '@vitejs/plugin-react'
 import 'dotenv/config'
 import { defineConfig } from 'vitest/config'
 import { resolveTestDatabaseUrl } from './test/db/testDatabaseUrl.ts'
+import { reactCompiler } from './test/vite/react-compiler.ts'
 
 export default defineConfig({
   plugins: [react()],
@@ -23,6 +24,11 @@ export default defineConfig({
       },
       {
         extends: true,
+        // The app is built with the React Compiler (see next.config.js), so the
+        // components are tested as it compiles them. Only the browser-side code
+        // needs it — the email templates the other projects render are React
+        // too, and the compiler's runtime has no dispatcher to hook into there.
+        plugins: [reactCompiler()],
         test: {
           name: 'components',
           environment: 'jsdom',
