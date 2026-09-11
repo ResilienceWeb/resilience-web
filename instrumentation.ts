@@ -44,23 +44,31 @@ export async function onRequestError(
   Sentry.captureRequestError(error, request, context)
 
   const err = error instanceof Error ? error : new Error(String(error))
+  const attributes = {
+    'error.type': err.name,
+    'error.stack': err.stack || '',
+    'http.method': request.method,
+    'http.path': request.path,
+    'next.route.path': context.routePath,
+    'next.route.type': context.routeType,
+    'next.router.kind': context.routerKind,
+  }
+
+  // Logs go to both while we confirm Sentry receives what PostHog does. Once
+  // that is verified, the PostHog half and the whole OTel setup come out.
+  Sentry.logger.error(err.message, attributes)
+
   const logger = loggerProvider.getLogger('resilience-web')
   logger.emit({
     body: err.message,
     severityNumber: SeverityNumber.ERROR,
     severityText: 'ERROR',
-    attributes: {
-      'error.type': err.name,
-      'error.stack': err.stack || '',
-      'http.method': request.method,
-      'http.path': request.path,
-      'next.route.path': context.routePath,
-      'next.route.type': context.routeType,
-      'next.router.kind': context.routerKind,
-    },
+    attributes,
   })
 
-  await loggerProvider.forceFlush()
+  // Netlify freezes the function once the response is out, so both exporters
+  // are flushed before returning rather than left to their batch timers.
+  await Promise.all([loggerProvider.forceFlush(), Sentry.flush(2000)])
 }
 
 export function register() {
@@ -69,6 +77,7 @@ export function register() {
       dsn: 'https://a205584b48c84a7fbfcd3632479d33f7@o4505069644611584.ingest.sentry.io/4505069646643200',
       enabled: isProduction,
       tracesSampleRate: TRACES_SAMPLE_RATE,
+      enableLogs: true,
       debug: false,
     })
 
@@ -80,6 +89,7 @@ export function register() {
       dsn: 'https://a205584b48c84a7fbfcd3632479d33f7@o4505069644611584.ingest.sentry.io/4505069646643200',
       enabled: isProduction,
       tracesSampleRate: TRACES_SAMPLE_RATE,
+      enableLogs: true,
       debug: false,
     })
   }
