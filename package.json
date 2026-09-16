@@ -7,7 +7,7 @@
     "dev": "next dev --turbopack -H 0.0.0.0 -p 4000",
     "trigger": "npx trigger.dev@latest dev",
     "build": "next build",
-    "build:analyze": "ANALYZE=true npm run build",
+    "build:analyze": "next build --experimental-analyze",
     "start": "next start -H 0.0.0.0 -p ${PORT:-4000}",
     "db": "prisma studio --port 7777",
     "db:up": "docker compose --project-name=resilience-web up -d",

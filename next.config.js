@@ -139,6 +139,30 @@ const nextConfig = {
   experimental: {
     scrollRestoration: process.env.NODE_ENV === 'development' ? false : true,
     staticGenerationMaxConcurrency: 5,
+    // The three settings below are Turbopack's 16.3 chunking work. Measured on
+    // this app they change first-load JS by ~150 bytes and leave chunk counts
+    // identical: our biggest chunks are Sentry (143KB gz) and PostHog (90KB
+    // gz), both over the 200KB maxMergeChunkSize, so the chunker will never
+    // merge them however it's tuned. They're set because the first two become
+    // Next defaults in a later version and cost nothing, not because they
+    // bought us anything today. `npm run build:analyze` is how to re-check.
+
+    // One shared runtime.js rather than one per route. The saving it claims is
+    // a blocking request and ~10KB per soft navigation, which a static build
+    // measurement can't see — unverified here.
+    turbopackSharedRuntime: true,
+    // Turbopack only tree-shook ESM before 16.3. leaflet, leaflet.markercluster
+    // and papaparse are CJS-only, but all three are behind next/dynamic, so
+    // nothing moved on first load.
+    turbopackCjsTreeShaking: true,
+    turbopackChunking: {
+      // Matched unanchored against the App Router pathname, hence the anchors:
+      // `/` is the marketing homepage and `/[subdomain]` each web's directory,
+      // which between them are where nearly every visitor lands. Inert while
+      // the payload is shaped as described above; kept so the chunker favours
+      // these two once it has merge candidates to work with.
+      priorityRoutes: [/^\/$/, /^\/\[subdomain\]$/],
+    },
   },
   skipTrailingSlashRedirect: true,
   async headers() {
