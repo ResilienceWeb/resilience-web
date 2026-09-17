@@ -253,6 +253,7 @@
 
   .leaflet-container {
     height: 300px;
+    isolation: isolate;
   }
 
   .leaflet-popup-content {

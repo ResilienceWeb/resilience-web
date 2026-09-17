@@ -170,9 +170,6 @@ const SetLocationMap = ({
   return (
     <div
       className={cn(
-        // Contain Leaflet's internal z-indexes (panes at 400, controls at 1000)
-        // so dropdowns elsewhere on the page aren't painted behind the map
-        'isolate',
         noPhysicalLocation ? 'pointer-events-none opacity-50' : 'opacity-100',
       )}
     >

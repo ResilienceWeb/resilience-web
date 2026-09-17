@@ -123,7 +123,6 @@ function WebsMap({ webs = [] }: WebsMapProps) {
           zoom={UK_ZOOM}
           scrollWheelZoom={true}
           style={{ height: '600px', width: '100%' }}
-          className="z-0"
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
