@@ -46,7 +46,7 @@
     "chroma-js": "3.2.0",
     "class-variance-authority": "0.7.1",
     "cmdk": "1.1.1",
-    "cnfast": "0.2.0",
+    "cn": "0.3.0",
     "d3-force": "3.0.0",
     "diff": "9.0.0",
     "driver.js": "1.8.0",
