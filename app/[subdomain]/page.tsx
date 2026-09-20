@@ -1,26 +1,19 @@
 import { cache } from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { GraphQLClient } from 'graphql-request'
+import { fetchPlaceCalEvents } from '@/lib/placecal'
 import prisma from '@prisma-rw'
 import { compressJson } from '@helpers/compression'
 import { getAllWebs } from '@db/webRepository'
 import Web from './Web'
 
 const CENTRAL_NODE_ID = 999
-const PLACECAL_NEIGHBORHOOD_ID = {
-  norwich: 14629,
-}
 
 export default async function WebPage(props) {
   const params = await props.params
   const { subdomain: webSlug } = params
   const rawData = await getData({ webSlug })
-
-  let events = []
-  if (PLACECAL_NEIGHBORHOOD_ID[webSlug]) {
-    events = await getEvents(PLACECAL_NEIGHBORHOOD_ID[webSlug])
-  }
+  const events = await fetchPlaceCalEvents(webSlug)
 
   if (!rawData) {
     return notFound()
@@ -439,98 +432,6 @@ async function getData({ webSlug }): Promise<DataType> {
   }
 }
 
-interface EventAddress {
-  streetAddress: string
-  postalCode: string
-  geo: {
-    latitude: number
-    longitude: number
-  }
-}
-
-interface EventOrganizer {
-  id: string
-  name: string
-}
-
-interface Event {
-  id: string
-  name: string
-  summary: string
-  description: string
-  startDate: string
-  endDate: string
-  publisherUrl: string
-  address: EventAddress
-  organizer: EventOrganizer
-}
-
-interface EventsResponse {
-  eventsByFilter: Event[]
-}
-
-async function getEvents(neighbourhoodId: number): Promise<Event[]> {
-  const today = new Date()
-  const twoWeeksFromNow = new Date()
-  twoWeeksFromNow.setDate(today.getDate() + 14)
-
-  // Format dates as required by the API (YYYY-MM-DD HH:mm)
-  const formatDate = (date: Date): string => {
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day} 00:00`
-  }
-
-  const fromDate = formatDate(today)
-  const toDate = formatDate(twoWeeksFromNow)
-
-  const eventsClient = new GraphQLClient(process.env.PLACECAL_GRAPHQL_URL || '')
-
-  const query = `
-    query GetEventsByFilter($neighbourhoodId: Int!, $fromDate: String!, $toDate: String!) {
-      eventsByFilter(
-        neighbourhoodId: $neighbourhoodId
-        fromDate: $fromDate
-        toDate: $toDate
-      ) {
-        id
-        name
-        summary
-        description
-        startDate
-        endDate
-        publisherUrl
-        address {
-          streetAddress
-          postalCode
-          geo {
-            latitude
-            longitude
-          }
-        }
-        organizer {
-          id
-          name
-        }
-      }
-    }
-  `
-
-  try {
-    const response = await eventsClient.request<EventsResponse>(query, {
-      neighbourhoodId,
-      fromDate,
-      toDate,
-    })
-
-    return response.eventsByFilter
-  } catch (error) {
-    console.error('Error fetching events:', error)
-    return []
-  }
-}
-
 function drawCirclePoints(points, radius, center) {
   const positions = []
   const slice = (2 * Math.PI) / points
@@ -549,4 +450,9 @@ function drawCirclePoints(points, radius, center) {
 }
 
 export const dynamicParams = true
-export const revalidate = false
+// Regenerated on demand whenever a listing, category or tag changes (see the
+// `revalidatePath` calls across app/api), so this timer exists only for the
+// events tab, whose data comes from PlaceCal rather than from us. A day is as
+// coarse as it can be without the 14-day window creeping shut; finished events
+// are hidden on the client, against the visitor's own clock.
+export const revalidate = 86400

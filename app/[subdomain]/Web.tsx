@@ -4,6 +4,7 @@ import { useEffect, memo, useMemo, useState } from 'react'
 import { HiOutlineShare } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
+import type { PlaceCalEvent } from '@/lib/placecal'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts'
 import { trackWebEvent } from '@helpers/analytics'
@@ -61,7 +62,7 @@ type Props = {
   data: string
   categories?: WebCategory[]
   tags?: WebTag[]
-  events?: any[]
+  events?: PlaceCalEvent[]
   features: any
   webId: number
   webName: string
@@ -77,7 +78,7 @@ const Web = ({
   data: compressedData,
   categories: webCategories = [],
   tags: webTags = [],
-  events,
+  events = [],
   features,
   webId,
   webName,
@@ -130,7 +131,7 @@ const Web = ({
   const requestedTab = viewParam ?? storedTab ?? defaultTab
   const tabs = ['web', 'list']
   if (isGeoMappingEnabled) tabs.push('map')
-  if (events?.length > 0) tabs.push('events')
+  if (events.length > 0) tabs.push('events')
   const availableTabs = tabs
   const activeTab = availableTabs.includes(requestedTab)
     ? requestedTab
@@ -352,7 +353,7 @@ const Web = ({
           handleClearSearchTermValue={handleClearSearchTermValue}
           handleSearchTermChange={handleSearchTermChange}
           handleTagSelection={handleTagSelection}
-          hasEvents={events?.length > 0}
+          hasEvents={events.length > 0}
           isGeoMappingEnabled={isGeoMappingEnabled}
           isMobile={isMobile}
           isWebMode={false}

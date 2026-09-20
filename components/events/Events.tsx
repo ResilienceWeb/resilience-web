@@ -1,35 +1,11 @@
 'use client'
 
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import Link from 'next/link'
+import type { PlaceCalEvent, PlaceCalEventAddress } from '@/lib/placecal'
+import { filterUpcomingEvents } from '@/lib/placecal'
 import { Clock, MapPin, Timer, Globe } from 'lucide-react'
 import Footer from '@components/footer'
-
-type EventAddress = {
-  streetAddress?: string
-  postalCode?: string
-  geo?: {
-    latitude: number
-    longitude: number
-  }
-}
-
-type EventOrganizer = {
-  id: string
-  name: string
-}
-
-type EventItem = {
-  id: string
-  name: string
-  summary?: string
-  description?: string
-  startDate: string
-  endDate: string
-  publisherUrl?: string
-  address?: EventAddress
-  organizer?: EventOrganizer
-}
 
 function formatDateHeading(date: Date) {
   return date.toLocaleDateString(undefined, {
@@ -74,7 +50,7 @@ function dayKey(d: Date) {
   return d.toISOString().slice(0, 10)
 }
 
-function getLocationLabel(address?: EventAddress) {
+function getLocationLabel(address?: PlaceCalEventAddress) {
   const text = address?.streetAddress?.trim()
   if (!text) {
     return 'Online'
@@ -92,21 +68,26 @@ function getLocationLabel(address?: EventAddress) {
 }
 
 type Props = {
-  items: EventItem[]
+  items: PlaceCalEvent[]
   webSlug: string
 }
 
 const Events = ({ items, webSlug }: Props) => {
-  const groups = (() => {
-    if (!items || items.length === 0)
-      return [] as { key: string; date: Date; events: EventItem[] }[]
+  // The page is statically generated and refreshed once a day, so `items` can
+  // be hours old and still contain events that have since finished. Reading
+  // the clock here is what keeps them off the page. A manual useMemo so the
+  // React Compiler can't hoist the `new Date()` out and freeze the cut-off.
+  const groups = useMemo(() => {
+    const upcoming = filterUpcomingEvents(items, new Date())
+    if (upcoming.length === 0)
+      return [] as { key: string; date: Date; events: PlaceCalEvent[] }[]
 
-    const sorted = [...items].sort(
+    const sorted = [...upcoming].sort(
       (a, b) =>
         new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
     )
 
-    const map = new Map<string, { date: Date; events: EventItem[] }>()
+    const map = new Map<string, { date: Date; events: PlaceCalEvent[] }>()
     for (const ev of sorted) {
       const start = new Date(ev.startDate)
       const key = dayKey(start)
@@ -118,7 +99,7 @@ const Events = ({ items, webSlug }: Props) => {
     return Array.from(map.entries())
       .sort((a, b) => a[1].date.getTime() - b[1].date.getTime())
       .map(([key, value]) => ({ key, date: value.date, events: value.events }))
-  })()
+  }, [items])
 
   return (
     <>
@@ -135,7 +116,9 @@ const Events = ({ items, webSlug }: Props) => {
         </p>
 
         {groups.length === 0 && (
-          <div className="text-center text-neutral-500">No upcoming events</div>
+          <div className="mt-8 text-center text-neutral-500">
+            No upcoming events
+          </div>
         )}
 
         {groups.map(({ key, date, events }) => (
