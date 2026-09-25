@@ -185,8 +185,6 @@ export async function POST(request: NextRequest) {
       email: webCreatedAdminEmailComponent,
     })
 
-    // The web already exists at this point; a failed follow-up job must not
-    // tell the user it wasn't created (they retry and hit a 409).
     try {
       const handle = await checkWebInactiveTask.trigger({
         email: session?.user.email,
