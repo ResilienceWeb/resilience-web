@@ -185,11 +185,16 @@ export async function POST(request: NextRequest) {
       email: webCreatedAdminEmailComponent,
     })
 
-    const handle = await checkWebInactiveTask.trigger({
-      email: session?.user.email,
-      webId: web.id,
-    })
-    console.log('[RW]Task is running with handle', handle.id)
+    try {
+      const handle = await checkWebInactiveTask.trigger({
+        email: session?.user.email,
+        webId: web.id,
+      })
+      console.log('[RW]Task is running with handle', handle.id)
+    } catch (e) {
+      console.error(`[RW] Unable to schedule web inactive check - ${e}`)
+      Sentry.captureException(e)
+    }
 
     return Response.json({
       web,
