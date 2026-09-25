@@ -2,7 +2,10 @@ import { render } from 'react-email'
 import { createTransport } from 'nodemailer'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Created on first send, not at import: Trigger.dev indexes task files with no
+// env vars set, and the constructor throws without a key.
+let resend: Resend | undefined
+const getResend = () => (resend ??= new Resend(process.env.RESEND_API_KEY))
 
 const sentFrom = 'Resilience Web <noreply@resilienceweb.org.uk>'
 
@@ -44,7 +47,7 @@ export const sendEmail = async ({
     return
   }
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: sentFrom,
     to,
     replyTo: replyTo ?? process.env.EMAIL_FROM,
