@@ -10,6 +10,7 @@ import {
   HiExternalLink,
   HiX,
   HiUpload,
+  HiDownload,
   HiChartBar,
   HiChartPie,
   HiBell,
@@ -244,6 +245,13 @@ export default function SidebarContent({ closeMenu, ...rest }) {
       icon: <HiUpload />,
       iconColor: 'text-sky-500',
       tourId: 'nav-import',
+    })
+    advancedItems.push({
+      label: 'Export to CSV',
+      href: '/admin/export',
+      icon: <HiDownload />,
+      iconColor: 'text-sky-500',
+      tourId: 'nav-export',
     })
   }
   if (advancedItems.length > 0) {
