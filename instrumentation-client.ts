@@ -5,6 +5,7 @@ import * as Sentry from '@sentry/nextjs'
 import {
   BROWSER_EXTENSION_ERRORS,
   BROWSER_EXTENSION_URLS,
+  DATA_COLLECTION,
 } from '@helpers/sentry'
 
 // Fraction of requests traced. Errors are captured whatever this is.
@@ -21,6 +22,7 @@ Sentry.init({
   denyUrls: BROWSER_EXTENSION_URLS,
 
   tracesSampleRate: TRACES_SAMPLE_RATE,
+  dataCollection: DATA_COLLECTION,
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
