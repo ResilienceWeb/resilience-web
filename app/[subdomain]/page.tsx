@@ -170,6 +170,7 @@ async function getData({ webSlug }): Promise<DataType> {
               image: true,
               seekingVolunteers: true,
               website: true,
+              email: true,
               createdAt: true,
               socials: {
                 select: { platform: true, url: true },
@@ -253,6 +254,7 @@ async function getData({ webSlug }): Promise<DataType> {
         location,
         relations,
         website,
+        email,
         createdAt,
       } = placement.listing
       const { slug, featured, tags } = placement
@@ -278,6 +280,7 @@ async function getData({ webSlug }): Promise<DataType> {
         label: title,
         color: `#${category.color}`,
         website,
+        email,
       }
 
       if (isNew) {
