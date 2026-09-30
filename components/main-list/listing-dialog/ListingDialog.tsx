@@ -1,7 +1,12 @@
 'use client'
 
 import { memo } from 'react'
-import { HiUserGroup, HiOutlineLink, HiExternalLink } from 'react-icons/hi'
+import {
+  HiUserGroup,
+  HiOutlineLink,
+  HiExternalLink,
+  HiOutlineMail,
+} from 'react-icons/hi'
 import Link from 'next/link'
 import { useParams, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
@@ -147,6 +152,18 @@ const ListingDialog = ({
               </a>
             )}
 
+            {item.email && (
+              <a
+                href={`mailto:${item.email}`}
+                className="inline-flex items-center gap-1 rounded-full border border-transparent bg-gray-100 px-2 py-0.5 text-xs text-gray-700 transition-colors hover:bg-gray-200 md:gap-1.5 md:px-2.5"
+              >
+                <HiOutlineMail className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                <span className="max-w-45 truncate md:max-w-70">
+                  {item.email}
+                </span>
+              </a>
+            )}
+
             {item.seekingVolunteers && (
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -169,7 +186,7 @@ const ListingDialog = ({
             <div className="mt-4 flex justify-between">{socialLinks}</div>
           )}
 
-          <div className="my-4 prose prose-lg prose-headings:font-semibold prose-a:text-blue-600 mb-12 max-w-none">
+          <div className="my-4 prose prose-base prose-headings:font-semibold prose-a:text-blue-600 mb-12 max-w-none">
             <RichText html={item.description} />
           </div>
 
@@ -195,7 +212,7 @@ const ListingDialog = ({
                     rel="noopener noreferrer"
                     className={`group inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium transition-all ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
                   >
-                    <Icon className="h-4 w-4 transition-transform group-hover:scale-110" />
+                    <Icon className="h-4 w-4" />
                     <span>{actionConfig.label}</span>
                   </a>
                 )

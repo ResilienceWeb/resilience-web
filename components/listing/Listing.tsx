@@ -2,7 +2,12 @@
 
 import { memo, useEffect } from 'react'
 import { FiEdit, FiMapPin } from 'react-icons/fi'
-import { HiArrowLeft, HiUserGroup, HiExternalLink } from 'react-icons/hi'
+import {
+  HiArrowLeft,
+  HiUserGroup,
+  HiExternalLink,
+  HiOutlineMail,
+} from 'react-icons/hi'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -164,6 +169,18 @@ function Listing({ listing, categories }) {
                 <HiExternalLink className="h-3 w-3 md:h-3.5 md:w-3.5" />
                 <span className="max-w-45 truncate md:max-w-70">
                   {websiteSanitized}
+                </span>
+              </a>
+            )}
+
+            {listing.email && (
+              <a
+                href={`mailto:${listing.email}`}
+                className="inline-flex items-center gap-1 rounded-full border border-transparent bg-gray-100 px-2.5 py-0.5 text-xs text-gray-700 transition-colors hover:bg-gray-200 md:gap-1.5 md:px-3"
+              >
+                <HiOutlineMail className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                <span className="max-w-45 truncate md:max-w-70">
+                  {listing.email}
                 </span>
               </a>
             )}
