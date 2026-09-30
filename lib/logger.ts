@@ -1,28 +1,15 @@
-import { loggerProvider } from '@/instrumentation'
-import { SeverityNumber } from '@opentelemetry/api-logs'
-
-const logger = loggerProvider.getLogger('resilience-web')
-
-const severityMap = {
-  debug: SeverityNumber.DEBUG,
-  info: SeverityNumber.INFO,
-  warn: SeverityNumber.WARN,
-  error: SeverityNumber.ERROR,
-} as const
+import * as Sentry from '@sentry/nextjs'
 
 export function log(
-  level: keyof typeof severityMap,
+  level: 'debug' | 'info' | 'warn' | 'error',
   message: string,
   attributes?: Record<string, string | number | boolean>,
 ) {
-  logger.emit({
-    body: message,
-    severityNumber: severityMap[level],
-    severityText: level.toUpperCase(),
-    attributes,
-  })
+  Sentry.logger[level](message, attributes)
 }
 
+// Netlify freezes the function once the response is out, so buffered logs are
+// flushed explicitly rather than left to Sentry's batch timer.
 export async function flushLogs() {
-  await loggerProvider.forceFlush()
+  await Sentry.flush(2000)
 }

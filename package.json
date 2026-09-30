@@ -31,13 +31,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "5.9.1",
-    "@opentelemetry/api-logs": "0.222.0",
-    "@opentelemetry/exporter-logs-otlp-http": "0.222.0",
-    "@opentelemetry/resources": "2.11.0",
-    "@opentelemetry/sdk-logs": "0.222.0",
     "@prisma/adapter-pg": "7.10.0",
     "@prisma/client": "7.10.0",
-    "@sentry/nextjs": "10.75.0",
+    "@sentry/nextjs": "11.1.0",
     "@supabase/supabase-js": "2.117.2",
     "@tanstack/react-query": "5.104.0",
     "@tinymce/tinymce-react": "6.3.0",
@@ -139,7 +135,6 @@
   },
   "allowScripts": {
     "@prisma/engines@7.10.0": true,
-    "@sentry/cli@2.58.6": true,
     "esbuild@0.28.1": true,
     "fsevents@2.3.2": true,
     "fsevents@2.3.3": true,
