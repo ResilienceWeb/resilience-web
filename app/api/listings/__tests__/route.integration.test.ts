@@ -52,6 +52,29 @@ describe('GET /api/listings', () => {
     const { listings } = await response.json()
     expect(listings.map((l) => l.title)).toEqual(['Food Hub'])
   })
+
+  it('says which other webs each listing is also in, leaving out deleted ones', async () => {
+    const bristol = await createWeb({ slug: 'bristol' })
+    const { id: listingId } = await createListing(bristol.id)
+    for (const web of [
+      { slug: 'cardiff', title: 'Cardiff' },
+      { slug: 'bath', title: 'Bath' },
+      { slug: 'leeds', title: 'Leeds', deletedAt: new Date() },
+    ]) {
+      const { id: webId } = await createWeb(web)
+      await prisma.listingPlacement.create({
+        data: { listingId, webId, slug: `in-${web.slug}` },
+      })
+    }
+
+    const response = await GET(request('/api/listings?web=bristol'))
+
+    const { listings } = await response.json()
+    expect(listings[0].sharedWith.map((s) => s.web.title)).toEqual([
+      'Bath',
+      'Cardiff',
+    ])
+  })
 })
 
 describe('POST /api/listings', () => {

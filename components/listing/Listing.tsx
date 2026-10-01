@@ -124,7 +124,7 @@ function Listing({ listing, categories }) {
                       rel="noopener noreferrer"
                       className={`group inline-flex h-10 w-10 items-center justify-center rounded-full ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} transition-all hover:shadow-md ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
                     >
-                      <Icon className="h-5 w-5 transition-transform group-hover:scale-110" />
+                      <Icon className="h-5 w-5" />
                     </a>
                   )
                 })}
@@ -297,17 +297,15 @@ function Listing({ listing, categories }) {
                 Location
               </h3>
               <div className="overflow-hidden rounded-2xl bg-linear-to-br from-gray-50 to-white ring-1 ring-gray-100">
-                <div className="flex items-center justify-between border-b border-gray-100 bg-white px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <p className="font-semibold text-gray-900">
-                      {listing.location.description}
-                    </p>
-                  </div>
+                <div className="flex flex-col gap-3 border-b border-gray-100 bg-white px-5 py-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                  <p className="min-w-0 font-semibold text-gray-900">
+                    {listing.location.description}
+                  </p>
                   <a
                     href={`https://www.google.com/maps/dir/?api=1&destination=${listing.location.latitude},${listing.location.longitude}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-emerald-50 to-green-50 px-4 py-2 text-sm font-medium text-emerald-700 ring-1 ring-emerald-100 transition-all hover:from-emerald-100 hover:to-green-100 hover:shadow-md"
+                    className="inline-flex shrink-0 items-center gap-2 self-start rounded-xl bg-emerald-50 px-4 py-2 text-sm font-medium whitespace-nowrap text-emerald-700 ring-1 ring-emerald-100 transition-colors hover:bg-emerald-100"
                   >
                     Get Directions
                   </a>
@@ -318,6 +316,7 @@ function Listing({ listing, categories }) {
                     longitude={listing.location.longitude}
                     locationDescription={listing.location.description}
                     hideDescription
+                    rounded={false}
                   />
                 </div>
               </div>

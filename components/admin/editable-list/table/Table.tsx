@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import { FaStar, FaRegStar } from 'react-icons/fa'
+import { HiOutlineGlobeAlt } from 'react-icons/hi'
 import { PiWarningCircleBold } from 'react-icons/pi'
 import Link from 'next/link'
 import CategoryTag from '@components/category-tag'
@@ -46,6 +47,18 @@ const TableContent = ({ items, removeItem }) => {
                   <TableCell>
                     <div className="flex flex-col gap-2">
                       <span>{item.title}</span>
+                      {item.sharedWith?.length > 0 && (
+                        <span className="inline-flex items-center gap-1 text-xs text-sky-800">
+                          <HiOutlineGlobeAlt
+                            className="h-4 w-4 shrink-0"
+                            aria-hidden
+                          />
+                          Also on{' '}
+                          {item.sharedWith
+                            .map((placement) => placement.web.title)
+                            .join(', ')}
+                        </span>
+                      )}
                       {item.inactive ? (
                         <div className="flex flex-wrap gap-1">
                           <Badge

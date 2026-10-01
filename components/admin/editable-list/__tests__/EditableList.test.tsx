@@ -76,6 +76,27 @@ describe('the admin listings table', () => {
     await waitFor(() => expectListed(ALL_TITLES))
   })
 
+  it('marks the listings that are also in other webs', async () => {
+    renderList({
+      items: [
+        ...LISTINGS,
+        listing({
+          id: 4,
+          title: 'Food Hub',
+          sharedWith: [
+            { web: { slug: 'bath', title: 'Bath' } },
+            { web: { slug: 'cardiff', title: 'Cardiff' } },
+          ],
+        }),
+      ],
+    })
+
+    expect(
+      await within(row('Food Hub')).findByText('Also on Bath, Cardiff'),
+    ).toBeInTheDocument()
+    expect(within(row('Bike Kitchen')).queryByText(/also on/i)).toBeNull()
+  })
+
   it('narrows the table as the editor types', async () => {
     const { user } = renderList()
     await waitFor(() => expectListed(ALL_TITLES))

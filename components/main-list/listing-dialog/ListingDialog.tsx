@@ -83,7 +83,7 @@ const ListingDialog = ({
               rel="noopener noreferrer"
               className={`group inline-flex h-10 w-10 items-center justify-center rounded-full ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} transition-all ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
             >
-              <Icon className="h-5 w-5 transition-transform group-hover:scale-110" />
+              <Icon className="h-5 w-5" />
             </a>
           )
         })}
