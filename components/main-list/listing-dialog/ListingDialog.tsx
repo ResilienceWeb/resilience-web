@@ -14,6 +14,7 @@ import { actionTypes, actionIconStyles } from '@helpers/actions'
 import { getWebUrl } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import { sanitizeLink } from '@helpers/utils'
+import AlsoOnWebs from '@components/also-on-webs'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
 import RichText from '@components/rich-text'
@@ -82,7 +83,7 @@ const ListingDialog = ({
               rel="noopener noreferrer"
               className={`group inline-flex h-10 w-10 items-center justify-center rounded-full ${config.bgClass} ${config.textClass} ring-1 ${config.ringClass} transition-all ${config.hoverBgClass} ${config.hoverTextClass} ${config.hoverRingClass}`}
             >
-              <Icon className="h-5 w-5 transition-transform group-hover:scale-110" />
+              <Icon className="h-5 w-5" />
             </a>
           )
         })}
@@ -181,6 +182,8 @@ const ListingDialog = ({
               </Tooltip>
             )}
           </div>
+
+          <AlsoOnWebs webs={item.alsoListedIn} className="mt-3" />
 
           {isMobile && (
             <div className="mt-4 flex justify-between">{socialLinks}</div>

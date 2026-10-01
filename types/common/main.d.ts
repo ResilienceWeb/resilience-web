@@ -29,6 +29,13 @@ declare global {
       description?: string
       noPhysicalLocation?: boolean
     }
+    alsoListedIn?: AlsoListedIn[]
+  }
+
+  /** Another web the listing is placed in, and its slug there. */
+  type AlsoListedIn = {
+    slug: string
+    web: { slug: string; title: string }
   }
 
   type CategoryWithListings = Prisma.CategoryGetPayload<{
@@ -67,5 +74,6 @@ declare global {
     label: string
     color: string
     group?: string
+    alsoListedIn?: AlsoListedIn[]
   }
 }

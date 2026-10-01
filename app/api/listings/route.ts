@@ -38,6 +38,8 @@ export async function GET(request: NextRequest) {
           },
         },
         placements: {
+          where: { web: { deletedAt: null } },
+          orderBy: { web: { title: 'asc' } },
           include: {
             web: { select: { id: true, slug: true, title: true } },
             category: {

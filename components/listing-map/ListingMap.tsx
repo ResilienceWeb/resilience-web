@@ -3,12 +3,15 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { cn } from '@components/lib/utils'
 
 interface ListingMapProps {
   latitude: number
   longitude: number
   locationDescription: string
   hideDescription?: boolean
+  /** Off when the map fills a card that already clips it to its own corners. */
+  rounded?: boolean
 }
 
 export default function ListingMap({
@@ -16,6 +19,7 @@ export default function ListingMap({
   longitude,
   locationDescription,
   hideDescription = false,
+  rounded = true,
 }: ListingMapProps) {
   const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
 
@@ -34,7 +38,7 @@ export default function ListingMap({
           </a>
         </div>
       )}
-      <div className="h-[300px] overflow-hidden rounded-lg">
+      <div className={cn('h-[300px] overflow-hidden', rounded && 'rounded-lg')}>
         <MapContainer
           center={[latitude, longitude]}
           zoom={17}

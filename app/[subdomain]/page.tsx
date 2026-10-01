@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { fetchPlaceCalEvents } from '@/lib/placecal'
 import prisma from '@prisma-rw'
 import { compressJson } from '@helpers/compression'
+import { otherWebs, visibleWebPlacements } from '@db/listingRepository'
 import { getAllWebs } from '@db/webRepository'
 import Web from './Web'
 
@@ -185,6 +186,7 @@ async function getData({ webSlug }): Promise<DataType> {
                   description: true,
                 },
               },
+              placements: visibleWebPlacements,
               relations: {
                 select: {
                   id: true,
@@ -256,6 +258,7 @@ async function getData({ webSlug }): Promise<DataType> {
         website,
         email,
         createdAt,
+        placements: webPlacements,
       } = placement.listing
       const { slug, featured, tags } = placement
 
@@ -281,6 +284,11 @@ async function getData({ webSlug }): Promise<DataType> {
         color: `#${category.color}`,
         website,
         email,
+      }
+
+      const alsoListedIn = otherWebs(webPlacements, webSlug)
+      if (alsoListedIn.length > 0) {
+        transformedNode.alsoListedIn = alsoListedIn
       }
 
       if (isNew) {

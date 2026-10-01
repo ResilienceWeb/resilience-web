@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import truncate from 'lodash.truncate'
 import prisma from '@prisma-rw'
+import { otherWebs, visibleWebPlacements } from '@db/listingRepository'
 import { initializeBuildCache } from '../../../lib/build-cache'
 import Listing from './Listing'
 import getListing, { sortCategoriesByLabel } from './getListing'
@@ -91,6 +92,7 @@ export async function generateStaticParams() {
             select: { latitude: true, longitude: true, description: true },
           },
           edits: { select: { id: true } },
+          placements: visibleWebPlacements,
         },
       },
     },
@@ -100,17 +102,20 @@ export async function generateStaticParams() {
 
   // Pre-flatten into listing-shaped objects keyed by (webSlug, slug) so getListing()
   // can hit the cache during build.
-  const flattenedForCache = placements.map((p) => ({
-    ...p.listing,
-    slug: p.slug,
-    featured: p.featured,
-    category: p.category,
-    tags: p.tags,
-    web: {
-      ...p.web,
-      categories: sortCategoriesByLabel(p.web.categories),
-    },
-  }))
+  const flattenedForCache = placements.map(
+    ({ listing: { placements: listingPlacements, ...listing }, ...p }) => ({
+      ...listing,
+      slug: p.slug,
+      featured: p.featured,
+      category: p.category,
+      tags: p.tags,
+      web: {
+        ...p.web,
+        categories: sortCategoriesByLabel(p.web.categories),
+      },
+      alsoListedIn: otherWebs(listingPlacements, p.web.slug),
+    }),
+  )
   initializeBuildCache(flattenedForCache as any)
 
   console.log(
