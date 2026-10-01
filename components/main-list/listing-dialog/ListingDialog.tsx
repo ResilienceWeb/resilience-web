@@ -14,6 +14,7 @@ import { actionTypes, actionIconStyles } from '@helpers/actions'
 import { getWebUrl } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import { sanitizeLink } from '@helpers/utils'
+import AlsoOnWebs from '@components/also-on-webs'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
 import RichText from '@components/rich-text'
@@ -181,6 +182,8 @@ const ListingDialog = ({
               </Tooltip>
             )}
           </div>
+
+          <AlsoOnWebs webs={item.alsoListedIn} className="mt-3" />
 
           {isMobile && (
             <div className="mt-4 flex justify-between">{socialLinks}</div>

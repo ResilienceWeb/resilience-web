@@ -1,6 +1,7 @@
 import { cache } from 'react'
 import prisma from '@prisma-rw'
 import { exclude } from '@helpers/utils'
+import { otherWebs, visibleWebPlacements } from '@db/listingRepository'
 import { isBuildTime, getListingFromCache } from '../../../lib/build-cache'
 
 /** Label-sorted, as the client hook sorted them. See `getData` in the web page. */
@@ -59,17 +60,7 @@ const getListing = cache(async function getListing({
             select: { latitude: true, longitude: true, description: true },
           },
           edits: { select: { id: true } },
-          // All other webs this listing also lives in — used for the "also in" link.
-          placements: {
-            where: {
-              webId: { not: undefined },
-              web: { deletedAt: null, slug: { not: webSlug } },
-            },
-            select: {
-              slug: true,
-              web: { select: { slug: true, title: true } },
-            },
-          },
+          placements: visibleWebPlacements,
           relations: {
             select: {
               id: true,
@@ -111,10 +102,7 @@ const getListing = cache(async function getListing({
       ...placementFields.web,
       categories: sortCategoriesByLabel(placementFields.web.categories),
     },
-    alsoListedIn: alsoIn.map((p) => ({
-      slug: p.slug,
-      web: p.web,
-    })),
+    alsoListedIn: otherWebs(alsoIn, webSlug),
     // Only surface relations that ALSO live in the current web — relations without
     // a placement here have no slug/category to render, and exposing them would link
     // off into a 404.

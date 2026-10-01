@@ -72,4 +72,43 @@ describe('getListing', () => {
 
     expect(listing?.relations).toEqual([])
   })
+
+  it('lists the other published webs the listing is placed in', async () => {
+    const bristol = await createWeb({ slug: 'bristol', title: 'Bristol' })
+    const hub = await createListing(bristol.id, {
+      slug: 'food-hub',
+      categoryId: (await createCategory(bristol.id)).id,
+    })
+
+    const place = async (
+      web: { slug: string; title: string; published?: boolean },
+      categorised = true,
+    ) => {
+      const created = await createWeb(web)
+      await prisma.listingPlacement.create({
+        data: {
+          listingId: hub.id,
+          webId: created.id,
+          slug: `hub-in-${web.slug}`,
+          categoryId: categorised
+            ? (await createCategory(created.id)).id
+            : undefined,
+        },
+      })
+    }
+    await place({ slug: 'cardiff', title: 'Cardiff' })
+    await place({ slug: 'bath', title: 'Bath' })
+    await place({ slug: 'leeds', title: 'Leeds', published: false })
+    await place({ slug: 'york', title: 'York' }, false)
+
+    const listing = await getListing({
+      webSlug: 'bristol',
+      listingSlug: 'food-hub',
+    })
+
+    expect(listing?.alsoListedIn).toEqual([
+      { slug: 'hub-in-bath', web: { slug: 'bath', title: 'Bath' } },
+      { slug: 'hub-in-cardiff', web: { slug: 'cardiff', title: 'Cardiff' } },
+    ])
+  })
 })

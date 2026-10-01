@@ -249,3 +249,27 @@ export async function bulkCreateListingsWithRelations(
 
   return createdIds
 }
+
+/**
+ * The webs a visitor can follow a listing to. Unpublished webs are still being
+ * built, and an uncategorised placement's listing page 404s, so both are left
+ * out. Callers drop the web the visitor is already on.
+ */
+export const visibleWebPlacements = {
+  where: {
+    categoryId: { not: null },
+    web: { deletedAt: null, published: true },
+  },
+  select: {
+    slug: true,
+    web: { select: { slug: true, title: true } },
+  },
+  orderBy: { web: { title: 'asc' } },
+} satisfies Prisma.Listing$placementsArgs
+
+export function otherWebs<T extends { web: { slug: string } }>(
+  placements: T[],
+  currentWebSlug: string,
+): T[] {
+  return placements.filter((p) => p.web.slug !== currentWebSlug)
+}

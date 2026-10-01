@@ -16,6 +16,7 @@ import { trackListingEvent } from '@helpers/analytics'
 import { getWebUrl, REMOTE_URL } from '@helpers/config'
 import { socialMediaPlatforms, socialIconStyles } from '@helpers/socials'
 import { sanitizeLink } from '@helpers/utils'
+import AlsoOnWebs from '@components/also-on-webs'
 import CategoryTag from '@components/category-tag'
 import { MagicBackButton } from '@components/magic-back-button/MagicBackButton'
 import Item from '@components/main-list/item'
@@ -237,6 +238,8 @@ function Listing({ listing, categories }) {
                 })}
             </div>
           </div>
+
+          <AlsoOnWebs webs={listing.alsoListedIn} className="mt-4" />
         </div>
 
         <div className="prose prose-sm md:prose-base">
@@ -362,23 +365,6 @@ function Listing({ listing, categories }) {
                 <span key={tag.id}>{badge}</span>
               )
             })}
-          </div>
-        )}
-
-        {listing.alsoListedIn?.length > 0 && (
-          <div className="mt-8 text-sm text-gray-500">
-            Also listed in:{' '}
-            {listing.alsoListedIn.map((entry, index) => (
-              <span key={entry.web.slug}>
-                {index > 0 && ', '}
-                <a
-                  href={`${getWebUrl(entry.web.slug)}/${entry.slug}`}
-                  className="font-medium text-gray-700 underline-offset-2 hover:underline"
-                >
-                  {entry.web.title}
-                </a>
-              </span>
-            ))}
           </div>
         )}
       </div>
