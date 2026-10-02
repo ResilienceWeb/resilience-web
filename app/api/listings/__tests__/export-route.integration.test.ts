@@ -100,19 +100,22 @@ describe('GET /api/listings/export', () => {
     )
 
     const rows = await rowsOf(response)
-    expect(rows.map((r) => [r.Name, r.Status])).toEqual([
-      ['Allotment', 'Pending'],
-      ['Bike Kitchen', 'Inactive'],
-      ['Food Hub', 'Live'],
+    expect(rows.map((r) => r.Name)).toEqual([
+      'Allotment',
+      'Bike Kitchen',
+      'Food Hub',
     ])
-    expect(rows[2]).toMatchObject({
+    expect(rows[2]).toEqual({
+      Name: 'Food Hub',
       Description: '<p>Surplus food, shared</p>',
-      Email: 'hello@foodhub.org',
       Website: 'https://foodhub.org',
       Address: '1 Mill Road, Bristol',
       Category: 'Food',
       Facebook: 'https://facebook.com/fh',
+      Twitter: '',
       Instagram: '',
+      LinkedIn: '',
+      YouTube: '',
     })
   })
 })

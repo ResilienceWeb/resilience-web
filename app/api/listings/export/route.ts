@@ -23,8 +23,8 @@ export async function GET(request: NextRequest) {
       return Response.json({ error: 'Web not found' }, { status: 404 })
     }
 
-    // The export carries contact emails and listings nobody has approved yet,
-    // which the public web never shows.
+    // The export includes listings nobody has approved yet, which the public
+    // web never shows.
     if (!(await callerCanEditWeb(caller, web.id))) {
       return Response.json(
         { error: "You don't have permission to export this web's listings" },
@@ -40,10 +40,7 @@ export async function GET(request: NextRequest) {
           select: {
             title: true,
             description: true,
-            email: true,
             website: true,
-            pending: true,
-            inactive: true,
             location: { select: { description: true } },
             socials: { select: { platform: true, url: true } },
           },

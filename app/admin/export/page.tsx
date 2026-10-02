@@ -37,10 +37,8 @@ export default function ExportPage() {
 
       <div className="flex flex-col gap-3 text-sm text-gray-700">
         <p>
-          Each listing gets one row, with its name, description, email, website,
-          address, category and social media links. A Status column tells you
-          whether a listing is live, still pending review, or marked as
-          inactive.
+          Each listing gets one row, with its name, description, website,
+          address, category and social media links.
         </p>
         <p>
           The columns match the ones Import from CSV looks for, so you can use

@@ -8,10 +8,7 @@ const listing = (
 ): ExportableListing => ({
   title: 'Bike Kitchen',
   description: '<p>Fix your bike</p>',
-  email: null,
   website: null,
-  pending: false,
-  inactive: false,
   location: null,
   socials: [],
   category: { label: 'Transport' },
@@ -25,7 +22,6 @@ describe('listingsToCsv', () => {
   it('can be imported again without remapping any column', () => {
     const csv = listingsToCsv([
       listing({
-        email: 'hello@bikekitchen.org',
         website: 'https://bikekitchen.org',
         location: { description: '1 Mill Road, Cambridge' },
         socials: [
@@ -40,11 +36,9 @@ describe('listingsToCsv', () => {
     const mapping = applyAutoMapping(meta.fields ?? [])
     const [row] = mapRows(data, mapping)
 
-    expect(mapping.Status).toBeNull()
     expect(row).toMatchObject({
       name: 'Bike Kitchen',
       description: '<p>Fix your bike</p>',
-      email: 'hello@bikekitchen.org',
       website: 'https://bikekitchen.org',
       address: '1 Mill Road, Cambridge',
       category: 'Transport',
@@ -52,20 +46,6 @@ describe('listingsToCsv', () => {
         { platform: 'instagram', url: 'https://instagram.com/bikekitchen' },
       ],
     })
-  })
-
-  it('says which listings are not live', () => {
-    const csv = listingsToCsv([
-      listing({ title: 'Live one' }),
-      listing({ title: 'Proposed one', pending: true }),
-      listing({ title: 'Closed one', inactive: true }),
-    ])
-
-    expect(parse(csv).map((r) => [r.Name, r.Status])).toEqual([
-      ['Live one', 'Live'],
-      ['Proposed one', 'Pending'],
-      ['Closed one', 'Inactive'],
-    ])
   })
 
   it('keeps commas, quotes and line breaks inside their cell', () => {
@@ -83,7 +63,7 @@ describe('listingsToCsv', () => {
 
   it('still has a header row when the web has no listings', () => {
     expect(listingsToCsv([]).split('\r\n')[0]).toBe(
-      'Name,Description,Email,Website,Address,Category,Facebook,Twitter,Instagram,LinkedIn,YouTube,Status',
+      'Name,Description,Website,Address,Category,Facebook,Twitter,Instagram,LinkedIn,YouTube',
     )
   })
 })

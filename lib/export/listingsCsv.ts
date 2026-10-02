@@ -3,10 +3,7 @@ import Papa from 'papaparse'
 export interface ExportableListing {
   title: string
   description: string | null
-  email: string | null
   website: string | null
-  pending: boolean
-  inactive: boolean
   location: { description: string | null } | null
   socials: { platform: string; url: string }[]
   category: { label: string } | null
@@ -22,12 +19,6 @@ const SOCIAL_COLUMNS = {
   YouTube: 'youtube',
 } as const
 
-const status = (listing: ExportableListing) => {
-  if (listing.pending) return 'Pending'
-  if (listing.inactive) return 'Inactive'
-  return 'Live'
-}
-
 export function listingsToCsv(listings: ExportableListing[]): string {
   const rows = listings.map((listing) => {
     const socials = Object.fromEntries(
@@ -40,12 +31,10 @@ export function listingsToCsv(listings: ExportableListing[]): string {
     return {
       Name: listing.title,
       Description: listing.description ?? '',
-      Email: listing.email ?? '',
       Website: listing.website ?? '',
       Address: listing.location?.description ?? '',
       Category: listing.category?.label ?? '',
       ...socials,
-      Status: status(listing),
     }
   })
 
@@ -54,12 +43,10 @@ export function listingsToCsv(listings: ExportableListing[]): string {
       fields: [
         'Name',
         'Description',
-        'Email',
         'Website',
         'Address',
         'Category',
         ...Object.keys(SOCIAL_COLUMNS),
-        'Status',
       ],
       data: rows,
     },
