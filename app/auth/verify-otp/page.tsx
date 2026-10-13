@@ -13,6 +13,10 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@components/ui/input-otp'
 import LogoImage from '../../../public/logo.png'
 import styles from '../auth.module.css'
 
+// Long enough that a second tap doesn't fire while the first email is still on
+// its way, short enough that someone whose email really didn't arrive can retry.
+const RESEND_COOLDOWN_MS = 30_000
+
 export default function VerifyOTP() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -28,12 +32,19 @@ export default function VerifyOTP() {
   const [error, setError] = useState('')
   const [isVerifying, setIsVerifying] = useState(false)
   const [isResending, setIsResending] = useState(false)
+  const [codeResent, setCodeResent] = useState(false)
 
   useEffect(() => {
     if (!email) {
       router.push('/auth/signin')
     }
   }, [email, router])
+
+  useEffect(() => {
+    if (!codeResent) return
+    const timeout = setTimeout(() => setCodeResent(false), RESEND_COOLDOWN_MS)
+    return () => clearTimeout(timeout)
+  }, [codeResent])
 
   const verifyOtp = async (otpValue: string) => {
     if (otpValue.length !== 6) {
@@ -173,6 +184,7 @@ export default function VerifyOTP() {
       setOtp('')
       setError('')
       setIsResending(false)
+      setCodeResent(true)
     } catch (error) {
       console.error('[RW] Error resending OTP:', error)
       Sentry.captureException(error, {
@@ -247,11 +259,18 @@ export default function VerifyOTP() {
               type="button"
               variant="link"
               onClick={handleResend}
-              disabled={isResending}
+              disabled={isResending || codeResent}
               className="mt-1"
             >
-              {isResending ? 'Sending...' : 'Resend code'}
+              {isResending
+                ? 'Sending...'
+                : codeResent
+                  ? 'Code sent'
+                  : 'Resend code'}
             </Button>
+            <p role="status" className="mt-1 text-sm text-green-700">
+              {codeResent && `We've sent a new code to ${email}.`}
+            </p>
           </div>
         </div>
       </div>
