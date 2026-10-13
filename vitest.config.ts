@@ -1,8 +1,12 @@
+import nextEnv from '@next/env'
 import react from '@vitejs/plugin-react'
-import 'dotenv/config'
 import { defineConfig } from 'vitest/config'
 import { resolveTestDatabaseUrl } from './test/db/testDatabaseUrl.ts'
 import { reactCompiler } from './test/vite/react-compiler.ts'
+
+// Load .env the way Next does: plain dotenv leaves ${VAR} references in
+// DATABASE_URL unexpanded, which Prisma rejects as an invalid port.
+nextEnv.loadEnvConfig(process.cwd())
 
 export default defineConfig({
   plugins: [react()],

@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma-client'
 import { PrismaPg } from '@prisma/adapter-pg'
+import { sslFor } from '../../prisma/ssl.ts'
 
 /**
  * A Prisma client for the Playwright process.
@@ -11,6 +12,6 @@ import { PrismaPg } from '@prisma/adapter-pg'
 export const prisma = new PrismaClient({
   adapter: new PrismaPg({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
+    ssl: sslFor(process.env.DATABASE_URL),
   }),
 })

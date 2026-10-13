@@ -67,8 +67,25 @@ vi.mock('next/navigation', () => ({
 // so `useSession` reads from `test/session.ts` instead — the same store the
 // integration tests drive with `signInAs()`. This and `next/navigation` above
 // are the only two places the component suite knows what it is running on.
-vi.mock('@auth-client', async () => {
+// `authClient` is a real Better Auth client, so its calls are plain HTTP to
+// /api/auth that a test stubs with MSW like any other endpoint.
+vi.mock('@auth-client', async (importActual) => {
   const { sessionStore } = await import('../session.ts')
+  const { ERROR_MESSAGES } = await importActual<typeof import('@auth-client')>()
+  const { createAuthClient } = await import('better-auth/react')
+  const { adminClient, emailOTPClient } =
+    await import('better-auth/client/plugins')
+  // Better Auth holds on to `fetch` from when it loads, before MSW patches it,
+  // and takes its base URL from BETTER_AUTH_URL in .env, so the app's own
+  // client sends test requests to a real local server. Look `fetch` up on each
+  // call, and stay on the page's origin.
+  const authClient = createAuthClient({
+    baseURL: `${window.location.origin}/api/auth`,
+    plugins: [adminClient(), emailOTPClient()],
+    fetchOptions: {
+      customFetchImpl: (input, init) => fetch(input, init),
+    },
+  })
   return {
     useSession: () => ({
       data: sessionStore.current,
@@ -77,8 +94,8 @@ vi.mock('@auth-client', async () => {
     }),
     signIn: vi.fn(),
     signOut: vi.fn(),
-    authClient: {},
-    ERROR_MESSAGES: {},
+    authClient,
+    ERROR_MESSAGES,
   }
 })
 
@@ -186,4 +203,8 @@ Element.prototype.scrollIntoView ??= vi.fn()
 Element.prototype.hasPointerCapture ??= vi.fn(() => false)
 Element.prototype.setPointerCapture ??= vi.fn()
 Element.prototype.releasePointerCapture ??= vi.fn()
+
+// jsdom does no layout, so nothing is at any point. input-otp asks anyway, to
+// spot password-manager badges sitting over the code field.
+document.elementFromPoint ??= vi.fn(() => null)
 /* eslint-enable @typescript-eslint/unbound-method */
