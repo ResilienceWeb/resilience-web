@@ -1,6 +1,10 @@
+import nextEnv from '@next/env'
 import { defineConfig, devices } from '@playwright/test'
-import 'dotenv/config'
 import { STORAGE_STATE } from './tests/support/storage-state.ts'
+
+// Load .env the way Next does: plain dotenv leaves ${VAR} references in
+// DATABASE_URL unexpanded, which Prisma rejects as an invalid port.
+nextEnv.loadEnvConfig(process.cwd())
 
 /**
  * See https://playwright.dev/docs/test-configuration.
