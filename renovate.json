@@ -4,5 +4,91 @@
     "config:recommended"
   ],
   "npmrc": "allow-remote=all",
-  "npmrcMerge": true
+  "npmrcMerge": true,
+  "timezone": "Europe/London",
+  "schedule": ["before 6am on monday"],
+  "packageRules": [
+    {
+      "description": "Later rules override earlier ones, so these two catch-alls only cover what no named group below claims",
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "runtime dependencies"
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "dev dependencies"
+    },
+    {
+      "matchPackageNames": [
+        "next",
+        "@next/**",
+        "eslint-config-next",
+        "react",
+        "react-dom",
+        "@types/react",
+        "babel-plugin-react-compiler"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "Next.js and React"
+    },
+    {
+      "matchPackageNames": [
+        "radix-ui",
+        "lucide-react",
+        "react-icons",
+        "sonner",
+        "cmdk",
+        "class-variance-authority",
+        "cnfast",
+        "tailwindcss",
+        "@tailwindcss/**",
+        "tailwindcss-animate",
+        "react-colorful",
+        "input-otp",
+        "driver.js",
+        "tinymce",
+        "@tinymce/**",
+        "react-intersection-observer",
+        "usehooks-ts",
+        "leaflet",
+        "leaflet-geosearch",
+        "leaflet.markercluster",
+        "react-leaflet",
+        "@types/leaflet",
+        "@types/leaflet.markercluster",
+        "d3-force",
+        "react-force-graph-2d",
+        "recharts",
+        "chroma-js"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "UI"
+    },
+    {
+      "matchPackageNames": [
+        "prisma",
+        "@prisma/**",
+        "better-auth",
+        "@supabase/**",
+        "@trigger.dev/**",
+        "@sentry/**",
+        "posthog-js",
+        "nodemailer",
+        "@types/nodemailer",
+        "resend",
+        "sharp",
+        "graphql",
+        "graphql-request"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "backend and services"
+    },
+    {
+      "matchManagers": ["github-actions", "docker-compose"],
+      "groupName": "CI and Docker"
+    }
+  ]
 }
