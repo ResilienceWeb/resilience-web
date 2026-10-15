@@ -2,10 +2,8 @@
 
 import { useEffect } from 'react'
 import { useSearchParams, useRouter, redirect } from 'next/navigation'
-import * as Sentry from '@sentry/nextjs'
 import 'driver.js/dist/driver.css'
 import posthog from 'posthog-js'
-import { useSession } from '@auth-client'
 import EditableList from '@components/admin/editable-list'
 import Faq from '@components/faq'
 import { Spinner } from '@components/ui/spinner'
@@ -41,7 +39,6 @@ const faqs = [
 
 export default function AdminPage() {
   const router = useRouter()
-  const { data: session } = useSession()
   const { selectedWebSlug } = useAppContext()
   const { canEdit: canEditCurrentWeb, isPending: isCheckingEditAccess } =
     useCanEditWeb()
@@ -56,14 +53,6 @@ export default function AdminPage() {
   const { mutate: deleteListing } = useDeleteListing()
 
   const allowedListings = canEditCurrentWeb ? listings : null
-
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'production' && session?.user) {
-      console.log('Identifying user')
-      posthog.identify(session.user.id, { email: session.user.email })
-      Sentry.setUser({ id: session.user.id, email: session.user.email })
-    }
-  }, [session?.user])
 
   const clearSearchParams = () => {
     router.replace('/admin')

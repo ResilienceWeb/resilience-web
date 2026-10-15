@@ -43,7 +43,7 @@ export default async function Layout({ children }) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Providers>
+      <Providers userId={session.user.id}>
         <LayoutContainer>
           <Suspense>{children}</Suspense>
         </LayoutContainer>
