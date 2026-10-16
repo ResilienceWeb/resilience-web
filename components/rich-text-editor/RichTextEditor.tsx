@@ -1,5 +1,15 @@
 import { useController, useFormContext } from 'react-hook-form'
+import { EMBED_PROVIDERS } from '@/lib/embed-providers.js'
 import { Editor } from '@tinymce/tinymce-react'
+
+// TinyMCE sandboxes every iframe in the editor except its own short list of
+// hosts, which leaves out youtube-nocookie (what saved YouTube embeds become)
+// and the map and SoundCloud players. A sandboxed player cannot run scripts
+// and shows an error instead of the video. TinyMCE matches the bare host with
+// any leading www. removed.
+const SANDBOX_EXCLUSIONS = EMBED_PROVIDERS.map(({ hostname }) =>
+  hostname.replace(/^www\./, ''),
+)
 
 interface RichTextEditorProps {
   name: string
@@ -35,6 +45,7 @@ const RichTextEditor = ({
             'undo redo | link image | styles | bold italic underline | align | bullist numlist',
           contextmenu: false,
           paste_as_text: false,
+          sandbox_iframes_exclusions: SANDBOX_EXCLUSIONS,
           plugins:
             'media autolink lists link image preview fullscreen emoticons help',
         }}
