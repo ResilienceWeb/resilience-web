@@ -14,7 +14,7 @@ import type { PostHog } from 'posthog-js'
 
 let clientPromise: Promise<PostHog | null> | null = null
 
-function loadPostHog(): Promise<PostHog | null> {
+export function loadPostHog(): Promise<PostHog | null> {
   if (clientPromise) return clientPromise
 
   const key = process.env.NEXT_PUBLIC_POSTHOG_KEY
@@ -32,11 +32,12 @@ function loadPostHog(): Promise<PostHog | null> {
         debug: false,
         capture_pageview: false,
         capture_pageleave: true,
-        persistence: 'localStorage',
+        // Nothing is stored on the visitor's device, so analytics needs no consent banner
+        cookieless_mode: 'always',
         capture_exceptions: true,
         capture_performance: true,
         session_recording: {
-          maskAllInputs: false,
+          maskAllInputs: true,
         },
       })
       return posthog
