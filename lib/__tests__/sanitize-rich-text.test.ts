@@ -61,6 +61,68 @@ describe('sanitizeRichText', () => {
     })
   })
 
+  describe('media embeds', () => {
+    it.each([
+      [
+        'Vimeo',
+        '<iframe src="https://player.vimeo.com/video/76979871" width="640" height="360" allowfullscreen></iframe>',
+      ],
+      [
+        'Spotify',
+        '<iframe src="https://open.spotify.com/embed/episode/abc" width="100%" height="152" allow="encrypted-media"></iframe>',
+      ],
+      [
+        'SoundCloud',
+        '<iframe src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1" width="100%" height="166"></iframe>',
+      ],
+      [
+        'Google Maps',
+        '<iframe src="https://www.google.com/maps/embed?pb=!1m18" width="600" height="450"></iframe>',
+      ],
+      [
+        'OpenStreetMap',
+        '<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-2.6%2C51.4&amp;layer=mapnik" width="425" height="350"></iframe>',
+      ],
+    ])('keeps a %s embed', (_label, input) => {
+      expect(sanitizeRichText(input)).toBe(input)
+    })
+
+    it('serves YouTube from the no-cookie domain, as TinyMCE writes it protocol-relative', () => {
+      expect(
+        sanitizeRichText(
+          '<iframe src="//www.youtube.com/embed/dQw4w9WgXcQ" width="560" height="314" allowfullscreen="allowfullscreen"></iframe>',
+        ),
+      ).toBe(
+        '<iframe src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" width="560" height="314" allowfullscreen="allowfullscreen"></iframe>',
+      )
+    })
+
+    it.each([
+      ['an unknown host', 'https://evil.example/embed/x'],
+      ['a lookalike host', 'https://www.youtube.com.evil.example/embed/x'],
+      [
+        'an allowed host outside its embed path',
+        'https://www.google.com/search?q=x',
+      ],
+      ['a javascript: URL', 'javascript:alert(1)'],
+      ['a relative URL', '/admin'],
+    ])('drops an iframe pointing at %s', (_label, src) => {
+      expect(
+        sanitizeRichText(
+          `<p>before</p><iframe src="${src}"></iframe><p>after</p>`,
+        ),
+      ).toBe('<p>before</p><p>after</p>')
+    })
+
+    it('strips event handlers from an allowed embed', () => {
+      expect(
+        sanitizeRichText(
+          '<iframe src="https://player.vimeo.com/video/1" onload="steal()" srcdoc="<script>x</script>"></iframe>',
+        ),
+      ).toBe('<iframe src="https://player.vimeo.com/video/1"></iframe>')
+    })
+  })
+
   it('adds rel to links opening in a new tab, which TinyMCE omits', () => {
     expect(
       sanitizeRichText('<a href="https://example.org" target="_blank">x</a>'),

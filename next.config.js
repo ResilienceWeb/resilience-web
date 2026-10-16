@@ -1,6 +1,7 @@
 // @ts-check
 
 import { withSentryConfig } from '@sentry/nextjs/config'
+import { EMBED_ORIGINS } from './lib/embed-providers.js'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -48,8 +49,9 @@ const contentSecurityPolicy = [
     'https://www.google.com',
   ].join(' '),
   // TinyMCE renders its editor into a blob: iframe; reCAPTCHA renders its
-  // challenge into one served from google.com, invisible mode included.
-  "frame-src 'self' blob: https://www.google.com",
+  // challenge into one served from google.com, invisible mode included. The
+  // rest are the media embeds rich text is allowed to keep.
+  `frame-src ${[...new Set(["'self'", 'blob:', 'https://www.google.com', ...EMBED_ORIGINS])].join(' ')}`,
   "worker-src 'self' blob:",
   "manifest-src 'self'",
   'upgrade-insecure-requests',
