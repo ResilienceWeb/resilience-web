@@ -31,7 +31,8 @@ const contentSecurityPolicy = [
   // whose api.js pulls its runtime from gstatic. Both were found by this
   // policy's own violation reports rather than by reading the code.
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://cdn.tiny.cloud https://eu-assets.i.posthog.com https://browser.sentry-cdn.com https://www.google.com https://www.gstatic.com`,
-  "style-src 'self' 'unsafe-inline' https://cdn.tiny.cloud",
+  // reCAPTCHA's badge stylesheet also comes from gstatic.
+  "style-src 'self' 'unsafe-inline' https://cdn.tiny.cloud https://www.gstatic.com",
   "font-src 'self' data: https://cdn.tiny.cloud",
   // Listing descriptions embed images from arbitrary hosts by design, so an
   // origin list would be permanently incomplete. Images are not executable.
