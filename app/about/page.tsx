@@ -1,7 +1,5 @@
-import { GraphQLClient } from 'graphql-request'
-import { remark } from 'remark'
-import html from 'remark-html'
-import About from './About'
+import { getStaticPage } from '@/lib/static-page'
+import StaticPage from '@components/static-page'
 
 export const metadata = {
   title: 'About | Resilience Web',
@@ -19,35 +17,9 @@ export const metadata = {
 }
 
 export default async function AboutPage() {
-  const { page, contentHtml } = await getData()
+  const { title, contentHtml } = await getStaticPage('about')
 
-  return <About page={page} contentHtml={contentHtml} />
+  return <StaticPage title={title} contentHtml={contentHtml} />
 }
 
-async function getData(): Promise<any> {
-  const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL)
-
-  const { page } = await graphcms.request<{ page: any }>(`
-	{
-		page(where: {slug: "about"}) {
-			content {
-				markdown
-			}
-			title
-		}
-	}
-	`)
-
-  const processedContent = await remark()
-    .use(html)
-    .process(page.content.markdown)
-  const contentHtml = processedContent.toString()
-
-  return {
-    page,
-    contentHtml,
-  }
-}
-
-export const dynamicParams = true
 export const revalidate = 3600

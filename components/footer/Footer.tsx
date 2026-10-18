@@ -104,6 +104,7 @@ export default function Footer({ hideBorder = false }) {
             >
               Donate
             </Link>
+            <Link href={`${REMOTE_URL}/privacy-policy`}>Privacy policy</Link>
           </div>
           <div>
             <ListHeader>Stay up to date</ListHeader>

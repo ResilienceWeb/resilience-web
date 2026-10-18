@@ -42,6 +42,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: 'https://www.resilienceweb.org.uk/news',
     },
+    {
+      url: 'https://www.resilienceweb.org.uk/privacy-policy',
+    },
     ...webPathItems,
     ...listingPathItems,
   ]
