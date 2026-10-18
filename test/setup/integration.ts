@@ -15,7 +15,7 @@ import { signOut } from '../session.ts'
  * Outbound edges
  *
  * These tests run real Postgres and real route handlers, but must never send
- * an email, upload an image, or call MailerLite. Tests can assert on the stubs
+ * an email, upload an image, or touch the mailing list. Tests can assert on the stubs
  * by importing the same module (e.g. `expect(sendEmail).toHaveBeenCalled()`).
  * ---------------------------------------------------------------------- */
 
@@ -50,21 +50,12 @@ vi.mock('@helpers/deleteImage', () => ({
   default: vi.fn().mockResolvedValue(undefined),
 }))
 
-vi.mock('@helpers/syncSubscriberSegmentation', () => ({
-  syncSubscriberSegmentation: vi.fn().mockResolvedValue(undefined),
-  syncSubscriberSegmentationSafe: vi.fn().mockResolvedValue(undefined),
-}))
-
-// Mocked directly as well as through the wrapper above, so that a route
-// importing MailerLite on its own can never reach the live API.
-vi.mock('@helpers/mailerlite', () => ({
-  upsertSubscriber: vi.fn().mockResolvedValue(undefined),
-  getSubscriber: vi.fn().mockResolvedValue(null),
-  getSubscriberId: vi.fn().mockResolvedValue(null),
-  forgetSubscriber: vi.fn().mockResolvedValue(undefined),
-  getOrCreateGroupId: vi.fn().mockResolvedValue('group-id'),
-  unassignFromGroup: vi.fn().mockResolvedValue(undefined),
-  SEGMENTATION_GROUPS: {},
+// The mailing list lives in Resend's contacts, behind the same API key as
+// transactional email.
+vi.mock('@helpers/mailingList', () => ({
+  subscribe: vi.fn().mockResolvedValue(undefined),
+  isSubscribed: vi.fn().mockResolvedValue(false),
+  unsubscribe: vi.fn().mockResolvedValue(undefined),
 }))
 
 // Route handlers resolve the caller through `getSessionSafe`. Tests drive it

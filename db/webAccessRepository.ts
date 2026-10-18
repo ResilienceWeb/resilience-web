@@ -1,7 +1,6 @@
 import { WebRole } from '@prisma-client'
 import prisma from '@prisma-rw'
 import { FEATURES } from '@helpers/features'
-import { syncSubscriberSegmentationSafe } from '@helpers/syncSubscriberSegmentation'
 import { getWebBySlug } from './webRepository'
 
 /**
@@ -109,8 +108,6 @@ export async function addUserToWeb(
     },
   })
 
-  await syncSubscriberSegmentationSafe(email)
-
   return webAccess
 }
 
@@ -123,8 +120,6 @@ export async function removeUserFromWeb(email: string, webId: number) {
       user_web_access: { email, webId },
     },
   })
-
-  await syncSubscriberSegmentationSafe(email)
 
   return deleted
 }
@@ -147,8 +142,6 @@ export async function updateUserRole(
       web: true,
     },
   })
-
-  await syncSubscriberSegmentationSafe(email)
 
   return webAccess
 }

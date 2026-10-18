@@ -46,13 +46,15 @@ const SignupForm = ({ formRef }: Props) => {
     })
     if (response.status === 201) {
       setIsSuccess(true)
+      setErrorMessage(undefined)
     } else {
       setIsSuccess(false)
 
-      const responseJson = await response.json()
-      if (response.status === 400 || response.status === 403) {
-        setErrorMessage(responseJson.error)
-      }
+      const responseJson = await response.json().catch(() => ({}))
+      setErrorMessage(
+        responseJson.error ??
+          "Something went wrong and we couldn't add you to the list. Please try again later.",
+      )
     }
   }
 
