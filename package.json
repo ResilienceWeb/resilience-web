@@ -120,7 +120,7 @@
     "postcss": "8.5.30",
     "prettier": "3.9.9",
     "prettier-plugin-tailwindcss": "0.8.1",
-    "prisma": "7.10.0",
+    "prisma": "7.10.1",
     "react-email": "6.11.1",
     "stylelint": "17.15.0",
     "stylelint-config-recommended": "18.0.0",
