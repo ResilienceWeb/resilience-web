@@ -105,10 +105,6 @@ export default function Footer({ hideBorder = false }) {
               Donate
             </Link>
             <Link href={`${REMOTE_URL}/privacy-policy`}>Privacy policy</Link>
-            <Link href={`${REMOTE_URL}/terms-of-use`}>Terms of use</Link>
-            <Link href={`${REMOTE_URL}/community-contribution-policy`}>
-              Community contribution policy
-            </Link>
           </div>
           <div>
             <ListHeader>Stay up to date</ListHeader>

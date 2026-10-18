@@ -45,12 +45,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: 'https://www.resilienceweb.org.uk/privacy-policy',
     },
-    {
-      url: 'https://www.resilienceweb.org.uk/terms-of-use',
-    },
-    {
-      url: 'https://www.resilienceweb.org.uk/community-contribution-policy',
-    },
     ...webPathItems,
     ...listingPathItems,
   ]
