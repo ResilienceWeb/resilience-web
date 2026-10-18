@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "5.9.1",
-    "@prisma/adapter-pg": "7.10.0",
-    "@prisma/client": "7.10.0",
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
     "@sentry/nextjs": "11.7.0",
     "@supabase/supabase-js": "2.117.3",
     "@tanstack/react-query": "5.104.2",
