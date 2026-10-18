@@ -139,7 +139,8 @@ Images stored on **Supabase Storage** (S3-compatible) (soon to move to Supabase)
 
 ### Email System
 
-- **Production**: Mailersend (via [helpers/email.ts](helpers/email.ts))
+- **Production**: Resend (via [helpers/email.ts](helpers/email.ts))
+- **Mailing list**: Resend contacts (via [helpers/mailingList.ts](helpers/mailingList.ts))
 - **Local**: Mailpit (Docker container on port 8025)
 - **Templates**: React Email components in [components/emails/](components/emails/)
 
@@ -322,7 +323,7 @@ How it works:
 - `DATABASE_URL` is redirected in [vitest.config.ts](vitest.config.ts), so the
   `@prisma-rw` singleton that route handlers import is already pointed at the
   test database.
-- Outbound edges (email, MailerLite, image upload, `revalidatePath`) are stubbed
+- Outbound edges (email, the mailing list, image upload, `revalidatePath`) are stubbed
   in [test/setup/integration.ts](test/setup/integration.ts) alongside the
   per-test reset. Tests never send email or upload anything.
 
@@ -374,7 +375,7 @@ Key variables (see [.env.example](.env.example)):
 - `SENTRY_AUTH_TOKEN` - Sentry deployment token
 - `NEXT_PUBLIC_POSTHOG_KEY` - PostHog project key
 - Supabase Storage credentials for image storage
-- Mailersend API key for production emails
+- `RESEND_API_KEY` for production emails and the mailing list (needs full access, not sending-only)
 
 ## Code Quality Tools
 

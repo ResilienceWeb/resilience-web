@@ -2,11 +2,7 @@ import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { getSessionSafe } from '@auth'
-import {
-  getSubscriber,
-  upsertSubscriber,
-  forgetSubscriber,
-} from '@helpers/mailerlite'
+import { isSubscribed, subscribe, unsubscribe } from '@helpers/mailingList'
 
 export async function GET(request: NextRequest) {
   try {
@@ -22,8 +18,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const subscriber = await getSubscriber(session.user.email)
-    const subscribedToMailingList = subscriber?.status === 'active'
+    const subscribedToMailingList = await isSubscribed(session.user.email)
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
@@ -65,10 +60,7 @@ export async function PATCH(request: NextRequest) {
     })
 
     if (requestBody.subscribed) {
-      await upsertSubscriber({
-        email: session.user.email,
-        fields: updatedUser.name ? { name: updatedUser.name } : undefined,
-      })
+      await subscribe(session.user.email, updatedUser.name)
 
       return Response.json({
         data: {
@@ -77,10 +69,7 @@ export async function PATCH(request: NextRequest) {
         },
       })
     } else {
-      const subscriber = await getSubscriber(session.user.email)
-      if (subscriber) {
-        await forgetSubscriber(subscriber.id)
-      }
+      await unsubscribe(session.user.email)
 
       return Response.json({
         data: {

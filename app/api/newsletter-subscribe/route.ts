@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server'
 import { callerIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha } from '@/lib/verify-recaptcha'
 import * as Sentry from '@sentry/nextjs'
+import { subscribe } from '@helpers/mailingList'
 
 export async function POST(request: NextRequest) {
   const { email, recaptchaToken } = await request.json()
@@ -29,25 +30,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const response = await fetch(
-      'https://connect.mailerlite.com/api/subscribers',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          email,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}`,
-        },
-      },
-    )
-    const data = await response.json()
-
-    if (data.error) {
-      return Response.json({ error: data.error }, { status: 400 })
-    }
-
+    await subscribe(email)
     return Response.json({ error: null }, { status: 201 })
   } catch (error) {
     console.error(`[RW] Failed to sign up user to newsletter - ${error}`)
@@ -57,7 +40,7 @@ export async function POST(request: NextRequest) {
         error:
           "Something went wrong on our end and we couldn't add you to the list. Please email info@resilienceweb.org.uk and we'll sort it out for you.",
       },
-      { status: 400 },
+      { status: 502 },
     )
   }
 }

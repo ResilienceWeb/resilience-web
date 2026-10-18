@@ -1,9 +1,6 @@
 import { render } from 'react-email'
 import { createTransport } from 'nodemailer'
-import { Resend } from 'resend'
-
-let resend: Resend | undefined
-const getResend = () => (resend ??= new Resend(process.env.RESEND_API_KEY))
+import { getResend } from './resend'
 
 const sentFrom = 'Resilience Web <noreply@resilienceweb.org.uk>'
 
