@@ -4,6 +4,13 @@ import { getResend } from './resend'
 
 const sentFrom = 'Resilience Web <noreply@resilienceweb.org.uk>'
 
+// Ask receiving servers not to send out-of-office and vacation replies.
+// Auto-Submitted is RFC 3834; X-Auto-Response-Suppress is Exchange's equivalent.
+const AUTOMATED_MAIL_HEADERS = {
+  'Auto-Submitted': 'auto-generated',
+  'X-Auto-Response-Suppress': 'All',
+}
+
 export const sendEmail = async ({
   to,
   subject,
@@ -37,6 +44,7 @@ export const sendEmail = async ({
       subject,
       text: emailText,
       html: emailHtml,
+      headers: AUTOMATED_MAIL_HEADERS,
     })
 
     return
@@ -49,6 +57,7 @@ export const sendEmail = async ({
     subject,
     html: emailHtml,
     text: emailText,
+    headers: AUTOMATED_MAIL_HEADERS,
   })
 }
 
