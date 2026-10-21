@@ -14,11 +14,11 @@ const CSP_REPORT_URI =
 // wrong one silently breaks the site for everyone, so it collects violations
 // in Sentry first and gets promoted to `Content-Security-Policy` once a week
 // of real traffic comes back quiet.
-const contentSecurityPolicy = [
+const contentSecurityPolicy = (/** @type {string} */ frameAncestors) => [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
-  "frame-ancestors 'none'",
+  `frame-ancestors ${frameAncestors}`,
   "form-action 'self'",
   // Next inlines hydration payloads into prerendered HTML, and a nonce cannot
   // be baked into a page generated at build time — so 'unsafe-inline' is
@@ -60,10 +60,8 @@ const contentSecurityPolicy = [
 ].join('; ')
 
 const securityHeaders = [
-  { key: 'Content-Security-Policy-Report-Only', value: contentSecurityPolicy },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-  { key: 'X-Frame-Options', value: 'DENY' },
   {
     key: 'Permissions-Policy',
     value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
@@ -75,6 +73,21 @@ const securityHeaders = [
     value: 'max-age=63072000; includeSubDomains',
   },
 ]
+
+const unframeableHeaders = [
+  {
+    key: 'Content-Security-Policy-Report-Only',
+    value: contentSecurityPolicy("'none'"),
+  },
+  { key: 'X-Frame-Options', value: 'DENY' },
+]
+
+// A web's public pages (cambridge.resilienceweb.org.uk and its listings) are
+// meant to be embedded on other sites, so they can be framed by anyone.
+// Everything else - the main site, and /admin, which is reachable on every
+// subdomain - keeps refusing to be framed, to rule out clickjacking.
+const WEB_SUBDOMAIN_HOST =
+  '(?!www\\.|staging\\.)(?:[^.]+\\.(staging\\.)?resilienceweb\\.org\\.uk|[^.]+\\.localhost(:\\d+)?)'
 
 /**
  * @type {import('next').NextConfig}
@@ -149,6 +162,27 @@ const nextConfig = {
       {
         source: '/:path*',
         headers: securityHeaders,
+      },
+      {
+        source: '/:path*',
+        missing: [{ type: 'host', value: WEB_SUBDOMAIN_HOST }],
+        headers: unframeableHeaders,
+      },
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: WEB_SUBDOMAIN_HOST }],
+        headers: [
+          {
+            key: 'Content-Security-Policy-Report-Only',
+            value: contentSecurityPolicy('*'),
+          },
+        ],
+      },
+      // Header rules can override a header but not remove one, so the
+      // unframeable pages on web subdomains are matched after the rule above.
+      {
+        source: '/admin/:path*',
+        headers: unframeableHeaders,
       },
       {
         source: '/api/contact',
