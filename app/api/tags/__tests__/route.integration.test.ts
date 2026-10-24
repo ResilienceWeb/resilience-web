@@ -12,7 +12,7 @@ import { describe, expect, it } from 'vitest'
 import prisma from '@prisma-rw'
 import { PUT as putTagListings } from '../[id]/listings/route.ts'
 import { DELETE as deleteTag, PATCH as patchTag } from '../[id]/route.ts'
-import { POST as postTag } from '../route.ts'
+import { GET as getTags, POST as postTag } from '../route.ts'
 
 const asEditorOf = async (webId: number) => {
   const { user } = await createUserWithWebAccess(webId, WebRole.EDITOR)
@@ -227,5 +227,88 @@ describe('PUT /api/tags/[id]/listings', () => {
       include: { listings: true },
     })
     expect(tagged?.listings).toEqual([])
+  })
+})
+
+describe('a tag icon', () => {
+  it('is saved with a new tag', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    await asEditorOf(web.id)
+
+    const response = await postTag(
+      request('/api/tags', {
+        method: 'POST',
+        body: { label: 'Food aid', icon: 'gm:food-bank', webId: web.id },
+      }),
+    )
+
+    expect(response.status).toBe(200)
+    expect(
+      (await prisma.tag.findFirst({ where: { webId: web.id } }))?.icon,
+    ).toBe('gm:food-bank')
+  })
+
+  it('is optional', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    await asEditorOf(web.id)
+
+    await postTag(
+      request('/api/tags', {
+        method: 'POST',
+        body: { label: 'Free', webId: web.id },
+      }),
+    )
+
+    expect(
+      (await prisma.tag.findFirst({ where: { webId: web.id } }))?.icon,
+    ).toBeNull()
+  })
+
+  it('must be one the icon picker offers', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    await asEditorOf(web.id)
+
+    const response = await postTag(
+      request('/api/tags', {
+        method: 'POST',
+        body: { label: 'Free', icon: '<script>', webId: web.id },
+      }),
+    )
+
+    expect(response.status).toBe(400)
+    expect(await prisma.tag.count()).toBe(0)
+  })
+
+  it('can be changed and removed without touching the label', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const tag = await createTag(web.id, { label: 'Food aid', icon: 'Leaf' })
+    await asEditorOf(web.id)
+
+    const patch = (body: object) =>
+      patchTag(
+        request(`/api/tags/${tag.id}`, { method: 'PATCH', body }),
+        params({ id: String(tag.id) }),
+      )
+    const saved = () => prisma.tag.findUnique({ where: { id: tag.id } })
+
+    await patch({ icon: 'gm:food-bank' })
+    expect(await saved()).toMatchObject({
+      label: 'Food aid',
+      icon: 'gm:food-bank',
+    })
+
+    await patch({ icon: null })
+    expect((await saved())?.icon).toBeNull()
+
+    expect((await patch({ icon: 'gm:nope' })).status).toBe(400)
+  })
+
+  it('comes back with the web tags', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    await createTag(web.id, { icon: 'gm:food-bank' })
+
+    const response = await getTags(request('/api/tags?web=bristol'))
+
+    expect((await response.json()).data[0].icon).toBe('gm:food-bank')
   })
 })

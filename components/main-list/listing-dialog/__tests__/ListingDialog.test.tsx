@@ -43,3 +43,25 @@ describe('the listing dialog', () => {
     expect(within(dialog).queryByText(/also on/i)).toBeNull()
   })
 })
+
+describe("the listing dialog's tags", () => {
+  it("show the tag's icon", () => {
+    setRoute({ params: { subdomain: 'bristol' } })
+    renderPage(
+      <ListingDialog
+        isOpen
+        item={{
+          ...item,
+          tags: [{ id: 1, label: 'Food aid', icon: 'gm:food-bank' }],
+        }}
+        onClose={() => {}}
+      />,
+    )
+
+    const chip = screen.getByRole('link', { name: '#Food aid' })
+    expect(chip.querySelector('image')).toHaveAttribute(
+      'href',
+      '/icons/green-map/food-bank.svg',
+    )
+  })
+})

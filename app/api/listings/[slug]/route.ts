@@ -50,7 +50,7 @@ export async function GET(
             category: {
               select: { id: true, color: true, label: true },
             },
-            tags: { select: { id: true, label: true } },
+            tags: { select: { id: true, label: true, icon: true } },
           },
         },
         relations: {
@@ -346,7 +346,7 @@ export async function PUT(request) {
             include: {
               web: true,
               category: { select: { id: true, color: true, label: true } },
-              tags: { select: { id: true, label: true } },
+              tags: { select: { id: true, label: true, icon: true } },
             },
           },
           relations: {
@@ -387,7 +387,7 @@ export async function PUT(request) {
           include: {
             web: true,
             category: { select: { id: true, color: true, label: true } },
-            tags: { select: { id: true, label: true } },
+            tags: { select: { id: true, label: true, icon: true } },
           },
         },
         relations: {

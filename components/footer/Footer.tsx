@@ -3,6 +3,7 @@ import { FaGithub, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa'
 import Image from 'next/image'
 import Link from 'next/link'
 import { REMOTE_URL } from '@helpers/config'
+import GreenMapCredit from '@components/green-map-credit'
 import SignupForm from '@components/signup-form'
 import LogoImage from '../../public/logo.png'
 
@@ -86,6 +87,7 @@ export default function Footer({ hideBorder = false }) {
             <p className="text-sm">
               Resilience Web CIC - Company number 15322382
             </p>
+            <GreenMapCredit />
           </div>
           <div className="flex flex-col gap-2">
             <ListHeader>Useful links</ListHeader>

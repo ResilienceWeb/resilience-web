@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
+import IconPicker from '@components/icon-picker'
 import { Button } from '@components/ui/button'
 import { DialogFooter } from '@components/ui/dialog'
 import {
@@ -16,6 +17,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 
 const formSchema = z.object({
   label: z.string().min(1, 'Label is required'),
+  icon: z.string().nullable(),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -33,6 +35,7 @@ const TagForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       label: tag?.label ?? '',
+      icon: tag?.icon ?? null,
     },
   })
 
@@ -54,6 +57,25 @@ const TagForm = ({
               <FormLabel>Tag label</FormLabel>
               <FormControl>
                 <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="icon"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Tag icon (optional)</FormLabel>
+              <FormControl>
+                <IconPicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  description="Select an icon to show on this tag"
+                  allowNone
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

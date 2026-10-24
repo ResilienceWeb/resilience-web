@@ -6,9 +6,10 @@ import {
 } from '@/test/msw/handlers'
 import { server } from '@/test/msw/server'
 import { renderPage } from '@/test/render'
+import * as Sentry from '@sentry/nextjs'
 import { screen, waitFor, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import CategoriesPage from '../page.tsx'
 
 /**
@@ -29,6 +30,7 @@ const TAGS = [
   {
     id: 6,
     label: 'Free',
+    icon: 'gm:food-bank',
     listings: [{ id: 1 }],
     _count: { listings: 1 },
   },
@@ -174,6 +176,32 @@ describe('the tags an editor has set up', () => {
   })
 })
 
+describe('when the tags cannot be loaded', () => {
+  it('says so instead of breaking the page, and reports it', async () => {
+    server.use(
+      http.get(
+        '/api/tags',
+        () => new HttpResponse('Unable to fetch tags', { status: 500 }),
+      ),
+    )
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      /couldn.t load your tags/i,
+    )
+    expect(vi.mocked(Sentry.captureException)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: expect.stringContaining(
+          'Unable to fetch tags for bristol (500)',
+        ),
+      }),
+    )
+  })
+})
+
 describe('creating a tag', () => {
   it('sends the new label for the web being edited', async () => {
     const created = recordRequests({ data: { id: 9 } })
@@ -271,5 +299,76 @@ describe('deleting a tag', () => {
     )
 
     expect(await screen.findByRole('button', { name: 'Remove' })).toBeDisabled()
+  })
+})
+
+describe('giving a tag an icon', () => {
+  it('sends the Green Map icon the editor picked, and credits Green Map', async () => {
+    const created = recordRequests({ data: { id: 9 } })
+    server.use(http.post('/api/tags', created.resolver))
+
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.type(await screen.findByLabelText('Tag label'), 'Food aid')
+
+    await user.click(screen.getByRole('button', { name: 'Select an icon...' }))
+    await user.click(await screen.findByRole('tab', { name: 'Green Map' }))
+    expect(
+      screen.getByRole('link', { name: 'Green Map System' }),
+    ).toHaveAttribute('href', 'https://greenmap.org')
+    await user.type(screen.getByRole('searchbox'), 'food bank')
+    await user.click(screen.getByRole('button', { name: 'Food Bank' }))
+
+    await user.click(screen.getByRole('button', { name: 'Create' }))
+
+    await waitFor(() => expect(created.calls).toHaveLength(1))
+    expect(created.calls[0].body).toMatchObject({
+      label: 'Food aid',
+      icon: 'gm:food-bank',
+    })
+  })
+
+  it('sends no icon when the editor leaves it unset', async () => {
+    const created = recordRequests({ data: { id: 9 } })
+    server.use(http.post('/api/tags', created.resolver))
+
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.type(await screen.findByLabelText('Tag label'), 'Repair')
+    await user.click(screen.getByRole('button', { name: 'Create' }))
+
+    await waitFor(() => expect(created.calls).toHaveLength(1))
+    expect(created.calls[0].body).toMatchObject({ icon: null })
+  })
+
+  it("can take a tag's icon away again", async () => {
+    const updated = recordRequests({ tag: {} })
+    server.use(http.patch('/api/tags/:id', updated.resolver))
+
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(
+      within(await screen.findByRole('row', { name: /^Free\b/ })).getByRole(
+        'button',
+        { name: 'Edit' },
+      ),
+    )
+
+    await user.click(
+      await screen.findByRole('button', { name: 'Change icon (Food Bank)' }),
+    )
+    await user.click(await screen.findByRole('button', { name: 'Remove icon' }))
+    await user.click(screen.getByRole('button', { name: 'Update' }))
+
+    await waitFor(() => expect(updated.calls).toHaveLength(1))
+    expect(updated.calls[0].body).toMatchObject({ label: 'Free', icon: null })
   })
 })

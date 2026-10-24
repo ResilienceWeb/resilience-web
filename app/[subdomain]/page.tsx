@@ -161,7 +161,7 @@ async function getData({ webSlug }): Promise<DataType> {
           slug: true,
           featured: true,
           tags: {
-            select: { id: true, label: true },
+            select: { id: true, label: true, icon: true },
           },
           listing: {
             select: {

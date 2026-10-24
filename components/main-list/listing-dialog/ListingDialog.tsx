@@ -18,6 +18,7 @@ import AlsoOnWebs from '@components/also-on-webs'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
 import RichText from '@components/rich-text'
+import TagIcon from '@components/tag-icon'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import {
@@ -237,7 +238,7 @@ const ListingDialog = ({
                     style={{ backgroundColor: tag.color ?? '#797d7a' }}
                     clickable
                   >
-                    #{tag.label}
+                    <TagIcon name={tag.icon} />#{tag.label}
                   </Badge>
                 </Link>
               )

@@ -1,5 +1,6 @@
 import { memo, useState } from 'react'
 import { useToggle } from 'usehooks-ts'
+import TagIcon from '@components/tag-icon'
 import { Button } from '@components/ui/button'
 import {
   Table,
@@ -119,7 +120,10 @@ const List = ({ tags }) => {
 
                   return (
                     <TableCell key={index} className="max-w-[100px]">
-                      {cell}
+                      <span className="flex items-center">
+                        <TagIcon name={row.icon} />
+                        {cell}
+                      </span>
                     </TableCell>
                   )
                 })}

@@ -2437,6 +2437,7 @@ export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typ
 export const TagScalarFieldEnum = {
   id: 'id',
   label: 'label',
+  icon: 'icon',
   webId: 'webId'
 } as const
 
