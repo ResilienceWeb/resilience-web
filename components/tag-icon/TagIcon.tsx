@@ -6,7 +6,7 @@ export default function TagIcon({ name }: { name?: string | null }) {
   if (!icon) return null
   return (
     <icon.icon
-      className="mr-1 h-[1.25em] w-[1.25em] shrink-0"
+      className="mr-0.5 h-[1.25em] w-[1.25em] shrink-0"
       aria-hidden="true"
     />
   )

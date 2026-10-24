@@ -22,7 +22,7 @@ import { MagicBackButton } from '@components/magic-back-button/MagicBackButton'
 import Item from '@components/main-list/item'
 import RichText from '@components/rich-text'
 import ShareButton from '@components/share-button'
-import TagIcon from '@components/tag-icon'
+import TagLabel from '@components/tag-label'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
@@ -351,18 +351,21 @@ function Listing({ listing, categories }) {
                   className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
                   style={{ backgroundColor: tag.color ?? '#718096' }}
                 >
-                  <TagIcon name={tag.icon} />#{tag.label}
+                  <TagLabel tag={tag} />
                 </Badge>
               )
               return listing.web?.slug ? (
                 <Link
                   key={tag.id}
                   href={`${getWebUrl(listing.web.slug)}?tags=${urlEncodedTag}`}
+                  className="flex"
                 >
                   {badge}
                 </Link>
               ) : (
-                <span key={tag.id}>{badge}</span>
+                <span key={tag.id} className="flex">
+                  {badge}
+                </span>
               )
             })}
           </div>

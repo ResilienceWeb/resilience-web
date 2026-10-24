@@ -32,7 +32,7 @@ describe('a listing page', () => {
 })
 
 describe("a listing page's tags", () => {
-  it("show the tag's icon, and a plain chip for a tag without one", () => {
+  it("show the tag's icon in place of the '#', which a tag without one keeps", () => {
     renderPage(
       <Listing
         listing={{
@@ -50,7 +50,7 @@ describe("a listing page's tags", () => {
     const iconOf = (chip: HTMLElement) =>
       chip.querySelector('image')?.getAttribute('href')
 
-    expect(iconOf(screen.getByRole('link', { name: '#Food aid' }))).toBe(
+    expect(iconOf(screen.getByRole('link', { name: 'Food aid' }))).toBe(
       '/icons/green-map/food-bank.svg',
     )
     expect(iconOf(screen.getByRole('link', { name: '#Free' }))).toBeUndefined()

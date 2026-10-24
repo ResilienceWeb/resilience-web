@@ -58,7 +58,7 @@ describe("the listing dialog's tags", () => {
       />,
     )
 
-    const chip = screen.getByRole('link', { name: '#Food aid' })
+    const chip = screen.getByRole('link', { name: 'Food aid' })
     expect(chip.querySelector('image')).toHaveAttribute(
       'href',
       '/icons/green-map/food-bank.svg',
