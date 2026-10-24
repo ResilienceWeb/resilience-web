@@ -201,8 +201,7 @@ export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typ
 export const TagScalarFieldEnum = {
   id: 'id',
   label: 'label',
-  webId: 'webId',
-  listingEditId: 'listingEditId'
+  webId: 'webId'
 } as const
 
 export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]

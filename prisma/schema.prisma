@@ -143,13 +143,12 @@ model Category {
 }
 
 model Tag {
-  id            Int                @id @default(autoincrement())
-  label         String
-  webId         Int?
-  web           Web?               @relation(fields: [webId], references: [id])
-  listings      ListingPlacement[]
-  ListingEdit   ListingEdit?       @relation(fields: [listingEditId], references: [id])
-  listingEditId Int?
+  id           Int                @id @default(autoincrement())
+  label        String
+  webId        Int?
+  web          Web?               @relation(fields: [webId], references: [id])
+  listings     ListingPlacement[]
+  listingEdits ListingEdit[]
 
   @@unique([webId, label], name: "tagIdentifier")
   @@index([webId, id])

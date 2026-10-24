@@ -1,8 +1,10 @@
 import {
+  createCategory,
   createListing,
   createListingEdit,
   createUser,
   createUserWithWebAccess,
+  createTag,
   createWeb,
 } from '@/test/factories'
 import { params, request } from '@/test/http'
@@ -10,7 +12,7 @@ import { signInAs } from '@/test/session'
 import { WebRole } from '@prisma-client'
 import { describe, expect, it } from 'vitest'
 import prisma from '@prisma-rw'
-import { DELETE } from '../[slug]/edit/route.ts'
+import { DELETE, POST } from '../[slug]/edit/route.ts'
 
 const rejectEdit = (slug: string, webSlug: string) =>
   DELETE(
@@ -79,5 +81,68 @@ describe('DELETE /api/listings/[slug]/edit', () => {
 
     expect(response.status).toBe(200)
     expect(await prisma.listingEdit.count()).toBe(0)
+  })
+})
+
+describe('POST /api/listings/[slug]/edit', () => {
+  const propose = (
+    slug: string,
+    webSlug: string,
+    fields: { listingId: number; category: number; tags: number[] },
+  ) => {
+    const form = new FormData()
+    form.set('listingId', String(fields.listingId))
+    form.set('title', 'Proposed title')
+    form.set('category', String(fields.category))
+    form.set('tags', JSON.stringify(fields.tags))
+    form.set('noPhysicalLocation', 'true')
+    return POST(
+      request(`/api/listings/${slug}/edit?web=${webSlug}`, {
+        method: 'POST',
+        body: form,
+      }),
+      params({ slug }),
+    )
+  }
+
+  it('lets two pending proposals in the same web both keep a tag they picked', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const category = await createCategory(web.id)
+    const free = await createTag(web.id, { label: 'Free' })
+    const foodHub = await createListing(web.id, { slug: 'food-hub' })
+    const bikeKitchen = await createListing(web.id, { slug: 'bike-kitchen' })
+
+    const first = await createUser()
+    signInAs({ id: first.id, email: first.email })
+    expect(
+      (
+        await propose('food-hub', 'bristol', {
+          listingId: foodHub.id,
+          category: category.id,
+          tags: [free.id],
+        })
+      ).status,
+    ).toBe(201)
+
+    const second = await createUser()
+    signInAs({ id: second.id, email: second.email })
+    expect(
+      (
+        await propose('bike-kitchen', 'bristol', {
+          listingId: bikeKitchen.id,
+          category: category.id,
+          tags: [free.id],
+        })
+      ).status,
+    ).toBe(201)
+
+    const edits = await prisma.listingEdit.findMany({
+      include: { tags: true },
+      orderBy: { id: 'asc' },
+    })
+    expect(edits.map((edit) => edit.tags.map((t) => t.label))).toEqual([
+      ['Free'],
+      ['Free'],
+    ])
   })
 })

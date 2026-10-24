@@ -434,7 +434,7 @@ export type ListingEditCreateInput = {
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
   web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagCreateNestedManyWithoutListingEditsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
   user: Prisma.UserCreateNestedOneWithoutListingEditInput
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingEditInput
@@ -457,7 +457,7 @@ export type ListingEditUncheckedCreateInput = {
   locationId?: number | null
   userId: string
   accepted?: boolean
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditsInput
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingEditInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingEditInput
 }
@@ -475,7 +475,7 @@ export type ListingEditUpdateInput = {
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
   web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUpdateManyWithoutListingEditsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingEditNestedInput
@@ -498,7 +498,7 @@ export type ListingEditUncheckedUpdateInput = {
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditsNestedInput
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingEditNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingEditNestedInput
 }
@@ -762,20 +762,42 @@ export type ListingEditUncheckedUpdateManyWithoutCategoryNestedInput = {
   deleteMany?: Prisma.ListingEditScalarWhereInput | Prisma.ListingEditScalarWhereInput[]
 }
 
-export type ListingEditCreateNestedOneWithoutTagsInput = {
-  create?: Prisma.XOR<Prisma.ListingEditCreateWithoutTagsInput, Prisma.ListingEditUncheckedCreateWithoutTagsInput>
-  connectOrCreate?: Prisma.ListingEditCreateOrConnectWithoutTagsInput
-  connect?: Prisma.ListingEditWhereUniqueInput
+export type ListingEditCreateNestedManyWithoutTagsInput = {
+  create?: Prisma.XOR<Prisma.ListingEditCreateWithoutTagsInput, Prisma.ListingEditUncheckedCreateWithoutTagsInput> | Prisma.ListingEditCreateWithoutTagsInput[] | Prisma.ListingEditUncheckedCreateWithoutTagsInput[]
+  connectOrCreate?: Prisma.ListingEditCreateOrConnectWithoutTagsInput | Prisma.ListingEditCreateOrConnectWithoutTagsInput[]
+  connect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
 }
 
-export type ListingEditUpdateOneWithoutTagsNestedInput = {
-  create?: Prisma.XOR<Prisma.ListingEditCreateWithoutTagsInput, Prisma.ListingEditUncheckedCreateWithoutTagsInput>
-  connectOrCreate?: Prisma.ListingEditCreateOrConnectWithoutTagsInput
-  upsert?: Prisma.ListingEditUpsertWithoutTagsInput
-  disconnect?: Prisma.ListingEditWhereInput | boolean
-  delete?: Prisma.ListingEditWhereInput | boolean
-  connect?: Prisma.ListingEditWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ListingEditUpdateToOneWithWhereWithoutTagsInput, Prisma.ListingEditUpdateWithoutTagsInput>, Prisma.ListingEditUncheckedUpdateWithoutTagsInput>
+export type ListingEditUncheckedCreateNestedManyWithoutTagsInput = {
+  create?: Prisma.XOR<Prisma.ListingEditCreateWithoutTagsInput, Prisma.ListingEditUncheckedCreateWithoutTagsInput> | Prisma.ListingEditCreateWithoutTagsInput[] | Prisma.ListingEditUncheckedCreateWithoutTagsInput[]
+  connectOrCreate?: Prisma.ListingEditCreateOrConnectWithoutTagsInput | Prisma.ListingEditCreateOrConnectWithoutTagsInput[]
+  connect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+}
+
+export type ListingEditUpdateManyWithoutTagsNestedInput = {
+  create?: Prisma.XOR<Prisma.ListingEditCreateWithoutTagsInput, Prisma.ListingEditUncheckedCreateWithoutTagsInput> | Prisma.ListingEditCreateWithoutTagsInput[] | Prisma.ListingEditUncheckedCreateWithoutTagsInput[]
+  connectOrCreate?: Prisma.ListingEditCreateOrConnectWithoutTagsInput | Prisma.ListingEditCreateOrConnectWithoutTagsInput[]
+  upsert?: Prisma.ListingEditUpsertWithWhereUniqueWithoutTagsInput | Prisma.ListingEditUpsertWithWhereUniqueWithoutTagsInput[]
+  set?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  disconnect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  delete?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  connect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  update?: Prisma.ListingEditUpdateWithWhereUniqueWithoutTagsInput | Prisma.ListingEditUpdateWithWhereUniqueWithoutTagsInput[]
+  updateMany?: Prisma.ListingEditUpdateManyWithWhereWithoutTagsInput | Prisma.ListingEditUpdateManyWithWhereWithoutTagsInput[]
+  deleteMany?: Prisma.ListingEditScalarWhereInput | Prisma.ListingEditScalarWhereInput[]
+}
+
+export type ListingEditUncheckedUpdateManyWithoutTagsNestedInput = {
+  create?: Prisma.XOR<Prisma.ListingEditCreateWithoutTagsInput, Prisma.ListingEditUncheckedCreateWithoutTagsInput> | Prisma.ListingEditCreateWithoutTagsInput[] | Prisma.ListingEditUncheckedCreateWithoutTagsInput[]
+  connectOrCreate?: Prisma.ListingEditCreateOrConnectWithoutTagsInput | Prisma.ListingEditCreateOrConnectWithoutTagsInput[]
+  upsert?: Prisma.ListingEditUpsertWithWhereUniqueWithoutTagsInput | Prisma.ListingEditUpsertWithWhereUniqueWithoutTagsInput[]
+  set?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  disconnect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  delete?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  connect?: Prisma.ListingEditWhereUniqueInput | Prisma.ListingEditWhereUniqueInput[]
+  update?: Prisma.ListingEditUpdateWithWhereUniqueWithoutTagsInput | Prisma.ListingEditUpdateWithWhereUniqueWithoutTagsInput[]
+  updateMany?: Prisma.ListingEditUpdateManyWithWhereWithoutTagsInput | Prisma.ListingEditUpdateManyWithWhereWithoutTagsInput[]
+  deleteMany?: Prisma.ListingEditScalarWhereInput | Prisma.ListingEditScalarWhereInput[]
 }
 
 export type ListingEditCreateNestedManyWithoutListingInput = {
@@ -907,7 +929,7 @@ export type ListingEditCreateWithoutUserInput = {
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
   web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagCreateNestedManyWithoutListingEditsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingEditInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingEditInput
@@ -928,7 +950,7 @@ export type ListingEditUncheckedCreateWithoutUserInput = {
   slug?: string | null
   locationId?: number | null
   accepted?: boolean
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditsInput
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingEditInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingEditInput
 }
@@ -992,7 +1014,7 @@ export type ListingEditCreateWithoutWebInput = {
   accepted?: boolean
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagCreateNestedManyWithoutListingEditsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
   user: Prisma.UserCreateNestedOneWithoutListingEditInput
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingEditInput
@@ -1014,7 +1036,7 @@ export type ListingEditUncheckedCreateWithoutWebInput = {
   locationId?: number | null
   userId: string
   accepted?: boolean
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditsInput
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingEditInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingEditInput
 }
@@ -1057,7 +1079,7 @@ export type ListingEditCreateWithoutCategoryInput = {
   accepted?: boolean
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
   web: Prisma.WebCreateNestedOneWithoutListingEditsInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagCreateNestedManyWithoutListingEditsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
   user: Prisma.UserCreateNestedOneWithoutListingEditInput
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingEditInput
@@ -1079,7 +1101,7 @@ export type ListingEditUncheckedCreateWithoutCategoryInput = {
   locationId?: number | null
   userId: string
   accepted?: boolean
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditsInput
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingEditInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingEditInput
 }
@@ -1154,54 +1176,20 @@ export type ListingEditCreateOrConnectWithoutTagsInput = {
   create: Prisma.XOR<Prisma.ListingEditCreateWithoutTagsInput, Prisma.ListingEditUncheckedCreateWithoutTagsInput>
 }
 
-export type ListingEditUpsertWithoutTagsInput = {
+export type ListingEditUpsertWithWhereUniqueWithoutTagsInput = {
+  where: Prisma.ListingEditWhereUniqueInput
   update: Prisma.XOR<Prisma.ListingEditUpdateWithoutTagsInput, Prisma.ListingEditUncheckedUpdateWithoutTagsInput>
   create: Prisma.XOR<Prisma.ListingEditCreateWithoutTagsInput, Prisma.ListingEditUncheckedCreateWithoutTagsInput>
-  where?: Prisma.ListingEditWhereInput
 }
 
-export type ListingEditUpdateToOneWithWhereWithoutTagsInput = {
-  where?: Prisma.ListingEditWhereInput
+export type ListingEditUpdateWithWhereUniqueWithoutTagsInput = {
+  where: Prisma.ListingEditWhereUniqueInput
   data: Prisma.XOR<Prisma.ListingEditUpdateWithoutTagsInput, Prisma.ListingEditUncheckedUpdateWithoutTagsInput>
 }
 
-export type ListingEditUpdateWithoutTagsInput = {
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
-  web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
-  category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
-  location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
-  socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingEditNestedInput
-  actions?: Prisma.ListingActionUpdateManyWithoutListingEditNestedInput
-}
-
-export type ListingEditUncheckedUpdateWithoutTagsInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  listingId?: Prisma.IntFieldUpdateOperationsInput | number
-  webId?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingEditNestedInput
-  actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingEditNestedInput
+export type ListingEditUpdateManyWithWhereWithoutTagsInput = {
+  where: Prisma.ListingEditScalarWhereInput
+  data: Prisma.XOR<Prisma.ListingEditUpdateManyMutationInput, Prisma.ListingEditUncheckedUpdateManyWithoutTagsInput>
 }
 
 export type ListingEditCreateWithoutListingInput = {
@@ -1216,7 +1204,7 @@ export type ListingEditCreateWithoutListingInput = {
   accepted?: boolean
   web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagCreateNestedManyWithoutListingEditsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
   user: Prisma.UserCreateNestedOneWithoutListingEditInput
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingEditInput
@@ -1238,7 +1226,7 @@ export type ListingEditUncheckedCreateWithoutListingInput = {
   locationId?: number | null
   userId: string
   accepted?: boolean
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditsInput
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingEditInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingEditInput
 }
@@ -1282,7 +1270,7 @@ export type ListingEditCreateWithoutSocialsInput = {
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
   web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagCreateNestedManyWithoutListingEditsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
   user: Prisma.UserCreateNestedOneWithoutListingEditInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingEditInput
@@ -1304,7 +1292,7 @@ export type ListingEditUncheckedCreateWithoutSocialsInput = {
   locationId?: number | null
   userId: string
   accepted?: boolean
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditsInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingEditInput
 }
 
@@ -1337,7 +1325,7 @@ export type ListingEditUpdateWithoutSocialsInput = {
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
   web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUpdateManyWithoutListingEditsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingEditNestedInput
@@ -1359,7 +1347,7 @@ export type ListingEditUncheckedUpdateWithoutSocialsInput = {
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditsNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingEditNestedInput
 }
 
@@ -1376,7 +1364,7 @@ export type ListingEditCreateWithoutActionsInput = {
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
   web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagCreateNestedManyWithoutListingEditsInput
   location?: Prisma.ListingLocationCreateNestedOneWithoutListingEditInput
   user: Prisma.UserCreateNestedOneWithoutListingEditInput
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingEditInput
@@ -1398,7 +1386,7 @@ export type ListingEditUncheckedCreateWithoutActionsInput = {
   locationId?: number | null
   userId: string
   accepted?: boolean
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditsInput
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingEditInput
 }
 
@@ -1431,7 +1419,7 @@ export type ListingEditUpdateWithoutActionsInput = {
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
   web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUpdateManyWithoutListingEditsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingEditNestedInput
@@ -1453,7 +1441,7 @@ export type ListingEditUncheckedUpdateWithoutActionsInput = {
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditsNestedInput
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingEditNestedInput
 }
 
@@ -1470,7 +1458,7 @@ export type ListingEditCreateWithoutLocationInput = {
   listing: Prisma.ListingCreateNestedOneWithoutEditsInput
   web: Prisma.WebCreateNestedOneWithoutListingEditsInput
   category?: Prisma.CategoryCreateNestedOneWithoutListingEditInput
-  tags?: Prisma.TagCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagCreateNestedManyWithoutListingEditsInput
   user: Prisma.UserCreateNestedOneWithoutListingEditInput
   socials?: Prisma.ListingSocialMediaCreateNestedManyWithoutListingEditInput
   actions?: Prisma.ListingActionCreateNestedManyWithoutListingEditInput
@@ -1491,7 +1479,7 @@ export type ListingEditUncheckedCreateWithoutLocationInput = {
   slug?: string | null
   userId: string
   accepted?: boolean
-  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutListingEditsInput
   socials?: Prisma.ListingSocialMediaUncheckedCreateNestedManyWithoutListingEditInput
   actions?: Prisma.ListingActionUncheckedCreateNestedManyWithoutListingEditInput
 }
@@ -1552,7 +1540,7 @@ export type ListingEditUpdateWithoutUserInput = {
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
   web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUpdateManyWithoutListingEditsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingEditNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingEditNestedInput
@@ -1573,7 +1561,7 @@ export type ListingEditUncheckedUpdateWithoutUserInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditsNestedInput
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingEditNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingEditNestedInput
 }
@@ -1624,7 +1612,7 @@ export type ListingEditUpdateWithoutWebInput = {
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUpdateManyWithoutListingEditsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingEditNestedInput
@@ -1646,7 +1634,7 @@ export type ListingEditUncheckedUpdateWithoutWebInput = {
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditsNestedInput
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingEditNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingEditNestedInput
 }
@@ -1697,7 +1685,7 @@ export type ListingEditUpdateWithoutCategoryInput = {
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
   web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUpdateManyWithoutListingEditsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingEditNestedInput
@@ -1719,7 +1707,7 @@ export type ListingEditUncheckedUpdateWithoutCategoryInput = {
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditsNestedInput
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingEditNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingEditNestedInput
 }
@@ -1734,6 +1722,63 @@ export type ListingEditUncheckedUpdateManyWithoutCategoryInput = {
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type ListingEditUpdateWithoutTagsInput = {
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
+  web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
+  category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
+  location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
+  socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingEditNestedInput
+  actions?: Prisma.ListingActionUpdateManyWithoutListingEditNestedInput
+}
+
+export type ListingEditUncheckedUpdateWithoutTagsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingEditNestedInput
+  actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingEditNestedInput
+}
+
+export type ListingEditUncheckedUpdateManyWithoutTagsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  listingId?: Prisma.IntFieldUpdateOperationsInput | number
+  webId?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1770,7 +1815,7 @@ export type ListingEditUpdateWithoutListingInput = {
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUpdateManyWithoutListingEditsNestedInput
   location?: Prisma.ListingLocationUpdateOneWithoutListingEditNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingEditNestedInput
@@ -1792,7 +1837,7 @@ export type ListingEditUncheckedUpdateWithoutListingInput = {
   locationId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditsNestedInput
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingEditNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingEditNestedInput
 }
@@ -1844,7 +1889,7 @@ export type ListingEditUpdateWithoutLocationInput = {
   listing?: Prisma.ListingUpdateOneRequiredWithoutEditsNestedInput
   web?: Prisma.WebUpdateOneRequiredWithoutListingEditsNestedInput
   category?: Prisma.CategoryUpdateOneWithoutListingEditNestedInput
-  tags?: Prisma.TagUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUpdateManyWithoutListingEditsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutListingEditNestedInput
   socials?: Prisma.ListingSocialMediaUpdateManyWithoutListingEditNestedInput
   actions?: Prisma.ListingActionUpdateManyWithoutListingEditNestedInput
@@ -1865,7 +1910,7 @@ export type ListingEditUncheckedUpdateWithoutLocationInput = {
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutListingEditsNestedInput
   socials?: Prisma.ListingSocialMediaUncheckedUpdateManyWithoutListingEditNestedInput
   actions?: Prisma.ListingActionUncheckedUpdateManyWithoutListingEditNestedInput
 }
