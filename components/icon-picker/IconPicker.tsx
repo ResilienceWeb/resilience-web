@@ -1,5 +1,11 @@
 import { useState } from 'react'
-import { getIcon, iconSets, type IconSetId } from '@helpers/icons'
+import { greenMapIconDescriptions } from '@helpers/green-map-icon-descriptions'
+import {
+  getIcon,
+  iconSets,
+  type IconEntry,
+  type IconSetId,
+} from '@helpers/icons'
 import GreenMapCredit from '@components/green-map-credit'
 import { Button } from '@components/ui/button'
 import {
@@ -23,6 +29,22 @@ type Props = {
   allowNone?: boolean
 }
 
+const descriptionOf = (icon: IconEntry) =>
+  icon.set === 'gm' ? greenMapIconDescriptions[icon.name.slice(3)] : undefined
+
+/** Name matches first, then icons whose description mentions the search. */
+const search = (icons: IconEntry[], query: string) => {
+  const term = query.trim().toLowerCase()
+  if (!term) return icons
+  const byName = icons.filter((icon) => icon.label.toLowerCase().includes(term))
+  const byDescription = icons.filter(
+    (icon) =>
+      !byName.includes(icon) &&
+      descriptionOf(icon)?.toLowerCase().includes(term),
+  )
+  return [...byName, ...byDescription]
+}
+
 export default function IconPicker({
   value,
   onChange,
@@ -35,8 +57,21 @@ export default function IconPicker({
   const [activeSet, setActiveSet] = useState<IconSetId>(selected?.set ?? 'fa')
   const [category, setCategory] = useState<string | null>(null)
   const [query, setQuery] = useState('')
+  // Choosing takes two steps so that a name and description can be read before
+  // committing to an icon, on touch screens too, where there is no hover.
+  const [pending, setPending] = useState<IconEntry | undefined>(selected)
+  const [previewed, setPreviewed] = useState<IconEntry | undefined>()
+  const shownInPanel = previewed ?? pending
 
   const hex = color ? `#${color.replace(/^#/, '')}` : undefined
+
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen)
+    if (isOpen) {
+      setPending(selected)
+      setPreviewed(undefined)
+    }
+  }
 
   const choose = (name: string | null) => {
     onChange(name)
@@ -44,7 +79,7 @@ export default function IconPicker({
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {selected ? (
           <Button
@@ -70,7 +105,8 @@ export default function IconPicker({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
+      {/* Opened from inside another dialog, whose overlay already dims the page */}
+      <DialogContent className="sm:max-w-lg" overlayClassName="bg-transparent">
         <DialogHeader>
           <DialogTitle>Select an icon</DialogTitle>
         </DialogHeader>
@@ -92,11 +128,11 @@ export default function IconPicker({
           </TabsList>
 
           {iconSets.map((set) => {
-            const search = query.trim().toLowerCase()
-            const shown = set.icons.filter(
-              (icon) =>
-                (!category || icon.category === category) &&
-                (!search || icon.label.toLowerCase().includes(search)),
+            const shown = search(
+              set.icons.filter(
+                (icon) => !category || icon.category === category,
+              ),
+              query,
             )
 
             return (
@@ -127,17 +163,23 @@ export default function IconPicker({
                   ))}
                 </div>
 
-                <div className="grid max-h-[40vh] grid-cols-5 gap-3 overflow-y-auto sm:grid-cols-6">
+                <div
+                  className="grid max-h-[34vh] grid-cols-5 gap-3 overflow-y-auto p-1 sm:grid-cols-6"
+                  onMouseLeave={() => setPreviewed(undefined)}
+                  onBlur={() => setPreviewed(undefined)}
+                >
                   {shown.map((icon) => (
                     <Button
                       key={icon.name}
                       type="button"
                       variant="outline"
                       className="aria-pressed:ring-primary h-14 w-14 p-0 aria-pressed:ring-2"
-                      title={icon.label}
                       aria-label={icon.label}
-                      aria-pressed={icon.name === selected?.name}
-                      onClick={() => choose(icon.name)}
+                      aria-pressed={icon.name === pending?.name}
+                      onMouseEnter={() => setPreviewed(icon)}
+                      onFocus={() => setPreviewed(icon)}
+                      onClick={() => setPending(icon)}
+                      onDoubleClick={() => choose(icon.name)}
                     >
                       <icon.icon className="!h-8 !w-8" aria-hidden="true" />
                     </Button>
@@ -157,16 +199,42 @@ export default function IconPicker({
           })}
         </Tabs>
 
-        {allowNone && selected && (
+        <div className="bg-muted/50 min-h-20 rounded-md p-3 text-sm">
+          {shownInPanel ? (
+            <>
+              <p className="font-semibold">{shownInPanel.label}</p>
+              {descriptionOf(shownInPanel) && (
+                <p className="text-muted-foreground mt-1 line-clamp-3">
+                  {descriptionOf(shownInPanel)}
+                </p>
+              )}
+            </>
+          ) : (
+            <p className="text-muted-foreground">
+              Choose an icon to see what it means.
+            </p>
+          )}
+        </div>
+
+        <div className="flex flex-wrap justify-end gap-2">
+          {allowNone && selected && (
+            <Button
+              type="button"
+              variant="ghost"
+              className="mr-auto"
+              onClick={() => choose(null)}
+            >
+              Remove icon
+            </Button>
+          )}
           <Button
             type="button"
-            variant="ghost"
-            className="w-fit"
-            onClick={() => choose(null)}
+            disabled={!pending || pending.name === selected?.name}
+            onClick={() => pending && choose(pending.name)}
           >
-            Remove icon
+            Use this icon
           </Button>
-        )}
+        </div>
       </DialogContent>
     </Dialog>
   )

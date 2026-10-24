@@ -321,6 +321,7 @@ describe('giving a tag an icon', () => {
     ).toHaveAttribute('href', 'https://greenmap.org')
     await user.type(screen.getByRole('searchbox'), 'food bank')
     await user.click(screen.getByRole('button', { name: 'Food Bank' }))
+    await user.click(screen.getByRole('button', { name: 'Use this icon' }))
 
     await user.click(screen.getByRole('button', { name: 'Create' }))
 
@@ -370,5 +371,40 @@ describe('giving a tag an icon', () => {
 
     await waitFor(() => expect(updated.calls).toHaveLength(1))
     expect(updated.calls[0].body).toMatchObject({ label: 'Free', icon: null })
+  })
+})
+
+describe('finding the right icon', () => {
+  const openGreenMapIcons = async () => {
+    const { user } = renderCategoriesPage()
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.click(
+      await screen.findByRole('button', { name: 'Select an icon...' }),
+    )
+    await user.click(await screen.findByRole('tab', { name: 'Green Map' }))
+    return user
+  }
+
+  it('searches what an icon means, not just its name', async () => {
+    const user = await openGreenMapIcons()
+
+    await user.type(screen.getByRole('searchbox'), 'hunger')
+
+    expect(
+      screen.getByRole('button', { name: 'Food Bank' }),
+    ).toBeInTheDocument()
+  })
+
+  it('explains an icon before the editor commits to it', async () => {
+    const user = await openGreenMapIcons()
+
+    await user.type(screen.getByRole('searchbox'), 'food bank')
+    await user.click(screen.getByRole('button', { name: 'Food Bank' }))
+
+    const dialog = screen.getByRole('dialog', { name: 'Select an icon' })
+    expect(dialog).toHaveTextContent(/hunger is reduced/)
+    expect(screen.getByRole('button', { name: 'Use this icon' })).toBeEnabled()
   })
 })
