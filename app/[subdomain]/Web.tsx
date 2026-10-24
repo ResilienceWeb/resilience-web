@@ -55,7 +55,7 @@ export type RelatedWeb = {
 }
 
 export type WebCategory = { label: string; color: string; icon: string }
-export type WebTag = { id: number; label: string }
+export type WebTag = { id: number; label: string; icon?: string | null }
 
 type Props = {
   // gzip+base64 compressed NetworkData, decompressed on the client below.
@@ -158,10 +158,15 @@ const Web = ({
   })()
 
   const tags = (() => {
-    return webTags.map((t) => ({
-      value: t.label,
-      label: t.label,
-    }))
+    return webTags.map((t) => {
+      const IconComponent = getIcon(t.icon)?.monochrome
+
+      return {
+        value: t.label,
+        label: t.label,
+        icon: IconComponent ? <IconComponent aria-hidden="true" /> : undefined,
+      }
+    })
   })()
 
   const selectedCategories = categoriesParam.map((categoryLabel) => {
@@ -177,6 +182,7 @@ const Web = ({
   const selectedTags = tagsParam.map((tagLabel) => ({
     value: tagLabel,
     label: tagLabel,
+    icon: tags.find((t) => t.label === tagLabel)?.icon,
   }))
 
   const [selectedId, setSelectedId] = useState()

@@ -253,3 +253,33 @@ describe('the images in the list', () => {
     expect(eager).toHaveLength(6)
   })
 })
+
+describe('the tag filter', () => {
+  it("shows each tag's icon, in the list and once picked", async () => {
+    const { user } = renderPage(
+      <Web
+        data={webData(LISTINGS)}
+        categories={CATEGORIES}
+        tags={[{ id: 1, label: 'Food aid', icon: 'gm:food-bank' }]}
+        features={[]}
+        webId={1}
+        webName="Bristol"
+        webIsPublished
+        webSlug="bristol"
+      />,
+      { searchParams: { view: 'list', tags: 'Food aid' } },
+    )
+    const iconOf = (element: Element) =>
+      element.querySelector('image')?.getAttribute('href')
+
+    const tagFilter = screen
+      .getAllByRole('combobox')
+      .find((box) => box.textContent?.includes('Food aid'))
+    expect(iconOf(tagFilter)).toBe('/icons/green-map/food-bank.svg')
+
+    await user.click(tagFilter)
+    expect(
+      iconOf(await screen.findByRole('option', { name: 'Food aid' })),
+    ).toBe('/icons/green-map/food-bank.svg')
+  })
+})

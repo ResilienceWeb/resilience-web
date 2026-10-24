@@ -34,7 +34,7 @@ const faqs = [
 ]
 
 export default function CategoriesPage() {
-  const { tags, isPending: isTagsPending } = useTags()
+  const { tags, isPending: isTagsPending, isError: isTagsError } = useTags()
   const { categories, isPending: isCategoriesPending } = useCategories()
 
   const orderedCategories = categories?.sort((a, b) =>
@@ -68,7 +68,11 @@ export default function CategoriesPage() {
 
         <TabsContent value="tags" className="mt-6">
           <TagsHeader />
-          {tags?.length === 0 ? (
+          {isTagsError ? (
+            <p role="alert" className="text-center text-red-600">
+              We couldn&apos;t load your tags. Please try again later.
+            </p>
+          ) : tags?.length === 0 ? (
             <p className="text-center text-gray-600">No tags yet</p>
           ) : isTagsPending ? (
             <Spinner />

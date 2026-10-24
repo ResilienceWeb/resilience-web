@@ -29,7 +29,7 @@ const UpdateTagDialog: React.FC<props> = ({
         <DialogHeader>
           <DialogTitle>Update tag</DialogTitle>
         </DialogHeader>
-        <DialogDescription>Update the selected tag label</DialogDescription>
+        <DialogDescription>Update the selected tag</DialogDescription>
         <TagForm onSubmit={onSubmit} onDelete={onDelete} tag={tag} />
       </DialogContent>
     </Dialog>

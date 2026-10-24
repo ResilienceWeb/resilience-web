@@ -145,6 +145,7 @@ model Category {
 model Tag {
   id           Int                @id @default(autoincrement())
   label        String
+  icon         String?
   webId        Int?
   web          Web?               @relation(fields: [webId], references: [id])
   listings     ListingPlacement[]

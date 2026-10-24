@@ -39,18 +39,21 @@ export type TagSumAggregateOutputType = {
 export type TagMinAggregateOutputType = {
   id: number | null
   label: string | null
+  icon: string | null
   webId: number | null
 }
 
 export type TagMaxAggregateOutputType = {
   id: number | null
   label: string | null
+  icon: string | null
   webId: number | null
 }
 
 export type TagCountAggregateOutputType = {
   id: number
   label: number
+  icon: number
   webId: number
   _all: number
 }
@@ -69,18 +72,21 @@ export type TagSumAggregateInputType = {
 export type TagMinAggregateInputType = {
   id?: true
   label?: true
+  icon?: true
   webId?: true
 }
 
 export type TagMaxAggregateInputType = {
   id?: true
   label?: true
+  icon?: true
   webId?: true
 }
 
 export type TagCountAggregateInputType = {
   id?: true
   label?: true
+  icon?: true
   webId?: true
   _all?: true
 }
@@ -174,6 +180,7 @@ export type TagGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type TagGroupByOutputType = {
   id: number
   label: string
+  icon: string | null
   webId: number | null
   _count: TagCountAggregateOutputType | null
   _avg: TagAvgAggregateOutputType | null
@@ -203,6 +210,7 @@ export type TagWhereInput = {
   NOT?: Prisma.TagWhereInput | Prisma.TagWhereInput[]
   id?: Prisma.IntFilter<"Tag"> | number
   label?: Prisma.StringFilter<"Tag"> | string
+  icon?: Prisma.StringNullableFilter<"Tag"> | string | null
   webId?: Prisma.IntNullableFilter<"Tag"> | number | null
   web?: Prisma.XOR<Prisma.WebNullableScalarRelationFilter, Prisma.WebWhereInput> | null
   listings?: Prisma.ListingPlacementListRelationFilter
@@ -212,6 +220,7 @@ export type TagWhereInput = {
 export type TagOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  icon?: Prisma.SortOrderInput | Prisma.SortOrder
   webId?: Prisma.SortOrderInput | Prisma.SortOrder
   web?: Prisma.WebOrderByWithRelationInput
   listings?: Prisma.ListingPlacementOrderByRelationAggregateInput
@@ -225,6 +234,7 @@ export type TagWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TagWhereInput[]
   NOT?: Prisma.TagWhereInput | Prisma.TagWhereInput[]
   label?: Prisma.StringFilter<"Tag"> | string
+  icon?: Prisma.StringNullableFilter<"Tag"> | string | null
   webId?: Prisma.IntNullableFilter<"Tag"> | number | null
   web?: Prisma.XOR<Prisma.WebNullableScalarRelationFilter, Prisma.WebWhereInput> | null
   listings?: Prisma.ListingPlacementListRelationFilter
@@ -234,6 +244,7 @@ export type TagWhereUniqueInput = Prisma.AtLeast<{
 export type TagOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  icon?: Prisma.SortOrderInput | Prisma.SortOrder
   webId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TagCountOrderByAggregateInput
   _avg?: Prisma.TagAvgOrderByAggregateInput
@@ -248,11 +259,13 @@ export type TagScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TagScalarWhereWithAggregatesInput | Prisma.TagScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Tag"> | number
   label?: Prisma.StringWithAggregatesFilter<"Tag"> | string
+  icon?: Prisma.StringNullableWithAggregatesFilter<"Tag"> | string | null
   webId?: Prisma.IntNullableWithAggregatesFilter<"Tag"> | number | null
 }
 
 export type TagCreateInput = {
   label: string
+  icon?: string | null
   web?: Prisma.WebCreateNestedOneWithoutTagsInput
   listings?: Prisma.ListingPlacementCreateNestedManyWithoutTagsInput
   listingEdits?: Prisma.ListingEditCreateNestedManyWithoutTagsInput
@@ -261,6 +274,7 @@ export type TagCreateInput = {
 export type TagUncheckedCreateInput = {
   id?: number
   label: string
+  icon?: string | null
   webId?: number | null
   listings?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutTagsInput
   listingEdits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutTagsInput
@@ -268,6 +282,7 @@ export type TagUncheckedCreateInput = {
 
 export type TagUpdateInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   web?: Prisma.WebUpdateOneWithoutTagsNestedInput
   listings?: Prisma.ListingPlacementUpdateManyWithoutTagsNestedInput
   listingEdits?: Prisma.ListingEditUpdateManyWithoutTagsNestedInput
@@ -276,6 +291,7 @@ export type TagUpdateInput = {
 export type TagUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   webId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   listings?: Prisma.ListingPlacementUncheckedUpdateManyWithoutTagsNestedInput
   listingEdits?: Prisma.ListingEditUncheckedUpdateManyWithoutTagsNestedInput
@@ -284,16 +300,19 @@ export type TagUncheckedUpdateInput = {
 export type TagCreateManyInput = {
   id?: number
   label: string
+  icon?: string | null
   webId?: number | null
 }
 
 export type TagUpdateManyMutationInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TagUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   webId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -315,6 +334,7 @@ export type TagTagIdentifierCompoundUniqueInput = {
 export type TagCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
   webId?: Prisma.SortOrder
 }
 
@@ -326,12 +346,14 @@ export type TagAvgOrderByAggregateInput = {
 export type TagMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
   webId?: Prisma.SortOrder
 }
 
 export type TagMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   label?: Prisma.SortOrder
+  icon?: Prisma.SortOrder
   webId?: Prisma.SortOrder
 }
 
@@ -460,6 +482,7 @@ export type TagUncheckedUpdateManyWithoutListingEditsNestedInput = {
 
 export type TagCreateWithoutWebInput = {
   label: string
+  icon?: string | null
   listings?: Prisma.ListingPlacementCreateNestedManyWithoutTagsInput
   listingEdits?: Prisma.ListingEditCreateNestedManyWithoutTagsInput
 }
@@ -467,6 +490,7 @@ export type TagCreateWithoutWebInput = {
 export type TagUncheckedCreateWithoutWebInput = {
   id?: number
   label: string
+  icon?: string | null
   listings?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutTagsInput
   listingEdits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutTagsInput
 }
@@ -503,11 +527,13 @@ export type TagScalarWhereInput = {
   NOT?: Prisma.TagScalarWhereInput | Prisma.TagScalarWhereInput[]
   id?: Prisma.IntFilter<"Tag"> | number
   label?: Prisma.StringFilter<"Tag"> | string
+  icon?: Prisma.StringNullableFilter<"Tag"> | string | null
   webId?: Prisma.IntNullableFilter<"Tag"> | number | null
 }
 
 export type TagCreateWithoutListingsInput = {
   label: string
+  icon?: string | null
   web?: Prisma.WebCreateNestedOneWithoutTagsInput
   listingEdits?: Prisma.ListingEditCreateNestedManyWithoutTagsInput
 }
@@ -515,6 +541,7 @@ export type TagCreateWithoutListingsInput = {
 export type TagUncheckedCreateWithoutListingsInput = {
   id?: number
   label: string
+  icon?: string | null
   webId?: number | null
   listingEdits?: Prisma.ListingEditUncheckedCreateNestedManyWithoutTagsInput
 }
@@ -542,6 +569,7 @@ export type TagUpdateManyWithWhereWithoutListingsInput = {
 
 export type TagCreateWithoutListingEditsInput = {
   label: string
+  icon?: string | null
   web?: Prisma.WebCreateNestedOneWithoutTagsInput
   listings?: Prisma.ListingPlacementCreateNestedManyWithoutTagsInput
 }
@@ -549,6 +577,7 @@ export type TagCreateWithoutListingEditsInput = {
 export type TagUncheckedCreateWithoutListingEditsInput = {
   id?: number
   label: string
+  icon?: string | null
   webId?: number | null
   listings?: Prisma.ListingPlacementUncheckedCreateNestedManyWithoutTagsInput
 }
@@ -577,10 +606,12 @@ export type TagUpdateManyWithWhereWithoutListingEditsInput = {
 export type TagCreateManyWebInput = {
   id?: number
   label: string
+  icon?: string | null
 }
 
 export type TagUpdateWithoutWebInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listings?: Prisma.ListingPlacementUpdateManyWithoutTagsNestedInput
   listingEdits?: Prisma.ListingEditUpdateManyWithoutTagsNestedInput
 }
@@ -588,6 +619,7 @@ export type TagUpdateWithoutWebInput = {
 export type TagUncheckedUpdateWithoutWebInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   listings?: Prisma.ListingPlacementUncheckedUpdateManyWithoutTagsNestedInput
   listingEdits?: Prisma.ListingEditUncheckedUpdateManyWithoutTagsNestedInput
 }
@@ -595,10 +627,12 @@ export type TagUncheckedUpdateWithoutWebInput = {
 export type TagUncheckedUpdateManyWithoutWebInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TagUpdateWithoutListingsInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   web?: Prisma.WebUpdateOneWithoutTagsNestedInput
   listingEdits?: Prisma.ListingEditUpdateManyWithoutTagsNestedInput
 }
@@ -606,6 +640,7 @@ export type TagUpdateWithoutListingsInput = {
 export type TagUncheckedUpdateWithoutListingsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   webId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   listingEdits?: Prisma.ListingEditUncheckedUpdateManyWithoutTagsNestedInput
 }
@@ -613,11 +648,13 @@ export type TagUncheckedUpdateWithoutListingsInput = {
 export type TagUncheckedUpdateManyWithoutListingsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   webId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type TagUpdateWithoutListingEditsInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   web?: Prisma.WebUpdateOneWithoutTagsNestedInput
   listings?: Prisma.ListingPlacementUpdateManyWithoutTagsNestedInput
 }
@@ -625,6 +662,7 @@ export type TagUpdateWithoutListingEditsInput = {
 export type TagUncheckedUpdateWithoutListingEditsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   webId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   listings?: Prisma.ListingPlacementUncheckedUpdateManyWithoutTagsNestedInput
 }
@@ -632,6 +670,7 @@ export type TagUncheckedUpdateWithoutListingEditsInput = {
 export type TagUncheckedUpdateManyWithoutListingEditsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   webId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -678,6 +717,7 @@ export type TagCountOutputTypeCountListingEditsArgs<ExtArgs extends runtime.Type
 export type TagSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   label?: boolean
+  icon?: boolean
   webId?: boolean
   web?: boolean | Prisma.Tag$webArgs<ExtArgs>
   listings?: boolean | Prisma.Tag$listingsArgs<ExtArgs>
@@ -688,6 +728,7 @@ export type TagSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type TagSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   label?: boolean
+  icon?: boolean
   webId?: boolean
   web?: boolean | Prisma.Tag$webArgs<ExtArgs>
 }, ExtArgs["result"]["tag"]>
@@ -695,6 +736,7 @@ export type TagSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
 export type TagSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   label?: boolean
+  icon?: boolean
   webId?: boolean
   web?: boolean | Prisma.Tag$webArgs<ExtArgs>
 }, ExtArgs["result"]["tag"]>
@@ -702,10 +744,11 @@ export type TagSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
 export type TagSelectScalar = {
   id?: boolean
   label?: boolean
+  icon?: boolean
   webId?: boolean
 }
 
-export type TagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "webId", ExtArgs["result"]["tag"]>
+export type TagOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "label" | "icon" | "webId", ExtArgs["result"]["tag"]>
 export type TagInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   web?: boolean | Prisma.Tag$webArgs<ExtArgs>
   listings?: boolean | Prisma.Tag$listingsArgs<ExtArgs>
@@ -729,6 +772,7 @@ export type $TagPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     label: string
+    icon: string | null
     webId: number | null
   }, ExtArgs["result"]["tag"]>
   composites: {}
@@ -1158,6 +1202,7 @@ export interface Prisma__TagClient<T, Null = never, ExtArgs extends runtime.Type
 export interface TagFieldRefs {
   readonly id: Prisma.FieldRef<"Tag", 'Int'>
   readonly label: Prisma.FieldRef<"Tag", 'String'>
+  readonly icon: Prisma.FieldRef<"Tag", 'String'>
   readonly webId: Prisma.FieldRef<"Tag", 'Int'>
 }
     

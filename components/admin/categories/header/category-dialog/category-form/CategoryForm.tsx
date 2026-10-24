@@ -1,6 +1,7 @@
 import { memo, useState } from 'react'
 import { HexColorPicker } from 'react-colorful'
 import { useForm } from 'react-hook-form'
+import IconPicker from '@components/icon-picker'
 import { Button } from '@components/ui/button'
 import { DialogFooter } from '@components/ui/dialog'
 import {
@@ -13,7 +14,6 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
-import IconSelector from './IconSelector'
 
 const randomHexColorCode = () => {
   const n = (Math.random() * 0xfffff * 1000000).toString(16)
@@ -77,10 +77,11 @@ const CategoryForm = ({
             <FormItem>
               <FormLabel>Category icon</FormLabel>
               <FormControl>
-                <IconSelector
+                <IconPicker
                   value={field.value}
                   onChange={(icon) => field.onChange(icon)}
                   color={color}
+                  description="Select an icon for this category"
                 />
               </FormControl>
               <FormMessage />

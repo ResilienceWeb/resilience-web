@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
             category: {
               select: { id: true, color: true, label: true },
             },
-            tags: { select: { id: true, label: true } },
+            tags: { select: { id: true, label: true, icon: true } },
           },
         },
         relations: {
