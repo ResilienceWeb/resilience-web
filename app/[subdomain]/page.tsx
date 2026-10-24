@@ -110,7 +110,7 @@ type DataType = {
   // Kept compressed across the wire and decompressed on the client in Web.tsx.
   data: string
   categories: Array<{ label: string; color: string; icon: string }>
-  tags: Array<{ id: number; label: string }>
+  tags: Array<{ id: number; label: string; icon: string | null }>
   webData: {
     id: number
     title: string
@@ -422,11 +422,14 @@ async function getData({ webSlug }): Promise<DataType> {
     })
 
   // Only tags carried by a visible listing are worth offering as a filter.
-  const tagsById = new Map<number, { id: number; label: string }>()
+  const tagsById = new Map<
+    number,
+    { id: number; label: string; icon: string | null }
+  >()
   for (const category of categories) {
     for (const placement of category.listings) {
       for (const tag of placement.tags) {
-        tagsById.set(tag.id, { id: tag.id, label: tag.label })
+        tagsById.set(tag.id, { id: tag.id, label: tag.label, icon: tag.icon })
       }
     }
   }
