@@ -169,6 +169,28 @@ describe('POST /api/listing/[id]/apply-edit', () => {
     expect(updated?.tags.map((t) => t.label)).toEqual(['New'])
   })
 
+  it('applies exactly the tags the approved proposal picked when another proposal shares one', async () => {
+    const { web, listing, proposer } = await scenario()
+    const free = await createTag(web.id, { label: 'Free' })
+    const online = await createTag(web.id, { label: 'Online' })
+    const familyFriendly = await createTag(web.id, { label: 'Family friendly' })
+    const otherListing = await createListing(web.id, { slug: 'bike-kitchen' })
+    const edit = await createListingEdit(web.id, listing.id, proposer.id, {
+      tagIds: [free.id, online.id],
+    })
+    await createListingEdit(web.id, otherListing.id, proposer.id, {
+      tagIds: [free.id, familyFriendly.id],
+    })
+
+    expect((await apply(listing.id, edit.id)).status).toBe(200)
+
+    const updated = await prisma.listingPlacement.findFirst({
+      where: { listingId: listing.id },
+      include: { tags: { orderBy: { label: 'asc' } } },
+    })
+    expect(updated?.tags.map((t) => t.label)).toEqual(['Free', 'Online'])
+  })
+
   it('leaves existing tags alone when the edit carries none', async () => {
     // Legacy edits predate tag support; approving one must not wipe the tags.
     const { web, listing, proposer } = await scenario()

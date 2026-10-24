@@ -36,7 +36,6 @@ export async function GET(request: NextRequest) {
         id: true,
         label: true,
         webId: true,
-        listingEditId: true,
         // A tag only ever belongs to one web, so scoping by webId does not
         // change the count - it just lets the aggregate use the webId index
         _count: {
