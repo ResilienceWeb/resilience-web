@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { IconBaseProps } from 'react-icons'
 import { greenMapIconDescriptions } from '@helpers/green-map-icon-descriptions'
 import {
   getIcon,
@@ -27,7 +28,16 @@ type Props = {
   color?: string
   /** Offer to clear the icon. */
   allowNone?: boolean
+  /** Show icons in one colour, as they will appear (tags). */
+  monochrome?: boolean
 }
+
+const IconGlyph = ({
+  icon,
+  monochrome,
+  ...props
+}: IconBaseProps & { icon: IconEntry; monochrome: boolean }) =>
+  monochrome ? <icon.monochrome {...props} /> : <icon.icon {...props} />
 
 const descriptionOf = (icon: IconEntry) =>
   icon.set === 'gm' ? greenMapIconDescriptions[icon.name.slice(3)] : undefined
@@ -51,6 +61,7 @@ export default function IconPicker({
   description,
   color,
   allowNone = false,
+  monochrome = false,
 }: Props) {
   const [open, setOpen] = useState(false)
   const selected = value && value !== 'default' ? getIcon(value) : undefined
@@ -88,7 +99,9 @@ export default function IconPicker({
             className="hover:bg-muted/50 flex h-14 w-14 rounded-[50%] p-0 transition-colors"
             style={hex ? { border: `2px solid ${hex}` } : undefined}
           >
-            <selected.icon
+            <IconGlyph
+              icon={selected}
+              monochrome={monochrome}
               className="!h-8 !w-8"
               style={hex ? { color: hex } : undefined}
               aria-hidden="true"
@@ -181,7 +194,12 @@ export default function IconPicker({
                       onClick={() => setPending(icon)}
                       onDoubleClick={() => choose(icon.name)}
                     >
-                      <icon.icon className="!h-8 !w-8" aria-hidden="true" />
+                      <IconGlyph
+                        icon={icon}
+                        monochrome={monochrome}
+                        className="!h-8 !w-8"
+                        aria-hidden="true"
+                      />
                     </Button>
                   ))}
                 </div>

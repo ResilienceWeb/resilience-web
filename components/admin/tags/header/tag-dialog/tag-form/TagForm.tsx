@@ -75,6 +75,7 @@ const TagForm = ({
                   onChange={field.onChange}
                   description="Select an icon to show on this tag"
                   allowNone
+                  monochrome
                 />
               </FormControl>
               <FormMessage />

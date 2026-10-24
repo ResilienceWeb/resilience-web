@@ -6,6 +6,8 @@ export type GreenMapIcon = {
   name: string
   category: string
   file: string
+  /** A single-colour version, for icons that use white. Others are one already. */
+  monoFile?: string
 }
 
 export const greenMapIcons: GreenMapIcon[] = [
@@ -374,6 +376,7 @@ export const greenMapIcons: GreenMapIcon[] = [
     name: 'Future Redevelopment Space',
     category: 'Land and Water',
     file: 'future-redevelopment-space.png',
+    monoFile: 'mono/future-redevelopment-space.png',
   },
   {
     slug: 'garden',
@@ -446,6 +449,7 @@ export const greenMapIcons: GreenMapIcon[] = [
     name: 'Green Store',
     category: 'Green Economy',
     file: 'green-store.svg',
+    monoFile: 'mono/green-store.svg',
   },
   {
     slug: 'green-technology',
@@ -656,6 +660,7 @@ export const greenMapIcons: GreenMapIcon[] = [
     name: 'Pollution Monitor',
     category: 'Eco-Information',
     file: 'pollution-monitor.svg',
+    monoFile: 'mono/pollution-monitor.svg',
   },
   {
     slug: 'poor-labor-practice',

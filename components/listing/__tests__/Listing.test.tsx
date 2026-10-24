@@ -55,4 +55,20 @@ describe("a listing page's tags", () => {
     )
     expect(iconOf(screen.getByRole('link', { name: '#Free' }))).toBeUndefined()
   })
+
+  it('draw the icon in the colour of the label, not its own', () => {
+    renderPage(
+      <Listing
+        listing={{
+          ...listing({ title: 'Food Hub' }),
+          web: { id: 1, slug: 'bristol', title: 'Bristol' },
+          tags: [{ id: 1, label: 'Food aid', icon: 'gm:food-bank' }],
+        }}
+        categories={[]}
+      />,
+    )
+
+    const chip = screen.getByRole('link', { name: 'Food aid' })
+    expect(chip.querySelector('rect')).toHaveAttribute('fill', 'currentColor')
+  })
 })

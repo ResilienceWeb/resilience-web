@@ -1,4 +1,4 @@
-import { createElement } from 'react'
+import { createElement, useId } from 'react'
 import type { IconBaseProps, IconType } from 'react-icons'
 import {
   FaLeaf,
@@ -41,6 +41,8 @@ export type IconSetId = 'fa' | 'gm'
 
 export type IconEntry = {
   icon: IconType
+  /** The icon in a single colour, the surrounding text's. Tags use this. */
+  monochrome: IconType
   /** The value stored in the database, e.g. 'Leaf' or 'gm:food-bank'. */
   name: string
   label: string
@@ -50,7 +52,7 @@ export type IconEntry = {
   src?: string
 }
 
-const fontAwesomeIcons: Omit<IconEntry, 'label' | 'set'>[] = [
+const fontAwesomeIcons: Omit<IconEntry, 'label' | 'set' | 'monochrome'>[] = [
   // Environment
   { icon: FaLeaf, name: 'Leaf', category: 'Environment' },
   { icon: FaTree, name: 'Tree', category: 'Environment' },
@@ -107,7 +109,7 @@ const fontAwesomeIcons: Omit<IconEntry, 'label' | 'set'>[] = [
 
 // Wraps an image in an <svg> sized like a react-icons icon, so it takes the
 // same props and classes, and inlines into Leaflet marker HTML. The image
-// keeps its own colours: Green Map's must not be recoloured.
+// keeps its own colours.
 const imageIcon = (src: string): IconType => {
   const ImageIcon = ({
     size,
@@ -131,11 +133,50 @@ const imageIcon = (src: string): IconType => {
   return ImageIcon
 }
 
+// Paints the image's shape in a single colour, the current text colour unless
+// one is given, by using the image as an alpha mask over a filled square.
+const monochromeImageIcon = (maskSrc: string): IconType => {
+  const MonochromeImageIcon = ({
+    size,
+    title,
+    color,
+    children: _children,
+    ...props
+  }: IconBaseProps) => {
+    // useId's output carries characters that url(#…) won't resolve
+    const maskId = `icon-mask${useId().replace(/[^\w-]/g, '')}`
+    return createElement(
+      'svg',
+      {
+        xmlns: 'http://www.w3.org/2000/svg',
+        viewBox: '0 0 1 1',
+        width: size ?? '1em',
+        height: size ?? '1em',
+        ...props,
+      },
+      title ? createElement('title', null, title) : null,
+      createElement(
+        'mask',
+        { id: maskId, style: { maskType: 'alpha' } },
+        createElement('image', { href: maskSrc, width: 1, height: 1 }),
+      ),
+      createElement('rect', {
+        width: 1,
+        height: 1,
+        fill: color ?? 'currentColor',
+        mask: `url(#${maskId})`,
+      }),
+    )
+  }
+  return MonochromeImageIcon
+}
+
 const greenMapEntries: IconEntry[] = greenMapIcons.map(
-  ({ slug, name, category, file }) => {
+  ({ slug, name, category, file, monoFile }) => {
     const src = `/icons/green-map/${file}`
     return {
       icon: imageIcon(src),
+      monochrome: monochromeImageIcon(`/icons/green-map/${monoFile ?? file}`),
       name: `gm:${slug}`,
       label: name,
       category,
@@ -147,6 +188,7 @@ const greenMapEntries: IconEntry[] = greenMapIcons.map(
 
 const fontAwesomeEntries: IconEntry[] = fontAwesomeIcons.map((icon) => ({
   ...icon,
+  monochrome: icon.icon,
   label: icon.name,
   set: 'fa',
 }))

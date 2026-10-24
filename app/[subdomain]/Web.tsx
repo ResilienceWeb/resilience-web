@@ -159,7 +159,7 @@ const Web = ({
 
   const tags = (() => {
     return webTags.map((t) => {
-      const IconComponent = getIcon(t.icon)?.icon
+      const IconComponent = getIcon(t.icon)?.monochrome
 
       return {
         value: t.label,
