@@ -254,7 +254,7 @@ export default function IconPicker({
             {allowNone && selected && (
               <Button
                 type="button"
-                variant="ghost"
+                variant="destructive"
                 className="mr-auto"
                 onClick={() => choose(null)}
               >
