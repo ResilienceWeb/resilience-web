@@ -408,3 +408,28 @@ describe('finding the right icon', () => {
     expect(screen.getByRole('button', { name: 'Use this icon' })).toBeEnabled()
   })
 })
+
+describe('picking a Font Awesome icon', () => {
+  it('takes one click, with no explanation needed', async () => {
+    const created = recordRequests({ data: { id: 9 } })
+    server.use(http.post('/api/tags', created.resolver))
+
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.type(await screen.findByLabelText('Tag label'), 'Gardening')
+    await user.click(screen.getByRole('button', { name: 'Select an icon...' }))
+
+    expect(screen.queryByText(/see what it means/)).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Use this icon' })).toBeNull()
+
+    await user.click(screen.getByRole('button', { name: 'Seedling' }))
+    expect(screen.queryByRole('dialog', { name: 'Select an icon' })).toBeNull()
+
+    await user.click(screen.getByRole('button', { name: 'Create' }))
+    await waitFor(() => expect(created.calls).toHaveLength(1))
+    expect(created.calls[0].body).toMatchObject({ icon: 'Seedling' })
+  })
+})

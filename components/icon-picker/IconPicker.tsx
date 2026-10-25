@@ -68,9 +68,13 @@ export default function IconPicker({
   const [activeSet, setActiveSet] = useState<IconSetId>(selected?.set ?? 'fa')
   const [category, setCategory] = useState<string | null>(null)
   const [query, setQuery] = useState('')
-  // Choosing takes two steps so that a name and description can be read before
-  // committing to an icon, on touch screens too, where there is no hover.
-  const [pending, setPending] = useState<IconEntry | undefined>(selected)
+  // Green Map icons aren't self-explanatory, so choosing one takes two steps:
+  // its name and description show first, on touch screens too, where there is
+  // no hover. Font Awesome icons are picked with a single click.
+  const selectedGreenMap = selected?.set === 'gm' ? selected : undefined
+  const [pending, setPending] = useState<IconEntry | undefined>(
+    selectedGreenMap,
+  )
   const [previewed, setPreviewed] = useState<IconEntry | undefined>()
   const shownInPanel = previewed ?? pending
 
@@ -79,7 +83,7 @@ export default function IconPicker({
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen)
     if (isOpen) {
-      setPending(selected)
+      setPending(selectedGreenMap)
       setPreviewed(undefined)
     }
   }
@@ -141,6 +145,7 @@ export default function IconPicker({
           </TabsList>
 
           {iconSets.map((set) => {
+            const explained = set.id === 'gm'
             const shown = search(
               set.icons.filter(
                 (icon) => !category || icon.category === category,
@@ -188,11 +193,20 @@ export default function IconPicker({
                       variant="outline"
                       className="aria-pressed:ring-primary h-14 w-14 p-0 aria-pressed:ring-2"
                       aria-label={icon.label}
-                      aria-pressed={icon.name === pending?.name}
-                      onMouseEnter={() => setPreviewed(icon)}
-                      onFocus={() => setPreviewed(icon)}
-                      onClick={() => setPending(icon)}
-                      onDoubleClick={() => choose(icon.name)}
+                      aria-pressed={
+                        icon.name ===
+                        (explained ? pending?.name : selected?.name)
+                      }
+                      onMouseEnter={
+                        explained ? () => setPreviewed(icon) : undefined
+                      }
+                      onFocus={explained ? () => setPreviewed(icon) : undefined}
+                      onClick={() =>
+                        explained ? setPending(icon) : choose(icon.name)
+                      }
+                      onDoubleClick={
+                        explained ? () => choose(icon.name) : undefined
+                      }
                     >
                       <IconGlyph
                         icon={icon}
@@ -209,50 +223,55 @@ export default function IconPicker({
                   </p>
                 )}
 
-                {set.id === 'gm' && (
-                  <GreenMapCredit className="text-muted-foreground" />
+                {explained && (
+                  <>
+                    <GreenMapCredit className="text-muted-foreground" />
+                    <div className="bg-muted/50 min-h-20 rounded-md p-3 text-sm">
+                      {shownInPanel ? (
+                        <>
+                          <p className="font-semibold">{shownInPanel.label}</p>
+                          {descriptionOf(shownInPanel) && (
+                            <p className="text-muted-foreground mt-1 line-clamp-3">
+                              {descriptionOf(shownInPanel)}
+                            </p>
+                          )}
+                        </>
+                      ) : (
+                        <p className="text-muted-foreground">
+                          Choose an icon to see what it means.
+                        </p>
+                      )}
+                    </div>
+                  </>
                 )}
               </TabsContent>
             )
           })}
         </Tabs>
 
-        <div className="bg-muted/50 min-h-20 rounded-md p-3 text-sm">
-          {shownInPanel ? (
-            <>
-              <p className="font-semibold">{shownInPanel.label}</p>
-              {descriptionOf(shownInPanel) && (
-                <p className="text-muted-foreground mt-1 line-clamp-3">
-                  {descriptionOf(shownInPanel)}
-                </p>
-              )}
-            </>
-          ) : (
-            <p className="text-muted-foreground">
-              Choose an icon to see what it means.
-            </p>
-          )}
-        </div>
-
-        <div className="flex flex-wrap justify-end gap-2">
-          {allowNone && selected && (
-            <Button
-              type="button"
-              variant="ghost"
-              className="mr-auto"
-              onClick={() => choose(null)}
-            >
-              Remove icon
-            </Button>
-          )}
-          <Button
-            type="button"
-            disabled={!pending || pending.name === selected?.name}
-            onClick={() => pending && choose(pending.name)}
-          >
-            Use this icon
-          </Button>
-        </div>
+        {((allowNone && selected) || activeSet === 'gm') && (
+          <div className="flex flex-wrap justify-end gap-2">
+            {allowNone && selected && (
+              <Button
+                type="button"
+                variant="ghost"
+                className="mr-auto"
+                onClick={() => choose(null)}
+              >
+                Remove icon
+              </Button>
+            )}
+            {activeSet === 'gm' && (
+              <Button
+                type="button"
+                disabled={!pending || pending.name === selected?.name}
+                onClick={() => pending && choose(pending.name)}
+              >
+                Use this icon
+              </Button>
+            )}
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   )
