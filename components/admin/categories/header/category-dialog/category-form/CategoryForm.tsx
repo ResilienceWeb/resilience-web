@@ -165,7 +165,7 @@ const CategoryForm = ({
                   disabled={category?._count?.listings > 0}
                   type="button"
                 >
-                  Remove
+                  Remove category
                 </Button>
               </TooltipTrigger>
               {category?._count?.listings > 0 && (

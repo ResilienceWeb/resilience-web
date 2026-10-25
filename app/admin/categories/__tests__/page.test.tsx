@@ -143,7 +143,9 @@ describe('deleting a category', () => {
         await screen.findByRole('row', { name: /^Transport\b/ }),
       ).getByRole('button', { name: 'Edit' }),
     )
-    await user.click(await screen.findByRole('button', { name: 'Remove' }))
+    await user.click(
+      await screen.findByRole('button', { name: 'Remove category' }),
+    )
 
     await waitFor(() => expect(deleted.calls).toHaveLength(1))
     expect(deleted.calls[0].url.pathname).toBe('/api/categories/2')
@@ -158,7 +160,9 @@ describe('deleting a category', () => {
       ).getByRole('button', { name: 'Edit' }),
     )
 
-    expect(await screen.findByRole('button', { name: 'Remove' })).toBeDisabled()
+    expect(
+      await screen.findByRole('button', { name: 'Remove category' }),
+    ).toBeDisabled()
   })
 })
 
