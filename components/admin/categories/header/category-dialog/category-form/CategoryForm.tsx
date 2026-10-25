@@ -83,6 +83,7 @@ const CategoryForm = ({
                   value={field.value}
                   onChange={(icon) => field.onChange(icon)}
                   color={color}
+                  monochrome
                   description="Select an icon for this category"
                   renderPreview={(icon) => (
                     <CategoryTag

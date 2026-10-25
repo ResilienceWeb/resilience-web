@@ -25,7 +25,7 @@ type Props = {
   value: string | null | undefined
   onChange: (value: string | null) => void
   description: string
-  /** Hex colour, with or without '#', for the trigger and Font Awesome icons. */
+  /** Hex colour, with or without '#'. Every icon is shown in it, in one colour. */
   color?: string
   /** Offer to clear the icon. */
   allowNone?: boolean
@@ -47,12 +47,14 @@ const IconTile = ({
   monochrome,
   captioned,
   pressed,
+  tint,
   ...handlers
 }: {
   icon: IconEntry
   monochrome: boolean
   captioned: boolean
   pressed: boolean
+  tint?: string
 } & Pick<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   'onClick' | 'onDoubleClick' | 'onMouseEnter' | 'onFocus'
@@ -71,6 +73,7 @@ const IconTile = ({
       icon={icon}
       monochrome={monochrome}
       className="h-8 w-8 shrink-0"
+      style={tint ? { color: tint } : undefined}
       aria-hidden="true"
     />
     {captioned && (
@@ -122,6 +125,8 @@ export default function IconPicker({
   const sectionsRef = useRef<Record<string, HTMLElement | null>>({})
 
   const hex = color ? `#${color.replace(/^#/, '')}` : undefined
+  // Given a colour, icons are shown in it rather than in their own colours
+  const singleColour = monochrome || Boolean(hex)
   const searching = query.trim() !== ''
 
   const handleOpenChange = (isOpen: boolean) => {
@@ -149,7 +154,7 @@ export default function IconPicker({
           >
             <IconGlyph
               icon={selected}
-              monochrome={monochrome}
+              monochrome={singleColour}
               className="!h-8 !w-8"
               style={hex ? { color: hex } : undefined}
               aria-hidden="true"
@@ -292,7 +297,8 @@ export default function IconPicker({
                               <IconTile
                                 key={icon.name}
                                 icon={icon}
-                                monochrome={monochrome}
+                                monochrome={singleColour}
+                                tint={hex}
                                 captioned={explained}
                                 {...tileProps(icon)}
                               />

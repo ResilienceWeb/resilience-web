@@ -462,3 +462,25 @@ describe('picking a Font Awesome icon', () => {
     expect(created.calls[0].body).toMatchObject({ icon: 'Seedling' })
   })
 })
+
+describe("a category's icon", () => {
+  it("is chosen from icons shown in the category's colour", async () => {
+    const { user } = renderCategoriesPage()
+
+    await user.click(
+      within(
+        await screen.findByRole('row', { name: /^Community\b/ }),
+      ).getByRole('button', { name: 'Edit' }),
+    )
+    await user.click(
+      await screen.findByRole('button', { name: 'Select an icon...' }),
+    )
+    await user.click(await screen.findByRole('tab', { name: 'Green Map' }))
+
+    const glyph = screen
+      .getByRole('button', { name: 'Food Bank' })
+      .querySelector('svg')
+    expect(glyph).toHaveStyle({ color: '#b0e3c1' })
+    expect(glyph.querySelector('rect')).toHaveAttribute('fill', 'currentColor')
+  })
+})
