@@ -64,7 +64,7 @@ const IconTile = ({
     aria-label={icon.label}
     aria-pressed={pressed}
     className={cn(
-      'text-foreground/75 hover:bg-muted hover:text-foreground focus-visible:ring-ring aria-pressed:bg-primary/10 aria-pressed:text-foreground aria-pressed:ring-primary flex flex-col items-center gap-1.5 rounded-lg p-2 transition-colors focus-visible:ring-2 focus-visible:outline-none aria-pressed:ring-2',
+      'text-foreground/75 hover:bg-muted hover:text-foreground focus-visible:ring-ring aria-pressed:bg-primary/10 aria-pressed:text-foreground aria-pressed:ring-primary flex flex-col items-center gap-1.5 rounded-lg p-2 transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:outline-none aria-pressed:ring-2 aria-pressed:ring-inset',
       captioned ? 'justify-start' : 'aspect-square justify-center',
     )}
     {...handlers}
