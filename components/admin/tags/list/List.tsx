@@ -1,6 +1,9 @@
 import { memo, useState } from 'react'
 import { useToggle } from 'usehooks-ts'
+import { isPickableTag, isSharedTag } from '@helpers/tags'
+import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
 import TagIcon from '@components/tag-icon'
+import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import {
   Table,
@@ -13,6 +16,7 @@ import {
 import useListings from '@hooks/listings/useListings'
 import useAddTagToListings from '@hooks/tags/useAddTagToListings'
 import useDeleteTag from '@hooks/tags/useDeleteTag'
+import useRemoveTagFromWeb from '@hooks/tags/useRemoveTagFromWeb'
 import useUpdateTag from '@hooks/tags/useUpdateTag'
 import { UpdateTagDialog } from '../header/tag-dialog'
 import AddTagToListingsDialog from './add-to-listings-dialog'
@@ -33,11 +37,13 @@ const List = ({ tags }) => {
     useToggle()
   const [isAddToListingsDialogOpen, _toggleAdd, setIsAddToListingsDialogOpen] =
     useToggle()
+  const [isRemoveDialogOpen, _toggleRemove, setIsRemoveDialogOpen] = useToggle()
 
   const { listings, isPending: isLoadingListings } = useListings()
   const { mutate: updateTag } = useUpdateTag()
   const { mutate: deleteTag } = useDeleteTag()
   const { mutate: addTagToListings } = useAddTagToListings()
+  const { mutate: removeTagFromWeb } = useRemoveTagFromWeb()
 
   const [selectedTagId, setSelectedTagId] = useState(null)
   const selectedTag = tags.find((tag) => tag.id === selectedTagId)
@@ -58,6 +64,16 @@ const List = ({ tags }) => {
   const handleDelete = () => {
     setIsUpdateTagDialogOpen(false)
     deleteTag({ id: selectedTagId })
+  }
+
+  const handleOpenRemoveDialog = (tagId) => {
+    setSelectedTagId(tagId)
+    setIsRemoveDialogOpen(true)
+  }
+
+  const handleRemoveFromWeb = () => {
+    setIsRemoveDialogOpen(false)
+    removeTagFromWeb({ tagId: selectedTagId })
   }
 
   const handleOpenAddTagToListingsDialog = (tagId) => {
@@ -104,16 +120,18 @@ const List = ({ tags }) => {
                         <span className="font-bold">
                           {row._count?.listings ?? 0}
                         </span>
-                        <Button
-                          onClick={() =>
-                            handleOpenAddTagToListingsDialog(row.id)
-                          }
-                          variant="outline"
-                          size="sm"
-                          className="ml-2"
-                        >
-                          Add tag to listings
-                        </Button>
+                        {isPickableTag(row) && (
+                          <Button
+                            onClick={() =>
+                              handleOpenAddTagToListingsDialog(row.id)
+                            }
+                            variant="outline"
+                            size="sm"
+                            className="ml-2"
+                          >
+                            Add tag to listings
+                          </Button>
+                        )}
                       </TableCell>
                     )
                   }
@@ -123,6 +141,11 @@ const List = ({ tags }) => {
                       <span className="flex items-center">
                         <TagIcon name={row.icon} />
                         {cell}
+                        {isSharedTag(row) && (
+                          <Badge variant="secondary" className="ml-2">
+                            Shared
+                          </Badge>
+                        )}
                       </span>
                     </TableCell>
                   )
@@ -133,9 +156,25 @@ const List = ({ tags }) => {
                       variant="outline"
                       onClick={() => handleOpenUpdateTagDialog(row.id)}
                       size="sm"
+                      disabled={isSharedTag(row)}
+                      title={
+                        isSharedTag(row)
+                          ? 'Shared tags are the same in every web, so they cannot be edited'
+                          : undefined
+                      }
                     >
                       Edit
                     </Button>
+                    {isSharedTag(row) && (
+                      <Button
+                        variant="outline"
+                        onClick={() => handleOpenRemoveDialog(row.id)}
+                        size="sm"
+                        className="whitespace-normal"
+                      >
+                        Remove from all listings in this web
+                      </Button>
+                    )}
                   </div>
                 </TableCell>
               </TableRow>
@@ -149,6 +188,14 @@ const List = ({ tags }) => {
         onClose={() => setIsUpdateTagDialogOpen(false)}
         onDelete={handleDelete}
         onSubmit={handleSubmit}
+      />
+      <DeleteConfirmationDialog
+        isOpen={isRemoveDialogOpen}
+        onClose={() => setIsRemoveDialogOpen(false)}
+        handleRemove={handleRemoveFromWeb}
+        titleLabel={`Remove "${selectedTag?.label}"`}
+        description="This takes the shared tag off every listing in this web. Other webs keep it, and you can add it to listings again later."
+        buttonLabel="Remove from all listings"
       />
       {selectedTag && !isLoadingListings && isAddToListingsDialogOpen && (
         <AddTagToListingsDialog

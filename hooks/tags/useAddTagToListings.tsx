@@ -3,6 +3,7 @@ import { useAppContext } from '@store/hooks'
 
 async function addTagToListingsRequest({
   tagId,
+  webId,
   addedListingIds,
   removedListingIds,
 }) {
@@ -12,6 +13,7 @@ async function addTagToListingsRequest({
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
+      webId,
       addedListingIds,
       removedListingIds,
     }),
@@ -24,14 +26,20 @@ async function addTagToListingsRequest({
 
 export default function useAddTagToListings() {
   const queryClient = useQueryClient()
-  const { selectedWebSlug: webSlug } = useAppContext()
+  const { selectedWebSlug: webSlug, selectedWebId: webId } = useAppContext()
 
   return useMutation({
-    mutationFn: addTagToListingsRequest,
+    // A shared tag is in every web, so the server is told which one to change
+    mutationFn: (variables: {
+      tagId: number
+      addedListingIds: number[]
+      removedListingIds: number[]
+    }) => addTagToListingsRequest({ ...variables, webId }),
     onSettled: () => {
       void queryClient.invalidateQueries({
         queryKey: ['tags', { webSlug }],
       })
+      void queryClient.invalidateQueries({ queryKey: ['listings'] })
     },
   })
 }

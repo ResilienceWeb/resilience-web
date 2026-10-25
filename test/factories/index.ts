@@ -56,6 +56,25 @@ export async function createTag(
   })
 }
 
+/** A tag common to every web: no web of its own, found by its `key`. */
+export async function createSharedTag(
+  overrides: Partial<{
+    key: string
+    label: string
+    icon: string | null
+    retiredAt: Date | null
+  }> = {},
+) {
+  const id = uniq()
+  return prisma.tag.create({
+    data: {
+      key: `shared-${id}`,
+      label: `Shared ${id}`,
+      ...overrides,
+    },
+  })
+}
+
 export async function createUser(
   overrides: Partial<{ email: string; name: string; role: string }> = {},
 ) {

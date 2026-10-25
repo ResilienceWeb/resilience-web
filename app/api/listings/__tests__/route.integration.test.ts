@@ -1,6 +1,7 @@
 import {
   createCategory,
   createListing,
+  createSharedTag,
   createTag,
   createUser,
   createUserWithWebAccess,
@@ -188,6 +189,25 @@ describe('POST /api/listings', () => {
       include: { tags: true },
     })
     expect(placement?.tags).toEqual([])
+  })
+
+  it('accepts a shared tag, but not a retired one', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const free = await createSharedTag({ label: 'Free' })
+    const retired = await createSharedTag({ retiredAt: new Date() })
+
+    await post(
+      newListingForm({
+        webId: String(web.id),
+        pending: 'true',
+        tags: `${free.id},${retired.id}`,
+      }),
+    )
+
+    const placement = await prisma.listingPlacement.findFirst({
+      include: { tags: true },
+    })
+    expect(placement?.tags.map((t) => t.label)).toEqual(['Free'])
   })
 
   it('does not let a proposal relate itself to an existing listing', async () => {

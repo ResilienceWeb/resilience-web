@@ -146,6 +146,9 @@ model Tag {
   id           Int                @id @default(autoincrement())
   label        String
   icon         String?
+  // Set only on shared tags, which have no web (see docs/adr/0001)
+  key          String?            @unique
+  retiredAt    DateTime?          @map("retired_at")
   webId        Int?
   web          Web?               @relation(fields: [webId], references: [id])
   listings     ListingPlacement[]

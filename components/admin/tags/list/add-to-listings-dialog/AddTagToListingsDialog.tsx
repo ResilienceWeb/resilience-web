@@ -16,7 +16,17 @@ export default function AddTagToListingsDialog({
   onClose,
   onSubmit,
 }) {
-  const linkedListingsIds = tag.listings.map((listing) => listing.id)
+  // The tag hangs off each listing's placement in this web, which is what the
+  // listings come back with as `placements[0]`.
+  const choices = listings.flatMap((listing) => {
+    const placementId = listing.placements?.[0]?.id
+    return placementId === undefined
+      ? []
+      : [{ placementId, title: listing.title, tags: listing.tags ?? [] }]
+  })
+  const linkedListingsIds = choices
+    .filter((choice) => choice.tags.some((t) => t.id === tag.id))
+    .map((choice) => choice.placementId)
 
   const [selectedListings, setSelectedListings] = useState(
     () => new Set(linkedListingsIds),
@@ -53,20 +63,20 @@ export default function AddTagToListingsDialog({
           Add the tag to the selected listings
         </DialogDescription>
         <div className="flex flex-col gap-4 overflow-y-auto py-4 pr-2">
-          {listings.map((listing) => (
-            <div key={listing.id} className="flex items-center">
+          {choices.map((choice) => (
+            <div key={choice.placementId} className="flex items-center">
               <Checkbox
-                id={`listing-${listing.id}`}
-                checked={selectedListings.has(listing.id)}
+                id={`listing-${choice.placementId}`}
+                checked={selectedListings.has(choice.placementId)}
                 onCheckedChange={(checked) =>
-                  handleCheckboxChange(listing.id, checked)
+                  handleCheckboxChange(choice.placementId, checked)
                 }
               />
               <label
-                htmlFor={`listing-${listing.id}`}
+                htmlFor={`listing-${choice.placementId}`}
                 className="ml-2 text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                {listing.title}
+                {choice.title}
               </label>
             </div>
           ))}

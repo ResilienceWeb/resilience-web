@@ -4,6 +4,7 @@ import { requireWebEditor } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { isSelectableIcon } from '@helpers/icons'
+import { findSharedTagWithLabel, usableInWeb } from '@db/tagRepository'
 
 export async function GET(request: NextRequest) {
   try {
@@ -37,9 +38,11 @@ export async function GET(request: NextRequest) {
         id: true,
         label: true,
         icon: true,
+        key: true,
+        retiredAt: true,
         webId: true,
-        // A tag only ever belongs to one web, so scoping by webId does not
-        // change the count - it just lets the aggregate use the webId index
+        // Scoped to the web: a shared tag is used by listings in many webs,
+        // and the scope also lets the aggregate use the webId index
         _count: {
           select: {
             listings: {
@@ -50,8 +53,13 @@ export async function GET(request: NextRequest) {
           },
         },
       },
+      // The web's own tags, the shared tags it could pick, and any retired
+      // shared tags its listings still carry
       where: {
-        webId: web.id,
+        OR: [
+          usableInWeb(web.id),
+          { webId: null, listings: { some: { webId: web.id } } },
+        ],
       },
       orderBy: [
         {
@@ -83,6 +91,14 @@ export async function POST(request: NextRequest) {
 
   if (body.icon != null && !isSelectableIcon(body.icon)) {
     return Response.json({ error: 'Unknown icon' }, { status: 400 })
+  }
+
+  const sharedTag = await findSharedTagWithLabel(body.label)
+  if (sharedTag) {
+    return Response.json(
+      { error: `"${sharedTag.label}" is already a shared tag`, sharedTag },
+      { status: 409 },
+    )
   }
 
   try {

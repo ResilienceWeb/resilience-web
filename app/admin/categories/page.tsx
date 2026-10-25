@@ -1,6 +1,7 @@
 'use client'
 
 import { parseAsStringLiteral, useQueryState } from 'nuqs'
+import { isInWebTagList } from '@helpers/tags'
 import CategoriesHeader from '@components/admin/categories/header'
 import CategoriesList from '@components/admin/categories/list'
 import TagsHeader from '@components/admin/tags/header'
@@ -39,7 +40,12 @@ export default function CategoriesPage() {
     'tab',
     parseAsStringLiteral(['categories', 'tags']).withDefault('categories'),
   )
-  const { tags, isPending: isTagsPending, isError: isTagsError } = useTags()
+  const {
+    tags: allTags,
+    isPending: isTagsPending,
+    isError: isTagsError,
+  } = useTags()
+  const tags = allTags?.filter(isInWebTagList)
   const { categories, isPending: isCategoriesPending } = useCategories()
 
   const orderedCategories = categories?.sort((a, b) =>

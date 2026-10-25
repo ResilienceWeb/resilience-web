@@ -26,13 +26,28 @@ const CATEGORIES = [
 ]
 
 const TAGS = [
-  { id: 5, label: 'Volunteer-run', listings: [], _count: { listings: 0 } },
+  { id: 5, label: 'Volunteer-run', webId: 3, _count: { listings: 0 } },
   {
     id: 6,
     label: 'Free',
     icon: 'gm:food-bank',
-    listings: [{ id: 1 }],
+    webId: 3,
     _count: { listings: 1 },
+  },
+  // Shared tags: the web's listings use the first, not the second
+  {
+    id: 7,
+    label: 'Food Bank',
+    key: 'food-bank',
+    webId: null,
+    _count: { listings: 2 },
+  },
+  {
+    id: 8,
+    label: 'Cycling',
+    key: 'cycling',
+    webId: null,
+    _count: { listings: 0 },
   },
 ]
 
@@ -50,7 +65,15 @@ beforeEach(() => {
   server.use(
     stubCategories(CATEGORIES),
     stubTags(TAGS),
-    stubListings([{ id: 1, title: 'Bike Kitchen', tags: [] }]),
+    stubListings([
+      {
+        id: 1,
+        title: 'Bike Kitchen',
+        tags: [{ id: 7, label: 'Food Bank' }],
+        placements: [{ id: 101 }],
+      },
+      { id: 2, title: 'Seed Library', tags: [], placements: [{ id: 102 }] },
+    ]),
   )
 })
 
@@ -512,5 +535,86 @@ describe("a category's icon", () => {
       .querySelector('svg')
     expect(glyph).toHaveStyle({ color: '#b0e3c1' })
     expect(glyph.querySelector('rect')).toHaveAttribute('fill', 'currentColor')
+  })
+})
+
+describe('shared tags', () => {
+  const openTags = async () => {
+    const rendered = renderCategoriesPage()
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(rendered.user)
+    await screen.findByRole('cell', { name: 'Volunteer-run' })
+    return rendered
+  }
+
+  it('are listed, marked as shared, only when the web uses them', async () => {
+    await openTags()
+
+    expect(rowFor('Food Bank')).toHaveTextContent('Shared')
+    expect(rowFor('Food Bank')).toHaveTextContent('2')
+    expect(rowFor('Volunteer-run')).not.toHaveTextContent('Shared')
+    expect(screen.queryByRole('row', { name: /^Cycling\b/ })).toBeNull()
+  })
+
+  it('cannot be edited, only taken off every listing in this web', async () => {
+    const removed = recordRequests({ data: {} })
+    server.use(http.delete('/api/tags/:id/listings', removed.resolver))
+    const { user } = await openTags()
+
+    const row = rowFor('Food Bank')
+    expect(within(row).getByRole('button', { name: 'Edit' })).toBeDisabled()
+
+    await user.click(
+      within(row).getByRole('button', {
+        name: 'Remove from all listings in this web',
+      }),
+    )
+    await user.click(
+      await screen.findByRole('button', { name: 'Remove from all listings' }),
+    )
+
+    await waitFor(() => expect(removed.calls).toHaveLength(1))
+    expect(removed.calls[0].url.pathname).toBe('/api/tags/7/listings')
+    expect(removed.calls[0].body).toEqual({ webId: 3 })
+  })
+
+  it("can be added to more of the web's listings", async () => {
+    const changed = recordRequests({ data: {} })
+    server.use(http.put('/api/tags/:id/listings', changed.resolver))
+    const { user } = await openTags()
+
+    await user.click(
+      within(rowFor('Food Bank')).getByRole('button', {
+        name: 'Add tag to listings',
+      }),
+    )
+    expect(
+      await screen.findByRole('checkbox', { name: 'Bike Kitchen' }),
+    ).toBeChecked()
+    await user.click(screen.getByRole('checkbox', { name: 'Seed Library' }))
+    await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+    await waitFor(() => expect(changed.calls).toHaveLength(1))
+    expect(changed.calls[0].url.pathname).toBe('/api/tags/7/listings')
+    expect(changed.calls[0].body).toEqual({
+      webId: 3,
+      addedListingIds: [101, 102],
+      removedListingIds: [],
+    })
+  })
+
+  it("can't be copied as a web tag of the same name", async () => {
+    const created = recordRequests({ data: { id: 9 } })
+    server.use(http.post('/api/tags', created.resolver))
+    const { user } = await openTags()
+
+    await user.click(screen.getByRole('button', { name: /new tag/i }))
+    await user.type(await screen.findByLabelText('Tag label'), 'cycling ')
+    await user.click(screen.getByRole('button', { name: 'Create' }))
+
+    expect(
+      await screen.findByText(/"Cycling" is already a shared tag/),
+    ).toBeInTheDocument()
+    expect(created.calls).toHaveLength(0)
   })
 })

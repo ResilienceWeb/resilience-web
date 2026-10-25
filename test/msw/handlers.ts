@@ -23,7 +23,11 @@ export interface CategoryStub {
 export interface TagStub {
   id: number
   label: string
-  listings?: unknown[]
+  icon?: string | null
+  /** `null` for a shared tag, which every web can use. */
+  webId?: number | null
+  key?: string | null
+  retiredAt?: string | null
   _count?: { listings: number }
 }
 

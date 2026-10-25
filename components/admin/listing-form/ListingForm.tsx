@@ -13,8 +13,10 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Category } from '@prisma-client'
+import { toast } from 'sonner'
 import { z } from 'zod'
 import { scrollToFormError } from '@helpers/scrollToFormError'
+import { isPickableTag } from '@helpers/tags'
 import { generateSlug } from '@helpers/utils'
 import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
@@ -163,7 +165,7 @@ const ListingForm = ({
 
   const tagOptions: MultiSelectOption[] = (() => {
     if (!tags) return []
-    return tags.map((t) => ({
+    return tags.filter(isPickableTag).map((t) => ({
       value: t.id,
       label: t.label,
     }))
@@ -432,10 +434,16 @@ const ListingForm = ({
               }
               creatable
               onCreateOption={async (inputValue) => {
-                const newTag = await createTag({
-                  label: inputValue,
-                  webId: web?.id,
-                })
+                let newTag
+                try {
+                  newTag = await createTag({
+                    label: inputValue,
+                    webId: web?.id,
+                  })
+                } catch (error) {
+                  toast.error(error.message)
+                  return
+                }
                 setValue('tags', [
                   ...tagsValues,
                   { value: newTag.id, label: newTag.label },

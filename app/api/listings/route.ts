@@ -12,6 +12,7 @@ import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingCreatedEmail from '@components/emails/ListingCreatedEmail'
 import ListingProposedAdminEmail from '@components/emails/ListingProposedAdminEmail'
+import { findTagsUsableInWeb } from '@db/tagRepository'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
@@ -154,19 +155,12 @@ export async function POST(request) {
     const socialsData = socials ? JSON.parse(socials) : []
     const actionsData = actions ? JSON.parse(actions) : []
 
-    // Tags and categories are per-web, so only this web's may be attached.
-    const requestedTagIds = (
-      typeof tags === 'string' && tags !== '' ? tags.split(',') : []
+    // Categories and web tags are per-web, so only this web's (and the shared
+    // tags) may be attached.
+    const tagsToConnect = await findTagsUsableInWeb(
+      typeof tags === 'string' && tags !== '' ? tags.split(',') : [],
+      webId,
     )
-      .map(Number)
-      .filter(Number.isInteger)
-    const tagsToConnect =
-      requestedTagIds.length > 0
-        ? await prisma.tag.findMany({
-            where: { id: { in: requestedTagIds }, webId },
-            select: { id: true },
-          })
-        : []
 
     const categoryInThisWeb = Number.isInteger(category)
       ? await prisma.category.findFirst({

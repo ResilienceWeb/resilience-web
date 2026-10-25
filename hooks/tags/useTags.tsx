@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import type { Tag } from '@prisma-client'
 import * as Sentry from '@sentry/nextjs'
 import { useQuery } from '@tanstack/react-query'
 import { useAppContext } from '@store/hooks'
@@ -29,7 +28,7 @@ export default function useTags({
     isPending,
     isError,
     error,
-  } = useQuery<Tag[]>({
+  } = useQuery<TagWithListings[]>({
     queryKey: ['tags', { webSlug }],
     queryFn: fetchTagsRequest,
     refetchOnWindowFocus: false,

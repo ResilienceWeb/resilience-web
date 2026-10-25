@@ -34,6 +34,7 @@ import {
   FaMapMarkerAlt,
   FaHeart,
   FaGlobe,
+  FaGift,
 } from 'react-icons/fa'
 import { greenMapIcons } from '@helpers/green-map-icons'
 
@@ -102,6 +103,7 @@ const fontAwesomeIcons: Omit<IconEntry, 'label' | 'set' | 'monochrome'>[] = [
   { icon: FaFlask, name: 'Flask', category: 'Other' },
   { icon: FaPalette, name: 'Palette', category: 'Other' },
   { icon: FaGlobe, name: 'Globe', category: 'Other' },
+  { icon: FaGift, name: 'Gift', category: 'Other' },
 
   // Default
   { icon: FaMapMarkerAlt, name: 'default', category: 'Other' },

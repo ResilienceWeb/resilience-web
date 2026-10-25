@@ -1,4 +1,5 @@
 import { PrismaPg } from '@prisma/adapter-pg'
+import { sameTagLabel } from '../helpers/tags.ts'
 import { PrismaClient, WebRole } from './generated/client.ts'
 import { sslFor } from './ssl.ts'
 
@@ -673,6 +674,12 @@ async function seedUsers() {
 }
 
 async function seedWeb(web: SeedWeb) {
+  // The shared tags come from the migrations; a seed tag with a shared tag's
+  // name uses it rather than making a web tag that duplicates it.
+  const sharedTags = await prisma.tag.findMany({ where: { webId: null } })
+  const sharedTagFor = (label: string) =>
+    sharedTags.find((t) => sameTagLabel(t.label, label))
+
   const created = await prisma.web.create({
     data: {
       title: web.title,
@@ -692,7 +699,11 @@ async function seedWeb(web: SeedWeb) {
         })),
       },
       categories: { create: web.categories },
-      tags: { create: web.tags.map((label) => ({ label })) },
+      tags: {
+        create: web.tags
+          .filter((label) => !sharedTagFor(label))
+          .map((label) => ({ label })),
+      },
     },
     include: { categories: true, tags: true },
   })
@@ -700,7 +711,13 @@ async function seedWeb(web: SeedWeb) {
   return {
     id: created.id,
     categoryIds: new Map(created.categories.map((c) => [c.label, c.id])),
-    tagIds: new Map(created.tags.map((t) => [t.label, t.id])),
+    tagIds: new Map([
+      ...web.tags.flatMap((label): [string, number][] => {
+        const shared = sharedTagFor(label)
+        return shared ? [[label, shared.id]] : []
+      }),
+      ...created.tags.map((t): [string, number] => [t.label, t.id]),
+    ]),
   }
 }
 
