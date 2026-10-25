@@ -148,9 +148,9 @@ export default function IconPicker({
         {selected ? (
           <Button
             type="button"
-            variant="outline"
-            className="hover:bg-muted/50 flex h-14 w-14 rounded-[50%] p-0 transition-colors"
-            style={hex ? { border: `2px solid ${hex}` } : undefined}
+            variant="ghost"
+            className="border-input text-foreground hover:bg-muted/50 flex h-14 w-14 rounded-full border-2 p-0 transition-colors"
+            style={hex ? { borderColor: hex } : undefined}
           >
             <IconGlyph
               icon={selected}
