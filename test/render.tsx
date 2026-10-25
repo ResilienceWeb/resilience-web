@@ -2,7 +2,10 @@ import type { ReactElement, ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, type RenderOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { NuqsTestingAdapter } from 'nuqs/adapters/testing'
+import {
+  NuqsTestingAdapter,
+  type OnUrlUpdateFunction,
+} from 'nuqs/adapters/testing'
 import { TooltipProvider } from '@components/ui/tooltip'
 import { AppContext } from '@store/AppContext'
 
@@ -24,7 +27,8 @@ export interface SelectedWeb {
  *  - React Query, so data-fetching hooks are real (see `test/msw` for the
  *    responses they get)
  *  - nuqs, so components that keep state in the URL work; pass `searchParams`
- *    to start the test on a particular URL state
+ *    to start the test on a particular URL state, and `onUrlUpdate` to see the
+ *    URL a component writes
  *  - the selected web, which every admin screen reads to know what it is
  *    looking at; pass `selectedWeb` to put a test inside one
  *  - the tooltip provider, which the app mounts once at the root
@@ -36,10 +40,12 @@ export function renderPage(
   ui: ReactElement,
   {
     searchParams = {},
+    onUrlUpdate,
     selectedWeb = {},
     ...options
   }: Omit<RenderOptions, 'wrapper'> & {
     searchParams?: Record<string, string>
+    onUrlUpdate?: OnUrlUpdateFunction
     selectedWeb?: SelectedWeb
   } = {},
 ) {
@@ -54,7 +60,7 @@ export function renderPage(
   }
 
   const Providers = ({ children }: { children: ReactNode }) => (
-    <NuqsTestingAdapter searchParams={searchParams}>
+    <NuqsTestingAdapter searchParams={searchParams} onUrlUpdate={onUrlUpdate}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <AppContext value={appContext}>{children}</AppContext>

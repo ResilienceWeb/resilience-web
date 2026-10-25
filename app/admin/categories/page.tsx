@@ -1,5 +1,6 @@
 'use client'
 
+import { parseAsStringLiteral, useQueryState } from 'nuqs'
 import CategoriesHeader from '@components/admin/categories/header'
 import CategoriesList from '@components/admin/categories/list'
 import TagsHeader from '@components/admin/tags/header'
@@ -34,6 +35,10 @@ const faqs = [
 ]
 
 export default function CategoriesPage() {
+  const [tab, setTab] = useQueryState(
+    'tab',
+    parseAsStringLiteral(['categories', 'tags']).withDefault('categories'),
+  )
   const { tags, isPending: isTagsPending, isError: isTagsError } = useTags()
   const { categories, isPending: isCategoriesPending } = useCategories()
 
@@ -55,7 +60,10 @@ export default function CategoriesPage() {
         </p>
       </div>
 
-      <Tabs defaultValue="categories">
+      <Tabs
+        value={tab}
+        onValueChange={(value) => void setTab(value as 'categories' | 'tags')}
+      >
         <TabsList>
           <TabsTrigger value="categories">Categories</TabsTrigger>
           <TabsTrigger value="tags">Tags</TabsTrigger>

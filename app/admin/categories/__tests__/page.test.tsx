@@ -54,6 +54,36 @@ beforeEach(() => {
   )
 })
 
+describe('which tab is open', () => {
+  it('is kept in the URL, so a refresh stays on it', async () => {
+    const urls: URLSearchParams[] = []
+    const { user } = renderPage(<CategoriesPage />, {
+      selectedWeb: { slug: 'bristol', id: 3 },
+      onUrlUpdate: ({ searchParams }) => urls.push(searchParams),
+    })
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+
+    await waitFor(() => expect(urls.at(-1)?.get('tab')).toBe('tags'))
+  })
+
+  it('opens on the tab the URL names', async () => {
+    renderPage(<CategoriesPage />, {
+      selectedWeb: { slug: 'bristol', id: 3 },
+      searchParams: { tab: 'tags' },
+    })
+
+    expect(
+      await screen.findByRole('cell', { name: 'Volunteer-run' }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Tags' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    )
+  })
+})
+
 describe('the categories an editor has set up', () => {
   it('are listed with how many listings use each one', async () => {
     renderCategoriesPage()
