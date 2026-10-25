@@ -1,7 +1,8 @@
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import IconPicker from '@components/icon-picker'
+import TagChip from '@components/tag-chip'
 import { Button } from '@components/ui/button'
 import { DialogFooter } from '@components/ui/dialog'
 import {
@@ -38,6 +39,7 @@ const TagForm = ({
       icon: tag?.icon ?? null,
     },
   })
+  const label = useWatch({ control: form.control, name: 'label' })
 
   function handleSubmit(data: FormValues) {
     onSubmit(data)
@@ -76,6 +78,14 @@ const TagForm = ({
                   description="Select an icon to show on this tag"
                   allowNone
                   monochrome
+                  renderPreview={(icon) => (
+                    <TagChip
+                      tag={{
+                        label: label || 'Tag',
+                        icon: icon.name,
+                      }}
+                    />
+                  )}
                 />
               </FormControl>
               <FormMessage />

@@ -22,8 +22,7 @@ import { MagicBackButton } from '@components/magic-back-button/MagicBackButton'
 import Item from '@components/main-list/item'
 import RichText from '@components/rich-text'
 import ShareButton from '@components/share-button'
-import TagLabel from '@components/tag-label'
-import { Badge } from '@components/ui/badge'
+import TagChip from '@components/tag-chip'
 import { Button } from '@components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 
@@ -346,14 +345,7 @@ function Listing({ listing, categories }) {
           <div className="mt-8 flex flex-wrap gap-2">
             {listing.tags.map((tag) => {
               const urlEncodedTag = tag.label.replace(' ', '+')
-              const badge = (
-                <Badge
-                  className="cursor-pointer px-2.5 py-0.5 text-xs font-medium tracking-wide transition-all select-none hover:opacity-90"
-                  style={{ backgroundColor: tag.color ?? '#718096' }}
-                >
-                  <TagLabel tag={tag} />
-                </Badge>
-              )
+              const badge = <TagChip tag={tag} />
               return listing.web?.slug ? (
                 <Link
                   key={tag.id}

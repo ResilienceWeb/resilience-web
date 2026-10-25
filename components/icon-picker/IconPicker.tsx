@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import type { IconBaseProps } from 'react-icons'
 import { greenMapIconDescriptions } from '@helpers/green-map-icon-descriptions'
 import {
@@ -8,6 +8,7 @@ import {
   type IconSetId,
 } from '@helpers/icons'
 import GreenMapCredit from '@components/green-map-credit'
+import { cn } from '@components/lib/utils'
 import { Button } from '@components/ui/button'
 import {
   Dialog,
@@ -30,6 +31,8 @@ type Props = {
   allowNone?: boolean
   /** Show icons in one colour, as they will appear (tags). */
   monochrome?: boolean
+  /** How the thing being edited will look with an icon, e.g. its chip. */
+  renderPreview?: (icon: IconEntry) => ReactNode
 }
 
 const IconGlyph = ({
@@ -38,6 +41,45 @@ const IconGlyph = ({
   ...props
 }: IconBaseProps & { icon: IconEntry; monochrome: boolean }) =>
   monochrome ? <icon.monochrome {...props} /> : <icon.icon {...props} />
+
+const IconTile = ({
+  icon,
+  monochrome,
+  captioned,
+  pressed,
+  ...handlers
+}: {
+  icon: IconEntry
+  monochrome: boolean
+  captioned: boolean
+  pressed: boolean
+} & Pick<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'onClick' | 'onDoubleClick' | 'onMouseEnter' | 'onFocus'
+>) => (
+  <button
+    type="button"
+    aria-label={icon.label}
+    aria-pressed={pressed}
+    className={cn(
+      'text-foreground/75 hover:bg-muted hover:text-foreground focus-visible:ring-ring aria-pressed:bg-primary/10 aria-pressed:text-foreground aria-pressed:ring-primary flex flex-col items-center gap-1.5 rounded-lg p-2 transition-colors focus-visible:ring-2 focus-visible:outline-none aria-pressed:ring-2',
+      captioned ? 'justify-start' : 'aspect-square justify-center',
+    )}
+    {...handlers}
+  >
+    <IconGlyph
+      icon={icon}
+      monochrome={monochrome}
+      className="h-8 w-8 shrink-0"
+      aria-hidden="true"
+    />
+    {captioned && (
+      <span className="text-muted-foreground line-clamp-2 text-center text-[11px] leading-tight">
+        {icon.label}
+      </span>
+    )}
+  </button>
+)
 
 const descriptionOf = (icon: IconEntry) =>
   icon.set === 'gm' ? greenMapIconDescriptions[icon.name.slice(3)] : undefined
@@ -62,11 +104,11 @@ export default function IconPicker({
   color,
   allowNone = false,
   monochrome = false,
+  renderPreview,
 }: Props) {
   const [open, setOpen] = useState(false)
   const selected = value && value !== 'default' ? getIcon(value) : undefined
   const [activeSet, setActiveSet] = useState<IconSetId>(selected?.set ?? 'fa')
-  const [category, setCategory] = useState<string | null>(null)
   const [query, setQuery] = useState('')
   // Green Map icons aren't self-explanatory, so choosing one takes two steps:
   // its name and description show first, on touch screens too, where there is
@@ -77,8 +119,10 @@ export default function IconPicker({
   )
   const [previewed, setPreviewed] = useState<IconEntry | undefined>()
   const shownInPanel = previewed ?? pending
+  const sectionsRef = useRef<Record<string, HTMLElement | null>>({})
 
   const hex = color ? `#${color.replace(/^#/, '')}` : undefined
+  const searching = query.trim() !== ''
 
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen)
@@ -123,7 +167,7 @@ export default function IconPicker({
         )}
       </DialogTrigger>
       {/* Opened from inside another dialog, whose overlay already dims the page */}
-      <DialogContent className="sm:max-w-lg" overlayClassName="bg-transparent">
+      <DialogContent className="sm:max-w-3xl" overlayClassName="bg-transparent">
         <DialogHeader>
           <DialogTitle>Select an icon</DialogTitle>
         </DialogHeader>
@@ -131,118 +175,164 @@ export default function IconPicker({
 
         <Tabs
           value={activeSet}
-          onValueChange={(set) => {
-            setActiveSet(set as IconSetId)
-            setCategory(null)
-          }}
+          onValueChange={(set) => setActiveSet(set as IconSetId)}
+          className="min-w-0"
         >
-          <TabsList>
-            {iconSets.map((set) => (
-              <TabsTrigger key={set.id} value={set.id}>
-                {set.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <TabsList className="w-fit">
+              {iconSets.map((set) => (
+                <TabsTrigger key={set.id} value={set.id}>
+                  {set.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <Input
+              type="search"
+              placeholder="Search icons"
+              aria-label="Search icons"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              className="sm:flex-1"
+            />
+          </div>
 
           {iconSets.map((set) => {
             const explained = set.id === 'gm'
-            const shown = search(
-              set.icons.filter(
-                (icon) => !category || icon.category === category,
-              ),
-              query,
-            )
+            const shown = search(set.icons, query)
+            // Green Map's 169 icons are grouped by category, but searching
+            // ranks them instead. Font Awesome's few fit in one grid.
+            const grouped = explained && !searching
+            const groups = !grouped
+              ? [{ category: null, icons: shown }]
+              : set.categories.map((category) => ({
+                  category,
+                  icons: shown.filter((icon) => icon.category === category),
+                }))
+
+            const tileProps = (icon: IconEntry) =>
+              explained
+                ? {
+                    pressed: icon.name === pending?.name,
+                    onMouseEnter: () => setPreviewed(icon),
+                    onFocus: () => setPreviewed(icon),
+                    onClick: () => setPending(icon),
+                    onDoubleClick: () => choose(icon.name),
+                  }
+                : {
+                    pressed: icon.name === selected?.name,
+                    onClick: () => choose(icon.name),
+                  }
 
             return (
               <TabsContent
                 key={set.id}
                 value={set.id}
-                className="flex flex-col gap-3"
-              >
-                <Input
-                  type="search"
-                  placeholder="Search icons"
-                  aria-label="Search icons"
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                />
-                <div className="flex flex-wrap gap-1">
-                  {[null, ...set.categories].map((option) => (
-                    <Button
-                      key={option ?? 'all'}
-                      type="button"
-                      size="sm"
-                      variant={category === option ? 'default' : 'outline'}
-                      aria-pressed={category === option}
-                      onClick={() => setCategory(option)}
-                    >
-                      {option ?? 'All'}
-                    </Button>
-                  ))}
-                </div>
-
-                <div
-                  className="grid max-h-[34vh] grid-cols-5 gap-3 overflow-y-auto p-1 sm:grid-cols-6"
-                  onMouseLeave={() => setPreviewed(undefined)}
-                  onBlur={() => setPreviewed(undefined)}
-                >
-                  {shown.map((icon) => (
-                    <Button
-                      key={icon.name}
-                      type="button"
-                      variant="outline"
-                      className="aria-pressed:ring-primary h-14 w-14 p-0 aria-pressed:ring-2"
-                      aria-label={icon.label}
-                      aria-pressed={
-                        icon.name ===
-                        (explained ? pending?.name : selected?.name)
-                      }
-                      onMouseEnter={
-                        explained ? () => setPreviewed(icon) : undefined
-                      }
-                      onFocus={explained ? () => setPreviewed(icon) : undefined}
-                      onClick={() =>
-                        explained ? setPending(icon) : choose(icon.name)
-                      }
-                      onDoubleClick={
-                        explained ? () => choose(icon.name) : undefined
-                      }
-                    >
-                      <IconGlyph
-                        icon={icon}
-                        monochrome={monochrome}
-                        className="!h-8 !w-8"
-                        aria-hidden="true"
-                      />
-                    </Button>
-                  ))}
-                </div>
-                {shown.length === 0 && (
-                  <p className="text-muted-foreground text-sm">
-                    No icons match.
-                  </p>
+                className={cn(
+                  'mt-3',
+                  explained && 'md:grid md:grid-cols-[1fr_15rem] md:gap-5',
                 )}
+              >
+                <div className="flex min-w-0 flex-col gap-2">
+                  {grouped && (
+                    <nav
+                      aria-label="Icon categories"
+                      className="-mx-1 flex gap-1 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0"
+                    >
+                      {set.categories.map((category) => (
+                        <button
+                          key={category}
+                          type="button"
+                          className="bg-muted text-muted-foreground hover:bg-muted/70 hover:text-foreground shrink-0 rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap transition-colors"
+                          onClick={() =>
+                            sectionsRef.current[
+                              `${set.id}:${category}`
+                            ]?.scrollIntoView?.({
+                              block: 'start',
+                              behavior: 'smooth',
+                            })
+                          }
+                        >
+                          {category}
+                        </button>
+                      ))}
+                    </nav>
+                  )}
+
+                  <div
+                    className="max-h-[min(55vh,30rem)] overflow-y-auto pr-1"
+                    onMouseLeave={() => setPreviewed(undefined)}
+                    onBlur={() => setPreviewed(undefined)}
+                  >
+                    {groups
+                      .filter((group) => group.icons.length > 0)
+                      .map((group) => (
+                        <section
+                          key={group.category ?? 'results'}
+                          ref={(element) => {
+                            sectionsRef.current[`${set.id}:${group.category}`] =
+                              element
+                          }}
+                          aria-label={group.category ?? undefined}
+                          className="pb-3"
+                        >
+                          {group.category && (
+                            <h3 className="bg-background text-muted-foreground sticky top-0 z-10 py-1.5 text-xs font-semibold tracking-wide uppercase">
+                              {group.category}
+                            </h3>
+                          )}
+                          <div
+                            className={cn(
+                              'grid gap-1',
+                              explained
+                                ? 'grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))]'
+                                : 'grid-cols-[repeat(auto-fill,minmax(3.5rem,1fr))]',
+                            )}
+                          >
+                            {group.icons.map((icon) => (
+                              <IconTile
+                                key={icon.name}
+                                icon={icon}
+                                monochrome={monochrome}
+                                captioned={explained}
+                                {...tileProps(icon)}
+                              />
+                            ))}
+                          </div>
+                        </section>
+                      ))}
+                    {shown.length === 0 && (
+                      <p className="text-muted-foreground py-6 text-center text-sm">
+                        No icons match “{query.trim()}”.
+                      </p>
+                    )}
+                  </div>
+                </div>
 
                 {explained && (
-                  <>
-                    <GreenMapCredit className="text-muted-foreground" />
-                    <div className="bg-muted/50 min-h-20 rounded-md p-3 text-sm">
-                      {shownInPanel ? (
-                        <>
+                  <aside className="bg-muted/50 mt-3 flex flex-col gap-3 rounded-lg p-4 text-sm md:mt-0">
+                    {shownInPanel ? (
+                      <>
+                        {renderPreview && (
+                          <div className="bg-background flex justify-center rounded-md p-3">
+                            {renderPreview(shownInPanel)}
+                          </div>
+                        )}
+                        <div>
                           <p className="font-semibold">{shownInPanel.label}</p>
                           {descriptionOf(shownInPanel) && (
-                            <p className="text-muted-foreground mt-1 line-clamp-3">
+                            <p className="text-muted-foreground mt-1 line-clamp-6 md:line-clamp-[12]">
                               {descriptionOf(shownInPanel)}
                             </p>
                           )}
-                        </>
-                      ) : (
-                        <p className="text-muted-foreground">
-                          Choose an icon to see what it means.
-                        </p>
-                      )}
-                    </div>
-                  </>
+                        </div>
+                      </>
+                    ) : (
+                      <p className="text-muted-foreground">
+                        Choose an icon to see what it means.
+                      </p>
+                    )}
+                    <GreenMapCredit className="text-muted-foreground mt-auto text-xs" />
+                  </aside>
                 )}
               </TabsContent>
             )

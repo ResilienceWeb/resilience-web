@@ -409,6 +409,29 @@ describe('finding the right icon', () => {
   })
 })
 
+describe('previewing an icon', () => {
+  it("shows the tag's chip as visitors will see it", async () => {
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.type(await screen.findByLabelText('Tag label'), 'Food aid')
+    await user.click(screen.getByRole('button', { name: 'Select an icon...' }))
+    await user.click(await screen.findByRole('tab', { name: 'Green Map' }))
+    await user.type(screen.getByRole('searchbox'), 'food bank')
+    await user.click(screen.getByRole('button', { name: 'Food Bank' }))
+
+    const picker = screen.getByRole('dialog', { name: 'Select an icon' })
+    const chip = within(picker).getByText('Food aid')
+    expect(chip.querySelector('image')).toHaveAttribute(
+      'href',
+      '/icons/green-map/food-bank.svg',
+    )
+    expect(chip).not.toHaveTextContent('#')
+  })
+})
+
 describe('picking a Font Awesome icon', () => {
   it('takes one click, with no explanation needed', async () => {
     const created = recordRequests({ data: { id: 9 } })

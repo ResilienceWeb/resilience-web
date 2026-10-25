@@ -1,6 +1,7 @@
 import { memo, useState } from 'react'
 import { HexColorPicker } from 'react-colorful'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
+import CategoryTag from '@components/category-tag'
 import IconPicker from '@components/icon-picker'
 import { Button } from '@components/ui/button'
 import { DialogFooter } from '@components/ui/dialog'
@@ -44,6 +45,7 @@ const CategoryForm = ({
       icon: category?.icon,
     },
   })
+  const label = useWatch({ control: form.control, name: 'label' })
 
   const onSubmitForm = (values: FormValues) => {
     onSubmit(values)
@@ -82,6 +84,14 @@ const CategoryForm = ({
                   onChange={(icon) => field.onChange(icon)}
                   color={color}
                   description="Select an icon for this category"
+                  renderPreview={(icon) => (
+                    <CategoryTag
+                      colorHex={`#${color ?? form.getValues('color')}`}
+                      iconName={icon.name}
+                    >
+                      {label || 'Category'}
+                    </CategoryTag>
+                  )}
                 />
               </FormControl>
               <FormMessage />
