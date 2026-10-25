@@ -6,9 +6,10 @@ import {
 } from '@/test/msw/handlers'
 import { server } from '@/test/msw/server'
 import { renderPage } from '@/test/render'
+import * as Sentry from '@sentry/nextjs'
 import { screen, waitFor, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import CategoriesPage from '../page.tsx'
 
 /**
@@ -29,6 +30,7 @@ const TAGS = [
   {
     id: 6,
     label: 'Free',
+    icon: 'gm:food-bank',
     listings: [{ id: 1 }],
     _count: { listings: 1 },
   },
@@ -50,6 +52,36 @@ beforeEach(() => {
     stubTags(TAGS),
     stubListings([{ id: 1, title: 'Bike Kitchen', tags: [] }]),
   )
+})
+
+describe('which tab is open', () => {
+  it('is kept in the URL, so a refresh stays on it', async () => {
+    const urls: URLSearchParams[] = []
+    const { user } = renderPage(<CategoriesPage />, {
+      selectedWeb: { slug: 'bristol', id: 3 },
+      onUrlUpdate: ({ searchParams }) => urls.push(searchParams),
+    })
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+
+    await waitFor(() => expect(urls.at(-1)?.get('tab')).toBe('tags'))
+  })
+
+  it('opens on the tab the URL names', async () => {
+    renderPage(<CategoriesPage />, {
+      selectedWeb: { slug: 'bristol', id: 3 },
+      searchParams: { tab: 'tags' },
+    })
+
+    expect(
+      await screen.findByRole('cell', { name: 'Volunteer-run' }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'Tags' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    )
+  })
 })
 
 describe('the categories an editor has set up', () => {
@@ -141,7 +173,9 @@ describe('deleting a category', () => {
         await screen.findByRole('row', { name: /^Transport\b/ }),
       ).getByRole('button', { name: 'Edit' }),
     )
-    await user.click(await screen.findByRole('button', { name: 'Remove' }))
+    await user.click(
+      await screen.findByRole('button', { name: 'Remove category' }),
+    )
 
     await waitFor(() => expect(deleted.calls).toHaveLength(1))
     expect(deleted.calls[0].url.pathname).toBe('/api/categories/2')
@@ -156,7 +190,9 @@ describe('deleting a category', () => {
       ).getByRole('button', { name: 'Edit' }),
     )
 
-    expect(await screen.findByRole('button', { name: 'Remove' })).toBeDisabled()
+    expect(
+      await screen.findByRole('button', { name: 'Remove category' }),
+    ).toBeDisabled()
   })
 })
 
@@ -171,6 +207,32 @@ describe('the tags an editor has set up', () => {
       await screen.findByRole('cell', { name: 'Volunteer-run' }),
     ).toBeInTheDocument()
     expect(rowFor('Free')).toHaveTextContent('1')
+  })
+})
+
+describe('when the tags cannot be loaded', () => {
+  it('says so instead of breaking the page, and reports it', async () => {
+    server.use(
+      http.get(
+        '/api/tags',
+        () => new HttpResponse('Unable to fetch tags', { status: 500 }),
+      ),
+    )
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      /couldn.t load your tags/i,
+    )
+    expect(vi.mocked(Sentry.captureException)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: expect.stringContaining(
+          'Unable to fetch tags for bristol (500)',
+        ),
+      }),
+    )
   })
 })
 
@@ -251,7 +313,7 @@ describe('deleting a tag', () => {
         await screen.findByRole('row', { name: /^Volunteer-run\b/ }),
       ).getByRole('button', { name: 'Edit' }),
     )
-    await user.click(await screen.findByRole('button', { name: 'Remove' }))
+    await user.click(await screen.findByRole('button', { name: 'Remove tag' }))
 
     await waitFor(() => expect(deleted.calls).toHaveLength(1))
     expect(deleted.calls[0].url.pathname).toBe('/api/tags/5')
@@ -270,6 +332,185 @@ describe('deleting a tag', () => {
       ),
     )
 
-    expect(await screen.findByRole('button', { name: 'Remove' })).toBeDisabled()
+    expect(
+      await screen.findByRole('button', { name: 'Remove tag' }),
+    ).toBeDisabled()
+  })
+})
+
+describe('giving a tag an icon', () => {
+  it('sends the Green Map icon the editor picked, and credits Green Map', async () => {
+    const created = recordRequests({ data: { id: 9 } })
+    server.use(http.post('/api/tags', created.resolver))
+
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.type(await screen.findByLabelText('Tag label'), 'Food aid')
+
+    await user.click(screen.getByRole('button', { name: 'Select an icon...' }))
+    await user.click(await screen.findByRole('tab', { name: 'Green Map' }))
+    expect(
+      screen.getByRole('link', { name: 'Green Map System' }),
+    ).toHaveAttribute('href', 'https://greenmap.org')
+    await user.type(screen.getByRole('searchbox'), 'food bank')
+    await user.click(screen.getByRole('button', { name: 'Food Bank' }))
+    await user.click(screen.getByRole('button', { name: 'Use this icon' }))
+
+    await user.click(screen.getByRole('button', { name: 'Create' }))
+
+    await waitFor(() => expect(created.calls).toHaveLength(1))
+    expect(created.calls[0].body).toMatchObject({
+      label: 'Food aid',
+      icon: 'gm:food-bank',
+    })
+  })
+
+  it('sends no icon when the editor leaves it unset', async () => {
+    const created = recordRequests({ data: { id: 9 } })
+    server.use(http.post('/api/tags', created.resolver))
+
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.type(await screen.findByLabelText('Tag label'), 'Repair')
+    await user.click(screen.getByRole('button', { name: 'Create' }))
+
+    await waitFor(() => expect(created.calls).toHaveLength(1))
+    expect(created.calls[0].body).toMatchObject({ icon: null })
+  })
+
+  it("can take a tag's icon away again", async () => {
+    const updated = recordRequests({ tag: {} })
+    server.use(http.patch('/api/tags/:id', updated.resolver))
+
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(
+      within(await screen.findByRole('row', { name: /^Free\b/ })).getByRole(
+        'button',
+        { name: 'Edit' },
+      ),
+    )
+
+    await user.click(
+      await screen.findByRole('button', { name: 'Change icon (Food Bank)' }),
+    )
+    await user.click(await screen.findByRole('button', { name: 'Remove icon' }))
+    await user.click(screen.getByRole('button', { name: 'Update' }))
+
+    await waitFor(() => expect(updated.calls).toHaveLength(1))
+    expect(updated.calls[0].body).toMatchObject({ label: 'Free', icon: null })
+  })
+})
+
+describe('finding the right icon', () => {
+  const openGreenMapIcons = async () => {
+    const { user } = renderCategoriesPage()
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.click(
+      await screen.findByRole('button', { name: 'Select an icon...' }),
+    )
+    await user.click(await screen.findByRole('tab', { name: 'Green Map' }))
+    return user
+  }
+
+  it('searches what an icon means, not just its name', async () => {
+    const user = await openGreenMapIcons()
+
+    await user.type(screen.getByRole('searchbox'), 'hunger')
+
+    expect(
+      screen.getByRole('button', { name: 'Food Bank' }),
+    ).toBeInTheDocument()
+  })
+
+  it('explains an icon before the editor commits to it', async () => {
+    const user = await openGreenMapIcons()
+
+    await user.type(screen.getByRole('searchbox'), 'food bank')
+    await user.click(screen.getByRole('button', { name: 'Food Bank' }))
+
+    const dialog = screen.getByRole('dialog', { name: 'Select an icon' })
+    expect(dialog).toHaveTextContent(/hunger is reduced/)
+    expect(screen.getByRole('button', { name: 'Use this icon' })).toBeEnabled()
+  })
+})
+
+describe('previewing an icon', () => {
+  it("shows the tag's chip as visitors will see it", async () => {
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.type(await screen.findByLabelText('Tag label'), 'Food aid')
+    await user.click(screen.getByRole('button', { name: 'Select an icon...' }))
+    await user.click(await screen.findByRole('tab', { name: 'Green Map' }))
+    await user.type(screen.getByRole('searchbox'), 'food bank')
+    await user.click(screen.getByRole('button', { name: 'Food Bank' }))
+
+    const picker = screen.getByRole('dialog', { name: 'Select an icon' })
+    const chip = within(picker).getByText('Food aid')
+    expect(chip.querySelector('image')).toHaveAttribute(
+      'href',
+      '/icons/green-map/food-bank.svg',
+    )
+    expect(chip).not.toHaveTextContent('#')
+  })
+})
+
+describe('picking a Font Awesome icon', () => {
+  it('takes one click, with no explanation needed', async () => {
+    const created = recordRequests({ data: { id: 9 } })
+    server.use(http.post('/api/tags', created.resolver))
+
+    const { user } = renderCategoriesPage()
+
+    await screen.findByRole('cell', { name: 'Community' })
+    await openTagsTab(user)
+    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.type(await screen.findByLabelText('Tag label'), 'Gardening')
+    await user.click(screen.getByRole('button', { name: 'Select an icon...' }))
+
+    expect(screen.queryByText(/see what it means/)).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Use this icon' })).toBeNull()
+
+    await user.click(screen.getByRole('button', { name: 'Seedling' }))
+    expect(screen.queryByRole('dialog', { name: 'Select an icon' })).toBeNull()
+
+    await user.click(screen.getByRole('button', { name: 'Create' }))
+    await waitFor(() => expect(created.calls).toHaveLength(1))
+    expect(created.calls[0].body).toMatchObject({ icon: 'Seedling' })
+  })
+})
+
+describe("a category's icon", () => {
+  it("is chosen from icons shown in the category's colour", async () => {
+    const { user } = renderCategoriesPage()
+
+    await user.click(
+      within(
+        await screen.findByRole('row', { name: /^Community\b/ }),
+      ).getByRole('button', { name: 'Edit' }),
+    )
+    await user.click(
+      await screen.findByRole('button', { name: 'Select an icon...' }),
+    )
+    await user.click(await screen.findByRole('tab', { name: 'Green Map' }))
+
+    const glyph = screen
+      .getByRole('button', { name: 'Food Bank' })
+      .querySelector('svg')
+    expect(glyph).toHaveStyle({ color: '#b0e3c1' })
+    expect(glyph.querySelector('rect')).toHaveAttribute('fill', 'currentColor')
   })
 })

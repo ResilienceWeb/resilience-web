@@ -45,7 +45,7 @@ export async function createCategory(
 
 export async function createTag(
   webId: number,
-  overrides: Partial<{ label: string }> = {},
+  overrides: Partial<{ label: string; icon: string | null }> = {},
 ) {
   return prisma.tag.create({
     data: {

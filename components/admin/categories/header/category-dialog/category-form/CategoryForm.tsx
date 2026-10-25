@@ -1,6 +1,8 @@
 import { memo, useState } from 'react'
 import { HexColorPicker } from 'react-colorful'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
+import CategoryTag from '@components/category-tag'
+import IconPicker from '@components/icon-picker'
 import { Button } from '@components/ui/button'
 import { DialogFooter } from '@components/ui/dialog'
 import {
@@ -13,7 +15,6 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
-import IconSelector from './IconSelector'
 
 const randomHexColorCode = () => {
   const n = (Math.random() * 0xfffff * 1000000).toString(16)
@@ -44,6 +45,7 @@ const CategoryForm = ({
       icon: category?.icon,
     },
   })
+  const label = useWatch({ control: form.control, name: 'label' })
 
   const onSubmitForm = (values: FormValues) => {
     onSubmit(values)
@@ -77,10 +79,20 @@ const CategoryForm = ({
             <FormItem>
               <FormLabel>Category icon</FormLabel>
               <FormControl>
-                <IconSelector
+                <IconPicker
                   value={field.value}
                   onChange={(icon) => field.onChange(icon)}
                   color={color}
+                  monochrome
+                  description="Select an icon for this category"
+                  renderPreview={(icon) => (
+                    <CategoryTag
+                      colorHex={`#${color ?? form.getValues('color')}`}
+                      iconName={icon.name}
+                    >
+                      {label || 'Category'}
+                    </CategoryTag>
+                  )}
                 />
               </FormControl>
               <FormMessage />
@@ -154,7 +166,7 @@ const CategoryForm = ({
                   disabled={category?._count?.listings > 0}
                   type="button"
                 >
-                  Remove
+                  Remove category
                 </Button>
               </TooltipTrigger>
               {category?._count?.listings > 0 && (

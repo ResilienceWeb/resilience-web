@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server'
 import { requireWebEditor } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { isSelectableIcon } from '@helpers/icons'
 import { findTagWebId } from '../authorization.ts'
 
 export async function PATCH(
@@ -21,6 +22,10 @@ export async function PATCH(
   const denied = await requireWebEditor(request, webId)
   if (denied) return denied
 
+  if (body.icon != null && !isSelectableIcon(body.icon)) {
+    return Response.json({ error: 'Unknown icon' }, { status: 400 })
+  }
+
   try {
     const tag = await prisma.tag.update({
       where: {
@@ -28,6 +33,7 @@ export async function PATCH(
       },
       data: {
         ...(body.label !== undefined ? { label: body.label } : {}),
+        ...(body.icon !== undefined ? { icon: body.icon } : {}),
       },
       include: {
         web: {

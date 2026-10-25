@@ -29,11 +29,13 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 const DialogContent = ({
   className,
+  overlayClassName,
   children,
   forceMount,
   ...props
 }: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
   forceMount?: boolean
+  overlayClassName?: string
 }) => {
   const content = (
     <DialogPrimitive.Content
@@ -54,7 +56,7 @@ const DialogContent = ({
   if (forceMount) {
     return (
       <>
-        <DialogOverlay />
+        <DialogOverlay className={overlayClassName} />
         {content}
       </>
     )
@@ -62,7 +64,7 @@ const DialogContent = ({
 
   return (
     <DialogPortal>
-      <DialogOverlay />
+      <DialogOverlay className={overlayClassName} />
       {content}
     </DialogPortal>
   )

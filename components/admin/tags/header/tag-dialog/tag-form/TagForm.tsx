@@ -1,6 +1,8 @@
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
+import IconPicker from '@components/icon-picker'
+import TagChip from '@components/tag-chip'
 import { Button } from '@components/ui/button'
 import { DialogFooter } from '@components/ui/dialog'
 import {
@@ -16,6 +18,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 
 const formSchema = z.object({
   label: z.string().min(1, 'Label is required'),
+  icon: z.string().nullable(),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -33,8 +36,10 @@ const TagForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       label: tag?.label ?? '',
+      icon: tag?.icon ?? null,
     },
   })
+  const label = useWatch({ control: form.control, name: 'label' })
 
   function handleSubmit(data: FormValues) {
     onSubmit(data)
@@ -60,6 +65,34 @@ const TagForm = ({
           )}
         />
 
+        <FormField
+          control={form.control}
+          name="icon"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Tag icon (optional)</FormLabel>
+              <FormControl>
+                <IconPicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  description="Select an icon to show on this tag"
+                  allowNone
+                  monochrome
+                  renderPreview={(icon) => (
+                    <TagChip
+                      tag={{
+                        label: label || 'Tag',
+                        icon: icon.name,
+                      }}
+                    />
+                  )}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <DialogFooter className="flex flex-col gap-2">
           {tag && (
             <Tooltip>
@@ -71,7 +104,7 @@ const TagForm = ({
                   className="opacity-85"
                   onClick={onDelete}
                 >
-                  Remove
+                  Remove tag
                 </Button>
               </TooltipTrigger>
               {tag?.listings?.length > 0 && (

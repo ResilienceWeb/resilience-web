@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server'
 import { requireWebEditor } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { isSelectableIcon } from '@helpers/icons'
 
 export async function GET(request: NextRequest) {
   try {
@@ -35,6 +36,7 @@ export async function GET(request: NextRequest) {
       select: {
         id: true,
         label: true,
+        icon: true,
         webId: true,
         // A tag only ever belongs to one web, so scoping by webId does not
         // change the count - it just lets the aggregate use the webId index
@@ -79,6 +81,10 @@ export async function POST(request: NextRequest) {
   const denied = await requireWebEditor(request, webId)
   if (denied) return denied
 
+  if (body.icon != null && !isSelectableIcon(body.icon)) {
+    return Response.json({ error: 'Unknown icon' }, { status: 400 })
+  }
+
   try {
     // Enumerated, not spread: `data: body` would let the caller set `webId`
     // past the check above, or reach other webs through `listings`.
@@ -86,6 +92,7 @@ export async function POST(request: NextRequest) {
       data: {
         webId,
         label: body.label,
+        icon: body.icon ?? null,
       },
       include: {
         web: {

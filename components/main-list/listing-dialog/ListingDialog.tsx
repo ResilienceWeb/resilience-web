@@ -18,6 +18,7 @@ import AlsoOnWebs from '@components/also-on-webs'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
 import RichText from '@components/rich-text'
+import TagLabel from '@components/tag-label'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 import {
@@ -231,13 +232,14 @@ const ListingDialog = ({
                   key={tag.id}
                   href={`${getWebUrl(subdomain)}?web=${webSearchParam}&tags=${urlEncodedTag}`}
                   onClick={onClose}
+                  className="flex"
                 >
                   <Badge
                     className="transition-opacity select-none hover:opacity-80"
                     style={{ backgroundColor: tag.color ?? '#797d7a' }}
                     clickable
                   >
-                    #{tag.label}
+                    <TagLabel tag={tag} />
                   </Badge>
                 </Link>
               )
