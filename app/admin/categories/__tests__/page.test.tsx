@@ -279,7 +279,7 @@ describe('deleting a tag', () => {
         await screen.findByRole('row', { name: /^Volunteer-run\b/ }),
       ).getByRole('button', { name: 'Edit' }),
     )
-    await user.click(await screen.findByRole('button', { name: 'Remove' }))
+    await user.click(await screen.findByRole('button', { name: 'Remove tag' }))
 
     await waitFor(() => expect(deleted.calls).toHaveLength(1))
     expect(deleted.calls[0].url.pathname).toBe('/api/tags/5')
@@ -298,7 +298,9 @@ describe('deleting a tag', () => {
       ),
     )
 
-    expect(await screen.findByRole('button', { name: 'Remove' })).toBeDisabled()
+    expect(
+      await screen.findByRole('button', { name: 'Remove tag' }),
+    ).toBeDisabled()
   })
 })
 

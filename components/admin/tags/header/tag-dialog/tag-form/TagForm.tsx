@@ -104,7 +104,7 @@ const TagForm = ({
                   className="opacity-85"
                   onClick={onDelete}
                 >
-                  Remove
+                  Remove tag
                 </Button>
               </TooltipTrigger>
               {tag?.listings?.length > 0 && (
