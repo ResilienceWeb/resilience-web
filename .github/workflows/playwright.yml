@@ -34,8 +34,8 @@ jobs:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
     steps:
-    - uses: actions/checkout@v6
-    - uses: actions/setup-node@v6
+    - uses: actions/checkout@v7
+    - uses: actions/setup-node@v7
       with:
         node-version-file: '.nvmrc'
     - name: Install dependencies
@@ -52,7 +52,7 @@ jobs:
       run: npx playwright test
       env:
         NEXT_PUBLIC_BASE_URL: http://localhost:4000
-    - uses: actions/upload-artifact@v5
+    - uses: actions/upload-artifact@v7
       if: always()
       with:
         name: playwright-report
