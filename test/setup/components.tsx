@@ -140,7 +140,7 @@ vi.mock('@sentry/nextjs', () => ({
 
 // `error` so a request the tests forgot to stub fails loudly instead of
 // silently resolving to something unexpected.
-beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
+beforeAll(() => server.listen({ onUnhandledFrame: 'error' }))
 
 afterEach(() => {
   cleanup()
