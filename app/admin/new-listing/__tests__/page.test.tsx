@@ -107,6 +107,37 @@ describe('tagging a listing', () => {
     expect(screen.queryByRole('option', { name: 'Retired' })).toBeNull()
   })
 
+  it("shows each tag's icon in the list and on the chosen tag", async () => {
+    server.use(
+      stubTags([
+        { id: 1, label: 'Bristol only', webId: 3 },
+        {
+          id: 2,
+          label: 'Food Bank',
+          webId: null,
+          key: 'food-bank',
+          icon: 'gm:food-bank',
+        },
+      ]),
+    )
+    const { user } = await openTagPicker()
+    const iconIn = (element: HTMLElement) =>
+      element.querySelector('image')?.getAttribute('href')
+
+    const foodBank = await screen.findByRole('option', { name: 'Food Bank' })
+    expect(iconIn(foodBank)).toBe('/icons/green-map/food-bank.svg')
+    expect(iconIn(screen.getByRole('option', { name: 'Bristol only' }))).toBe(
+      undefined,
+    )
+
+    await user.click(foodBank)
+
+    const chip = screen.getByRole('button', {
+      name: 'Remove Food Bank',
+    }).parentElement
+    expect(iconIn(chip)).toBe('/icons/green-map/food-bank.svg')
+  })
+
   it("says why a tag can't be created with a shared tag's name", async () => {
     server.use(
       http.post('/api/tags', () =>

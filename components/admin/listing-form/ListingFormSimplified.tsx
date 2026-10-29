@@ -39,6 +39,7 @@ import useTags from '@hooks/tags/useTags'
 import Actions from './Actions'
 import ImageUpload from './ImageUpload'
 import SocialMedia from './SocialMedia'
+import { tagOption } from './tagOption'
 
 const SetLocationMap = dynamic(
   () => import('@components/admin/set-location-map'),
@@ -188,10 +189,7 @@ const ListingFormSimplified = ({
   const tagOptions: MultiSelectOption[] = (() => {
     if (!tags) return []
 
-    return tags.filter(isPickableTag).map((t) => ({
-      value: t.id,
-      label: t.label,
-    }))
+    return tags.filter(isPickableTag).map(tagOption)
   })()
 
   const handleSubmitForm = (data: any) => {

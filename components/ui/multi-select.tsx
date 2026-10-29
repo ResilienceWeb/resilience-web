@@ -52,6 +52,10 @@ function MultiSelect({
   const [isCreating, setIsCreating] = React.useState(false)
 
   const selectedValues = new Set(value.map((v) => v.value))
+  // Selected values are often kept as plain { value, label } in form state,
+  // so a chip borrows its icon from the matching option
+  const iconFor = (item: MultiSelectOption) =>
+    item.icon ?? options.find((o) => o.value === item.value)?.icon
 
   const handleSelect = (option: MultiSelectOption) => {
     if (selectedValues.has(option.value)) {
@@ -121,12 +125,12 @@ function MultiSelect({
                     : undefined
                 }
               >
-                {item.icon && (
+                {iconFor(item) && (
                   // Icons come tinted with the category color for the white
                   // dropdown; on the color-filled pill force them to match the
                   // label text so they stay legible
                   <span className="mr-0.5 flex h-3 w-3 items-center justify-center [&_svg]:[color:currentColor]!">
-                    {item.icon}
+                    {iconFor(item)}
                   </span>
                 )}
                 {item.label}
