@@ -36,7 +36,7 @@ const NewTagDialog: React.FC<props> = ({ onSubmit, isOpen, onClose }) => {
         </DialogDescription>
 
         <section aria-labelledby="shared-tags-heading">
-          <h3 id="shared-tags-heading" className="mb-2 text-sm font-medium">
+          <h3 id="shared-tags-heading" className="mb-3 text-base font-semibold">
             Shared tags
           </h3>
           {isError ? (
@@ -73,9 +73,12 @@ const NewTagDialog: React.FC<props> = ({ onSubmit, isOpen, onClose }) => {
         <Separator />
 
         <section aria-labelledby="own-tag-heading">
-          <h3 id="own-tag-heading" className="mb-2 text-sm font-medium">
+          <h3 id="own-tag-heading" className="text-base font-semibold">
             Or create your own
           </h3>
+          <p className="mb-3 text-sm text-gray-600">
+            A tag that only your web uses.
+          </p>
           <TagForm onSubmit={onSubmit} />
         </section>
       </DialogContent>

@@ -18,6 +18,11 @@ const faqs = [
       'Every listing belongs to exactly one category, which determines its colour on the web. Tags are optional labels that cut across categories — a listing can have several, and visitors can filter the web by tag.',
   },
   {
+    question: 'What are shared tags?',
+    answer:
+      'Shared tags are a common set of tags, such as "Food Bank" or "Repair Café", that every web can use and that mean the same thing wherever they appear. Add the ones that suit your web with the "Add tag" button on the Tags tab, and they will then be available when tagging listings. Shared tags cannot be renamed or given a different icon, but you can remove one from your web at any time, which also takes it off your listings. If none of them fit, you can create your own tag instead.',
+  },
+  {
     question: 'Why can I not delete a category?',
     answer:
       'A category cannot be deleted while there are still listings using it. Move those listings to a different category first, then delete it.',

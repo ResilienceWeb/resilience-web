@@ -139,7 +139,7 @@ const List = ({ tags }) => {
                   return (
                     <TableCell key={index} className="max-w-[100px]">
                       <span className="flex items-center">
-                        <TagIcon name={row.icon} />
+                        <TagIcon name={row.icon} className="mr-2 h-5 w-5" />
                         {cell}
                         {isSharedTag(row) && (
                           <Badge variant="secondary" className="ml-2">
