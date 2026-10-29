@@ -29,7 +29,7 @@ const Header = () => {
           className="gap-2"
         >
           <HiPlus className="h-5 w-5" />
-          New tag
+          Add tag
         </Button>
       </div>
       <NewTagDialog

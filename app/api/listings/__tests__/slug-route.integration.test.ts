@@ -171,15 +171,17 @@ describe('PUT /api/listings/[slug]', () => {
 })
 
 describe('PUT /api/listings/[slug] tags', () => {
-  it("adds this web's tags and shared tags, and nothing else", async () => {
+  it("adds this web's tags and the shared tags it has added, and nothing else", async () => {
     const web = await createWeb({ slug: 'bristol' })
     const otherWeb = await createWeb({ slug: 'cambridge' })
     const ours = await createTag(web.id, { label: 'Ours' })
     const theirs = await createTag(otherWeb.id, { label: 'Theirs' })
-    const shared = await createSharedTag({ label: 'Shared' })
+    const shared = await createSharedTag({ label: 'Shared', addedTo: [web.id] })
+    const notAdded = await createSharedTag({ label: 'Not added' })
     const retired = await createSharedTag({
       label: 'Retired',
       retiredAt: new Date(),
+      addedTo: [web.id],
     })
     const listing = await createListing(web.id, { slug: 'food-hub' })
     const { user } = await createUserWithWebAccess(web.id, WebRole.EDITOR)
@@ -190,7 +192,9 @@ describe('PUT /api/listings/[slug] tags', () => {
       listingForm({
         id: String(listing.id),
         webId: String(web.id),
-        tags: [ours, theirs, shared, retired].map((t) => t.id).join(','),
+        tags: [ours, theirs, shared, notAdded, retired]
+          .map((t) => t.id)
+          .join(','),
       }),
     )
 

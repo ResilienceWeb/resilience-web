@@ -172,7 +172,7 @@ const List = ({ tags }) => {
                         size="sm"
                         className="whitespace-normal"
                       >
-                        Remove from all listings in this web
+                        Remove from this web
                       </Button>
                     )}
                   </div>
@@ -194,8 +194,8 @@ const List = ({ tags }) => {
         onClose={() => setIsRemoveDialogOpen(false)}
         handleRemove={handleRemoveFromWeb}
         titleLabel={`Remove "${selectedTag?.label}"`}
-        description="This takes the shared tag off every listing in this web. Other webs keep it, and you can add it to listings again later."
-        buttonLabel="Remove from all listings"
+        description="This removes the shared tag from this web and takes it off every listing in it. Other webs keep it, and you can add it again later."
+        buttonLabel="Remove from this web"
       />
       {selectedTag && !isLoadingListings && isAddToListingsDialogOpen && (
         <AddTagToListingsDialog

@@ -16,6 +16,7 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
+import useSharedTags from '@hooks/tags/useSharedTags'
 import useTags from '@hooks/tags/useTags'
 
 const formSchema = z.object({
@@ -43,15 +44,17 @@ const TagForm = ({
   })
   const label = useWatch({ control: form.control, name: 'label' })
   const { tags } = useTags()
+  const { sharedTags } = useSharedTags()
   const isUsed = (tag?._count?.listings ?? 0) > 0
 
   function handleSubmit(data: FormValues) {
-    const sharedTag = tags?.find(
-      (t) => isSharedTag(t) && sameTagLabel(t.label, data.label),
-    )
+    const sharedTag = [
+      ...(tags?.filter(isSharedTag) ?? []),
+      ...(sharedTags ?? []),
+    ].find((t) => sameTagLabel(t.label, data.label))
     if (sharedTag) {
       form.setError('label', {
-        message: `"${sharedTag.label}" is already a shared tag, which every web can use. Pick it in a listing's tags instead.`,
+        message: `"${sharedTag.label}" is already a shared tag, which every web can use. Add it from the shared tags instead.`,
       })
       return
     }

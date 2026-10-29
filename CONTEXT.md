@@ -11,7 +11,7 @@ A short label on a listing within a web, optionally shown with an icon, describi
 _Avoid_: Label, attribute, feature
 
 **Shared tag**:
-A tag drawn from the one list common to every web, so that it means the same thing wherever it is used and can be searched across webs.
+A tag drawn from the one list common to every web, so that it means the same thing wherever it is used and can be searched across webs. A web's editors add the shared tags they want to their web; only those can go on its listings.
 _Avoid_: Preset, global tag, Green Map tag
 
 **Retired shared tag**:

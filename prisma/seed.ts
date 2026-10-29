@@ -675,7 +675,7 @@ async function seedUsers() {
 
 async function seedWeb(web: SeedWeb) {
   // The shared tags come from the migrations; a seed tag with a shared tag's
-  // name uses it rather than making a web tag that duplicates it.
+  // name adds it to the web rather than making a web tag that duplicates it.
   const sharedTags = await prisma.tag.findMany({ where: { webId: null } })
   const sharedTagFor = (label: string) =>
     sharedTags.find((t) => sameTagLabel(t.label, label))
@@ -703,6 +703,12 @@ async function seedWeb(web: SeedWeb) {
         create: web.tags
           .filter((label) => !sharedTagFor(label))
           .map((label) => ({ label })),
+      },
+      sharedTags: {
+        create: web.tags
+          .map(sharedTagFor)
+          .filter(Boolean)
+          .map((tag) => ({ tagId: tag.id })),
       },
     },
     include: { categories: true, tags: true },

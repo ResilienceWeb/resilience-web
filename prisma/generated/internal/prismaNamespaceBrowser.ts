@@ -59,6 +59,7 @@ export const ModelName = {
   Web: 'Web',
   Category: 'Category',
   Tag: 'Tag',
+  WebSharedTag: 'WebSharedTag',
   Listing: 'Listing',
   ListingPlacement: 'ListingPlacement',
   ListingSocialMedia: 'ListingSocialMedia',
@@ -208,6 +209,15 @@ export const TagScalarFieldEnum = {
 } as const
 
 export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
+
+
+export const WebSharedTagScalarFieldEnum = {
+  webId: 'webId',
+  tagId: 'tagId',
+  addedAt: 'addedAt'
+} as const
+
+export type WebSharedTagScalarFieldEnum = (typeof WebSharedTagScalarFieldEnum)[keyof typeof WebSharedTagScalarFieldEnum]
 
 
 export const ListingScalarFieldEnum = {

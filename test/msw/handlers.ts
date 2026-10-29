@@ -34,6 +34,7 @@ export interface TagStub {
 export const handlers = [
   http.get('/api/categories', () => HttpResponse.json({ data: [] })),
   http.get('/api/tags', () => HttpResponse.json({ data: [] })),
+  http.get('/api/tags/shared', () => HttpResponse.json({ data: [] })),
 ]
 
 /** Categories as `/api/categories?web=…` returns them. */
@@ -52,6 +53,29 @@ export function stubCategories(categories: CategoryStub[]) {
 /** Tags as `/api/tags?web=…` returns them. */
 export function stubTags(tags: TagStub[]) {
   return http.get('/api/tags', () => HttpResponse.json({ data: tags }))
+}
+
+export interface SharedTagStub {
+  id: number
+  label: string
+  key?: string
+  icon?: string | null
+  /** Whether the web has added it already. */
+  added?: boolean
+}
+
+/** The shared tags a web could add, as `/api/tags/shared?web=…` returns them. */
+export function stubSharedTags(tags: SharedTagStub[]) {
+  return http.get('/api/tags/shared', () =>
+    HttpResponse.json({
+      data: tags.map((t) => ({
+        key: t.label.toLowerCase().replace(/\W+/g, '-'),
+        icon: null,
+        added: false,
+        ...t,
+      })),
+    }),
+  )
 }
 
 /** Listings as `/api/listings?web=…` returns them. */

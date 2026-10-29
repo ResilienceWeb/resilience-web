@@ -1,7 +1,8 @@
 /**
  * Folds web tags that duplicate a shared tag into it: for each web tag whose
  * label matches a shared tag's (ignoring case and surrounding space, nothing
- * fuzzier), its listings move to the shared tag and the web tag is deleted.
+ * fuzzier), its listings move to the shared tag, the web adds the shared tag,
+ * and the web tag is deleted.
  *
  * Prints what it would change and stops, unless given --apply. Rerun it
  * whenever a migration adds a shared tag.

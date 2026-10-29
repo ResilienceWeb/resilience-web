@@ -191,16 +191,20 @@ describe('POST /api/listings', () => {
     expect(placement?.tags).toEqual([])
   })
 
-  it('accepts a shared tag, but not a retired one', async () => {
+  it("accepts a shared tag the web has added, but not one it hasn't or a retired one", async () => {
     const web = await createWeb({ slug: 'bristol' })
-    const free = await createSharedTag({ label: 'Free' })
-    const retired = await createSharedTag({ retiredAt: new Date() })
+    const free = await createSharedTag({ label: 'Free', addedTo: [web.id] })
+    const notAdded = await createSharedTag({ label: 'Cycling' })
+    const retired = await createSharedTag({
+      retiredAt: new Date(),
+      addedTo: [web.id],
+    })
 
     await post(
       newListingForm({
         webId: String(web.id),
         pending: 'true',
-        tags: `${free.id},${retired.id}`,
+        tags: `${free.id},${notAdded.id},${retired.id}`,
       }),
     )
 

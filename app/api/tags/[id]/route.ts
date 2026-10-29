@@ -4,7 +4,7 @@ import { requireWebEditor } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { isSelectableIcon } from '@helpers/icons'
-import { findSharedTagWithLabel } from '@db/tagRepository'
+import { findSharedTagWithLabel, sharedTagConflict } from '@db/tagRepository'
 import { findTag, sharedTagRefusal } from '../authorization.ts'
 
 export async function PATCH(
@@ -33,10 +33,7 @@ export async function PATCH(
   const sharedTag =
     body.label !== undefined ? await findSharedTagWithLabel(body.label) : null
   if (sharedTag) {
-    return Response.json(
-      { error: `"${sharedTag.label}" is already a shared tag`, sharedTag },
-      { status: 409 },
-    )
+    return sharedTagConflict(sharedTag)
   }
 
   try {

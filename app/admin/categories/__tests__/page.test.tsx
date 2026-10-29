@@ -2,6 +2,7 @@ import {
   recordRequests,
   stubCategories,
   stubListings,
+  stubSharedTags,
   stubTags,
 } from '@/test/msw/handlers'
 import { server } from '@/test/msw/server'
@@ -34,7 +35,7 @@ const TAGS = [
     webId: 3,
     _count: { listings: 1 },
   },
-  // Shared tags: the web's listings use the first, not the second
+  // A shared tag the web has added
   {
     id: 7,
     label: 'Food Bank',
@@ -42,13 +43,12 @@ const TAGS = [
     webId: null,
     _count: { listings: 2 },
   },
-  {
-    id: 8,
-    label: 'Cycling',
-    key: 'cycling',
-    webId: null,
-    _count: { listings: 0 },
-  },
+]
+
+const SHARED_TAGS = [
+  { id: 7, label: 'Food Bank', added: true },
+  { id: 8, label: 'Cycling' },
+  { id: 9, label: 'Composting' },
 ]
 
 const renderCategoriesPage = () =>
@@ -65,6 +65,7 @@ beforeEach(() => {
   server.use(
     stubCategories(CATEGORIES),
     stubTags(TAGS),
+    stubSharedTags(SHARED_TAGS),
     stubListings([
       {
         id: 1,
@@ -269,7 +270,7 @@ describe('creating a tag', () => {
     await screen.findByRole('cell', { name: 'Community' })
     await openTagsTab(user)
 
-    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.click(await screen.findByRole('button', { name: 'Add tag' }))
     await user.type(await screen.findByLabelText('Tag label'), 'Repair')
     await user.click(screen.getByRole('button', { name: 'Create' }))
 
@@ -285,7 +286,7 @@ describe('creating a tag', () => {
 
     await screen.findByRole('cell', { name: 'Community' })
     await openTagsTab(user)
-    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.click(await screen.findByRole('button', { name: 'Add tag' }))
 
     expect(await screen.findByRole('button', { name: 'Create' })).toBeDisabled()
     expect(created.calls).toHaveLength(0)
@@ -370,7 +371,7 @@ describe('giving a tag an icon', () => {
 
     await screen.findByRole('cell', { name: 'Community' })
     await openTagsTab(user)
-    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.click(await screen.findByRole('button', { name: 'Add tag' }))
     await user.type(await screen.findByLabelText('Tag label'), 'Food aid')
 
     await user.click(screen.getByRole('button', { name: 'Select an icon...' }))
@@ -399,7 +400,7 @@ describe('giving a tag an icon', () => {
 
     await screen.findByRole('cell', { name: 'Community' })
     await openTagsTab(user)
-    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.click(await screen.findByRole('button', { name: 'Add tag' }))
     await user.type(await screen.findByLabelText('Tag label'), 'Repair')
     await user.click(screen.getByRole('button', { name: 'Create' }))
 
@@ -438,7 +439,7 @@ describe('finding the right icon', () => {
     const { user } = renderCategoriesPage()
     await screen.findByRole('cell', { name: 'Community' })
     await openTagsTab(user)
-    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.click(await screen.findByRole('button', { name: 'Add tag' }))
     await user.click(
       await screen.findByRole('button', { name: 'Select an icon...' }),
     )
@@ -474,7 +475,7 @@ describe('previewing an icon', () => {
 
     await screen.findByRole('cell', { name: 'Community' })
     await openTagsTab(user)
-    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.click(await screen.findByRole('button', { name: 'Add tag' }))
     await user.type(await screen.findByLabelText('Tag label'), 'Food aid')
     await user.click(screen.getByRole('button', { name: 'Select an icon...' }))
     await user.click(await screen.findByRole('tab', { name: 'Green Map' }))
@@ -500,7 +501,7 @@ describe('picking a Font Awesome icon', () => {
 
     await screen.findByRole('cell', { name: 'Community' })
     await openTagsTab(user)
-    await user.click(await screen.findByRole('button', { name: /new tag/i }))
+    await user.click(await screen.findByRole('button', { name: 'Add tag' }))
     await user.type(await screen.findByLabelText('Tag label'), 'Gardening')
     await user.click(screen.getByRole('button', { name: 'Select an icon...' }))
 
@@ -547,7 +548,7 @@ describe('shared tags', () => {
     return rendered
   }
 
-  it('are listed, marked as shared, only when the web uses them', async () => {
+  it('the web has added are listed, marked as shared', async () => {
     await openTags()
 
     expect(rowFor('Food Bank')).toHaveTextContent('Shared')
@@ -556,25 +557,49 @@ describe('shared tags', () => {
     expect(screen.queryByRole('row', { name: /^Cycling\b/ })).toBeNull()
   })
 
-  it('cannot be edited, only taken off every listing in this web', async () => {
+  it('are offered in the Add tag dialog until the web adds them', async () => {
+    const added = recordRequests({ data: {} })
+    server.use(http.post('/api/tags/:id/web', added.resolver))
+    const { user } = await openTags()
+
+    await user.click(screen.getByRole('button', { name: 'Add tag' }))
+    const dialog = await screen.findByRole('dialog')
+    await within(dialog).findByRole('button', { name: 'Add Cycling' })
+    expect(
+      within(dialog).getByRole('button', { name: 'Add Composting' }),
+    ).toBeInTheDocument()
+    expect(
+      within(dialog).queryByRole('button', { name: 'Add Food Bank' }),
+    ).toBeNull()
+
+    await user.click(
+      within(dialog).getByRole('button', { name: 'Add Cycling' }),
+    )
+
+    await waitFor(() => expect(added.calls).toHaveLength(1))
+    expect(added.calls[0].url.pathname).toBe('/api/tags/8/web')
+    expect(added.calls[0].body).toEqual({ webId: 3 })
+  })
+
+  it('cannot be edited, only removed from this web', async () => {
     const removed = recordRequests({ data: {} })
-    server.use(http.delete('/api/tags/:id/listings', removed.resolver))
+    server.use(http.delete('/api/tags/:id/web', removed.resolver))
     const { user } = await openTags()
 
     const row = rowFor('Food Bank')
     expect(within(row).getByRole('button', { name: 'Edit' })).toBeDisabled()
 
     await user.click(
-      within(row).getByRole('button', {
-        name: 'Remove from all listings in this web',
-      }),
+      within(row).getByRole('button', { name: 'Remove from this web' }),
     )
     await user.click(
-      await screen.findByRole('button', { name: 'Remove from all listings' }),
+      within(await screen.findByRole('alertdialog')).getByRole('button', {
+        name: 'Remove from this web',
+      }),
     )
 
     await waitFor(() => expect(removed.calls).toHaveLength(1))
-    expect(removed.calls[0].url.pathname).toBe('/api/tags/7/listings')
+    expect(removed.calls[0].url.pathname).toBe('/api/tags/7/web')
     expect(removed.calls[0].body).toEqual({ webId: 3 })
   })
 
@@ -608,7 +633,7 @@ describe('shared tags', () => {
     server.use(http.post('/api/tags', created.resolver))
     const { user } = await openTags()
 
-    await user.click(screen.getByRole('button', { name: /new tag/i }))
+    await user.click(screen.getByRole('button', { name: 'Add tag' }))
     await user.type(await screen.findByLabelText('Tag label'), 'cycling ')
     await user.click(screen.getByRole('button', { name: 'Create' }))
 

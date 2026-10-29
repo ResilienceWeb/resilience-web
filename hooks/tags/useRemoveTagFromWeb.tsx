@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAppContext } from '@store/hooks'
 
 async function removeTagFromWebRequest({ tagId, webId }) {
-  const response = await fetch(`/api/tags/${tagId}/listings`, {
+  const response = await fetch(`/api/tags/${tagId}/web`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -17,7 +17,7 @@ async function removeTagFromWebRequest({ tagId, webId }) {
   return data
 }
 
-/** Takes a tag off every listing in the selected web: how a web drops a shared tag. */
+/** Removes a shared tag from the selected web, and so from its listings. */
 export default function useRemoveTagFromWeb() {
   const queryClient = useQueryClient()
   const { selectedWebSlug: webSlug, selectedWebId: webId } = useAppContext()
@@ -28,6 +28,9 @@ export default function useRemoveTagFromWeb() {
     onSettled: () => {
       void queryClient.invalidateQueries({
         queryKey: ['tags', { webSlug }],
+      })
+      void queryClient.invalidateQueries({
+        queryKey: ['sharedTags', { webSlug }],
       })
       void queryClient.invalidateQueries({ queryKey: ['listings'] })
     },

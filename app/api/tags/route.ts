@@ -4,7 +4,7 @@ import { requireWebEditor } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { isSelectableIcon } from '@helpers/icons'
-import { findSharedTagWithLabel, usableInWeb } from '@db/tagRepository'
+import { findSharedTagWithLabel, sharedTagConflict } from '@db/tagRepository'
 
 export async function GET(request: NextRequest) {
   try {
@@ -53,11 +53,13 @@ export async function GET(request: NextRequest) {
           },
         },
       },
-      // The web's own tags, the shared tags it could pick, and any retired
-      // shared tags its listings still carry
+      // The web's own tags, the shared tags it has added, and any shared tags
+      // its listings still carry. Retired ones are included so they can be
+      // seen and removed; the pickers leave them out.
       where: {
         OR: [
-          usableInWeb(web.id),
+          { webId: web.id },
+          { webId: null, addedToWebs: { some: { webId: web.id } } },
           { webId: null, listings: { some: { webId: web.id } } },
         ],
       },
@@ -95,10 +97,7 @@ export async function POST(request: NextRequest) {
 
   const sharedTag = await findSharedTagWithLabel(body.label)
   if (sharedTag) {
-    return Response.json(
-      { error: `"${sharedTag.label}" is already a shared tag`, sharedTag },
-      { status: 409 },
-    )
+    return sharedTagConflict(sharedTag)
   }
 
   try {

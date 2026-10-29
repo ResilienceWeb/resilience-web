@@ -4,6 +4,7 @@ import { sameTagLabel } from '../helpers/tags.ts'
 import type { PrismaClient } from '../prisma/generated/client.ts'
 
 export type DuplicateWebTag = {
+  webId: number
   webSlug: string
   webTag: { id: number; label: string }
   sharedTag: { id: number; label: string; key: string | null }
@@ -27,6 +28,7 @@ export async function findWebTagsDuplicatingSharedTags(
     select: {
       id: true,
       label: true,
+      webId: true,
       web: { select: { slug: true } },
       listings: { select: { id: true } },
       listingEdits: { select: { id: true } },
@@ -43,6 +45,7 @@ export async function findWebTagsDuplicatingSharedTags(
     }
     return [
       {
+        webId: webTag.webId,
         webSlug: webTag.web.slug,
         webTag: { id: webTag.id, label: webTag.label },
         sharedTag: {
@@ -59,7 +62,8 @@ export async function findWebTagsDuplicatingSharedTags(
 
 /**
  * Moves each duplicate's listings, and the pending edits that picked it, onto
- * the shared tag, then deletes the web tag.
+ * the shared tag, adds the shared tag to the web so its editors can keep using
+ * it, then deletes the web tag.
  */
 export async function mergeWebTagsIntoSharedTags(
   prisma: PrismaClient,
@@ -77,6 +81,16 @@ export async function mergeWebTagsIntoSharedTags(
             connect: duplicate.listingEditIds.map((id) => ({ id })),
           },
         },
+      }),
+      prisma.webSharedTag.upsert({
+        where: {
+          webId_tagId: {
+            webId: duplicate.webId,
+            tagId: duplicate.sharedTag.id,
+          },
+        },
+        create: { webId: duplicate.webId, tagId: duplicate.sharedTag.id },
+        update: {},
       }),
       prisma.tag.delete({ where: { id: duplicate.webTag.id } }),
     ])

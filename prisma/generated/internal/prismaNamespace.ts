@@ -405,6 +405,7 @@ export const ModelName = {
   Web: 'Web',
   Category: 'Category',
   Tag: 'Tag',
+  WebSharedTag: 'WebSharedTag',
   Listing: 'Listing',
   ListingPlacement: 'ListingPlacement',
   ListingSocialMedia: 'ListingSocialMedia',
@@ -437,7 +438,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "account" | "user" | "session" | "verification" | "verificationToken" | "web" | "category" | "tag" | "listing" | "listingPlacement" | "listingSocialMedia" | "listingAction" | "listingEdit" | "listingLocation" | "webLocation" | "permission" | "ownership" | "webAccess" | "webFeature" | "listingAnalyticsDaily" | "webAnalyticsDaily" | "notification" | "notificationReceipt" | "notificationWeb" | "rateLimit"
+    modelProps: "account" | "user" | "session" | "verification" | "verificationToken" | "web" | "category" | "tag" | "webSharedTag" | "listing" | "listingPlacement" | "listingSocialMedia" | "listingAction" | "listingEdit" | "listingLocation" | "webLocation" | "permission" | "ownership" | "webAccess" | "webFeature" | "listingAnalyticsDaily" | "webAnalyticsDaily" | "notification" | "notificationReceipt" | "notificationWeb" | "rateLimit"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1030,6 +1031,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TagCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TagCountAggregateOutputType> | number
+        }
+      }
+    }
+    WebSharedTag: {
+      payload: Prisma.$WebSharedTagPayload<ExtArgs>
+      fields: Prisma.WebSharedTagFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WebSharedTagFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebSharedTagPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WebSharedTagFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebSharedTagPayload>
+        }
+        findFirst: {
+          args: Prisma.WebSharedTagFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebSharedTagPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WebSharedTagFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebSharedTagPayload>
+        }
+        findMany: {
+          args: Prisma.WebSharedTagFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebSharedTagPayload>[]
+        }
+        create: {
+          args: Prisma.WebSharedTagCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebSharedTagPayload>
+        }
+        createMany: {
+          args: Prisma.WebSharedTagCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WebSharedTagCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebSharedTagPayload>[]
+        }
+        delete: {
+          args: Prisma.WebSharedTagDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebSharedTagPayload>
+        }
+        update: {
+          args: Prisma.WebSharedTagUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebSharedTagPayload>
+        }
+        deleteMany: {
+          args: Prisma.WebSharedTagDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WebSharedTagUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WebSharedTagUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebSharedTagPayload>[]
+        }
+        upsert: {
+          args: Prisma.WebSharedTagUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WebSharedTagPayload>
+        }
+        aggregate: {
+          args: Prisma.WebSharedTagAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWebSharedTag>
+        }
+        groupBy: {
+          args: Prisma.WebSharedTagGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebSharedTagGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WebSharedTagCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WebSharedTagCountAggregateOutputType> | number
         }
       }
     }
@@ -2446,6 +2521,15 @@ export const TagScalarFieldEnum = {
 export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
 
 
+export const WebSharedTagScalarFieldEnum = {
+  webId: 'webId',
+  tagId: 'tagId',
+  addedAt: 'addedAt'
+} as const
+
+export type WebSharedTagScalarFieldEnum = (typeof WebSharedTagScalarFieldEnum)[keyof typeof WebSharedTagScalarFieldEnum]
+
+
 export const ListingScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -2932,6 +3016,7 @@ export type GlobalOmitConfig = {
   web?: Prisma.WebOmit
   category?: Prisma.CategoryOmit
   tag?: Prisma.TagOmit
+  webSharedTag?: Prisma.WebSharedTagOmit
   listing?: Prisma.ListingOmit
   listingPlacement?: Prisma.ListingPlacementOmit
   listingSocialMedia?: Prisma.ListingSocialMediaOmit
