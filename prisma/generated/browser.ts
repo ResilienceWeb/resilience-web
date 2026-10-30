@@ -58,6 +58,11 @@ export type Category = Prisma.CategoryModel
  */
 export type Tag = Prisma.TagModel
 /**
+ * Model WebSharedTag
+ * A shared tag a web has chosen to use, which puts it in that web's pickers.
+ */
+export type WebSharedTag = Prisma.WebSharedTagModel
+/**
  * Model Listing
  * 
  */

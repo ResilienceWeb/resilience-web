@@ -1,6 +1,7 @@
 import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
+import { isSharedTag, sameTagLabel } from '@helpers/tags'
 import IconPicker from '@components/icon-picker'
 import TagChip from '@components/tag-chip'
 import { Button } from '@components/ui/button'
@@ -15,6 +16,8 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
+import useSharedTags from '@hooks/tags/useSharedTags'
+import useTags from '@hooks/tags/useTags'
 
 const formSchema = z.object({
   label: z.string().min(1, 'Label is required'),
@@ -40,8 +43,21 @@ const TagForm = ({
     },
   })
   const label = useWatch({ control: form.control, name: 'label' })
+  const { tags } = useTags()
+  const { sharedTags } = useSharedTags()
+  const isUsed = (tag?._count?.listings ?? 0) > 0
 
   function handleSubmit(data: FormValues) {
+    const sharedTag = [
+      ...(tags?.filter(isSharedTag) ?? []),
+      ...(sharedTags ?? []),
+    ].find((t) => sameTagLabel(t.label, data.label))
+    if (sharedTag) {
+      form.setError('label', {
+        message: `"${sharedTag.label}" is already a shared tag, which every web can use. Add it from the shared tags instead.`,
+      })
+      return
+    }
     onSubmit(data)
   }
 
@@ -100,14 +116,14 @@ const TagForm = ({
                 <Button
                   type="button"
                   variant="destructive"
-                  disabled={tag?.listings?.length > 0}
+                  disabled={isUsed}
                   className="opacity-85"
                   onClick={onDelete}
                 >
                   Remove tag
                 </Button>
               </TooltipTrigger>
-              {tag?.listings?.length > 0 && (
+              {isUsed && (
                 <TooltipContent>
                   <p>
                     To delete this tag, first ensure there are no listings

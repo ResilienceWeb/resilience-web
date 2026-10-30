@@ -12,6 +12,7 @@ import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingCreatedEmail from '@components/emails/ListingCreatedEmail'
 import ListingProposedAcceptedEmail from '@components/emails/ListingProposedAcceptedEmail'
+import { findTagsUsableInWeb } from '@db/tagRepository'
 
 function exclude(data, keys) {
   return Object.fromEntries(
@@ -191,11 +192,10 @@ export async function PUT(request) {
     const socialsData = socials ? JSON.parse(socials) : []
     const actionsData = actions ? JSON.parse(actions) : []
 
-    // Prepare tags
-    const tagsArray = tags !== '' ? tags.split(',') : []
-    const tagsToConnect = tagsArray.map((tagId) => ({
-      id: Number(tagId),
-    }))
+    const tagsToConnect = await findTagsUsableInWeb(
+      tags ? tags.split(',') : [],
+      placementWebId,
+    )
     const removedTagsArray = removedTags !== '' ? removedTags.split(',') : []
     const tagsToDisconnect = removedTagsArray.map((tagId) => ({
       id: Number(tagId),

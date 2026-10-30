@@ -3,6 +3,7 @@ import {
   recordRequests,
   stubCategories,
   stubListingEdits,
+  stubTags,
   stubWeb,
 } from '@/test/msw/handlers'
 import { server } from '@/test/msw/server'
@@ -155,5 +156,37 @@ describe('a listing that is already under review', () => {
     )
 
     expect(router.back).toHaveBeenCalled()
+  })
+})
+
+describe("the listing's tags", () => {
+  it('show their icons', async () => {
+    server.use(
+      stubTags([
+        {
+          id: 2,
+          label: 'Food Bank',
+          webId: null,
+          key: 'food-bank',
+          icon: 'gm:food-bank',
+        },
+      ]),
+    )
+    renderPage(
+      <EditListing
+        listing={{ ...LISTING, tags: [{ id: 2, label: 'Food Bank' }] }}
+        webSlug="bristol"
+      />,
+    )
+
+    const chip = (
+      await screen.findByRole('button', { name: 'Remove Food Bank' })
+    ).parentElement
+    await waitFor(() =>
+      expect(chip.querySelector('image')).toHaveAttribute(
+        'href',
+        '/icons/green-map/food-bank.svg',
+      ),
+    )
   })
 })

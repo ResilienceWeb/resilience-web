@@ -24,14 +24,23 @@ const columns = [
     accessor: 'listings',
   },
   {
-    Header: 'Icon',
-    accessor: 'icon',
-  },
-  {
     Header: 'Color',
     accessor: 'color',
   },
 ]
+
+/** The same size as a tag's icon in the tags table, but in the category's colour. */
+const CategoryIcon = ({ category }) => {
+  const Icon = getIcon(category.icon)?.icon
+  if (!Icon) return null
+  return (
+    <Icon
+      className="mr-2 h-5 w-5 shrink-0"
+      style={{ color: `#${category.color}` }}
+      aria-hidden="true"
+    />
+  )
+}
 
 const List = ({ categories }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -103,30 +112,12 @@ const List = ({ categories }) => {
                     )
                   }
 
-                  if (column.accessor === 'icon') {
-                    const DisplayIcon = getIcon(cell)?.icon
-
-                    if (!DisplayIcon) {
-                      return (
-                        <TableCell key={index}>
-                          <p>no icon</p>
-                        </TableCell>
-                      )
-                    }
-
-                    return (
-                      <TableCell key={index}>
-                        <DisplayIcon
-                          className="h-6! w-6!"
-                          style={{ color: `#${row.color}` }}
-                        />
-                      </TableCell>
-                    )
-                  }
-
                   return (
                     <TableCell key={index} className="max-w-[100px]">
-                      {cell}
+                      <span className="flex items-center">
+                        <CategoryIcon category={row} />
+                        {cell}
+                      </span>
                     </TableCell>
                   )
                 })}

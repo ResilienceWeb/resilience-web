@@ -11,6 +11,7 @@ import uploadImage from '@helpers/uploadImage'
 import { stringToBoolean } from '@helpers/utils'
 import ListingEditProposedAdminEmail from '@components/emails/ListingEditProposedAdminEmail'
 import { getListingEdits } from '@db/listingEditRepository'
+import { findTagsUsableInWeb } from '@db/tagRepository'
 
 export async function GET(
   request: NextRequest,
@@ -79,7 +80,7 @@ export async function POST(request, props) {
     const actions = formData.get('actions')
     const actionsData = actions ? JSON.parse(actions) : []
     const tags = formData.get('tags')
-    const tagsData: number[] = tags ? JSON.parse(tags) : []
+    const tagsData: unknown[] = tags ? JSON.parse(tags) : []
     const latitude = formData.get('latitude')
     const longitude = formData.get('longitude')
     const locationDescription = formData.get('locationDescription')
@@ -165,7 +166,7 @@ export async function POST(request, props) {
         })),
       },
       tags: {
-        connect: tagsData.map((id) => ({ id })),
+        connect: await findTagsUsableInWeb(tagsData, placement.webId),
       },
       location: locationData,
     }

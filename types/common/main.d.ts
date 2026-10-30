@@ -51,8 +51,17 @@ declare global {
     }
   }>
 
+  /** A tag as `/api/tags?web=…` returns it, counting its listings in that web. */
   type TagWithListings = Prisma.TagGetPayload<{
-    include: { listings: true }
+    select: {
+      id: true
+      label: true
+      icon: true
+      key: true
+      retiredAt: true
+      webId: true
+      _count: { select: { listings: true } }
+    }
   }>
 
   type ListingNodeType = {

@@ -56,6 +56,31 @@ export async function createTag(
   })
 }
 
+/**
+ * A tag common to every web: no web of its own, found by its `key`. Only the
+ * webs in `addedTo` have added it, which is what lets their listings pick it.
+ */
+export async function createSharedTag({
+  addedTo = [],
+  ...overrides
+}: Partial<{
+  key: string
+  label: string
+  icon: string | null
+  retiredAt: Date | null
+  addedTo: number[]
+}> = {}) {
+  const id = uniq()
+  return prisma.tag.create({
+    data: {
+      key: `shared-${id}`,
+      label: `Shared ${id}`,
+      ...overrides,
+      addedToWebs: { create: addedTo.map((webId) => ({ webId })) },
+    },
+  })
+}
+
 export async function createUser(
   overrides: Partial<{ email: string; name: string; role: string }> = {},
 ) {

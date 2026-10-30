@@ -121,6 +121,7 @@ model Web {
   listingEdits          ListingEdit[]
   listingAnalyticsDaily ListingAnalyticsDaily[]
   notificationTargets   NotificationWeb[]
+  sharedTags            WebSharedTag[]
 
   @@map("Location")
 }
@@ -146,14 +147,32 @@ model Tag {
   id           Int                @id @default(autoincrement())
   label        String
   icon         String?
+  // Set only on shared tags, which have no web (see docs/adr/0001)
+  key          String?            @unique
+  retiredAt    DateTime?          @map("retired_at")
   webId        Int?
   web          Web?               @relation(fields: [webId], references: [id])
   listings     ListingPlacement[]
   listingEdits ListingEdit[]
+  // The webs that have added this shared tag; empty on a web tag
+  addedToWebs  WebSharedTag[]
 
   @@unique([webId, label], name: "tagIdentifier")
   @@index([webId, id])
   @@map("tags")
+}
+
+/// A shared tag a web has chosen to use, which puts it in that web's pickers.
+model WebSharedTag {
+  webId   Int
+  web     Web      @relation(fields: [webId], references: [id], onDelete: Cascade)
+  tagId   Int
+  tag     Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  addedAt DateTime @default(now()) @map("added_at")
+
+  @@id([webId, tagId])
+  @@index([tagId])
+  @@map("web_shared_tags")
 }
 
 model Listing {

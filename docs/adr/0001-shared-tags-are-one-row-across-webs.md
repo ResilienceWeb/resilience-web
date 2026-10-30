@@ -8,6 +8,7 @@ Tags otherwise belong to exactly one web, but a shared tag is a single `Tag` row
 
 ## Consequences
 
-- A `null` `webId` on a tag is deliberate: it marks a shared tag, not missing data. Code that lists or counts a web's tags must include the shared tags its listings use.
-- Web editors cannot edit or delete a shared tag; the tag routes already refuse tags without a web. Removing a shared tag from a web means removing it from that web's listings.
+- A `null` `webId` on a tag is deliberate: it marks a shared tag, not missing data. Code that lists or counts a web's tags must include the shared tags it has added, and any its listings still use.
+- A web chooses which shared tags it uses: adding one (a `WebSharedTag` row) puts it in that web's pickers, and webs start with none. Removing it also takes it off that web's listings.
+- Web editors cannot edit or delete a shared tag; the tag routes already refuse tags without a web.
 - Shared tags are retired, never deleted: a retired one leaves the pickers but stays on listings that have it.

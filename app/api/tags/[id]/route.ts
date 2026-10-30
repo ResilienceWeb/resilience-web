@@ -4,7 +4,8 @@ import { requireWebEditor } from '@/lib/api-authorization'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
 import { isSelectableIcon } from '@helpers/icons'
-import { findTagWebId } from '../authorization.ts'
+import { findSharedTagWithLabel, sharedTagConflict } from '@db/tagRepository'
+import { findTag, sharedTagRefusal } from '../authorization.ts'
 
 export async function PATCH(
   request: NextRequest,
@@ -14,16 +15,25 @@ export async function PATCH(
   const tagId = Number(params.id)
   const body = await request.json()
 
-  const webId = await findTagWebId(tagId)
-  if (webId === null) {
+  const existing = await findTag(tagId)
+  if (!existing) {
     return Response.json({ error: 'Tag not found' }, { status: 404 })
   }
+  if (existing.webId === null) {
+    return sharedTagRefusal()
+  }
 
-  const denied = await requireWebEditor(request, webId)
+  const denied = await requireWebEditor(request, existing.webId)
   if (denied) return denied
 
   if (body.icon != null && !isSelectableIcon(body.icon)) {
     return Response.json({ error: 'Unknown icon' }, { status: 400 })
+  }
+
+  const sharedTag =
+    body.label !== undefined ? await findSharedTagWithLabel(body.label) : null
+  if (sharedTag) {
+    return sharedTagConflict(sharedTag)
   }
 
   try {
@@ -63,12 +73,15 @@ export async function DELETE(
   const params = await props.params
   const tagId = Number(params.id)
 
-  const webId = await findTagWebId(tagId)
-  if (webId === null) {
+  const existing = await findTag(tagId)
+  if (!existing) {
     return Response.json({ error: 'Tag not found' }, { status: 404 })
   }
+  if (existing.webId === null) {
+    return sharedTagRefusal()
+  }
 
-  const denied = await requireWebEditor(request, webId)
+  const denied = await requireWebEditor(request, existing.webId)
   if (denied) return denied
 
   try {

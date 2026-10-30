@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { Category } from '@prisma-client'
 import { z } from 'zod'
 import { scrollToFormError } from '@helpers/scrollToFormError'
+import { isPickableTag } from '@helpers/tags'
 import { generateSlug } from '@helpers/utils'
 import RichTextEditor from '@components/rich-text-editor'
 import { Button } from '@components/ui/button'
@@ -38,6 +39,7 @@ import useTags from '@hooks/tags/useTags'
 import Actions from './Actions'
 import ImageUpload from './ImageUpload'
 import SocialMedia from './SocialMedia'
+import { tagOption } from './tagOption'
 
 const SetLocationMap = dynamic(
   () => import('@components/admin/set-location-map'),
@@ -187,10 +189,7 @@ const ListingFormSimplified = ({
   const tagOptions: MultiSelectOption[] = (() => {
     if (!tags) return []
 
-    return tags.map((t) => ({
-      value: t.id,
-      label: t.label,
-    }))
+    return tags.filter(isPickableTag).map(tagOption)
   })()
 
   const handleSubmitForm = (data: any) => {

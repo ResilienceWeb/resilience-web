@@ -1,0 +1,528 @@
+import {
+  createListing,
+  createListingEdit,
+  createSharedTag,
+  createTag,
+  createUser,
+  createUserWithWebAccess,
+  createWeb,
+} from '@/test/factories'
+import { params, request } from '@/test/http'
+import { signInAs } from '@/test/session'
+import { WebRole } from '@prisma-client'
+import { describe, expect, it } from 'vitest'
+import prisma from '@prisma-rw'
+import {
+  findWebTagsDuplicatingSharedTags,
+  mergeWebTagsIntoSharedTags,
+} from '@db/sharedTagCleanup'
+import { PUT as putTagListings } from '../[id]/listings/route.ts'
+import { DELETE as deleteTag, PATCH as patchTag } from '../[id]/route.ts'
+import {
+  DELETE as removeTagFromWeb,
+  POST as addTagToWeb,
+} from '../[id]/web/route.ts'
+import { GET as getTags, POST as postTag } from '../route.ts'
+import { GET as getSharedTags } from '../shared/route.ts'
+
+/**
+ * Shared tags are one row with no web, used by listings in every web (see
+ * docs/adr/0001-shared-tags-are-one-row-across-webs.md). A web chooses which
+ * of them it uses. No web may change them, and each web only ever touches its
+ * own listings' use of them.
+ */
+
+const asEditorOf = async (webId: number) => {
+  const { user } = await createUserWithWebAccess(webId, WebRole.EDITOR)
+  signInAs({ id: user.id, email: user.email })
+  return user
+}
+
+const putListings = (tagId: number, body: Record<string, unknown>) =>
+  putTagListings(
+    request(`/api/tags/${tagId}/listings`, { method: 'PUT', body }),
+    params({ id: String(tagId) }),
+  )
+
+const addToWeb = (tagId: number, webId: number) =>
+  addTagToWeb(
+    request(`/api/tags/${tagId}/web`, { method: 'POST', body: { webId } }),
+    params({ id: String(tagId) }),
+  )
+
+const removeFromWeb = (tagId: number, webId: number) =>
+  removeTagFromWeb(
+    request(`/api/tags/${tagId}/web`, { method: 'DELETE', body: { webId } }),
+    params({ id: String(tagId) }),
+  )
+
+const webIdsThatAdded = async (tagId: number) =>
+  (
+    await prisma.webSharedTag.findMany({
+      where: { tagId },
+      orderBy: { webId: 'asc' },
+    })
+  ).map((added) => added.webId)
+
+const placementIdsTagged = async (tagId: number) =>
+  (
+    await prisma.listingPlacement.findMany({
+      where: { tags: { some: { id: tagId } } },
+      select: { id: true },
+      orderBy: { id: 'asc' },
+    })
+  ).map((p) => p.id)
+
+describe('a shared tag', () => {
+  it('can be used in two webs, and found in both by its key', async () => {
+    const foodBank = await createSharedTag({
+      key: 'food-bank',
+      label: 'Food Bank',
+    })
+    const bristol = await createWeb({ slug: 'bristol' })
+    const cambridge = await createWeb({ slug: 'cambridge' })
+    const inBristol = await createListing(bristol.id)
+    const inCambridge = await createListing(cambridge.id)
+
+    await asEditorOf(bristol.id)
+    await addToWeb(foodBank.id, bristol.id)
+    await putListings(foodBank.id, {
+      webId: bristol.id,
+      addedListingIds: [inBristol.placements[0]?.id],
+    })
+    await asEditorOf(cambridge.id)
+    await addToWeb(foodBank.id, cambridge.id)
+    await putListings(foodBank.id, {
+      webId: cambridge.id,
+      addedListingIds: [inCambridge.placements[0]?.id],
+    })
+
+    const tagged = await prisma.listingPlacement.findMany({
+      where: { tags: { some: { key: 'food-bank' } } },
+      select: { listingId: true, webId: true },
+      orderBy: { id: 'asc' },
+    })
+    expect(tagged).toEqual([
+      { listingId: inBristol.id, webId: bristol.id },
+      { listingId: inCambridge.id, webId: cambridge.id },
+    ])
+  })
+})
+
+describe('GET /api/tags', () => {
+  it("offers a web its own tags and the shared tags it has added, counting only that web's listings", async () => {
+    const bristol = await createWeb({ slug: 'bristol' })
+    const cambridge = await createWeb({ slug: 'cambridge' })
+    const free = await createSharedTag({
+      label: 'Free',
+      addedTo: [bristol.id, cambridge.id],
+    })
+    await createSharedTag({ label: 'Cycling', addedTo: [bristol.id] })
+    await createSharedTag({ label: 'Composting', addedTo: [cambridge.id] })
+    await createTag(bristol.id, { label: 'Bristol only' })
+    await createTag(cambridge.id, { label: 'Cambridge only' })
+    await createListing(bristol.id, { tagIds: [free.id] })
+    await createListing(cambridge.id, { tagIds: [free.id] })
+    await createListing(cambridge.id, { tagIds: [free.id] })
+
+    const response = await getTags(request('/api/tags?web=bristol'))
+    const tags = (await response.json()).data
+
+    expect(tags.map((t) => [t.label, t._count.listings]).sort()).toEqual([
+      ['Bristol only', 0],
+      ['Cycling', 0],
+      ['Free', 1],
+    ])
+  })
+
+  it('still lists a retired shared tag for a web that added it or whose listings carry it', async () => {
+    const bristol = await createWeb({ slug: 'bristol' })
+    const cambridge = await createWeb({ slug: 'cambridge' })
+    await createWeb({ slug: 'oxford' })
+    await createSharedTag({
+      label: 'Added',
+      retiredAt: new Date(),
+      addedTo: [bristol.id],
+    })
+    const carried = await createSharedTag({
+      label: 'Carried',
+      retiredAt: new Date(),
+    })
+    await createListing(cambridge.id, { tagIds: [carried.id] })
+
+    const labels = async (web: string) =>
+      (await (await getTags(request(`/api/tags?web=${web}`))).json()).data.map(
+        (t) => t.label,
+      )
+
+    expect(await labels('bristol')).toEqual(['Added'])
+    expect(await labels('cambridge')).toEqual(['Carried'])
+    expect(await labels('oxford')).toEqual([])
+  })
+})
+
+describe('GET /api/tags/shared', () => {
+  it('lists the shared tags a web could add, marking the ones it has', async () => {
+    const bristol = await createWeb({ slug: 'bristol' })
+    const cambridge = await createWeb({ slug: 'cambridge' })
+    await createSharedTag({ label: 'Free', addedTo: [bristol.id] })
+    await createSharedTag({ label: 'Cycling', addedTo: [cambridge.id] })
+    await createSharedTag({ label: 'Retired', retiredAt: new Date() })
+    await createTag(bristol.id, { label: 'Bristol only' })
+
+    const response = await getSharedTags(
+      request('/api/tags/shared?web=bristol'),
+    )
+    const tags = (await response.json()).data
+
+    expect(tags.map((t) => [t.label, t.added])).toEqual([
+      ['Cycling', false],
+      ['Free', true],
+    ])
+  })
+})
+
+describe('web editors', () => {
+  it('cannot rename or re-icon a shared tag', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const tag = await createSharedTag({ label: 'Free', icon: 'HandsHelping' })
+    await asEditorOf(web.id)
+
+    const response = await patchTag(
+      request(`/api/tags/${tag.id}`, {
+        method: 'PATCH',
+        body: { label: 'Gratis', icon: 'Leaf', webId: web.id },
+      }),
+      params({ id: String(tag.id) }),
+    )
+
+    expect(response.status).toBe(403)
+    expect(
+      await prisma.tag.findUnique({ where: { id: tag.id } }),
+    ).toMatchObject({ label: 'Free', icon: 'HandsHelping', webId: null })
+  })
+
+  it('cannot delete a shared tag, even as a global admin', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const tag = await createSharedTag()
+    await createListing(web.id, { tagIds: [tag.id] })
+    const admin = await createUser({ role: 'admin' })
+    signInAs({ id: admin.id, email: admin.email, role: 'admin' })
+
+    const response = await deleteTag(
+      request(`/api/tags/${tag.id}`, { method: 'DELETE' }),
+      params({ id: String(tag.id) }),
+    )
+
+    expect(response.status).toBe(403)
+    expect(await placementIdsTagged(tag.id)).toHaveLength(1)
+  })
+
+  it.each(['Free', ' free '])(
+    'cannot create a web tag named %j when that is a shared tag',
+    async (label) => {
+      const web = await createWeb({ slug: 'bristol' })
+      await createSharedTag({ label: 'Free' })
+      await asEditorOf(web.id)
+
+      const response = await postTag(
+        request('/api/tags', {
+          method: 'POST',
+          body: { label, webId: web.id },
+        }),
+      )
+
+      expect(response.status).toBe(409)
+      expect(await prisma.tag.count({ where: { webId: web.id } })).toBe(0)
+    },
+  )
+
+  it('cannot rename a web tag to a shared tag', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    await createSharedTag({ label: 'Free' })
+    const tag = await createTag(web.id, { label: 'No charge' })
+    await asEditorOf(web.id)
+
+    const response = await patchTag(
+      request(`/api/tags/${tag.id}`, {
+        method: 'PATCH',
+        body: { label: 'FREE' },
+      }),
+      params({ id: String(tag.id) }),
+    )
+
+    expect(response.status).toBe(409)
+    expect(
+      (await prisma.tag.findUnique({ where: { id: tag.id } }))?.label,
+    ).toBe('No charge')
+  })
+})
+
+describe('PUT /api/tags/[id]/listings for a shared tag', () => {
+  it('needs to be told which web it is changing', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const tag = await createSharedTag({ addedTo: [web.id] })
+    const listing = await createListing(web.id)
+    await asEditorOf(web.id)
+
+    const response = await putListings(tag.id, {
+      addedListingIds: [listing.placements[0]?.id],
+    })
+
+    expect(response.status).toBe(400)
+    expect(await placementIdsTagged(tag.id)).toEqual([])
+  })
+
+  it('rejects an editor of a different web', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const otherWeb = await createWeb({ slug: 'cambridge' })
+    const tag = await createSharedTag({ addedTo: [web.id, otherWeb.id] })
+    const listing = await createListing(web.id)
+    await asEditorOf(otherWeb.id)
+
+    const response = await putListings(tag.id, {
+      webId: web.id,
+      addedListingIds: [listing.placements[0]?.id],
+    })
+
+    expect(response.status).toBe(403)
+    expect(await placementIdsTagged(tag.id)).toEqual([])
+  })
+
+  it('only reaches placements in the web it was told', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const otherWeb = await createWeb({ slug: 'cambridge' })
+    const tag = await createSharedTag({ addedTo: [web.id, otherWeb.id] })
+    const theirs = await createListing(otherWeb.id)
+    await asEditorOf(web.id)
+
+    await putListings(tag.id, {
+      webId: web.id,
+      addedListingIds: [theirs.placements[0]?.id],
+    })
+
+    expect(await placementIdsTagged(tag.id)).toEqual([])
+  })
+
+  it("will not add one the web hasn't added", async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const tag = await createSharedTag()
+    const listing = await createListing(web.id)
+    await asEditorOf(web.id)
+
+    await putListings(tag.id, {
+      webId: web.id,
+      addedListingIds: [listing.placements[0]?.id],
+    })
+
+    expect(await placementIdsTagged(tag.id)).toEqual([])
+  })
+
+  it('will not add a retired one, but will take it off', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const tag = await createSharedTag({
+      retiredAt: new Date(),
+      addedTo: [web.id],
+    })
+    const tagged = await createListing(web.id, { tagIds: [tag.id] })
+    const untagged = await createListing(web.id)
+    await asEditorOf(web.id)
+
+    await putListings(tag.id, {
+      webId: web.id,
+      addedListingIds: [untagged.placements[0]?.id],
+    })
+    expect(await placementIdsTagged(tag.id)).toEqual([tagged.placements[0]?.id])
+
+    await putListings(tag.id, {
+      webId: web.id,
+      removedListingIds: [tagged.placements[0]?.id],
+    })
+    expect(await placementIdsTagged(tag.id)).toEqual([])
+  })
+})
+
+describe('POST /api/tags/[id]/web', () => {
+  it('adds a shared tag to the web, once however often it is asked', async () => {
+    const bristol = await createWeb({ slug: 'bristol' })
+    await createWeb({ slug: 'cambridge' })
+    const tag = await createSharedTag()
+    await asEditorOf(bristol.id)
+
+    expect((await addToWeb(tag.id, bristol.id)).status).toBe(200)
+    expect((await addToWeb(tag.id, bristol.id)).status).toBe(200)
+
+    expect(await webIdsThatAdded(tag.id)).toEqual([bristol.id])
+  })
+
+  it('rejects an editor of a different web', async () => {
+    const bristol = await createWeb({ slug: 'bristol' })
+    const cambridge = await createWeb({ slug: 'cambridge' })
+    const tag = await createSharedTag()
+    await asEditorOf(cambridge.id)
+
+    expect((await addToWeb(tag.id, bristol.id)).status).toBe(403)
+    expect(await webIdsThatAdded(tag.id)).toEqual([])
+  })
+
+  it('refuses a retired shared tag', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const tag = await createSharedTag({ retiredAt: new Date() })
+    await asEditorOf(web.id)
+
+    expect((await addToWeb(tag.id, web.id)).status).toBe(409)
+    expect(await webIdsThatAdded(tag.id)).toEqual([])
+  })
+
+  it.each(['Cycling', ' cycling '])(
+    'refuses when the web already has its own tag called %j',
+    async (label) => {
+      const web = await createWeb({ slug: 'bristol' })
+      const otherWeb = await createWeb({ slug: 'cambridge' })
+      await createTag(web.id, { label })
+      const tag = await createSharedTag({ label: 'Cycling' })
+      await asEditorOf(web.id)
+
+      const response = await addToWeb(tag.id, web.id)
+
+      expect(response.status).toBe(409)
+      expect((await response.json()).error).toMatch(
+        /already has its own ".*" tag/,
+      )
+      expect(await webIdsThatAdded(tag.id)).toEqual([])
+
+      // Another web's tag of that name is no obstacle
+      await asEditorOf(otherWeb.id)
+      expect((await addToWeb(tag.id, otherWeb.id)).status).toBe(200)
+    },
+  )
+
+  it('refuses a web tag, which already belongs to its web', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const tag = await createTag(web.id)
+    await asEditorOf(web.id)
+
+    expect((await addToWeb(tag.id, web.id)).status).toBe(400)
+    expect(await webIdsThatAdded(tag.id)).toEqual([])
+  })
+})
+
+describe('DELETE /api/tags/[id]/web', () => {
+  it('removes a shared tag from this web and its listings, leaving other webs alone', async () => {
+    const bristol = await createWeb({ slug: 'bristol' })
+    const cambridge = await createWeb({ slug: 'cambridge' })
+    const tag = await createSharedTag({ addedTo: [bristol.id, cambridge.id] })
+    await createListing(bristol.id, { tagIds: [tag.id] })
+    await createListing(bristol.id, { tagIds: [tag.id] })
+    const theirs = await createListing(cambridge.id, { tagIds: [tag.id] })
+    await asEditorOf(bristol.id)
+
+    const response = await removeFromWeb(tag.id, bristol.id)
+
+    expect(response.status).toBe(200)
+    expect(await webIdsThatAdded(tag.id)).toEqual([cambridge.id])
+    expect(await placementIdsTagged(tag.id)).toEqual([theirs.placements[0]?.id])
+    expect(await prisma.tag.findUnique({ where: { id: tag.id } })).not.toBe(
+      null,
+    )
+  })
+
+  it('rejects an editor of a different web', async () => {
+    const bristol = await createWeb({ slug: 'bristol' })
+    const cambridge = await createWeb({ slug: 'cambridge' })
+    const tag = await createSharedTag({ addedTo: [bristol.id] })
+    await createListing(bristol.id, { tagIds: [tag.id] })
+    await asEditorOf(cambridge.id)
+
+    const response = await removeFromWeb(tag.id, bristol.id)
+
+    expect(response.status).toBe(403)
+    expect(await webIdsThatAdded(tag.id)).toEqual([bristol.id])
+    expect(await placementIdsTagged(tag.id)).toHaveLength(1)
+  })
+
+  it('refuses a web tag, which is deleted instead', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const tag = await createTag(web.id)
+    await createListing(web.id, { tagIds: [tag.id] })
+    await asEditorOf(web.id)
+
+    expect((await removeFromWeb(tag.id, web.id)).status).toBe(400)
+    expect(await placementIdsTagged(tag.id)).toHaveLength(1)
+  })
+})
+
+describe('merging web tags into shared tags', () => {
+  const setUp = async () => {
+    const bristol = await createWeb({ slug: 'bristol' })
+    const cambridge = await createWeb({ slug: 'cambridge' })
+    const free = await createSharedTag({ key: 'free', label: 'Free' })
+    await createSharedTag({ key: 'repair-cafe', label: 'Repair Café' })
+    const bristolFree = await createTag(bristol.id, { label: 'free ' })
+    const cambridgeFree = await createTag(cambridge.id, { label: 'FREE' })
+    // Close, but not the same name: left alone
+    const repairCafe = await createTag(bristol.id, { label: 'Repair Cafe' })
+    const listing = await createListing(bristol.id, {
+      tagIds: [bristolFree.id, repairCafe.id],
+    })
+    const theirs = await createListing(cambridge.id, {
+      tagIds: [cambridgeFree.id],
+    })
+    const proposer = await createUser()
+    const edit = await createListingEdit(bristol.id, listing.id, proposer.id, {
+      tagIds: [bristolFree.id],
+    })
+    return { bristol, cambridge, free, repairCafe, listing, theirs, edit }
+  }
+
+  it('reports the duplicates without changing anything', async () => {
+    await setUp()
+    const before = await prisma.tag.findMany({
+      include: { listings: true, listingEdits: true },
+      orderBy: { id: 'asc' },
+    })
+
+    const duplicates = await findWebTagsDuplicatingSharedTags(prisma)
+
+    expect(
+      duplicates.map((d) => [d.webSlug, d.webTag.label, d.placementIds.length]),
+    ).toEqual([
+      ['bristol', 'free ', 1],
+      ['cambridge', 'FREE', 1],
+    ])
+    expect(
+      await prisma.tag.findMany({
+        include: { listings: true, listingEdits: true },
+        orderBy: { id: 'asc' },
+      }),
+    ).toEqual(before)
+  })
+
+  it('moves listings and pending edits to the shared tag, leaving no duplicate', async () => {
+    const { bristol, cambridge, free, repairCafe, listing, theirs, edit } =
+      await setUp()
+
+    await mergeWebTagsIntoSharedTags(
+      prisma,
+      await findWebTagsDuplicatingSharedTags(prisma),
+    )
+
+    expect(await findWebTagsDuplicatingSharedTags(prisma)).toEqual([])
+    expect(await webIdsThatAdded(free.id)).toEqual([bristol.id, cambridge.id])
+    expect(await placementIdsTagged(free.id)).toEqual([
+      listing.placements[0]?.id,
+      theirs.placements[0]?.id,
+    ])
+    expect(
+      (
+        await prisma.listingEdit.findUnique({
+          where: { id: edit.id },
+          include: { tags: true },
+        })
+      )?.tags.map((t) => t.id),
+    ).toEqual([free.id])
+    expect(await placementIdsTagged(repairCafe.id)).toEqual([
+      listing.placements[0]?.id,
+    ])
+  })
+})

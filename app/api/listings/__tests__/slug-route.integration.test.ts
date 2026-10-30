@@ -1,5 +1,7 @@
 import {
   createListing,
+  createSharedTag,
+  createTag,
   createUser,
   createUserWithWebAccess,
   createWeb,
@@ -165,6 +167,71 @@ describe('PUT /api/listings/[slug]', () => {
     )
 
     expect(response.status).toBe(200)
+  })
+})
+
+describe('PUT /api/listings/[slug] tags', () => {
+  it("adds this web's tags and the shared tags it has added, and nothing else", async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const otherWeb = await createWeb({ slug: 'cambridge' })
+    const ours = await createTag(web.id, { label: 'Ours' })
+    const theirs = await createTag(otherWeb.id, { label: 'Theirs' })
+    const shared = await createSharedTag({ label: 'Shared', addedTo: [web.id] })
+    const notAdded = await createSharedTag({ label: 'Not added' })
+    const retired = await createSharedTag({
+      label: 'Retired',
+      retiredAt: new Date(),
+      addedTo: [web.id],
+    })
+    const listing = await createListing(web.id, { slug: 'food-hub' })
+    const { user } = await createUserWithWebAccess(web.id, WebRole.EDITOR)
+    signInAs({ id: user.id, email: user.email })
+
+    await put(
+      'food-hub',
+      listingForm({
+        id: String(listing.id),
+        webId: String(web.id),
+        tags: [ours, theirs, shared, notAdded, retired]
+          .map((t) => t.id)
+          .join(','),
+      }),
+    )
+
+    const placement = await prisma.listingPlacement.findFirst({
+      where: { listingId: listing.id },
+      include: { tags: { orderBy: { id: 'asc' } } },
+    })
+    expect(placement?.tags.map((t) => t.label)).toEqual(['Ours', 'Shared'])
+  })
+
+  it('keeps a retired shared tag the listing already has', async () => {
+    const web = await createWeb({ slug: 'bristol' })
+    const retired = await createSharedTag({
+      label: 'Retired',
+      retiredAt: new Date(),
+    })
+    const listing = await createListing(web.id, {
+      slug: 'food-hub',
+      tagIds: [retired.id],
+    })
+    const { user } = await createUserWithWebAccess(web.id, WebRole.EDITOR)
+    signInAs({ id: user.id, email: user.email })
+
+    await put(
+      'food-hub',
+      listingForm({
+        id: String(listing.id),
+        webId: String(web.id),
+        tags: String(retired.id),
+      }),
+    )
+
+    const placement = await prisma.listingPlacement.findFirst({
+      where: { listingId: listing.id },
+      include: { tags: true },
+    })
+    expect(placement?.tags.map((t) => t.label)).toEqual(['Retired'])
   })
 })
 

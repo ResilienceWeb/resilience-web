@@ -9,6 +9,12 @@ async function createTagRequest(tagData) {
     body: JSON.stringify(tagData),
   })
 
+  // Refused when the label is a shared tag's, which the caller should say
+  if (!response.ok) {
+    const { error } = await response.json().catch(() => ({}))
+    throw new Error(error ?? 'Unable to create tag')
+  }
+
   const result = await response.json()
   return result.data
 }
