@@ -10,8 +10,12 @@ import { renderPage } from '@/test/render'
 import * as Sentry from '@sentry/nextjs'
 import { screen, waitFor, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
+import { toast } from 'sonner'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import CategoriesPage from '../page.tsx'
+
+// Toasts render into a <Toaster> that the page doesn't mount by itself
+vi.mock('sonner', () => ({ toast: { error: vi.fn(), success: vi.fn() } }))
 
 /**
  * The screen where an editor shapes the vocabulary of their web: the
@@ -579,6 +583,27 @@ describe('shared tags', () => {
     await waitFor(() => expect(added.calls).toHaveLength(1))
     expect(added.calls[0].url.pathname).toBe('/api/tags/8/web')
     expect(added.calls[0].body).toEqual({ webId: 3 })
+  })
+
+  it("says why one can't be added when the web has a tag of that name", async () => {
+    server.use(
+      http.post('/api/tags/:id/web', () =>
+        HttpResponse.json(
+          { error: 'Your web already has its own "Cycling" tag.' },
+          { status: 409 },
+        ),
+      ),
+    )
+    const { user } = await openTags()
+
+    await user.click(screen.getByRole('button', { name: 'Add tag' }))
+    await user.click(await screen.findByRole('button', { name: 'Add Cycling' }))
+
+    await waitFor(() =>
+      expect(vi.mocked(toast.error)).toHaveBeenCalledWith(
+        'Your web already has its own "Cycling" tag.',
+      ),
+    )
   })
 
   it('cannot be edited, only removed from this web', async () => {

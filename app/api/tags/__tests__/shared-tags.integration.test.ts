@@ -374,6 +374,29 @@ describe('POST /api/tags/[id]/web', () => {
     expect(await webIdsThatAdded(tag.id)).toEqual([])
   })
 
+  it.each(['Cycling', ' cycling '])(
+    'refuses when the web already has its own tag called %j',
+    async (label) => {
+      const web = await createWeb({ slug: 'bristol' })
+      const otherWeb = await createWeb({ slug: 'cambridge' })
+      await createTag(web.id, { label })
+      const tag = await createSharedTag({ label: 'Cycling' })
+      await asEditorOf(web.id)
+
+      const response = await addToWeb(tag.id, web.id)
+
+      expect(response.status).toBe(409)
+      expect((await response.json()).error).toMatch(
+        /already has its own ".*" tag/,
+      )
+      expect(await webIdsThatAdded(tag.id)).toEqual([])
+
+      // Another web's tag of that name is no obstacle
+      await asEditorOf(otherWeb.id)
+      expect((await addToWeb(tag.id, otherWeb.id)).status).toBe(200)
+    },
+  )
+
   it('refuses a web tag, which already belongs to its web', async () => {
     const web = await createWeb({ slug: 'bristol' })
     const tag = await createTag(web.id)

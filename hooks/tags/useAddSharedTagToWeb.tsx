@@ -9,8 +9,10 @@ async function addSharedTagToWebRequest({ tagId, webId }) {
     },
     body: JSON.stringify({ webId }),
   })
+  // Refused when the web has a tag of the same name, which the caller should say
   if (!response.ok) {
-    throw new Error(`Unable to add tag ${tagId} (${response.status})`)
+    const { error } = await response.json().catch(() => ({}))
+    throw new Error(error ?? `Unable to add tag ${tagId} (${response.status})`)
   }
 
   const { data } = await response.json()

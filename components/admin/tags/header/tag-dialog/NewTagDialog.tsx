@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { toast } from 'sonner'
 import TagChip from '@components/tag-chip'
 import { Button } from '@components/ui/button'
 import {
@@ -60,7 +61,12 @@ const NewTagDialog: React.FC<props> = ({ onSubmit, isOpen, onClose }) => {
                     size="sm"
                     disabled={isAdding}
                     aria-label={`Add ${tag.label}`}
-                    onClick={() => addSharedTag({ tagId: tag.id })}
+                    onClick={() =>
+                      addSharedTag(
+                        { tagId: tag.id },
+                        { onError: (error) => toast.error(error.message) },
+                      )
+                    }
                   >
                     Add
                   </Button>

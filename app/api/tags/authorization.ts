@@ -12,7 +12,7 @@ export async function findTag(tagId: number) {
   }
   return prisma.tag.findUnique({
     where: { id: tagId },
-    select: { webId: true, retiredAt: true },
+    select: { webId: true, label: true, retiredAt: true },
   })
 }
 

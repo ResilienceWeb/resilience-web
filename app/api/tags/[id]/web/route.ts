@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { findWebTagWithLabel } from '@db/tagRepository'
 import { resolveTagWeb } from '../../authorization.ts'
 
 /**
@@ -37,6 +38,20 @@ export async function POST(
   if (tag.retiredAt) {
     return Response.json(
       { error: 'A retired shared tag cannot be added to a web' },
+      { status: 409 },
+    )
+  }
+
+  // Two tags of the same name in one web can't be told apart in a picker.
+  // Folding the web's tag into the shared one moves its listings, which is
+  // left to scripts/merge-web-tags-into-shared-tags.ts rather than a click.
+  const webTag = await findWebTagWithLabel(webId, tag.label)
+  if (webTag) {
+    return Response.json(
+      {
+        error: `Your web already has its own "${webTag.label}" tag. Rename it first if you want to add the shared one.`,
+        webTag,
+      },
       { status: 409 },
     )
   }

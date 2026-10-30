@@ -36,6 +36,15 @@ export async function findTagUsableInWeb(tagId: number, webId: number) {
   })
 }
 
+/** The web's own tag that a shared tag's label would duplicate, if any. */
+export async function findWebTagWithLabel(webId: number, label: string) {
+  const webTags = await prisma.tag.findMany({
+    where: { webId },
+    select: { id: true, label: true },
+  })
+  return webTags.find((tag) => sameTagLabel(tag.label, label)) ?? null
+}
+
 /** The shared tag a web tag's label would duplicate, if any, retired or not. */
 export async function findSharedTagWithLabel(label: unknown) {
   if (typeof label !== 'string') {
