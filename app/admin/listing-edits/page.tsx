@@ -1,8 +1,10 @@
 'use client'
 
 import { PiCheckCircleBold, PiClockBold } from 'react-icons/pi'
+import NextLink from 'next/link'
 import Faq from '@components/faq'
 import { Badge } from '@components/ui/badge'
+import { Button } from '@components/ui/button'
 import { Spinner } from '@components/ui/spinner'
 import {
   Table,
@@ -24,7 +26,7 @@ const faqs = [
   {
     question: 'How do I review a suggested edit?',
     answer:
-      'Go to the Listings page and press the "View suggested edit" button on the listing. You can compare the suggested changes with the current version, then accept or reject them.',
+      'Press Review next to the suggestion. You can compare the suggested changes with the current version, then accept or reject them.',
   },
   {
     question: 'Why can a listing only have one suggested edit at a time?',
@@ -127,6 +129,17 @@ export default function ListingEditsPage() {
                           <PiClockBold className="h-4 w-4" />
                           Pending
                         </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {!edit.accepted && edit.listing?.slug && (
+                        <Button variant="outline" size="sm" asChild>
+                          <NextLink
+                            href={`/admin/listings/${edit.listing.slug}/edits`}
+                          >
+                            Review
+                          </NextLink>
+                        </Button>
                       )}
                     </TableCell>
                   </TableRow>
