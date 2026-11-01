@@ -3,6 +3,7 @@ on:
   pull_request:
 jobs:
   test:
+    name: Code quality
     permissions:
       contents: read
     timeout-minutes: 5

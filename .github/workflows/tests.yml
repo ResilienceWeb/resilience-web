@@ -5,6 +5,7 @@ on:
   pull_request:
 jobs:
   test:
+    name: Unit and integration tests
     timeout-minutes: 15
     runs-on: ubuntu-latest
     env:

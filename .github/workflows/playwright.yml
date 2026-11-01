@@ -5,6 +5,7 @@ on:
   pull_request:
 jobs:
   test:
+    name: Playwright
     timeout-minutes: 60
     runs-on: ubuntu-latest
     env:
