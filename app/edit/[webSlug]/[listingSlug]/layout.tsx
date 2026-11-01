@@ -3,6 +3,7 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getSessionSafe } from '@auth'
 import { REMOTE_URL } from '@helpers/config'
+import { canUserEditWebBySlug } from '@db/webAccessRepository'
 
 export const metadata: Metadata = {
   title: 'Edit Listing | Resilience Web',
@@ -26,6 +27,18 @@ export default async function Layout(props) {
   if (!session) {
     redirect(
       `${REMOTE_URL}/auth/signin?redirectTo=${`/edit/${params.webSlug}/${params.listingSlug}`}`,
+    )
+  }
+
+  // People who can edit the web change the listing directly. The suggestion
+  // form would only queue their change for their own review.
+  const canEditWeb =
+    session.user.role === 'admin' ||
+    (await canUserEditWebBySlug(session.user.email, params.webSlug))
+
+  if (canEditWeb) {
+    redirect(
+      `${REMOTE_URL}/admin/listings/${params.listingSlug}?web=${params.webSlug}`,
     )
   }
 

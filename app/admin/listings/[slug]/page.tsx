@@ -21,9 +21,21 @@ export default function ListingPage({ params }) {
   const searchParams = useSearchParams()
   const { categories } = useCategories()
   const { mutate: updateListing } = useUpdateListing()
-  const { selectedWebSlug } = useAppContext()
+  const { selectedWebSlug, setSelectedWebSlug } = useAppContext()
 
   const showSuccessMessage = searchParams.get('editApplied') === 'true'
+  // Set when someone arrives from a listing's public page, which may belong to
+  // a different web than the one they last had selected here.
+  const requestedWebSlug = searchParams.get('web')
+  const isSwitchingWeb =
+    Boolean(requestedWebSlug) && requestedWebSlug !== selectedWebSlug
+
+  useEffect(() => {
+    if (requestedWebSlug) {
+      setSelectedWebSlug(requestedWebSlug)
+      window.history.replaceState({}, '', window.location.pathname)
+    }
+  }, [requestedWebSlug, setSelectedWebSlug])
 
   useEffect(() => {
     if (showSuccessMessage) {
@@ -59,7 +71,13 @@ export default function ListingPage({ params }) {
     selectedWebSlug,
   )
 
-  if (!categories || !listing || isPending || isLoadingListingEdits) {
+  if (
+    isSwitchingWeb ||
+    !categories ||
+    !listing ||
+    isPending ||
+    isLoadingListingEdits
+  ) {
     return <Spinner />
   }
 
