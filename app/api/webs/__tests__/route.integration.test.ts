@@ -5,6 +5,7 @@ import { WebRole } from '@prisma-client'
 import checkWebInactiveTask from '@trigger/check-web-inactive'
 import { describe, expect, it, vi } from 'vitest'
 import prisma from '@prisma-rw'
+import { isSelectableIcon } from '@helpers/icons'
 import { POST } from '../route.ts'
 
 vi.mock('@trigger/check-web-inactive', () => ({
@@ -45,6 +46,24 @@ describe('POST /api/webs', () => {
       where: { email: user.email, role: WebRole.OWNER },
     })
     expect(owned).toHaveLength(2)
+  })
+
+  it('gives every starter category an icon', async () => {
+    const { user } = await createUserWithWebAccess(
+      (await createWeb({ slug: 'bristol' })).id,
+      WebRole.OWNER,
+    )
+    signInAs({ id: user.id, email: user.email })
+
+    await POST(createRequest(newWeb))
+
+    const categories = await prisma.category.findMany({
+      where: { web: { slug: 'middlesbrough' } },
+    })
+    expect(categories.length).toBeGreaterThan(0)
+    for (const category of categories) {
+      expect(isSelectableIcon(category.icon), category.label).toBe(true)
+    }
   })
 
   it('still succeeds when the inactive-web job cannot be scheduled', async () => {

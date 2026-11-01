@@ -3,8 +3,10 @@
 import { useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { AiOutlineLoading } from 'react-icons/ai'
+import { PiInfoBold } from 'react-icons/pi'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import posthog from 'posthog-js'
@@ -14,6 +16,7 @@ import { scrollToFormError } from '@helpers/scrollToFormError'
 import { generateSlug } from '@helpers/utils'
 import Faq from '@components/faq'
 import RichTextEditor from '@components/rich-text-editor'
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert'
 import { Button } from '@components/ui/button'
 import { Card, CardContent } from '@components/ui/card'
 import {
@@ -42,6 +45,11 @@ const faqs = [
     question: '🌱 What is a Resilience Web?',
     answer:
       'A Resilience Web is a digital mapping of environmental and social justice groups in a place, curated by people who live there. These webs are intended to help the discovery, collaboration and networking between activists and groups.',
+  },
+  {
+    question: '🏘️ What is the difference between a web and a listing?',
+    answer:
+      'A web covers a whole place, like a city, town or village, and is run by a team of local volunteers. A listing is a single group or organisation on a web. If you want your group to appear on Resilience Web, propose a listing on the web for your area rather than creating a new web.',
   },
   {
     question: '💵 How much does it cost to use the platform?',
@@ -157,14 +165,36 @@ const WebCreation = () => {
       </div>
 
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Welcome 👋</h1>
+        <h1 className="text-3xl font-bold tracking-tight">
+          Create a web for your area
+        </h1>
         <p className="text-muted-foreground">
-          You are taking the first steps in setting up a Resilience Web for your
-          area, well done! Once you fill out the details below, you will be able
-          to start adding listings, inviting collaborators to your team and so
-          much more.
+          A Resilience Web maps the environmental and social justice groups
+          across a whole place, like a city, town or village. Once you fill out
+          the details below, you will be able to start adding the groups in your
+          area as listings, inviting collaborators to your team and so much
+          more.
         </p>
       </div>
+
+      {/* A static signpost, so it shouldn't be announced like an error. */}
+      <Alert role="note">
+        <PiInfoBold />
+        <AlertTitle>Want to add your group or organisation?</AlertTitle>
+        <AlertDescription>
+          <p>
+            You don't need to create a web. Find the web for your area and
+            propose your group as a listing on it instead.{' '}
+            <Link
+              href="/#web-cards"
+              onClick={() => posthog.capture('web-creation-find-web-click')}
+              className="font-semibold underline"
+            >
+              Find your area's web
+            </Link>
+          </p>
+        </AlertDescription>
+      </Alert>
 
       <Card>
         <CardContent className="pt-6">
@@ -178,7 +208,7 @@ const WebCreation = () => {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold">Web title</FormLabel>
+                    <FormLabel className="font-semibold">Place name</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -186,6 +216,10 @@ const WebCreation = () => {
                         placeholder="e.g. York"
                       />
                     </FormControl>
+                    <FormDescription>
+                      The city, town or village this web covers, not the name of
+                      a group.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
