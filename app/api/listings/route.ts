@@ -63,6 +63,7 @@ export async function GET(request: NextRequest) {
         edits: {
           where: {
             accepted: false,
+            web: { slug: web },
           },
           // Only the count is read, and the full rows carry every proposed
           // title, description and image.
