@@ -16,30 +16,37 @@ const defaultCategories = [
   {
     label: 'Environment',
     color: '7ed957',
+    icon: 'Leaf',
   },
   {
     label: 'Community',
     color: 'ff66c4',
+    icon: 'City',
   },
   {
     label: 'Social justice',
     color: 'ff5757',
+    icon: 'BalanceScale',
   },
   {
     label: 'Food',
     color: 'a4791b',
+    icon: 'Carrot',
   },
   {
     label: 'Health',
     color: 'd195e9',
+    icon: 'HandHoldingHeart',
   },
   {
     label: 'Education',
     color: 'c9e265',
+    icon: 'Education',
   },
   {
     label: 'Human rights',
     color: 'a2b342',
+    icon: 'FistRaised',
   },
 ]
 
