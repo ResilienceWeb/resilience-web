@@ -1,6 +1,7 @@
 import {
   createCategory,
   createListing,
+  createListingEdit,
   createSharedTag,
   createTag,
   createUser,
@@ -75,6 +76,27 @@ describe('GET /api/listings', () => {
       'Bath',
       'Cardiff',
     ])
+  })
+
+  it('only counts the pending edits suggested in the web it was asked for', async () => {
+    const bristol = await createWeb({ slug: 'bristol' })
+    const cardiff = await createWeb({ slug: 'cardiff' })
+    const { id: listingId } = await createListing(bristol.id)
+    await prisma.listingPlacement.create({
+      data: { listingId, webId: cardiff.id, slug: 'in-cardiff' },
+    })
+    const user = await createUser()
+    await createListingEdit(cardiff.id, listingId, user.id)
+
+    const inBristol = await (
+      await GET(request('/api/listings?web=bristol'))
+    ).json()
+    const inCardiff = await (
+      await GET(request('/api/listings?web=cardiff'))
+    ).json()
+
+    expect(inBristol.listings[0].edits).toEqual([])
+    expect(inCardiff.listings[0].edits).toHaveLength(1)
   })
 })
 
