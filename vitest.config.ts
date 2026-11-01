@@ -63,3 +63,5 @@ export default defineConfig({
     ],
   },
 })
+
+# Automated fix for issue #608: Admins using the public "Edit listing" button create a suggested edit they can't open from Suggested Edits
