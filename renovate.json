@@ -89,6 +89,17 @@
     {
       "matchManagers": ["github-actions", "docker-compose"],
       "groupName": "CI and Docker"
+    },
+    {
+      "description": "Node.js is upgraded by hand, so leave .nvmrc alone",
+      "matchDepNames": ["node"],
+      "enabled": false
+    },
+    {
+      "description": "@types/node majors track the Node.js major, so they move with the manual upgrade",
+      "matchPackageNames": ["@types/node"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     }
   ]
 }
