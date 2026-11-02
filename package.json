@@ -126,13 +126,13 @@
     "stylelint-config-recommended": "18.0.0",
     "svgo": "4.1.0",
     "tailwindcss": "4.3.3",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "typescript-eslint": "8.72.1",
     "vitest": "5.0.5"
   },
   "overrides": {
     "eslint": "10.14.0",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   },
   "allowScripts": {
     "@prisma/engines@7.10.0": true,
