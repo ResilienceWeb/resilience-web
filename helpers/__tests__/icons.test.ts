@@ -17,7 +17,11 @@ describe('looking up an icon', () => {
       label: 'Food Bank',
       set: 'gm',
       src: '/icons/green-map/food-bank.svg',
+      monoSrc: '/icons/green-map/food-bank.svg',
     })
+    expect(getIcon('gm:green-store')?.monoSrc).toBe(
+      '/icons/green-map/mono/green-store.svg',
+    )
   })
 
   it('finds nothing for an unknown name', () => {

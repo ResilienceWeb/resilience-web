@@ -50,6 +50,8 @@ export type IconEntry = {
   set: IconSetId
   /** URL of the image behind an asset-backed icon. */
   src?: string
+  /** URL of a single-colour version of src, its shape usable as a mask. */
+  monoSrc?: string
 }
 
 const fontAwesomeIcons: Omit<IconEntry, 'label' | 'set' | 'monochrome'>[] = [
@@ -174,14 +176,16 @@ const monochromeImageIcon = (maskSrc: string): IconType => {
 const greenMapEntries: IconEntry[] = greenMapIcons.map(
   ({ slug, name, category, file, monoFile }) => {
     const src = `/icons/green-map/${file}`
+    const monoSrc = `/icons/green-map/${monoFile ?? file}`
     return {
       icon: imageIcon(src),
-      monochrome: monochromeImageIcon(`/icons/green-map/${monoFile ?? file}`),
+      monochrome: monochromeImageIcon(monoSrc),
       name: `gm:${slug}`,
       label: name,
       category,
       set: 'gm',
       src,
+      monoSrc,
     }
   },
 )
