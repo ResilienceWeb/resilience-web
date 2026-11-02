@@ -4,8 +4,10 @@
   "type": "module",
   "license": "AGPL-3.0-only",
   "scripts": {
+    "predev": "node scripts/copy-tinymce.ts",
     "dev": "next dev --turbopack -H 0.0.0.0 -p 4000",
     "trigger": "npx trigger.dev@latest dev",
+    "prebuild": "node scripts/copy-tinymce.ts",
     "build": "next build",
     "analyze": "next analyze",
     "start": "next start -H 0.0.0.0 -p ${PORT:-4000}",

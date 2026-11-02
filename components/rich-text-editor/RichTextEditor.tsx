@@ -34,16 +34,20 @@ const RichTextEditor = ({
       )}
       <Editor
         {...otherProps}
-        apiKey={process.env.NEXT_PUBLIC_TINY_MCE_APIKEY}
+        // Self-hosted under the GPL (copied in by scripts/copy-tinymce.ts):
+        // Tiny Cloud's free plan caps how many times a month the editor loads.
+        tinymceScriptSrc="/tinymce/tinymce.min.js"
+        licenseKey="gpl"
         value={field.value ?? ''}
         onEditorChange={field.onChange}
         onBlur={field.onBlur}
         init={{
           height: 300,
-          menubar: 'edit view insert format tc help',
+          menubar: 'edit view insert format help',
           toolbar:
             'undo redo | link image | styles | bold italic underline | align | bullist numlist',
           contextmenu: false,
+          promotion: false,
           paste_as_text: false,
           sandbox_iframes_exclusions: SANDBOX_EXCLUSIONS,
           plugins:

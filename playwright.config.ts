@@ -55,7 +55,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'next dev --turbopack -p 4000',
+    command: 'node scripts/copy-tinymce.ts && next dev --turbopack -p 4000',
     url: 'http://localhost:4000',
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
