@@ -39,5 +39,6 @@ test('the rich text editor loads from our own origin', async ({ page }) => {
 
   await expect(editor).toHaveText('Weekly community meal')
   await expect(page.getByText(/license key/i)).toHaveCount(0)
+  await expect(page.getByText('Get all features')).toHaveCount(0)
   expect(tinyCloudRequests).toEqual([])
 })

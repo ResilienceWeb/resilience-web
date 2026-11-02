@@ -47,6 +47,7 @@ const RichTextEditor = ({
           toolbar:
             'undo redo | link image | styles | bold italic underline | align | bullist numlist',
           contextmenu: false,
+          promotion: false,
           paste_as_text: false,
           sandbox_iframes_exclusions: SANDBOX_EXCLUSIONS,
           plugins:
