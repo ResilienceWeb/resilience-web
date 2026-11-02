@@ -1,8 +1,8 @@
 import { memo } from 'react'
-import { FaStar, FaRegStar } from 'react-icons/fa'
 import { HiOutlineGlobeAlt } from 'react-icons/hi'
 import { PiWarningCircleBold } from 'react-icons/pi'
 import Link from 'next/link'
+import { Star } from 'lucide-react'
 import CategoryTag from '@components/category-tag'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
@@ -153,9 +153,12 @@ const TableContent = ({ items, removeItem }) => {
                         }}
                       >
                         {isFeatured ? (
-                          <FaStar className="text-green-500" />
+                          <Star
+                            size="1em"
+                            className="fill-current text-green-500"
+                          />
                         ) : (
-                          <FaRegStar />
+                          <Star size="1em" />
                         )}
                       </button>
                     </div>

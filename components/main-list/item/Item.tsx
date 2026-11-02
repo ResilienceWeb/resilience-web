@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, memo } from 'react'
-import { FaStar } from 'react-icons/fa'
 import { HiUserGroup } from 'react-icons/hi'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import chroma from 'chroma-js'
+import { Star } from 'lucide-react'
 import { isBranchDeploy } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
@@ -52,7 +52,7 @@ const Item = ({
       {isFeatured && (
         <Tooltip>
           <TooltipTrigger asChild>
-            <FaStar className="absolute top-[140px] z-100 h-[26px] w-[26px] text-yellow-200 right-1 bottom-1" />
+            <Star className="absolute fill-current top-[140px] z-100 h-[26px] w-[26px] text-yellow-200 right-1 bottom-1" />
           </TooltipTrigger>
           <TooltipContent>
             <p>Featured listing</p>
