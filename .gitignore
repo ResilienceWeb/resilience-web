@@ -33,6 +33,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# Self-hosted TinyMCE, copied from node_modules by scripts/copy-tinymce.ts
+/public/tinymce
+
 # Mailpit
 data
 

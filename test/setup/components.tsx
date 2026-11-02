@@ -99,7 +99,7 @@ vi.mock('@auth-client', async (importActual) => {
   }
 })
 
-// TinyMCE downloads its editor from a CDN and takes over a real document to
+// TinyMCE loads its editor as a separate script and takes over a real document to
 // render into. It stands in for a text box, so that is what it renders as here
 // — a test types a description the same way a visitor does. The remaining props
 // are the id and labelling that `FormControl` hands down, so the field keeps
@@ -109,7 +109,8 @@ vi.mock('@tinymce/tinymce-react', () => ({
     value,
     onEditorChange,
     onBlur,
-    apiKey: _apiKey,
+    tinymceScriptSrc: _tinymceScriptSrc,
+    licenseKey: _licenseKey,
     init: _init,
     ...rest
   }: Record<string, any>) => (

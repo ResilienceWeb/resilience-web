@@ -5,3 +5,4 @@ obj
 !*.css
 !*.scss
 playwright-report/
+public/tinymce

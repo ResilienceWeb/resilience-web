@@ -30,10 +30,10 @@ const contentSecurityPolicy = (/** @type {string} */ frameAncestors) => [
   // (instrumentation-client.ts); google.com and gstatic.com serve reCAPTCHA,
   // whose api.js pulls its runtime from gstatic. Both were found by this
   // policy's own violation reports rather than by reading the code.
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://cdn.tiny.cloud https://eu-assets.i.posthog.com https://browser.sentry-cdn.com https://www.google.com https://www.gstatic.com`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://eu-assets.i.posthog.com https://browser.sentry-cdn.com https://www.google.com https://www.gstatic.com`,
   // reCAPTCHA's badge stylesheet also comes from gstatic.
-  "style-src 'self' 'unsafe-inline' https://cdn.tiny.cloud https://www.gstatic.com",
-  "font-src 'self' data: https://cdn.tiny.cloud",
+  "style-src 'self' 'unsafe-inline' https://www.gstatic.com",
+  "font-src 'self' data:",
   // Listing descriptions embed images from arbitrary hosts by design, so an
   // origin list would be permanently incomplete. Images are not executable.
   "img-src 'self' data: blob: https:",
@@ -45,7 +45,6 @@ const contentSecurityPolicy = (/** @type {string} */ frameAncestors) => [
     'https://*.ingest.sentry.io',
     'https://*.ingest.de.sentry.io',
     'https://nominatim.openstreetmap.org',
-    'https://cdn.tiny.cloud',
     'https://browser.sentry-cdn.com',
     'https://www.google.com',
   ].join(' '),
