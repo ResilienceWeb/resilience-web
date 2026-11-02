@@ -375,9 +375,12 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
     const repaint = () => setIconsReady((count) => count + 1)
     data.nodes.forEach((node) => {
       if (node.group === 'category') {
-        if (node.icon) getIconImage(node.icon, '#666', repaint)
+        if (node.icon) getIconImage(node.icon, '#666', { onLoad: repaint })
       } else if (node.category?.icon && node.category.icon !== 'default') {
-        getIconImage(node.category.icon, '#fff', repaint)
+        getIconImage(node.category.icon, '#fff', {
+          monochrome: true,
+          onLoad: repaint,
+        })
       }
     })
   }, [data])
@@ -532,8 +535,12 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
           : null
 
     if (iconName) {
-      const iconColor = node.group === 'category' ? '#666' : '#fff'
-      const iconImage = getIconImage(iconName, iconColor)
+      // Listing nodes are filled with the category colour, which an icon in
+      // its own colours can share and vanish into, so paint those white.
+      const iconImage =
+        node.group === 'category'
+          ? getIconImage(iconName, '#666')
+          : getIconImage(iconName, '#fff', { monochrome: true })
       if (iconImage) {
         const iconSize = nodeRadius
         ctx.drawImage(
