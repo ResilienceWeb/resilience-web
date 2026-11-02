@@ -22,3 +22,22 @@ test('the pending edits page loads', async ({ page }) => {
 
   await expect(page).toHaveURL(/\/admin\/listing-edits$/)
 })
+
+test('the rich text editor loads from our own origin', async ({ page }) => {
+  const tinyCloudRequests: string[] = []
+  page.on('request', (request) => {
+    if (request.url().includes('tiny.cloud')) {
+      tinyCloudRequests.push(request.url())
+    }
+  })
+
+  await page.goto('/admin/new-listing')
+
+  const editor = page.frameLocator('.tox-edit-area iframe').locator('body')
+  await editor.click()
+  await editor.pressSequentially('Weekly community meal')
+
+  await expect(editor).toHaveText('Weekly community meal')
+  await expect(page.getByText(/license key/i)).toHaveCount(0)
+  expect(tinyCloudRequests).toEqual([])
+})
