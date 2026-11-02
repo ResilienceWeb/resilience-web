@@ -6,7 +6,7 @@ import { RxHamburgerMenu } from 'react-icons/rx'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import posthog from 'posthog-js'
+import { captureEventAndReset } from '@helpers/posthog'
 import { useSession, signOut } from '@auth-client'
 import GetInTouchButton from '@components/contact-dialog/GetInTouchButton'
 import {
@@ -34,8 +34,7 @@ const Nav = ({ onOpen }) => {
     await signOut({
       fetchOptions: {
         onSuccess: () => {
-          posthog.capture('user-signed-out')
-          posthog.reset()
+          captureEventAndReset('user-signed-out')
           router.push('/auth/signin')
         },
       },

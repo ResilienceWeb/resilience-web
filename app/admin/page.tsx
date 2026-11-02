@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { useSearchParams, useRouter, redirect } from 'next/navigation'
 import 'driver.js/dist/driver.css'
-import posthog from 'posthog-js'
+import { captureEvent } from '@helpers/posthog'
 import EditableList from '@components/admin/editable-list'
 import Faq from '@components/faq'
 import { Spinner } from '@components/ui/spinner'
@@ -62,7 +62,7 @@ export default function AdminPage() {
   const firstTime = searchParams.get('firstTime')
   useEffect(() => {
     if (firstTime === 'true') {
-      posthog.capture('web-creation-dashboard-landing')
+      captureEvent('web-creation-dashboard-landing')
       const timeout = setTimeout(() => {
         tour.drive()
         clearSearchParams()

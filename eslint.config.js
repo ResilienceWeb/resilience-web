@@ -98,6 +98,18 @@ export default tseslint.config([
           "destructuredArrayIgnorePattern": "^_"
         }
       ],
+      "@typescript-eslint/no-restricted-imports": [
+        2,
+        {
+          "paths": [
+            {
+              "name": "posthog-js",
+              "message": "Use @helpers/posthog — a static import puts ~100 KiB of posthog-js in the entry chunk.",
+              "allowTypeImports": true
+            }
+          ]
+        }
+      ],
       "@typescript-eslint/no-unsafe-assignment": 0,
       "@typescript-eslint/no-unsafe-member-access": 0,
       "@typescript-eslint/restrict-template-expressions": 0,

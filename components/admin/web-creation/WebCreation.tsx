@@ -9,7 +9,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import posthog from 'posthog-js'
+import { captureEvent } from '@helpers/posthog'
 import * as z from 'zod'
 import { useSession } from '@auth-client'
 import { scrollToFormError } from '@helpers/scrollToFormError'
@@ -145,7 +145,7 @@ const WebCreation = () => {
   }, [session?.data?.user?.email, setValue])
 
   useEffect(() => {
-    posthog.capture('web-creation-start')
+    captureEvent('web-creation-start')
   }, [])
 
   useEffect(() => {
@@ -187,7 +187,7 @@ const WebCreation = () => {
             propose your group as a listing on it instead.{' '}
             <Link
               href="/#web-cards"
-              onClick={() => posthog.capture('web-creation-find-web-click')}
+              onClick={() => captureEvent('web-creation-find-web-click')}
               className="font-semibold underline"
             >
               Find your area's web

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import posthog from 'posthog-js'
+import { captureEvent } from '@helpers/posthog'
 import { getWebUrl } from '@helpers/config'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
@@ -88,7 +88,7 @@ const CreateNewWebCard = () => {
   return (
     <Link
       href="/auth/signup"
-      onClick={() => posthog.capture('create-new-web-click')}
+      onClick={() => captureEvent('create-new-web-click')}
       className="group flex h-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-white p-6 text-center transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
     >
       <div className="rounded-full bg-green-50 p-4">

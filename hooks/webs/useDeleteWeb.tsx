@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import posthog from 'posthog-js'
+import { captureEvent } from '@helpers/posthog'
 
 async function deleteWebRequest(webSlug: string) {
   const response = await fetch(`/api/webs/${webSlug}/delete`, {
@@ -22,7 +22,7 @@ export default function useDeleteWeb(webSlug: string) {
   return useMutation({
     mutationFn: () => deleteWebRequest(webSlug),
     onSuccess: () => {
-      posthog.capture('web-deleted', { webSlug })
+      captureEvent('web-deleted', { webSlug })
       queryClient.invalidateQueries({
         queryKey: ['webs'],
       })

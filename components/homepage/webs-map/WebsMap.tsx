@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import posthog from 'posthog-js'
+import { captureEvent } from '@helpers/posthog'
 import { getWebUrl } from '@helpers/config'
 import { createCustomIcon } from '@helpers/map'
 import { Badge } from '@components/ui/badge'
@@ -94,7 +94,7 @@ function WebsMap({ webs = [] }: WebsMapProps) {
   )
 
   const handleCreateWebClick = () => {
-    posthog.capture('create-new-web-click')
+    captureEvent('create-new-web-click')
     router.push('/auth/signup')
   }
 
@@ -210,7 +210,7 @@ function WebPopupContent({ web }: { web: Web }) {
 
         <Button
           onClick={() => {
-            posthog.capture('web-popup-explore-click', { webId: web.id })
+            captureEvent('web-popup-explore-click', { webId: web.id })
             router.push(webUrl)
           }}
           className="w-full"
