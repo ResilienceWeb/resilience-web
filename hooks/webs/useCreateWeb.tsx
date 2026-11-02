@@ -1,6 +1,6 @@
 import type { Web } from '@prisma-client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import posthog from 'posthog-js'
+import { captureEvent } from '@helpers/posthog'
 
 async function createWebRequest(webData): Promise<{ web: Web }> {
   const response = await fetch('/api/webs', {
@@ -31,7 +31,7 @@ export default function useCreateWeb() {
       return { previousWebs, newWeb }
     },
     onSuccess: (_data, variables) => {
-      posthog.capture('web-created', { webSlug: variables.slug })
+      captureEvent('web-created', { webSlug: variables.slug })
       queryClient.invalidateQueries({
         queryKey: ['webs', { withAdminInfo: false }],
       })

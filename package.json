@@ -9,7 +9,7 @@
     "trigger": "npx trigger.dev@latest dev",
     "prebuild": "node scripts/copy-tinymce.ts",
     "build": "next build",
-    "build:analyze": "ANALYZE=true npm run build",
+    "analyze": "next analyze",
     "start": "next start -H 0.0.0.0 -p ${PORT:-4000}",
     "db": "prisma studio --port 7777",
     "db:up": "docker compose --project-name=resilience-web up -d",

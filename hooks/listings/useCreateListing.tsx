@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import posthog from 'posthog-js'
+import { captureEvent } from '@helpers/posthog'
 import { useAppContext } from '@store/hooks'
 
 async function createListingRequest(listingData) {
@@ -37,7 +37,7 @@ export default function useCreateListing() {
       queryClient.setQueryData(['listings'], context?.previousListings)
     },
     onSuccess: (listing) => {
-      posthog.capture('listing-created', {
+      captureEvent('listing-created', {
         listingSlug: listing?.slug,
         webSlug,
       })

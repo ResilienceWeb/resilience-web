@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import posthog from 'posthog-js'
+import { captureEvent } from '@helpers/posthog'
 import { useAppContext } from '@store/hooks'
 
 async function updateListingRequest(listingData) {
@@ -29,7 +29,7 @@ export default function useUpdateListing() {
   return useMutation({
     mutationFn: updateListingRequest,
     onSuccess: (updatedListing) => {
-      posthog.capture('listing-updated', {
+      captureEvent('listing-updated', {
         listingSlug: updatedListing?.slug,
         webSlug,
       })
