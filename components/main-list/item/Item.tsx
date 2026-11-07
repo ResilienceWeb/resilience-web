@@ -4,8 +4,8 @@ import { useState, memo } from 'react'
 import { HiUserGroup } from 'react-icons/hi'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import chroma from 'chroma-js'
 import { Star } from 'lucide-react'
+import { withAlpha } from '@helpers/colors'
 import { isBranchDeploy } from '@helpers/config'
 import CategoryTag from '@components/category-tag'
 import ListingImage from '@components/listing-image'
@@ -33,9 +33,7 @@ const Item = ({
     ? `/${subdomain}/${dataItem.slug}`
     : `/${dataItem.slug}`
 
-  const categoryBackgroundColor = chroma(dataItem.category.color)
-    .alpha(0.5)
-    .css()
+  const categoryBackgroundColor = withAlpha(dataItem.category.color, 0.5)
 
   const categoryIndex = categoriesIndexes?.[dataItem.category.label]
 

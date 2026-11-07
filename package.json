@@ -41,7 +41,6 @@
     "@tinymce/tinymce-react": "6.3.1",
     "@trigger.dev/sdk": "4.8.3",
     "better-auth": "1.7.18",
-    "chroma-js": "3.2.0",
     "class-variance-authority": "0.7.1",
     "cmdk": "1.1.1",
     "cnfast": "0.2.0",
