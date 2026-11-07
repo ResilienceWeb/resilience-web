@@ -32,7 +32,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
-    "@hookform/resolvers": "5.9.2",
+    "@hookform/resolvers": "7.0.3",
     "@prisma/adapter-pg": "7.10.1",
     "@prisma/client": "7.10.1",
     "@sentry/nextjs": "11.11.0",
