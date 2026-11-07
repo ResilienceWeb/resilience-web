@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, memo, useMemo, useState } from 'react'
+import { Suspense, use, useEffect, memo, useMemo, useState } from 'react'
 import { HiOutlineShare } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
@@ -62,7 +62,9 @@ type Props = {
   data: string
   categories?: WebCategory[]
   tags?: WebTag[]
-  events?: PlaceCalEvent[]
+  // Streamed in after the rest of the page. Absent when the web has no
+  // PlaceCal neighbourhood, which hides the events tab.
+  events?: Promise<PlaceCalEvent[]>
   features: any
   webId: number
   webName: string
@@ -74,11 +76,21 @@ type Props = {
   relatedWebs?: RelatedWeb[]
 }
 
+function StreamedEvents({
+  events,
+  webSlug,
+}: {
+  events: Promise<PlaceCalEvent[]>
+  webSlug: string
+}) {
+  return <Events items={use(events)} webSlug={webSlug} />
+}
+
 const Web = ({
   data: compressedData,
   categories: webCategories = [],
   tags: webTags = [],
-  events = [],
+  events,
   features,
   webId,
   webName,
@@ -131,7 +143,7 @@ const Web = ({
   const requestedTab = viewParam ?? storedTab ?? defaultTab
   const tabs = ['web', 'list']
   if (isGeoMappingEnabled) tabs.push('map')
-  if (events.length > 0) tabs.push('events')
+  if (events) tabs.push('events')
   const availableTabs = tabs
   const activeTab = availableTabs.includes(requestedTab)
     ? requestedTab
@@ -359,7 +371,7 @@ const Web = ({
           handleClearSearchTermValue={handleClearSearchTermValue}
           handleSearchTermChange={handleSearchTermChange}
           handleTagSelection={handleTagSelection}
-          hasEvents={events.length > 0}
+          hasEvents={Boolean(events)}
           isGeoMappingEnabled={isGeoMappingEnabled}
           isMobile={isMobile}
           isWebMode={false}
@@ -429,7 +441,11 @@ const Web = ({
             categories={webCategories}
           />
         )}
-        {activeTab === 'events' && <Events items={events} webSlug={webSlug} />}
+        {activeTab === 'events' && (
+          <Suspense fallback={<Spinner />}>
+            <StreamedEvents events={events} webSlug={webSlug} />
+          </Suspense>
+        )}
 
         {isTransitionMode && <LicenseTransition />}
         {!isTransitionMode && activeTab !== 'events' && <License />}

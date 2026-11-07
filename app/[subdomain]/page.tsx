@@ -1,7 +1,7 @@
 import { cache } from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { fetchPlaceCalEvents } from '@/lib/placecal'
+import { fetchPlaceCalEvents, getPlaceCalNeighbourhoodId } from '@/lib/placecal'
 import prisma from '@prisma-rw'
 import { compressJson } from '@helpers/compression'
 import { otherWebs, visibleWebPlacements } from '@db/listingRepository'
@@ -13,10 +13,13 @@ const CENTRAL_NODE_ID = 999
 export default async function WebPage(props) {
   const params = await props.params
   const { subdomain: webSlug } = params
-  const [rawData, events] = await Promise.all([
-    getData({ webSlug }),
-    fetchPlaceCalEvents(webSlug),
-  ])
+  // Not awaited: only a handful of webs have a PlaceCal neighbourhood, and a
+  // third-party service shouldn't hold up the page. The events stream in.
+  const events =
+    getPlaceCalNeighbourhoodId(webSlug) === undefined
+      ? undefined
+      : fetchPlaceCalEvents(webSlug)
+  const rawData = await getData({ webSlug })
 
   if (!rawData) {
     return notFound()
