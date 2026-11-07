@@ -1,7 +1,7 @@
 import { cache } from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { fetchPlaceCalEvents } from '@/lib/placecal'
+import { fetchPlaceCalEvents, getPlaceCalNeighbourhoodId } from '@/lib/placecal'
 import prisma from '@prisma-rw'
 import { compressJson } from '@helpers/compression'
 import { otherWebs, visibleWebPlacements } from '@db/listingRepository'
@@ -13,8 +13,13 @@ const CENTRAL_NODE_ID = 999
 export default async function WebPage(props) {
   const params = await props.params
   const { subdomain: webSlug } = params
+  // Not awaited: only a handful of webs have a PlaceCal neighbourhood, and a
+  // third-party service shouldn't hold up the page. The events stream in.
+  const events =
+    getPlaceCalNeighbourhoodId(webSlug) === undefined
+      ? undefined
+      : fetchPlaceCalEvents(webSlug)
   const rawData = await getData({ webSlug })
-  const events = await fetchPlaceCalEvents(webSlug)
 
   if (!rawData) {
     return notFound()
@@ -130,74 +135,72 @@ type DataType = {
 }
 
 async function getData({ webSlug }): Promise<DataType> {
-  const webData = await getWebForPage(webSlug)
-
-  if (!webData) {
-    console.log(`[RW] Web not found for webSlug ${webSlug}`)
-    return null
-  }
-
-  const categories = await prisma.category.findMany({
-    where: {
-      web: {
-        slug: webSlug,
-        deletedAt: null,
-      },
-    },
-    select: {
-      id: true,
-      label: true,
-      color: true,
-      icon: true,
-      listings: {
-        where: {
-          listing: {
-            inactive: false,
-            pending: false,
-          },
+  // The categories query filters on the slug itself, so it needn't wait for
+  // the web.
+  const [webData, categories] = await Promise.all([
+    getWebForPage(webSlug),
+    prisma.category.findMany({
+      where: {
+        web: {
+          slug: webSlug,
+          deletedAt: null,
         },
-        orderBy: { id: 'asc' },
-        select: {
-          slug: true,
-          featured: true,
-          tags: {
-            select: { id: true, label: true, icon: true },
+      },
+      select: {
+        id: true,
+        label: true,
+        color: true,
+        icon: true,
+        listings: {
+          where: {
+            listing: {
+              inactive: false,
+              pending: false,
+            },
           },
-          listing: {
-            select: {
-              id: true,
-              title: true,
-              description: true,
-              image: true,
-              seekingVolunteers: true,
-              website: true,
-              email: true,
-              createdAt: true,
-              socials: {
-                select: { platform: true, url: true },
-              },
-              actions: {
-                select: { type: true, url: true },
-              },
-              location: {
-                select: {
-                  latitude: true,
-                  longitude: true,
-                  description: true,
+          orderBy: { id: 'asc' },
+          select: {
+            slug: true,
+            featured: true,
+            tags: {
+              select: { id: true, label: true, icon: true },
+            },
+            listing: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+                image: true,
+                seekingVolunteers: true,
+                website: true,
+                email: true,
+                createdAt: true,
+                socials: {
+                  select: { platform: true, url: true },
                 },
-              },
-              placements: visibleWebPlacements,
-              relations: {
-                select: {
-                  id: true,
-                  placements: {
-                    where: { web: { slug: webSlug } },
-                    select: {
-                      category: {
-                        select: { id: true, color: true, label: true },
+                actions: {
+                  select: { type: true, url: true },
+                },
+                location: {
+                  select: {
+                    latitude: true,
+                    longitude: true,
+                    description: true,
+                  },
+                },
+                placements: visibleWebPlacements,
+                relations: {
+                  select: {
+                    id: true,
+                    placements: {
+                      where: { web: { slug: webSlug } },
+                      select: {
+                        category: {
+                          select: { id: true, color: true, label: true },
+                        },
                       },
+                      take: 1,
                     },
-                    take: 1,
                   },
                 },
               },
@@ -205,8 +208,13 @@ async function getData({ webSlug }): Promise<DataType> {
           },
         },
       },
-    },
-  })
+    }),
+  ])
+
+  if (!webData) {
+    console.log(`[RW] Web not found for webSlug ${webSlug}`)
+    return null
+  }
 
   if (!categories) {
     console.log(`[RW] Web or listings not found for webSlug ${webSlug}`)

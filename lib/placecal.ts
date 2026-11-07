@@ -12,6 +12,10 @@ const PLACECAL_NEIGHBOURHOOD_ID: Record<string, number> = {
 /** How far ahead of today we ask PlaceCal for. */
 const WINDOW_DAYS = 14
 
+// The events stream in after the rest of the page, but the response stays
+// open until they arrive, so a hung PlaceCal must not hold it open for long.
+const TIMEOUT_MS = 5000
+
 export interface PlaceCalEventAddress {
   streetAddress?: string
 }
@@ -117,10 +121,14 @@ export async function fetchPlaceCalEvents(
   const eventsClient = new GraphQLClient(process.env.PLACECAL_GRAPHQL_URL || '')
 
   try {
-    const response = await eventsClient.request<EventsResponse>(query, {
-      neighbourhoodId,
-      fromDate: formatDate(today),
-      toDate: formatDate(windowEnd),
+    const response = await eventsClient.request<EventsResponse>({
+      document: query,
+      variables: {
+        neighbourhoodId,
+        fromDate: formatDate(today),
+        toDate: formatDate(windowEnd),
+      },
+      signal: AbortSignal.timeout(TIMEOUT_MS),
     })
 
     return response.eventsByFilter ?? []
