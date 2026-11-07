@@ -1,5 +1,4 @@
-import chroma from 'chroma-js'
-import { selectMoreAccessibleColor } from '@helpers/colors'
+import { selectMoreAccessibleColor, withAlpha } from '@helpers/colors'
 import { getIcon } from '@helpers/icons'
 import { cn } from '@components/lib/utils'
 import { Badge } from '@components/ui/badge'
@@ -19,8 +18,6 @@ const CategoryTag = ({
   className,
   ...props
 }: CategoryTagProps) => {
-  const color = chroma(colorHex)
-
   const accessibleTextColor = selectMoreAccessibleColor(
     colorHex,
     '#3f3f40',
@@ -37,7 +34,7 @@ const CategoryTag = ({
         className,
       )}
       style={{
-        backgroundColor: color.alpha(alpha).css(),
+        backgroundColor: withAlpha(colorHex, alpha),
         color: accessibleTextColor,
       }}
       {...props}
