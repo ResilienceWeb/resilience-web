@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { fetchPlaceCalEvents, getPlaceCalNeighbourhoodId } from '@/lib/placecal'
 import prisma from '@prisma-rw'
-import { compressJson } from '@helpers/compression'
 import { otherWebs, visibleWebPlacements } from '@db/listingRepository'
 import { getAllWebs } from '@db/webRepository'
 import Web from './Web'
@@ -111,9 +110,7 @@ export async function generateStaticParams() {
 }
 
 type DataType = {
-  // gzip+base64 compressed network visualization data ({ nodes, edges }).
-  // Kept compressed across the wire and decompressed on the client in Web.tsx.
-  data: string
+  data: { nodes: any[]; edges: any[] }
   categories: Array<{ label: string; color: string; icon: string }>
   tags: Array<{ id: number; label: string; icon: string | null }>
   webData: {
@@ -444,9 +441,9 @@ async function getData({ webSlug }): Promise<DataType> {
   const publicTags = [...tagsById.values()].sort((a, b) => a.id - b.id)
 
   return {
-    // Compress only the network visualization data — it's the large payload.
-    // webData is small and is consumed directly for props/metadata.
-    data: compressJson(transformedData),
+    // Sent as plain JSON: Brotli on the response compresses it better than
+    // gzip+base64 did, and the client has nothing to decode.
+    data: transformedData,
     categories: publicCategories,
     tags: publicTags,
     // @ts-ignore
