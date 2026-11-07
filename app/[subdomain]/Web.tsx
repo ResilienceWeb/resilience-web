@@ -15,7 +15,6 @@ import {
   removeNonAlphaNumeric,
   sortStringsFunc,
   intersection,
-  htmlTitle,
 } from '@helpers/utils'
 import AlertBanner from '@components/alert-banner'
 import Events from '@components/events'
@@ -186,6 +185,8 @@ const Web = ({
   }))
 
   const [selectedId, setSelectedId] = useState()
+  // Frozen at mount, as in Item, so the featured check stays pure during render
+  const [now] = useState(() => Date.now())
 
   const handleCategorySelection = (value) => {
     const categoryLabels = value.map((c) => c.label)
@@ -225,6 +226,8 @@ const Web = ({
 
   const [filteredItems, filteredDescriptiveNodes] = (() => {
     if (!data) return []
+    const isFeatured = (item) =>
+      Boolean(item.featured) && new Date(item.featured).getTime() > now
     let results: any[] = data?.nodes
       .filter(
         (item) =>
@@ -235,8 +238,8 @@ const Web = ({
       .sort(sortStringsFunc)
       .sort((a, b) => {
         // Sort by featured first (if date is in the future), then new, then regular
-        const aFeatured = a.featured && new Date(a.featured) > new Date()
-        const bFeatured = b.featured && new Date(b.featured) > new Date()
+        const aFeatured = isFeatured(a)
+        const bFeatured = isFeatured(b)
         if (aFeatured && !bFeatured) return -1
         if (!aFeatured && bFeatured) return 1
         if (a.new && !b.new) return -1
@@ -274,28 +277,18 @@ const Web = ({
       )
     }
 
-    results = results.map((item) => {
-      let tagsHTML = ''
-      item.tags?.forEach((tag) => {
-        tagsHTML += `<span class="vis-network-title-tag" style="background-color: ${tag.color ?? '#b4fdbd'}">${tag.label}</span>`
-      })
-      return {
-        ...item,
-        title: htmlTitle(
-          `<span class="vis-network-title-label">${item.label}</span><br><div class="vis-network-title-tag-list">${tagsHTML}</div>`,
-        ),
-      }
-    })
-
-    const filteredDescriptiveNodes = descriptiveNodes.filter(
-      (descriptiveNode) =>
-        results.some(
-          (item) =>
-            item.category.label === descriptiveNode.label ||
-            descriptiveNode.group === 'central-node' ||
-            descriptiveNode.group === 'related-web',
-        ),
+    const visibleCategories = new Set(
+      results.map((item) => item.category.label),
     )
+    const filteredDescriptiveNodes =
+      results.length === 0
+        ? []
+        : descriptiveNodes.filter(
+            (descriptiveNode) =>
+              descriptiveNode.group === 'central-node' ||
+              descriptiveNode.group === 'related-web' ||
+              visibleCategories.has(descriptiveNode.label),
+          )
 
     return [results, filteredDescriptiveNodes]
   })()
