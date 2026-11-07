@@ -283,3 +283,44 @@ describe('the tag filter', () => {
     ).toBe('/icons/green-map/food-bank.svg')
   })
 })
+
+describe('the web page listing order', () => {
+  it('puts listings featured until a future date first, then the rest alphabetically', async () => {
+    const DAY = 24 * 60 * 60 * 1000
+    renderPage(
+      <Web
+        data={webData([
+          { title: 'Bike Kitchen', category: 'Transportation' },
+          {
+            title: 'Apple Orchard',
+            category: 'Environment',
+            featured: new Date(Date.now() - DAY).toISOString(),
+          },
+          {
+            title: 'Zero Waste Shop',
+            category: 'Community',
+            featured: new Date(Date.now() + DAY).toISOString(),
+          },
+        ])}
+        categories={CATEGORIES}
+        features={[]}
+        webId={1}
+        webName="Bristol"
+        webIsPublished
+        webSlug="bristol"
+      />,
+      { searchParams: { view: 'list' } },
+    )
+
+    await expectVisible(['Bike Kitchen'])
+    const order = screen
+      .getAllByRole('link', { name: /Bike Kitchen|Apple Orchard|Zero Waste/i })
+      .map((link) => link.textContent)
+
+    expect(order).toEqual([
+      expect.stringContaining('Zero Waste Shop'),
+      expect.stringContaining('Apple Orchard'),
+      expect.stringContaining('Bike Kitchen'),
+    ])
+  })
+})
