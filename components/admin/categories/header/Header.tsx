@@ -1,13 +1,12 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { HiPlus } from 'react-icons/hi'
-import { useToggle } from 'usehooks-ts'
 import { Button } from '@components/ui/button'
 import useCreateCategory from '@hooks/categories/useCreateCategory'
 import { useAppContext } from '@store/hooks'
 import { NewCategoryDialog } from './category-dialog'
 
 const Header = () => {
-  const [isOpen, _toggle, setIsOpen] = useToggle()
+  const [isOpen, setIsOpen] = useState(false)
   const { mutate: createCategory } = useCreateCategory()
   const { selectedWebId } = useAppContext()
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import truncate from 'lodash.truncate'
 import prisma from '@prisma-rw'
+import { metaDescription } from '@helpers/metaDescription'
 import { otherWebs, visibleWebPlacements } from '@db/listingRepository'
 import { initializeBuildCache } from '../../../lib/build-cache'
 import Listing from './Listing'
@@ -39,14 +39,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
     return null
   }
 
-  const descriptionStrippedOfHtml = listing.description?.replace(
-    /<[^>]*>?/gm,
-    '',
-  )
-  const truncatedDescription = truncate(descriptionStrippedOfHtml, {
-    length: 160,
-    separator: /,.? +/,
-  })
+  const truncatedDescription = metaDescription(listing.description)
 
   return {
     title: `${listing.title} | Resilience Web`,

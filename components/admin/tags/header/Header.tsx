@@ -1,13 +1,12 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { HiPlus } from 'react-icons/hi'
-import { useToggle } from 'usehooks-ts'
 import { Button } from '@components/ui/button'
 import useCreateTag from '@hooks/tags/useCreateTag'
 import { useAppContext } from '@store/hooks'
 import { NewTagDialog } from './tag-dialog'
 
 const Header = () => {
-  const [isOpen, _toggle, setIsOpen] = useToggle()
+  const [isOpen, setIsOpen] = useState(false)
   const { mutate: createTag } = useCreateTag()
   const { selectedWebId } = useAppContext()
 

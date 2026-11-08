@@ -124,7 +124,7 @@ REST API endpoints in [app/api/](app/api/):
 
 ### Image Management
 
-Images stored on **Supabase Storage** (S3-compatible) (soon to move to Supabase):
+Images stored on **Supabase Storage**:
 - Upload: [helpers/uploadImage.ts](helpers/uploadImage.ts)
 - Delete: [helpers/deleteImage.ts](helpers/deleteImage.ts)
 - Client: [lib/supabase-storage.ts](lib/supabase-storage.ts)
@@ -154,10 +154,10 @@ Images stored on **Supabase Storage** (S3-compatible) (soon to move to Supabase)
 
 ### Network Visualization
 
-**Vis-network** for relationship graphs:
+**react-force-graph-2d** (canvas, with `d3-force` for layout) for relationship graphs:
 - Components: [components/network/](components/network/)
 - Shows relationships between listings, categories, and webs
-- Custom fork: `vis-network-react` from DinerIsmail/vis-network-react
+- The page sends `{ nodes, edges }`; [Network.tsx](components/network/Network.tsx) maps it to the graph's `{ nodes, links }`
 
 ### CMS Integration
 

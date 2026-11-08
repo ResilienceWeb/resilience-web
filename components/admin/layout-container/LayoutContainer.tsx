@@ -1,11 +1,11 @@
 'use client'
-import { useToggle } from 'usehooks-ts'
+import { useState } from 'react'
 import Nav from '@components/admin/nav'
 import Sidebar from '@components/admin/sidebar'
 import Footer from '@components/footer'
 
 const LayoutContainer = ({ children }) => {
-  const [isOpen, _toggle, setIsOpen] = useToggle()
+  const [isOpen, setIsOpen] = useState(false)
   const onOpen = () => setIsOpen(true)
   const onClose = () => setIsOpen(false)
 
