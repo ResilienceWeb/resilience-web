@@ -1,5 +1,4 @@
 import { memo, useState } from 'react'
-import { useToggle } from 'usehooks-ts'
 import { isPickableTag, isSharedTag } from '@helpers/tags'
 import DeleteConfirmationDialog from '@components/admin/delete-confirmation-dialog'
 import TagIcon from '@components/tag-icon'
@@ -33,11 +32,10 @@ const columns = [
 ]
 
 const List = ({ tags }) => {
-  const [isUpdateTagDialogOpen, _toggleUpdate, setIsUpdateTagDialogOpen] =
-    useToggle()
-  const [isAddToListingsDialogOpen, _toggleAdd, setIsAddToListingsDialogOpen] =
-    useToggle()
-  const [isRemoveDialogOpen, _toggleRemove, setIsRemoveDialogOpen] = useToggle()
+  const [isUpdateTagDialogOpen, setIsUpdateTagDialogOpen] = useState(false)
+  const [isAddToListingsDialogOpen, setIsAddToListingsDialogOpen] =
+    useState(false)
+  const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false)
 
   const { listings, isPending: isLoadingListings } = useListings()
   const { mutate: updateTag } = useUpdateTag()

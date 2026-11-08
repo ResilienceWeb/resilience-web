@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import type { Web, WebLocation } from '@prisma-client'
-import truncate from 'lodash.truncate'
 import prisma from '@prisma-rw'
+import { metaDescription } from '@helpers/metaDescription'
 import WebHome from './WebHome'
 
 export default async function WebHomePage(props) {
@@ -37,14 +37,7 @@ export async function generateMetadata(props): Promise<Metadata> {
     return null
   }
 
-  const descriptionStrippedOfHtml = webData.description?.replace(
-    /<[^>]*>?/gm,
-    '',
-  )
-  const truncatedDescription = truncate(descriptionStrippedOfHtml, {
-    length: 160,
-    separator: /,.? +/,
-  })
+  const truncatedDescription = metaDescription(webData.description)
 
   return {
     title: `${webData.title} Resilience Web`,

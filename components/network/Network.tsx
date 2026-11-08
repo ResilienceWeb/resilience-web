@@ -139,7 +139,6 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
   // Derive isOpen from selectedId to avoid useEffect/setState pattern
   const isOpen = Boolean(selectedId)
 
-  // Transform vis-network data format to react-force-graph format
   const graphData: GraphData = (() => {
     if (!data) return { nodes: [], links: [] }
 

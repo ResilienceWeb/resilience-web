@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import truncate from 'lodash.truncate'
+import { metaDescription } from '@helpers/metaDescription'
 import { generateSlug } from '@helpers/utils'
 import Listing from '../../[subdomain]/[slug]/Listing'
 import {
@@ -31,14 +31,7 @@ export async function generateMetadata(props): Promise<Metadata> {
     return null
   }
 
-  const descriptionStrippedOfHtml = listing.description?.replace(
-    /<[^>]*>?/gm,
-    '',
-  )
-  const truncatedDescription = truncate(descriptionStrippedOfHtml, {
-    length: 160,
-    separator: /,.? +/,
-  })
+  const truncatedDescription = metaDescription(listing.description)
 
   return {
     title: `${listing.title} | Resilience Web`,

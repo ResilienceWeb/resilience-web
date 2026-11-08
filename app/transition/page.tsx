@@ -4,7 +4,6 @@ import {
   dehydrate,
   HydrationBoundary,
 } from '@tanstack/react-query'
-import { groupBy } from 'es-toolkit'
 import { FEATURES } from '@helpers/features'
 import { generateSlug } from '@helpers/utils'
 import Web, { CENTRAL_NODE_ID } from '../[subdomain]/Web'
@@ -166,7 +165,10 @@ function transformData(data) {
     })
   })
 
-  const nodesGroupedByCategory = groupBy(nodes, (node) => node.category.label)
+  const nodesGroupedByCategory = Object.groupBy(
+    nodes,
+    (node) => node.category.label,
+  )
 
   // Central node
   nodes.push({
