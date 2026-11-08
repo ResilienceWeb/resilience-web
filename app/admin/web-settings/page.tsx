@@ -296,7 +296,8 @@ export default function WebSettingsPage() {
                 <FormLabel className="font-semibold">Contact Email</FormLabel>
                 <FormDescription className="mb-2">
                   This should be an email address where people can reach you
-                  with questions or feedback.
+                  with questions or feedback. It will be publicly displayed on
+                  your web.
                 </FormDescription>
                 <Input
                   name="contactEmail"
