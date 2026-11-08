@@ -6,6 +6,12 @@ describe('metaDescription', () => {
     expect(metaDescription('<p>We fix <b>bikes</b>.</p>')).toBe('We fix bikes.')
   })
 
+  it('leaves no tag behind when tags are nested inside each other', () => {
+    expect(metaDescription('Hi <<b>script>alert(1)</script>')).toBe(
+      'Hi script>alert(1)',
+    )
+  })
+
   it('is empty when there is no description', () => {
     expect(metaDescription(null)).toBe('')
     expect(metaDescription(undefined)).toBe('')
