@@ -1,9 +1,8 @@
-import { compressJson } from '@helpers/compression'
+import type { NetworkData } from '@/app/[subdomain]/Web'
 
 /**
- * Builds the `data` prop the web page receives: gzipped, base64-encoded network
- * data. Tests describe listings in plain terms and this puts them in the shape
- * the page decompresses on mount.
+ * Builds the `data` prop the web page receives: its network data. Tests
+ * describe listings in plain terms and this puts them in the page's shape.
  */
 
 export interface ListingFixture {
@@ -21,7 +20,7 @@ export const CENTRAL_NODE_ID = 999
 export function webData(
   listings: ListingFixture[],
   { webTitle = 'Bristol' } = {},
-) {
+): NetworkData {
   const categoryLabels = [...new Set(listings.map((l) => l.category))]
 
   const categoryNodes = categoryLabels.map((label, index) => ({
@@ -45,12 +44,12 @@ export function webData(
     new: false,
   }))
 
-  return compressJson({
+  return {
     nodes: [
       { id: CENTRAL_NODE_ID, label: webTitle, group: 'central-node' },
       ...categoryNodes,
       ...listingNodes,
     ],
     edges: [],
-  })
+  } as NetworkData
 }

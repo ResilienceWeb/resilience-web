@@ -207,13 +207,9 @@ The `Web` model uses soft deletes:
 - Queries filter: `WHERE deletedAt IS NULL`
 - Deletion endpoint: [app/api/webs/[slug]/delete/route.ts](app/api/webs/[slug]/delete/route.ts)
 
-### Data Compression
+### Network Data Payload
 
-Large page data (network visualization) is gzip-compressed (then base64-encoded) on the server and stays compressed across the wire, decompressed on the client:
-- Compressed in [app/[subdomain]/page.tsx](app/[subdomain]/page.tsx) `getData()` via `compressJson()`
-- Decompressed in [app/[subdomain]/Web.tsx](app/[subdomain]/Web.tsx) via `decompressJson()`
-- Isomorphic gzip helpers (fflate-based): [helpers/compression.ts](helpers/compression.ts)
-- Reduces the initial page load / RSC payload for webs with many listings
+The network visualization data is built in [app/[subdomain]/page.tsx](app/[subdomain]/page.tsx) `getData()` and passed to [app/[subdomain]/Web.tsx](app/[subdomain]/Web.tsx) as plain JSON. Don't gzip+base64 it into a string: the response is already Brotli-compressed, which shrinks plain JSON further than it can shrink base64, so that made pages slightly bigger and added a decode step on the client.
 
 ### Static Generation
 
@@ -284,7 +280,7 @@ Writing one:
   stubs a request and remembers what was sent — the URL and the body, whether
   it went as JSON or as a form.
 - Build props with the fixtures in [test/fixtures/](test/fixtures/) —
-  `webData([{ title, category }])` returns the compressed payload the web page
+  `webData([{ title, category }])` returns the network data the web page
   expects, and `listing({ title })` a listing in the shape the client sees it.
 
 ```tsx

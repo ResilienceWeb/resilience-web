@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, use, useEffect, memo, useMemo, useState } from 'react'
+import { Suspense, use, useEffect, memo, useState } from 'react'
 import { HiOutlineShare } from 'react-icons/hi'
 import dynamic from 'next/dynamic'
 import NextLink from 'next/link'
@@ -8,7 +8,6 @@ import type { PlaceCalEvent } from '@/lib/placecal'
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts'
 import { trackWebEvent } from '@helpers/analytics'
-import { decompressJson } from '@helpers/compression'
 import { REMOTE_URL } from '@helpers/config'
 import { isFeatureEnabled, FEATURES } from '@helpers/features'
 import { getIcon } from '@helpers/icons'
@@ -39,7 +38,7 @@ const ListingsMap = dynamic(() => import('@components/listings-map'), {
 
 export const CENTRAL_NODE_ID = 999
 
-type NetworkData = {
+export type NetworkData = {
   nodes: ListingNodeType[]
   edges: any[]
 }
@@ -57,8 +56,7 @@ export type WebCategory = { label: string; color: string; icon: string }
 export type WebTag = { id: number; label: string; icon?: string | null }
 
 type Props = {
-  // gzip+base64 compressed NetworkData, decompressed on the client below.
-  data: string
+  data: NetworkData | null
   categories?: WebCategory[]
   tags?: WebTag[]
   // Streamed in after the rest of the page. Absent when the web has no
@@ -86,7 +84,7 @@ function StreamedEvents({
 }
 
 const Web = ({
-  data: compressedData,
+  data,
   categories: webCategories = [],
   tags: webTags = [],
   events,
@@ -100,16 +98,6 @@ const Web = ({
   webSlug,
   relatedWebs = [],
 }: Props) => {
-  // Deliberately a manual useMemo: without it the React Compiler merges this
-  // value and the filter pipeline below into a single memo scope, which then
-  // spans the hook calls in between and gets discarded entirely — so `data`
-  // (and filteredNetworkData) would be rebuilt on every render, remounting the
-  // network graph whenever unrelated state changes (e.g. the listing dialog).
-  const data: NetworkData | null = useMemo(
-    () => (compressedData ? decompressJson<NetworkData>(compressedData) : null),
-    [compressedData],
-  )
-
   const isMobile = useIsMobile()
   const [isVolunteer, setIsVolunteer] = useState(false)
   const defaultTab = isMobile ? 'list' : 'web'
