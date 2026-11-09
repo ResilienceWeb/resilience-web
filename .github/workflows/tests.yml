@@ -15,7 +15,7 @@ jobs:
       BETTER_AUTH_SECRET: ci-secret-not-used-for-anything-real
     services:
       postgres:
-        image: postgres:17
+        image: postgres:18
         env:
           POSTGRES_PASSWORD: password
         options: >-
