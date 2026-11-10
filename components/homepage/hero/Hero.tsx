@@ -2,9 +2,10 @@ import { ArrowDown } from 'lucide-react'
 
 interface HeroProps {
   webCount: number
+  listingCount: number
 }
 
-export default function Hero({ webCount }: HeroProps) {
+export default function Hero({ webCount, listingCount }: HeroProps) {
   return (
     <div className="relative w-full">
       <div className="mx-auto max-w-7xl pt-6 pb-2 md:pt-10">
@@ -25,7 +26,9 @@ export default function Hero({ webCount }: HeroProps) {
             <div className="flex flex-col items-start gap-2 text-sm text-gray-500 md:flex-row md:items-center md:gap-3 md:justify-center">
               <span className="flex items-center gap-2">
                 <span className="inline-flex h-2 w-2 shrink-0 rounded-full bg-green-500" />
-                {webCount} community webs active across the UK
+                {webCount} community webs with{' '}
+                {listingCount.toLocaleString('en-GB')} listings active across
+                the UK
               </span>
               <a
                 href="#web-cards"

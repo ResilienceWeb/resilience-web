@@ -38,6 +38,17 @@ async function getData(): Promise<any> {
       slug: true,
       image: true,
       publishedAt: true,
+      _count: {
+        select: {
+          // Same listings the web's own page shows
+          listings: {
+            where: {
+              categoryId: { not: null },
+              listing: { inactive: false, pending: false },
+            },
+          },
+        },
+      },
       location: {
         select: {
           latitude: true,
