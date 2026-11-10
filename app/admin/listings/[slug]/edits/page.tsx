@@ -57,7 +57,9 @@ export default function ListingEditsPage({ params }) {
     }
   }, [isSuccess, isError, router, slug])
 
-  if (!listing || isLoadingListing || isLoadingListingEdits) {
+  // After accepting, the edit is gone from the cache; hold the spinner until the
+  // redirect lands instead of flashing "No pending edits found".
+  if (!listing || isLoadingListing || isLoadingListingEdits || isSuccess) {
     return <Spinner />
   }
 

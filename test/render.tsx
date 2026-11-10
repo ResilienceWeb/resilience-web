@@ -34,7 +34,9 @@ export interface SelectedWeb {
  *  - the tooltip provider, which the app mounts once at the root
  *
  * Retries are off, otherwise a deliberately-failing request takes three
- * attempts before the component shows its error state.
+ * attempts before the component shows its error state. `staleTime` matches
+ * `app/providers.tsx`, so a page reached with data already cached shows that
+ * cache rather than quietly refetching it.
  */
 export function renderPage(
   ui: ReactElement,
@@ -50,7 +52,7 @@ export function renderPage(
   } = {},
 ) {
   const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false } },
+    defaultOptions: { queries: { retry: false, staleTime: 60 * 1000 } },
   })
 
   const appContext = {
