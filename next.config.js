@@ -183,6 +183,20 @@ const nextConfig = {
         source: '/admin/:path*',
         headers: unframeableHeaders,
       },
+      // Sign-in pages and sign-in-gated pages, which redirect anonymous visitors
+      // (Googlebot included), so a header is the only noindex signal that
+      // survives the redirect. robots.txt must not block these paths, or Google
+      // never sees it and indexes the bare URLs it finds linked.
+      ...[
+        '/admin/:path*',
+        '/auth/:path*',
+        '/activate',
+        '/edit/:path*',
+        '/new-listing/:path*',
+      ].map((source) => ({
+        source,
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex' }],
+      })),
       {
         source: '/api/contact',
         headers: [

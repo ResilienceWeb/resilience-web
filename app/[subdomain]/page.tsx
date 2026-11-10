@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { fetchPlaceCalEvents, getPlaceCalNeighbourhoodId } from '@/lib/placecal'
 import prisma from '@prisma-rw'
+import { metaDescription } from '@helpers/metaDescription'
 import { otherWebs, visibleWebPlacements } from '@db/listingRepository'
 import { getAllWebs } from '@db/webRepository'
 import Web from './Web'
@@ -84,14 +85,17 @@ export async function generateMetadata(props): Promise<Metadata> {
     return null
   }
 
+  const description =
+    metaDescription(webData.description) ||
+    `${webData.title} Resilience Web: a map of local groups working to co-create a more socially and environmentally just place.`
+
   return {
     title: `${webData.title} | Resilience Web`,
+    description,
     openGraph: {
       title: `${webData.title} | Resilience Web`,
       images: [{ url: webData.image }],
-      description:
-        webData.description ??
-        'A web of connections, showing local groups working to co-create a more socially and environmentally just city.',
+      description,
     },
     alternates: {
       canonical: `https://${webData.slug}.resilienceweb.org.uk`,

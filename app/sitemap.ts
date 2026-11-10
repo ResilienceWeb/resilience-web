@@ -24,10 +24,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     )
     const websData = await websResponse.json()
     const { webs } = websData
-    webPathItems = webs.map((w) => ({
-      url: `https://${w.slug}.resilienceweb.org.uk/web`,
-      lastModified: w.updatedAt,
-    }))
+    webPathItems = webs.flatMap((w) => [
+      {
+        url: `https://${w.slug}.resilienceweb.org.uk`,
+        lastModified: w.updatedAt,
+      },
+      {
+        url: `https://${w.slug}.resilienceweb.org.uk/web`,
+        lastModified: w.updatedAt,
+      },
+    ])
   } catch {
     // Degrade gracefully: keep the static entries even if webs can't be fetched.
   }

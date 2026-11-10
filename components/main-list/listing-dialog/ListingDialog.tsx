@@ -226,7 +226,10 @@ const ListingDialog = ({
 
           <div className="mt-4 flex flex-wrap justify-end gap-1">
             {item.tags?.map((tag) => {
-              const urlEncodedTag = tag.label.replace(' ', '+')
+              const urlEncodedTag = encodeURIComponent(tag.label).replace(
+                /%20/g,
+                '+',
+              )
               return (
                 <Link
                   key={tag.id}

@@ -37,7 +37,9 @@ export async function generateMetadata(props): Promise<Metadata> {
     return null
   }
 
-  const truncatedDescription = metaDescription(webData.description)
+  const truncatedDescription =
+    metaDescription(webData.description) ||
+    `${webData.title} Resilience Web: a map of local groups working to co-create a more socially and environmentally just place.`
 
   return {
     title: `${webData.title} Resilience Web`,

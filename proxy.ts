@@ -91,7 +91,8 @@ export default function middleware(req: NextRequest) {
 
   if (currentHost === 'cambridge-city') {
     return NextResponse.redirect(
-      `https://cambridge.resilienceweb.org.uk${pathname}`,
+      `https://cambridge.resilienceweb.org.uk${pathname}${req.nextUrl.search}`,
+      301,
     )
   }
 

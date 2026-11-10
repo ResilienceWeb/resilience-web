@@ -344,7 +344,10 @@ function Listing({ listing, categories }) {
         {listing.tags?.length > 0 && (
           <div className="mt-8 flex flex-wrap gap-2">
             {listing.tags.map((tag) => {
-              const urlEncodedTag = tag.label.replace(' ', '+')
+              const urlEncodedTag = encodeURIComponent(tag.label).replace(
+                /%20/g,
+                '+',
+              )
               const badge = <TagChip tag={tag} />
               return listing.web?.slug ? (
                 <Link
