@@ -19,9 +19,15 @@ interface HomepageProps {
 }
 
 export default function Homepage({ webs, showMap = false }: HomepageProps) {
+  const displayedWebs = webs.filter(isWebDisplayedOnHomepage)
+  const listingCount = displayedWebs.reduce(
+    (total, web) => total + (web._count?.listings ?? 0),
+    0,
+  )
+
   return (
     <Layout webs={webs}>
-      <Hero webCount={webs.filter(isWebDisplayedOnHomepage).length} />
+      <Hero webCount={displayedWebs.length} listingCount={listingCount} />
       {showMap ? <WebsMap webs={webs} /> : <WebCards webs={webs} />}
       <Features />
       <JoinTheCommunity />
