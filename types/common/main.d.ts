@@ -30,6 +30,8 @@ declare global {
       noPhysicalLocation?: boolean
     }
     alsoListedIn?: AlsoListedIn[]
+    /** The page search engines should index when the listing is in several webs. */
+    canonicalUrl?: string
   }
 
   /** Another web the listing is placed in, and its slug there. */
