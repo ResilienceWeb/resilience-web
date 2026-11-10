@@ -130,3 +130,16 @@ const options: sanitizeHtml.IOptions = {
 export function sanitizeRichText<T>(value: T): T {
   return typeof value === 'string' ? (sanitizeHtml(value, options) as T) : value
 }
+
+const diffOptions: sanitizeHtml.IOptions = {
+  ...options,
+  allowedTags: [...(options.allowedTags as string[]), 'ins', 'del'],
+}
+
+/**
+ * The same allow-list plus the `<ins>` / `<del>` markers an HTML diff adds.
+ * Kept separate so stored descriptions can't pick those tags up.
+ */
+export function sanitizeRichTextDiff(html: string): string {
+  return sanitizeHtml(html, diffOptions)
+}
