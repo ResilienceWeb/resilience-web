@@ -1,10 +1,7 @@
-Sitemap: https://resilienceweb.org.uk/sitemap.xml
+Sitemap: https://www.resilienceweb.org.uk/sitemap.xml
 
 User-agent: *
 Disallow: /api/
-Disallow: /admin/
-Disallow: /auth/
-Disallow: /edit/
 
 User-agent: AI2Bot
 User-agent: Ai2Bot-Dolma

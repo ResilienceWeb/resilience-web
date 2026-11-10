@@ -14,8 +14,8 @@ const downloadImage = (filename: string) => {
   document.body.removeChild(link)
 }
 
-const codeSnippet = `<a href="https://resilienceweb.org.uk" target="_blank">
-  <img width="400" height="140" src="https://resilienceweb.org.uk/proud-member.png" alt="Proud to be part of Resilience Web" />
+const codeSnippet = `<a href="https://www.resilienceweb.org.uk" target="_blank">
+  <img width="400" height="140" src="https://www.resilienceweb.org.uk/proud-member.png" alt="Proud to be part of Resilience Web" />
 </a>
 `
 
