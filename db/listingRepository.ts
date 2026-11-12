@@ -273,3 +273,29 @@ export function otherWebs<T extends { web: { slug: string } }>(
 ): T[] {
   return placements.filter((p) => p.web.slug !== currentWebSlug)
 }
+
+/** `visibleWebPlacements` plus the id that `canonicalPlacement` orders by. */
+export const listingPagePlacements = {
+  ...visibleWebPlacements,
+  select: { ...visibleWebPlacements.select, id: true },
+} satisfies Prisma.Listing$placementsArgs
+
+/**
+ * A listing shared into several webs has one near-identical page per web, so
+ * all of them point search engines at the oldest one a visitor can reach:
+ * normally the web the listing was created in. Lowest id rather than
+ * `createdAt`, because the multi-web migration backfilled `created_at` from
+ * the listing itself.
+ */
+export function canonicalPlacement<T extends { id: number }>(
+  placements: T[],
+): T | undefined {
+  return placements.reduce<T | undefined>(
+    (oldest, p) => (!oldest || p.id < oldest.id ? p : oldest),
+    undefined,
+  )
+}
+
+export function listingUrl(webSlug: string, slug: string) {
+  return `https://${webSlug}.resilienceweb.org.uk/${slug}`
+}

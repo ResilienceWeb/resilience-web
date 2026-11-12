@@ -1,8 +1,40 @@
 import { cache } from 'react'
 import prisma from '@prisma-rw'
 import { exclude } from '@helpers/utils'
-import { otherWebs, visibleWebPlacements } from '@db/listingRepository'
+import {
+  canonicalPlacement,
+  listingPagePlacements,
+  listingUrl,
+  otherWebs,
+} from '@db/listingRepository'
 import { isBuildTime, getListingFromCache } from '../../../lib/build-cache'
+
+type ReachablePlacement = {
+  id: number
+  slug: string
+  web: { slug: string; title: string }
+}
+
+/**
+ * What the listing page derives from the listing's reachable placements. Shared
+ * with `generateStaticParams`, which fills the build cache with the same shape.
+ */
+export function placementLinks(
+  placements: ReachablePlacement[],
+  current: { webSlug: string; slug: string },
+) {
+  const canonical = canonicalPlacement(placements) ?? {
+    slug: current.slug,
+    web: { slug: current.webSlug },
+  }
+
+  return {
+    alsoListedIn: otherWebs(placements, current.webSlug).map(
+      ({ slug, web }) => ({ slug, web }),
+    ),
+    canonicalUrl: listingUrl(canonical.web.slug, canonical.slug),
+  }
+}
 
 /** Label-sorted, as the client hook sorted them. See `getData` in the web page. */
 export function sortCategoriesByLabel<T extends { label: string }>(
@@ -60,7 +92,7 @@ const getListing = cache(async function getListing({
             select: { latitude: true, longitude: true, description: true },
           },
           edits: { select: { id: true } },
-          placements: visibleWebPlacements,
+          placements: listingPagePlacements,
           relations: {
             select: {
               id: true,
@@ -102,7 +134,10 @@ const getListing = cache(async function getListing({
       ...placementFields.web,
       categories: sortCategoriesByLabel(placementFields.web.categories),
     },
-    alsoListedIn: otherWebs(alsoIn, webSlug),
+    ...placementLinks(alsoIn, {
+      webSlug: placementFields.web.slug,
+      slug: placementFields.slug,
+    }),
     // Only surface relations that ALSO live in the current web — relations without
     // a placement here have no slug/category to render, and exposing them would link
     // off into a 404.
