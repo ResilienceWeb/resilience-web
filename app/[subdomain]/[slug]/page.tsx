@@ -2,10 +2,10 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import prisma from '@prisma-rw'
 import { metaDescription } from '@helpers/metaDescription'
-import { otherWebs, visibleWebPlacements } from '@db/listingRepository'
+import { listingPagePlacements } from '@db/listingRepository'
 import { initializeBuildCache } from '../../../lib/build-cache'
 import Listing from './Listing'
-import getListing, { sortCategoriesByLabel } from './getListing'
+import getListing, { placementLinks, sortCategoriesByLabel } from './getListing'
 
 type PageProps = {
   params: Promise<{
@@ -50,7 +50,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       images: [{ url: listing.image }],
     },
     alternates: {
-      canonical: `https://${params.subdomain}.resilienceweb.org.uk/${params.slug}`,
+      canonical: listing.canonicalUrl,
     },
   }
 }
@@ -85,7 +85,7 @@ export async function generateStaticParams() {
             select: { latitude: true, longitude: true, description: true },
           },
           edits: { select: { id: true } },
-          placements: visibleWebPlacements,
+          placements: listingPagePlacements,
         },
       },
     },
@@ -106,7 +106,10 @@ export async function generateStaticParams() {
         ...p.web,
         categories: sortCategoriesByLabel(p.web.categories),
       },
-      alsoListedIn: otherWebs(listingPlacements, p.web.slug),
+      ...placementLinks(listingPlacements, {
+        webSlug: p.web.slug,
+        slug: p.slug,
+      }),
     }),
   )
   initializeBuildCache(flattenedForCache as any)

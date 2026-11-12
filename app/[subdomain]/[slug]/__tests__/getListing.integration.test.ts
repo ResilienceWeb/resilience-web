@@ -111,4 +111,90 @@ describe('getListing', () => {
       { slug: 'hub-in-cardiff', web: { slug: 'cardiff', title: 'Cardiff' } },
     ])
   })
+
+  describe('canonical URL', () => {
+    async function shareInto(
+      listingId: number,
+      web: Parameters<typeof createWeb>[0],
+      { categorised = true } = {},
+    ) {
+      const created = await createWeb(web)
+      await prisma.listingPlacement.create({
+        data: {
+          listingId,
+          webId: created.id,
+          slug: `hub-in-${created.slug}`,
+          categoryId: categorised
+            ? (await createCategory(created.id)).id
+            : undefined,
+        },
+      })
+    }
+
+    async function createHubInBristol() {
+      const bristol = await createWeb({ slug: 'bristol' })
+      return createListing(bristol.id, {
+        slug: 'food-hub',
+        categoryId: (await createCategory(bristol.id)).id,
+      })
+    }
+
+    it('points every copy of a shared listing at the web it was first placed in', async () => {
+      const hub = await createHubInBristol()
+      await shareInto(hub.id, { slug: 'bath' })
+
+      const inBristol = await getListing({
+        webSlug: 'bristol',
+        listingSlug: 'food-hub',
+      })
+      const inBath = await getListing({
+        webSlug: 'bath',
+        listingSlug: 'hub-in-bath',
+      })
+
+      expect(inBristol?.canonicalUrl).toBe(
+        'https://bristol.resilienceweb.org.uk/food-hub',
+      )
+      expect(inBath?.canonicalUrl).toBe(
+        'https://bristol.resilienceweb.org.uk/food-hub',
+      )
+    })
+
+    it('passes over a first placement that visitors cannot reach', async () => {
+      const hub = await createHubInBristol()
+      await prisma.web.update({
+        where: { slug: 'bristol' },
+        data: { published: false },
+      })
+      await shareInto(hub.id, { slug: 'york' }, { categorised: false })
+      await shareInto(hub.id, { slug: 'bath' })
+      await shareInto(hub.id, { slug: 'cardiff' })
+
+      const listing = await getListing({
+        webSlug: 'cardiff',
+        listingSlug: 'hub-in-cardiff',
+      })
+
+      expect(listing?.canonicalUrl).toBe(
+        'https://bath.resilienceweb.org.uk/hub-in-bath',
+      )
+    })
+
+    it('falls back to the page itself when no placement is reachable', async () => {
+      await createHubInBristol()
+      await prisma.web.update({
+        where: { slug: 'bristol' },
+        data: { published: false },
+      })
+
+      const listing = await getListing({
+        webSlug: 'bristol',
+        listingSlug: 'food-hub',
+      })
+
+      expect(listing?.canonicalUrl).toBe(
+        'https://bristol.resilienceweb.org.uk/food-hub',
+      )
+    })
+  })
 })

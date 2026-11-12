@@ -1,17 +1,14 @@
 import * as Sentry from '@sentry/nextjs'
 import prisma from '@prisma-rw'
+import { canonicalPlacement, visibleWebPlacements } from '@db/listingRepository'
 
 export async function GET() {
   try {
-    // A listing can live in multiple webs via placements, and each placement is
-    // its own URL (web subdomain + placement slug), so we build the sitemap from
-    // placements rather than listings.
+    // Only each listing's canonical page: its other placements point search
+    // engines there, and listing them too would contradict that.
     const placements = await prisma.listingPlacement.findMany({
       where: {
-        web: {
-          published: true,
-          deletedAt: null,
-        },
+        ...visibleWebPlacements.where,
         listing: {
           image: {
             not: null,
@@ -22,6 +19,8 @@ export async function GET() {
         },
       },
       select: {
+        id: true,
+        listingId: true,
         slug: true,
         web: {
           select: {
@@ -36,11 +35,15 @@ export async function GET() {
       },
     })
 
-    const listings = placements.map((p) => ({
-      slug: p.slug,
-      updatedAt: p.listing.updatedAt,
-      web: p.web,
-    }))
+    const byListing = Map.groupBy(placements, (p) => p.listingId)
+    const listings = [...byListing.values()].map((listingPlacements) => {
+      const p = canonicalPlacement(listingPlacements)
+      return {
+        slug: p.slug,
+        updatedAt: p.listing.updatedAt,
+        web: p.web,
+      }
+    })
 
     return Response.json({
       listings,
