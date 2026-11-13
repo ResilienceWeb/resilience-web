@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { sanitizeRichText } from '../sanitize-rich-text'
+import { sanitizeRichText, sanitizeRichTextDiff } from '../sanitize-rich-text'
 
 const DANGEROUS =
   /<script|<iframe|<form|<input|<button|<svg|javascript:|\son[a-z]+\s*=|url\(/i
@@ -134,5 +134,25 @@ describe('sanitizeRichText', () => {
   it('passes non-string values through, so callers keep their null handling', () => {
     expect(sanitizeRichText(null)).toBeNull()
     expect(sanitizeRichText(undefined)).toBeUndefined()
+  })
+})
+
+describe('sanitizeRichTextDiff', () => {
+  it('keeps the insertion and deletion markers a diff adds', () => {
+    const input =
+      '<p>fix <del class="diffdel">your own</del><ins class="diffins">a</ins> bicycle</p>'
+    expect(sanitizeRichTextDiff(input)).toBe(input)
+  })
+
+  it('still strips anything executable', () => {
+    expect(
+      sanitizeRichTextDiff(
+        '<ins><img src=x onerror="alert(1)"></ins><script>alert(2)</script>',
+      ),
+    ).not.toMatch(DANGEROUS)
+  })
+
+  it('does not let stored rich text keep the markers', () => {
+    expect(sanitizeRichText('<ins>new</ins><del>old</del>')).toBe('newold')
   })
 })

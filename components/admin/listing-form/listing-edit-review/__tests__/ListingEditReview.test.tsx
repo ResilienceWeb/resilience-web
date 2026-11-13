@@ -3,7 +3,7 @@ import { recordRequests } from '@/test/msw/handlers'
 import { server } from '@/test/msw/server'
 import { router } from '@/test/next-navigation'
 import { renderPage } from '@/test/render'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { http } from 'msw'
 import { describe, expect, it, vi } from 'vitest'
 import ListingEditReview from '../ListingEditReview.tsx'
@@ -69,6 +69,53 @@ describe('the suggested-edit review', () => {
     expect(section('Title')).toHaveTextContent('Bristol')
     expect(section('Title')).toHaveTextContent('Bike Kitchen')
     expect(section('Description')).toHaveTextContent('every Sunday')
+  })
+
+  it('shows a formatted description with the changes marked in it', () => {
+    renderReview(
+      suggesting({
+        description:
+          '<p>Volunteers help you fix your <strong>own</strong> bicycle.</p><ul><li>Every Sunday</li></ul>',
+      }),
+    )
+
+    const description = section('Description')
+    expect(description).not.toHaveTextContent('<')
+    expect(within(description).getByRole('listitem')).toHaveTextContent(
+      'Every Sunday',
+    )
+    expect(
+      within(description)
+        .getAllByRole('insertion')
+        .map((ins) => ins.textContent)
+        .join(' '),
+    ).toContain('Every Sunday')
+  })
+
+  it('marks wording taken out of the description as removed', () => {
+    renderReview(
+      suggesting({ description: '<p>Volunteers help you fix bicycles.</p>' }),
+    )
+
+    expect(
+      within(section('Description'))
+        .getAllByRole('deletion')
+        .map((del) => del.textContent)
+        .join(' '),
+    ).toContain('your own')
+  })
+
+  it('does not run a script hidden in a suggested description', () => {
+    renderReview(
+      suggesting({
+        description:
+          '<p>Volunteers help you fix your own bicycle.</p><img src="x" onerror="alert(1)"><script>alert(2)</script>',
+      }),
+    )
+
+    const description = section('Description')
+    expect(description.querySelector('script')).toBeNull()
+    expect(description.querySelector('[onerror]')).toBeNull()
   })
 
   it('leaves out the fields the suggestion does not touch', () => {

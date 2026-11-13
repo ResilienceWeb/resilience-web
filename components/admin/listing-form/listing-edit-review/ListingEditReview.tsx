@@ -6,6 +6,7 @@ import { Button } from '@components/ui/button'
 import useDeleteListingEdit from '@hooks/listings/useDeleteListingEdit'
 import ActionEdits from './ActionEdits'
 import Diff from './Diff'
+import HtmlDiff from './HtmlDiff'
 import SocialMediaEdits from './SocialMediaEdits'
 import TagEdits from './TagEdits'
 
@@ -57,10 +58,10 @@ const ListingEditReview = ({
         string2={editedListing.category.label}
       />
 
-      <Diff
+      <HtmlDiff
         label="Description"
-        string1={listing.description}
-        string2={editedListing.description}
+        html1={listing.description}
+        html2={editedListing.description}
       />
 
       <Diff
