@@ -34,6 +34,9 @@ setup('authenticate as the seeded web owner', async ({ request }) => {
       identifier,
       value: `${otp}:0`,
       expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+      // Better Auth filters on createdAt when consuming the code; null makes it throw.
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   })
 
