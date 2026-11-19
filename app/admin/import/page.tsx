@@ -12,7 +12,7 @@ const faqs = [
   {
     question: 'What should my CSV file contain?',
     answer:
-      'A header row followed by one row per listing. Only a name column is required — you can also map columns for description, email, website, address, category and social media links during the import.',
+      "A header row followed by one row per listing. Each row needs a name, a description and a category. You can also map columns for email, website, address and social media links during the import. Categories that don't exist on your web yet are created for you.",
   },
   {
     question: 'What happens if a listing already exists?',
@@ -28,16 +28,18 @@ const faqs = [
 
 export default function ImportPage() {
   const router = useRouter()
-  const canEditWeb = useCanEditWeb()
+  const { canEdit, isPending } = useCanEditWeb()
   const { selectedWebSlug, selectedWebId } = useAppContext()
 
+  // selectedWebId arrives with the list of allowed webs, after the first
+  // render, so only the access check can decide whether to send someone away.
   useEffect(() => {
-    if (!selectedWebId || !canEditWeb) {
+    if (!selectedWebSlug || (!isPending && !canEdit)) {
       router.push('/admin')
     }
-  }, [selectedWebId, canEditWeb, router])
+  }, [selectedWebSlug, isPending, canEdit, router])
 
-  if (!selectedWebId || !canEditWeb) {
+  if (!selectedWebId || !canEdit) {
     return <Spinner />
   }
 
