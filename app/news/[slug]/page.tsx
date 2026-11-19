@@ -2,11 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { remark } from 'remark'
 import html from 'remark-html'
-import {
-  isBuildTime,
-  initializeNewsBuildCache,
-  getNewsPostFromCache,
-} from '../../../lib/build-cache'
+import { isBuildTime } from '../../../lib/build-cache'
 import { getHygraphClient } from '../../../lib/hygraph'
 import NewsItem from './NewsItem'
 
@@ -62,30 +58,38 @@ export async function generateMetadata(props): Promise<Metadata> {
   }
 }
 
+// Next renders pages in separate worker processes, so this is memoised per process:
+// each worker makes one bulk request instead of one per page and per generateMetadata(),
+// which burst past Hygraph's rate limit (HTTP 429). graphql-request POSTs aren't
+// deduped by Next's fetch cache, so nothing else collapses them.
+let allPosts: Promise<Map<string, any>> | null = null
+
+function getAllPosts(): Promise<Map<string, any>> {
+  allPosts ??= getHygraphClient()
+    .request<{ pages: any[] }>(
+      `{
+        pages {
+          ${POST_FIELDS}
+        }
+      }`,
+    )
+    .then(({ pages }) => new Map(pages.map((page) => [page.slug, page])))
+    .catch((error) => {
+      allPosts = null
+      throw error
+    })
+
+  return allPosts
+}
+
 export async function generateStaticParams() {
-  const graphcms = getHygraphClient()
+  const posts = await getAllPosts()
 
-  // Fetch full post data (not just slugs) and seed the build cache with it, so the
-  // per-page render and generateMetadata() read posts from memory instead of each
-  // issuing its own Hygraph request. Together these collapse the build down to this
-  // single bulk request and avoid the concurrent-request bursts that were triggering
-  // HTTP 429 rate limiting. (graphql-request POSTs aren't deduped by Next's fetch
-  // cache, so the cache is what makes the bulk fetch pay off.)
-  const { pages } = await graphcms.request<{ pages: any[] }>(`{
-    pages {
-      ${POST_FIELDS}
-    }
-  }`)
-
-  initializeNewsBuildCache(pages)
-
-  return pages.map(({ slug }) => ({
-    slug,
-  }))
+  return [...posts.keys()].map((slug) => ({ slug }))
 }
 
 async function getNewsItem({ slug }): Promise<any> {
-  let page = isBuildTime() ? getNewsPostFromCache(slug) : null
+  let page = isBuildTime() ? (await getAllPosts()).get(slug) : null
 
   if (!page) {
     const graphcms = getHygraphClient()
