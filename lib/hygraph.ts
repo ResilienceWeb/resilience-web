@@ -11,7 +11,7 @@ let client: GraphQLClient | null = null
 
 export function getHygraphClient(): GraphQLClient {
   if (!client) {
-    client = new GraphQLClient(process.env.GRAPHCMS_URL)
+    client = new GraphQLClient(process.env.HYGRAPH_URL)
   }
 
   return client
