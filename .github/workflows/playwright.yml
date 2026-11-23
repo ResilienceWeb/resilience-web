@@ -23,7 +23,7 @@ jobs:
       SUPABASE_SECRET_KEY: ci-placeholder-never-used
     services:
       postgres:
-        image: postgres:17
+        image: postgres:19
         env:
           POSTGRES_PASSWORD: password
         options: >-
