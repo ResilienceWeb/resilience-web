@@ -31,7 +31,7 @@ export default function Hero({ webCount, listingCount }: HeroProps) {
                 the UK
               </span>
               <a
-                href="#web-cards"
+                href="#webs"
                 className="flex items-center gap-1 font-medium text-primary underline underline-offset-2 hover:text-primary/80"
               >
                 Explore them

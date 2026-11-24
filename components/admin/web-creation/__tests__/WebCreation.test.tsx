@@ -21,6 +21,6 @@ describe('creating a web', () => {
 
     expect(
       screen.getByRole('link', { name: "Find your area's web" }),
-    ).toHaveAttribute('href', '/#web-cards')
+    ).toHaveAttribute('href', '/#webs')
   })
 })

@@ -186,7 +186,7 @@ const WebCreation = () => {
             You don't need to create a web. Find the web for your area and
             propose your group as a listing on it instead.{' '}
             <Link
-              href="/#web-cards"
+              href="/#webs"
               onClick={() => captureEvent('web-creation-find-web-click')}
               className="font-semibold underline"
             >

@@ -36,7 +36,7 @@ export default function MainNav({ webs }) {
   const navItems = [
     {
       label: 'Webs',
-      href: '/#web-cards',
+      href: '/#webs',
       children: webs
         ?.filter((web) => web.slug !== 'ctrlshift' && web.slug !== 'transition')
         .map((web) => ({
