@@ -30,9 +30,10 @@ export const usePageTrackerHandler = ({
 
     /** Handle user operate original back/forward button or history.go()/back()/forward() or framework routing. **/
     const handlePopState = (event: PopStateEvent) => {
-      const state = event.state as HistoryCustomState
+      // Null for entries made outside pushState, such as a same-page #anchor link.
+      const state = event.state as HistoryCustomState | null
       const statePageIndex =
-        state.__REACT_PAGE_TRACKER_INTERNAL__?.pageIndex ?? 0
+        state?.__REACT_PAGE_TRACKER_INTERNAL__?.pageIndex ?? 0
       const pageEvent =
         pageIndexRef.current > statePageIndex ? 'back' : 'forward'
       if (pageEvent === 'forward') {
@@ -41,13 +42,13 @@ export const usePageTrackerHandler = ({
         pageIndexRef.current = statePageIndex ?? 0
       }
       const pageHistory = [
-        ...(state.__REACT_PAGE_TRACKER_INTERNAL__?.pageHistory || []),
+        ...(state?.__REACT_PAGE_TRACKER_INTERNAL__?.pageHistory || []),
       ]
       pageTrackerStore.setState({
         pageIndex: pageIndexRef.current,
         isFirstPage: pageIndexRef.current === 0,
         isLastPage: pageHistory.length === visitedTotalLengthRef.current,
-        referrer: state.__REACT_PAGE_TRACKER_INTERNAL__?.referrer ?? '',
+        referrer: state?.__REACT_PAGE_TRACKER_INTERNAL__?.referrer ?? '',
         pageHistory,
         pageHistoryLength: visitedTotalLengthRef.current,
         pageEvent,
@@ -65,7 +66,7 @@ export const usePageTrackerHandler = ({
         return originalPushState(state, title, url)
       }
       const newPageIndex =
-        (history.state.__REACT_PAGE_TRACKER_INTERNAL__?.pageIndex ?? 0) + 1
+        (history.state?.__REACT_PAGE_TRACKER_INTERNAL__?.pageIndex ?? 0) + 1
       pageIndexRef.current = newPageIndex
       const newPageHistory = pageTrackerStore.getImmutablePageHistory()
       newPageHistory.push(url)
