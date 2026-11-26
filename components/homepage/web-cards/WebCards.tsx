@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { captureEvent } from '@helpers/posthog'
 import { getWebUrl } from '@helpers/config'
+import { captureEvent } from '@helpers/posthog'
 import { Badge } from '@components/ui/badge'
 import { Button } from '@components/ui/button'
 
