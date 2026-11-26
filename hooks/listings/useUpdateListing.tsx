@@ -17,8 +17,12 @@ async function updateListingRequest(listingData) {
     body: formData,
   })
 
-  const data = await response.json()
-  const { listing } = data
+  // The route answers a failure with plain text, not JSON.
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+
+  const { listing } = await response.json()
   return listing
 }
 
@@ -34,12 +38,12 @@ export default function useUpdateListing() {
         webSlug,
       })
     },
-    onSettled: (updatedListing) => {
+    onSettled: (updatedListing, _error, variables) => {
       queryClient.invalidateQueries({
         queryKey: [
           'listings',
           'detail',
-          { webSlug, listingSlug: updatedListing.slug },
+          { webSlug, listingSlug: updatedListing?.slug ?? variables.slug },
         ],
       })
       queryClient.invalidateQueries({
