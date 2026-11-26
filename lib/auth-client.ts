@@ -67,6 +67,7 @@ export const ERROR_MESSAGES: Partial<Record<AUTH_ERROR_CODE, string>> = {
     'This account already has a password set. Please sign in with your password.',
   INVALID_OTP: 'Invalid code. Please check and try again.',
   OTP_EXPIRED: 'This code has expired. Please request a new one.',
+  TOO_MANY_ATTEMPTS: 'Too many incorrect attempts. Please request a new code.',
 }
 
 export const { signIn, signOut } = authClient

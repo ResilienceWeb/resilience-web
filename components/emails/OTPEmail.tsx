@@ -13,9 +13,10 @@ import { main, container, logo, paragraph } from './styles'
 export type OTPEmailProps = {
   email: string
   otp: string
+  purpose?: 'sign-in' | 'change-email'
 }
 
-const OTPEmail = ({ email, otp }: OTPEmailProps) => {
+const OTPEmail = ({ email, otp, purpose = 'sign-in' }: OTPEmailProps) => {
   // Insert invisible space into email address to prevent it from being
   // turned into a hyperlink by email clients like Outlook and Apple Mail.
   const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`
@@ -35,8 +36,9 @@ const OTPEmail = ({ email, otp }: OTPEmailProps) => {
           />
 
           <Text style={paragraph}>
-            Hello! You requested a verification code to sign in to Resilience
-            Web.
+            {purpose === 'change-email'
+              ? 'Hello! You asked to change the email address on your Resilience Web account to this one.'
+              : 'Hello! You requested a verification code to sign in to Resilience Web.'}
           </Text>
 
           <Text style={paragraph}>

@@ -32,12 +32,13 @@ import { Spinner } from '@components/ui/spinner'
 import useCurrentUser from '@hooks/user/useCurrentUser'
 import useUpdateUser from '@hooks/user/useUpdateUser'
 import useMyWebAccess from '@hooks/web-access/useMyWebAccess'
+import ChangeEmail from './ChangeEmail'
 
 const faqs = [
   {
     question: 'Can I change the email address I sign in with?',
     answer:
-      'Not from this page. Your email address is how your account and web access are identified, so if you need to change it, please get in touch at info@resilienceweb.org.uk.',
+      "Yes. Choose \"Change email\" above and we'll send a code to the new address to confirm it's yours. Your webs and mailing list subscription move with you, and we'll let your old address know about the change.",
   },
   {
     question: 'I was invited to a web but I cannot see it here. Why?',
@@ -105,7 +106,8 @@ export default function UserSettingsPage() {
         <CardHeader>
           <CardTitle>User settings</CardTitle>
         </CardHeader>
-        <CardContent className="max-w-md">
+        <CardContent className="flex max-w-md flex-col gap-6">
+          <ChangeEmail currentEmail={session.user.email} />
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
