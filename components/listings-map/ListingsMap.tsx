@@ -10,6 +10,7 @@ import {
   useMap,
   ZoomControl,
 } from 'react-leaflet'
+import { useRouter } from 'next/navigation'
 import L from 'leaflet'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
@@ -137,6 +138,7 @@ function FitBoundsToMarkers({ markers }: { markers: [number, number][] }) {
 }
 
 function ListingsMap({ items = [], relatedWebs = [], categories }: MapProps) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [isFullScreen, setIsFullScreen] = useState(false)
   const [isUnmappedPanelOpen, setIsUnmappedPanelOpen] = useState(false)
@@ -320,7 +322,7 @@ function ListingsMap({ items = [], relatedWebs = [], categories }: MapProps) {
                   icon={createRelatedWebIcon(web.title)}
                   eventHandlers={{
                     click: () => {
-                      window.location.assign(`${getWebUrl(web.slug)}?view=map`)
+                      router.push(`${getWebUrl(web.slug)}?view=map`)
                     },
                   }}
                 />
