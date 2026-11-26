@@ -1,5 +1,6 @@
 ---
 description: Triage recent Sentry errors and fix the obvious ones on agent/ branches
+disable-model-invocation: true
 ---
 
 You are running unattended (usually overnight) in a throwaway git worktree of this repo,

@@ -1,5 +1,6 @@
 ---
 description: Review the last week of PostHog analytics, fix clear bugs it reveals, and report the rest
+disable-model-invocation: true
 ---
 
 You are running unattended (weekly, overnight) in a throwaway git worktree of this repo,
