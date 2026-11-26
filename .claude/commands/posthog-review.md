@@ -10,6 +10,14 @@ Your job: read the last week of product analytics, fix the few things that are c
 broken in our code, and write a short weekly report for the maintainer about everything
 else.
 
+**If this prompt ends without a "Run context" section, someone ran it by hand.** In that
+case:
+- Gather and decide as in steps 1–2 and give the report from step 5 in the chat. Write no
+  files.
+- Propose the fixes you'd make and wait for the user's go-ahead before changing anything.
+- Once they approve, work in their normal flow, not on `agent/` branches or the `prs/`
+  folder.
+
 ## 1. Gather the data
 
 Use the PostHog MCP tools. The project is "Resilience Web" (id `14275`, EU cloud), and

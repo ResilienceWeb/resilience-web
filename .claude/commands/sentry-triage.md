@@ -9,6 +9,13 @@ unsure, skip the issue and explain why in the summary. Don't guess.
 Your job: look at recent Sentry errors, fix the ones that are clearly bugs in our code
 with a small, safe change, and write up everything else for a human.
 
+**If this prompt ends without a "Run context" section, someone ran it by hand.** In that
+case:
+- Do the triage in steps 1–3 and give the summary from step 6 in the chat. Write no files.
+- Propose the fixes you'd make and wait for the user's go-ahead before changing anything.
+- Once they approve, work in their normal flow, not on `agent/` branches or the `prs/`
+  folder.
+
 ## 1. Find candidates
 
 Use the Sentry MCP tools. Org `resilience-web`, project `resilience-web`. Look at
