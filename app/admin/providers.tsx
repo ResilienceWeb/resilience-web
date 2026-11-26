@@ -2,8 +2,8 @@
 import { useEffect } from 'react'
 import * as Sentry from '@sentry/nextjs'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
-import StoreProvider from '@store/StoreProvider'
 import { loadPostHog } from '@helpers/posthog'
+import StoreProvider from '@store/StoreProvider'
 
 export default function Providers({ children, userId }) {
   useEffect(() => {

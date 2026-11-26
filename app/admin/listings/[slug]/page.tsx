@@ -5,6 +5,7 @@ import { HiArrowLeft } from 'react-icons/hi'
 import { PiInfoBold } from 'react-icons/pi'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { toast } from 'sonner'
 import ListingForm from '@components/admin/listing-form'
 import { Alert, AlertTitle } from '@components/ui/alert'
 import { Button } from '@components/ui/button'
@@ -20,7 +21,8 @@ export default function ListingPage({ params }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { categories } = useCategories()
-  const { mutate: updateListing } = useUpdateListing()
+  const { mutateAsync: updateListing, isPending: isUpdating } =
+    useUpdateListing()
   const { selectedWebSlug } = useAppContext()
 
   const showSuccessMessage = searchParams.get('editApplied') === 'true'
@@ -43,12 +45,17 @@ export default function ListingPage({ params }) {
     }
   }
 
-  const handleSubmit = (data) => {
+  const handleSubmit = async (data) => {
     if (data.id) {
       if (data.pending) {
         data.isApprovingProposedListing = true
       }
-      updateListing(data)
+      try {
+        await updateListing(data)
+      } catch (error) {
+        toast.error(`Unable to update listing: ${error.message}`)
+        return
+      }
     }
     goBack()
   }
@@ -142,7 +149,7 @@ export default function ListingPage({ params }) {
               categories={categories}
               listing={listing}
               handleSubmit={handleSubmit}
-              isSubmitting={isPending}
+              isSubmitting={isUpdating}
             />
           </div>
         </div>

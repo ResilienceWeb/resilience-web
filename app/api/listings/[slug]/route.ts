@@ -34,7 +34,7 @@ export async function GET(
       slug,
       web: {
         deletedAt: null,
-        ...(webSlug ? { slug: { contains: webSlug } } : {}),
+        ...(webSlug ? { slug: webSlug } : {}),
       },
     }
 
@@ -75,7 +75,7 @@ export async function GET(
     // Pick the placement matching the current web context so flattenListingPlacement
     // hoists the right slug/category/tags onto the listing.
     const matchingPlacement = listingRaw.placements.find(
-      (p) => p.slug === slug && (!webSlug || p.web.slug.includes(webSlug)),
+      (p) => p.slug === slug && (!webSlug || p.web.slug === webSlug),
     )
     const otherPlacements = listingRaw.placements.filter(
       (p) => p.id !== matchingPlacement?.id,

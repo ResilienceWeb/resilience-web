@@ -20,7 +20,7 @@ export const getListingEdits = async (
       slug: listingSlug,
       web: {
         deletedAt: null,
-        ...(webSlug ? { slug: { contains: webSlug } } : {}),
+        ...(webSlug ? { slug: webSlug } : {}),
       },
     },
     select: { listingId: true, webId: true },

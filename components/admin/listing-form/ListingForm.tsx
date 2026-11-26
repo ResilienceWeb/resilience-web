@@ -201,7 +201,9 @@ const ListingForm = ({
         ? {
             latitude: listing.location.latitude,
             longitude: listing.location.longitude,
-            description: listing.location.description,
+            // Older locations were saved without a description, which the
+            // schema's string would reject with no field on screen to show it.
+            description: listing.location.description ?? '',
           }
         : undefined,
   })

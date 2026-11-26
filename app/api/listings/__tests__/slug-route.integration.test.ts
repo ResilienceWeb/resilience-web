@@ -11,7 +11,7 @@ import { signInAs } from '@/test/session'
 import { WebRole } from '@prisma-client'
 import { describe, expect, it } from 'vitest'
 import prisma from '@prisma-rw'
-import { DELETE, PUT } from '../[slug]/route.ts'
+import { DELETE, GET, PUT } from '../[slug]/route.ts'
 
 const listingForm = (fields: Record<string, string> = {}) => {
   const form = new FormData()
@@ -42,6 +42,32 @@ const del = (slug: string, webId: number) =>
     request(`/api/listings/${slug}`, { method: 'DELETE', body: { webId } }),
     params({ slug }),
   )
+
+const get = (slug: string, webSlug: string) =>
+  GET(request(`/api/listings/${slug}?web=${webSlug}`), params({ slug }))
+
+describe('GET /api/listings/[slug]', () => {
+  // A web whose slug merely contains another's ("south-cambridgeshire" holds
+  // "cambridge") once matched too, so the admin form loaded that web's listing.
+  it('returns the listing in the named web, not one whose slug contains it', async () => {
+    const cambridge = await createWeb({ slug: 'cambridge' })
+    const southCambs = await createWeb({ slug: 'south-cambridgeshire' })
+    await createListing(southCambs.id, {
+      title: 'Other',
+      slug: 'cam-conservators',
+    })
+    const listing = await createListing(cambridge.id, {
+      title: 'Cam Conservators',
+      slug: 'cam-conservators',
+    })
+
+    const { listing: found } = await (
+      await get('cam-conservators', 'cambridge')
+    ).json()
+
+    expect(found.id).toBe(listing.id)
+  })
+})
 
 describe('PUT /api/listings/[slug]', () => {
   it('rejects an anonymous caller and leaves the listing alone', async () => {

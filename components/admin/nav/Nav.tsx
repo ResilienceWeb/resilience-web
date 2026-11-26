@@ -6,8 +6,8 @@ import { RxHamburgerMenu } from 'react-icons/rx'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { captureEventAndReset } from '@helpers/posthog'
 import { useSession, signOut } from '@auth-client'
+import { captureEventAndReset } from '@helpers/posthog'
 import GetInTouchButton from '@components/contact-dialog/GetInTouchButton'
 import {
   DropdownMenu,
