@@ -4,6 +4,7 @@ import { isAPIError } from 'better-auth/api'
 import { betterAuth } from 'better-auth/minimal'
 import { emailOTP, admin } from 'better-auth/plugins'
 import prisma from '@prisma-rw'
+import { onAccountEmailChanged } from '@helpers/accountEmailChanged'
 import { sendEmail } from '@helpers/email'
 import OTPEmail from '@components/emails/OTPEmail'
 
@@ -51,15 +52,25 @@ export const auth = betterAuth({
     admin(),
     emailOTP({
       expiresIn: 60 * 10, // 10 minutes
-      sendVerificationOTP: async ({ email, otp }) => {
+      // Only the new address is verified. The usual reason to change is having
+      // lost the old one, so the old address is told about the change instead.
+      changeEmail: {
+        enabled: true,
+      },
+      sendVerificationOTP: async ({ email, otp, type }) => {
+        const purpose = type === 'change-email' ? 'change-email' : 'sign-in'
         const otpEmail = OTPEmail({
           email,
           otp,
+          purpose,
         })
 
         return sendEmail({
           to: email,
-          subject: `Your Resilience Web verification code`,
+          subject:
+            purpose === 'change-email'
+              ? `Confirm your new Resilience Web email address`
+              : `Your Resilience Web verification code`,
           email: otpEmail,
         })
       },
@@ -85,6 +96,25 @@ export const auth = betterAuth({
   user: {
     deleteUser: {
       enabled: true,
+    },
+  },
+  databaseHooks: {
+    user: {
+      update: {
+        // The endpoint's session still holds the user as they were before the
+        // update, which is the only place the previous address survives.
+        after: async (user, ctx) => {
+          if (ctx?.path !== '/email-otp/change-email') return
+          const previousEmail = ctx.context.session?.user.email
+          if (!previousEmail || previousEmail === user.email) return
+
+          await onAccountEmailChanged({
+            previousEmail,
+            newEmail: user.email,
+            name: user.name,
+          })
+        },
+      },
     },
   },
 })
