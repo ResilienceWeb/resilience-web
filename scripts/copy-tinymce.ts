@@ -10,24 +10,10 @@
  */
 import { cpSync, rmSync } from 'node:fs'
 import path from 'node:path'
+import { isServedTinymceFile } from '../lib/self-hosted-tinymce.ts'
 
 const source = path.join(import.meta.dirname, '../node_modules/tinymce')
 const destination = path.join(import.meta.dirname, '../public/tinymce')
 
-// The editor loads tinymce.min.js, which asks for .min.js plugins and themes,
-// so the unminified sources and package metadata are never requested.
-const isNeeded = (file: string) => {
-  const name = path.basename(file)
-  if (name.endsWith('.js')) return name.endsWith('.min.js')
-  return ![
-    'package.json',
-    'bower.json',
-    'composer.json',
-    'tinymce.d.ts',
-    'README.md',
-    'CHANGELOG.md',
-  ].includes(name)
-}
-
 rmSync(destination, { recursive: true, force: true })
-cpSync(source, destination, { recursive: true, filter: isNeeded })
+cpSync(source, destination, { recursive: true, filter: isServedTinymceFile })
