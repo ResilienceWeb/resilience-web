@@ -150,8 +150,10 @@ function ListingsMap({ items = [], relatedWebs = [], categories }: MapProps) {
 
   const toggleFullScreen = useCallback(() => {
     if (!document.fullscreenElement) {
+      // iPhone Safari has no element fullscreen API at all.
+      if (!mapContainerRef.current?.requestFullscreen) return
       mapContainerRef.current
-        ?.requestFullscreen()
+        .requestFullscreen()
         .then(() => setIsFullScreen(true))
         .catch((err) => {
           console.error(

@@ -318,8 +318,10 @@ const Network = ({ data, selectedId, setSelectedId, webId }) => {
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
+      // iPhone Safari has no element fullscreen API at all.
+      if (!graphRef.current?.requestFullscreen) return
       graphRef.current
-        ?.requestFullscreen()
+        .requestFullscreen()
         .then(() => setIsFullScreen(true))
         .catch((err) => {
           console.error(
